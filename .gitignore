@@ -107,3 +107,7 @@ venv.bak/
 /admin
 /examples
 /welcome
+
+# sessions and logs
+/schemeofwork/sessions
+/schemeofwork/errors
