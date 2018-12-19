@@ -1,0 +1,394 @@
+"id";"description";"solo_taxonomy_id";"topic_id";"content_id";"exam_board_id"
+1;"Describe the term hardware";2;9;9;3
+2;"Describe the difference between early and modern computers";2;9;11;3
+3;"Explain the purpose of memory in terms of Von Neumann architecture";2;7;9;3
+4;"Describe the purpose of the Central Processing Unit (CPU) ";2;7;9;3
+5;"Describe the Fetch-Decode-Execute cycle";2;7;9;3
+6;"Give the names of different CPU components: ALU, ACC, CIR, MAR, MDR, PC";1;7;9;3
+7;"Describe the purpose of the CPU components: ALU, ACC, CIR, MAR, MDR, PC";2;7;9;3
+8;"Explain the purpose of cache memory";3;7;9;3
+9;"Explain what is meant by clock speed";2;7;9;3
+10;"Name factors that improve CPU performance (Processor Speed, Bus Speed, Cache, Cores)";1;7;9;3
+11;"Explain how different factors improve CPU performance";2;8;9;3
+12;"Expain the purpose of RAM and ROM";3;8;9;3
+13;"What is meant by dual core and quad core";1;7;9;3
+14;"Name the different types of computer systems (General-purpose, Dedicated systems, control systems)";1;9;8;3
+15;"Describe the purpose of different types of computer systems.";2;9;8;3
+16;"Describe a embedded system";2;9;8;3
+17;"Explain the advantage of an embedded system over a general-purpose system.";3;9;8;3
+18;"Calculate the number of bytes in a kilobyte/megabyte/gigabyte";1;8;11;3
+19;"Name the acronym RAM";1;8;11;3
+20;"Give another name for solid-state memory";1;8;11;3
+21;"Describe what is meant by volatile memory";2;8;11;3
+22;"Explain how RAM can make programs faster";3;8;11;3
+23;"List the different types of memory in order of speed";2;8;11;3
+24;"Name the acronym ROM";1;8;11;3
+25;"Describe what is meant by Read-Only Memory";2;8;11;3
+26;"Describe the difference between ROM and RAM";3;8;11;3
+27;"Identify the name for the type of storage when the computer does not have enough space in RAM";1;8;11;3
+28;"Describe what happens when there is not enough storage in RAM";2;8;11;3
+29;"Expain the effect of switching between RAM and using Virtual Memory";3;8;11;3
+30;"Draw the relationship between Virtual Memory, Main memory, Cache and the CPU.";2;8;9;3
+31;"Explain the effect of adding more RAM";3;8;11;3
+32;"Explain the purpose of secondary storage";3;11;10;3
+33;"Identify and name the types of Secondary storage";1;11;10;3
+34;"Describe how information is stored in flash memory";2;11;10;3
+35;"Describe how information is stored using magnetic storage";2;11;10;3
+36;"Explain the advantage of magnetic storage";3;11;10;3
+37;"List the different layers used in rewritable optical disks";2;11;10;3
+38;"Describe how data is written to a rewritable optical disk";2;11;10;3
+39;"Compare and describe the requirements for different types of optical storage";3;11;10;3
+40;"Identify a flash memory device";1;11;10;3
+41;"Explain the advantages and disadvantages of solid-state drives over magnetic drive";3;11;10;3
+42;"Calculate the amount of storage required for given data";3;11;10;3
+43;"Justify the reasons for a choosing a type of secondary storage";3;11;10;3
+44;"List the considerations for selecting secondary storage";2;11;10;3
+45;"List the benefits of a network";2;15;12;3
+46;"Define the term Network";1;15;12;3
+47;"List the different types of network (LAN, WAN, PAN, SAN, VPN)";2;15;12;3
+48;"Describe given types of network";2;15;12;3
+49;"Explain what is meant by a VPN";3;16;12;3
+50;"Identify different network connections (UTP, Fibre-optic, wireless).";1;19;12;3
+51;"Describe different network connections";2;17;12;3
+52;"Explain how Fibre-optic cable transmits data.";3;17;12;3
+53;"Give reasons why Fibre-optic cable has an advantage over UTP (Unshielded Twisted Pair)";3;17;12;3
+54;"Define the term client-server";1;18;12;3
+55;"Identify the services provided by a client server network.";1;18;12;3
+56;"Identify the nodes on a client-server network";1;18;12;3
+57;"List different types of server used in a client-server network";2;18;12;3
+58;"Give an example of a service provide by a server in a client-server network (Email, Web, Database)";1;18;12;3
+59;"Explain components delivered to the user from a web-server";3;18;12;3
+60;"Define the term peer-to-peer network";1;18;12;3
+61;"Describe the advantages and disadvantages of a peer-to-peer network";2;18;12;3
+62;"Explain the illegal implication of file sharing on a peer-to-peer network";3;18;12;3
+63;"Define the term Ethernet";1;18;12;3
+64;"Define the term WiFi";1;18;12;3
+65;"List two common standards for networks (Ethernet, WiFi)";2;18;12;3
+66;"Describe the Network Interface Controller (NIC)";2;18;12;3
+67;"Describe how the Network Interface Controller (NIC) is used for sending and receiving messages on the network.";2;19;12;3
+68;"Identify the device used to connect a wireless-enabled device, such as a laptop or tablet, to a wireless network. ";1;19;12;3
+69;"Identify different network hardware (NIC, Wireless Access Point, Router, Hub, Switch)";1;19;12;3
+70;"Describe how different devices are connected together on a network.";2;19;12;3
+71;"Give reasons for selecting a hub or a switch";3;19;12;3
+72;"Identify different network layouts (Star, Mesh, Bus, Ring) ";1;20;12;3
+73;"Describe the advantage of a Star Topology";2;20;12;3
+74;"Describe the advantage of a Mesh Topology";2;20;12;3
+75;"Describe the difference between a full mesh and partial mesh topology ";2;20;12;3
+76;"Explain how a message is transmitted through different topologies";3;23;12;3
+77;"List wavebands used in WiFi.";2;23;12;3
+78;"Explain how channels work across a given bandwidth";3;23;12;3
+79;"Describe the vulnerability of a Wireless network";2;23;12;3
+80;"Define the term encryption";1;21;12;3
+81;"Describe how basic encryption (Caesar cipher) is used to transform a message";2;21;12;3
+82;"List the steps to encrypt a message using assymmetric key encryption";2;21;12;3
+83;"Explain why encryption is important in the exchange of messages over a network";3;21;12;3
+84;"Create an algorithm to encrypt a message";4;21;12;3
+85;"Define the term protocol";1;23;12;3
+86;"Describe the purpose of using protocols";2;23;12;3
+87;"Name the main network addressing protocols";1;22;12;3
+88;"Describe the format used for the main network address protocols (MAC address and IP address)";2;22;12;3
+89;"Describe how devices are assign an IP address (DHCP)";2;22;12;3
+90;"Name common protocols used on the internet (HTML, XML, HTTP, HTTPS, POP, IMAP, SMTP, FTP)";1;23;12;3
+91;"Describe the common protocols used on the internet (HTML, XML, HTTP, HTTPS, POP, IMAP, SMTP, FTP)";2;23;12;3
+92;"Define the term TCP/IP";1;23;12;3
+93;"Define the term protocol";1;23;12;3
+94;"Name the layers in the TCP/IP stack";1;24;12;3
+95;"Describe the purpose of each layer in the TCP/IP stack";2;24;12;3
+96;"Explain what might happen if the network protocols are not used when message are send over the network";3;23;12;3
+97;"Define the terms Encapsulation and De-encapsulation";1;24;12;3
+98;"Describe the process of encapsulation of data in the TCP/IP stack";2;24;12;3
+99;"Define the term Ethernet";1;23;12;3
+100;"Define the term frame";1;23;12;3
+101;"Define the term CMSA/CD";1;23;12;3
+102;"Describe how frames are constructed";2;23;12;3
+103;"Describe how collission detection may occur";2;23;12;3
+104;"Explain how the length of an ethernet cable affects performance";3;19;12;3
+105;"Desribe the difference between simplex, duplex and full duplex communication";3;19;12;3
+106;"Define the term packet";1;23;12;3
+107;"Identify different parts of a packet";2;23;12;3
+108;"Explain how a packet is structured";3;23;12;3
+109;"Define the term CRC";1;23;12;3
+110;"Explain how CRC ensures data is not corrupted";3;23;12;3
+111;"Define the term routing";1;23;12;3
+112;"Identify two methods used to route data on a network ";1;23;12;3
+113;"Explain the difference between circuit switching and packet switching";3;23;12;3
+114;"Define the term hacking";1;25;13;3
+115;"Describe one motive for hacking";2;25;13;3
+116;"Give two motives for hacking";2;25;13;3
+117;"Describe how people contribute to weakness in network security";2;25;13;3
+118;"Describe what should be included a basic security policy";2;26;13;3
+119;"List four areas that should be included in a security policy";2;26;13;3
+120;"Explain what should be included in areas of the network policy";3;26;13;3
+121;"Give one example of data that should be restricted ";3;26;13;3
+122;"Define the term malware";1;25;13;3
+123;"Give three examples of malware";2;25;13;3
+124;"Describe three strategies for protecting against malware";2;25;13;3
+125;"Explain two methods that a hacker may use to access a user account";3;25;13;3
+126;"Define the term phishing";1;25;13;3
+127;"Define the term Denial of Service (DoS)";1;25;13;3
+128;"Describe how a Denial of Service attack prevents anyone using the resource ";2;25;13;3
+129;"Define the term Packet Sniffing";1;25;13;3
+130;"What protocol can be used to prevent Packet Sniffing";1;25;13;3
+131;"Define the term SQL Injection";1;25;13;3
+132;"Describe how SQL Injection attack is carried out";2;25;13;3
+133;"Describe how a validation check could be applied to avoid SQL injection 1=1 technique";3;25;13;3
+134;"Define the term firewall";1;19;13;3
+135;"Give two places where a firewall can be installed";2;19;13;3
+136;"Describe how a firewall prevents unauthorised traffic";2;19;13;3
+137;"Define the term internet";1;28;12;3
+138;"List four services that run on the internet";2;28;12;3
+139;"Define the term DNS";1;28;12;3
+140;"Describe how DNS is used for easy to remember domain names";2;28;12;3
+141;"Construct a heirarchical diagram to show how urls form part of a naming system";2;28;12;3
+142;"Define the term cloud";1;28;12;3
+143;"Give two advantages of using cloud services";2;28;12;3
+144;"Give one disadvantages of using cloud services";2;28;12;3
+145;"Define the term Virtual Network";1;28;12;3
+146;"Describe how a Virtual Network might be implemented";2;28;12;3
+147;"Define the term Program";1;29;8;3
+148;"Desribe the term Platform";2;29;8;3
+149;"Define the term Application";1;29;8;3
+150;"Define the term Utility Program";1;29;8;3
+151;"Define the term Software";1;29;8;3
+152;"Define the term Programming Language";1;29;8;3
+153;"Define the term Instructions";1;29;8;3
+154;"Describe what is meant by a computer program?";2;29;8;3
+155;"Explain the difference between an application and system software";3;29;8;3
+156;"Explain the advantages of obtaining software from an online repository";3;29;8;3
+157;"State two actions that are carried out by package management utility";2;29;8;3
+158;"Explain the advantages of the Operating System";3;30;8;3
+159;"Give six purposes of the Operating System";2;30;8;3
+160;"Explain the purpose of the kernel";3;30;8;3
+161;"Define the purpose of the command line";1;30;8;3
+162;"Define how a network technicians could run multiple actions using the command line";1;30;8;3
+163;"Explain two advantages of using a Graphical User Interface (GUI) over the command line";3;30;8;3
+164;"Give the names of three operating systems";2;30;8;3
+165;"Describe the purpose and advantage of a Dynamic Link Library (DLL) file.";2;31;8;3
+166;"Name two types of libraries";1;31;8;3
+167;"Define what how manufacturers use Unix";1;30;8;3
+168;"Name two operating systems designed to work with mobile phones";1;30;8;3
+169;"Describe the difference between Linux and Unix";3;30;8;3
+170;"Define the term firmware";1;30;8;3
+171;"Explain how multi-tasking allows more than one program to run";3;30;8;3
+172;"Give one example of a real time operating system";1;30;8;3
+173;"Identify file permissions for owner, group and all users";1;30;8;3
+174;"Explain how an Operating System manages free memory";3;30;8;3
+175;"Explain how the operating system manages peripheral devices";3;30;8;3
+176;"Describe how the operating system uses interrupt codes ";1;7;8;3
+177;"Define the term disk fragmenter";1;32;8;3
+178;"Describe how a disk can become fragmented";2;32;8;3
+179;"Name six types of utility software";2;32;8;3
+180;"Define the terms computer virus, worm, trojan horse, spyware, adware, keylogger";1;32;8;3
+181;"Name five types of malicious programs";2;32;8;3
+182;"Define the term backup";1;32;8;3
+183;"Explain the difference between full backup, incremental backup and differential backup";3;32;8;3
+184;"Define the term Computational Thinking";1;33;2;3
+185;"Describe how computational thinking helps to solve problems";2;33;2;3
+186;"List the four stages of problem solving";2;33;2;3
+187;"Define the term abstraction";1;33;2;3
+188;"Give seven examples of abstraction";2;33;2;3
+189;"Define the term Decomposition";1;33;2;3
+190;"Describe using an example how decompostion is used to solve a problem";2;33;2;3
+191;"Define the term Pattern Recognition";1;33;2;3
+192;"Describe using an example how pattern recognition is used to solve a problem";2;33;2;3
+193;"Define the term algorithm";1;33;2;3
+194;"Describe two ways that an algorithm can be expressed";2;33;2;3
+195;"Write an algorithm to solve a simple everyday problem";1;33;2;3
+196;"Describe how a binary search algorithm is finds an item in a list";2;33;1;3
+197;"Describe how a linear search algorithm is finds an item in a list";2;33;1;3
+198;"Describe how a bubble sort is used to sort items in a list";2;33;1;3
+199;"Describe how a merge sort is used to sort items in a list";2;33;1;3
+200;"Describe how a insertion sort is used to sort items in a list";2;33;1;3
+201;"Explain and give reasons why a binary search would be more efficient than a linear search";3;33;1;3
+202;"Define the term variable";1;35;4;3
+203;"Define the term constant";1;35;4;3
+204;"Explain what happens when a variable or constant is declared";3;35;4;3
+205;"Define the term typecast";1;36;4;3
+206;"Give five examples of primitive data types and their allocated size in bytes (integer, float, string, boolean, character)";2;36;4;3
+207;"Give reasons for allocating different data types such as numbers and strings";3;36;4;3
+208;"Calculate the estimated file size based on datatypes and number of records";2;36;4;3
+209;"Define the term sequence";1;37;2;3
+210;"Define the term selection";1;37;2;3
+211;"Define the term Iteration";1;37;2;3
+212;"Describe three types of iteration";2;37;2;3
+213;"Create a pseudocode program using sequence, selection and iteration";4;37;2;3
+214;"Explain the difference between REPEAT UNTIL and WHILE DO iteration";3;42;2;3
+215;"List and describe five standard operators (+, -, /, *, ^)";2;40;2;3
+216;"Identify six comparison operators (==, >=, <=, >, <, !=)";1;40;2;3
+217;"Write a program in pseudo code that calculates integer and float values using standard operators";4;36;2;3
+218;"Write a program in pseudo code that uses comparsion operators";4;40;2;3
+219;"Describe how an array is used to store items";2;43;4;3
+220;"Identify items and their position in an array";1;43;4;3
+221;"Write a program in pseudo code to populate a one-dimensional array";4;43;4;3
+222;"Write a program in pseudo code to populate a two-dimensional array";4;43;4;3
+223;"Explain the difference between an storing data in an array and storing data in records using a database ";3;43;4;3
+224;"Define the term file";1;44;4;3
+225;"Describe how a program reads a file";2;44;4;3
+226;"Write a program that reads data from a file";4;44;4;3
+227;"Write a program that writes data to a file";4;44;4;3
+228;"Identify values returned from a SELECT statement";1;44;4;3
+229;"Describe the SQL commands SELECT, CREATE, INSERT and DELETE";2;44;4;3
+230;"Write a SQL statement to display records from a table";4;44;4;3
+231;"Write a SQL statement to display a subset of records from a table";4;44;4;3
+232;"Describe three methods of string manipulation (Len, Substring, Concatenation)";2;45;4;3
+233;"Identify values returned from string-handling commands (LEN, Substring)";1;45;4;3
+234;"Write a program in pseudocode to return the length of a string";4;45;4;3
+235;"Write a program in pseudocode to return a substring";4;45;4;3
+236;"Write a program in pseudocode to concatenate strings";4;45;4;3
+237;"Define the term function";1;46;3;3
+238;"List and describe five advantages of functions and procedures (reduce size of the source code, maintainability, reusability of code and existing functions, reduce debugging)";2;46;3;3
+239;"Describe how a function is constructed";2;46;3;3
+240;"Explain the difference between a function and procedure";3;46;3;3
+241;"Define the term syntax error";1;47;3;3
+242;"Define the term logic error";1;47;3;3
+243;"Identify syntax errors in a program";1;47;3;3
+244;"Identify logical errors in a program";1;47;3;3
+245;"Describe how a program requires precise instructions";2;47;3;3
+246;"Give five reasons syntax errors may occur (undeclared variables, variables not declared correctly, incompatable data types, incorrect assignment, defintion spelt incorrectly)";2;47;3;3
+247;"Describe how a program can run unexpectedly due to logic errors";2;47;3;3
+248;"Give five causes of logical errors (divide by zero, incomplete programs, stack overflow, unexpected outputs, program crashes)";2;47;3;3
+249;"Define the term input validation";1;47;3;3
+250;"Describe five input validations";2;47;3;3
+251;"Describe five methods of contingencies for handling erronous user input (clear and meaningful prompts, handle unexpected inputs, anticipate misuse, consider combinations of inputs that may result in an error, user authentication)";2;47;3;3
+252;"Define the purpose of program maintenance";1;47;3;3
+253;"Give four methods that makes a program easier to maintain (Change logs, indents to show structure, comments, meaningful identifiers)";2;47;3;3
+254;"Write a program using techniques that make the program maintainable (indents, comments, identifier names)";2;47;3;3
+255;"Define the purpose of testing";1;47;3;3
+256;"Describe six types of testing (Functional, Parametric, fault tolerance, integration, regression, iterative, final, user acceptance)";2;47;3;3
+257;"Describe five validation tests (valid, valid extreme, invalid, invalid extreme, erroneous)";2;47;3;3
+258;"Explain why it is necessary to carry out various validation tests (valid, valid extreme, invalid, invalid extreme, erroneous)";3;47;3;3
+259;"Create a test plan showing type of test, various data inputs, reason for test and expected result)";4;47;3;3
+260;"Explain the difference between white box and black box testing";3;47;3;3
+261;"Write a program that includes include validation tests, erronous user input and misuse)";4;47;3;3
+262;"Define the term binary";1;56;5;3
+263;"Define the term denary";1;56;5;3
+264;"Describe how a computer uses 1s and 0s to represents numeric values";2;56;5;3
+265;"Convert up to 8-bit binary to denary by identifying place values";2;56;5;3
+266;"Convert denary to 8-bit binary (the division and remainder method and the subtraction method)";2;56;5;3
+267;"Identify bits, nibbles and bytes";1;56;5;3
+268;"Name units of storage and the number of byte stored";1;56;5;3
+269;"Carry out binary addition on two 4-bit binary numbers";2;56;5;3
+270;"Define the term overflow";1;56;5;3
+271;"Describe how to multiply and divide by 2, 4 and 8 using binary shift ";2;56;5;3
+272;"Define the term hexidecimal";1;57;5;3
+273;"Convert denary to hexidecimal (using the division and remainder method)";2;57;5;3
+274;"Convert 8-bit binary to hexidecimal";2;57;5;3
+275;"Convert hexidecimal to binary";2;57;5;3
+276;"Convert binary to hexidecimal";2;57;5;3
+277;"Define the purpose of carrying out check digits";1;57;5;3
+278;"Describe the steps for calculating the EAN8 for a number";2;57;5;3
+279;"Define what is meant by a parity checks on binary numbers";1;57;5;3
+280;"Define the term ASCII";1;58;6;3
+281;"Define the term Character Set";1;58;6;3
+282;"Describe how many bits are required for a ASCII character";2;58;6;3
+283;"Define the term Unicode";1;58;6;3
+284;"Describe how words using ASCII characters are sorted";2;58;6;3
+285;"Explain the difference between ASCII and Unicode";3;58;6;3
+286;"Define the term pixel";1;59;6;3
+287;"Define the term colour depth";1;59;6;3
+288;"Define the term resolution in Pixels Per Inch (PPI) and Dots Per Inch (DPI)";1;59;6;3
+289;"Define the term metadata";1;60;6;3
+290;"Describe how images are represented using 1s and 0s";2;59;6;3
+291;"Explain how an image looses quality when it is enlarged";3;59;6;3
+292;"Explain how many number bits are required per pixel for colour depth";3;59;6;3
+293;"Estimate the size of an image file (in bytes, kilobytes, megabytes, gigabytes) based on width, height and colour depth";4;59;6;3
+294;"Define the term analogue";1;61;6;3
+295;"Describe the ";2;61;6;3
+296;"Explain the difference between analogue and digital";3;61;6;3
+297;"Define the term bit depth";1;61;6;3
+298;"Define the term bit rate";1;61;6;3
+299;"Define the term Sample Rate";1;61;6;3
+300;"Describe how the quality of sound can be improved by increasing the sample rate";2;61;6;3
+301;"Describe how the accuracy of sampling can be improved by increasing the bit depth";2;61;6;3
+302;"Explain how the quality of sound can be improved by increasing the sample rate and bit depth";3;61;6;3
+303;"Explain how the size of a sound file is increased by the number of channels and bit rate";3;61;6;3
+304;"Define the term compression";1;62;6;3
+305;"Describe how compression is used to transfer data over the internet and store data";2;62;6;3
+306;"Define the term lossy compression";1;62;6;3
+307;"Define the term lossless compression";1;62;6;3
+308;"Describe the difference between lossy and lossless compression";2;62;6;3
+309;"Name five compression standards";2;62;6;3
+310;"Explain the importance of compressing files when transmitting them over the internet";3;62;6;3
+311;"Define the term logic gate";1;38;7;3
+312;"Describe how inputs are effected by AND, OR and NOT gates";2;38;7;3
+313;"Construct a Truth Table for binary inputs and outputs for AND, OR and NOT gates";2;38;7;3
+314;"Describe how boolean algebra is used in programming";2;39;7;3
+315;"Construct a Truth Table for binary inputs and outputs for Boolean logic";2;39;7;3
+316;"Define the term opcode and operand";1;48;15;3
+317;"Define the term Mnumonic";1;48;15;3
+318;"Define the term Instruction Set";1;48;15;3
+319;"Describe how instructions are composed of the opcode and operand";2;48;15;3
+320;"Define the term translator and translation";1;49;15;3
+321;"Describe how instruction sets are used to store the different opcodes";2;49;15;3
+322;"Describe how human readable instructions are translated into machine code";2;49;15;3
+323;"Describe that each machine (processor) has its own unique set of instructions";2;49;15;3
+324;"Explain how the opcodes are translated into machine code using the instruction set";3;49;15;3
+325;"Define the term assembler";1;50;15;3
+326;"Describe how assembly language is translated into machine code using an assembler";2;50;15;3
+327;"Explain how an assembly language program is contructed";3;50;15;3
+328;"Define the term high-level language";1;51;15;3
+329;"Describe how high level languages improve productivity";2;51;15;3
+330;"Give three reasons for choosing high-level language over assembly language (problem-orientated, easier to read, portable)";3;51;15;3
+331;"Define the term source code";1;52;15;3
+332;"Define the term Object code";1;52;15;3
+333;"Describe how source code is compiled into object code";2;52;15;3
+334;"Explain the different between source and object code";3;52;15;3
+335;"Give four advantages for compiling code (unreadable code; runs faster once compiled; source code does not need to be published, compilers optimise code) and three disadvantages to compiling code (must be compiled in full after each change; cannot apply small incremental changes; compiled programms are machine specific).";3;52;15;3
+336;"Define the term interpreter";1;53;15;3
+337;"Describe how an interpreter runs though lines of code";2;53;15;3
+338;"Give three advantages (code is easy to debug; errors occur during translation line-by-line; easy to experiment) and four disadvantages (code runs slower; code is not optimised; source code can be copied; interpreter required in memory).";3;53;15;3
+339;"Define the term Pretty Printing";1;54;15;3
+340;"Describe how code is presented in a Editor";2;54;15;3
+341;"Define the term IDE";1;54;15;3
+342;"Describe four common features found in an IDE";2;54;15;3
+343;"Define the term Virtual Machine";1;55;15;3
+344;"Describe how a virtual machine is implmented to handle different platforms (to translate and package a program)";2;55;15;3
+345;"Define how computer technology effect our daily life";1;63;14;3
+346;"Describe nine examples affect the world and society (Safety, Travel, Business, Retail, Entertainment, Communication, Education, Politics, Science).";2;63;14;3
+347;"Describe that there are benefits and problems with technology";2;63;14;3
+348;"Describe that technology suffers problems of unauthorised access to data and computer systems";2;64;14;3
+349;"Define the Computer Misuse Act 1990";1;64;14;3
+350;"Describe features defined under the Computer Misuse Act 1990 to minimise threats (Unauthorised access,";2;64;14;3
+351;"Define the Freedom of Information Act 2000";1;64;14;3
+352;"Describe how under the Freedom of Information Act 2000 authorities must publish information and data and that the public can request information.";2;64;14;3
+353;"Give the names of four public bodies that the Freedom of Information Act 2000 covers ";2;64;14;3
+354;"Define the Communications Act 2003";1;64;14;3
+355;"Give two illegal action to which it is an offence under the Communications Act 2003 (using WiFi without permission; send offensive communications).";2;64;14;3
+356;"Define the Data Protection Act 1998";1;64;14;3
+357;"Give eight provisions in the Data Protection Act 1998 (Data should be: processed fairly and lawfully; should only be used for the puprose is was being collected; should be relevant not excessive; be accurate and up to date; kept only as long as necessary; protected; not transfered outside the EU unless adequate data protection is in place in that country).";2;64;14;3
+358;"Give three exemptions to the Data Protection Act (National security; crime and taxation; domestic purposes).";2;64;14;3
+359;"Define the Copyright, Designs and Patents Act, CPDA 1988";1;64;14;3
+360;"Describe how it is illegal to copy, modify or distribute software or other intellectual property without permission ";2;64;14;3
+361;"Define the Creative Commons Licence";1;64;14;3
+362;"Describe how the Creative Commons issues licences for allowing modify or copying of work";2;64;14;3
+363;"Define the term proprietary software";1;65;14;3
+364;"Define the term open source software";1;65;14;3
+365;"Describe how proprietary software is paid for in return for services";2;65;14;3
+366;"Describe how open-source software is made freely available and can be updated by a community of developers and redistributed";2;65;14;3
+367;"Describe six differences between open-source and proprietary software";2;65;14;3
+368;"Define the term Ethics";1;66;14;3
+369;"Describe how ethics is both personal and laid down by organisations";2;66;14;3
+370;"Describe the rights to privacy in the age of the internet";2;66;14;3
+371;"Give reason for and against an individual rights to privacy if they give out personal information to companies and organisations.";3;66;14;3
+372;"Define the term censorship on the internet";1;66;14;3
+373;"Describe censorship measures implemented on the internet";2;66;14;3
+374;"Explain the need for censorship on the internet - give reasons for and against what information should be blocked";3;66;14;3
+375;"Describe three areas affected by technology";2;67;14;3
+376;"Define the term automated descision making";1;67;14;3
+377;"Describe seven areas where automated descison making is implemented (Power distribution; Emergency response; Stock market trading; chemical plants; aeroplane collision avoidance; driverless cars; credit assessments).";2;67;14;3
+378;"Describe five areas where technology is used to monitor activity and behaviour (CCTV; Criminal Electronic Tags; Black Boxes in cars; Mobile phone signals; Workplace logging)";2;66;14;3
+379;"Give reason why it might be reasonable and unreasonable for organisations to demand access to social network data posted privately";3;66;14;3
+380;"Describe how data is a useful commodity to organisations";2;66;14;3
+381;"Define the term Artificial Intelligence (AI)";1;68;14;3
+382;"Describe four examples where AI is used (credit card; speech recognition; medical diagnosis; prediciting events).";2;68;14;3
+383;"Describe how AI systems are contructed";2;68;14;3
+384;"Explain the different aspects of machine and human intelligence and give one example where technology can be used to fool people into think they are interacting with another human.";3;68;14;3
+385;"Describe that computers are made from toxic materials";2;69;14;3
+386;"Describe that computers produce hazardous waste";2;69;14;3
+387;"Explain the positive and negative impacts of electricity output from data centres.";3;69;14;3
+394;"Use a keyboard";1;73;17;-1
+395;"Define the term Interrupt";1;7;25;3
+396;"Describe how the interrupt is triggered";2;7;25;3
+397;"Explain the Interrupt Service Routine and its effect on the Fetch Decode Execute cycle";3;7;25;3
+398;"Give three examples of interrupts";2;7;25;3
+399;"Describe how the operating system uses interrupt codes ";1;30;9;3

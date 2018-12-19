@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S'<class \'_mysql_exceptions.ProgrammingError\'> (1146, "Table \'cssow.sw\' doesn\'t exist")'
+p3
+sS'layer'
+p4
+S'C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 04A93578, file "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 83, in <module>\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\globals.py", line 421, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\tools.py", line 3867, in f\n    return action(*a, **b)\n  File "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 46, in edit\n    topic_options = topicModel.get_options()\n  File "applications/schemeofwork/models/topicModel.py", line 35, in get_options\n    rows = db.executesql(str_select)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\base.py", line 772, in executesql\n    adapter.execute(query)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\adapters\\__init__.py", line 67, in wrap\n    return f(*args, **kwargs)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 413, in execute\n    rv = self.cursor.execute(command, *args[1:], **kwargs)\n  File "MySQLdb/cursors.py", line 205, in execute\n  File "MySQLdb/connections.py", line 36, in defaulterrorhandler\nProgrammingError: (1146, "Table \'cssow.sw\' doesn\'t exist")\n'
+p11
+s.

@@ -1,0 +1,75 @@
+{{extend '__layout.html'}}
+{{ from datetime import datetime }}
+{{block header}}
+<div class="row">
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="site-heading">
+      <h1>{{=content["main_heading"]}}</h1>
+      <span class="subheading">{{=content["sub_heading"]}}</span>
+    </div>
+  </div>
+</div>
+{{end}}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+      <div class="container">
+          {{if auth.user:}}
+              <a class="navbar-brand" href="{{=URL('edit')}}">{{=T('New')}}</a>
+          {{pass}}
+    </div>
+</nav>
+<!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <!-- Filters Start -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Key stage</label>
+                <select class="form-control" id="email" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Key stage - All -</option>
+                    <option value="1">Key stage 1</option>
+                    <option value="2">Key stage 2</option>
+                    <option value="3">Key stage 3</option>
+                    <option value="4">Key stage 4</option>
+                    <option value="5">Key stage 5</option>
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Filters END -->
+          <!-- Scheme of works -->
+          {{ for row in model: }}
+          <div class="post-preview">
+            <a href="{{=URL('schemesofwork', 'view', vars=dict(id=row.id))}}">
+              <h2 class="post-title">
+                {{=row.name}}
+              </h2>
+              <h3 class="post-subtitle">
+                {{=row.exam_board_name}} {{=row.key_stage_name}}
+              </h3>
+            </a>
+            <p class="post-meta">Created by
+              <a href="#">{{=row.created_by}}</a>
+              {{if row.created: }}
+                on {{=str(row.ui_date())}}
+              {{ pass }}
+              {{if auth.user:}}
+                 - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">Delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">Edit</a>
+              {{pass}}</p>
+          </div>
+          <hr>
+            {{ pass }}
+          <!-- Pager -->
+          <div class="clearfix">
+            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          </div>
+          <!-- Scheme of works END -->
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Main Content END -->
+{{block page_js}}
+{{end page_js}}

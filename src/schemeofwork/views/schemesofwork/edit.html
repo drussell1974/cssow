@@ -1,0 +1,86 @@
+{{extend '__layout.html'}}
+{{block header}}
+<div class="row">
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="site-heading">
+      <h1>{{=content["main_heading"]}}</h1>
+      <span class="subheading">{{=content["sub_heading"]}}</span>
+    </div>
+  </div>
+</div>
+{{end}}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+      <div class="container">
+          {{if auth.user:}}
+              {{if model.is_new(): }}<a class="navbar-brand" href="{{=URL('delete_item', vars=dict(id=model.id))}}">{{=T('Delete')}}</a>{{pass}}
+          {{pass}}
+    </div>
+</nav>
+<!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <p>{{=content["strap_line"]}}</p>
+          <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+          <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+          <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+          <form name="edit-schemeofwork" id="schemeofworkEdit" method="post" action="save_item">
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Title</label>
+                <input type="text" name="name" class="form-control" placeholder="Title" id="name" name="name" required data-validation-required-message="Please enter a title."
+                       value='{{=model.name}}'>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Exam board</label>
+                <select class="form-control" name="exam_board_id" id="exam_board_id" required data-validation-required-message="Please select a exam board option.">
+                    <option value="0">- Select an option for exam board -</option>
+                    {{ for opt in examboard_options: }}
+                    <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.exam_board_id else ""}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Key stage</label>
+                <select class="form-control" name="key_stage_id" id="key_stage_id" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Select a key stage -</option>
+                    {{ for opt in keystage_options: }}
+                    <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.key_stage_id else ""}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Description</label>
+                <textarea rows="5" class="form-control" name="description" placeholder="Description" id="message" required data-validation-required-message="Please enter a description.">
+                    {{=model.description}}
+                </textarea>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <input type="hidden" name="id" value="{{=model.id}}">
+              <button type="submit" class="btn btn-primary" id="saveSchemeOfWorkButton">Save</button>
+              <button type="submit" class="btn btn-primary" id="cancelSchemeOfWorkButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Main Content END -->
+
+{{block page_js}}
+{{end page_js}}

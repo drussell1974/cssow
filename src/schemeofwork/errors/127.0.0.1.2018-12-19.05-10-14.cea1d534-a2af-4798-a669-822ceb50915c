@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S'<class \'_mysql_exceptions.OperationalError\'> (1054, "Unknown column \'le.learning_episode_id\' in \'field list\'")'
+p3
+sS'layer'
+p4
+S'C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py'
+p5
+sS'code'
+p6
+S'<code object <module> at 0488C458, file "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 2>'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\restricted.py", line 219, in restricted\n    exec(ccode, environment)\n  File "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 78, in <module>\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\globals.py", line 421, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Dev\\cssow_web2py\\src\\applications\\schemeofwork\\controllers/learningobjective.py", line 18, in index\n    data = learningobjectiveModel.get_all()\n  File "applications/schemeofwork/models/learningobjectiveModel.py", line 150, in get_all\n    rows = db.executesql(select_sql)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\base.py", line 772, in executesql\n    adapter.execute(query)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\adapters\\__init__.py", line 67, in wrap\n    return f(*args, **kwargs)\n  File "C:\\Dev\\cssow_web2py\\src\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 413, in execute\n    rv = self.cursor.execute(command, *args[1:], **kwargs)\n  File "MySQLdb/cursors.py", line 205, in execute\n  File "MySQLdb/connections.py", line 36, in defaulterrorhandler\nOperationalError: (1054, "Unknown column \'le.learning_episode_id\' in \'field list\'")\n'
+p11
+s.

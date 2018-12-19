@@ -1,0 +1,5 @@
+CREATE USER 'drussell1974'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'drussell1974'@'localhost' WITH GRANT OPTION;
+CREATE USER 'drussell1974'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'drussell1974'@'%' WITH GRANT OPTION;
+CREATE SCHEMA IF NOT EXISTS cssow;

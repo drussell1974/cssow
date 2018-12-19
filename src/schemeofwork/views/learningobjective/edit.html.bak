@@ -1,0 +1,111 @@
+{{extend '__layout.html'}}
+{{block header}}
+<div class="row">
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="site-heading">
+      <h1>{{=content["main_heading"]}}</h1>
+      <span class="subheading">{{=content["sub_heading"]}}</span>
+    </div>
+  </div>
+</div>
+{{end}}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+      <div class="container">
+          {{if auth.user:}}
+              {{if model.is_new(): }}<a class="navbar-brand" href="{{=URL('delete_item', vars=dict(id=model.id))}}">{{=T('Delete')}}</a>{{pass}}
+          {{pass}}
+    </div>
+</nav>
+<!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <p>{{=content["strap_line"]}}</p>
+          <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+          <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+          <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+          <form name="edit-schemeofwork" id="schemeofworkEdit" method="post" action="save_item">
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Description</label>
+                <input type="text" name="name" class="form-control" placeholder="Description" id="description" name="description" required data-validation-required-message="Please enter a description."
+                       value='{{=model.description}}'>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Solo Taxonomy START -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Solo Taxonomy</label>
+                <select class="form-control" name="solo_taxonomy_id" id="solo_taxonomy_id" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Select a solo taxonomy -</option>
+                    {{ for opt in solo_taxonomy_options: }}
+                    <option value="{{=opt.id}}" {{if opt.id == model.solo_taxonomy_id:}} selected {{pass}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Solo Taxonomy END -->
+            <!-- Topic START -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Topic</label>
+                <select class="form-control" name="topic_id" id="topic_id" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Select a topic -</option>
+                    {{ for opt in topic_options: }}
+                    <option value="{{=opt.id}}" {{if opt.id == model.topic_id:}} selected {{pass}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Topic END -->
+            <!-- Content START -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Content</label>
+                <select class="form-control" name="content_id" id="content_id" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Select content -</option>
+                    {{ for opt in content_options: }}
+                    <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Content END -->
+            <!-- Exam board START -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Exam Board</label>
+                <select class="form-control" name="exam_board_id" id="exam_board_id" required data-validation-required-message="Please select a key stage.">
+                    <option value="0">- Select an exam board -</option>
+                    {{ for opt in exam_board_options: }}
+                    <option value="{{=opt.id}}" {{if opt.id == model.exam_board_id:}} selected {{pass}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Exam Board END -->
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <input type="hidden" name="id" value="{{=model.id}}">
+              <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
+              <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
+              <button type="submit" class="btn btn-primary" id="saveSchemeOfWorkButton">Save</button>
+              <button type="submit" class="btn btn-primary" id="cancelSchemeOfWorkButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Main Content END -->
+
+{{block page_js}}
+{{end page_js}}

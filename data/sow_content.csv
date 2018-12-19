@@ -1,0 +1,26 @@
+"id";"description";"letter";"key_stage_id"
+1;"standard algorithms, including binary search and merge sort";"A";4
+2;"following and writing algorithms to solve problems, including sequence, selection and iteration, and input, processing and output";"B";4
+3;"how particular programs and algorithms work";"C";4
+4;"the concept of data type, including integer, Boolean, real, character and string and data structures, including records and one- and two-dimensional arrays";"D";4
+5;"representation of numbers in binary and hexadecimal; conversion between these and decimal; binary addition and shifts";"E";4
+6;"representation of text, sound, and graphics inside computers";"F";4
+7;"Boolean logic using AND, OR and NOT, combination of these, and the application of logical operators";"G";4
+8;"the purpose and functionality of systems software, including the operating system and utility software";"H";4
+9;"characteristics of systems architectures: CPU architecture, including Von Neumann and the role of components";"I";4
+10;"characteristics of systems architectures: main and contemporary secondary storage and ways of storing data on devices including magnetic, optical and solid state";"J";4
+11;"characteristics of systems architectures: data capacity and calculation of data capacity requirements";"K";4
+12;"networks and the importance of: connectivity, both wired and wireless; types of networks; common network topologies; network security; protocols; layers";"L";4
+13;"cyber security: forms of attack; methods of identifying vulnerabilities; way to protect software systems";"M";4
+14;"the ethical, legal and environmental impacts of digital technology on wider society, including issues of privacy and cyber security";"N";4
+15;"characteristics and purpose of different levels of programming language, including lowlevel language";"O";4
+17;"use a keyboard and mouse effectively";"A";2
+19;"fundamentals of programming";"A";5
+20;"the concept of data type, including primitive data types and complex data structures";"B";5
+21;"data representation";"C";5
+22;"following and writing algorithms";"D";5
+23;"methods of capturing, selecting, exchanging and managing data to produce information for a particular purpose ";"E";5
+24;"the need for and functions of systems software ";"F";5
+25;"characteristics of contemporary systems architectures, including processors, storage, input, output and their connectivity";"G";5
+26;"characteristics of networks and the importance of networking protocols and standards";"H";5
+27;"the individual moral, social ethical, legal and cultural opportunities and risks of digital technology";"I";5
