@@ -103,5 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# custom
-src/schemeofwork/private
+# default web2py apps
+/admin
+/examples
+/welcome
