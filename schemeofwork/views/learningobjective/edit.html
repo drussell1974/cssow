@@ -18,12 +18,40 @@
 </nav>
 <!-- Main Content -->
     <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <p>{{=content["strap_line"]}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <form name="edit-schemeofwork" id="schemeofworkEdit" method="post" action="edit">
+                <!-- Solo Taxonomy START -->
+                    <div class="control-group">
+                      <div class="form-group floating-label-form-group controls">
+                        <label>Select existing Learning objective</label>
+                        <select class="form-control" name="learning_objective_id" id="learning_objective_id" required data-validation-required-message="Please select a learning objective.">
+                            <option value="0">- Select an existing learning objective -</option>
+                            {{ for opt in other_learning_objective_options: }}
+                            <option value="{{=opt.id}}" {{if opt.id == model.id:}} selected {{pass}}>{{=opt.description}}</option>
+                            {{ pass }}
+                        </select>
+                        <p class="help-block text-danger"></p>
+                      </div>
+                    </div>
+                    <br>
+                    <div id="success"></div>
+                    <div class="form-group">
+                    <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
+                    <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
+                   <button type="submit" class="btn btn-primary" id="getExistingLearningObjective">Fill</button>
+                    </div>
+                </form>
+            </div>
+        </div>
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <p>{{=content["strap_line"]}}</p>
-          <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
-          <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
-          <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
           <form name="edit-schemeofwork" id="schemeofworkEdit" method="post" action="save_item">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
@@ -95,8 +123,8 @@
               <input type="hidden" name="id" value="{{=model.id}}">
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
               <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
-              <button type="submit" class="btn btn-primary" id="saveSchemeOfWorkButton">Save</button>
-              <button type="submit" class="btn btn-primary" id="cancelSchemeOfWorkButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+              <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
             </div>
           </form>
         </div>

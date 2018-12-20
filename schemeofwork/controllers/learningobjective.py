@@ -38,7 +38,15 @@ def index():
 
 @auth.requires_login()
 def edit():
-    model = learningobjectiveModel.get_model()
+    model = None
+    # check if an existing_learning_objective_id has been passed
+    if request.vars.learning_objective_id is not None:
+        _id = int(request.vars.learning_objective_id if request.vars.learning_objective_id is not None else 0)
+        model = learningobjectiveModel.get_new_model(_id)
+    else:
+        _id = int(request.vars.id if request.vars.id is not None else 0)
+        model = learningobjectiveModel.get_model(_id)
+
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
@@ -53,6 +61,8 @@ def edit():
     content_options = contentModel.get_options(key_stage_id)
     exam_board_options = examboardModel.get_options()
 
+    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, key_stage_id = key_stage_id)
+
     content = {
         "main_heading":"Learning objective",
         "sub_heading":model.description,
@@ -64,7 +74,9 @@ def edit():
         solo_taxonomy_options = solo_taxonomy_options,
         topic_options = topic_options,
         content_options = content_options,
-        exam_board_options = exam_board_options)
+        exam_board_options = exam_board_options,
+        other_learning_objective_options = other_learning_objective_options
+    )
 
 
 @auth.requires_login()
