@@ -70,6 +70,7 @@ db.define_table('sow_scheme_of_work',
 db.define_table('sow_learning_episode',
                 Field('order_of_delivery_id', 'integer'),
                 Field('scheme_of_work_id', 'reference sow_scheme_of_work', required=True),
+                Field('topic_id', 'reference sow_topic', required=True),
                 migrate = False
                )
 

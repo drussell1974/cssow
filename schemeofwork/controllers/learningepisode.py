@@ -37,9 +37,15 @@ def edit():
 @auth.requires_login()
 def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    model = learningepisodeModel.save(auth.user.id)
 
-    return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=model.id)))
+    id_ = int(request.vars.id)
+    order_of_delivery_id = int(request.vars.order_of_delivery_id)
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    topic_id = int(request.vars.topic_id)
+
+    model = learningepisodeModel.save(auth.user.id, id_, order_of_delivery_id, scheme_of_work_id, topic_id)
+
+    return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=model.id, topic_id = model.topic_id)))
 
 
 @auth.requires_login()

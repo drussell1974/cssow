@@ -13,6 +13,7 @@ learningepisiodeModel = exec_environment('applications/schemeofwork/models/learn
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
+    topic_id = int(request.vars.topic_id)
 
     scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only()
     order_of_delivery_name = learningepisiodeModel.get_order_of_delivery_name_only(learning_episode_id)
@@ -31,6 +32,7 @@ def index():
         content = content,
         model = data,
         scheme_of_work_id = scheme_of_work_id,
+        topic_id = topic_id,
         learning_episode_id = learning_episode_id,
         learningepisiode_options = learning_episode_options
     )
@@ -53,7 +55,8 @@ def edit():
     if request.vars.learning_episode_id is not None:
         # required for creating a new object
         model.learning_episode_id = int(request.vars.learning_episode_id)
-
+    if request.vars.topic_id is not None:
+        model.topic_id = int(request.vars.topic_id)
 
     key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
     solo_taxonomy_options = solotaxonomyModel.get_options()
@@ -61,7 +64,7 @@ def edit():
     content_options = contentModel.get_options(key_stage_id)
     exam_board_options = examboardModel.get_options()
 
-    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, key_stage_id = key_stage_id)
+    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, topic_id = model.topic_id)
 
     content = {
         "main_heading":"Learning objective",

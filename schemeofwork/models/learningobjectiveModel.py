@@ -279,7 +279,7 @@ def get_model(id_):
     return model
 
 
-def get_options(not_in_learning_episode = 0, key_stage_id = 0):
+def get_options(not_in_learning_episode = 0, topic_id = 0):
     select_sql = ("SELECT " +
                     "  lob.id as id, " + # 0
                      "  lob.description as description, " + #1
@@ -309,7 +309,7 @@ def get_options(not_in_learning_episode = 0, key_stage_id = 0):
                     " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
                     " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
                     " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-                    " WHERE le.id != {} OR le_lo.learning_objective_id is null;".format(not_in_learning_episode))
+                    " WHERE (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR pnt_top.id = {});".format(not_in_learning_episode, topic_id, topic_id))
 
     rows = db.executesql(select_sql)
 
