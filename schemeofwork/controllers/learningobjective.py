@@ -59,7 +59,7 @@ def edit():
     key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
 
     solo_taxonomy_options = solotaxonomyModel.get_options()
-    topic_options = topicModel.get_options()
+    topic_options = topicModel.get_options(learning_episode.parent_topic_id)
     content_options = contentModel.get_options(key_stage_id)
     exam_board_options = examboardModel.get_options()
 

@@ -1,0 +1,1 @@
+ALTER TABLE sow_learning_objective__has__learning_episode ADD UNIQUE sow_learning_episode__unique__idx (learning_objective_id, learning_episode_id);
