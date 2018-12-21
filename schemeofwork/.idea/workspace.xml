@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7c71fb3-db88-4303-9a0f-17e07d653a71" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/views/learningobjective/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/learningobjective/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/schemesofwork/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/schemesofwork/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,13 +22,13 @@
         <counts>
           <entry key="52805e40-9c71-4135-ac28-7e214c04fbb0" value="1" />
           <entry key="bak" value="5" />
-          <entry key="html" value="10" />
+          <entry key="html" value="11" />
           <entry key="py" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="10" />
+          <entry key="HTML" value="11" />
           <entry key="PLAIN_TEXT" value="6" />
           <entry key="Python" value="18" />
         </counts>
@@ -36,13 +36,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="bak" value="1" />
-          <entry key="html" value="1768" />
+          <entry key="html" value="1920" />
           <entry key="py" value="7242" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="1768" />
+          <entry key="HTML" value="1920" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Python" value="7242" />
         </counts>
@@ -57,7 +57,7 @@
             <state relative-caret-position="274">
               <caret line="21" column="98" selection-start-line="21" selection-start-column="62" selection-end-line="21" selection-end-column="98" />
               <folding>
-                <marker date="1545404259603" expanded="true" signature="4689:5077" ph="..." />
+                <marker date="1545405556055" expanded="true" signature="4689:5077" ph="..." />
               </folding>
             </state>
           </provider>
@@ -67,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/learningepisode.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="527">
-              <caret line="37" column="15" lean-forward="true" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
+              <caret line="37" column="15" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -77,6 +77,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
               <caret line="22" selection-start-line="22" selection-end-line="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/schemesofwork/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="42" column="96" selection-start-line="42" selection-start-column="96" selection-end-line="42" selection-end-column="96" />
             </state>
           </provider>
         </entry>
@@ -99,16 +108,16 @@
         <entry file="file://$PROJECT_DIR$/views/learningepisode/edit.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="648">
-              <caret line="48" column="24" lean-forward="true" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
+              <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/learningobjective/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="291">
-              <caret line="57" column="26" lean-forward="true" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
+              <caret line="57" column="26" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
               <folding>
                 <element signature="n#nav#0;n#!!top" />
                 <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" />
@@ -145,7 +154,7 @@
         <entry file="file://$PROJECT_DIR$/models/learningobjectiveModel.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="465">
-              <caret line="411" column="32" lean-forward="true" selection-start-line="411" selection-start-column="32" selection-end-line="411" selection-end-column="32" />
+              <caret line="411" column="32" selection-start-line="411" selection-start-column="32" selection-end-line="411" selection-end-column="32" />
               <folding>
                 <element signature="e#1176#2067#0" />
                 <element signature="e#2050#2090#0" />
@@ -155,8 +164,8 @@
                 <element signature="e#6737#9225#0" />
                 <element signature="e#9252#12136#0" />
                 <element signature="e#12203#15210#0" />
-                <marker date="1545404493372" expanded="true" signature="4516:4523" ph="..." />
-                <marker date="1545404493372" expanded="true" signature="13327:19074" ph="..." />
+                <marker date="1545405556070" expanded="true" signature="4516:4523" ph="..." />
+                <marker date="1545405556070" expanded="true" signature="13327:19074" ph="..." />
               </folding>
             </state>
           </provider>
@@ -188,6 +197,7 @@
       <find>get_unassociated_learning_objectives</find>
       <find>order_of_delivery_id</find>
       <find>learning_episode_id</find>
+      <find>Delete</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -209,6 +219,7 @@
         <option value="$PROJECT_DIR$/controllers/learningobjective.py" />
         <option value="$PROJECT_DIR$/models/learningobjectiveModel.py" />
         <option value="$PROJECT_DIR$/views/learningobjective/index.html" />
+        <option value="$PROJECT_DIR$/views/schemesofwork/index.html" />
       </list>
     </option>
   </component>
@@ -374,13 +385,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/topicModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/schemeofworkModel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -394,14 +398,14 @@
     <entry file="file://$PROJECT_DIR$/views/learningepisode/edit.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="648">
-          <caret line="48" column="24" lean-forward="true" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
+          <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/learningepisode.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="37" column="15" lean-forward="true" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
+          <caret line="37" column="15" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -436,7 +440,7 @@
         <state relative-caret-position="274">
           <caret line="21" column="98" selection-start-line="21" selection-start-column="62" selection-end-line="21" selection-end-column="98" />
           <folding>
-            <marker date="1545404259603" expanded="true" signature="4689:5077" ph="..." />
+            <marker date="1545405556055" expanded="true" signature="4689:5077" ph="..." />
           </folding>
         </state>
       </provider>
@@ -444,7 +448,7 @@
     <entry file="file://$PROJECT_DIR$/models/learningobjectiveModel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
-          <caret line="411" column="32" lean-forward="true" selection-start-line="411" selection-start-column="32" selection-end-line="411" selection-end-column="32" />
+          <caret line="411" column="32" selection-start-line="411" selection-start-column="32" selection-end-line="411" selection-end-column="32" />
           <folding>
             <element signature="e#1176#2067#0" />
             <element signature="e#2050#2090#0" />
@@ -454,8 +458,8 @@
             <element signature="e#6737#9225#0" />
             <element signature="e#9252#12136#0" />
             <element signature="e#12203#15210#0" />
-            <marker date="1545404493372" expanded="true" signature="4516:4523" ph="..." />
-            <marker date="1545404493372" expanded="true" signature="13327:19074" ph="..." />
+            <marker date="1545405556070" expanded="true" signature="4516:4523" ph="..." />
+            <marker date="1545405556070" expanded="true" signature="13327:19074" ph="..." />
           </folding>
         </state>
       </provider>
@@ -463,7 +467,7 @@
     <entry file="file://$PROJECT_DIR$/views/learningobjective/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
-          <caret line="57" column="26" lean-forward="true" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
+          <caret line="57" column="26" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
           <folding>
             <element signature="n#nav#0;n#!!top" />
             <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" />
@@ -471,6 +475,20 @@
             <element signature="n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" />
             <element signature="e#4116#4122#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/topicModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/schemesofwork/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="42" column="96" selection-start-line="42" selection-start-column="96" selection-end-line="42" selection-end-column="96" />
         </state>
       </provider>
     </entry>

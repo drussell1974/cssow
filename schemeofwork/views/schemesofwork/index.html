@@ -40,7 +40,7 @@
           <!-- Scheme of works -->
           {{ for row in model: }}
           <div class="post-preview">
-            <a href="{{=URL('schemesofwork', 'view', vars=dict(id=row.id))}}">
+            <a href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
               <h2 class="post-title">
                 {{=row.name}}
               </h2>
@@ -54,7 +54,7 @@
                 on {{=str(row.date_created_ui())}}
               {{ pass }}
               {{if auth.user:}}
-                 - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">Delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">Edit</a>
+                 - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
               {{pass}}</p>
           </div>
           <hr>
