@@ -360,7 +360,7 @@ def get_parent_options(current_key_stage_id = 0, topic_id = 0):
     return data
 
 
-def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topic_id):
+def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topic_id, parent_topic_id):
 
     select_sql = ("SELECT " +
             "  lob.id as id, " + # 0
@@ -392,8 +392,8 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
             " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
             " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
             " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(key_stage_id, learning_episode_id, topic_id, topic_id))
-    raise Exception(select_sql)
+            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(key_stage_id, learning_episode_id, topic_id, parent_topic_id, parent_topic_id))
+    #raise Exception(select_sql)
     rows = db.executesql(select_sql)
 
     data = [];
@@ -415,8 +415,8 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
             exam_board_name = row[12],
             key_stage_id = row[13],
             key_stage_name = row[14],
-            learning_episode_id=row[15],
-            order_of_delivery_id=row[16],
+            learning_episode_id = learning_episode_id,
+            learning_episode_name = row[16],
             created = row[17],
             created_by = row[18])
         data.append(model)

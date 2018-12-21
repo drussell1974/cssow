@@ -22,7 +22,8 @@ def index():
     unassociated_learning_objectives = learningobjectiveModel.get_unassociated_learning_objectives(
         learning_episode_id=learning_episode.id,
         key_stage_id=learning_episode.key_stage_id,
-        topic_id=learning_episode.topic_id)
+        topic_id=learning_episode.topic_id,
+        parent_topic_id=learning_episode.parent_topic_id)
 
     content = {
         "main_heading":"Learning objectives",
