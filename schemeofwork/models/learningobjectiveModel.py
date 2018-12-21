@@ -63,10 +63,17 @@ class LearningObjectiveModel (BaseModel):
 
         db.executesql(str_update)
 
-        str_insert2 = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
-        str_insert2 = str_insert2.format(this.id, this.learning_episode_id)
+        # insert if entry in sow_learning_objective__has__learning_episode doesn't already map sow learning_objective and sow_learning_episode
 
-        db.executesql(str_insert2)
+        str_check_duplicate = "SELECT id FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {} AND learning_episode_id = {};"
+        str_check_duplicate = str_check_duplicate.format(this.id, this.learning_episode_id)
+
+        rows = db.executesql(str_check_duplicate)
+
+        if(len(rows) == 0):
+            str_insert2 = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
+            str_insert2 = str_insert2.format(this.id, this.learning_episode_id)
+            db.executesql(str_insert2)
 
         return True
 
