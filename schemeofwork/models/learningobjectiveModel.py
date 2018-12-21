@@ -89,7 +89,7 @@ class LearningObjectiveModel (BaseModel):
 
 
     def _delete(this):
-        str_delete = "DELETE FROM sow_learning_objective WHERE id = {};"
+        str_delete = "DELETE FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {};"
         str_delete = str_delete.format(this.id)
 
         rval = db.executesql(str_delete)
@@ -309,7 +309,7 @@ def get_options(not_in_learning_episode = 0, topic_id = 0):
                     " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
                     " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
                     " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-                    " WHERE (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR pnt_top.id = {});".format(not_in_learning_episode, topic_id, topic_id))
+                    " WHERE (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(not_in_learning_episode, topic_id, topic_id))
 
     rows = db.executesql(select_sql)
 
@@ -364,9 +364,7 @@ def save(auth_user_id, description):
 
 
 
-def delete(auth_user_id):
-
-    id_ = int(request.vars.id)
+def delete(auth_user_id, id_):
 
     model = LearningObjectiveModel(id_)
     model._delete();

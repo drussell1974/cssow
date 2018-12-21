@@ -13,16 +13,19 @@ db = DAL(configuration.get('db.uri'),
 
 class LearningEpisodeModel (BaseModel):
 
-    scheme_of_work_id = 0
     order_of_delivery_id = 0
+    scheme_of_work_id = 0
+    scheme_of_work_name = ""
     topic_id = 0
+    topic_name = ""
 
     def __init__(this, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", created = "", created_by = ""):
         this.id = int(id_)
         this.order_of_delivery_id = int(order_of_delivery_id)
         this.scheme_of_work_id = int(scheme_of_work_id)
         this.scheme_of_work_name = scheme_of_work_name if scheme_of_work_id > 0 else ""
-        this.topic_id = topic_id
+        this.topic_id = int(topic_id)
+        this.topic_name = topic_name
         this.created = created
         this.created_by = created_by
 
@@ -41,10 +44,12 @@ class LearningEpisodeModel (BaseModel):
 
 
     def _insert(this):
-        str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id created, created_by) VALUES ({}, {}, '{}', {});"
+        str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, created, created_by) VALUES ({}, {}, {}, '{}', {});"
         str_insert = str_insert.format(this.order_of_delivery_id, this.scheme_of_work_id, this.topic_id, this.created, this.created_by)
 
-        return get_last_insert_id(db)
+        db.executesql(str_insert)
+
+        return this.get_last_insert_row_id(db)
 
 
     def _delete(this):
@@ -70,6 +75,7 @@ def get_options(scheme_of_work_id):
     return data
 
 
+"""
 def get_order_of_delivery_name_only(learning_episode_id):
 
     select_sql = ("SELECT le.order_of_delivery_id as order_of_delivery_name FROM sow_learning_episode as le WHERE le.id = {};".format(learning_episode_id))
@@ -82,22 +88,23 @@ def get_order_of_delivery_name_only(learning_episode_id):
         order_of_delivery_name = row[0]
 
     return order_of_delivery_name
+"""
 
 
-def get_all():
-
-    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+def get_all(scheme_of_work_id):
 
     select_sql = ("SELECT " +
                  "  le.id as id, " + #0
                  "  le.order_of_delivery_id as order_of_delivery_id, " #1
                  "  le.scheme_of_work_id as scheme_of_work_id, " + #2
-                 "  le.topic_id as topic_id, " + #3
-                 "  sow.name as scheme_of_work_name, " + #4
-                 "  le.created as created, " + #5
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #6
+                 "  sow.name as scheme_of_work_name, " + #3
+                 "  top.id as topic_id, " + #4
+                 "  top.name as topic_name, " + #5
+                 "  le.created as created, " + #6
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #7
                  " FROM sow_learning_episode as le " +
                  "  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id " +
+                 "  LEFT JOIN sow_topic as top ON top.id = le.topic_id " +
                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by " +
                  "  WHERE le.scheme_of_work_id = {} ORDER BY le.order_of_delivery_id;".format(scheme_of_work_id))
 
@@ -106,33 +113,34 @@ def get_all():
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], topic_id=row[3], created=row[5], created_by=row[6])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], created=row[6], created_by=row[7])
         data.append(model)
 
     return data
 
 
-def get_model():
-    id_ = int(request.vars.id if request.vars.id is not None else 0)
+def get_model(id_):
     model = LearningEpisodeModel(id_);
 
     select_sql = ("SELECT " +
                  "  le.id as id, " + #0
                  "  le.order_of_delivery_id as order_of_delivery_id, " #1
                  "  le.scheme_of_work_id as scheme_of_work_id, " + #2
-                 "  le.topic_id as topic_id, " + #3
-                 "  sow.name as scheme_of_work_name, " + #4
-                 "  le.created as created, " + #5
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #6
+                 "  sow.name as scheme_of_work_name, " + #3
+                 "  top.id as topic_id, " + #4
+                 "  top.name as topic_name, " + #5
+                 "  le.created as created, " + #6
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #7
                  " FROM sow_learning_episode as le " +
                  "  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id " +
+                 "  INNER JOIN sow_topic as top ON top.id = le.topic_id " +
                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by " +
                   "  WHERE le.id = {};".format(id_))
 
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], topic_id=row[3], created=row[5], created_by=row[6])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], created=row[6], created_by=row[7])
 
     return model
 

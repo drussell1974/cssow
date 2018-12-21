@@ -2,16 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7c71fb3-db88-4303-9a0f-17e07d653a71" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/schemeofwork.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/schemeofwork.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/learningepisode.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/learningepisode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/learningobjective.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/learningobjective.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/db_custom.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/db_custom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/SchemeOfWork.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/_BaseModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/contentModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/db.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/db_custom.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/examboardModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/keystageModel.py.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/models/learningepisodeModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/learningepisodeModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/learningepisodeModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/learningobjective.py.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/models/learningobjectiveModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/learningobjectiveModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/learningobjectiveModel.py.1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/learningobjectiveModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/schemeofworkModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/schemeofworkModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/schemeofworkModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/solotaxonomyModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/topicModel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/basemodel.py.1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/basemodel.py.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/__layout.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/default/about.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/default/index.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/default/user.html.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/views/learningepisode/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/learningepisode/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/learningepisode/edit.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/learningepisode/index.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/learningobjective/edit.html.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/views/learningobjective/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/learningobjective/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/learningobjective/index.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/schemesofwork/edit.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/schemesofwork/index.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/schemesofwork/new.html.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/schemesofwork/view.html.bak" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,28 +55,31 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="bak" value="2" />
-          <entry key="html" value="3" />
-          <entry key="py" value="7" />
+          <entry key="52805e40-9c71-4135-ac28-7e214c04fbb0" value="1" />
+          <entry key="bak" value="5" />
+          <entry key="html" value="6" />
+          <entry key="py" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="3" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="Python" value="7" />
+          <entry key="HTML" value="6" />
+          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="Python" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="670" />
-          <entry key="py" value="1870" />
+          <entry key="bak" value="1" />
+          <entry key="html" value="799" />
+          <entry key="py" value="2653" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="670" />
-          <entry key="Python" value="1870" />
+          <entry key="HTML" value="799" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Python" value="2653" />
         </counts>
       </usages-collector>
     </session>
@@ -58,56 +87,19 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/learningepisode/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="731">
+              <caret line="49" column="97" selection-start-line="49" selection-start-column="97" selection-end-line="49" selection-end-column="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/learningobjective.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="66" column="73" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="73" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/topicModel.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/models/learningobjectiveModel.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
-              <folding>
-                <marker date="1545329914692" expanded="true" signature="12198:15195" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/db.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1173" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/db_custom.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py.bak">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
+            <state relative-caret-position="611">
+              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
             </state>
           </provider>
         </entry>
@@ -115,17 +107,50 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/learningobjective/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="73" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
+            <state relative-caret-position="289">
+              <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="46" column="148" selection-start-line="46" selection-start-column="148" selection-end-line="46" selection-end-column="148" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py">
+        <entry file="file://$PROJECT_DIR$/models/learningobjectiveModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
-              <caret line="133" column="20" lean-forward="true" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
+            <state relative-caret-position="291">
+              <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
+              <folding>
+                <marker date="1545366519856" expanded="true" signature="12240:15255" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/schemeofworkModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="84" column="13" lean-forward="true" selection-start-line="84" selection-start-column="13" selection-end-line="84" selection-end-column="13" />
+              <folding>
+                <element signature="e#24#53#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/basemodel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="30" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -133,17 +158,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/learningepisode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="31" column="95" selection-start-line="31" selection-start-column="95" selection-end-line="31" selection-end-column="95" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/learningepisode/edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="3" column="42" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
+            <state relative-caret-position="255">
+              <caret line="24" column="68" lean-forward="true" selection-start-line="24" selection-start-column="68" selection-end-line="24" selection-end-column="68" />
             </state>
           </provider>
         </entry>
@@ -156,6 +172,11 @@
       <find>learning_ep</find>
       <find>request</find>
       <find>LearningEpisodeModel</find>
+      <find>get_model</find>
+      <find>scheme_of_work_name</find>
+      <find>get_last_insert_id</find>
+      <find>get_all</find>
+      <find>raise</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -167,13 +188,15 @@
       <list>
         <option value="$PROJECT_DIR$/views/learningobjective/edit.html" />
         <option value="$PROJECT_DIR$/models/db_custom.py" />
-        <option value="$PROJECT_DIR$/controllers/learningepisode.py" />
-        <option value="$PROJECT_DIR$/views/learningobjective/index.html" />
         <option value="$PROJECT_DIR$/models/topicModel.py" />
         <option value="$PROJECT_DIR$/views/learningepisode/edit.html" />
-        <option value="$PROJECT_DIR$/models/learningepisodeModel.py" />
+        <option value="$PROJECT_DIR$/models/learningepisodeModel.py.bak" />
+        <option value="$PROJECT_DIR$/views/learningobjective/index.html" />
         <option value="$PROJECT_DIR$/controllers/learningobjective.py" />
         <option value="$PROJECT_DIR$/models/learningobjectiveModel.py" />
+        <option value="$PROJECT_DIR$/models/schemeofworkModel.py" />
+        <option value="$PROJECT_DIR$/controllers/learningepisode.py" />
+        <option value="$PROJECT_DIR$/models/learningepisodeModel.py" />
       </list>
     </option>
   </component>
@@ -204,7 +227,7 @@
             <path>
               <item name="schemeofwork" type="b2602c69:ProjectViewProjectNode" />
               <item name="schemeofwork" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="schemeofwork" type="b2602c69:ProjectViewProjectNode" />
@@ -216,6 +239,18 @@
               <item name="schemeofwork" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="learningepisode" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="schemeofwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="schemeofwork" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="learningobjective" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="schemeofwork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="schemeofwork" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="schemesofwork" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -287,62 +322,107 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py.bak">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/learningobjective/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="73" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/topicModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="544">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/schemesofwork/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="43" column="25" lean-forward="true" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/learningepisode/edit.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" column="42" selection-start-line="3" selection-start-column="42" selection-end-line="3" selection-end-column="42" />
+        <state relative-caret-position="731">
+          <caret line="49" column="97" selection-start-line="49" selection-start-column="97" selection-end-line="49" selection-end-column="97" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/learningepisode.py">
+    <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py.bak">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="31" column="95" selection-start-line="31" selection-start-column="95" selection-end-line="31" selection-end-column="95" />
+        <state relative-caret-position="221">
+          <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/learningobjective/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/learningobjective.py.bak">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/errors/127.0.0.1.2018-12-21.03-49-17.52805e40-9c71-4135-ac28-7e214c04fbb0">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="416" column="764" selection-start-line="416" selection-start-column="764" selection-end-line="416" selection-end-column="764" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/learningobjective.py.bak">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/learningobjective.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="66" column="73" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="73" />
+        <state relative-caret-position="611">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py">
+    <entry file="file://$PROJECT_DIR$/modules/basemodel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="133" column="20" lean-forward="true" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
+        <state relative-caret-position="289">
+          <caret line="17" column="30" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/schemeofworkModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="84" column="13" lean-forward="true" selection-start-line="84" selection-start-column="13" selection-end-line="84" selection-end-column="13" />
+          <folding>
+            <element signature="e#24#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/learningepisode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="24" column="68" lean-forward="true" selection-start-line="24" selection-start-column="68" selection-end-line="24" selection-end-column="68" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/learningobjectiveModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
+        <state relative-caret-position="291">
           <caret line="313" column="4" selection-start-line="313" selection-start-column="4" selection-end-line="313" selection-end-column="4" />
           <folding>
-            <marker date="1545329914692" expanded="true" signature="12198:15195" ph="..." />
+            <marker date="1545366519856" expanded="true" signature="12240:15255" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/learningepisodeModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="46" column="148" selection-start-line="46" selection-start-column="148" selection-end-line="46" selection-end-column="148" />
         </state>
       </provider>
     </entry>

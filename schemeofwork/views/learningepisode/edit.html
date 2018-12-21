@@ -31,12 +31,23 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Topic</label>
+                <select class="form-control" name="topic_id" id="topic_id" required data-validation-required-message="Please select a topic option.">
+                    <option value="0">- Select an option for topic -</option>
+                    {{ for opt in topic_options: }}
+                    <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.topic_id else ""}}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
             <br>
             <div id="success"></div>
             <div class="form-group">
               <input type="hidden" name="id" value="{{=model.id}}">
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
-                <input type="hidden" name="topic_id" value="{{=model.topic_id}}">
               <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
               <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
             </div>

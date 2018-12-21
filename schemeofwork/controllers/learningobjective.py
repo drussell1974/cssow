@@ -2,7 +2,6 @@
 from gluon.shell import exec_environment
 
 learningobjectiveModel = exec_environment('applications/schemeofwork/models/learningobjectiveModel.py', request=request)
-#learningepisodeModel = exec_environment('applications/schemeofwork/models/learningepisodeModel.py', request=request)
 schemeofworkModel = exec_environment('applications/schemeofwork/models/schemeofworkModel.py', request=request)
 solotaxonomyModel = exec_environment('applications/schemeofwork/models/solotaxonomyModel.py')
 topicModel = exec_environment('applications/schemeofwork/models/topicModel.py')
@@ -13,18 +12,16 @@ learningepisiodeModel = exec_environment('applications/schemeofwork/models/learn
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
-    topic_id = int(request.vars.topic_id)
 
     scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only()
-    order_of_delivery_name = learningepisiodeModel.get_order_of_delivery_name_only(learning_episode_id)
-
+    learning_episode = learningepisiodeModel.get_model(learning_episode_id)
     data = learningobjectiveModel.get_all(learning_episode_id)
 
     learning_episode_options = learningepisiodeModel.get_options(scheme_of_work_id)
 
     content = {
         "main_heading":"Learning objectives",
-        "sub_heading": "for {} ({})".format(scheme_of_work_name, order_of_delivery_name),
+        "sub_heading": "for {} - {} - {}".format(scheme_of_work_name, learning_episode.id, learning_episode.topic_name),
         "background_img":"home-bg.jpg"
               }
 
@@ -32,7 +29,7 @@ def index():
         content = content,
         model = data,
         scheme_of_work_id = scheme_of_work_id,
-        topic_id = topic_id,
+        topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
         learningepisiode_options = learning_episode_options
     )
@@ -58,17 +55,19 @@ def edit():
     if request.vars.topic_id is not None:
         model.topic_id = int(request.vars.topic_id)
 
+    learning_episode = learningepisiodeModel.get_model(model.learning_episode_id)
     key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
+
     solo_taxonomy_options = solotaxonomyModel.get_options()
     topic_options = topicModel.get_options()
     content_options = contentModel.get_options(key_stage_id)
     exam_board_options = examboardModel.get_options()
 
-    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, topic_id = model.topic_id)
+    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, topic_id = learning_episode.topic_id)
 
     content = {
         "main_heading":"Learning objective",
-        "sub_heading":model.description,
+        "sub_heading": "for {} - {} - {}".format(learning_episode.scheme_of_work_name, learning_episode.id, learning_episode.topic_name),
         "strap_line":"Click save to add objective."
               }
     return dict(
@@ -92,10 +91,11 @@ def save_item():
 
 
 @auth.requires_login()
-def delete_item():
+def delete_item():#
+    id_ = int(request.vars.id)
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    learningobjectiveModel.delete(auth.user.id)
+    learningobjectiveModel.delete(auth.user.id, id_)
 
-    return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
+    return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)))

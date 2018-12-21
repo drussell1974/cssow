@@ -51,7 +51,7 @@ class SchemeOfWorkModel(BaseModel):
 
         db.executesql(str_insert)
 
-        return get_last_insert_id(db)
+        return this.get_last_insert_row_id(db)
 
 
     def _delete(this):
@@ -81,7 +81,7 @@ def save(auth_user_id):
     if model.is_valid == True:
         if model.is_new() == True:
             retId = model._insert()
-            model.id = rId
+            model.id = retId
         else:
             model._update()
 
