@@ -29,11 +29,12 @@ def edit():
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
+
     topic_options = []
     learningobjectives_data = learningobjectiveModel.get_all(id_)
 
-    if(len(learningobjectives_data) == 0):
-        topic_options = topicModel.get_options();
+    if(len(learningobjectives_data) == 0 or model.id != 0):
+        topic_options = topicModel.get_options(model.topic_id, model.parent_topic_id);
 
     content = {
         "main_heading":"Learning episode",

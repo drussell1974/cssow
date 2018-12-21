@@ -22,7 +22,7 @@ class ExamBoardModel:
     parent_name = ""
 
 
-def get_options(parent_topic_id = 0):
+def get_options(topic_id = 0, parent_topic_id = 0):
 
     str_select = (" SELECT " +
                   "   top.id as id, " +
@@ -31,10 +31,10 @@ def get_options(parent_topic_id = 0):
                   "   prt_top.name as parent_name " +
                   "  FROM sow_topic as top" +
                   "  LEFT JOIN sow_topic as prt_top ON prt_top.id = top.parent_id" +
-                  "  WHERE top.parent_id = %s OR %s = 0" +
+                  "  WHERE %s = 0 OR top.id = %s OR top.id = %s OR prt_top.id = %s" +
                   "  ORDER BY parent_name, name;");
 
-    rows = db.executesql(str_select, (parent_topic_id, parent_topic_id))
+    rows = db.executesql(str_select, (topic_id, topic_id, parent_topic_id, parent_topic_id))
 
     data = [];
 

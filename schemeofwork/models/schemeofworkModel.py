@@ -133,8 +133,8 @@ def get_all():
     return data
 
 
-def get_model():
-    id_ = int(0 if request.vars.id == None else request.vars.id)
+def get_model(id_):
+    #id_ = int(0 if request.vars.id == None else request.vars.id)
 
     model = SchemeOfWorkModel(0);
 

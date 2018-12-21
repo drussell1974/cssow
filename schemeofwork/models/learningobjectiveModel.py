@@ -392,7 +392,11 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
             " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
             " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
             " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(key_stage_id, learning_episode_id, topic_id, parent_topic_id, parent_topic_id))
+            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} ".format(key_stage_id, learning_episode_id, topic_id, parent_topic_id))
+    if parent_topic_id is not None:
+        select_sql = select_sql + " OR top.id = {} OR pnt_top.id = {}".format(parent_topic_id, parent_topic_id)
+    select_sql = select_sql + ") ORDER BY solo.lvl;"
+
     #raise Exception(select_sql)
     rows = db.executesql(select_sql)
 
