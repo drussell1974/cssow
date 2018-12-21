@@ -41,10 +41,10 @@
           <div class="post-preview">
             <a href="{{=URL('learningepisodes', 'view', vars=dict(id=row.id))}}">
               <h2 class="post-title">
-                {{=row.order_of_delivery_id}}
+                Week {{=row.order_of_delivery_id}} - {{=row.topic_name}}
               </h2>
               <h3 class="post-subtitle">
-                {{=row.scheme_of_work_name}}
+                for scheme of work - {{=row.scheme_of_work_name}}
               </h3>
             </a>
             <p class="post-meta">Created by

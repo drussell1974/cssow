@@ -25,7 +25,7 @@
                     <div class="control-group">
                       <div class="form-group floating-label-form-group controls">
                         <label>Scheme of work</label>
-                        <select class="form-control" id="scheme_of_work_id" name="scheme_of_work_id" required data-validation-required-message="Please select a scheme of work." onchange="this.form.submit()">
+                        <select class="form-control" id="learning_episode_id" name="learning_episode_id" required data-validation-required-message="Please select a scheme of work." onchange="this.form.submit()">
                             <option value="0">- Select a learning episode -</option>
                             {{ for opt in learningepisiode_options:}}
                                 <option value="{{=opt.id}}" {{if opt.id == learning_episode_id :}} selected {{pass}}>{{=opt.order_of_delivery_id}}</option>
@@ -34,6 +34,7 @@
                         <p class="help-block text-danger"></p>
                      </div>
                   </div>
+                    <input type="hidden" name="scheme_of_work_id" value="{{=scheme_of_work_id}}">
               </form>
             <!-- Filters END -->
           <!-- Scheme of works -->
@@ -44,7 +45,7 @@
                 {{=row.description}}
               </h2>
               <h3 class="post-subtitle">
-                {{=row.topic_name}} - {{=row.learning_episode_id}}
+                {{=row.topic_name}} - Week {{=row.learning_episode_name}}
               </h3>
             </a>
             <p class="post-meta">Created by
@@ -59,10 +60,15 @@
           <hr>
             {{ pass }}
           <!-- Scheme of works END -->
+          <!-- Pager -->
+          <div class="clearfix">
+            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          </div>
         </div>
+
       </div>
 
-    {{if auth.user:}}
+    {{if auth.user and len(unassociated_learning_objectives) > 0:}}
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             <h2>Unassociated learning objectives</h2>
@@ -81,13 +87,12 @@
             </p>
           </div>
             {{ pass }}
-        </div>
-    {{pass}}
           <!-- Unassociated learning objectives END -->
-          <!-- Pager -->
-          <div class="clearfix">
+            <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
           </div>
+        </div>
+    {{pass}}
         </div>
       </div>
     </div>

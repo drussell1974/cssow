@@ -26,7 +26,7 @@ def index():
 
     content = {
         "main_heading":"Learning objectives",
-        "sub_heading": "for {} - {} - {}".format(scheme_of_work_name, learning_episode.id, learning_episode.topic_name),
+        "sub_heading": "for {} - Week {} - {}".format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
         "background_img":"home-bg.jpg"
               }
 
@@ -73,7 +73,7 @@ def edit():
 
     content = {
         "main_heading":"Learning objective",
-        "sub_heading": "for {} - {} - {}".format(learning_episode.scheme_of_work_name, learning_episode.id, learning_episode.topic_name),
+        "sub_heading": "for {} - Week {} - {}".format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
         "strap_line":"Click save to add objective."
               }
     return dict(

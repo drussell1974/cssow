@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from gluon.shell import exec_environment
 learningepisodeModel = exec_environment('applications/schemeofwork/models/learningepisodeModel.py', request=request)
+learningobjectiveModel = exec_environment('applications/schemeofwork/models/learningobjectiveModel.py', request=request)
 schemeofworkModel = exec_environment('applications/schemeofwork/models/schemeofworkModel.py', request=request)
 topicModel = exec_environment('applications/schemeofwork/models/topicModel.py', request=request)
 
@@ -28,13 +29,16 @@ def edit():
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    topic_options = []
+    learningobjectives_data = learningobjectiveModel.get_all(id_)
 
-    topic_options = topicModel.get_options();
+    if(len(learningobjectives_data) == 0):
+        topic_options = topicModel.get_options();
 
     content = {
         "main_heading":"Learning episode",
-        "sub_heading":model.scheme_of_work_name,
-        "strap_line": model.order_of_delivery_id if model.order_of_delivery_id is not None else "Click next to map the pathway and objectives."
+        "sub_heading":"for {}".format(model.scheme_of_work_name),
+        "strap_line": "Week " + str(model.order_of_delivery_id)
               }
     return dict(content = content, model = model, topic_options = topic_options)
 

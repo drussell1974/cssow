@@ -31,6 +31,7 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+              {{ if len(topic_options) > 0: }}
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Topic</label>
@@ -43,6 +44,9 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+              {{ else: }}
+              <input type="hidden" name="topic_id" value="{{=model.topic_id}}">
+              {{ pass }}
             <br>
             <div id="success"></div>
             <div class="form-group">
