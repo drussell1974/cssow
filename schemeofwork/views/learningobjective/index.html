@@ -54,7 +54,7 @@
                 on {{=str(row.date_created_ui())}}
               {{ pass }}
               {{if auth.user:}}
-                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">Delete</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">Edit</a>
+                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">remove</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">edit</a>
               {{pass}}</p>
           </div>
           <hr>
