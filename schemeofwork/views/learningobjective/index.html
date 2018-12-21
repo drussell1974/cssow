@@ -58,11 +58,36 @@
           </div>
           <hr>
             {{ pass }}
+          <!-- Scheme of works END -->
+        </div>
+      </div>
+
+    {{if auth.user:}}
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h2>Unassociated learning objectives</h2>
+            <!-- Unassociated learning objectives -->
+          {{ for row in unassociated_learning_objectives: }}
+          <div class="post-preview">
+            <p class="post-meta">
+                <a href="{{=URL('learningobjective', 'add_existing_objective', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=row.description}}</a>
+                 <i class="small">
+                    by <a href="#">{{=row.created_by}}</a>
+                    {{if row.created: }}
+                        on {{=str(row.date_created_ui())}}
+                    {{ pass }}
+                </i>
+
+            </p>
+          </div>
+            {{ pass }}
+        </div>
+    {{pass}}
+          <!-- Unassociated learning objectives END -->
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
           </div>
-          <!-- Scheme of works END -->
         </div>
       </div>
     </div>

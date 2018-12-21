@@ -26,14 +26,15 @@ def get_options(parent_topic_id = 0):
 
     str_select = (" SELECT " +
                   "   top.id as id, " +
-                  "   CONCAT_WS(' : ', top.name, prt_top.name) as name, " +
+                  "   CONCAT_WS(' : ', prt_top.name, top.name) as name, " +
                   "   prt_top.id as parent_id, " +
                   "   prt_top.name as parent_name " +
                   "  FROM sow_topic as top" +
                   "  LEFT JOIN sow_topic as prt_top ON prt_top.id = top.parent_id" +
-                  "  WHERE top.parent_id = {} OR {} = 0;".format(parent_topic_id, parent_topic_id));
-    #raise Exception(str_select)
-    rows = db.executesql(str_select)
+                  "  WHERE top.parent_id = %s OR %s = 0" +
+                  "  ORDER BY parent_name, name;");
+
+    rows = db.executesql(str_select, (parent_topic_id, parent_topic_id))
 
     data = [];
 

@@ -19,6 +19,11 @@ def index():
 
     learning_episode_options = learningepisiodeModel.get_options(scheme_of_work_id)
 
+    unassociated_learning_objectives = learningobjectiveModel.get_unassociated_learning_objectives(
+        learning_episode_id=learning_episode.id,
+        key_stage_id=learning_episode.key_stage_id,
+        topic_id=learning_episode.topic_id)
+
     content = {
         "main_heading":"Learning objectives",
         "sub_heading": "for {} - {} - {}".format(scheme_of_work_name, learning_episode.id, learning_episode.topic_name),
@@ -31,7 +36,8 @@ def index():
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
-        learningepisiode_options = learning_episode_options
+        learningepisiode_options = learning_episode_options,
+        unassociated_learning_objectives = unassociated_learning_objectives
     )
 
 
@@ -56,8 +62,6 @@ def edit():
         model.topic_id = int(request.vars.topic_id)
 
     learning_episode = learningepisiodeModel.get_model(model.learning_episode_id)
-
-    #raise Exception("topic_id:{} parent_topic_id:{}".format(learning_episode.topic_id, learning_episode.parent_topic_id))
 
     key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
     solo_taxonomy_options = solotaxonomyModel.get_options()
@@ -88,6 +92,17 @@ def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
     learningobjectiveModel.save(auth.user.id, request.vars.description)
+
+    return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
+
+
+@auth.requires_login()
+def add_existing_objective():
+    learning_objective_id = int(request.vars.id)
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    learning_episode_id = int(request.vars.learning_episode_id)
+
+    learningobjectiveModel.add_existing_objective(auth.user.id, id_=learning_objective_id, learning_episode_id=learning_episode_id)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
 

@@ -20,8 +20,9 @@ class LearningEpisodeModel (BaseModel):
     topic_name = ""
     parent_topic_id = 0
     parent_topic_name = ""
+    key_stage_id = None
 
-    def __init__(this, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", created = "", created_by = ""):
+    def __init__(this, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, created = "", created_by = ""):
         this.id = int(id_)
         this.order_of_delivery_id = int(order_of_delivery_id)
         this.scheme_of_work_id = int(scheme_of_work_id)
@@ -29,7 +30,8 @@ class LearningEpisodeModel (BaseModel):
         this.topic_id = int(topic_id)
         this.topic_name = topic_name
         this.parent_topic_id = parent_topic_id
-        this.parent_topic_name = parent_topic_name
+        this.parent_topic_name = parent_topic_name,
+        this.key_stage_id = key_stage_id
         this.created = created
         this.created_by = created_by
 
@@ -79,22 +81,6 @@ def get_options(scheme_of_work_id):
     return data
 
 
-"""
-def get_order_of_delivery_name_only(learning_episode_id):
-
-    select_sql = ("SELECT le.order_of_delivery_id as order_of_delivery_name FROM sow_learning_episode as le WHERE le.id = {};".format(learning_episode_id))
-
-    rows = db.executesql(select_sql)
-
-    order_of_delivery_name = "";
-
-    for row in rows:
-        order_of_delivery_name = row[0]
-
-    return order_of_delivery_name
-"""
-
-
 def get_all(scheme_of_work_id):
 
     select_sql = ("SELECT " +
@@ -106,8 +92,9 @@ def get_all(scheme_of_work_id):
                  "  top.name as topic_name, " + #5
                  "  pnt_top.id as parent_topic_id, " + #6
                  "  pnt_top.name as parent_topic_name, " + #7
-                 "  le.created as created, " + #8
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #9
+                 "  sow.key_stage_id as key_stage_id, " + #8
+                 "  le.created as created, " + #9
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #10
                  " FROM sow_learning_episode as le " +
                  "  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id " +
                  "  LEFT JOIN sow_topic as top ON top.id = le.topic_id " +
@@ -120,7 +107,7 @@ def get_all(scheme_of_work_id):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], created=row[8], created_by=row[9])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by=row[10])
         data.append(model)
 
     return data
@@ -138,8 +125,9 @@ def get_model(id_):
                  "  top.name as topic_name, " + #5
                  "  pnt_top.id as parent_topic_id, " + #6
                  "  pnt_top.name as parent_topic_name, " + #7
-                 "  le.created as created, " + #8
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #9
+                 "  sow.key_stage_id as key_stage_id, " + #8
+                 "  le.created as created, " + #9
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #10
                  " FROM sow_learning_episode as le " +
                  "  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id " +
                  "  INNER JOIN sow_topic as top ON top.id = le.topic_id " +
@@ -150,8 +138,8 @@ def get_model(id_):
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], created=row[8], created_by=row[9])
-    #raise Exception(model.parent_topic_id)
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by=row[10])
+
     return model
 
 
