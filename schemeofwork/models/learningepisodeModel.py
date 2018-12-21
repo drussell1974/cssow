@@ -28,6 +28,8 @@ class LearningEpisodeModel (BaseModel):
         this.scheme_of_work_name = scheme_of_work_name if scheme_of_work_id > 0 else ""
         this.topic_id = int(topic_id)
         this.topic_name = topic_name
+        this.parent_topic_id = parent_topic_id
+        this.parent_topic_name = parent_topic_name
         this.created = created
         this.created_by = created_by
 
@@ -128,7 +130,7 @@ def get_model(id_):
     model = LearningEpisodeModel(id_);
 
     select_sql = ("SELECT " +
-                                  "  le.id as id, " + #0
+                  "  le.id as id, " + #0
                  "  le.order_of_delivery_id as order_of_delivery_id, " #1
                  "  le.scheme_of_work_id as scheme_of_work_id, " + #2
                  "  sow.name as scheme_of_work_name, " + #3
@@ -144,12 +146,12 @@ def get_model(id_):
                  "  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by " +
                   "  WHERE le.id = {};".format(id_))
-
+    #raise Exception(select_sql)
     rows = db.executesql(select_sql)
 
     for row in rows:
         model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], created=row[8], created_by=row[9])
-
+    #raise Exception(model.parent_topic_id)
     return model
 
 

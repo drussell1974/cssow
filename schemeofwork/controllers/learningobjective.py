@@ -56,14 +56,16 @@ def edit():
         model.topic_id = int(request.vars.topic_id)
 
     learning_episode = learningepisiodeModel.get_model(model.learning_episode_id)
-    key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
 
+    #raise Exception("topic_id:{} parent_topic_id:{}".format(learning_episode.topic_id, learning_episode.parent_topic_id))
+
+    key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
     solo_taxonomy_options = solotaxonomyModel.get_options()
     topic_options = topicModel.get_options(learning_episode.parent_topic_id)
     content_options = contentModel.get_options(key_stage_id)
     exam_board_options = examboardModel.get_options()
 
-    other_learning_objective_options = learningobjectiveModel.get_options(not_in_learning_episode = model.learning_episode_id, topic_id = learning_episode.topic_id)
+    parent_learning_objective_options = learningobjectiveModel.get_parent_options(current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
 
     content = {
         "main_heading":"Learning objective",
@@ -77,7 +79,7 @@ def edit():
         topic_options = topic_options,
         content_options = content_options,
         exam_board_options = exam_board_options,
-        other_learning_objective_options = other_learning_objective_options
+        parent_learning_objective_options = parent_learning_objective_options
     )
 
 

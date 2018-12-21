@@ -111,3 +111,4 @@ venv.bak/
 # sessions and logs
 /schemeofwork/sessions
 /schemeofwork/errors
+*.bak

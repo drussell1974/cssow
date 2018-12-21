@@ -29,8 +29,9 @@ class LearningObjectiveModel (BaseModel):
     learning_episode_name = ""
     key_stage_id = 0
     key_stage_name = ""
+    parent_id = None
 
-    def __init__(this, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", learning_episode_id = 0, learning_episode_name = "", key_stage_id = 0, key_stage_name = "", created = "", created_by = ""):
+    def __init__(this, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", learning_episode_id = 0, learning_episode_name = "", key_stage_id = 0, key_stage_name = "", parent_id = None, created = "", created_by = ""):
         this.id = int(id_)
         this.description = description
         this.solo_taxonomy_id = solo_taxonomy_id
@@ -48,6 +49,7 @@ class LearningObjectiveModel (BaseModel):
         this.learning_episode_name = learning_episode_name
         this.key_stage_id = key_stage_id
         this.key_stage_name = key_stage_name
+        this.parent_id = parent_id
         this.created = created
         this.created_by = created_by
 
@@ -58,11 +60,8 @@ class LearningObjectiveModel (BaseModel):
 
 
     def _update(this):
-        str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} WHERE id =  {};"
-        str_update = str_update.format(this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.id)
-
-        db.executesql(str_update)
-
+        str_update = "UPDATE sow_learning_objective SET description = %s, solo_taxonomy_id = %s, topic_id = %s, content_id = %s, exam_board_id = %s, parent_id = %s WHERE id =  %s;"
+        db.executesql(str_update, (this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.parent_id, this.id))
         # insert if entry in sow_learning_objective__has__learning_episode doesn't already map sow learning_objective and sow_learning_episode
 
         str_check_duplicate = "SELECT id FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {} AND learning_episode_id = {};"
@@ -79,10 +78,10 @@ class LearningObjectiveModel (BaseModel):
 
 
     def _insert(this):
-        str_insert1 = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, created, created_by) VALUES ('{}', {}, {}, {}, {}, '{}', {});"
-        str_insert1 = str_insert1.format(this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.created, this.created_by)
+        str_insert1 = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+        #str_insert1 = str_insert1.format(this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.parent_id, this.created, this.created_by)
 
-        db.executesql(str_insert1)
+        db.executesql(str_insert1, (this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.parent_id, this.created, this.created_by))
         this.id = this.get_last_insert_row_id(db)
 
         # insert into linking table between objective and learning episode
@@ -286,7 +285,7 @@ def get_model(id_):
     return model
 
 
-def get_options(not_in_learning_episode = 0, topic_id = 0):
+def get_parent_options(current_key_stage_id = 0, topic_id = 0, learning_episode_id = 0):
     select_sql = ("SELECT " +
                     "  lob.id as id, " + # 0
                      "  lob.description as description, " + #1
@@ -301,14 +300,11 @@ def get_options(not_in_learning_episode = 0, topic_id = 0):
                      "  cnt.description as content_description, " #10
                      "  exam.id as exam_board_id, " + #11
                      "  exam.name as exam_board_name, " #12
-                     "  le.id as learning_episode_id, " + #13
-                     "  ks.id as key_stage_id, " + #14
-                     "  ks.name as key_stage_name, " + #15
+                     "  ks.id as key_stage_id, " + #13
+                     "  ks.name as key_stage_name, " + #14
                      "  lob.created as created, " + #15
                      "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #16
                     " FROM sow_learning_objective as lob " +
-                    " LEFT JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_objective_id = lob.id " +
-                    " LEFT JOIN sow_learning_episode as le ON le.id = le_lo.learning_episode_id " +
                     " LEFT JOIN sow_topic as top ON top.id = lob.topic_id " +
                     " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
                     " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id " +
@@ -316,7 +312,7 @@ def get_options(not_in_learning_episode = 0, topic_id = 0):
                     " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
                     " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
                     " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-                    " WHERE (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(not_in_learning_episode, topic_id, topic_id))
+                    " WHERE ks.id > {} AND (top.id = {} OR pnt_top.id = {}) ORDER BY solo.lvl;".format(current_key_stage_id, topic_id, topic_id))
 
     rows = db.executesql(select_sql)
 
@@ -337,11 +333,10 @@ def get_options(not_in_learning_episode = 0, topic_id = 0):
             content_description = row[10],
             exam_board_id = row[11],
             exam_board_name = row[12],
-            learning_episode_id = row[13],
-            key_stage_id = row[14],
-            key_stage_name = row[15],
-            created = row[16],
-            created_by = row[17])
+            key_stage_id = row[13],
+            key_stage_name = row[14],
+            created = row[15],
+            created_by = row[16])
         data.append(model)
 
     return data
@@ -357,6 +352,7 @@ def save(auth_user_id, description):
         topic_id = request.vars.topic_id,
         content_id = request.vars.content_id,
         exam_board_id = request.vars.exam_board_id,
+        parent_id = request.vars.parent_id,
         learning_episode_id = request.vars.learning_episode_id,
         created = datetime.now(),
         created_by = auth_user_id
