@@ -65,6 +65,9 @@ def save_item():
                                    int(request.vars.exam_board_id),
                                    int(request.vars.key_stage_id))
 
+    if model.is_valid == False:
+        return redirect(URL('learningepisode', 'edit', vars=dict(model = model)))
+
     return redirect(URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id)))
 
 

@@ -28,6 +28,8 @@ class SchemeOfWorkModel(BaseModel):
         self.is_valid = True
         self.validation_errors.clear()
 
+        # Validate name
+
         if self.name is None or len(self.name) == 0:
             self.validation_errors["name"]= ("name required")
             self.is_valid = False
@@ -35,9 +37,26 @@ class SchemeOfWorkModel(BaseModel):
             self.validation_errors["name"] = "name cannot exceed 25 characters {}".format(len(self.name))
             self.is_valid = False
 
+        # Validate description
+
         if len(self.description) > 1500:
             self.validation_errors["description"] = "description is {} characters (cannot exceed 1500)".format(len(self.description))
             self.is_valid = False
 
+        # Validate exam board
 
+        if self.exam_board_id is None or self.exam_board_id < 0:
+            self.validation_errors["exam_board_id"]= ("selection required for exam board")
+            self.is_valid = False
+        elif self.exam_board_id > 9999:
+            self.validation_errors["exam_board_id"] = "{} is not a valid selection for exam board".format(self.exam_board_id)
+            self.is_valid = False
 
+        # Validate key stage
+
+        if self.key_stage_id is None or self.key_stage_id < 1:
+            self.validation_errors["key_stage_id"]= ("selection required for key stage")
+            self.is_valid = False
+        elif self.key_stage_id > 9999:
+            self.validation_errors["key_stage_id"] = "{} is not a valid selection for key stage".format(self.exam_board_id)
+            self.is_valid = False

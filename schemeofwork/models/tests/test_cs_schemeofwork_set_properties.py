@@ -49,7 +49,6 @@ class TestCase_SchemeOfWork_Name(TestCase_SchemeOfWork_Base):
 
 
     def test_min__valid_extreme(self):
-
         # set up
         test = self._construct_valid_object()
 
@@ -60,19 +59,35 @@ class TestCase_SchemeOfWork_Name(TestCase_SchemeOfWork_Base):
 
         # assert
         self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("name" in test.validation_errors, "name should not have validation error %s" % test.validation_errors)
 
 
-    def test_min__valid_extreme(self):
+    def test_min__invalid_extreme(self):
         # set up
         test = self._construct_valid_object()
 
-        test.name = "A"
+        test.name = ""
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("name" in test.validation_errors, "name should have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.name = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("name" in test.validation_errors, "name should have validation error %s" % test.validation_errors)
 
 
     def test_max__valid_extreme(self):
@@ -86,32 +101,7 @@ class TestCase_SchemeOfWork_Name(TestCase_SchemeOfWork_Base):
 
         # assert
         self.assertTrue(test.is_valid, "is_valid should be True")
-
-
-    def test_min__invalid_extreme(self):
-
-        test = self._construct_valid_object()
-
-        test.name = ""
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertFalse(test.is_valid, "is_valid should be False")
-
-    def test_min__invalid_extreme_when_None(self):
-
-        test = self._construct_valid_object()
-
-        test.name = None
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertTrue("name" in test.validation_errors, "name should have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertFalse("name" in test.validation_errors, "name should not have validation error %s" % test.validation_errors)
 
 
     def test_max__invalid_extreme(self):
@@ -167,10 +157,6 @@ class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
         self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
 
-
-
-
-
     def test_max__invalid_extreme(self):
 
         test = self._construct_valid_object()
@@ -187,4 +173,166 @@ class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
+class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
 
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.exam_board_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.exam_board_id = -1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.exam_board_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.exam_board_id = 9999
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.exam_board_id = 10000
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+
+class TestCase_SchemeOfWork_KeyStageId(TestCase_SchemeOfWork_Base):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 9999
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 10000
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
