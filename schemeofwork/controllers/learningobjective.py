@@ -10,10 +10,10 @@ examboardModel = exec_environment('applications/schemeofwork/models/examboardMod
 learningepisiodeModel = exec_environment('applications/schemeofwork/models/learningepisodeModel.py')
 
 def index():
-    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    scheme_of_work_id = int(request.vars.scheme_of_work_id) # scheme_of_work_id = int(request.vars.scheme_of_work_id if request.vars.scheme_of_work_id is not None else 0)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only()
+    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only(scheme_of_work_id)
     learning_episode = learningepisiodeModel.get_model(learning_episode_id)
     data = learningobjectiveModel.get_all(learning_episode_id)
 
@@ -92,7 +92,15 @@ def edit():
 def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
-    learningobjectiveModel.save(auth.user.id, request.vars.description)
+    learningobjectiveModel.save(auth_user_id=auth.user.id,
+                                id_ = request.vars.id,
+                                description = request.vars.description,
+                                solo_taxonomy_id = request.vars.solo_taxonomy_id,
+                                topic_id = request.vars.topic_id,
+                                content_id = request.vars.content_id,
+                                exam_board_id = request.vars.exam_board_id,
+                                parent_id = request.vars.parent_id,
+                                learning_episode_id = request.vars.learning_episode_id)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
 

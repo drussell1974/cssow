@@ -23,8 +23,8 @@ def index():
 
 
 def view():
-
-    model = schemeofworkModel.get_model()
+    id_ = int(request.vars.id)
+    model = schemeofworkModel.get_model(id_=id_)
 
     # check results and redirect if necessary
 
@@ -41,9 +41,8 @@ def view():
 
 @auth.requires_login()
 def edit():
-
-    model = schemeofworkModel.get_model()
-    # TODO: Remove as this is redundant as get_model() creates a new model
+    id_ = int(request.vars.id if request.vars.id is not None else 0)
+    model = schemeofworkModel.get_model(id_)
     if(model == None):
         redirect(URL('index', vars=dict(message="item deleted")))
 
@@ -60,12 +59,19 @@ def edit():
 
 @auth.requires_login()
 def save_item():
-    model = schemeofworkModel.save(auth.user.id)
+    model = schemeofworkModel.save(
+        auth_user_id=auth.user.id,
+        id_=request.vars.id,
+        name=request.vars.name,
+        description=request.vars.description,
+        exam_board_id=request.vars.exam_board_id,
+        key_stage_id=request.vars.key_stage_id,)
 
     return redirect(URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id)))
 
 
 @auth.requires_login()
 def delete_item():
-    schemeofworkModel.delete(auth.user.id)
+    id_ = int(request.vars.id)
+    schemeofworkModel.delete(auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))

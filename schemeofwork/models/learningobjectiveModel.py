@@ -428,18 +428,18 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
     return data
 
 
-def save(auth_user_id, description):
+def save(auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, learning_episode_id):
 
     # refresh model for validation
     model = LearningObjectiveModel(
-        id_ = request.vars.id,
+        id_ = id_,
         description = description,
-        solo_taxonomy_id = request.vars.solo_taxonomy_id,
-        topic_id = request.vars.topic_id,
-        content_id = request.vars.content_id,
-        exam_board_id = request.vars.exam_board_id,
-        parent_id = request.vars.parent_id,
-        learning_episode_id = request.vars.learning_episode_id,
+        solo_taxonomy_id = solo_taxonomy_id,
+        topic_id = topic_id,
+        content_id = content_id,
+        exam_board_id = exam_board_id,
+        parent_id = parent_id,
+        learning_episode_id = learning_episode_id,
         created = datetime.now(),
         created_by = auth_user_id
     )

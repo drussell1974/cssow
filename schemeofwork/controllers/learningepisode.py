@@ -7,7 +7,7 @@ topicModel = exec_environment('applications/schemeofwork/models/topicModel.py', 
 
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only()
+    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only(scheme_of_work_id)
 
     data = learningepisodeModel.get_all(scheme_of_work_id)
     schemeofwork_options = schemeofworkModel.get_options()

@@ -63,18 +63,16 @@ class SchemeOfWorkModel(BaseModel):
         return rval
 
 
-def save(auth_user_id):
+def save(auth_user_id, id_, name = "", description = "", exam_board_id = 0, key_stage_id = 0):
     # refresh model for validation
     model = SchemeOfWorkModel(
-        request.vars.id,
-        request.vars.name,
-        request.vars.description,
-        request.vars.exam_board_id,
-        request.vars.exam_board_name,
-        request.vars.key_stage_id,
-        request.vars.key_stage_name,
-        datetime.now(),
-        auth_user_id
+        id_=id_,
+        name=name,
+        description=description,
+        exam_board_id=exam_board_id,
+        key_stage_id=key_stage_id,
+        created=datetime.now(),
+        created_by=auth_user_id
     )
 
     model.validate()
@@ -88,8 +86,8 @@ def save(auth_user_id):
     return model;
 
 
-def delete(auth_user_id):
-    model = SchemeOfWorkModel(request.vars.id)
+def delete(auth_user_id, id_):
+    model = SchemeOfWorkModel(id_)
     model._delete();
 
 
@@ -134,7 +132,6 @@ def get_all():
 
 
 def get_model(id_):
-    #id_ = int(0 if request.vars.id == None else request.vars.id)
 
     model = SchemeOfWorkModel(0);
 
@@ -161,8 +158,7 @@ def get_model(id_):
 
     return model
 
-def get_schemeofwork_name_only():
-    scheme_of_work_id = int(request.vars.scheme_of_work_id if request.vars.scheme_of_work_id is not None else 0)
+def get_schemeofwork_name_only(scheme_of_work_id):
 
     select_sql = ("SELECT " +
                  "  sow.name as name " #0
