@@ -140,7 +140,7 @@ def get_key_stage_id_only(scheme_of_work_id):
     return key_stage_id
 
 """
-Private CRUD functions 
+Private CRUD functions
 """
 
 def _update(model):

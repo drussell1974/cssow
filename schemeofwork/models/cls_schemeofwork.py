@@ -24,8 +24,20 @@ class SchemeOfWorkModel(BaseModel):
 
 
     def validate(self):
+        # set to True while validating
         self.is_valid = True
-        return True
+        self.validation_errors.clear()
+
+        if self.name is None or len(self.name) == 0:
+            self.validation_errors["name"]= ("name required")
+            self.is_valid = False
+        elif len(self.name) > 25:
+            self.validation_errors["name"] = "name cannot exceed 25 characters {}".format(len(self.name))
+            self.is_valid = False
+
+        if len(self.description) > 1500:
+            self.validation_errors["description"] = "description is {} characters (cannot exceed 1500)".format(len(self.description))
+            self.is_valid = False
 
 
 

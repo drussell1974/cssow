@@ -6,6 +6,7 @@ class BaseModel:
     created = ""
     created_by = ""
     is_valid = False
+    validation_errors = {}
 
     def is_new(self):
         if self.id == 0:
