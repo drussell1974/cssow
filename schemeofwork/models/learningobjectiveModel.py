@@ -395,7 +395,7 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
             " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} ".format(key_stage_id, learning_episode_id, topic_id, parent_topic_id))
     if parent_topic_id is not None:
         select_sql = select_sql + " OR top.id = {} OR pnt_top.id = {}".format(parent_topic_id, parent_topic_id)
-    select_sql = select_sql + ") ORDER BY solo.lvl;"
+    select_sql = select_sql + ") ORDER BY top.name;"
 
     #raise Exception(select_sql)
     rows = db.executesql(select_sql)

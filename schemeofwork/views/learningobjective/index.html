@@ -37,16 +37,13 @@
                     <input type="hidden" name="scheme_of_work_id" value="{{=scheme_of_work_id}}">
               </form>
             <!-- Filters END -->
-          <!-- Scheme of works -->
+          <!-- Show learning objectives for this learning episode -->
           {{ for row in model: }}
           <div class="post-preview">
             <a href="{{=URL('learningepisodes', 'view', vars=dict(id=row.id))}}">
               <h2 class="post-title">
                 {{=row.description}}
               </h2>
-              <h3 class="post-subtitle">
-                {{=row.topic_name}} - Week {{=row.learning_episode_name}}
-              </h3>
             </a>
             <p class="post-meta">Created by
               <a href="#">{{=row.created_by}}</a>
@@ -59,7 +56,7 @@
           </div>
           <hr>
             {{ pass }}
-          <!-- Scheme of works END -->
+          <!-- Show learning objectives for this learning episode  END -->
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
@@ -71,13 +68,19 @@
     {{if auth.user and len(unassociated_learning_objectives) > 0:}}
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            <h2>Unassociated learning objectives</h2>
-            <!-- Unassociated learning objectives -->
-          {{ for row in unassociated_learning_objectives: }}
+            <!-- Related learning objectives -->
+            <h2>Releated learning objectives</h2>
+            <p>Click to add to {{=content["sub_heading"]}}</p>
+            {{ current_topic_id = 0}}
+          {{ for row in unassociated_learning_objectives: }} <!-- unassociated_learning_objectives ordered by topic -->
+            {{ if current_topic_id != int(row.topic_id): }}
+            {{ current_topic_id = row.topic_id }}
+            <h3>{{=row.topic_name}}</h3>
+            {{ pass }}
           <div class="post-preview">
             <p class="post-meta">
                 <a href="{{=URL('learningobjective', 'add_existing_objective', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=row.description}}</a>
-                 <i class="small">
+                 <br><i class="small">
                     by <a href="#">{{=row.created_by}}</a>
                     {{if row.created: }}
                         on {{=str(row.date_created_ui())}}
@@ -87,7 +90,7 @@
             </p>
           </div>
             {{ pass }}
-          <!-- Unassociated learning objectives END -->
+          <!-- Related learning objectives END -->
             <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
           </div>
