@@ -1,125 +1,17 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+
 from gluon.contrib.appconfig import AppConfig
-from basemodel import BaseModel
-
 configuration = AppConfig(reload=True)
-
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
 
-class LearningObjectiveModel (BaseModel):
+from datetime import datetime
+from cls_learningobjective import LearningObjectiveModel
 
-    description = ""
-    solo_taxonomy_id = 0
-    solo_taxonomy_name = ""
-    solo_taxonomy_level = ""
-    topic_id = 0
-    topic_name = ""
-    parent_topic_id = 0
-    parent_topic_name = ""
-    content_id = 0
-    content_description = ""
-    exam_board_id = 0
-    exam_board_name = ""
-    learning_episode_id = 0
-    learning_episode_name = ""
-    key_stage_id = 0
-    key_stage_name = ""
-    parent_id = None
-
-    def __init__(this, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by = ""):
-        this.id = int(id_)
-        this.description = description
-        this.solo_taxonomy_id = solo_taxonomy_id
-        this.solo_taxonomy_name = solo_taxonomy_name
-        this.solo_taxonomy_level = solo_taxonomy_level
-        this.topic_id = topic_id
-        this.topic_name = topic_name
-        this.parent_topic_id = parent_topic_id
-        this.parent_topic_name = parent_topic_name
-        this.content_id = content_id
-        this.content_name = content_description
-        this.exam_board_id = exam_board_id
-        this.exam_board_name = exam_board_name
-        this.learning_episode_id = learning_episode_id
-        this.learning_episode_name = learning_episode_name
-        this.key_stage_id = key_stage_id
-        this.key_stage_name = key_stage_name
-        this.parent_id = None if parent_id is None else parent_id
-        this.created = created
-        this.created_by = created_by
-
-
-    def validate(this):
-        this.is_valid = True
-        return True
-
-
-    def _update(this, db):
-
-        # build update statement
-
-        str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} ".format(this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id)
-
-        # update parent id, if supplid
-        if int(this.parent_id) > 0:
-            str_update = str_update + ", parent_id = {} ".format(this.parent_id)
-
-        str_update = str_update + " WHERE id =  {};".format(this.id)
-
-        db.executesql(str_update)
-
-        # insert if entry in sow_learning_objective__has__learning_episode doesn't already map sow learning_objective and sow_learning_episode
-
-        str_check_duplicate = "SELECT id FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {} AND learning_episode_id = {};"
-        str_check_duplicate = str_check_duplicate.format(this.id, this.learning_episode_id)
-
-        rows = db.executesql(str_check_duplicate)
-
-        if(len(rows) == 0):
-            str_insert2 = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
-            str_insert2 = str_insert2.format(this.id, this.learning_episode_id)
-            db.executesql(str_insert2)
-
-        return True
-
-
-    def _insert(this, db):
-
-        str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by) VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});"
-        str_insert = str_insert.format(this.description, this.solo_taxonomy_id, this.topic_id, this.content_id, this.exam_board_id, this.parent_id, this.created, this.created_by)
-
-        db.executesql(str_insert)
-
-        this.id = this.get_last_insert_row_id(db)
-
-        # insert into linking table between objective and learning episode
-        this._insert__sow_learning_objective__has__learning_episode()
-
-
-        return True
-
-
-    def _insert__sow_learning_objective__has__learning_episode(this, db):
-        str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
-        str_insert = str_insert.format(this.id, this.learning_episode_id)
-        db.executesql(str_insert)
-
-
-    def _delete(this, db):
-        str_delete = "DELETE FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {};"
-        str_delete = str_delete.format(this.id)
-
-        rval = db.executesql(str_delete)
-
-        return rval
-
-
-def get_all(db, learning_episode_id):
+def get_all(learning_episode_id):
 
     select_sql = ("SELECT " +
                  "  lob.id as id, " + # 0
@@ -184,7 +76,7 @@ def get_all(db, learning_episode_id):
     return data
 
 
-def get_new_model(db, id_):
+def get_new_model(id_):
     model = LearningObjectiveModel(id_);
 
     select_sql = ("SELECT " +
@@ -242,7 +134,7 @@ def get_new_model(db, id_):
     return model
 
 
-def get_model(db, id_):
+def get_model(id_):
     model = LearningObjectiveModel(id_);
 
     select_sql = ("SELECT " +
@@ -303,7 +195,7 @@ def get_model(db, id_):
     return model
 
 
-def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
+def get_parent_options(current_key_stage_id = 0, topic_id = 0):
     select_sql = ("SELECT " +
                     "  lob.id as id, " + # 0
                      "  lob.description as description, " + #1
@@ -360,7 +252,7 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
     return data
 
 
-def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, topic_id, parent_topic_id):
+def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topic_id, parent_topic_id):
 
     select_sql = ("SELECT " +
             "  lob.id as id, " + # 0
@@ -428,7 +320,7 @@ def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, 
     return data
 
 
-def save(db, auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, learning_episode_id):
+def save(auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, learning_episode_id):
 
     # refresh model for validation
     model = LearningObjectiveModel(
@@ -447,17 +339,98 @@ def save(db, auth_user_id, id_, description, solo_taxonomy_id, topic_id, content
     rval = model.validate()
     if model.is_valid == True:
         if model.is_new() == True:
-            rval = model._insert(db)
+            rval = _insert(model)
         else:
-            rval = model._update(db)
+            rval = _update(model)
 
 
-def add_existing_objective(db, auth_user_id, id_, learning_episode_id):
+
+def add_existing_objective(auth_user_id, id_, learning_episode_id):
     model = LearningObjectiveModel(id_ = id_, learning_episode_id = learning_episode_id)
-    model._insert__sow_learning_objective__has__learning_episode(db)
+    _insert__sow_learning_objective__has__learning_episode(model)
 
 
-def delete(db, auth_user_id, id_):
+def delete(auth_user_id, id_):
 
     model = LearningObjectiveModel(id_)
-    model._delete(db);
+    _delete(model);
+
+"""
+Private CRUD functions 
+"""
+
+def _delete(model):
+
+    str_delete = "DELETE FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {};"
+    str_delete = str_delete.format(model.id)
+
+    rval = db.executesql(str_delete)
+
+    return rval
+
+
+def _update(model):
+
+    # build update statement
+
+    str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} ".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id)
+
+    # update parent id, if supplid
+    if int(model.parent_id) > 0:
+        str_update = str_update + ", parent_id = {} ".format(model.parent_id)
+
+    str_update = str_update + " WHERE id =  {};".format(model.id)
+
+    db.executesql(str_update)
+
+    # insert if entry in sow_learning_objective__has__learning_episode doesn't already map sow learning_objective and sow_learning_episode
+
+    str_check_duplicate = "SELECT id FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {} AND learning_episode_id = {};"
+    str_check_duplicate = str_check_duplicate.format(model.id, model.learning_episode_id)
+
+    rows = db.executesql(str_check_duplicate)
+
+    if(len(rows) == 0):
+        str_insert2 = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
+        str_insert2 = str_insert2.format(model.id, model.learning_episode_id)
+        db.executesql(str_insert2)
+
+    return True
+
+
+def _insert(model):
+
+    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, created, created_by"
+    str_values = "VALUES ('{}', {}, {}, {}, {}, '{}', {}".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, model.created, model.created_by)
+
+    if int(model.parent_id) > 0:
+        str_insert = str_insert + ", parent_id"
+        str_values = str_values + ", {}".format(model.parent_id)
+
+    str_insert = str_insert + ")"
+    str_values = str_values + ");"
+    db.executesql(str_insert + str_values)
+
+    model.id = _get_last_insert_row_id(model)
+
+    # insert into linking table between objective and learning episode
+    _insert__sow_learning_objective__has__learning_episode(model)
+
+
+    return True
+
+
+def _insert__sow_learning_objective__has__learning_episode(model):
+    str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
+    str_insert = str_insert.format(model.id, model.learning_episode_id)
+    db.executesql(str_insert)
+
+def _get_last_insert_row_id(model):
+        # get last inserted row id
+        rows = db.executesql("SELECT LAST_INSERT_ID();")
+
+        rval = None # Should not be zero (handle has necessary)
+        for row in rows:
+            model.id = int(row[0])
+
+        return model.id

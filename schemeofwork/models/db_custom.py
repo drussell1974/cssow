@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
 #

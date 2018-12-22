@@ -8,25 +8,27 @@ db = DAL(configuration.get('db.uri'),
      check_reserved=['all'])
 
 
-import learningobjective as learningobjectiveModel
-import schemeofwork as schemeofworkModel
-import solotaxonomy as solotaxonomyModel
-import topic as topicModel
-import content as contentModel
-import examboard as examboardModel
-import learningepisode as learningepisiodeModel
+from gluon.shell import exec_environment
+db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
+db_learningobjective  = exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
+db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
+db_solotaxonomy = exec_environment('applications/schemeofwork/models/db_solotaxonomy.py', request=request)
+db_topic = exec_environment('applications/schemeofwork/models/db_topic.py', request=request)
+db_content = exec_environment('applications/schemeofwork/models/db_content.py', request=request)
+db_examboard = exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
+db_learningepisode = exec_environment('applications/schemeofwork/models/db_learningepisode.py', request=request)
 
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id) # scheme_of_work_id = int(request.vars.scheme_of_work_id if request.vars.scheme_of_work_id is not None else 0)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only(scheme_of_work_id)
-    learning_episode = learningepisiodeModel.get_model(learning_episode_id)
-    data = learningobjectiveModel.get_all(learning_episode_id)
+    scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(scheme_of_work_id)
+    learning_episode = db_learningepisode.get_model(learning_episode_id)
+    data = db_learningobjective.get_all(learning_episode_id)
 
-    learning_episode_options = learningepisiodeModel.get_options(scheme_of_work_id)
+    learning_episode_options = db_learningepisode.get_options(scheme_of_work_id)
 
-    unassociated_learning_objectives = learningobjectiveModel.get_unassociated_learning_objectives(
+    unassociated_learning_objectives = db_learningobjective.get_unassociated_learning_objectives(
         learning_episode_id=learning_episode.id,
         key_stage_id=learning_episode.key_stage_id,
         topic_id=learning_episode.topic_id,
@@ -55,10 +57,10 @@ def edit():
     # check if an existing_learning_objective_id has been passed
     if request.vars.learning_objective_id is not None:
         _id = int(request.vars.learning_objective_id if request.vars.learning_objective_id is not None else 0)
-        model = learningobjectiveModel.get_new_model(_id)
+        model = db_learningobjective.get_new_model(_id)
     else:
         _id = int(request.vars.id if request.vars.id is not None else 0)
-        model = learningobjectiveModel.get_model(_id)
+        model = db_learningobjective.get_model(_id)
 
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
@@ -69,15 +71,15 @@ def edit():
     if request.vars.topic_id is not None:
         model.topic_id = int(request.vars.topic_id)
 
-    learning_episode = learningepisiodeModel.get_model(model.learning_episode_id)
+    learning_episode = db_learningepisode.get_model(model.learning_episode_id)
 
-    key_stage_id = schemeofworkModel.get_key_stage_id_only(model.scheme_of_work_id)
-    solo_taxonomy_options = solotaxonomyModel.get_options()
-    topic_options = topicModel.get_options(learning_episode.topic_id, learning_episode.parent_topic_id)
-    content_options = contentModel.get_options(key_stage_id)
-    exam_board_options = examboardModel.get_options()
+    key_stage_id = db_schemeofwork.get_key_stage_id_only(model.scheme_of_work_id)
+    solo_taxonomy_options = db_solotaxonomy.get_options()
+    topic_options = db_topic.get_options(learning_episode.topic_id, learning_episode.parent_topic_id)
+    content_options = db_content.get_options(key_stage_id)
+    exam_board_options = db_examboard.get_options()
 
-    parent_learning_objective_options = learningobjectiveModel.get_parent_options(current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
+    parent_learning_objective_options = db_learningobjective.get_parent_options(current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
 
     content = {
         "main_heading":"Learning objective",
@@ -99,7 +101,7 @@ def edit():
 def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
-    learningobjectiveModel.save(auth_user_id=auth.user.id,
+    db_learningobjective.save(auth_user_id=auth.user.id,
                                 id_ = request.vars.id,
                                 description = request.vars.description,
                                 solo_taxonomy_id = request.vars.solo_taxonomy_id,
@@ -118,7 +120,7 @@ def add_existing_objective():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    learningobjectiveModel.add_existing_objective(auth.user.id, id_=learning_objective_id, learning_episode_id=learning_episode_id)
+    db_learningobjective.add_existing_objective(auth.user.id, id_=learning_objective_id, learning_episode_id=learning_episode_id)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
 
@@ -129,6 +131,6 @@ def delete_item():#
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    learningobjectiveModel.delete(auth.user.id, id_)
+    db_learningobjective.delete(auth.user.id, id_)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)))

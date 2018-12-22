@@ -1,70 +1,14 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from gluon.contrib.appconfig import AppConfig
-from basemodel import BaseModel
-
 configuration = AppConfig(reload=True)
-
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
 
-class LearningEpisodeModel (BaseModel):
-
-    order_of_delivery_id = 0
-    scheme_of_work_id = 0
-    scheme_of_work_name = ""
-    topic_id = 0
-    topic_name = ""
-    parent_topic_id = 0
-    parent_topic_name = ""
-    key_stage_id = None
-
-    def __init__(this, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, created = "", created_by = ""):
-        this.id = int(id_)
-        this.order_of_delivery_id = int(order_of_delivery_id)
-        this.scheme_of_work_id = int(scheme_of_work_id)
-        this.scheme_of_work_name = scheme_of_work_name if scheme_of_work_id > 0 else ""
-        this.topic_id = int(topic_id)
-        this.topic_name = topic_name
-        this.parent_topic_id = parent_topic_id
-        this.parent_topic_name = parent_topic_name,
-        this.key_stage_id = key_stage_id
-        this.created = created
-        this.created_by = created_by
-
-    def validate(this):
-        this.is_valid = True
-        return True
-
-
-    def _update(this):
-        str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {}, scheme_of_work_id = {}, topic_id = {} WHERE id =  {};"
-        str_update = str_update.format(this.order_of_delivery_id, this.scheme_of_work_id, this.topic_id, this.id)
-
-        db.executesql(str_update)
-
-        return True
-
-
-    def _insert(this):
-        str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, created, created_by) VALUES ({}, {}, {}, '{}', {});"
-        str_insert = str_insert.format(this.order_of_delivery_id, this.scheme_of_work_id, this.topic_id, this.created, this.created_by)
-
-        db.executesql(str_insert)
-
-        return this.get_last_insert_row_id(db)
-
-
-    def _delete(this):
-        str_delete = "DELETE FROM sow_learning_episode WHERE id = {};"
-        str_delete = str_delete.format(this.id)
-
-        rval = db.executesql(str_delete)
-
-        return rval
+from datetime import datetime
+from cls_learningepisode import LearningEpisodeModel
 
 
 def get_options(scheme_of_work_id):
@@ -160,10 +104,10 @@ def save(auth_user_id, id_, order_of_delivery_id, scheme_of_work_id, topic_id):
     rval = model.validate()
     if model.is_valid == True:
         if model.is_new() == True:
-            newId = model._insert()
+            newId = _insert(model)
             model.id = newId
         else:
-            rval = model._update()
+            rval = _update(model)
 
     return model
 
@@ -171,4 +115,45 @@ def save(auth_user_id, id_, order_of_delivery_id, scheme_of_work_id, topic_id):
 def delete(auth_user_id, id_):
 
     model = LearningEpisodeModel(id_)
-    model._delete();
+    _delete(model);
+
+"""
+Private CRUD functions 
+"""
+
+def _update(model):
+    str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {}, scheme_of_work_id = {}, topic_id = {} WHERE id =  {};"
+    str_update = str_update.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.id)
+
+    db.executesql(str_update)
+
+    return True
+
+
+def _insert(model):
+    str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, created, created_by) VALUES ({}, {}, {}, '{}', {});"
+    str_insert = str_insert.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.created, model.created_by)
+
+    db.executesql(str_insert)
+
+    return _get_last_insert_row_id(model)
+
+
+def _delete(model, db):
+    str_delete = "DELETE FROM sow_learning_episode WHERE id = {};"
+    str_delete = str_delete.format(model.id)
+
+    rval = db.executesql(str_delete)
+
+    return rval
+
+
+def _get_last_insert_row_id(model):
+        # get last inserted row id
+        rows = db.executesql("SELECT LAST_INSERT_ID();")
+
+        rval = None # Should not be zero (handle has necessary)
+        for row in rows:
+            model.id = int(row[0])
+
+        return model.id

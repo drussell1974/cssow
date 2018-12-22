@@ -1,31 +1,21 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from gluon.contrib.appconfig import AppConfig
-
 configuration = AppConfig(reload=True)
-
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
-
-class KeyStageModel:
-    def __init__(this, id_, name):
-        this.id = id_
-        this.name = name
-    id = 0
-    name = ""
-
+from cls_solotaxonomy import SoloTaxonomyModel
 
 def get_options():
 
-    rows = db.executesql("SELECT id, name FROM sow_key_stage;")
+    rows = db.executesql("SELECT id, name, lvl FROM sow_solo_taxonomy;")
 
     data = [];
 
     for row in rows:
-        model = KeyStageModel(row[0], row[1])
+        model = SoloTaxonomyModel(row[0], row[1], row[2])
         data.append(model)
 
     return data

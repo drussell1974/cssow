@@ -7,18 +7,18 @@ db = DAL(configuration.get('db.uri'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
-import learningepisode as learningepisodeModel
-import learningobjective as learningobjectiveModel
-import schemeofwork as schemeofworkModel
-import topic as topicModel
-
+from gluon.shell import exec_environment
+db_learningepisode = exec_environment('applications/schemeofwork/models/db_learningepisode.py', request=request)
+db_learningobjective  = exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
+db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
+db_topic = exec_environment('applications/schemeofwork/models/db_topic.py', request=request)
 
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    scheme_of_work_name = schemeofworkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(scheme_of_work_id)
 
-    data = learningepisodeModel.get_all(db, scheme_of_work_id)
-    schemeofwork_options = schemeofworkModel.get_options(db)
+    data = db_learningepisode.get_all(scheme_of_work_id)
+    schemeofwork_options = db_schemeofwork.get_options()
 
     content = {
         "main_heading":"Learning episodes",
@@ -33,16 +33,16 @@ def index():
 def edit():
     id_ = int(request.vars.id if request.vars.id is not None else 0)
 
-    model = learningepisodeModel.get_model(db, id_)
+    model = db_learningepisode.get_model(id_)
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
     topic_options = []
-    learningobjectives_data = learningobjectiveModel.get_all(db, id_)
+    learningobjectives_data = db_learningobjective.get_all(id_)
 
     if(len(learningobjectives_data) == 0 or model.id != 0):
-        topic_options = topicModel.get_options(model.topic_id, model.parent_topic_id);
+        topic_options = db_topic.get_options(model.topic_id, model.parent_topic_id);
 
     content = {
         "main_heading":"Learning episode",
@@ -59,7 +59,7 @@ def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     topic_id = int(request.vars.topic_id)
 
-    model = learningepisodeModel.save(db, auth.user.id, id_, order_of_delivery_id, scheme_of_work_id, topic_id)
+    model = db_learningepisode.save(auth.user.id, id_, order_of_delivery_id, scheme_of_work_id, topic_id)
 
     return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=model.id)))
 
@@ -70,6 +70,6 @@ def delete_item():
     id_ = int(request.vars.id)
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
-    learningepisodeModel.delete(db, auth.user.id, id_)
+    db_learningepisode.delete(auth.user.id, id_)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id)))
