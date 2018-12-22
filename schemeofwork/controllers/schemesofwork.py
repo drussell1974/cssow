@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 # try something like
-from gluon.shell import exec_environment
-schemeofworkModel = exec_environment('applications/schemeofwork/models/schemeofworkModel.py', request=request)
-examboardModel = exec_environment('applications/schemeofwork/models/examboardModel.py')
-keystageModel = exec_environment('applications/schemeofwork/models/keystageModel.py')
+from gluon.contrib.appconfig import AppConfig
+configuration = AppConfig(reload=True)
 
-import datetime
+db = DAL(configuration.get('db.uri'),
+     pool_size=configuration.get('db.pool_size'),
+     migrate_enabled=configuration.get('db.migrate'),
+     check_reserved=['all'])
+
+import schemeofwork as schemeofworkModel
+import examboard as examboardModel
+import keystage as keystageModel
 
 
 def index():
@@ -17,14 +22,14 @@ def index():
               }
 
     # get the schemes of work
-    data = schemeofworkModel.get_all()
+    data = schemeofworkModel.get_all(db)
 
     return dict(content = content, model = data)
 
 
 def view():
     id_ = int(request.vars.id)
-    model = schemeofworkModel.get_model(id_=id_)
+    model = schemeofworkModel.get_model(db, id_=id_)
 
     # check results and redirect if necessary
 
@@ -42,12 +47,12 @@ def view():
 @auth.requires_login()
 def edit():
     id_ = int(request.vars.id if request.vars.id is not None else 0)
-    model = schemeofworkModel.get_model(id_)
+    model = schemeofworkModel.get_model(db, id_)
     if(model == None):
         redirect(URL('index', vars=dict(message="item deleted")))
 
-    examboard_options = examboardModel.get_options()
-    keystage_options = keystageModel.get_options()
+    examboard_options = examboardModel.get_options(db)
+    keystage_options = keystageModel.get_options(db)
 
     content = {
         "main_heading":model.name if model.name == "" else "New Scheme of work",
@@ -59,7 +64,7 @@ def edit():
 
 @auth.requires_login()
 def save_item():
-    model = schemeofworkModel.save(
+    model = schemeofworkModel.save(db,
         auth_user_id=auth.user.id,
         id_=request.vars.id,
         name=request.vars.name,
@@ -73,5 +78,5 @@ def save_item():
 @auth.requires_login()
 def delete_item():
     id_ = int(request.vars.id)
-    schemeofworkModel.delete(auth_user_id=auth.user.id, id_ = id_)
+    schemeofworkModel.delete(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))

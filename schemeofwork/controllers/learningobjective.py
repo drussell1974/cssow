@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
-from gluon.shell import exec_environment
+from gluon.contrib.appconfig import AppConfig
+configuration = AppConfig(reload=True)
 
-learningobjectiveModel = exec_environment('applications/schemeofwork/models/learningobjectiveModel.py', request=request)
-schemeofworkModel = exec_environment('applications/schemeofwork/models/schemeofworkModel.py', request=request)
-solotaxonomyModel = exec_environment('applications/schemeofwork/models/solotaxonomyModel.py')
-topicModel = exec_environment('applications/schemeofwork/models/topicModel.py')
-contentModel = exec_environment('applications/schemeofwork/models/contentModel.py')
-examboardModel = exec_environment('applications/schemeofwork/models/examboardModel.py')
-learningepisiodeModel = exec_environment('applications/schemeofwork/models/learningepisodeModel.py')
+db = DAL(configuration.get('db.uri'),
+     pool_size=configuration.get('db.pool_size'),
+     migrate_enabled=configuration.get('db.migrate'),
+     check_reserved=['all'])
+
+
+import learningobjective as learningobjectiveModel
+import schemeofwork as schemeofworkModel
+import solotaxonomy as solotaxonomyModel
+import topic as topicModel
+import content as contentModel
+import examboard as examboardModel
+import learningepisode as learningepisiodeModel
 
 def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id) # scheme_of_work_id = int(request.vars.scheme_of_work_id if request.vars.scheme_of_work_id is not None else 0)
