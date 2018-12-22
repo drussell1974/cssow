@@ -58,7 +58,10 @@ def save_item():
 
 @auth.requires_login()
 def delete_item():
+
+    id_ = int(request.vars.id)
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    learningepisodeModel.delete(auth.user.id)
+
+    learningepisodeModel.delete(auth.user.id, id_)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id)))

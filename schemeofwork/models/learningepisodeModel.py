@@ -168,9 +168,7 @@ def save(auth_user_id, id_, order_of_delivery_id, scheme_of_work_id, topic_id):
     return model
 
 
-def delete(auth_user_id):
-
-    id_ = int(request.vars.id)
+def delete(auth_user_id, id_):
 
     model = LearningEpisodeModel(id_)
     model._delete();
