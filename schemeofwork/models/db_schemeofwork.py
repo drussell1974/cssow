@@ -26,6 +26,9 @@ def save(auth_user_id, id_, name, desc, exam_board_id, key_stage_id):
         created_by=auth_user_id
     )
 
+    #from gluon.debug import dbg
+    #dbg.set_trace() # stop here!
+
     model.validate()
     if model.is_valid == True:
         if model.is_new() == True:

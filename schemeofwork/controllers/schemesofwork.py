@@ -66,7 +66,7 @@ def save_item():
                                    int(request.vars.key_stage_id))
 
     if model.is_valid == False:
-        return redirect(URL('learningepisode', 'edit', vars=dict(model = model)))
+        raise Exception("Validation errors:/n/n %s" % model.validation_errors)
 
     return redirect(URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id)))
 

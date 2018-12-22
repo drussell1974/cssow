@@ -281,6 +281,19 @@ class TestCase_SchemeOfWork_KeyStageId(TestCase_SchemeOfWork_Base):
         self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
 
+    def test_min__valid_extreme_allow_NONE(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_stage_id = -1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
 
     def test_min__invalid_extreme(self):
         # set up

@@ -15,9 +15,9 @@ class SchemeOfWorkModel(BaseModel):
         self.id = int(id_)
         self.name = name
         self.description = description
-        self.exam_board_id = exam_board_id
+        self.exam_board_id = int(exam_board_id)
         self.exam_board_name = exam_board_name if exam_board_id > 0 else ""
-        self.key_stage_id = key_stage_id
+        self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name if key_stage_id > 0 else ""
         self.created = created
         self.created_by = created_by
@@ -44,9 +44,8 @@ class SchemeOfWorkModel(BaseModel):
             self.is_valid = False
 
         # Validate exam board
-
-        if self.exam_board_id is None or self.exam_board_id < 0:
-            self.validation_errors["exam_board_id"]= ("selection required for exam board")
+        if self.exam_board_id is None or self.exam_board_id < 1:
+            self.validation_errors["exam_board_id"] = "selection required for exam board"
             self.is_valid = False
         elif self.exam_board_id > 9999:
             self.validation_errors["exam_board_id"] = "{} is not a valid selection for exam board".format(self.exam_board_id)
@@ -55,7 +54,7 @@ class SchemeOfWorkModel(BaseModel):
         # Validate key stage
 
         if self.key_stage_id is None or self.key_stage_id < 1:
-            self.validation_errors["key_stage_id"]= ("selection required for key stage")
+            self.validation_errors["key_stage_id"] = "selection required for key stage"
             self.is_valid = False
         elif self.key_stage_id > 9999:
             self.validation_errors["key_stage_id"] = "{} is not a valid selection for key stage".format(self.exam_board_id)
