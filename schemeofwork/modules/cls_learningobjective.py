@@ -62,6 +62,8 @@ class LearningObjectiveModel (BaseModel):
         self._validate_required_integer("topic_id", self.topic_id, 1, 9999)
         # validate content_id
         self._validate_required_integer("content_id", self.content_id, 1, 9999)
+        # validate solo_taxonomy_id
+        self._validate_required_integer("solo_taxonomy_id", self.solo_taxonomy_id, 1, 9999)
 
     def _clean_up(self):
         """ clean up properties """
