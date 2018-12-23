@@ -236,6 +236,10 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
     data = [];
 
     for row in rows:
+
+        from gluon.debug import dbg
+        dbg.set_trace() # stop here!
+
         model = LearningObjectiveModel(
             id_ = row[0],
             description = row[1],

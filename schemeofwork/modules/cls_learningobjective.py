@@ -21,27 +21,27 @@ class LearningObjectiveModel (BaseModel):
     key_stage_name = ""
     parent_id = None
 
-    def __init__(self, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = ""):
+    def __init__(self, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = ""):
         self.id = int(id_)
         self.description = description
-        self.solo_taxonomy_id = solo_taxonomy_id
+        self.solo_taxonomy_id = int(solo_taxonomy_id)
         self.solo_taxonomy_name = solo_taxonomy_name
         self.solo_taxonomy_level = solo_taxonomy_level
-        self.topic_id = topic_id
+        self.topic_id = int(topic_id)
         self.topic_name = topic_name
-        self.parent_topic_id = parent_topic_id
+        self.parent_topic_id = self._try_int(parent_topic_id)
         self.parent_topic_name = parent_topic_name
-        self.content_id = content_id
+        self.content_id = self._try_int(content_id)
         self.content_description = content_description
-        self.exam_board_id = exam_board_id
+        self.exam_board_id = self._try_int(exam_board_id)
         self.exam_board_name = exam_board_name
-        self.learning_episode_id = learning_episode_id
+        self.learning_episode_id = int(learning_episode_id)
         self.learning_episode_name = learning_episode_name
-        self.key_stage_id = key_stage_id
+        self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
-        self.parent_id = parent_id
+        self.parent_id = self._try_int(parent_id)
         self.created = created
-        self.created_by_id = created_by_id
+        self.created_by_id = int(created_by_id)
         self.created_by_name = created_by_name
 
 
