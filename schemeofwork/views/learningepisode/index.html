@@ -36,13 +36,16 @@
                     <div class="control-group">
                       <div class="form-group floating-label-form-group controls">
                         <label>Scheme of work</label>
-                        <select class="form-control" id="scheme_of_work_id" name="scheme_of_work_id" required data-validation-required-message="Please select a scheme of work." onchange="this.form.submit()">
+                        <select class="form-control" id="scheme_of_work_id" name="scheme_of_work_id" required data-validation-required-message="Please select a scheme of work.">
                             <option value="">- Select a scheme of work -</option>
                             {{ for opt in schemeofwork_options:}}
                                 <option value="{{=opt.id}}" {{if opt.id == scheme_of_work_id :}} selected {{pass}}>{{=opt.name}}</option>
                             {{ pass }}
                         </select>
                         <p class="help-block text-danger"></p>
+                          <div class="form-group">
+                        <button type="submit" class="btn" id="changeButton">Change</button>
+                    </div>
                      </div>
                   </div>
               </form>

@@ -39,10 +39,10 @@ def get_options():
     return data
 
 
-def get_all():
-    select_sql = ("SELECT " +
+def get_all(key_stage_id=0):
+    select_sql = ("SELECT " \
                   "  sow.id as id, " +  # 0
-                  "  sow.name as name, " +  # 1
+                  "  sow.name as name, " + # 1
                   "  sow.description as description, " +  # 2
                   "  sow.exam_board_id as exam_board_id, " +  # 3
                   "  exam.name as exam_board_name, " +  # 4
@@ -54,8 +54,8 @@ def get_all():
                   " FROM sow_scheme_of_work as sow " +
                   "  LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id " +
                   "  INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id " +
-                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by; ")
-
+                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by " +
+                  " WHERE sow.key_stage_id = {} or {} = 0;".format(key_stage_id, key_stage_id))
 
     rows = db.executesql(select_sql)
 

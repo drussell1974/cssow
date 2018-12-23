@@ -8,6 +8,9 @@ db_keystage = exec_environment('applications/schemeofwork/models/db_keystage.py'
 from cls_schemeofwork import SchemeOfWorkModel
 
 def index():
+
+    key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
+
     content = {
         "main_heading":"Schemes of work",
         "sub_heading":"Our shared schemes of work by key stage",
@@ -16,9 +19,11 @@ def index():
               }
 
     # get the schemes of work
-    data = db_schemeofwork.get_all()
+    data = db_schemeofwork.get_all(key_stage_id=key_stage_id)
 
-    return dict(content = content, model = data)
+    key_stage_options = db_keystage.get_options()
+
+    return dict(content = content, model = data, key_stage_options = key_stage_options)
 
 
 def view():

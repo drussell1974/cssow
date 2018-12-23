@@ -34,20 +34,23 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             <!-- Filters Start -->
-            <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
-                <label>Key stage</label>
-                <select class="form-control" id="email" required data-validation-required-message="Please select a key stage.">
-                    <option value="">- Select a key stage -</option>
-                    <option value="1">Key stage 1</option>
-                    <option value="2">Key stage 2</option>
-                    <option value="3">Key stage 3</option>
-                    <option value="4">Key stage 4</option>
-                    <option value="5">Key stage 5</option>
-                </select>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
+            <form name="filter-schemeofwork" id="schemeofworkFilter" method="post" action="index">
+                <div class="control-group">
+                  <div class="form-group floating-label-form-group controls">
+                    <label>Key stage</label>
+                    <select class="form-control" name="key_stage_id" id="key_stage_id" required data-validation-required-message="Please select a key stage.">
+                        <option value="">- Select a key stage -</option>
+                        {{ for opt in key_stage_options: }}
+                            <option value="{{=opt.id}}">{{=opt.name}}</option>
+                        {{ pass }}
+                    </select>
+                    <p class="help-block text-danger"></p>
+                      <div class="form-group">
+                            <button type="submit" class="btn" id="changeButton">Filter</button>
+                        </div>
+                  </div>
+                </div>
+            </form>
             <!-- Filters END -->
           <!-- Scheme of works -->
           {{ for row in model: }}

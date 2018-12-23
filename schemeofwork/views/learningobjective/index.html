@@ -39,7 +39,7 @@
                     <div class="control-group">
                       <div class="form-group floating-label-form-group controls">
                         <label>Scheme of work</label>
-                        <select class="form-control" id="learning_episode_id" name="learning_episode_id" required data-validation-required-message="Please select a scheme of work." onchange="this.form.submit()">
+                        <select class="form-control" id="learning_episode_id" name="learning_episode_id" required data-validation-required-message="Please select a scheme of work.">
                             <option value="">- Select a learning episode -</option>
                             {{ for opt in learningepisiode_options:}}
                                 <option value="{{=opt.id}}" {{if opt.id == learning_episode_id :}} selected {{pass}}>{{=opt.order_of_delivery_id}}</option>
@@ -48,7 +48,10 @@
                         <p class="help-block text-danger"></p>
                      </div>
                   </div>
-                    <input type="hidden" name="scheme_of_work_id" value="{{=scheme_of_work_id}}">
+                    <div class="form-group">
+                        <input type="hidden" name="scheme_of_work_id" value="{{=scheme_of_work_id}}">
+                        <button type="submit" class="btn" id="changeButton">Change</button>
+                    </div>
               </form>
             <!-- Filters END -->
           <!-- Show learning objectives for this learning episode -->

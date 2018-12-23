@@ -32,7 +32,7 @@ def get_all(learning_episode_id):
                  "  le.id as learning_episode_id, " + #15
                  "  le.order_of_delivery_id as learning_episode_name, " + #16
                  "  lob.created as created, " + #17
-                 "  lbb.created_by as created_by_id, " + #18
+                 "  lob.created_by as created_by_id, " + #18
                  "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #19
                  " FROM sow_scheme_of_work as sow " +
                  "  INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id " +
