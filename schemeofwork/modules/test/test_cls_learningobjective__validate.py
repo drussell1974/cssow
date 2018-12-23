@@ -10,7 +10,7 @@ from learningobjective_testcase import LearningObjective_TestCase
 """
 
 description DONE
-solo_taxonomy_id DOING
+solo_taxonomy_id DONE
 solo_taxonomy_name = ""
 solo_taxonomy_level = ""
 topic_id = DONE
@@ -21,7 +21,7 @@ content_id = DONE
 content_description = ""
 exam_board_id = DONE
 exam_board_name = ""
-learning_episode_id = 0
+learning_episode_id = DOING
 learning_episode_name = ""
 key_stage_id = 0
 key_stage_name = ""
@@ -449,6 +449,88 @@ class test_LearningObjectiveModel_validate__solo_taxonomy_id(LearningObjective_T
         # assert
         self.assertTrue("solo_taxonomy_id" in test.validation_errors, "solo_taxonomy_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+class test_LearningObjectiveModel_validate__learning_episode_id(LearningObjective_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.learning_episode_id = 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("learning_episode_id" in test.validation_errors, "learning_episode_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.learning_episode_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("learning_episode_id" in test.validation_errors, "learning_episode_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.learning_episode_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("learning_episode_id" in test.validation_errors, "learning_episode_id should have validation error %s" % test.validation_errors)
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.learning_episode_id = 9999
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("learning_episode_id" in test.validation_errors, "learning_episode_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.learning_episode_id = 10000  # too far out of possible range
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("learning_episode_id" in test.validation_errors, "learning_episode_id should have validation error %s" % test.validation_errors)
 
 
 """
