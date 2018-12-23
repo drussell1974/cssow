@@ -129,6 +129,34 @@ class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
     def tearDown(self):
         pass
 
+    def test_min__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.description = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
+
+
+    def test_min__valid_extreme_is_NONE(self):
+
+        test = self._construct_valid_object()
+
+        test.description = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
+
+
     def test_min__valid_extreme_trim_whitespace(self):
         test = self._construct_valid_object()
 
@@ -142,18 +170,6 @@ class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
         self.assertTrue(test.is_valid, "is_valid should be True")
         self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
-    def test_min__valid_extreme(self):
-
-        test = self._construct_valid_object()
-
-        test.description = "x"
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
     def test_max__valid_extreme(self):
 
@@ -168,6 +184,7 @@ class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
         # assert
         self.assertTrue(test.is_valid, "is_valid should be True")
         self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
+
 
     def test_max__invalid_extreme(self):
 

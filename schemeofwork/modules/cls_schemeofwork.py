@@ -49,10 +49,10 @@ class SchemeOfWorkModel(BaseModel):
             self.is_valid = False
 
         # Validate description
-
-        if len(self.description) > 1500:
-            self.validation_errors["description"] = "is {} characters (cannot exceed 1500)".format(len(self.description))
-            self.is_valid = False
+        if self.description is not None:
+            if len(self.description) > 1500:
+                self.validation_errors["description"] = "is {} characters (cannot exceed 1500)".format(len(self.description))
+                self.is_valid = False
 
         # Validate exam board
         if self.exam_board_id is not None:
@@ -65,5 +65,7 @@ class SchemeOfWorkModel(BaseModel):
             self.validation_errors["key_stage_id"] = "{} is not a valid selection for key stage".format(self.key_stage_id)
             self.is_valid = False
 
+
     def _clean(self):
-        self.description = self.description.lstrip(" ").rstrip(" ")
+        if self.description is not None:
+            self.description = self.description.lstrip(" ").rstrip(" ")
