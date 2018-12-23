@@ -60,6 +60,8 @@ class LearningObjectiveModel (BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # validate topic_id
         self._validate_required_integer("topic_id", self.topic_id, 1, 9999)
+        # validate content_id
+        self._validate_required_integer("content_id", self.content_id, 1, 9999)
 
     def _clean_up(self):
         """ clean up properties """
