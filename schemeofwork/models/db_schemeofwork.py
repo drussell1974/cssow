@@ -10,7 +10,7 @@ db = DAL(configuration.get('db.uri'),
          check_reserved=['all'])
 
 from cls_schemeofwork import SchemeOfWorkModel
-from db_helper import to_db_null, to_utf8
+from db_helper import to_db_null
 
 def save(model):
     if model.is_new() == True:

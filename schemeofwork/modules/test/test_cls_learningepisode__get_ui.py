@@ -67,4 +67,4 @@ class test_LearningEpisode__get_ui_title(LearningEpisode_TestCase):
         val = test.get_ui_title()
 
         # assert
-        self.assertEqual("Week 2 - Algorithms: Program structures", val)
+        self.assertEqual("Week 2 - Program structures : Algorithms", val)

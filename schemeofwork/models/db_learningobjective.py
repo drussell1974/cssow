@@ -10,7 +10,7 @@ db = DAL(configuration.get('db.uri'),
 
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
-from db_helper import to_db_null, to_utf8
+from db_helper import to_db_null
 
 def get_all(learning_episode_id):
 
