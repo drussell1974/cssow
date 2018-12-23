@@ -50,7 +50,7 @@ def edit():
 
     content = {
         "main_heading":model.name if model.name == "" else "New Scheme of work",
-        "sub_heading":model.exam_board_name + " " + model.key_stage_name,
+        "sub_heading":model.get_ui_sub_heading(),
         "strap_line": "" if model.name == "" else "Create a new scheme of work. Fill out the form below then click next to select or create learning episode."
               }
     return dict(content = content, model = model, examboard_options = examboard_options, keystage_options = keystage_options)

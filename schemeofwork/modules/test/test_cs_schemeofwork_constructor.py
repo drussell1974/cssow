@@ -63,3 +63,27 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual(2, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("test key stage", test.key_stage_name, "key_stage_name should be ''")
         self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_constructor__get_ui_sub_heading(self):
+        test = SchemeOfWorkModel(99,
+                         name="test name",
+                         description="test description",
+                         exam_board_id=1,
+                         exam_board_name="test exam board",
+                         key_stage_id=2,
+                         key_stage_name="test key stage")
+
+        self.assertEqual("test exam board - test key stage", test.get_ui_sub_heading())
+
+
+    def test_constructor__get_ui_title(self):
+        test = SchemeOfWorkModel(99,
+                         name="test name",
+                         description="test description",
+                         exam_board_id=1,
+                         exam_board_name="test exam board",
+                         key_stage_id=2,
+                         key_stage_name="test key stage")
+
+        self.assertEqual("test name", test.get_ui_title())

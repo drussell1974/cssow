@@ -54,14 +54,14 @@
           <div class="post-preview">
             <a href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
               <h2 class="post-title">
-                {{=row.name}}
+                {{=row.get_ui_title()}}
               </h2>
               <h3 class="post-subtitle">
-                {{=row.exam_board_name}} {{=row.key_stage_name}}
+                {{=row.get_ui_sub_heading()}}
               </h3>
             </a>
             <p class="post-meta">Created by
-              <a href="#">{{=row.created_by_name}}</a>
+              <a href="#">{{=row.created_by}}</a>
               {{if row.created: }}
                 on {{=str(row.date_created_ui())}}
               {{ pass }}

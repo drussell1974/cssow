@@ -23,8 +23,10 @@ class SchemeOfWorkModel(BaseModel):
         self.created_by_id = int(created_by_id)
         self.created_by_name = created_by_name
 
+
     def _try_int(self, val):
         """ convert value to int or None """
+
         try:
             val = int(val)
         except:
@@ -33,6 +35,7 @@ class SchemeOfWorkModel(BaseModel):
 
 
     def validate(self):
+
         """ clean up and validate model """
 
         self._on_before_validate()
@@ -72,6 +75,16 @@ class SchemeOfWorkModel(BaseModel):
             self.validation_errors["key_stage_id"] = "{} is not a valid selection for key stage".format(self.key_stage_id)
             self.is_valid = False
 
+
+    def get_ui_title(self):
+        self._clean_up()
+        return self.name
+
+
+    def get_ui_sub_heading(self):
+        self._clean_up()
+
+        return "{} - {}".format(self.exam_board_name, self.key_stage_name)
 
     def _clean_up(self):
         """ clean up properties """

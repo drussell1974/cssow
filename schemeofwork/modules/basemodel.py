@@ -9,6 +9,25 @@ class BaseModel:
     is_valid = False
     validation_errors = {}
 
+    def __init__(self, id_, created, created_by_id, created_by_name):
+        self.id = int(id_)
+        self.created = created
+        self.created_by_id = created_by_id
+        self.created_by_name = created_by_name
+
+
+    def validate(self):
+        pass
+
+
+    def get_ui_title(self):
+        pass
+
+
+    def get_ui_sub_heading(self):
+        pass
+
+
     def is_new(self):
         if self.id == 0:
             return True
@@ -16,7 +35,7 @@ class BaseModel:
             return False
 
 
-    def date_created_ui(self):
+    def get_ui_created(self):
         return datetime.strftime(self.created, "%d %B %Y")
 
 

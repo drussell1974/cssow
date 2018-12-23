@@ -62,7 +62,7 @@
             <p class="post-meta">Created by
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
-                on {{=str(row.date_created_ui())}}
+                on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
                 - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">remove</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">edit</a>
@@ -97,7 +97,7 @@
                  <br><i class="small">
                     by <a href="#">{{=row.created_by_name}}</a>
                     {{if row.created: }}
-                        on {{=str(row.date_created_ui())}}
+                        on {{=str(row.get_ui_created())}}
                     {{ pass }}
                 </i>
 
