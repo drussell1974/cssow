@@ -236,10 +236,6 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
     data = [];
 
     for row in rows:
-
-        from gluon.debug import dbg
-        dbg.set_trace() # stop here!
-
         model = LearningObjectiveModel(
             id_ = row[0],
             description = row[1],
@@ -357,7 +353,8 @@ def add_existing_objective(db, auth_user_id, id_, learning_episode_id):
 def delete(db, auth_user_id, id_):
 
     model = LearningObjectiveModel(id_)
-    _delete(model);
+    _delete(db, model);
+
 
 """
 Private CRUD functions 
@@ -404,7 +401,7 @@ def _update(db, model):
 
 def _insert(db, model):
 
-    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by"
+    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by)"
     str_insert = str_insert + " VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});".format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id), to_db_null(model.parent_id), model.created, model.created_by_id)
 
     db.executesql(str_insert)

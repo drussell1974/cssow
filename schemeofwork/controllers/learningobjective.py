@@ -74,13 +74,15 @@ def edit():
         model.topic_id = int(request.vars.topic_id)
 
     learning_episode = db_learningepisode.get_model(db, model.learning_episode_id)
+    key_stage_id = db_schemeofwork.get_key_stage_id_only(db, int(request.vars.scheme_of_work_id))
 
-    key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
+    model.learning_episode_id = learning_episode.id
+    model.key_stage_id = key_stage_id
+
     solo_taxonomy_options = db_solotaxonomy.get_options(db)
     topic_options = db_topic.get_options(db, learning_episode.topic_id, learning_episode.parent_topic_id)
     content_options = db_content.get_options(db, key_stage_id)
     exam_board_options = db_examboard.get_options(db)
-
     parent_learning_objective_options = db_learningobjective.get_parent_options(db, current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
 
     content = {
@@ -115,6 +117,7 @@ def save_item():
         topic_id=request.vars.topic_id,
         content_id=request.vars.content_id,
         exam_board_id=request.vars.exam_board_id,
+        key_stage_id=request.vars.key_stage_id,
         parent_id=request.vars.parent_id,
         learning_episode_id=request.vars.learning_episode_id,
         created=datetime.now(),

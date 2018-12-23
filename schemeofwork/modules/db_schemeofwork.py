@@ -138,9 +138,9 @@ Private CRUD functions
 
 def save(db, model):
     if model.is_new() == True:
-        _insert(model)
+        _insert(db, model)
     else:
-        _update(model)
+        _update(db, model)
 
     return model;
 
