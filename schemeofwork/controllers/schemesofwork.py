@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-from gluon.shell import exec_environment
-db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
-db_examboard = exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
-db_keystage = exec_environment('applications/schemeofwork/models/db_keystage.py', request=request)
+from gluon.contrib.appconfig import AppConfig
+configuration = AppConfig(reload=True)
 
+db = DAL(configuration.get('db.uri'),
+     pool_size=configuration.get('db.pool_size'),
+     migrate_enabled=configuration.get('db.migrate'),
+     check_reserved=['all'])
+
+import db_schemeofwork  #= exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
+import db_examboard  #= exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
+import db_keystage  #= exec_environment('applications/schemeofwork/models/db_keystage.py', request=request)
+
+from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
 
 def index():
+    """ index action """
 
     key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
 
@@ -19,16 +27,18 @@ def index():
               }
 
     # get the schemes of work
-    data = db_schemeofwork.get_all(key_stage_id=key_stage_id)
+    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id)
 
-    key_stage_options = db_keystage.get_options()
+    key_stage_options = db_keystage.get_options(db)
 
     return dict(content = content, model = data, key_stage_options = key_stage_options)
 
 
 def view():
+    """ view action (NOT USED) """
+
     id_ = int(request.vars.id)
-    model = db_schemeofwork.get_model(id_=id_)
+    model = db_schemeofwork.get_model(db, id_=id_)
 
     # check results and redirect if necessary
 
@@ -45,13 +55,15 @@ def view():
 
 @auth.requires_login()
 def edit():
+    """ edit action """
+
     id_ = int(request.vars.id if request.vars.id is not None else 0)
-    model = db_schemeofwork.get_model(id_)
+    model = db_schemeofwork.get_model(db, id_)
     if(model == None):
         redirect(URL('index', vars=dict(message="item deleted")))
 
-    examboard_options = db_examboard.get_options()
-    keystage_options = db_keystage.get_options()
+    examboard_options = db_examboard.get_options(db)
+    keystage_options = db_keystage.get_options(db)
 
     content = {
         "main_heading":model.name if model.name == "" else "New Scheme of work",
@@ -63,6 +75,7 @@ def edit():
 
 @auth.requires_login()
 def save_item():
+    """ save_item non-view action """
 
     # create instance of model from request.vars
 
@@ -79,7 +92,7 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        model = db_schemeofwork.save(model)
+        model = db_schemeofwork.save(db, model)
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
@@ -88,6 +101,8 @@ def save_item():
 
 @auth.requires_login()
 def delete_item():
+    """ delete_item non-view action """
+
     id_ = int(request.vars.id)
-    db_schemeofwork.delete(auth_user_id=auth.user.id, id_ = id_)
+    db_schemeofwork.delete(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))

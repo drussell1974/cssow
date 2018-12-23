@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # from gluon.debug import dbg
-
+"""
 from gluon.contrib.appconfig import AppConfig
 
 configuration = AppConfig(reload=True)
@@ -8,25 +8,13 @@ db = DAL(configuration.get('db.uri'),
          pool_size=configuration.get('db.pool_size'),
          migrate_enabled=configuration.get('db.migrate'),
          check_reserved=['all'])
+"""
+
 
 from cls_schemeofwork import SchemeOfWorkModel
 from db_helper import to_db_null
 
-def save(model):
-    if model.is_new() == True:
-        _insert(model)
-    else:
-        _update(model)
-
-    return model;
-
-
-def delete(auth_user_id, id_):
-    model = SchemeOfWorkModel(id_)
-    _delete(model);
-
-
-def get_options():
+def get_options(db):
     rows = db.executesql("SELECT id, name FROM sow_scheme_of_work;")
 
     data = [];
@@ -38,7 +26,7 @@ def get_options():
     return data
 
 
-def get_all(key_stage_id=0):
+def get_all(db, key_stage_id=0):
     select_sql = ("SELECT " \
                   "  sow.id as id, " +  # 0
                   "  sow.name as name, " + # 1
@@ -76,7 +64,7 @@ def get_all(key_stage_id=0):
     return data
 
 
-def get_model(id_):
+def get_model(db, id_):
     model = SchemeOfWorkModel(0);
 
     select_sql = ("SELECT " +
@@ -113,7 +101,7 @@ def get_model(id_):
     return model
 
 
-def get_schemeofwork_name_only(scheme_of_work_id):
+def get_schemeofwork_name_only(db, scheme_of_work_id):
     select_sql = ("SELECT " +
                   "  sow.name as name "  # 0
                   " FROM sow_scheme_of_work as sow " +
@@ -129,7 +117,7 @@ def get_schemeofwork_name_only(scheme_of_work_id):
     return scheme_of_work_name
 
 
-def get_key_stage_id_only(scheme_of_work_id):
+def get_key_stage_id_only(db, scheme_of_work_id):
     select_sql = ("SELECT " +
                   "  sow.key_stage_id as key_stage_id "  # 0
                   " FROM sow_scheme_of_work as sow " +
@@ -148,7 +136,21 @@ def get_key_stage_id_only(scheme_of_work_id):
 Private CRUD functions
 """
 
-def _update(model):
+def save(db, model):
+    if model.is_new() == True:
+        _insert(model)
+    else:
+        _update(model)
+
+    return model;
+
+
+def delete(db, auth_user_id, id_):
+    model = SchemeOfWorkModel(id_)
+    _delete(model);
+
+
+def _update(db, model):
     str_update = "UPDATE sow_scheme_of_work SET name = '{}', description = '{}', exam_board_id = {}, key_stage_id = {} WHERE id =  {};"
     str_update = str_update.format(to_db_null(model.name), to_db_null(model.description), to_db_null(model.exam_board_id), to_db_null(model.key_stage_id), to_db_null(model.id))
 
@@ -157,7 +159,7 @@ def _update(model):
     return True
 
 
-def _insert(model):
+def _insert(db, model):
     str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by) VALUES ('{}', '{}', {}, {}, '{}', {});"
     str_insert = str_insert.format(to_db_null(model.name), to_db_null(model.description), to_db_null(model.exam_board_id), to_db_null(model.key_stage_id), to_db_null(model.created), to_db_null(model.created_by_id))
 
@@ -172,7 +174,7 @@ def _insert(model):
     return model.id
 
 
-def _delete(model):
+def _delete(db, model):
     str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {};"
     str_delete = str_delete.format(model.id)
 

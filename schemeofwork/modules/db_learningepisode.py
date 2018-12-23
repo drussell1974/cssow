@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
 from gluon.contrib.appconfig import AppConfig
 configuration = AppConfig(reload=True)
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
+"""
 
-
-from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
 
-def get_options(scheme_of_work_id):
+def get_options(db, scheme_of_work_id):
 
     str_select = ("SELECT id, order_of_delivery_id FROM sow_learning_episode WHERE scheme_of_work_id = {};".format(scheme_of_work_id))
     rows = db.executesql(str_select)
@@ -24,7 +24,7 @@ def get_options(scheme_of_work_id):
     return data
 
 
-def get_all(scheme_of_work_id):
+def get_all(db, scheme_of_work_id):
 
     select_sql = ("SELECT " +
                  "  le.id as id, " + #0
@@ -57,7 +57,7 @@ def get_all(scheme_of_work_id):
     return data
 
 
-def get_model(id_):
+def get_model(db, id_):
     model = LearningEpisodeModel(id_);
 
     select_sql = ("SELECT " +
@@ -88,17 +88,17 @@ def get_model(id_):
     return model
 
 
-def save(model):
+def save(db, model):
     if model.is_new() == True:
-        newId = _insert(model)
+        newId = _insert(db, model)
         model.id = newId
     else:
-        rval = _update(model)
+        rval = _update(db, model)
 
     return model
 
 
-def delete(auth_user_id, id_):
+def delete(db, auth_user_id, id_):
 
     model = LearningEpisodeModel(id_)
     _delete(model);
@@ -107,7 +107,7 @@ def delete(auth_user_id, id_):
 Private CRUD functions 
 """
 
-def _update(model):
+def _update(db, model):
     str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {}, scheme_of_work_id = {}, topic_id = {} WHERE id =  {};"
     str_update = str_update.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.id)
 
@@ -116,7 +116,7 @@ def _update(model):
     return True
 
 
-def _insert(model):
+def _insert(db, model):
     str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, created, created_by) VALUES ({}, {}, {}, '{}', {});"
     str_insert = str_insert.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.created, model.created_by)
 
@@ -125,7 +125,7 @@ def _insert(model):
     return _get_last_insert_row_id(model)
 
 
-def _delete(model, db):
+def _delete(db, model):
     str_delete = "DELETE FROM sow_learning_episode WHERE id = {};"
     str_delete = str_delete.format(model.id)
 
@@ -134,7 +134,7 @@ def _delete(model, db):
     return rval
 
 
-def _get_last_insert_row_id(model):
+def _get_last_insert_row_id(db, model):
         # get last inserted row id
         rows = db.executesql("SELECT LAST_INSERT_ID();")
 

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-
+"""
 from gluon.contrib.appconfig import AppConfig
 configuration = AppConfig(reload=True)
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
-
+"""
 
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 from db_helper import to_db_null
 
-def get_all(learning_episode_id):
+def get_all(db, learning_episode_id):
 
     select_sql = ("SELECT " +
                  "  lob.id as id, " + # 0
@@ -79,7 +79,7 @@ def get_all(learning_episode_id):
     return data
 
 
-def get_new_model(id_):
+def get_new_model(db, id_):
     model = LearningObjectiveModel(id_);
 
     select_sql = ("SELECT " +
@@ -138,7 +138,7 @@ def get_new_model(id_):
     return model
 
 
-def get_model(id_):
+def get_model(db, id_):
     model = LearningObjectiveModel(id_);
 
     select_sql = ("SELECT " +
@@ -201,7 +201,7 @@ def get_model(id_):
     return model
 
 
-def get_parent_options(current_key_stage_id = 0, topic_id = 0):
+def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
     select_sql = ("SELECT " +
                     "  lob.id as id, " + # 0
                      "  lob.description as description, " + #1
@@ -260,7 +260,7 @@ def get_parent_options(current_key_stage_id = 0, topic_id = 0):
     return data
 
 
-def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topic_id, parent_topic_id):
+def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, topic_id, parent_topic_id):
 
     select_sql = ("SELECT " +
             "  lob.id as id, " + # 0
@@ -330,18 +330,18 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
     return data
 
 
-def save(model):
+def save(db, model):
     model.validate()
     if model.is_valid == True:
         if model.is_new() == True:
-            _insert(model)
+            _insert(db, model)
         else:
-            _update(model)
+            _update(db, model)
     return model
 
 
 
-def add_existing_objective(auth_user_id, id_, learning_episode_id):
+def add_existing_objective(db, auth_user_id, id_, learning_episode_id):
     model = LearningObjectiveModel(id_ = id_, learning_episode_id = learning_episode_id)
 
     # insert into linking table between objective and learning episode
@@ -350,7 +350,7 @@ def add_existing_objective(auth_user_id, id_, learning_episode_id):
     db.executesql(str_insert)
 
 
-def delete(auth_user_id, id_):
+def delete(db, auth_user_id, id_):
 
     model = LearningObjectiveModel(id_)
     _delete(model);
@@ -359,7 +359,7 @@ def delete(auth_user_id, id_):
 Private CRUD functions 
 """
 
-def _delete(model):
+def _delete(db, model):
 
     str_delete = "DELETE FROM sow_learning_objective__has__learning_episode WHERE learning_objective_id = {};"
     str_delete = str_delete.format(model.id)
@@ -369,7 +369,7 @@ def _delete(model):
     return rval
 
 
-def _update(model):
+def _update(db, model):
 
     # build update statement
 
@@ -398,7 +398,7 @@ def _update(model):
     return True
 
 
-def _insert(model):
+def _insert(db, model):
 
     str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by"
     str_insert = str_insert + " VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});".format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id), to_db_null(model.parent_id), model.created, model.created_by_id)

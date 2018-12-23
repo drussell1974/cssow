@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
-from gluon.contrib.appconfig import AppConfig
+"""from gluon.contrib.appconfig import AppConfig
 configuration = AppConfig(reload=True)
 db = DAL(configuration.get('db.uri'),
      pool_size=configuration.get('db.pool_size'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
+"""
 
-from cls_keystage import KeyStageModel
+from cls_content import ContentModel
 
-def get_options():
+def get_options(db, key_stage_id):
 
-    rows = db.executesql("SELECT id, name FROM sow_key_stage;")
+    rows = db.executesql("SELECT id, description FROM sow_content WHERE key_stage_id = {};".format(key_stage_id))
 
     data = [];
 
     for row in rows:
-        model = KeyStageModel(row[0], row[1])
+        model = ContentModel(row[0], row[1])
         data.append(model)
 
     return data
