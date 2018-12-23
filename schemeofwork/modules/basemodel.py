@@ -72,3 +72,11 @@ class BaseModel:
         elif len(value_to_validate) > 25:
             self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
             self.is_valid = False
+
+
+    def _validate_optional_string(self, name_of_property, value_to_validate, max_value):
+        if value_to_validate is not None:
+            if len(value_to_validate) > max_value:
+                self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(
+                    len(value_to_validate), max_value)
+                self.is_valid = False

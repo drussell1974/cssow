@@ -42,10 +42,7 @@ class SchemeOfWorkModel(BaseModel):
 
         max_value = 1500
 
-        if self.description is not None:
-            if len(self.description) > max_value:
-                self.validation_errors["description"] = "is {} characters (cannot exceed {} characters)".format(len(self.description), max_value)
-                self.is_valid = False
+        self._validate_optional_string("description", self.description, max_value)
 
         # Validate exam board
         if self.exam_board_id is not None:
