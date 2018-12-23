@@ -10,10 +10,10 @@ from learningobjective_testcase import LearningObjective_TestCase
 """
 
 description DONE
-solo_taxonomy_id DOING
+solo_taxonomy_id DONE
 solo_taxonomy_name = ""
 solo_taxonomy_level = ""
-topic_id = 0
+topic_id = DOING
 topic_name = ""
 parent_topic_id = 0
 parent_topic_name = ""
@@ -204,8 +204,91 @@ class test_LearningObjectiveModel_validate__exam_board_id(LearningObjective_Test
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
 
+
+class test_LearningObjectiveModel_validate__topic_id(LearningObjective_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.topic_id = 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("topic_id" in test.validation_errors, "topic_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.topic_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("topic_id" in test.validation_errors, "topic_id should not have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.topic_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("topic_id" in test.validation_errors, "topic_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.topic_id = 9999
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("topic_id" in test.validation_errors, "topic_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.topic_id = 10000  # too far out of possible range
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("topic_id" in test.validation_errors, "topic_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
 """
-class est_SchemeOfWork_clean_up__exam_board_name(LearningObjective_TestCase):
+class test_SchemeOfWork_clean_up__exam_board_name(LearningObjective_TestCase):
 
     def test__trim_whitespace(self):
         test = self._construct_valid_object()
