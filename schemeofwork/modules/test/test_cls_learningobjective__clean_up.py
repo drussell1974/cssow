@@ -16,9 +16,9 @@ parent_topic_name = DONE
 content_id = DONE
 content_description = DONE
 exam_board_id = DONE
-exam_board_name = DOING
+exam_board_name = DONE
 learning_episode_id = DONE
-learning_episode_name = ""
+learning_episode_name = DOING
 key_stage_id = DONE
 key_stage_name = ""
 parent_id = DONE
@@ -78,3 +78,17 @@ class test_SchemeOfWork_clean_up__exam_board_name(LearningObjective_TestCase):
 
         # assert
         self.assertEqual(test.exam_board_name, "x")
+
+
+class test_SchemeOfWork_clean_up__learning_episode_name(LearningObjective_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.learning_episode_name = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.learning_episode_name, "x")
