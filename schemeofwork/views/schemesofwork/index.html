@@ -61,9 +61,9 @@
               </h3>
             </a>
             <p class="post-meta">Created by
-              <a href="#">{{=row.created_by}}</a>
+              <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
-                on {{=str(row.date_created_ui())}}
+                on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
                  - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>

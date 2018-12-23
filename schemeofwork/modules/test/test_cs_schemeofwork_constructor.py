@@ -74,7 +74,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
                          key_stage_id=2,
                          key_stage_name="test key stage")
 
-        self.assertEqual("test exam board - test key stage", test.get_ui_sub_heading())
+        self.assertEqual("test key stage - test exam board", test.get_ui_sub_heading())
 
 
     def test_constructor__get_ui_title(self):

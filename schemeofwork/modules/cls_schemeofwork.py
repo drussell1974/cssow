@@ -84,7 +84,13 @@ class SchemeOfWorkModel(BaseModel):
     def get_ui_sub_heading(self):
         self._clean_up()
 
-        return "{} - {}".format(self.exam_board_name, self.key_stage_name)
+        heading = ""
+        if self.key_stage_name is not None:
+            heading = "{}".format(self.key_stage_name)
+        if self.exam_board_name is not None:
+            heading = heading + " - {}".format(self.exam_board_name)
+
+        return heading
 
     def _clean_up(self):
         """ clean up properties """
