@@ -37,23 +37,13 @@ class SchemeOfWorkModel(BaseModel):
 
         # Validate name
         self._validate_required_string("name", self.name, 1, 25)
-
         # Validate description
-
-        max_value = 1500
-
-        self._validate_optional_string("description", self.description, max_value)
-
+        self._validate_optional_string("description", self.description, 1500)
         # Validate exam board
-        if self.exam_board_id is not None:
-            if self.exam_board_id < 1 or self.exam_board_id > 9999:
-                self.validation_errors["exam_board_id"] = "{} is not a valid selection for exam board".format(self.exam_board_id)
-                self.is_valid = False
-
+        self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
-        if self.key_stage_id is None or self.key_stage_id < 1 or self.key_stage_id > 9999:
-            self.validation_errors["key_stage_id"] = "{} is not a valid selection for key stage".format(self.key_stage_id)
-            self.is_valid = False
+        self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
+
 
 
     def get_ui_title(self):

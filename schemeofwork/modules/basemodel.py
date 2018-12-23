@@ -80,3 +80,16 @@ class BaseModel:
                 self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(
                     len(value_to_validate), max_value)
                 self.is_valid = False
+
+
+    def _validate_required_integer(self, name_of_property, value_to_validate, min_value, max_value):
+        if value_to_validate is None or value_to_validate < min_value or value_to_validate > max_value:
+            self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
+            self.is_valid = False
+
+
+    def _validate_optional_integer(self, name_of_property, value_to_validate, min_value, max_value):
+        if value_to_validate is not None:
+            if value_to_validate < min_value or value_to_validate > max_value:
+                self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
+                self.is_valid = False

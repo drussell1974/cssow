@@ -9,8 +9,8 @@ from learningobjective_testcase import LearningObjective_TestCase
 
 """
 
-description = ""
-solo_taxonomy_id = 0
+description DONE
+solo_taxonomy_id DOING
 solo_taxonomy_name = ""
 solo_taxonomy_level = ""
 topic_id = 0
@@ -122,8 +122,8 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         self.assertTrue("description" in test.validation_errors, "description should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
 
-"""
-class test_SchemeOfWork_validate__exam_board_id(LearningObjective_TestCase):
+
+class test_LearningObjectiveModel_validate__exam_board_id(LearningObjective_TestCase):
 
     test = None
 
@@ -204,7 +204,7 @@ class test_SchemeOfWork_validate__exam_board_id(LearningObjective_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
 
-
+"""
 class est_SchemeOfWork_clean_up__exam_board_name(LearningObjective_TestCase):
 
     def test__trim_whitespace(self):
