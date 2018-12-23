@@ -3,13 +3,6 @@ from basemodel import BaseModel
 
 
 class SchemeOfWorkModel(BaseModel):
-    name = ""
-    description = ""
-    exam_board_id = 0
-    exam_board_name = ""
-    key_stage_id = 0
-    key_stage_name = ""
-
 
     def __init__(self, id_, name = "", description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", created = "", created_by_id = 0, created_by_name = ""):
         self.id = int(id_)
@@ -92,10 +85,11 @@ class SchemeOfWorkModel(BaseModel):
 
         return heading
 
+
     def _clean_up(self):
         """ clean up properties """
         if self.name is not None:
-            self.name = self.name.lstrip(" ").rstrip(" ")
+            self.name = self.name.lstrip(' ').rstrip(' ')
 
         if self.description is not None:
-            self.description = self.description.lstrip(" ").rstrip(" ")
+            self.description = self.description.lstrip(' ').rstrip(' ')

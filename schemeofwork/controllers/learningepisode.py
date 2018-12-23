@@ -7,6 +7,9 @@ db = DAL(configuration.get('db.uri'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
+from datetime import datetime
+from cls_learningepisode import LearningEpisodeModel
+
 from gluon.shell import exec_environment
 db_learningepisode = exec_environment('applications/schemeofwork/models/db_learningepisode.py', request=request)
 db_learningobjective  = exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
@@ -46,8 +49,8 @@ def edit():
 
     content = {
         "main_heading":"Learning episode",
-        "sub_heading":"for {}".format(model.scheme_of_work_name),
-        "strap_line": "Week " + str(model.order_of_delivery_id)
+        "sub_heading":model.get_ui_sub_heading(),
+        "strap_line":model.get_ui_title()
               }
     return dict(content = content, model = model, topic_options = topic_options)
 
@@ -59,7 +62,20 @@ def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     topic_id = int(request.vars.topic_id)
 
-    model = db_learningepisode.save(auth.user.id, id_, order_of_delivery_id, scheme_of_work_id, topic_id)
+    model = LearningEpisodeModel(
+        id_ = id_,
+        order_of_delivery_id = order_of_delivery_id,
+        scheme_of_work_id = scheme_of_work_id,
+        topic_id = topic_id,
+        created = datetime.now(),
+        created_by_id = auth.user.id
+    )
+
+    model.validate()
+    if model.is_valid == True:
+        model = db_learningepisode.save(model)
+    else:
+        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
     return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=model.id)))
 

@@ -75,9 +75,6 @@ def save_item():
         created=datetime.now(),
         created_by_id=auth.user_id)
 
-    #from gluon.debug import dbg
-    #dbg.set_trace() # stop here!
-
     # validate the model and save if valid otherwise redirect to default invalid
 
     model.validate()

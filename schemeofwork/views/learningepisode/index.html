@@ -55,7 +55,7 @@
           <div class="post-preview">
             <a href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=row.id, scheme_of_work_id=row.scheme_of_work_id,))}}">
               <h2 class="post-title">
-                Week {{=row.order_of_delivery_id}} - {{=row.topic_name}}
+                {{=row.get_ui_title()}}
               </h2>
             </a>
             <p class="post-meta">Created by

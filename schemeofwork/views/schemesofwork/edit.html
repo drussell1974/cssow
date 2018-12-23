@@ -42,7 +42,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Exam board</label>
                 <select class="form-control" name="exam_board_id" id="exam_board_id">
-                    <option>- Select an option for exam board (optional) -</option>
+                    <option value="">- Select an option for exam board (optional) -</option>
                     {{ for opt in examboard_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.exam_board_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}

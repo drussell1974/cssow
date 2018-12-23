@@ -10,12 +10,11 @@ db = DAL(configuration.get('db.uri'),
          check_reserved=['all'])
 
 from cls_schemeofwork import SchemeOfWorkModel
-
+from db_helper import to_db_null, to_utf8
 
 def save(model):
     if model.is_new() == True:
-        retId = _insert(model)
-        model.id = retId
+        _insert(model)
     else:
         _update(model)
 
@@ -151,7 +150,7 @@ Private CRUD functions
 
 def _update(model):
     str_update = "UPDATE sow_scheme_of_work SET name = '{}', description = '{}', exam_board_id = {}, key_stage_id = {} WHERE id =  {};"
-    str_update = str_update.format(set_db_null(model.name), set_db_null(model.description), set_db_null(model.exam_board_id), set_db_null(model.key_stage_id), set_db_null(model.id))
+    str_update = str_update.format(to_db_null(model.name), to_db_null(model.description), to_db_null(model.exam_board_id), to_db_null(model.key_stage_id), to_db_null(model.id))
 
     db.executesql(str_update)
 
@@ -160,7 +159,7 @@ def _update(model):
 
 def _insert(model):
     str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by) VALUES ('{}', '{}', {}, {}, '{}', {});"
-    str_insert = str_insert.format(set_db_null(model.name), set_db_null(model.description), set_db_null(model.exam_board_id), set_db_null(model.key_stage_id), set_db_null(model.created), set_db_null(model.created_by_id))
+    str_insert = str_insert.format(to_db_null(model.name), to_db_null(model.description), to_db_null(model.exam_board_id), to_db_null(model.key_stage_id), to_db_null(model.created), to_db_null(model.created_by_id))
 
     db.executesql(str_insert)
 
@@ -171,10 +170,6 @@ def _insert(model):
         model.id = int(row[0])
 
     return model.id
-
-
-def set_db_null(val):
-    return "NULL" if val is None else val
 
 
 def _delete(model):

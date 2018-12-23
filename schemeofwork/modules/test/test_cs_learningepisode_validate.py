@@ -5,36 +5,10 @@ import sys
 sys.path.insert(0, '../')
 
 from cls_learningepisode import LearningEpisodeModel
-
-class LearningEpisodeModel_TestCaseBase(TestCase):
-    """ Shared functions """
-    def _construct_valid_object(self):#
-        """ Create a valid Object """
-        # set up
-        test = LearningEpisodeModel(1,
-                                 order_of_delivery_id=2,
-                                 scheme_of_work_id=3,
-                                 topic_id=4,
-                                 parent_topic_id=5,
-                                 key_stage_id=6)
+from learningepisode_testcase import LearningEpisode_TestCase
 
 
-        # test
-        test.validate()
-
-        # assert
-        self.assertEqual(1, test.id)
-        self.assertEqual(2, test.order_of_delivery_id)
-        self.assertEqual(3, test.scheme_of_work_id)
-        self.assertEqual(4, test.topic_id)
-        self.assertEqual(5, test.parent_topic_id)
-        self.assertEqual(6, test.key_stage_id)
-        self.assertTrue(test.is_valid)
-
-        return test
-
-
-class test_LearningEpisodeModel__order_of_delivery_id(LearningEpisodeModel_TestCaseBase):
+class test_LearningEpisodeModel__validate__order_of_delivery_id(LearningEpisode_TestCase):
 
     test = None
 
@@ -114,7 +88,7 @@ class test_LearningEpisodeModel__order_of_delivery_id(LearningEpisodeModel_TestC
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__topic_id(LearningEpisodeModel_TestCaseBase):
+class test_LearningEpisodeModel__validate__topic_id(LearningEpisode_TestCase):
 
     test = None
 
@@ -194,7 +168,7 @@ class test_LearningEpisodeModel__topic_id(LearningEpisodeModel_TestCaseBase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__scheme_of_work_id(LearningEpisodeModel_TestCaseBase):
+class test_LearningEpisodeModel__validate__scheme_of_work_id(LearningEpisode_TestCase):
 
     test = None
 
@@ -274,7 +248,21 @@ class test_LearningEpisodeModel__scheme_of_work_id(LearningEpisodeModel_TestCase
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__key_stage_id(LearningEpisodeModel_TestCaseBase):
+class test_LearningEpisodeModel__clean_up___scheme_of_work_name(LearningEpisode_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.scheme_of_work_name = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.scheme_of_work_name, "x")
+
+
+class test_LearningEpisodeModel__validate__key_stage_id(LearningEpisode_TestCase):
 
     test = None
 
@@ -352,3 +340,17 @@ class test_LearningEpisodeModel__key_stage_id(LearningEpisodeModel_TestCaseBase)
         # assert
         self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+class test_LearningEpisodeModel_clean_up__key_stage_name(LearningEpisode_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.key_stage_name = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.key_stage_name, "x")

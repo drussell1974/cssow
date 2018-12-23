@@ -7,11 +7,12 @@ db = DAL(configuration.get('db.uri'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
+from datetime import datetime
+from cls_learningobjective import LearningObjectiveModel
 
 from gluon.shell import exec_environment
 db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
 db_learningobjective  = exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
-db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
 db_solotaxonomy = exec_environment('applications/schemeofwork/models/db_solotaxonomy.py', request=request)
 db_topic = exec_environment('applications/schemeofwork/models/db_topic.py', request=request)
 db_content = exec_environment('applications/schemeofwork/models/db_content.py', request=request)
@@ -101,15 +102,29 @@ def edit():
 def save_item():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
-    db_learningobjective.save(auth_user_id=auth.user.id,
-                                id_ = request.vars.id,
-                                description = request.vars.description,
-                                solo_taxonomy_id = request.vars.solo_taxonomy_id,
-                                topic_id = request.vars.topic_id,
-                                content_id = request.vars.content_id,
-                                exam_board_id = request.vars.exam_board_id,
-                                parent_id = request.vars.parent_id,
-                                learning_episode_id = request.vars.learning_episode_id)
+
+    # create instance of model from request.vars
+
+    model = LearningObjectiveModel(
+        id_=request.vars.id,
+        description=request.vars.description,
+        solo_taxonomy_id=request.vars.solo_taxonomy_id,
+        topic_id=request.vars.topic_id,
+        content_id=request.vars.content_id,
+        exam_board_id=request.vars.exam_board_id,
+        parent_id=request.vars.parent_id,
+        learning_episode_id=request.vars.learning_episode_id,
+        created=datetime.now(),
+        created_by_id=auth.user.id
+    )
+
+    # validate the model and save if valid otherwise redirect to default invalid
+
+    model.validate()
+    if model.is_valid == True:
+        model = db_learningobjective.save(model)
+    else:
+        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
     return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
 

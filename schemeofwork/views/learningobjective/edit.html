@@ -47,8 +47,8 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Select a linked Learning objective</label>
-                <select class="form-control" name="parent_id" id="parent_id" required data-validation-required-message="Please select a linked learning objective.">
-                    <option>- Select a linked learning objective (optional) -</option>
+                <select class="form-control" name="parent_id" id="parent_id">
+                    <option value="">- Select a linked learning objective (optional) -</option>
                     {{ for opt in parent_learning_objective_options: }}
                         <option value="{{=opt.id}}" {{if opt.id == model.parent_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}
@@ -90,7 +90,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Content</label>
                 <select class="form-control" name="content_id" id="content_id">
-                    <option>- Select content (optional) -</option>
+                    <option value="">- Select content (optional) -</option>
                     {{ for opt in content_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}

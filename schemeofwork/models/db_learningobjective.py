@@ -10,6 +10,7 @@ db = DAL(configuration.get('db.uri'),
 
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
+from db_helper import to_db_null, to_utf8
 
 def get_all(learning_episode_id):
 
@@ -329,28 +330,14 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
     return data
 
 
-def save(auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, learning_episode_id):
-
-    # refresh model for validation
-    model = LearningObjectiveModel(
-        id_ = id_,
-        description = description,
-        solo_taxonomy_id = solo_taxonomy_id,
-        topic_id = topic_id,
-        content_id = content_id,
-        exam_board_id = exam_board_id,
-        parent_id = parent_id,
-        learning_episode_id = learning_episode_id,
-        created = datetime.now(),
-        created_by_id = auth_user_id
-    )
-
-    rval = model.validate()
+def save(model):
+    model.validate()
     if model.is_valid == True:
         if model.is_new() == True:
-            rval = _insert(model)
+            _insert(model)
         else:
-            rval = _update(model)
+            _update(model)
+    return model
 
 
 
@@ -413,16 +400,10 @@ def _update(model):
 
 def _insert(model):
 
-    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, created, created_by"
-    str_values = "VALUES ('{}', {}, {}, {}, {}, '{}', {}".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, model.created, model.created_by_id)
+    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by"
+    str_insert = str_insert + " VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, to_db_null(model.parent_id), model.created, model.created_by_id)
 
-    if int(model.parent_id) > 0:
-        str_insert = str_insert + ", parent_id"
-        str_values = str_values + ", {}".format(model.parent_id)
-
-    str_insert = str_insert + ")"
-    str_values = str_values + ");"
-    db.executesql(str_insert + str_values)
+    db.executesql(str_insert)
 
     # get last inserted row id
     rows = db.executesql("SELECT LAST_INSERT_ID();")

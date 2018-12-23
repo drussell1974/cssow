@@ -9,7 +9,7 @@ db = DAL(configuration.get('db.uri'),
 
 from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
-
+from db_helper import to_db_null, to_utf8
 
 def get_options(scheme_of_work_id):
 
@@ -52,7 +52,9 @@ def get_all(scheme_of_work_id):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=to_utf8(row[3]), topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=to_utf8(row[7]), key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
+        from gluon.debug import dbg
+        dbg.set_trace() # stop here!
         data.append(model)
 
     return data
@@ -84,32 +86,17 @@ def get_model(id_):
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=dbfmt.to_utf8(row[3]), topic_id=row[4], topic_name=dbfmt.to_utf8(row[5]), parent_topic_id=row[6], parent_topic_name=dbfmt.to_utf8(row[7]), key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
 
     return model
 
 
-def save(auth_user_id, id_, order_of_delivery_id, scheme_of_work_id, topic_id):
-
-    # refresh model for validation
-    model = LearningEpisodeModel(
-        id_ = id_,
-        order_of_delivery_id = order_of_delivery_id,
-        scheme_of_work_id = scheme_of_work_id,
-        scheme_of_work_name = "",
-        topic_id = topic_id,
-        topic_name = "",
-        created = datetime.now(),
-        created_by_id = auth_user_id
-    )
-
-    rval = model.validate()
-    if model.is_valid == True:
-        if model.is_new() == True:
-            newId = _insert(model)
-            model.id = newId
-        else:
-            rval = _update(model)
+def save(model):
+    if model.is_new() == True:
+        newId = _insert(model)
+        model.id = newId
+    else:
+        rval = _update(model)
 
     return model
 
