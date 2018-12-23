@@ -11,8 +11,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
     test = None
 
     def setUp(self):
-
-        test = SchemeOfWorkModel(0)
+        pass
 
     def tearDown(self):
         pass
@@ -27,8 +26,10 @@ class Test_SchemeOfWork_Constructor(TestCase):
 
 
     def test_constructor_default(self):
+        # setup
         test = SchemeOfWorkModel(0)
 
+        # assert
         self.assertEqual(0, test.id)
         self.assertEqual("", test.name, "name should be ''")
         self.assertEqual("", test.description, "description should be ''")
@@ -36,8 +37,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual("", test.exam_board_name, "exam_board_name should be ''")
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
-        self.assertEqual(False, test.is_valid, "is_valid should be False")
-        self.assertTrue(len(test.validation_errors) == 0)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue(len(test.validation_errors) == 0, "Validation errors should be empty - %s" % test.validation_errors)
 
 
     def test_constructor_set_valid_values(self):
