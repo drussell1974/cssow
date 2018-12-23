@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/models" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/views" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/static" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/uploads" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/databases" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cron" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/controllers" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/modules/test" />
+    </content>
     <orderEntry type="jdk" jdkName="Python 3.5 (schemeofwork)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

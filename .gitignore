@@ -108,6 +108,9 @@ venv.bak/
 /examples
 /welcome
 
+# project metadata
+.idea/
+
 # sessions and logs
 /schemeofwork/sessions
 /schemeofwork/errors
