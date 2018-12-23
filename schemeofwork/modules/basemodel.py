@@ -43,3 +43,11 @@ class BaseModel:
         self.is_valid = True
         self.validation_errors.clear()
 
+
+    def _try_int(self, val):
+        """ convert value to int or None """
+        try:
+            val = int(val)
+        except:
+            val = None
+        return val

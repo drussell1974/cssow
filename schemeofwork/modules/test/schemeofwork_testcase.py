@@ -6,8 +6,7 @@ class SchemeOfWork_TestCase(TestCase):
     def _construct_valid_object(self):#
         """ Create a valid Object """
         # set up
-        test = SchemeOfWorkModel(99,
-                                     name="test name",
+        test = SchemeOfWorkModel(99, name="test name",
                                      description="test description",
                                      exam_board_id=1,
                                      exam_board_name="test exam board",

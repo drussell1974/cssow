@@ -248,20 +248,6 @@ class test_LearningEpisodeModel__validate__scheme_of_work_id(LearningEpisode_Tes
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__clean_up___scheme_of_work_name(LearningEpisode_TestCase):
-
-    def test__trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.scheme_of_work_name = " x "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual(test.scheme_of_work_name, "x")
-
-
 class test_LearningEpisodeModel__validate__key_stage_id(LearningEpisode_TestCase):
 
     test = None
@@ -341,16 +327,3 @@ class test_LearningEpisodeModel__validate__key_stage_id(LearningEpisode_TestCase
         self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
 
-
-class test_LearningEpisodeModel_clean_up__key_stage_name(LearningEpisode_TestCase):
-
-    def test__trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.key_stage_name = " x "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual(test.key_stage_name, "x")

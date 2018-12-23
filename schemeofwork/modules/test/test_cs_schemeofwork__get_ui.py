@@ -44,6 +44,7 @@ class test_SchemeOfWork__get_ui_sub_heading(SchemeOfWork_TestCase):
         # assert
         self.assertEqual("KS1", val)
 
+
 class test_SchemeOfWork__get_ui_title(SchemeOfWork_TestCase):
 
     def setUp(self):

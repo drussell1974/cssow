@@ -3,28 +3,27 @@ from basemodel import BaseModel
 
 
 class SchemeOfWorkModel(BaseModel):
+    """
+    id = 0
+    name = ""
+    description = ""
+    exam_board_id = 0
+    exam_board_name = ""
+    key_stage_id = 0
+    key_stage_name = ""
+    """
 
-    def __init__(self, id_, name = "", description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", created = "", created_by_id = 0, created_by_name = ""):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name=""):
         self.id = int(id_)
         self.name = name
         self.description = description
         self.exam_board_id = self._try_int(exam_board_id)
         self.exam_board_name = exam_board_name
-        self.key_stage_id = int(key_stage_id)
+        self.key_stage_id = self._try_int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.created = created
-        self.created_by_id = int(created_by_id)
+        self.created_by_id = self._try_int(created_by_id)
         self.created_by_name = created_by_name
-
-
-    def _try_int(self, val):
-        """ convert value to int or None """
-
-        try:
-            val = int(val)
-        except:
-            val = None
-        return val
 
 
     def validate(self):
@@ -93,3 +92,9 @@ class SchemeOfWorkModel(BaseModel):
 
         if self.description is not None:
             self.description = self.description.lstrip(' ').rstrip(' ')
+
+        if self.key_stage_name is not None:
+            self.key_stage_name = self.key_stage_name.strip(' ').rstrip(' ')
+
+        if self.exam_board_name is not None:
+            self.exam_board_name = self.exam_board_name.strip(' ').rstrip(' ')

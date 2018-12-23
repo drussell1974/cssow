@@ -365,15 +365,3 @@ class test_SchemeOfWork_validate__key_stage_id(SchemeOfWork_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_SchemeOfWork_clean_up__key_stage_name(SchemeOfWork_TestCase):
-
-    def test__trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.key_stage_name = " x "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual(test.key_stage_name, "x")
