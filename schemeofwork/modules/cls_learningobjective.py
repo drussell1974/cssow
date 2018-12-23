@@ -79,4 +79,10 @@ class LearningObjectiveModel (BaseModel):
         if self.description is not None:
             self.description = self.description.lstrip(' ').rstrip(' ')
 
+        if self.topic_name is not None:
+            self.topic_name = self.topic_name.lstrip(' ').rstrip(' ')
+
+        if self.parent_topic_name is not None:
+            self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
+
 

@@ -9,7 +9,7 @@ class LearningObjective_TestCase(TestCase):
 
     """ Shared functions """
     def setUp(self):
-        self.current_date_for_test = datetime.date.today()
+        self.current_date_for_test = datetime.today()
 
     def _construct_valid_object(self):#
         """ Create a valid Object """
