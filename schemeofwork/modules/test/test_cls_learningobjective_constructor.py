@@ -9,9 +9,12 @@ from cls_learningobjective import LearningObjectiveModel
 class Test_LearningObjectiveModel_Constructor(TestCase):
 
     test = None
+    current_date_for_test = ""
 
+    """ Shared functions """
     def setUp(self):
-        pass
+        self.current_date_for_test = datetime.today()
+
 
     def tearDown(self):
         pass
@@ -79,7 +82,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
                                       key_stage_id = 7,
                                       key_stage_name = "KS7",
                                       parent_id = 99,
-                                      created = datetime.now(),
+                                      created = self.current_date_for_test,
                                       created_by_id = 8,
                                       created_by_name = "Dave Russell")
 
@@ -104,7 +107,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertEqual(test.key_stage_id, 7, "--- setup --- key_stage_id failed")
         self.assertEqual(test.key_stage_name, "KS7", "--- setup --- key_stage_name failed")
         self.assertEqual(test.parent_id, 99, "--- setup --- parent_id failed")
-        self.assertEqual(test.created, datetime.now(), "--- setup --- created failed")
+        self.assertEqual(test.created, self.current_date_for_test, "--- setup --- created failed")
         self.assertEqual(test.created_by_id, 8, "--- setup --- created_by_id failed")
         self.assertEqual(test.created_by_name, "Dave Russell", "--- setup --- created_by_name failed")
 
