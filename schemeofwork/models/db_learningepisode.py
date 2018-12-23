@@ -71,18 +71,19 @@ def get_model(id_):
                  "  pnt_top.name as parent_topic_name, " + #7
                  "  sow.key_stage_id as key_stage_id, " + #8
                  "  le.created as created, " + #9
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #10
+                 "  le.created_by as created_by_id, " + #10
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #11
                  " FROM sow_learning_episode as le " +
                  "  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id " +
                  "  INNER JOIN sow_topic as top ON top.id = le.topic_id " +
                  "  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
                  "  LEFT JOIN auth_user as user ON user.id = sow.created_by " +
                   "  WHERE le.id = {};".format(id_))
-    #raise Exception(select_sql)
+
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by=row[10])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
 
     return model
 
@@ -98,7 +99,7 @@ def save(auth_user_id, id_, order_of_delivery_id, scheme_of_work_id, topic_id):
         topic_id = topic_id,
         topic_name = "",
         created = datetime.now(),
-        created_by = auth_user_id
+        created_by_id = auth_user_id
     )
 
     rval = model.validate()

@@ -21,7 +21,7 @@ class LearningObjectiveModel (BaseModel):
     key_stage_name = ""
     parent_id = None
 
-    def __init__(this, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by = ""):
+    def __init__(this, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", content_id = 0, content_description = "", exam_board_id = 0, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = ""):
         this.id = int(id_)
         this.description = description
         this.solo_taxonomy_id = solo_taxonomy_id
@@ -41,7 +41,8 @@ class LearningObjectiveModel (BaseModel):
         this.key_stage_name = key_stage_name
         this.parent_id = None if parent_id is None else parent_id
         this.created = created
-        this.created_by = created_by
+        this.created_by_id = created_by_id
+        this.created_by_name = created_by_name
 
 
     def validate(this):

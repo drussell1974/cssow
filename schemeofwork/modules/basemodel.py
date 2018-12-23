@@ -4,7 +4,8 @@ from datetime import datetime
 class BaseModel:
     id = 0
     created = ""
-    created_by = ""
+    created_by_id = 0
+    created_by_name = ""
     is_valid = False
     validation_errors = {}
 

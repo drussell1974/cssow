@@ -32,7 +32,8 @@ def get_all(learning_episode_id):
                  "  le.id as learning_episode_id, " + #15
                  "  le.order_of_delivery_id as learning_episode_name, " + #16
                  "  lob.created as created, " + #17
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #18
+                 "  lbb.created_by as created_by_id, " + #18
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #19
                  " FROM sow_scheme_of_work as sow " +
                  "  INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id " +
                  "  INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id " +
@@ -70,7 +71,8 @@ def get_all(learning_episode_id):
             learning_episode_id = row[15],
             learning_episode_name = row[16],
             created = row[17],
-            created_by = row[18])
+            created_by_id = row[18],
+            created_by_name = row[19])
         data.append(model)
 
     return data
@@ -129,7 +131,8 @@ def get_new_model(id_):
             key_stage_id = row[14],
             key_stage_name = row[15],
             created = row[16],
-            created_by = row[17])
+            created_by_id = row[17],
+            created_by_name = row[18])
 
     return model
 
@@ -154,8 +157,9 @@ def get_model(id_):
                  "  le.id as learning_episode_id, " + #13
                  "  sow.key_stage_id as key_stage_id, " + #14
                  "  ks.name as key_stage_name, " + #15
-                 "  lob.created as created, " + #15
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #16
+                 "  lob.created as created, " + #16
+                 "  lob.created_by as created_by_id, " + #17
+                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #18
                  " FROM sow_scheme_of_work as sow " +
                  "  INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id " +
                  "  INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id " +
@@ -190,7 +194,8 @@ def get_model(id_):
             key_stage_id = row[14],
             key_stage_name = row[15],
             created = row[16],
-            created_by = row[17])
+            created_by_id = row[17],
+            created_by_name = row[18])
 
     return model
 
@@ -213,7 +218,8 @@ def get_parent_options(current_key_stage_id = 0, topic_id = 0):
                      "  ks.id as key_stage_id, " + #13
                      "  ks.name as key_stage_name, " + #14
                      "  lob.created as created, " + #15
-                     "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #16
+                     "  lob.created_by as created_by_id, " + #16
+                     "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #17
                     " FROM sow_learning_objective as lob " +
                     " LEFT JOIN sow_topic as top ON top.id = lob.topic_id " +
                     " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
@@ -246,7 +252,8 @@ def get_parent_options(current_key_stage_id = 0, topic_id = 0):
             key_stage_id = row[13],
             key_stage_name = row[14],
             created = row[15],
-            created_by = row[16])
+            created_by_id = row[16],
+            created_by_name = row[17])
         data.append(model)
 
     return data
@@ -273,7 +280,8 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
              "  le.id as learning_episode_id, " + #15
              "  le.order_of_delivery_id as order_of_delivery_id, " + #16
              "  lob.created as created, " + #17
-             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " + #19
+             "  lob.created_by as created_by_id, " + #18
+             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #19
             " FROM sow_learning_objective as lob " +
             " LEFT JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_objective_id = lob.id " +
             " LEFT JOIN sow_learning_episode as le ON le.id = le_lo.learning_episode_id " +
@@ -314,7 +322,8 @@ def get_unassociated_learning_objectives(learning_episode_id, key_stage_id, topi
             learning_episode_id = learning_episode_id,
             learning_episode_name = row[16],
             created = row[17],
-            created_by = row[18])
+            created_by_id = row[18],
+            created_by_name = row[19])
         data.append(model)
 
     return data
@@ -333,7 +342,7 @@ def save(auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id,
         parent_id = parent_id,
         learning_episode_id = learning_episode_id,
         created = datetime.now(),
-        created_by = auth_user_id
+        created_by_id = auth_user_id
     )
 
     rval = model.validate()
@@ -347,7 +356,11 @@ def save(auth_user_id, id_, description, solo_taxonomy_id, topic_id, content_id,
 
 def add_existing_objective(auth_user_id, id_, learning_episode_id):
     model = LearningObjectiveModel(id_ = id_, learning_episode_id = learning_episode_id)
-    _insert__sow_learning_objective__has__learning_episode(model)
+
+    # insert into linking table between objective and learning episode
+    str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
+    str_insert = str_insert.format(model.id, model.learning_episode_id)
+    db.executesql(str_insert)
 
 
 def delete(auth_user_id, id_):
@@ -401,7 +414,7 @@ def _update(model):
 def _insert(model):
 
     str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, created, created_by"
-    str_values = "VALUES ('{}', {}, {}, {}, {}, '{}', {}".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, model.created, model.created_by)
+    str_values = "VALUES ('{}', {}, {}, {}, {}, '{}', {}".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, model.created, model.created_by_id)
 
     if int(model.parent_id) > 0:
         str_insert = str_insert + ", parent_id"
@@ -411,26 +424,16 @@ def _insert(model):
     str_values = str_values + ");"
     db.executesql(str_insert + str_values)
 
-    model.id = _get_last_insert_row_id(model)
+    # get last inserted row id
+    rows = db.executesql("SELECT LAST_INSERT_ID();")
+
+    for row in rows:
+        model.id = int(row[0])
 
     # insert into linking table between objective and learning episode
-    _insert__sow_learning_objective__has__learning_episode(model)
-
-
-    return True
-
-
-def _insert__sow_learning_objective__has__learning_episode(model):
     str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({}, {});"
     str_insert = str_insert.format(model.id, model.learning_episode_id)
     db.executesql(str_insert)
 
-def _get_last_insert_row_id(model):
-        # get last inserted row id
-        rows = db.executesql("SELECT LAST_INSERT_ID();")
+    return True
 
-        rval = None # Should not be zero (handle has necessary)
-        for row in rows:
-            model.id = int(row[0])
-
-        return model.id

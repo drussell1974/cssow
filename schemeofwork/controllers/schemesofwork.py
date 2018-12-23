@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from gluon.shell import exec_environment
 db_schemeofwork = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
 db_examboard = exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
 db_keystage = exec_environment('applications/schemeofwork/models/db_keystage.py', request=request)
 
+from cls_schemeofwork import SchemeOfWorkModel
 
 def index():
     content = {
@@ -56,17 +58,28 @@ def edit():
 
 @auth.requires_login()
 def save_item():
+
+    # create instance of model from request.vars
+
+    model = SchemeOfWorkModel(
+        id_=request.vars.id,
+        name=request.vars.name,
+        description=request.vars.description,
+        exam_board_id=request.vars.exam_board_id,
+        key_stage_id=request.vars.key_stage_id,
+        created=datetime.now(),
+        created_by_id=auth.user_id)
+
+    #from gluon.debug import dbg
     #dbg.set_trace() # stop here!
 
-    model = db_schemeofwork.save(int(auth.user.id),
-                                   int(request.vars.id),
-                                   request.vars.name,
-                                   request.vars.description,
-                                   int(request.vars.exam_board_id),
-                                   int(request.vars.key_stage_id))
+    # validate the model and save if valid otherwise redirect to default invalid
 
-    if model.is_valid == False:
-        raise Exception("Validation errors:/n/n %s" % model.validation_errors)
+    model.validate()
+    if model.is_valid == True:
+        model = db_schemeofwork.save(model)
+    else:
+        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
     return redirect(URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id)))
 

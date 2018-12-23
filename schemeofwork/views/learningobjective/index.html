@@ -40,7 +40,7 @@
                       <div class="form-group floating-label-form-group controls">
                         <label>Scheme of work</label>
                         <select class="form-control" id="learning_episode_id" name="learning_episode_id" required data-validation-required-message="Please select a scheme of work." onchange="this.form.submit()">
-                            <option value="0">- Select a learning episode -</option>
+                            <option value="">- Select a learning episode -</option>
                             {{ for opt in learningepisiode_options:}}
                                 <option value="{{=opt.id}}" {{if opt.id == learning_episode_id :}} selected {{pass}}>{{=opt.order_of_delivery_id}}</option>
                             {{ pass }}
@@ -60,7 +60,7 @@
               </h2>
             </a>
             <p class="post-meta">Created by
-              <a href="#">{{=row.created_by}}</a>
+              <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.date_created_ui())}}
               {{ pass }}
@@ -95,7 +95,7 @@
             <p class="post-meta">
                 <a href="{{=URL('learningobjective', 'add_existing_objective', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=row.description}}</a>
                  <br><i class="small">
-                    by <a href="#">{{=row.created_by}}</a>
+                    by <a href="#">{{=row.created_by_name}}</a>
                     {{if row.created: }}
                         on {{=str(row.date_created_ui())}}
                     {{ pass }}

@@ -140,8 +140,8 @@ class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
         test.validate()
 
         # assert
-        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
     def test_max__valid_extreme(self):
 
@@ -154,8 +154,8 @@ class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
         test.validate()
 
         # assert
-        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
     def test_max__invalid_extreme(self):
 
@@ -189,31 +189,31 @@ class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
         # set up
         test = self._construct_valid_object()
 
-        test.exam_board_id = 0
+        test.exam_board_id = 1
 
         # test
         test.validate()
 
         # assert
-        self.assertFalse("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
 
 
     def test_min__invalid_extreme(self):
         # set up
         test = self._construct_valid_object()
 
-        test.exam_board_id = -1
+        test.exam_board_id = 0 # values should not be negative
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
 
 
-    def test_min__invalid_extreme_when_None(self):
+    def test_min__valid_extreme_when_None(self):
 
         test = self._construct_valid_object()
 
@@ -223,8 +223,8 @@ class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
         test.validate()
 
         # assert
-        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("exam_board_id" in test.validation_errors, "exam_board_id should not have validation error %s" % test.validation_errors)
 
 
     def test_max__valid_extreme(self):
@@ -245,14 +245,14 @@ class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
 
         test = self._construct_valid_object()
 
-        test.exam_board_id = 10000
+        test.exam_board_id = 10000 # too far out of possible range
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
 
 
 
@@ -278,21 +278,8 @@ class TestCase_SchemeOfWork_KeyStageId(TestCase_SchemeOfWork_Base):
         test.validate()
 
         # assert
-        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
         self.assertTrue(test.is_valid, "is_valid should be True")
-
-    def test_min__valid_extreme_allow_NONE(self):
-        # set up
-        test = self._construct_valid_object()
-
-        test.key_stage_id = -1
-
-        # test
-        test.validate()
-
-        # assert
         self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
-        self.assertTrue(test.is_valid, "is_valid should be True")
 
 
     def test_min__invalid_extreme(self):
@@ -341,7 +328,7 @@ class TestCase_SchemeOfWork_KeyStageId(TestCase_SchemeOfWork_Base):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 10000
+        test.key_stage_id = 10000  # too far out of possible range
 
         # test
         test.validate()

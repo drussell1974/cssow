@@ -44,7 +44,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Topic</label>
                 <select class="form-control" name="topic_id" id="topic_id" required data-validation-required-message="Please select a topic option.">
-                    <option value="0">- Select an option for topic -</option>
+                    <option value="">- Select an option for topic -</option>
                     {{ for opt in topic_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.topic_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}

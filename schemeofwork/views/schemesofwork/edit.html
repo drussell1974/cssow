@@ -41,8 +41,8 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Exam board</label>
-                <select class="form-control" name="exam_board_id" id="exam_board_id" required data-validation-required-message="Please select a exam board option.">
-                    <option value="0">- Select an option for exam board -</option>
+                <select class="form-control" name="exam_board_id" id="exam_board_id">
+                    <option>- Select an option for exam board (optional) -</option>
                     {{ for opt in examboard_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.exam_board_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -54,7 +54,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Key stage</label>
                 <select class="form-control" name="key_stage_id" id="key_stage_id" required data-validation-required-message="Please select a key stage.">
-                    <option value="0">- Select a key stage -</option>
+                    <option value="">- Select a key stage -</option>
                     {{ for opt in keystage_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.key_stage_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}

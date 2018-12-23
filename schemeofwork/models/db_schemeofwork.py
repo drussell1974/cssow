@@ -9,33 +9,15 @@ db = DAL(configuration.get('db.uri'),
          migrate_enabled=configuration.get('db.migrate'),
          check_reserved=['all'])
 
-from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
 
 
-def save(auth_user_id, id_, name, desc, exam_board_id, key_stage_id):
-    # dbg.set_trace() # stop here!
-    # refresh model for validation
-    model = SchemeOfWorkModel(
-        id_=id_,
-        name=name,
-        description=desc,
-        exam_board_id=exam_board_id,
-        key_stage_id=key_stage_id,
-        created=datetime.now(),
-        created_by=auth_user_id
-    )
-
-    #from gluon.debug import dbg
-    #dbg.set_trace() # stop here!
-
-    model.validate()
-    if model.is_valid == True:
-        if model.is_new() == True:
-            retId = _insert(model)
-            model.id = retId
-        else:
-            _update(model)
+def save(model):
+    if model.is_new() == True:
+        retId = _insert(model)
+        model.id = retId
+    else:
+        _update(model)
 
     return model;
 
@@ -67,18 +49,29 @@ def get_all():
                   "  sow.key_stage_id as key_stage_id, " +  # 5
                   "  kys.name as key_stage_name, " +  # 6
                   "  sow.created as created, " +  # 7
-                  "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by " +  # 8
+                  "  sow.created_by as created_by_id, " + #8
+                  "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " +  # 9
                   " FROM sow_scheme_of_work as sow " +
-                  "  INNER JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id " +
+                  "  LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id " +
                   "  INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id " +
                   "  LEFT JOIN auth_user as user ON user.id = sow.created_by; ")
+
 
     rows = db.executesql(select_sql)
 
     data = [];
 
     for row in rows:
-        model = SchemeOfWorkModel(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+        model = SchemeOfWorkModel(id_=row[0],
+                                  name=row[1],
+                                  description=row[2],
+                                  exam_board_id=row[3],
+                                  exam_board_name=row[4],
+                                  key_stage_id=row[5],
+                                  key_stage_name=row[6],
+                                  created=row[7],
+                                  created_by_id=row[8],
+                                  created_by_name=row[9])
         data.append(model)
 
     return data
@@ -96,9 +89,10 @@ def get_model(id_):
                   " sow.key_stage_id as key_stage_id, " +  # 5
                   " kys.name as key_stage_name, " +  # 6
                   " sow.created as created, " +  # 7
-                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by " +  # 8
+                  " sow.created_by as created_by_id, " + #8
+                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " +  # 9
                   "FROM sow_scheme_of_work as sow " +
-                  " INNER JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id " +
+                  " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id " +
                   " INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id " +
                   " INNER JOIN auth_user as user ON user.id = sow.created_by " +
                   "  WHERE sow.id = {};".format(id_))
@@ -106,7 +100,16 @@ def get_model(id_):
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = SchemeOfWorkModel(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+        model = SchemeOfWorkModel(id_=row[0],
+                                  name=row[1],
+                                  description=row[2],
+                                  exam_board_id=row[3],
+                                  exam_board_name=row[4],
+                                  key_stage_id=row[5],
+                                  key_stage_name=row[6],
+                                  created=row[7],
+                                  created_by_id=row[8],
+                                  created_by_name=row[9])
 
     return model
 
@@ -148,7 +151,7 @@ Private CRUD functions
 
 def _update(model):
     str_update = "UPDATE sow_scheme_of_work SET name = '{}', description = '{}', exam_board_id = {}, key_stage_id = {} WHERE id =  {};"
-    str_update = str_update.format(model.name, model.description, model.exam_board_id, model.key_stage_id, model.id)
+    str_update = str_update.format(set_db_null(model.name), set_db_null(model.description), set_db_null(model.exam_board_id), set_db_null(model.key_stage_id), set_db_null(model.id))
 
     db.executesql(str_update)
 
@@ -157,12 +160,21 @@ def _update(model):
 
 def _insert(model):
     str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by) VALUES ('{}', '{}', {}, {}, '{}', {});"
-    str_insert = str_insert.format(model.name, model.description, model.exam_board_id, model.key_stage_id, model.created,
-                                   model.created_by)
+    str_insert = str_insert.format(set_db_null(model.name), set_db_null(model.description), set_db_null(model.exam_board_id), set_db_null(model.key_stage_id), set_db_null(model.created), set_db_null(model.created_by_id))
 
     db.executesql(str_insert)
 
-    return _get_last_insert_row_id(model)
+    # get last inserted row id
+    rows = db.executesql("SELECT LAST_INSERT_ID();")
+
+    for row in rows:
+        model.id = int(row[0])
+
+    return model.id
+
+
+def set_db_null(val):
+    return "NULL" if val is None else val
 
 
 def _delete(model):
@@ -172,14 +184,3 @@ def _delete(model):
     rval = db.executesql(str_delete)
 
     return rval
-
-
-def _get_last_insert_row_id(model):
-        # get last inserted row id
-        rows = db.executesql("SELECT LAST_INSERT_ID();")
-
-        rval = None # Should not be zero (handle has necessary)
-        for row in rows:
-            model.id = int(row[0])
-
-        return model.id

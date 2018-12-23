@@ -38,7 +38,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Key stage</label>
                 <select class="form-control" id="email" required data-validation-required-message="Please select a key stage.">
-                    <option value="0">- Key stage - All -</option>
+                    <option value="">- Select a key stage -</option>
                     <option value="1">Key stage 1</option>
                     <option value="2">Key stage 2</option>
                     <option value="3">Key stage 3</option>
@@ -61,7 +61,7 @@
               </h3>
             </a>
             <p class="post-meta">Created by
-              <a href="#">{{=row.created_by}}</a>
+              <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.date_created_ui())}}
               {{ pass }}
