@@ -8,9 +8,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e7c71fb3-db88-4303-9a0f-17e07d653a71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cls_learningepisode.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cls_learningepisode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cls_schemeofwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cls_schemeofwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,49 +35,49 @@
           <entry key="bak" value="6" />
           <entry key="html" value="32" />
           <entry key="ini" value="1" />
-          <entry key="py" value="194" />
+          <entry key="py" value="195" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="32" />
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="194" />
+          <entry key="Python" value="195" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="bak" value="2" />
-          <entry key="dummy" value="123" />
+          <entry key="dummy" value="134" />
           <entry key="html" value="3188" />
-          <entry key="py" value="21585" />
+          <entry key="py" value="21961" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="3188" />
-          <entry key="PLAIN_TEXT" value="125" />
-          <entry key="Python" value="21585" />
+          <entry key="PLAIN_TEXT" value="136" />
+          <entry key="Python" value="21961" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/cls_learningepisode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+            <state relative-caret-position="349">
+              <caret line="53" selection-start-line="53" selection-end-line="53" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py">
+        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="201">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#1#30#0" expanded="true" />
                 <element signature="e#1090#3192#0" />
@@ -92,7 +92,7 @@
         <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_constructor.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
               <folding>
                 <marker date="1545545375709" expanded="true" signature="212:231" ph="..." />
               </folding>
@@ -101,19 +101,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py">
+        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="257" column="36" selection-start-line="257" selection-start-column="36" selection-end-line="257" selection-end-column="36" />
+            <state relative-caret-position="184">
+              <caret line="140" column="47" lean-forward="true" selection-start-line="140" selection-start-column="47" selection-end-line="140" selection-end-column="47" />
               <folding>
                 <element signature="e#166#1638#0" />
                 <element signature="e#1708#3754#0" />
-                <element signature="e#3831#8152#0" />
+                <element signature="e#4350#6203#0" />
+                <element signature="e#6255#8152#0" />
                 <element signature="e#8229#10380#0" />
                 <element signature="e#10457#12561#0" />
-                <marker date="1545555122009" expanded="true" signature="280:289" ph="..." />
-                <marker date="1545555122009" expanded="true" signature="1728:1748" ph="..." />
-                <marker date="1545555122009" expanded="true" signature="3843:3863" ph="..." />
+                <marker date="1545556172786" expanded="true" signature="280:289" ph="..." />
+                <marker date="1545556172786" expanded="true" signature="1737:1757" ph="..." />
+                <marker date="1545556172786" expanded="true" signature="3861:3881" ph="..." />
+                <marker date="1545556172786" expanded="true" signature="4362:4368" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/cls_schemeofwork.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="417">
+              <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
+              <folding>
+                <marker date="1545556228543" expanded="true" signature="858:963" ph="..." />
               </folding>
             </state>
           </provider>
@@ -169,7 +183,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/modules/schemeofworkModel.py" />
         <option value="$PROJECT_DIR$/models/schemeofworkModel.py" />
         <option value="$PROJECT_DIR$/controllers/learningepisode.py" />
         <option value="$PROJECT_DIR$/modules/solotaxonomy.py" />
@@ -212,14 +225,15 @@
         <option value="$PROJECT_DIR$/views/schemesofwork/index.html" />
         <option value="$PROJECT_DIR$/views/learningepisode/index.html" />
         <option value="$PROJECT_DIR$/views/learningobjective/index.html" />
-        <option value="$PROJECT_DIR$/modules/cls_schemeofwork.py" />
         <option value="$PROJECT_DIR$/controllers/schemesofwork.py" />
         <option value="$PROJECT_DIR$/models/db_schemeofwork.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cs_learningepisode_constructor.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_constructor.py" />
-        <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py" />
         <option value="$PROJECT_DIR$/modules/cls_learningepisode.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" />
+        <option value="$PROJECT_DIR$/modules/cls_schemeofwork.py" />
       </list>
     </option>
   </component>
@@ -399,24 +413,6 @@
     <configuration />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test - 2018.12.23 at 06h 33m 47s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 06h 34m 41s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 06h 36m 34s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 06h 55m 55s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 06h 57m 17s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 08h 46m 08s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_test - 2018.12.23 at 08h 46m 49s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
@@ -427,6 +423,24 @@
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
     <history-entry file="Unittests_in_test - 2018.12.23 at 08h 53m 39s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 08h 58m 18s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 08h 58m 31s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 09h 00m 38s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 09h 04m 47s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 09h 09m 01s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 09h 09m 38s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
   </component>
@@ -475,7 +489,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py</url>
+          <url>file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py</url>
           <line>335</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
@@ -748,16 +762,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/cls_schemeofwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="53" column="29" lean-forward="true" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
-          <folding>
-            <marker date="1545543095459" expanded="true" signature="913:1018" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/cls_solotaxonomy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -775,37 +779,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_set_properties.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="257" column="36" selection-start-line="257" selection-start-column="36" selection-end-line="257" selection-end-column="36" />
-          <folding>
-            <element signature="e#166#1638#0" />
-            <element signature="e#1708#3754#0" />
-            <element signature="e#3831#8152#0" />
-            <element signature="e#8229#10380#0" />
-            <element signature="e#10457#12561#0" />
-            <marker date="1545555122009" expanded="true" signature="280:289" ph="..." />
-            <marker date="1545555122009" expanded="true" signature="1728:1748" ph="..." />
-            <marker date="1545555122009" expanded="true" signature="3843:3863" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_constructor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
           <folding>
             <marker date="1545545375709" expanded="true" signature="212:231" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_set_properties.py">
+    <entry file="file://$PROJECT_DIR$/modules/cls_learningepisode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="349">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#1#30#0" expanded="true" />
             <element signature="e#1090#3192#0" />
@@ -815,10 +809,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/cls_learningepisode.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+        <state relative-caret-position="184">
+          <caret line="140" column="47" lean-forward="true" selection-start-line="140" selection-start-column="47" selection-end-line="140" selection-end-column="47" />
+          <folding>
+            <element signature="e#166#1638#0" />
+            <element signature="e#1708#3754#0" />
+            <element signature="e#4350#6203#0" />
+            <element signature="e#6255#8152#0" />
+            <element signature="e#8229#10380#0" />
+            <element signature="e#10457#12561#0" />
+            <marker date="1545556172786" expanded="true" signature="280:289" ph="..." />
+            <marker date="1545556172786" expanded="true" signature="1737:1757" ph="..." />
+            <marker date="1545556172786" expanded="true" signature="3861:3881" ph="..." />
+            <marker date="1545556172786" expanded="true" signature="4362:4368" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/cls_schemeofwork.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
+          <folding>
+            <marker date="1545556228543" expanded="true" signature="858:963" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

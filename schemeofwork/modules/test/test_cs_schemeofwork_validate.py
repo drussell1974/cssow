@@ -36,7 +36,7 @@ class SchemeOfWork_TestCase(TestCase):
         return test
 
 
-class test_SchemeOfWork__name(SchemeOfWork_TestCase):
+class test_SchemeOfWork_validate__name(SchemeOfWork_TestCase):
 
     test = None
 
@@ -118,7 +118,7 @@ class test_SchemeOfWork__name(SchemeOfWork_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_SchemeOfWork__description(SchemeOfWork_TestCase):
+class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
 
     test = None
 
@@ -129,12 +129,24 @@ class test_SchemeOfWork__description(SchemeOfWork_TestCase):
     def tearDown(self):
         pass
 
+    def test_min__valid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.description = " x "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.description, "x")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
     def test_min__valid_extreme(self):
 
         test = self._construct_valid_object()
 
-        test.description = ""
+        test.description = "x"
 
         # test
         test.validate()
@@ -173,7 +185,7 @@ class test_SchemeOfWork__description(SchemeOfWork_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_SchemeOfWork__exam_board_id(SchemeOfWork_TestCase):
+class test_SchemeOfWork_validate__exam_board_id(SchemeOfWork_TestCase):
 
     test = None
 
@@ -255,7 +267,7 @@ class test_SchemeOfWork__exam_board_id(SchemeOfWork_TestCase):
         self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
 
 
-class test_SchemeOfWork__key_stage_id(SchemeOfWork_TestCase):
+class test_SchemeOfWork_validate__key_stage_id(SchemeOfWork_TestCase):
 
     test = None
 
