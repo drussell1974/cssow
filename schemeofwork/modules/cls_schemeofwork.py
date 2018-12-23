@@ -36,22 +36,28 @@ class SchemeOfWorkModel(BaseModel):
         self.is_valid = True
         self.validation_errors.clear()
 
-        # clean update properties
-        self._clean()
+        # clean properties before validation
+        self._clean_up()
 
         # Validate name
 
-        if self.name is None or len(self.name) == 0:
+        min_value = 1
+        max_value = 25
+
+        if self.name is None or len(self.name) < min_value:
             self.validation_errors["name"]= "required"
             self.is_valid = False
         elif len(self.name) > 25:
-            self.validation_errors["name"] = "is {} characters (cannot exceed 25 characters)".format(len(self.name))
+            self.validation_errors["name"] = "is {} characters (cannot exceed {} characters)".format(len(self.name), max_value)
             self.is_valid = False
 
         # Validate description
+
+        max_value = 1500
+
         if self.description is not None:
-            if len(self.description) > 1500:
-                self.validation_errors["description"] = "is {} characters (cannot exceed 1500)".format(len(self.description))
+            if len(self.description) > max_value:
+                self.validation_errors["description"] = "is {} characters (cannot exceed {} characters)".format(len(self.description), max_value)
                 self.is_valid = False
 
         # Validate exam board
@@ -66,6 +72,9 @@ class SchemeOfWorkModel(BaseModel):
             self.is_valid = False
 
 
-    def _clean(self):
+    def _clean_up(self):
+        if self.name is not None:
+            self.name = self.name.lstrip(" ").rstrip(" ")
+
         if self.description is not None:
             self.description = self.description.lstrip(" ").rstrip(" ")

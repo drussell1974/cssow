@@ -62,6 +62,19 @@ class test_SchemeOfWork_validate__name(SchemeOfWork_TestCase):
         self.assertFalse("name" in test.validation_errors, "name should not have validation error %s" % test.validation_errors)
 
 
+    def test_min__valid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.name = " x "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.name, "x")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("name" in test.validation_errors, "name should have no validation errors - %s" % test.validation_errors)
+
     def test_min__invalid_extreme(self):
         # set up
         test = self._construct_valid_object()
