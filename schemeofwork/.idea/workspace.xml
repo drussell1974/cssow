@@ -7,15 +7,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7c71fb3-db88-4303-9a0f-17e07d653a71" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/modules/test/test_cls_learningepisode__clean_up.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/test/learningobjective_testcase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/test/test_cls_schemeofwork_validate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/basemodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/basemodel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cls_learningobjective.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cls_learningobjective.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cls_schemeofwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cls_schemeofwork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/schemeofwork_testcase.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/schemeofwork_testcase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_basemodel_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_basemodel_constructor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode__get_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_learningepisode__get_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_learningepisode_constructor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_learningepisode_validate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_schemeofwork__get_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_constructor.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_schemeofwork_constructor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,29 +46,29 @@
           <entry key="dd33dd25-54a6-4302-850f-a2eccec7e440" value="1" />
           <entry key="html" value="43" />
           <entry key="ini" value="1" />
-          <entry key="py" value="247" />
+          <entry key="py" value="256" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="43" />
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="247" />
+          <entry key="Python" value="256" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="bak" value="2" />
-          <entry key="dummy" value="142" />
+          <entry key="dummy" value="150" />
           <entry key="html" value="3526" />
-          <entry key="py" value="27714" />
+          <entry key="py" value="29287" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="3526" />
-          <entry key="PLAIN_TEXT" value="144" />
-          <entry key="Python" value="27714" />
+          <entry key="PLAIN_TEXT" value="152" />
+          <entry key="Python" value="29287" />
         </counts>
       </usages-collector>
     </session>
@@ -71,13 +76,63 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py">
+        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
+            <state relative-caret-position="136">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding>
+                <element signature="e#1#30#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+              <folding>
+                <element signature="e#8037#10188#0" />
+                <element signature="e#10270#10497#0" />
+                <element signature="e#10576#12680#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/test/learningobjective_testcase.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="287">
+              <caret line="62" column="53" selection-start-line="62" selection-start-column="53" selection-end-line="62" selection-end-column="53" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+                <marker date="1545578334772" expanded="true" signature="245:310" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/cls_learningobjective.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="239">
+              <caret line="57" column="38" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="38" />
+              <folding>
+                <marker date="1545577951078" expanded="true" signature="2201:2210" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_validate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1972">
               <caret line="366" selection-start-line="366" selection-end-line="366" />
               <folding>
                 <element signature="e#1#30#0" expanded="true" />
-                <element signature="e#243#2713#0" />
                 <element signature="e#2791#7957#0" />
                 <element signature="e#8037#10188#0" />
                 <element signature="e#8580#8967#0" />
@@ -93,22 +148,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/cls_schemeofwork.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="134">
+              <caret line="37" column="23" lean-forward="true" selection-start-line="37" selection-start-column="23" selection-end-line="38" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -116,93 +159,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/basemodel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            <state relative-caret-position="321">
+              <caret line="73" column="33" lean-forward="true" selection-start-line="73" selection-start-column="33" selection-end-line="73" selection-end-column="33" />
               <folding>
-                <marker date="1545574193743" expanded="true" signature="439:496" ph="..." />
-                <marker date="1545574193743" expanded="true" signature="544:551" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/cls_learningepisode.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-24">
-              <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
-              <folding>
-                <marker date="1545572867346" expanded="true" signature="1553:1560" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="328" lean-forward="true" selection-start-line="328" selection-end-line="328" />
-              <folding>
-                <element signature="e#1#30#0" expanded="true" />
-                <element signature="e#283#2505#0" />
-                <element signature="e#418#794#0" />
-                <element signature="e#846#1222#0" />
-                <element signature="e#2592#4661#0" />
-                <element signature="e#4757#6934#0" />
-                <element signature="e#7359#9461#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode__clean_up.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-              <folding>
-                <element signature="e#1#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_constructor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
-              <folding>
-                <element signature="e#1#30#0" expanded="true" />
-                <element signature="e#330#440#0" />
-                <element signature="e#491#1234#0" />
-                <marker date="1545561090617" expanded="true" signature="203:222" ph="..." />
-                <marker date="1545561090617" expanded="false" signature="2884:2893" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/schemeofwork_testcase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <marker date="1545577979614" expanded="true" signature="596:638" ph="..." />
+                <marker date="1545577979614" expanded="true" signature="686:687" ph="..." />
               </folding>
             </state>
           </provider>
@@ -219,8 +180,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>created_by</find>
-      <find>get_u</find>
       <find>clean_up</find>
       <find>parent_topic_name</find>
       <find>DbFormatter</find>
@@ -249,6 +208,8 @@
       <find>_on_before_validate</find>
       <find>name,</find>
       <find>SchemeOfWorkModel(</find>
+      <find>content_name</find>
+      <find>created =</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -258,10 +219,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/models/db_keystage.py" />
-        <option value="$PROJECT_DIR$/models/db_solotaxonomy.py" />
-        <option value="$PROJECT_DIR$/models/db_topic.py" />
-        <option value="$PROJECT_DIR$/models/cls_learningobjective.py" />
         <option value="$PROJECT_DIR$/models/db_helper.py" />
         <option value="$PROJECT_DIR$/models/cls_learningepisode.py" />
         <option value="$PROJECT_DIR$/views/__layout.html" />
@@ -299,7 +256,6 @@
         <option value="$PROJECT_DIR$/controllers/learningepisode.py" />
         <option value="$PROJECT_DIR$/views/learningobjective/edit.html" />
         <option value="$PROJECT_DIR$/controllers/learningobjective.py" />
-        <option value="$PROJECT_DIR$/modules/cls_learningobjective.py" />
         <option value="$PROJECT_DIR$/modules/cls_learningepisode.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py" />
@@ -307,8 +263,13 @@
         <option value="$PROJECT_DIR$/modules/test/test_cls_learningepisode__clean_up.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py" />
         <option value="$PROJECT_DIR$/modules/test/schemeofwork_testcase.py" />
-        <option value="$PROJECT_DIR$/modules/basemodel.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cls_learningepisode_constructor.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py" />
         <option value="$PROJECT_DIR$/modules/cls_schemeofwork.py" />
+        <option value="$PROJECT_DIR$/modules/cls_learningobjective.py" />
+        <option value="$PROJECT_DIR$/modules/basemodel.py" />
+        <option value="$PROJECT_DIR$/modules/test/learningobjective_testcase.py" />
       </list>
     </option>
   </component>
@@ -434,7 +395,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modules/test/test_cs_basemodel_constructor.py" />
+      <option name="SCRIPT_NAME" value="C:\Dev\web2py\applications\schemeofwork\modules\test\test_cls_basemodel_constructor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -455,7 +416,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modules/test/test_cs_learningepisode__get_ui.py" />
+      <option name="SCRIPT_NAME" value="C:\Dev\web2py\applications\schemeofwork\modules\test\test_cls_learningepisode__get_ui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -513,34 +474,34 @@
     <configuration />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test - 2018.12.23 at 13h 46m 36s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 08m 44s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 13h 48m 49s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 08m 57s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 13h 49m 15s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 10m 44s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 13h 56m 37s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 12m 34s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 03m 30s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 13m 04s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 04m 07s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 13m 11s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 06m 35s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 14m 38s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 08m 57s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 14m 53s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 10m 04s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 17m 34s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 14h 10m 54s.xml">
+    <history-entry file="Unittests_in_test - 2018.12.23 at 15h 18m 58s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
   </component>
@@ -552,7 +513,7 @@
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.46" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45444444" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -589,12 +550,12 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py</url>
+          <url>file://$PROJECT_DIR$/modules/test/test_cls_learningepisode_validate.py</url>
           <line>335</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_constructor.py</url>
+          <url>file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_constructor.py</url>
           <line>79</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
@@ -602,19 +563,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/languages/ca.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="110" column="39" lean-forward="true" selection-start-line="110" selection-start-column="39" selection-end-line="110" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/appadmin.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/default.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/db_topic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -744,7 +692,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_basemodel_constructor.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_basemodel_constructor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
           <caret line="60" column="23" lean-forward="true" selection-start-line="60" selection-start-column="23" selection-end-line="60" selection-end-column="23" />
@@ -770,16 +718,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="50" column="24" lean-forward="true" selection-start-line="50" selection-start-column="24" selection-end-line="50" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/learningepisode_testcase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="52" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -811,17 +749,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_constructor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-          <folding>
-            <marker date="1545545375709" expanded="true" signature="212:231" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode__get_ui.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode__get_ui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
           <caret line="64" column="53" lean-forward="true" selection-start-line="64" selection-start-column="53" selection-end-line="64" selection-end-column="53" />
@@ -894,40 +822,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/cls_learningobjective.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-41">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
-          <folding>
-            <marker date="1545572723784" expanded="true" signature="2081:2090" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_validate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="366" selection-start-line="366" selection-end-line="366" />
-          <folding>
-            <element signature="e#1#30#0" expanded="true" />
-            <element signature="e#243#2713#0" />
-            <element signature="e#2791#7957#0" />
-            <element signature="e#8037#10188#0" />
-            <element signature="e#8580#8967#0" />
-            <element signature="e#9028#9370#0" />
-            <element signature="e#9421#9763#0" />
-            <element signature="e#10270#10497#0" />
-            <element signature="e#10576#12680#0" />
-            <marker date="1545573190156" expanded="true" signature="276:296" ph="..." />
-            <marker date="1545573190156" expanded="true" signature="2824:2844" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_learningepisode_validate.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode_validate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
-          <caret line="328" lean-forward="true" selection-start-line="328" selection-end-line="328" />
+          <caret line="328" selection-start-line="328" selection-end-line="328" />
           <folding>
             <element signature="e#1#30#0" expanded="true" />
             <element signature="e#283#2505#0" />
@@ -950,7 +848,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork__get_ui.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork__get_ui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
           <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
@@ -970,26 +868,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cs_schemeofwork_constructor.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_constructor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
-          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
           <folding>
             <element signature="e#1#30#0" expanded="true" />
             <element signature="e#330#440#0" />
             <element signature="e#491#1234#0" />
             <marker date="1545561090617" expanded="true" signature="203:222" ph="..." />
             <marker date="1545561090617" expanded="false" signature="2884:2893" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1004,21 +892,115 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/basemodel.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/learningepisode_testcase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="17">
+          <caret line="1" column="52" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="52" />
           <folding>
-            <marker date="1545574193743" expanded="true" signature="439:496" ph="..." />
-            <marker date="1545574193743" expanded="true" signature="544:551" ph="..." />
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode_constructor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="61" lean-forward="true" selection-start-line="55" selection-start-column="7" selection-end-line="61" />
+          <folding>
+            <element signature="e#339#485#0" />
+            <element signature="e#537#1467#0" />
+            <marker date="1545575805399" expanded="true" signature="212:231" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <element signature="e#8037#10188#0" />
+            <element signature="e#10270#10497#0" />
+            <element signature="e#10576#12680#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1972">
+          <caret line="366" selection-start-line="366" selection-end-line="366" />
+          <folding>
+            <element signature="e#1#30#0" expanded="true" />
+            <element signature="e#2791#7957#0" />
+            <element signature="e#8037#10188#0" />
+            <element signature="e#8580#8967#0" />
+            <element signature="e#9028#9370#0" />
+            <element signature="e#9421#9763#0" />
+            <element signature="e#10270#10497#0" />
+            <element signature="e#10576#12680#0" />
+            <marker date="1545573190156" expanded="true" signature="276:296" ph="..." />
+            <marker date="1545573190156" expanded="true" signature="2824:2844" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/cls_schemeofwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+        <state relative-caret-position="134">
+          <caret line="37" column="23" lean-forward="true" selection-start-line="37" selection-start-column="23" selection-end-line="38" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/cls_learningobjective.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="57" column="38" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="38" />
+          <folding>
+            <marker date="1545577951078" expanded="true" signature="2201:2210" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/basemodel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="73" column="33" lean-forward="true" selection-start-line="73" selection-start-column="33" selection-end-line="73" selection-end-column="33" />
+          <folding>
+            <marker date="1545577979614" expanded="true" signature="596:638" ph="..." />
+            <marker date="1545577979614" expanded="true" signature="686:687" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="e#1#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/learningobjective_testcase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="62" column="53" selection-start-line="62" selection-start-column="53" selection-end-line="62" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1545578334772" expanded="true" signature="245:310" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

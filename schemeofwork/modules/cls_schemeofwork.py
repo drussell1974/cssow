@@ -36,16 +36,7 @@ class SchemeOfWorkModel(BaseModel):
         self._clean_up()
 
         # Validate name
-
-        min_value = 1
-        max_value = 25
-
-        if self.name is None or len(self.name) < min_value:
-            self.validation_errors["name"]= "required"
-            self.is_valid = False
-        elif len(self.name) > 25:
-            self.validation_errors["name"] = "is {} characters (cannot exceed {} characters)".format(len(self.name), max_value)
-            self.is_valid = False
+        self._validate_required_string("name", self.name, 1, 25)
 
         # Validate description
 

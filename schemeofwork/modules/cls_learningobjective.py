@@ -32,7 +32,7 @@ class LearningObjectiveModel (BaseModel):
         self.parent_topic_id = parent_topic_id
         self.parent_topic_name = parent_topic_name
         self.content_id = content_id
-        self.content_name = content_description
+        self.content_description = content_description
         self.exam_board_id = exam_board_id
         self.exam_board_name = exam_board_name
         self.learning_episode_id = learning_episode_id
@@ -54,8 +54,15 @@ class LearningObjectiveModel (BaseModel):
         # clean properties before validation
         self._clean_up()
 
+        # validate description
+        self._validate_required_string("description", self.description, 1, 25)
+
+
+
     def _clean_up(self):
         """ clean up properties """
-        pass
+
+        if self.description is not None:
+            self.description = self.description.lstrip(' ').rstrip(' ')
 
 
