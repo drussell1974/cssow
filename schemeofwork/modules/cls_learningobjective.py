@@ -96,3 +96,8 @@ class LearningObjectiveModel (BaseModel):
         if self.content_description is not None:
             self.content_description = self.content_description.lstrip(' ').rstrip(' ')
 
+        # trim exam_board_name
+
+        if self.exam_board_name is not None:
+            self.exam_board_name = self.exam_board_name.lstrip(' ').rstrip(' ')
+
