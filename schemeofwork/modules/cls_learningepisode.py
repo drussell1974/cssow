@@ -43,7 +43,7 @@ class LearningEpisodeModel (BaseModel):
             self.is_valid = False
 
         # Validate topic_id
-        if self.topic_i is None or self.topic_id < 1 or self.topic_id > 9999:
+        if self.topic_id is None or self.topic_id < 1 or self.topic_id > 9999:
             self.validation_errors["topic_id"] = "{} is not a valid selection for scheme of work".format(self.order_of_delivery_id)
             self.is_valid = False
 

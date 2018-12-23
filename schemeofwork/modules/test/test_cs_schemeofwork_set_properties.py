@@ -6,7 +6,7 @@ sys.path.insert(0, '../')
 
 from cls_schemeofwork import SchemeOfWorkModel
 
-class TestCase_SchemeOfWork_Base(TestCase):
+class SchemeOfWork_TestCase(TestCase):
     """ Shared functions """
     def _construct_valid_object(self):#
         """ Create a valid Object """
@@ -36,7 +36,7 @@ class TestCase_SchemeOfWork_Base(TestCase):
         return test
 
 
-class TestCase_SchemeOfWork_Name(TestCase_SchemeOfWork_Base):
+class test_SchemeOfWork__name(SchemeOfWork_TestCase):
 
     test = None
 
@@ -118,7 +118,7 @@ class TestCase_SchemeOfWork_Name(TestCase_SchemeOfWork_Base):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
+class test_SchemeOfWork__description(SchemeOfWork_TestCase):
 
     test = None
 
@@ -173,7 +173,7 @@ class TestCase_SchemeOfWork_Description(TestCase_SchemeOfWork_Base):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
+class test_SchemeOfWork__exam_board_id(SchemeOfWork_TestCase):
 
     test = None
 
@@ -255,8 +255,7 @@ class TestCase_SchemeOfWork_ExamBoardId(TestCase_SchemeOfWork_Base):
         self.assertTrue("exam_board_id" in test.validation_errors, "exam_board_id should have validation error %s" % test.validation_errors)
 
 
-
-class TestCase_SchemeOfWork_KeyStageId(TestCase_SchemeOfWork_Base):
+class test_SchemeOfWork__key_stage_id(SchemeOfWork_TestCase):
 
     test = None
 

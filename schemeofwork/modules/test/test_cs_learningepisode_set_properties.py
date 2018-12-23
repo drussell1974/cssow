@@ -6,7 +6,7 @@ sys.path.insert(0, '../')
 
 from cls_learningepisode import LearningEpisodeModel
 
-class TestCase_LearningEpisodeModel_Base(TestCase):
+class LearningEpisodeModel_TestCaseBase(TestCase):
     """ Shared functions """
     def _construct_valid_object(self):#
         """ Create a valid Object """
@@ -34,7 +34,7 @@ class TestCase_LearningEpisodeModel_Base(TestCase):
         return test
 
 
-class TestCase_LearningEpisodeModel__order_of_delivery_id(TestCase_LearningEpisodeModel_Base):
+class test_LearningEpisodeModel__order_of_delivery_id(LearningEpisodeModel_TestCaseBase):
 
     test = None
 
@@ -114,7 +114,7 @@ class TestCase_LearningEpisodeModel__order_of_delivery_id(TestCase_LearningEpiso
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class TestCase_LearningEpisodeModel__topic_id(TestCase_LearningEpisodeModel_Base):
+class test_LearningEpisodeModel__topic_id(LearningEpisodeModel_TestCaseBase):
 
     test = None
 
@@ -194,7 +194,7 @@ class TestCase_LearningEpisodeModel__topic_id(TestCase_LearningEpisodeModel_Base
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class TestCase_LearningEpisodeModel__scheme_of_work_id(TestCase_LearningEpisodeModel_Base):
+class test_LearningEpisodeModel__scheme_of_work_id(LearningEpisodeModel_TestCaseBase):
 
     test = None
 
@@ -274,7 +274,7 @@ class TestCase_LearningEpisodeModel__scheme_of_work_id(TestCase_LearningEpisodeM
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class TestCase_LearningEpisodeModel__key_stage_id(TestCase_LearningEpisodeModel_Base):
+class test_LearningEpisodeModel__key_stage_id(LearningEpisodeModel_TestCaseBase):
 
     test = None
 
