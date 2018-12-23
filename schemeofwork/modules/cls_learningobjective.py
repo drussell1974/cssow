@@ -63,7 +63,7 @@ class LearningObjectiveModel (BaseModel):
         # validate parent_topic_id
         self._validate_optional_integer("parent_topic_id", self.parent_topic_id, 1, 9999)
         # validate content_id
-        self._validate_required_integer("content_id", self.content_id, 1, 9999)
+        self._validate_optional_integer("content_id", self.content_id, 1, 9999)
         # validate solo_taxonomy_id
         self._validate_required_integer("solo_taxonomy_id", self.solo_taxonomy_id, 1, 9999)
         # validate learning_episode_id

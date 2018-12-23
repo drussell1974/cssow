@@ -373,7 +373,7 @@ def _update(model):
 
     # build update statement
 
-    str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} ".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id)
+    str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} ".format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id))
 
     # update parent id, if supplid
     if int(model.parent_id) > 0:
@@ -401,7 +401,7 @@ def _update(model):
 def _insert(model):
 
     str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by"
-    str_insert = str_insert + " VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});".format(model.description, model.solo_taxonomy_id, model.topic_id, model.content_id, model.exam_board_id, to_db_null(model.parent_id), model.created, model.created_by_id)
+    str_insert = str_insert + " VALUES ('{}', {}, {}, {}, {}, {}, '{}', {});".format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id), to_db_null(model.parent_id), model.created, model.created_by_id)
 
     db.executesql(str_insert)
 

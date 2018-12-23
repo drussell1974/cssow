@@ -83,7 +83,7 @@ def get_model(id_):
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=dbfmt.to_utf8(row[3]), topic_id=row[4], topic_name=dbfmt.to_utf8(row[5]), parent_topic_id=row[6], parent_topic_name=dbfmt.to_utf8(row[7]), key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], created=row[9], created_by_id=row[10], created_by_name=row[11])
 
     return model
 

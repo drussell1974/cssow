@@ -303,11 +303,11 @@ class test_LearningObjectiveModel_validate__content_id(LearningObjective_TestCas
         test.validate()
 
         # assert
-        self.assertTrue("content_id" in test.validation_errors, "content_id should not have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("content_id" in test.validation_errors, "content_id should not have validation error %s" % test.validation_errors)
 
 
-    def test_min__invalid_extreme_when_None(self):
+    def test_min__valid_extreme_when_None(self):
 
         test = self._construct_valid_object()
 
@@ -317,8 +317,8 @@ class test_LearningObjectiveModel_validate__content_id(LearningObjective_TestCas
         test.validate()
 
         # assert
-        self.assertTrue("content_id" in test.validation_errors, "content_id should have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("content_id" in test.validation_errors, "content_id should not have validation errors - %s" % test.validation_errors)
 
 
     def test_max__valid_extreme(self):
