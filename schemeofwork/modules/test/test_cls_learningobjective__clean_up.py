@@ -18,9 +18,9 @@ content_description = DONE
 exam_board_id = DONE
 exam_board_name = DONE
 learning_episode_id = DONE
-learning_episode_name = DOING
+learning_episode_name = DONE
 key_stage_id = DONE
-key_stage_name = ""
+key_stage_name = DOING
 parent_id = DONE
 
 """
@@ -92,3 +92,17 @@ class test_SchemeOfWork_clean_up__learning_episode_name(LearningObjective_TestCa
 
         # assert
         self.assertEqual(test.learning_episode_name, "x")
+
+
+class test_SchemeOfWork_clean_up__key_stage_name(LearningObjective_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.key_stage_name = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.key_stage_name, "x")

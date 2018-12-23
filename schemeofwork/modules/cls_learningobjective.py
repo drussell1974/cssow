@@ -74,34 +74,32 @@ class LearningObjectiveModel (BaseModel):
         self._validate_optional_integer("parent_id", self.parent_id, 1, 9999)
 
     def _clean_up(self):
-        """ clean up properties """
+        """ clean up properties by removing whitespace etc """
 
         # trim description
-
         if self.description is not None:
             self.description = self.description.lstrip(' ').rstrip(' ')
 
         # trim topic_name
-
         if self.topic_name is not None:
             self.topic_name = self.topic_name.lstrip(' ').rstrip(' ')
 
         # trim parent_topic_name
-
         if self.parent_topic_name is not None:
             self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
 
         # trim content_description
-
         if self.content_description is not None:
             self.content_description = self.content_description.lstrip(' ').rstrip(' ')
 
         # trim exam_board_name
-
         if self.exam_board_name is not None:
             self.exam_board_name = self.exam_board_name.lstrip(' ').rstrip(' ')
 
         # trim learning_episode_name
-
         if self.learning_episode_name is not None:
             self.learning_episode_name = self.learning_episode_name.lstrip(' ').rstrip(' ')
+
+        # trim key_stage_name
+        if self.key_stage_name is not None:
+            self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
