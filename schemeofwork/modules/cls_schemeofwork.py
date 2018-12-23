@@ -24,6 +24,7 @@ class SchemeOfWorkModel(BaseModel):
         self.created_by_name = created_by_name
 
     def _try_int(self, val):
+        """ convert value to int or None """
         try:
             val = int(val)
         except:
@@ -32,9 +33,9 @@ class SchemeOfWorkModel(BaseModel):
 
 
     def validate(self):
-        # set to True while validating
-        self.is_valid = True
-        self.validation_errors.clear()
+        """ clean up and validate model """
+
+        self._on_before_validate()
 
         # clean properties before validation
         self._clean_up()
@@ -73,6 +74,7 @@ class SchemeOfWorkModel(BaseModel):
 
 
     def _clean_up(self):
+        """ clean up properties """
         if self.name is not None:
             self.name = self.name.lstrip(" ").rstrip(" ")
 

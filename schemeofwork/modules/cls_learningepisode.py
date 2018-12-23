@@ -29,8 +29,9 @@ class LearningEpisodeModel (BaseModel):
         self.created_by_name = created_by_name
 
     def validate(self):
-        self.is_valid = True
-        self.validation_errors.clear()
+        """ clean up and validate model """
+
+        self._on_before_validate()
 
         # Validate order_of_delivery_id
         if self.order_of_delivery_id is None or self.order_of_delivery_id < 1 or self.order_of_delivery_id > 9999:
