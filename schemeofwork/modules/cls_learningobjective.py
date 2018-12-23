@@ -76,13 +76,23 @@ class LearningObjectiveModel (BaseModel):
     def _clean_up(self):
         """ clean up properties """
 
+        # trim description
+
         if self.description is not None:
             self.description = self.description.lstrip(' ').rstrip(' ')
+
+        # trim topic_name
 
         if self.topic_name is not None:
             self.topic_name = self.topic_name.lstrip(' ').rstrip(' ')
 
+        # trim parent_topic_name
+
         if self.parent_topic_name is not None:
             self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
 
+        # trim content_description
+
+        if self.content_description is not None:
+            self.content_description = self.content_description.lstrip(' ').rstrip(' ')
 

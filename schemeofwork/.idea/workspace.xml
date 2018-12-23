@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7c71fb3-db88-4303-9a0f-17e07d653a71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/modules/cls_learningobjective.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cls_learningobjective.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/test/learningobjective_testcase.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/learningobjective_testcase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,86 +49,29 @@
           <entry key="bak" value="2" />
           <entry key="dummy" value="150" />
           <entry key="html" value="3526" />
-          <entry key="py" value="30091" />
+          <entry key="py" value="30210" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="3526" />
           <entry key="PLAIN_TEXT" value="152" />
-          <entry key="Python" value="30091" />
+          <entry key="Python" value="30210" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
-              <folding>
-                <element signature="e#268#2738#0" />
-                <element signature="e#8037#10188#0" />
-                <element signature="e#5572#7676#0" />
-                <element signature="e#7716#9760#0" />
-                <element signature="e#9895#11981#0" />
-                <element signature="e#12159#14323#0" />
-                <element signature="e#14474#16683#0" />
-                <element signature="e#15879#16239#0" />
-                <element signature="e#16292#16683#0" />
-                <element signature="e#16668#18819#0" />
-                <element signature="e#10576#12680#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/learningobjective_testcase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-                <marker date="1545581296928" expanded="true" signature="245:305" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/schemeofwork_testcase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/learningepisode_testcase.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="52" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+            <state relative-caret-position="304">
+              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
               <folding>
                 <element signature="e#251#476#0" />
+                <element signature="e#885#1102#0" />
+                <element signature="e#1223#1454#0" />
               </folding>
             </state>
           </provider>
@@ -148,57 +90,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork__clean_up.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_validate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2074">
-              <caret line="203" column="43" selection-start-line="203" selection-start-column="20" selection-end-line="203" selection-end-column="43" />
-              <folding>
-                <element signature="e#1#30#0" expanded="true" />
-                <element signature="e#2791#7957#0" />
-                <element signature="e#8580#8967#0" />
-                <element signature="e#9028#9370#0" />
-                <element signature="e#9421#9763#0" />
-                <element signature="e#9816#10188#0" />
-                <element signature="e#10270#10497#0" />
-                <element signature="e#10576#12680#0" />
-                <marker date="1545573190156" expanded="true" signature="276:296" ph="..." />
-                <marker date="1545573190156" expanded="true" signature="2824:2844" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/cls_learningobjective.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+            <state relative-caret-position="392">
+              <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
               <folding>
-                <marker date="1545581370749" expanded="true" signature="3152:3161" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="113" column="38" lean-forward="true" selection-start-line="113" selection-start-column="38" selection-end-line="113" selection-end-column="38" />
-              <folding>
-                <element signature="e#1#30#0" expanded="true" />
+                <marker date="1545581587013" expanded="true" signature="3152:3161" ph="..." />
               </folding>
             </state>
           </provider>
@@ -302,9 +199,9 @@
         <option value="$PROJECT_DIR$/modules/basemodel.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py" />
         <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective_constructor.py" />
-        <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py" />
         <option value="$PROJECT_DIR$/modules/test/learningobjective_testcase.py" />
         <option value="$PROJECT_DIR$/modules/cls_learningobjective.py" />
+        <option value="$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py" />
       </list>
     </option>
   </component>
@@ -509,12 +406,6 @@
     <configuration />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test - 2018.12.23 at 16h 02m 01s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test - 2018.12.23 at 16h 02m 54s.xml">
-      <configuration name="Unittests in test" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_test - 2018.12.23 at 16h 03m 14s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
@@ -539,16 +430,22 @@
     <history-entry file="Unittests_in_test - 2018.12.23 at 16h 09m 06s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 16h 09m 34s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2018.12.23 at 16h 11m 29s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20231824" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1670179" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45444444" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.45444444" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -927,46 +824,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
-          <folding>
-            <element signature="e#268#2738#0" />
-            <element signature="e#8037#10188#0" />
-            <element signature="e#5572#7676#0" />
-            <element signature="e#7716#9760#0" />
-            <element signature="e#9895#11981#0" />
-            <element signature="e#12159#14323#0" />
-            <element signature="e#14474#16683#0" />
-            <element signature="e#15879#16239#0" />
-            <element signature="e#16292#16683#0" />
-            <element signature="e#16668#18819#0" />
-            <element signature="e#10576#12680#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/schemeofwork_testcase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/learningepisode_testcase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="52" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/test/test_cls_schemeofwork_validate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2074">
@@ -996,10 +853,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode__clean_up.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__validate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="153">
+          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
+          <folding>
+            <element signature="e#268#2738#0" />
+            <element signature="e#8037#10188#0" />
+            <element signature="e#5572#7676#0" />
+            <element signature="e#7716#9760#0" />
+            <element signature="e#9895#11981#0" />
+            <element signature="e#12159#14323#0" />
+            <element signature="e#14474#16683#0" />
+            <element signature="e#15879#16239#0" />
+            <element signature="e#16292#16683#0" />
+            <element signature="e#16668#18819#0" />
+            <element signature="e#10576#12680#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/learningobjective_testcase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7">
+          <caret line="2" column="56" lean-forward="true" selection-start-line="2" selection-start-column="56" selection-end-line="2" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1545581296928" expanded="true" signature="245:305" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/schemeofwork_testcase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/learningepisode_testcase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="52" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="52" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
@@ -1016,33 +914,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py">
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningepisode__clean_up.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
-          <folding>
-            <element signature="e#251#476#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/test/learningobjective_testcase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
-            <marker date="1545581296928" expanded="true" signature="245:305" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/cls_learningobjective.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        <state relative-caret-position="392">
+          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
           <folding>
-            <marker date="1545581370749" expanded="true" signature="3152:3161" ph="..." />
+            <marker date="1545581587013" expanded="true" signature="3152:3161" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/test/test_cls_learningobjective__clean_up.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+          <folding>
+            <element signature="e#251#476#0" />
+            <element signature="e#885#1102#0" />
+            <element signature="e#1223#1454#0" />
           </folding>
         </state>
       </provider>

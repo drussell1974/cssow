@@ -11,8 +11,8 @@ description DONE
 solo_taxonomy_id DONE
 topic_id = DONE
 topic_name = DONE
-parent_topic_id = DOING
-parent_topic_name = ""
+parent_topic_id = DONE
+parent_topic_name = DONE
 content_id = DONE
 content_description = ""
 exam_board_id = DONE
@@ -50,3 +50,15 @@ class test_SchemeOfWork_clean_up__parent_topic_name(LearningObjective_TestCase):
         # assert
         self.assertEqual(test.parent_topic_name, "x")
 
+class test_SchemeOfWork_clean_up__content_description(LearningObjective_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.content_description = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.content_description, "x")
