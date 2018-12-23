@@ -21,9 +21,9 @@ content_id = DONE
 content_description = ""
 exam_board_id = DONE
 exam_board_name = ""
-learning_episode_id = DOING
+learning_episode_id = DONE
 learning_episode_name = ""
-key_stage_id = 0
+key_stage_id = DOING
 key_stage_name = ""
 parent_id = None
 
@@ -531,6 +531,89 @@ class test_LearningObjectiveModel_validate__learning_episode_id(LearningObjectiv
         # assert
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue("learning_episode_id" in test.validation_errors, "learning_episode_id should have validation error %s" % test.validation_errors)
+
+
+class test_LearningObjectiveModel_validate__key_stage_id(LearningObjective_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 9999
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.key_stage_id = 10000  # too far out of possible range
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
+
 
 
 """
