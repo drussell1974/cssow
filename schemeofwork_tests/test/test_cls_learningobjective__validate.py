@@ -1,10 +1,6 @@
-
-from unittest import TestCase
-
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../schemeofwork/modules/')
 
-from cls_learningobjective import LearningObjectiveModel
 from learningobjective_testcase import LearningObjective_TestCase
 
 

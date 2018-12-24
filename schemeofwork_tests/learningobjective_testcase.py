@@ -1,4 +1,7 @@
 from unittest import TestCase
+import sys
+sys.path.insert(0, '../schemeofwork/modules/')
+
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 

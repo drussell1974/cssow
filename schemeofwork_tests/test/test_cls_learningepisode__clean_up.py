@@ -1,9 +1,6 @@
-from unittest import TestCase
-
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../schemeofwork/modules')
 
-from cls_learningepisode import LearningEpisodeModel
 from learningepisode_testcase import LearningEpisode_TestCase
 
 class test_LearningEpisodeModel__clean_up___scheme_of_work_name(LearningEpisode_TestCase):
