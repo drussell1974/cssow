@@ -41,6 +41,9 @@ def edit():
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
+    key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
+    model.key_stage_id = key_stage_id
+
     topic_options = []
     learningobjectives_data = db_learningobjective.get_all(db, id_)
 
@@ -59,16 +62,12 @@ def edit():
 def save_item():
     """ save_item non-view action """
 
-    id_ = int(request.vars.id)
-    order_of_delivery_id = int(request.vars.order_of_delivery_id)
-    scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    topic_id = int(request.vars.topic_id)
-
     model = LearningEpisodeModel(
-        id_ = id_,
-        order_of_delivery_id = order_of_delivery_id,
-        scheme_of_work_id = scheme_of_work_id,
-        topic_id = topic_id,
+        id_ = request.vars.id,
+        order_of_delivery_id = request.vars.order_of_delivery_id,
+        scheme_of_work_id = request.vars.scheme_of_work_id,
+        topic_id = request.vars.topic_id,
+        key_stage_id= request.vars.key_stage_id,
         created = datetime.now(),
         created_by_id = auth.user.id
     )
@@ -79,7 +78,7 @@ def save_item():
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
-    return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=model.id)))
+    return redirect(URL('learningobjective', 'index', vars=dict(scheme_of_work_id=request.vars.scheme_of_work_id, learning_episode_id=model.id)))
 
 
 @auth.requires_login()

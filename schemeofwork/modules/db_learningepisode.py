@@ -90,10 +90,9 @@ def get_model(db, id_):
 
 def save(db, model):
     if model.is_new() == True:
-        newId = _insert(db, model)
-        model.id = newId
+        model.id = _insert(db, model)
     else:
-        rval = _update(db, model)
+        _update(db, model)
 
     return model
 
@@ -118,11 +117,18 @@ def _update(db, model):
 
 def _insert(db, model):
     str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, created, created_by) VALUES ({}, {}, {}, '{}', {});"
-    str_insert = str_insert.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.created, model.created_by)
+    str_insert = str_insert.format(model.order_of_delivery_id, model.scheme_of_work_id, model.topic_id, model.created, model.created_by_id)
 
     db.executesql(str_insert)
 
-    return _get_last_insert_row_id(model)
+    # get last inserted row id
+
+    rows = db.executesql("SELECT LAST_INSERT_ID();")
+
+    for row in rows:
+        model.id = int(row[0])
+
+    return model.id
 
 
 def _delete(db, model):
@@ -133,13 +139,3 @@ def _delete(db, model):
 
     return rval
 
-
-def _get_last_insert_row_id(db, model):
-        # get last inserted row id
-        rows = db.executesql("SELECT LAST_INSERT_ID();")
-
-        rval = None # Should not be zero (handle has necessary)
-        for row in rows:
-            model.id = int(row[0])
-
-        return model.id
