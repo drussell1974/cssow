@@ -374,13 +374,8 @@ def _update(db, model):
 
     # build update statement
 
-    str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {} ".format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id))
-
-    # update parent id, if supplid
-    if int(model.parent_id) > 0:
-        str_update = str_update + ", parent_id = {} ".format(model.parent_id)
-
-    str_update = str_update + " WHERE id =  {};".format(model.id)
+    str_update = "UPDATE sow_learning_objective SET description = '{}', solo_taxonomy_id = {}, topic_id = {}, content_id = {}, exam_board_id = {}, parent_id = {}  WHERE id =  {};"
+    str_update = str_update.format(model.description, model.solo_taxonomy_id, model.topic_id, to_db_null(model.content_id), to_db_null(model.exam_board_id), to_db_null(model.parent_id), model.id)
 
     db.executesql(str_update)
 
