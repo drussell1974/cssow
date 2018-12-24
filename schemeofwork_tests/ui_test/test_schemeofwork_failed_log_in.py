@@ -3,12 +3,13 @@ from selenium.webdriver.common.keys import Keys
 
 from ui_testcase import UITestCase
 
-class test_schemeofwork_default(UITestCase):
+class test_schemeofwork_failed_log_in(UITestCase):
 
     test_context = webdriver.Firefox()
+
     def setUp(self):
-        # setup
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/default/user/login")
+        # set up
+        self.test_context.get("http://127.0.0.1:8000/schemeofwork/default/index")
 
 
     def tearDown(self):
@@ -21,18 +22,14 @@ class test_schemeofwork_default(UITestCase):
         cls.test_context.close()
 
 
-    def test_page__should_have__title__title_heading__and__sub_heading(self):
-        # setup
-
-        # test
-
-        # assert
-        self.assertWebPageTitleAndHeadings("schemeofwork", "Log In", "Register to create schemes of work and lessons")
-
-
-
     def test_page__login_should_fail_with_incorrect_credentials(self):
+
         # setup
+        self.test_context.find_element_by_id("btn-login").click()
+
+        ' sleep to give time for browser to respond '
+        import time
+        time.sleep(6)
 
         # test
 
@@ -52,4 +49,3 @@ class test_schemeofwork_default(UITestCase):
 
         # assert
         self.assertEqual("Invalid email", self.test_context.find_element_by_id("email__error").text)
-

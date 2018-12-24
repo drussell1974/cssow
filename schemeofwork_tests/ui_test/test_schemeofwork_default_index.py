@@ -18,39 +18,12 @@ class test_schemeofwork_default(UITestCase):
         cls.test_context.close()
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-        # setup
-
         # test
 
         # assert
         self.assertWebPageTitleAndHeadings("schemeofwork", "Computing Schemes of work and lessons", "Computing schemes of work lessons across all key stages")
 
 
-    def test_page__login_should_redirect_to_default_index(self):
-        # setup
-
-        # test
-        self.test_context.find_element_by_id("btn-login").click()
-
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
-
-        elem = self.test_context.find_element_by_id("auth_user_email")
-        elem.send_keys("dave@jazzthecat.co.uk")
-        elem.send_keys(Keys.TAB)
-
-        elem = self.test_context.find_element_by_id("auth_user_password")
-        elem.send_keys("co2m1c")
-        elem.send_keys(Keys.RETURN)
-
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
-
-        # assert
-        ' redirect back to home page '
-        self.assertWebPageTitleAndHeadings("schemeofwork", "Computing Schemes of work and lessons", "Computing schemes of work lessons across all key stages")
 
 
 
