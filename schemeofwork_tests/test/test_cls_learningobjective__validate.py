@@ -26,8 +26,8 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         test.validate()
 
         # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
         self.assertFalse("description" in test.validation_errors, "description should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
 
 
     def test_min__valid_extreme_trim_whitespace(self):
@@ -39,9 +39,9 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         test.validate()
 
         # assert
+        self.assertFalse("description" in test.validation_errors, "description should have no validation errors - %s" % test.validation_errors)
         self.assertEqual(test.description, "x")
         self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("description" in test.validation_errors, "description should have no validation errors - %s" % test.validation_errors)
 
     def test_min__invalid_extreme(self):
         # set up
@@ -53,8 +53,8 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         test.validate()
 
         # assert
-        self.assertFalse(test.is_valid, "should not be is_valid")
         self.assertTrue("description" in test.validation_errors, "description should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "should not be is_valid")
 
 
     def test_min__invalid_extreme_when_None(self):
@@ -67,22 +67,28 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         test.validate()
 
         # assert
-        self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue("description" in test.validation_errors, "description should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
 
 
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
 
-        test.description = "Lorem ipsum dolor sit ame" # length 25 characters
+        test.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum malesuada sagittis. Morbi vel"\
+                "felis et tortor laoreet blandit ut eget nibh. Etiam feugiat, justo non semper bibendum, est nisl cursus lectus, quis varius elit mi nec purus. "\
+                "Nulla dapibus, est eu tincidunt scelerisque, felis velit viverra nunc, ut bibendum eros urna non dolor. Integer vitae dapibus risus. Suspendisse "\
+                "nec magna eu mauris tristique viverra sed quis massa. Donec in lorem tristique, accumsan mi sed, semper est. Aliquam enim dui, semper at scelerisque ac,"\
+                "pretium eu felis. Vivamus in lectus vehicula, hendrerit diam non, efficitur ante. Maecenas suscipit eget nisl ut iaculis. Phasellus et viverra mauris. "\
+                "Pellentesque sed metus hut dolor dignissim ultrices eget ac mi. Nullam id mi sit amet dui ultrices malesuada at vel ex. Phasellus fringilla est mauris, "\
+                "efficitur blandit purus sodales ut. Donec gravida id velit ullamcorper facilisis. Sed porta leo quis nunc aliquet laoreet. Ut ac massa eu tellus sed." # length 1000 characters
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
         self.assertFalse("description" in test.validation_errors, "description should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
 
 
     def test_max__invalid_extreme(self):
