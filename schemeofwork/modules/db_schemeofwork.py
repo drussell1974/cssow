@@ -147,7 +147,7 @@ def save(db, model):
 
 def delete(db, auth_user_id, id_):
     model = SchemeOfWorkModel(id_)
-    _delete(model);
+    _delete(db, model);
 
 
 def _update(db, model):
