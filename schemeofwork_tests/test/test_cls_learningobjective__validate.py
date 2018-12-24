@@ -95,7 +95,13 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
 
         test = self._construct_valid_object()
 
-        test.description = "Lorem ipsum dolor sit amet" # length 25 characters + 1
+        test.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum malesuada sagittis. Morbi vel"\
+                "felis et tortor laoreet blandit ut eget nibh. Etiam feugiat, justo non semper bibendum, est nisl cursus lectus, quis varius elit mi nec purus. "\
+                "Nulla dapibus, est eu tincidunt scelerisque, felis velit viverra nunc, ut bibendum eros urna non dolor. Integer vitae dapibus risus. Suspendisse "\
+                "nec magna eu mauris tristique viverra sed quis massa. Donec in lorem tristique, accumsan mi sed, semper est. Aliquam enim dui, semper at scelerisque ac,"\
+                "pretium eu felis. Vivamus in lectus vehicula, hendrerit diam non, efficitur ante. Maecenas suscipit eget nisl ut iaculis. Phasellus et viverra mauris. "\
+                "Pellentesque sed metus hut dolor dignissim ultrices eget ac mi. Nullam id mi sit amet dui ultrices malesuada at vel ex. Phasellus fringilla est mauris, "\
+                "efficitur blandit purus sodales ut. Donec gravida id velit ullamcorper facilisis. Sed porta leo quis nunc aliquet laoreet. Ut ac massa eu tellus sed.x" # length 1001 characters
 
         # test
         test.validate()

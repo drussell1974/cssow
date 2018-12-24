@@ -55,7 +55,7 @@ class LearningObjectiveModel (BaseModel):
         self._clean_up()
 
         # validate description
-        self._validate_required_string("description", self.description, 1, 25)
+        self._validate_required_string("description", self.description, 1, 1000)
         # validate exam_board_id
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # validate topic_id

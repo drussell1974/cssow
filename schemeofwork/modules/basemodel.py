@@ -69,7 +69,7 @@ class BaseModel:
         if value_to_validate is None or len(value_to_validate) < min_value:
             self.validation_errors[name_of_property] = "required"
             self.is_valid = False
-        elif len(value_to_validate) > 25:
+        elif len(value_to_validate) > max_value:
             self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
             self.is_valid = False
 
