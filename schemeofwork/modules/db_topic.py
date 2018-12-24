@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""from gluon.contrib.appconfig import AppConfig
-configuration = AppConfig(reload=True)
-db = DAL(configuration.get('db.uri'),
-     pool_size=configuration.get('db.pool_size'),
-     migrate_enabled=configuration.get('db.migrate'),
-     check_reserved=['all'])
-"""
 from cls_topic import TopicModel
 
 def get_options(db, topic_id = 0, parent_topic_id = 0):
