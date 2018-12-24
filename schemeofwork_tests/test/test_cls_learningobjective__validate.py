@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../../schemeofwork/modules')
+
 from learningobjective_testcase import LearningObjective_TestCase
 
 

@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../../schemeofwork/modules/')
+
 from schemeofwork_testcase import SchemeOfWork_TestCase
 
 

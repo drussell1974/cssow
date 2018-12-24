@@ -1,3 +1,7 @@
+import sys
+sys.path.append('../../schemeofwork/modules/')
+
+from unittest import TestCase
 from cls_schemeofwork import SchemeOfWorkModel
 
 

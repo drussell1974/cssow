@@ -1,3 +1,9 @@
+import sys
+sys.path.append('../../schemeofwork/modules/')
+
+from unittest import TestCase
+
+from learningepisode_testcase import LearningEpisode_TestCase
 from cls_learningepisode import LearningEpisodeModel
 
 

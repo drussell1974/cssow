@@ -1,3 +1,8 @@
+import sys
+sys.path.append('../../schemeofwork/modules/')
+
+from unittest import TestCase
+
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 

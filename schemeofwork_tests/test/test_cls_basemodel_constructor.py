@@ -1,4 +1,6 @@
 from unittest import TestCase
+import sys
+sys.path.append('../../schemeofwork/modules')
 
 from _datetime import datetime
 from basemodel import BaseModel
