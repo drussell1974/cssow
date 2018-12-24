@@ -115,3 +115,4 @@ venv.bak/
 /schemeofwork/sessions
 /schemeofwork/errors
 *.bak
+appconfig.production.ini
