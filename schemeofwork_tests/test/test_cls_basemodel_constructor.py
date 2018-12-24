@@ -1,9 +1,8 @@
 from unittest import TestCase
-import sys
-sys.path.insert(0, '../../schemeofwork/modules/')
 
 from _datetime import datetime
 from basemodel import BaseModel
+
 
 class Test_basemodel_Constructor(TestCase):
 

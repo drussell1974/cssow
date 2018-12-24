@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
-
 from learningepisode_testcase import LearningEpisode_TestCase
 
 

@@ -1,9 +1,8 @@
 from unittest import TestCase
-import sys
-sys.path.insert(0, '../../schemeofwork/modules/')
 
 from basemodel import BaseModel
 from datetime import datetime
+
 
 class test_LearningEpisodeModel__validate___on_before_validate(TestCase):
 

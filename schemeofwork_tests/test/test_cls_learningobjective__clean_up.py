@@ -1,26 +1,6 @@
-import sys
-sys.path.insert(0, '../../schemeofwork/modules/')
-
 from learningobjective_testcase import LearningObjective_TestCase
 
-"""
-description DONE
-solo_taxonomy_id DONE
-topic_id = DONE
-topic_name = DONE
-parent_topic_id = DONE
-parent_topic_name = DONE
-content_id = DONE
-content_description = DONE
-exam_board_id = DONE
-exam_board_name = DONE
-learning_episode_id = DONE
-learning_episode_name = DONE
-key_stage_id = DONE
-key_stage_name = DOING
-parent_id = DONE
 
-"""
 class test_SchemeOfWork_clean_up__topic_name(LearningObjective_TestCase):
 
     def test__trim_whitespace(self):

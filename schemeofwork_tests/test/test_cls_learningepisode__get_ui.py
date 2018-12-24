@@ -1,7 +1,5 @@
-import sys
-sys.path.insert(0, '../../schemeofwork/modules/')
-
 from learningepisode_testcase import LearningEpisode_TestCase
+
 
 class test_LearningEpisode__get_ui_sub_heading(LearningEpisode_TestCase):
 
