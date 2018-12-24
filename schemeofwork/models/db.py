@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from gluon.contrib.appconfig import AppConfig
+from gluon.tools import Auth
 
 # -------------------------------------------------------------------------
 # AppConfig configuration made easy. Look inside private/appconfig.ini
 # Auth is for authenticaiton and access control
 # -------------------------------------------------------------------------
-from gluon.contrib.appconfig import AppConfig
-from gluon.tools import Auth
 
 # -------------------------------------------------------------------------
 # This scaffolding model makes your app work on Google App Engine too

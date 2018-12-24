@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-from gluon.contrib.appconfig import AppConfig
-configuration = AppConfig(reload=True)
-
-db = DAL(configuration.get('db.uri'),
-     pool_size=configuration.get('db.pool_size'),
-     migrate_enabled=configuration.get('db.migrate'),
-     check_reserved=['all'])
-
 import db_schemeofwork  #= exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
 import db_examboard  #= exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
 import db_keystage  #= exec_environment('applications/schemeofwork/models/db_keystage.py', request=request)

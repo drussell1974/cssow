@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-from gluon.contrib.appconfig import AppConfig
-configuration = AppConfig(reload=True)
-
-db = DAL(configuration.get('db.uri'),
-     pool_size=configuration.get('db.pool_size'),
-     migrate_enabled=configuration.get('db.migrate'),
-     check_reserved=['all'])
-
 from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
 import db_schemeofwork  #= exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)

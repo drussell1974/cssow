@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+from gluon.contrib.appconfig import AppConfig
+configuration = AppConfig(reload=True)
+
+db = DAL(configuration.get('db.uri'),
+     pool_size=configuration.get('db.pool_size'),
+     migrate_enabled=configuration.get('db.migrate'),
+     check_reserved=['all'])
+
 from gluon.custom_import import track_changes; track_changes(True)
 
 from gluon.contrib.appconfig import AppConfig
@@ -9,8 +17,6 @@ db = DAL(configuration.get('db.uri'),
      migrate_enabled=configuration.get('db.migrate'),
      check_reserved=['all'])
 
-def get_db():
-    return db
 
 # -------------------------------------------------------------------------
 # Define your tables below (or better in another model file) for example
