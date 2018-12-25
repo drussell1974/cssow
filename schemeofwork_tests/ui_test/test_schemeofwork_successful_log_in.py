@@ -48,3 +48,13 @@ class test_schemeofwork_default(UITestCase):
         ' redirect back to home page '
         self.assertWebPageTitleAndHeadingsByRoute("default/index")
 
+
+    def test_page_navigate_to_default_index_after_log_out(self):
+        # set up
+        self.try_log_in()
+
+        # test
+        self.test_context.find_element_by_id('btn-logout').click()
+
+        # assert
+        self.assertWebPageTitleAndHeadingsByRoute('default/index')

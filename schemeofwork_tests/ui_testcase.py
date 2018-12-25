@@ -1,5 +1,5 @@
 from unittest import TestCase
-from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 class UITestCase(TestCase):
 
@@ -23,21 +23,25 @@ class UITestCase(TestCase):
                 # test - subheading
                 self.assertEqual(values[2], self.test_context.find_element_by_class_name("subheading").text, '"{}{}" subheading should be "{}""'.format(self.root_uri, route, values[2]))
 
-        def _log_in(self):
+        def try_log_in(self):
                 # setup
 
-                self.test_context.find_element_by_id("btn-login").click()
-                ' sleep to give time for browser to respond '
-                import time
-                time.sleep(3)
+                try:
+                        self.test_context.find_element_by_id("btn-login").click()
 
-                elem = self.test_context.find_element_by_id("auth_user_email")
-                elem.send_keys("dave@jazzthecat.co.uk")
-                elem.send_keys(Keys.TAB)
-                elem = self.test_context.find_element_by_id("auth_user_password")
-                elem.send_keys("co2m1c")
-                elem.send_keys(Keys.RETURN)
+                        ' sleep to give time for browser to respond '
+                        import time
+                        time.sleep(3)
 
-                ' sleep to give time for browser to respond '
-                import time
-                time.sleep(3)
+                        elem = self.test_context.find_element_by_id("auth_user_email")
+                        elem.send_keys("dave@jazzthecat.co.uk")
+                        elem.send_keys(Keys.TAB)
+                        elem = self.test_context.find_element_by_id("auth_user_password")
+                        elem.send_keys("co2m1c")
+                        elem.send_keys(Keys.RETURN)
+
+                        ' sleep to give time for browser to respond '
+                        import time
+                        time.sleep(3)
+                except:
+                        pass # already logged in (probably)
