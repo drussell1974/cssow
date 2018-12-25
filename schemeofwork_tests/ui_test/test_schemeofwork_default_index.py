@@ -2,9 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_default(UITestCase):
+class test_schemeofwork_default_index(UITestCase):
 
-    test_context = webdriver.Firefox()
+    test_context = webdriver.Chrome()
+
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/default/index")
@@ -21,7 +22,7 @@ class test_schemeofwork_default(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings("schemeofwork", "Computing Schemes of work and lessons", "Computing schemes of work lessons across all key stages")
+        self.assertWebPageTitleAndHeadingsByRoute("default/index")
 
 
 

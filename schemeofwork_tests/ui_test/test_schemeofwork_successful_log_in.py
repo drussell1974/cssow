@@ -5,7 +5,7 @@ from ui_testcase import UITestCase
 
 class test_schemeofwork_default(UITestCase):
 
-    test_context = webdriver.Firefox()
+    test_context = webdriver.Chrome()
 
     def setUp(self):
         # set up
@@ -28,7 +28,7 @@ class test_schemeofwork_default(UITestCase):
 
         ' sleep to give time for browser to respond '
         import time
-        time.sleep(6)
+        time.sleep(3)
 
         # test
 
@@ -42,10 +42,9 @@ class test_schemeofwork_default(UITestCase):
 
         ' sleep to give time for browser to respond '
         import time
-        time.sleep(4)
+        time.sleep(3)
 
         # assert
         ' redirect back to home page '
-        self.assertWebPageTitleAndHeadings("schemeofwork", "Computing Schemes of work and lessons", "Computing schemes of work lessons across all key stages")
-
+        self.assertWebPageTitleAndHeadingsByRoute("default/index")
 

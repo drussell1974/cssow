@@ -53,7 +53,7 @@
           <!-- Scheme of works -->
           {{ for row in model: }}
           <div class="post-preview">
-            <a href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
+            <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>

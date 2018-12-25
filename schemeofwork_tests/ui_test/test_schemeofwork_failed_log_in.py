@@ -5,7 +5,7 @@ from ui_testcase import UITestCase
 
 class test_schemeofwork_failed_log_in(UITestCase):
 
-    test_context = webdriver.Firefox()
+    test_context = webdriver.Chrome()
 
     def setUp(self):
         # set up
@@ -29,7 +29,7 @@ class test_schemeofwork_failed_log_in(UITestCase):
 
         ' sleep to give time for browser to respond '
         import time
-        time.sleep(6)
+        time.sleep(3)
 
         # test
 
@@ -45,7 +45,7 @@ class test_schemeofwork_failed_log_in(UITestCase):
 
         ' sleep to give time for browser to respond'
         import time
-        time.sleep(4)
+        time.sleep(3)
 
         # assert
         self.assertEqual("Invalid email", self.test_context.find_element_by_id("email__error").text)

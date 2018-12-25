@@ -5,7 +5,7 @@ from ui_testcase import UITestCase
 
 class test_schemeofwork_default_login(UITestCase):
 
-    test_context = webdriver.Firefox()
+    test_context = webdriver.Chrome()
 
     def setUp(self):
         # set up
@@ -28,8 +28,8 @@ class test_schemeofwork_default_login(UITestCase):
 
         ' sleep to give time for browser to respond '
         import time
-        time.sleep(4)
+        time.sleep(3)
 
         # assert
-        self.assertWebPageTitleAndHeadings("schemeofwork", "Log In", "Register to create schemes of work and lessons")
+        self.assertWebPageTitleAndHeadingsByRoute('default/user/login')
 
