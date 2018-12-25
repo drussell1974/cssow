@@ -32,12 +32,6 @@ class test_schemeofwork_default_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
 
-     def test_page__main_menu_to_all_schemesofwork_index(self):
-        # setup
-        self.test_context.find_element_by_xpath('/html/body/div/div/div/div[1]/div[1]/a').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
 
 
 
