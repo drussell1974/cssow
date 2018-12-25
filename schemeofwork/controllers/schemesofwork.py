@@ -58,7 +58,7 @@ def edit():
     keystage_options = db_keystage.get_options(db)
 
     content = {
-        "main_heading":model.name if model.name == "" else "New Scheme of work",
+        "main_heading":model.get_ui_title(),
         "sub_heading":model.get_ui_sub_heading(),
         "strap_line": "" if model.name == "" else "Create a new scheme of work. Fill out the form below then click next to select or create learning episode."
               }

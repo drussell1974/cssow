@@ -51,7 +51,7 @@ class test_schemeofwork_default(UITestCase):
 
     def test_page_navigate_to_default_index_after_log_out(self):
         # set up
-        self.try_log_in()
+        self.try_log_in('http://127.0.0.1:8000/schemeofwork/schemesofwork/index')
 
         # test
         self.test_context.find_element_by_id('btn-logout').click()

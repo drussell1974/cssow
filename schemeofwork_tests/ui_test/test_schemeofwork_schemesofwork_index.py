@@ -10,6 +10,8 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
+        # tests require login
+        #self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
 
     def tearDown(self):
         pass
@@ -46,7 +48,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
 
 
-    def test_page__navigate_to_default_index(self):
+    def test_page__breadcrumb__navigate_to_default_index(self):
         # setup
         self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a').click()
 
@@ -54,12 +56,28 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         self.assertWebPageTitleAndHeadingsByRoute('default/index')
 
 
-    def test_page__navigate_to_schemesofwork_index(self):
+    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a').click()
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+
+
+    def not_test_page__submenu__navigate_to_schemesofwork_new(self):
+        # setup
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
+
+        # test
+        self.test_context.find_element_by_id('btn-new').click()
+
+        ' sleep to give time for browser to respond '
+        import time
+        time.sleep(3)
+
+        # assert
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
+
 
 
 

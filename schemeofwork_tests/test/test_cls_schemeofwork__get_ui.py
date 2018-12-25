@@ -61,3 +61,15 @@ class test_SchemeOfWork__get_ui_title(SchemeOfWork_TestCase):
 
         # assert
         self.assertEqual("test name", val)
+
+
+    def test_new(self):
+        # set up
+        test = self._construct_valid_object()
+
+        # test
+        val = test.get_ui_title()
+
+        # assert
+        self.assertEqual("test name", val)
+        #get_ui_title

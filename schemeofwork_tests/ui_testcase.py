@@ -8,7 +8,14 @@ class UITestCase(TestCase):
         web_pages_titles_and_headings = {
                 'default/index':['schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages'],
                 'schemesofwork/index':['schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage'],
+                'schemesofwork/edit/new':['schemeofwork', 'Schemes of work', 'Create a new scheme of work'],
+                'schemesofwork/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
                 'learningepisode/index':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
+                'learningepisode/edit/new':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
+                'learningepisode/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
+                'learningobjective/index':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW TITLE FOR id=11'],
+                'learningobjective/edit/new':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING FOR id=11'],
+                'learningobjective/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
                 'default/user/login':['schemeofwork', 'Log In', 'Register to create schemes of work and lessons'],
         }
 
@@ -23,10 +30,14 @@ class UITestCase(TestCase):
                 # test - subheading
                 self.assertEqual(values[2], self.test_context.find_element_by_class_name("subheading").text, '"{}{}" subheading should be "{}""'.format(self.root_uri, route, values[2]))
 
-        def try_log_in(self):
-                # setup
+        def try_log_in(self, redirect_to_uri_on_login):
+
+                # setup by going to home
+                self.test_context.get(self.root_uri)
 
                 try:
+                        ' Attempt to login '
+
                         self.test_context.find_element_by_id("btn-login").click()
 
                         ' sleep to give time for browser to respond '
@@ -43,5 +54,7 @@ class UITestCase(TestCase):
                         ' sleep to give time for browser to respond '
                         import time
                         time.sleep(3)
+
+                        self.test_context.get(redirect_to_uri_on_login)
                 except:
                         pass # already logged in (probably)
