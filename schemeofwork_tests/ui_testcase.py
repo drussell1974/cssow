@@ -13,7 +13,7 @@ class UITestCase(TestCase):
                 'learningepisode/index':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
                 'learningepisode/edit/new':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
                 'learningepisode/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
-                'learningobjective/index':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW TITLE FOR id=11'],
+                'learningobjective/index':['schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Magnetic storage'],
                 'learningobjective/edit/new':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING FOR id=11'],
                 'learningobjective/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
                 'default/user/login':['schemeofwork', 'Log In', 'Register to create schemes of work and lessons'],
