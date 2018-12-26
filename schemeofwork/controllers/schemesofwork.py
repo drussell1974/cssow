@@ -58,8 +58,8 @@ def edit():
     keystage_options = db_keystage.get_options(db)
 
     content = {
-        "main_heading":model.get_ui_title(),
-        "sub_heading":model.get_ui_sub_heading(),
+        "main_heading":"Scheme of work" if model.get_ui_title() == "" else model.get_ui_title(),
+        "sub_heading":"Create a new scheme of work" if model.get_ui_sub_heading() == "" else model.get_ui_sub_heading(),
         "strap_line": "" if model.name == "" else "Create a new scheme of work. Fill out the form below then click next to select or create learning episode."
               }
     return dict(content = content, model = model, examboard_options = examboard_options, keystage_options = keystage_options)

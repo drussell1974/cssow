@@ -3,13 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_schemesofwork_edit(UITestCase):
+class test_schemeofwork_schemesofwork_new(UITestCase):
 
     test_context = webdriver.Chrome()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/edit?id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/edit")
 
 
     def tearDown(self):
@@ -23,29 +23,17 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-
+        """ Heading blank """
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit')
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
 
 
-    def test_page__breadcrumb_navigate_to_learning_episode_index(self):
-        # test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
-
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
-        # test
-        elem.click()
-
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+    def test_page__breadcrumb_navigate_to_learning_episode_index_not_visible_for_new_schemeofwork(self):
+        # test and assert
+        with self.assertRaises(Exception):
+            self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):
@@ -86,7 +74,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit')
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
 
 
     def test_page__edit_existing__should_redirect_to_index_if_valid(self):
@@ -100,7 +88,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         ' Fill in field with some information '
         elem.clear()
-        elem.send_keys("test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}".format(datetime.now()))
+        elem.send_keys("test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' select the submit button (to remove cursor from textarea '
         elem = self.test_context.find_element_by_id("saveButton")
@@ -115,6 +103,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.fail("Verify test has passed - write routine in the teardown to delete this record.")
 
 
 

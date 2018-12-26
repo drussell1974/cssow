@@ -56,14 +56,13 @@ class SchemeOfWorkModel(BaseModel):
 
         heading = ""
 
-        if self.key_stage_name is not None:
+        if self.key_stage_name is not None or self.key_stage_name != "":
             heading = "{}".format(self.key_stage_name)
-        if self.exam_board_name is not None:
+        if self.exam_board_name is not None or self.exam_board_name != "":
             heading = heading + " - {}".format(self.exam_board_name)
-
-        if len(heading) == 0 and self.is_new() == True:
-            heading = "Create a new scheme of work"
-
+        #raise Exception("'{}'".format(heading))
+        heading = heading.rstrip("- ")
+        heading = heading.lstrip(" -")
         return heading
 
 

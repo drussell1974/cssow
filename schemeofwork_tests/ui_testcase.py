@@ -8,7 +8,7 @@ class UITestCase(TestCase):
         web_pages_titles_and_headings = {
                 'default/index':['schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages'],
                 'schemesofwork/index':['schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage'],
-                'schemesofwork/edit/new':['schemeofwork', 'Schemes of work', 'Create a new scheme of work'],
+                'schemesofwork/edit/new':['schemeofwork', 'Scheme of work', 'Create a new scheme of work'],
                 'schemesofwork/edit':['schemeofwork', 'Selenium UI Test', 'KS1 - AQA'],
                 'learningepisode/index':['schemeofwork', "Learning episodes", 'for Selenium UI Test'],
                 'learningepisode/edit/new':['schemeofwork', "Learning episodes", 'for Selenium UI Test'],
