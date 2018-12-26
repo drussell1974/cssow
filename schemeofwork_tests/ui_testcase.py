@@ -36,11 +36,7 @@ class UITestCase(TestCase):
                 self.test_context.get(redirect_to_uri_on_login)
 
                 try:
-                        ' Attempt to login '
-
-                        self.test_context.find_element_by_id("btn-login").click()
-
-                        ' sleep to give time for browser to respond '
+                        ' sleep to give time for browser to respond before attempting login '
                         import time
                         time.sleep(3)
 
