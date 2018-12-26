@@ -88,7 +88,15 @@ def save_item():
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
-    return redirect(URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id)))
+    ' if the request.vars.id was 0 then this is a new scheme of work '
+    ' the user should be take create learning episodes '
+    redirect_to_url = ""
+    if int(request.vars.id) == 0:
+        redirect_to_url = URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id))
+    else:
+        redirect_to_url = URL('schemesofwork', 'index')
+
+    return redirect(redirect_to_url)
 
 
 @auth.requires_login()

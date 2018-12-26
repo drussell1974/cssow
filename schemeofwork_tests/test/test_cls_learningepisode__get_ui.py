@@ -22,7 +22,7 @@ class test_LearningEpisode__get_ui_sub_heading(LearningEpisode_TestCase):
         val = test.get_ui_sub_heading()
 
         # assert
-        self.assertEqual("Learning Episode for GCSE Computer Science", val)
+        self.assertEqual("for GCSE Computer Science", val)
 
 
 class test_LearningEpisode__get_ui_title(LearningEpisode_TestCase):

@@ -114,7 +114,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
 
 
 
