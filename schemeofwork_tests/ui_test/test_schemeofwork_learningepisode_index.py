@@ -23,7 +23,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):
@@ -42,16 +42,15 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
 
 
-    def not_test_page__submenu__navigate_to_learningepisode_new(self):
+    def test_page__submenu__navigate_to_learningepisode_new(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/index?scheme_of_work_id=76")
+        self.do_log_in("/schemeofwork/learningepisode/index?scheme_of_work_id=76")
 
         # test
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/a').click()
+        self.test_context.find_element_by_id('btn-new').click()
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('learningepisode/edit/new')
-
 
 
 

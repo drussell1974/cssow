@@ -86,9 +86,27 @@ class test_schemeofwork_schemesofwork_new(UITestCase):
 
         # test
 
-        ' Fill in field with some information '
-        elem.clear()
-        elem.send_keys("test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
+        ' Create valid information '
+
+        ' name '
+        elem = self.test_context.find_element_by_id("ctl-name")
+        elem.send_keys("should_redirect_to_index_if_valid")
+
+        ' exam board - just skip as not required'
+        elem = self.test_context.find_element_by_id("ctl-exam_board_id")
+        elem.send_keys(Keys.TAB)
+
+        ' key stage - select KS4 '
+        elem = self.test_context.find_element_by_id("ctl-key_stage_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "KS4":
+                 opt.click()
+
+        elem.send_keys(Keys.TAB)
+
+        ' description - Fill in field with some information '
+        elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' select the submit button (to remove cursor from textarea '
         elem = self.test_context.find_element_by_id("saveButton")
@@ -96,15 +114,9 @@ class test_schemeofwork_schemesofwork_new(UITestCase):
         ' submit the form '
         elem.send_keys(Keys.RETURN)
 
-        ' sleep to give time to ensure browser has redirected '
-        import time
-        time.sleep(3)
-
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
-        self.fail("Verify test has passed - write routine in the teardown to delete this record.")
-
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/new')
 
 
 

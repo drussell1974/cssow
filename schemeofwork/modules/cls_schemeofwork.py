@@ -36,7 +36,7 @@ class SchemeOfWorkModel(BaseModel):
         self._clean_up()
 
         # Validate name
-        self._validate_required_string("name", self.name, 1, 25)
+        self._validate_required_string("name", self.name, 1, 40)
         # Validate description
         self._validate_optional_string("description", self.description, 1500)
         # Validate exam board
@@ -56,13 +56,14 @@ class SchemeOfWorkModel(BaseModel):
 
         heading = ""
 
-        if self.key_stage_name is not None or self.key_stage_name != "":
+        if self.key_stage_name is not None:
             heading = "{}".format(self.key_stage_name)
-        if self.exam_board_name is not None or self.exam_board_name != "":
+        if self.exam_board_name is not None:
             heading = heading + " - {}".format(self.exam_board_name)
-        #raise Exception("'{}'".format(heading))
+
         heading = heading.rstrip("- ")
         heading = heading.lstrip(" -")
+
         return heading
 
 

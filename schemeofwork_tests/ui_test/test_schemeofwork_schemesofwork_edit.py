@@ -45,7 +45,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
         time.sleep(3)
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):
@@ -114,7 +114,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
 
 

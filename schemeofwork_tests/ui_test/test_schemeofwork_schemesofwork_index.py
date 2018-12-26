@@ -43,7 +43,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         time.sleep(3)
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):

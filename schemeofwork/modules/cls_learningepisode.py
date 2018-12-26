@@ -48,7 +48,7 @@ class LearningEpisodeModel (BaseModel):
 
     def get_ui_sub_heading(self):
         """ show scheme of work name """
-        return "Learning Episode for {}".format(self.scheme_of_work_name)
+        return "for {}".format(self.scheme_of_work_name)
 
 
     def validate(self):

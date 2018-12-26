@@ -75,7 +75,7 @@ class test_SchemeOfWork_validate__name(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.name = "Lorem ipsum dolor sit ame" # length 25 characters
+        test.name = "Lorem ipsum dolor sit a ipsum dolor sita" # length 25 characters
 
         # test
         test.validate()
@@ -89,7 +89,7 @@ class test_SchemeOfWork_validate__name(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.name = "Lorem ipsum dolor sit amet" # length 25 characters + 1
+        test.name = "Lorem ipsum dolor sit am ipsum dolor sita" # length 25 characters + 1
 
         # test
         test.validate()

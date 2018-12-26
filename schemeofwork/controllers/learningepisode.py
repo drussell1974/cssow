@@ -32,6 +32,8 @@ def edit():
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
+        model.scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, model.scheme_of_work_id)
+
 
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id

@@ -47,7 +47,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
 
     def not_test_page__submenu__navigate_to_learningepisode_new(self):
