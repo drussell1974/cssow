@@ -19,8 +19,13 @@
                   <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.scheme_of_work_id))}}">Learning episode</a>
+                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.scheme_of_work_id))}}">Episodes</a>
                 </li>
+                {{ if model.id > 0: }}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=model.id, scheme_of_work_id=model.scheme_of_work_id))}}">Objectives</a>
+                </li>
+                {{ pass }}
             </ul>
       </div>
 </nav>
@@ -34,7 +39,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Order of Delivery</label>
                 <!-- in the future select from planner -->
-                <input type="text" name="order_of_delivery_id" class="form-control" placeholder="Title" id="order_of_delivery_id" required data-validation-required-message="Please specify an order of delivery."
+                <input type="text" name="order_of_delivery_id" class="form-control" placeholder="Title" id="ctl-order_of_delivery_id" required data-validation-required-message="Please specify an order of delivery."
                        value='{{=model.order_of_delivery_id}}'>
                 <p class="help-block text-danger"></p>
               </div>
@@ -43,7 +48,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Topic</label>
-                <select class="form-control" name="topic_id" id="topic_id" required data-validation-required-message="Please select a topic option.">
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a topic option.">
                     <option value="">- Select an option for topic -</option>
                     {{ for opt in topic_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.topic_id else ""}}>{{=opt.name}}</option>

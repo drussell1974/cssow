@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_schemesofwork_edit(UITestCase):
+class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     test_context = webdriver.Chrome()
 
@@ -21,14 +21,17 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
         # tear down
         cls.test_context.close()
 
+    """ Check content """
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-
+        """ Check content """
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit')
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/76')
 
+
+    """ navigation """
 
     def test_page__breadcrumb_navigate_to_learning_episode_index(self):
         # test
@@ -49,20 +52,42 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):
-        #test
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a').click()
+        # setup
+        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a')
+        self.assertEqual("Home", elem.text)
+
+        # test
+        elem.click()
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('default/index')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
+        # setup
+        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a')
+        self.assertEqual("Schemes of work", elem.text)
+
         # test
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a').click()
+        elem.click()
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
 
+
+    def test_page__breadcrumb__navigate_to_learningepisode_index(self):
+        # setup
+        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
+        self.assertEqual("Learning episodes", elem.text)
+
+        # test
+        elem.click()
+
+        # assert
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
+
+
+    """ editing """
 
     def test_page__edit_existing__should_stay_on_same_page_if_invalid(self):
         # setup
@@ -86,7 +111,7 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit')
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/76')
 
 
     def test_page__edit_existing__should_redirect_to_index_if_valid(self):

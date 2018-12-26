@@ -23,7 +23,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index')
+        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index/47/76')
 
 
     def test_page__breadcrumb__navigate_to_default_index(self):

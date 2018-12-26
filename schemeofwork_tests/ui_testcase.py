@@ -8,15 +8,13 @@ class UITestCase(TestCase):
         web_pages_titles_and_headings = {
                 'default/index':['schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages'],
                 'schemesofwork/index':['schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage'],
+                'schemesofwork/edit/76':['schemeofwork', 'Selenium UI Test', 'KS1 - AQA'],
                 'schemesofwork/edit/new':['schemeofwork', 'Scheme of work', 'Create a new scheme of work'],
-                'schemesofwork/edit':['schemeofwork', 'Selenium UI Test', 'KS1 - AQA'],
-                'learningepisode/index/new':['schemeofwork', "Learning episodes", 'for should_redirect_to_index_if_valid'],
                 'learningepisode/index/76':['schemeofwork', "Learning episodes", 'for Selenium UI Test'],
-                'learningepisode/edit/new':['schemeofwork', "Learning episode", 'for Selenium UI Test'],
-                'learningepisode/edit/76':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
-                'learningobjective/index':['schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Problem solving'],
-                'learningobjective/edit/new':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING FOR id=11'],
-                'learningobjective/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
+                'learningepisode/edit/new/76':['schemeofwork', "Learning episode", 'for should_redirect_to_index_if_valid'],
+                'learningepisode/edit/47/76':['schemeofwork', 'Learning episode', 'for Selenium UI Test'],
+                'learningobjective/index/47/76':['schemeofwork', 'Learning objectives'],
+                'learningobjective/edit/47/76':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
                 'default/user/login':['schemeofwork', 'Log In', 'Register to create schemes of work and lessons'],
         }
 
@@ -24,12 +22,27 @@ class UITestCase(TestCase):
         def assertWebPageTitleAndHeadingsByRoute(self, route):
                 values = self.web_pages_titles_and_headings[route]
 
-                # assert - title
-                self.assertEqual(values[0], self.test_context.title, '"{}{}" page title should be "{}"'.format(self.root_uri, route, values[0]))
-                # assert - site-heading
-                self.assertEqual(values[1], self.test_context.find_element_by_tag_name("h1").text, '"{}{}" heading (h1) should be "{}"'.format(self.root_uri, route, values[1]))
                 # test - subheading
-                self.assertEqual(values[2], self.test_context.find_element_by_class_name("subheading").text, '"{}{}" subheading should be "{}""'.format(self.root_uri, route, values[2]))
+                if len(values) > 2:
+                        self.assertEqual(values[2], self.test_context.find_element_by_class_name("subheading").text, '"{}{}" subheading should be "{}""'.format(self.root_uri, route, values[2]))
+                # assert - site-heading
+                if len(values) > 1:
+                        self.assertEqual(values[1], self.test_context.find_element_by_tag_name("h1").text, '"{}{}" heading (h1) should be "{}"'.format(self.root_uri, route, values[1]))
+                # assert - title
+                if len(values) > 0:
+                        self.assertEqual(values[0], self.test_context.title, '"{}{}" page title should be "{}"'.format(self.root_uri, route, values[0]))
+
+        def assertWebPageTitleAndHeadings(self, title, h1, subheading):
+
+                # test - subheading
+                if title is not None:
+                        self.assertEqual(title, self.test_context.title, 'page title should be "{}"'.format(title))
+                # assert - site-heading
+                if h1 is not None:
+                        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, 'heading (h1) should be "{}"'.format(h1))
+                # assert - title
+                if subheading is not None:
+                        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text, 'subheading should be "{}""'.format(subheading))
 
 
         def try_log_in(self, redirect_to_uri_on_login):

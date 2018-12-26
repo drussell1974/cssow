@@ -49,7 +49,8 @@ def edit():
         "sub_heading":model.get_ui_sub_heading(),
         "strap_line":model.get_ui_title()
               }
-    return dict(content = content, model = model, topic_options = topic_options)
+
+    return dict(content = content, model = model, topic_options = topic_options, has_objectives = True)
 
 
 @auth.requires_login()
