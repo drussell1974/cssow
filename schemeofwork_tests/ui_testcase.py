@@ -103,3 +103,8 @@ class UITestCase(TestCase):
                         print('try_login handled - already logged in (probably) - {}'.format(e.args))
                         pass
 
+
+        def do_delete_test_scheme_of_work(self):
+                """TODO: Delete"""
+                pass
+
