@@ -53,4 +53,6 @@ class UITestCase(TestCase):
                         time.sleep(3)
 
                 except:
+                        ' if elements are not found then this will catch the exception'
+                        print('already logged in -- probably')
                         pass # already logged in (probably)
