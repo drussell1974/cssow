@@ -9,7 +9,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=35&scheme_of_work_id=11")
+        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=47&scheme_of_work_id=76")
 
     def tearDown(self):
         pass
@@ -52,7 +52,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def not_test_page__submenu__navigate_to_learningepisode_new(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=35&scheme_of_work_id=11")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=47&scheme_of_work_id=76")
 
         # test
         self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/a').click()

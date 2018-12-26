@@ -10,8 +10,6 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
-        # tests require login
-        #self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
 
     def tearDown(self):
         pass
@@ -32,7 +30,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
 
         # setup
-        elem = self.test_context.find_element_by_id("lnk-schemeofwork-11")
+        elem = self.test_context.find_element_by_id("lnk-schemeofwork-76")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)

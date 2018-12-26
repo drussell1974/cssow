@@ -18,6 +18,12 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
+                <!-- SHOULD ONLY DISPLAY IF EXISTING
+                {{ if model.id > 0: }} -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.id))}}">Learning episodes</a>
+                </li>
+                <!-- {{ pass }} -->
             </ul>
     </div>
 </nav>

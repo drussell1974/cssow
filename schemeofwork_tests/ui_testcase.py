@@ -9,11 +9,11 @@ class UITestCase(TestCase):
                 'default/index':['schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages'],
                 'schemesofwork/index':['schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage'],
                 'schemesofwork/edit/new':['schemeofwork', 'Schemes of work', 'Create a new scheme of work'],
-                'schemesofwork/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
-                'learningepisode/index':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
-                'learningepisode/edit/new':['schemeofwork', "Learning episodes", 'for A-Level Computer Science'],
+                'schemesofwork/edit':['schemeofwork', 'Selenium UI Test', 'KS1 - AQA'],
+                'learningepisode/index':['schemeofwork', "Learning episodes", 'for Selenium UI Test'],
+                'learningepisode/edit/new':['schemeofwork', "Learning episodes", 'for Selenium UI Test'],
                 'learningepisode/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
-                'learningobjective/index':['schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Magnetic storage'],
+                'learningobjective/index':['schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Problem solving'],
                 'learningobjective/edit/new':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING FOR id=11'],
                 'learningobjective/edit':['schemeofwork', 'MUST SHOW TITLE FOR id=11', 'MUST SHOW SUBHEADING HERE FOR id=11'],
                 'default/user/login':['schemeofwork', 'Log In', 'Register to create schemes of work and lessons'],
@@ -32,8 +32,8 @@ class UITestCase(TestCase):
 
         def try_log_in(self, redirect_to_uri_on_login):
 
-                # setup by going to home
-                self.test_context.get(self.root_uri)
+                ' Open uri - if authentication is required this should automatically redirect to login '
+                self.test_context.get(redirect_to_uri_on_login)
 
                 try:
                         ' Attempt to login '
@@ -52,9 +52,9 @@ class UITestCase(TestCase):
                         elem.send_keys(Keys.RETURN)
 
                         ' sleep to give time for browser to respond '
+                        # SHOULD REDIRECT
                         import time
                         time.sleep(3)
 
-                        self.test_context.get(redirect_to_uri_on_login)
                 except:
                         pass # already logged in (probably)
