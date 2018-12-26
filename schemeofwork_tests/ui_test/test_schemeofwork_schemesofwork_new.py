@@ -13,7 +13,8 @@ class test_schemeofwork_schemesofwork_new(UITestCase):
 
 
     def tearDown(self):
-        self.do_delete_scheme_of_work()
+        #self.do_delete_scheme_of_work()
+        pass
 
 
     @classmethod
