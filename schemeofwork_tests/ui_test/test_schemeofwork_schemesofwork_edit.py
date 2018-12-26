@@ -1,5 +1,5 @@
+from datetime import datetime
 from selenium import webdriver
-
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
@@ -62,6 +62,59 @@ class test_schemeofwork_schemesofwork_edit(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+
+
+    def test_page__edit_existing__should_stay_on_same_page_if_invalid(self):
+        # setup
+        elem = self.test_context.find_element_by_id("ctl-name")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        # test
+
+        ' Fill in field as blank '
+        elem.clear()
+        elem.send_keys("")
+
+        ' submit the form '
+        elem.send_keys(Keys.RETURN)
+
+        ' sleep to give time to ensure browser HAS not redirected '
+        import time
+        time.sleep(3)
+
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit')
+
+
+    def test_page__edit_existing__should_redirect_to_index_if_valid(self):
+        # setup
+        elem = self.test_context.find_element_by_id("ctl-description")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        # test
+
+        ' Fill in field as blank '
+        elem.clear()
+        elem.send_keys("test_page__edit_existing__should_redirect_to_index_if_valid" + str(datetime.now()))
+
+        ' select the submit button (to remove cursor from  textarea '
+        elem = self.test_context.find_element_by_id("saveButton")
+
+        ' submit the form '
+        elem.send_keys(Keys.RETURN)
+
+        ' sleep to give time to ensure browser has redirected '
+        import time
+        time.sleep(3)
+
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index')
 
 
 

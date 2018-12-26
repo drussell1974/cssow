@@ -31,6 +31,10 @@ class UITestCase(TestCase):
                 self.assertEqual(values[2], self.test_context.find_element_by_class_name("subheading").text, '"{}{}" subheading should be "{}""'.format(self.root_uri, route, values[2]))
 
         def try_log_in(self, redirect_to_uri_on_login):
+                """
+                Makes an attempt to log in, if the page has been redirected.
+                If the inputs for login are not found, then this is handled; it assumes the user is already logged in
+                """
 
                 ' Open uri - if authentication is required this should automatically redirect to login '
                 self.test_context.get(redirect_to_uri_on_login)
@@ -42,9 +46,12 @@ class UITestCase(TestCase):
 
                         elem = self.test_context.find_element_by_id("auth_user_email")
                         elem.send_keys("dave@jazzthecat.co.uk")
-                        elem.send_keys(Keys.TAB)
+                        #elem.send_keys(Keys.TAB)
+
                         elem = self.test_context.find_element_by_id("auth_user_password")
                         elem.send_keys("co2m1c")
+
+                        ' submit the form '
                         elem.send_keys(Keys.RETURN)
 
                         ' sleep to give time for browser to respond '
@@ -53,6 +60,6 @@ class UITestCase(TestCase):
                         time.sleep(3)
 
                 except:
-                        ' if elements are not found then this will catch the exception'
-                        print('already logged in -- probably')
-                        pass # already logged in (probably)
+                        ' if elements are not found then this will handle the exception assuming user is already logged in '
+                        print('try_login handled - already logged in (probably')
+                        pass
