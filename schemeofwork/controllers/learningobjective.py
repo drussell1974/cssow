@@ -11,7 +11,7 @@ import db_learningepisode  #= exec_environment('applications/schemeofwork/models
 
 def index():
     """ index action """
-    scheme_of_work_id = int(request.vars.scheme_of_work_id) # scheme_of_work_id = int(request.vars.scheme_of_work_id if request.vars.scheme_of_work_id is not None else 0)
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
 
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
@@ -23,8 +23,7 @@ def index():
     unassociated_learning_objectives = db_learningobjective.get_unassociated_learning_objectives(db,
         learning_episode_id=learning_episode.id,
         key_stage_id=learning_episode.key_stage_id,
-        topic_id=learning_episode.topic_id,
-        parent_topic_id=learning_episode.parent_topic_id)
+        topic_id=learning_episode.topic_id)
 
     content = {
         "main_heading":"Learning objectives",

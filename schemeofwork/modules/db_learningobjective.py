@@ -251,9 +251,9 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
     return data
 
 
-def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, topic_id, parent_topic_id):
+def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, topic_id):
 
-    select_sql = ("SELECT " +
+    select_sql = ("SELECT DISTINCT " +
             "  lob.id as id, " + # 0
              "  lob.description as description, " + #1
              "  solo.id as solo_id, " + #2
@@ -261,33 +261,30 @@ def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, 
              "  solo.lvl as solo_taxonomy_level, " + #4
              "  top.id as topic_id, " + #5
              "  top.name as topic_name, " + #6
-             "  pnt_top.id as parent_topic_id, " + #7
-             "  pnt_top.name as parent_topic_name, " + #8
+             "  top.parent_id as parent_topic_id, " + #7
+             "  top.parent_name as parent_topic_name, " + #8
              "  cnt.id as content_id, " + #9
              "  cnt.description as content_description, " #10
              "  exam.id as exam_board_id, " + #11
              "  exam.name as exam_board_name, " #12
              "  ks.id as key_stage_id, " + #13
              "  ks.name as key_stage_name, " + #14
-             "  le.id as learning_episode_id, " + #15
-             "  le.order_of_delivery_id as order_of_delivery_id, " + #16
-             "  lob.created as created, " + #17
-             "  lob.created_by as created_by_id, " + #18
-             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #19
+             "  lob.created as created, " + #15
+             "  lob.created_by as created_by_id, " + #16
+             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #17
             " FROM sow_learning_objective as lob " +
             " LEFT JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_objective_id = lob.id " +
             " LEFT JOIN sow_learning_episode as le ON le.id = le_lo.learning_episode_id " +
-            " LEFT JOIN sow_topic as top ON top.id = lob.topic_id " +
-            " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
+            " LEFT JOIN view_child_parent_topics as top ON top.id = lob.topic_id OR top.id = lob.parent_id OR top.parent_id = lob.parent_id " +
             " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id " +
             " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id " +
             " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
             " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
             " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) AND (top.id = {} ".format(key_stage_id, learning_episode_id, topic_id, parent_topic_id))
-    if parent_topic_id is not None:
-        select_sql = select_sql + " OR top.id = {} OR pnt_top.id = {}".format(parent_topic_id, parent_topic_id)
-    select_sql = select_sql + ") ORDER BY top.name;"
+            " WHERE ks.id = {} AND top.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) " +
+            " ORDER BY top.name;")
+
+    select_sql = select_sql.format(key_stage_id, topic_id, learning_episode_id)
 
     #raise Exception(select_sql)
     rows = db.executesql(select_sql)
@@ -312,10 +309,9 @@ def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, 
             key_stage_id = row[13],
             key_stage_name = row[14],
             learning_episode_id = learning_episode_id,
-            learning_episode_name = row[16],
-            created = row[17],
-            created_by_id = row[18],
-            created_by_name = row[19])
+            created = row[15],
+            created_by_id = row[16],
+            created_by_name = row[17])
         data.append(model)
 
     return data
