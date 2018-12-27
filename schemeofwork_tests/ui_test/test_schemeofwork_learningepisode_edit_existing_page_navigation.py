@@ -43,7 +43,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -67,7 +67,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
+        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
@@ -79,4 +79,4 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index/47/76')
+        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')

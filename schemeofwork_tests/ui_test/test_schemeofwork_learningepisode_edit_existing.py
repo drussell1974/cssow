@@ -48,7 +48,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/edit/47/76')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for Selenium UI Test')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -81,5 +81,5 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index/47/76')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for Selenium UI Test')
 
