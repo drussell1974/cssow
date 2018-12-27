@@ -20,6 +20,7 @@ class UITestCase(TestCase):
 
 
         def assertWebPageTitleAndHeadingsByRoute(self, route):
+                """ use assertWebPageTitleAndHeadings """
                 values = self.web_pages_titles_and_headings[route]
 
                 # test - subheading
@@ -55,9 +56,7 @@ class UITestCase(TestCase):
                 self.test_context.get(redirect_to_uri_on_login)
 
                 try:
-                        ' sleep to give time for browser to respond before attempting login '
-                        import time
-                        time.sleep(3)
+                        self.test_context.implicitly_wait(10)
 
                         elem = self.test_context.find_element_by_id("auth_user_email")
                         elem.send_keys("dave@jazzthecat.co.uk")
@@ -69,10 +68,6 @@ class UITestCase(TestCase):
                         ' submit the form '
                         elem.send_keys(Keys.RETURN)
 
-                        ' sleep to give time for browser to respond '
-                        # SHOULD REDIRECT
-                        import time
-                        time.sleep(3)
 
                 except Exception as e:
                         ' if elements are not found then this will handle the exception assuming user is already logged in '
@@ -92,10 +87,6 @@ class UITestCase(TestCase):
 
 
                 try:
-                        ' sleep to give time for browser to respond before attempting login '
-                        import time
-                        time.sleep(3)
-
                         elem = self.test_context.find_element_by_id("auth_user_email")
                         elem.send_keys("dave@jazzthecat.co.uk")
                         #elem.send_keys(Keys.TAB)
@@ -105,11 +96,6 @@ class UITestCase(TestCase):
 
                         ' submit the form '
                         elem.send_keys(Keys.RETURN)
-
-                        ' sleep to give time for browser to respond '
-                        # SHOULD REDIRECT
-                        import time
-                        time.sleep(3)
 
                 except Exception as e:
                         ' if elements are not found then this will handle the exception assuming user is already logged in '

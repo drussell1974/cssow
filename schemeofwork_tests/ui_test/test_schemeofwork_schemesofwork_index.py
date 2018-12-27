@@ -10,6 +10,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
+        self.test_context.implicitly_wait(10)
 
     def tearDown(self):
         pass
@@ -28,8 +29,8 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
     def test_page__navigate_to_learning_episode_index(self):
 
-
         # setup
+
         elem = self.test_context.find_element_by_id("lnk-schemeofwork-76")
 
         ' Ensure element is visible '
@@ -37,10 +38,6 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
         # test
         elem.click()
-
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
@@ -68,10 +65,6 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
-
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')

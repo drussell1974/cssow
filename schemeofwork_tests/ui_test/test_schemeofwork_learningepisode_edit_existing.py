@@ -23,65 +23,6 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         cls.test_context.close()
 
 
-    """ Test content """
-
-    def test_page__should_have__title__title_heading__and__sub_heading(self):
-        # test
-
-        # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for Selenium UI Test')
-
-
-    """ Breadcrumb """
-
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a')
-        self.assertEqual("Home", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a')
-        self.assertEqual("Schemes of work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
-
-
-    def test_page__breadcrumb__navigate_to_learningepisode_index(self):
-        #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
-        self.assertEqual("Episodes", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
-
-
-    def test_page__breadcrumb__navigate_to_learningobjective_index(self):
-        #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[4]/a')
-        self.assertEqual("Objectives", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index/47/76')
-
-
     """ Test edits """
 
     def test_page__should_stay_on_same_page_if_invalid(self):
@@ -104,10 +45,6 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' submit the form '
         elem.send_keys(Keys.RETURN)
-
-        ' sleep to give time to ensure browser HAS not redirected '
-        import time
-        time.sleep(3)
 
         # assert
         ' should still be on the same page '

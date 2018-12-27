@@ -79,10 +79,6 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         ' submit the form '
         elem.send_keys(Keys.RETURN)
 
-        ' sleep to give time to ensure browser HAS not redirected '
-        import time
-        time.sleep(3)
-
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')

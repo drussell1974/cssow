@@ -10,6 +10,8 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=47&scheme_of_work_id=76")
+        self.test_context.implicitly_wait(10)
+
 
     def tearDown(self):
         pass

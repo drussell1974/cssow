@@ -43,10 +43,6 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         # test
         elem.click()
 
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
-
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
 
@@ -105,10 +101,6 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         ' submit the form '
         elem.send_keys(Keys.RETURN)
 
-        ' sleep to give time to ensure browser HAS not redirected '
-        import time
-        time.sleep(3)
-
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/76')
@@ -132,10 +124,6 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         ' submit the form '
         elem.send_keys(Keys.RETURN)
-
-        ' sleep to give time to ensure browser has redirected '
-        import time
-        time.sleep(3)
 
         # assert
         ' should still be on the same page '

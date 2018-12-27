@@ -10,6 +10,7 @@ class test_schemeofwork_default_login(UITestCase):
     def setUp(self):
         # set up
         self.test_context.get("http://127.0.0.1:8000/schemeofwork/default/user/login")
+        self.test_context.implicitly_wait(10)
 
 
     def tearDown(self):
@@ -24,11 +25,8 @@ class test_schemeofwork_default_login(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         # setup
-        self.test_context.find_element_by_id("btn-login").click()
 
-        ' sleep to give time for browser to respond '
-        import time
-        time.sleep(3)
+        self.test_context.find_element_by_id("btn-login").click()
 
         # assert
         self.assertWebPageTitleAndHeadingsByRoute('default/user/login')
