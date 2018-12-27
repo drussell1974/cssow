@@ -40,6 +40,7 @@ class BaseModel:
     def get_ui_created(self):
         return datetime.strftime(self.created, "%d %B %Y")
 
+
     """
     formatting members
     """

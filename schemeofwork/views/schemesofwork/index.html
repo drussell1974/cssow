@@ -52,11 +52,11 @@
             <!-- Filters END -->
           <!-- Scheme of works -->
           {{ for row in model: }}
-          <div class="post-preview">
+          <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">
             <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
-              </h2>
+              </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
               <h3 class="post-subtitle">
                 {{=row.get_ui_sub_heading()}}
               </h3>

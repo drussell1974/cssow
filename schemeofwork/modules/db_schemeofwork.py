@@ -37,6 +37,7 @@ def get_all(db, key_stage_id=0):
     data = [];
 
     for row in rows:
+
         model = SchemeOfWorkModel(id_=row[0],
                                   name=row[1],
                                   description=row[2],
@@ -47,7 +48,14 @@ def get_all(db, key_stage_id=0):
                                   created=row[7],
                                   created_by_id=row[8],
                                   created_by_name=row[9])
-        data.append(model)
+        if row[7] is not None:
+            from datetime import datetime
+            date_format = "%Y-%m-%d %H:%M:%S"
+            a = datetime.strptime(str(row[7]), date_format)
+            b = datetime.now()
+            delta = b - a
+            model.is_recent = False if delta.days > 3 else True
+            data.append(model)
 
     return data
 

@@ -36,6 +36,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual("", test.exam_board_name, "exam_board_name should be ''")
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
+        self.assertFalse(test.is_recent)
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0, "Validation errors should be empty - %s" % test.validation_errors)
 
@@ -62,6 +63,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual(2, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("test key stage", test.key_stage_name, "key_stage_name should be ''")
         self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse(test.is_recent)
 
 
     def test_constructor__get_ui_sub_heading(self):
