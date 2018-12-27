@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_learningepisode_create_new(UITestCase):
+class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
     test_context = webdriver.Chrome()
 

@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_learningepisode_create_new(UITestCase):
+class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCase):
 
     test_context = webdriver.Chrome()
 
@@ -75,31 +75,3 @@ class test_schemeofwork_learningepisode_create_new(UITestCase):
         with self.assertRaises(Exception):
             self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[4]/a')
 
-
-
-    def test_page__should_stay_on_same_page_if_invalid(self):
-        # setup
-        elem = self.test_context.find_element_by_tag_name("form")
-
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
-        ' ctl-key_stage_id - select EMPTY '
-        elem = self.test_context.find_element_by_id("ctl-topic_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "- Select an option for topic -":
-                 opt.click()
-
-        elem.send_keys(Keys.TAB)
-
-        elem = self.test_context.find_element_by_id("saveButton")
-
-        ' submit the form '
-        elem.send_keys(Keys.RETURN)
-
-
-
-        # assert
-        ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning episode','for')

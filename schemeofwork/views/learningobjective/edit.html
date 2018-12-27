@@ -13,13 +13,13 @@
       <div class="container">
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('default','index')}}">Home</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.scheme_of_work_id))}}">Learning episode</a>
+                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.scheme_of_work_id))}}">Episodes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=model.learning_episode_id, scheme_of_work_id=model.scheme_of_work_id))}}">Objectives</a>
                 </li>
             </ul>
     </div>
