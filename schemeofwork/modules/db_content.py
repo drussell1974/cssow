@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+
+""" National Curriculum content """
+
 from cls_content import ContentModel
 
 def get_options(db, key_stage_id):
 
-    rows = db.executesql("SELECT id, description FROM sow_content WHERE key_stage_id = {};".format(key_stage_id))
+    str_select = " SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = %s " % (key_stage_id)
+
+    rows = db.executesql(str_select)
 
     data = [];
 
