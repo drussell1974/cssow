@@ -41,6 +41,15 @@ class BaseModel:
         return datetime.strftime(self.created, "%d %B %Y")
 
 
+    def set_is_recent(self):
+        """ checks the created field and sets is_recent """
+        if self.created is not None:
+            date_format = "%Y-%m-%d %H:%M:%S"
+            a = datetime.strptime(str(self.created), date_format)
+            b = datetime.now()
+            delta = b - a
+            self.is_recent = False if delta.days > 3 else True
+
     """
     formatting members
     """
