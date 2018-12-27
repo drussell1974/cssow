@@ -38,7 +38,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Description</label>
-                <input type="text" class="form-control" placeholder="Description" id="description" name="description" required data-validation-required-message="Please enter a description."
+                <input type="text" class="form-control" placeholder="Description" id="ctl-description" name="description" required data-validation-required-message="Please enter a description."
                        value='{{=model.description}}'>
                 <p class="help-block text-danger"></p>
               </div>
@@ -47,7 +47,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Select a linked Learning objective</label>
-                <select class="form-control" name="parent_id" id="parent_id">
+                <select class="form-control" name="parent_id" id="ctl-parent_id">
                     <option value="">- Select a linked learning objective (optional) -</option>
                     {{ for opt in parent_learning_objective_options: }}
                         <option value="{{=opt.id}}" {{if opt.id == model.parent_id:}} selected {{pass}}>{{=opt.description}}</option>
@@ -61,7 +61,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Solo Taxonomy</label>
-                <select class="form-control" name="solo_taxonomy_id" id="solo_taxonomy_id" required data-validation-required-message="Please select a key stage.">
+                <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a solo taxonomy -</option>
                     {{ for opt in solo_taxonomy_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.solo_taxonomy_id:}} selected {{pass}}>{{=opt.name}}</option>
@@ -75,7 +75,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Topic</label>
-                <select class="form-control" name="topic_id" id="topic_id" required data-validation-required-message="Please select a key stage.">
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a topic -</option>
                     {{ for opt in topic_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.topic_id:}} selected {{pass}}>{{=opt.name}}</option>
@@ -89,7 +89,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Content</label>
-                <select class="form-control" name="content_id" id="content_id">
+                <select class="form-control" name="content_id" id="ctl-content_id">
                     <option value="">- Select content (optional) -</option>
                     {{ for opt in content_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
@@ -103,7 +103,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Exam Board</label>
-                <select class="form-control" name="exam_board_id" id="exam_board_id">
+                <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
                     <option>- Select an exam board (optional) -</option>
                     {{ for opt in exam_board_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.exam_board_id:}} selected {{pass}}>{{=opt.name}}</option>

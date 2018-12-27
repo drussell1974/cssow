@@ -3,13 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase
 
-class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
+class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
     test_context = webdriver.Chrome()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?learning_episode_id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?id=460&learning_episode_id=47&scheme_of_work_id=76")
 
 
     def tearDown(self):

@@ -25,6 +25,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
     """ Test edit """
 
+
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")

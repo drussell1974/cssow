@@ -85,6 +85,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     """ editing """
 
+
     def test_page__edit_existing__should_stay_on_same_page_if_invalid(self):
         # setup
         elem = self.test_context.find_element_by_id("ctl-name")

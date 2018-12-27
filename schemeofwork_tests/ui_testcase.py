@@ -56,7 +56,7 @@ class UITestCase(TestCase):
                 self.test_context.get(redirect_to_uri_on_login)
 
                 try:
-                        self.test_context.implicitly_wait(10)
+                        self.test_context.implicitly_wait(4)
 
                         elem = self.test_context.find_element_by_id("auth_user_email")
                         elem.send_keys("dave@jazzthecat.co.uk")
@@ -87,6 +87,8 @@ class UITestCase(TestCase):
 
 
                 try:
+                        self.test_context.implicitly_wait(4)
+
                         elem = self.test_context.find_element_by_id("auth_user_email")
                         elem.send_keys("dave@jazzthecat.co.uk")
                         #elem.send_keys(Keys.TAB)
