@@ -43,7 +43,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -55,7 +55,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
@@ -67,7 +67,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for Selenium UI Test')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
@@ -79,4 +79,4 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Algorithms')
