@@ -28,37 +28,25 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
-
-
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a')
-        self.assertEqual("Home", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of work', 'Create a new scheme of work')
 
 
     def test_page__breadcrumb_navigate_to_learning_episode_index_not_visible_for_new_schemeofwork(self):
         # test and assert
         with self.assertRaises(Exception):
-            self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
+            self.test_context.find_element_by_id('lnk-bc-learning_episoodes')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
         self.assertEqual("Schemes of work", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     """ edit """
@@ -82,7 +70,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of work', 'Create a new scheme of work')
 
 
     def test_page__should_redirect_to_index_if_valid(self):

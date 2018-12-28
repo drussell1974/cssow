@@ -9,7 +9,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -48,7 +48,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -81,5 +81,5 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
 

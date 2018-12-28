@@ -24,14 +24,14 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def test_page__navigate_to_learning_episode_index(self):
 
         # setup
 
-        elem = self.test_context.find_element_by_id("lnk-schemeofwork-76")
+        elem = self.test_context.find_element_by_id("lnk-schemeofwork-11")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -40,23 +40,15 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
-
-
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a').click()
+        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
@@ -67,7 +59,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/edit/new')
+        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
 
 
 

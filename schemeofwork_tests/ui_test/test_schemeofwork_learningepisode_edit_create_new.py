@@ -9,7 +9,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?scheme_of_work_id=11")
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -48,7 +48,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning episode','for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning episode','for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -81,4 +81,4 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','for A-Level Computer Science - Week 1 - Algorithms')

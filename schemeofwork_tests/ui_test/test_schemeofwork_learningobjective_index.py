@@ -9,7 +9,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=47&scheme_of_work_id=76")
+        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
         self.test_context.implicitly_wait(4)
 
 
@@ -25,42 +25,34 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/index/47/76')
-
-
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a').click()
+        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisodes_index(self):
         # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a').click()
+        self.test_context.find_element_by_id('lnk-bc-learning_episodes').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
 
 
     def not_test_page__submenu__navigate_to_learningepisode_new(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/index?learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
 
         # test
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/a').click()
+        self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningobjective/edit/new')
+        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
 
 
 

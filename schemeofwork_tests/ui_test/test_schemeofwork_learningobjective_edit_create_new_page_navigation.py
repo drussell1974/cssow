@@ -9,7 +9,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?learning_episode_id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -28,7 +28,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Algorithms')
 
 
     """ Breadcrumb """
@@ -36,7 +36,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
         self.assertEqual("Schemes of work", elem.text)
 
         # test
@@ -48,23 +48,23 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
         #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
         self.assertEqual("Episodes", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
         #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-learning_objectives')
         self.assertEqual("Objectives", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')

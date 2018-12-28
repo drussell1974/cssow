@@ -42,7 +42,8 @@ def edit():
     learningobjectives_data = db_learningobjective.get_all(db, id_)
 
     if(len(learningobjectives_data) == 0 or model.id != 0):
-        topic_options = db_topic.get_options(db, model.topic_id, model.parent_topic_id);
+        topic_options = db_topic.get_options(db, model.topic_id);
+
 
     content = {
         "main_heading":"Learning episode",

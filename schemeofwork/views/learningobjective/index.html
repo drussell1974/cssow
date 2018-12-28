@@ -16,13 +16,10 @@
           {{pass}}
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('default','index')}}">Home</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">Learning episodes</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">Learning episodes</a>
                 </li>
             </ul>
     </div>

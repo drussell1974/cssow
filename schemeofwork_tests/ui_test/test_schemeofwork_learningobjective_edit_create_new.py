@@ -9,7 +9,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?learning_episode_id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -83,11 +83,11 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Algorithms')
 
 
 
-    def test_page__should_stay_on_same_page_if_valid(self):
+    def test_page__should_redirect_to_index_if_valid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
@@ -122,7 +122,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         all_options = elem.find_elements_by_tag_name('option')
         for opt in all_options:
             if opt.text == "Algorithms":
-                 opt.click()
+                opt.click()
         elem.send_keys(Keys.TAB)
 
         ' ctl-content_id SKIP '
@@ -143,5 +143,4 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
 
         # assert
-        ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')

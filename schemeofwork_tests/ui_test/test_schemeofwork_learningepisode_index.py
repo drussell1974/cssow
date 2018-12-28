@@ -9,7 +9,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningepisode/index?scheme_of_work_id=76")
+        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningepisode/index?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
         self.test_context.implicitly_wait(4)
 
 
@@ -25,34 +25,26 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('learningepisode/index/76')
-
-
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a').click()
+        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def test_page__submenu__navigate_to_learningepisode_new(self):
         # setup
-        self.do_log_in("/schemeofwork/learningepisode/index?scheme_of_work_id=76")
+        self.do_log_in("/schemeofwork/learningepisode/index?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
 
 
 

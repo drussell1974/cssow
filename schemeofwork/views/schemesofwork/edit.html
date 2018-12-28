@@ -13,17 +13,14 @@
       <div class="container">
         <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('default','index')}}">Home</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
+                <!-- SHOULD ONLY DISPLAY IF EXISTING -->
+                {{ if model.id > 0: }}
                 <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.id))}}">Learning episodes</a>
                 </li>
-                <!-- SHOULD ONLY DISPLAY IF EXISTING
-                {{ if model.id > 0: }} -->
-                <li class="nav-item">
-                  <a class="nav-link" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.id))}}">Learning episodes</a>
-                </li>
-                <!-- {{ pass }} -->
+                {{ pass }}
             </ul>
     </div>
 </nav>
@@ -35,7 +32,7 @@
           <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
           <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-          <form name="edit-schemeofwork" id="schemeofworkEdit" method="post" action="save_item">
+          <form name="edit-schemeofwork" id="form" method="post" action="save_item">
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>

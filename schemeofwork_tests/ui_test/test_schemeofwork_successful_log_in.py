@@ -40,7 +40,7 @@ class test_schemeofwork_default(UITestCase):
 
         # assert
         ' redirect back to home page '
-        self.assertWebPageTitleAndHeadingsByRoute("default/index")
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages')
 
 
     def test_page_navigate_to_default_index_after_log_out(self):
@@ -51,4 +51,4 @@ class test_schemeofwork_default(UITestCase):
         self.test_context.find_element_by_id('btn-logout').click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Computing Schemes of work and lessons', 'Computing schemes of work lessons across all key stages')

@@ -9,7 +9,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -28,50 +28,39 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for Selenium UI Test')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
 
 
     """ Breadcrumb """
 
-    def test_page__breadcrumb__navigate_to_default_index(self):
-        #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[1]/a')
-        self.assertEqual("Home", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadingsByRoute('default/index')
-
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[2]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
         self.assertEqual("Schemes of work", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadingsByRoute('schemesofwork/index')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
         #test
-        elem = self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[3]/a')
+        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
         self.assertEqual("Episodes", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for Selenium UI Test') # needs to show scheme of work
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science') # needs to show scheme of work
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):
         #test
 
         with self.assertRaises(Exception):
-            self.test_context.find_element_by_xpath('//*[@id="itemNav"]/div/ul/li[4]/a')
+            self.test_context.find_element_by_id('btn-new')
 

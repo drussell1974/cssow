@@ -9,7 +9,7 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?id=460&learning_episode_id=47&scheme_of_work_id=76")
+        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?id=460&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -83,7 +83,7 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Algorithms')
 
 
 
@@ -136,7 +136,6 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem.send_keys(Keys.TAB)
 
         ' Submit '
-
         elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
@@ -144,4 +143,4 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for Selenium UI Test - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')
