@@ -2,6 +2,7 @@
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 from db_helper import to_db_null
+import db_helper
 
 def get_all(db, learning_episode_id):
 
@@ -253,66 +254,74 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
 
 def get_unassociated_learning_objectives(db, learning_episode_id, key_stage_id, topic_id):
 
-    select_sql = ("SELECT DISTINCT " +
-            "  lob.id as id, " + # 0
-             "  lob.description as description, " + #1
-             "  solo.id as solo_id, " + #2
-             "  solo.name as solo_taxonomy_name, " + #3
-             "  solo.lvl as solo_taxonomy_level, " + #4
-             "  top.id as topic_id, " + #5
-             "  top.name as topic_name, " + #6
-             "  top.parent_id as parent_topic_id, " + #7
-             "  top.parent_name as parent_topic_name, " + #8
-             "  cnt.id as content_id, " + #9
+    str_select = ("SELECT DISTINCT " +
+            "  lob.id as id," + # 0
+             "  lob.description as description," + #1
+             "  solo.id as solo_id," + #2
+             "  solo.name as solo_taxonomy_name," + #3
+             "  solo.lvl as solo_taxonomy_level," + #4
+             "  top.id as topic_id," + #5
+             "  top.name as topic_name," + #6
+             "  top.parent_id as parent_topic_id," + #7
+             "  top.parent_name as parent_topic_name," + #8
+             "  cnt.id as content_id," + #9
              "  cnt.description as content_description, " #10
-             "  exam.id as exam_board_id, " + #11
+             "  exam.id as exam_board_id," + #11
              "  exam.name as exam_board_name, " #12
-             "  ks.id as key_stage_id, " + #13
-             "  ks.name as key_stage_name, " + #14
-             "  lob.created as created, " + #15
-             "  lob.created_by as created_by_id, " + #16
-             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #17
-            " FROM sow_learning_objective as lob " +
-            " LEFT JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_objective_id = lob.id " +
-            " LEFT JOIN sow_learning_episode as le ON le.id = le_lo.learning_episode_id " +
-            " LEFT JOIN view_child_parent_topics as top ON top.id = lob.topic_id OR top.id = lob.parent_id OR top.parent_id = lob.parent_id " +
-            " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id " +
-            " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id " +
-            " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
-            " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
-            " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-            " WHERE ks.id = {} AND top.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null) " +
+             "  ks.id as key_stage_id," + #13
+             "  ks.name as key_stage_name," + #14
+             "  lob.created as created," + #15
+             "  lob.created_by as created_by_id," + #16
+             "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name" + #17
+            " FROM sow_learning_objective as lob" +
+            " LEFT JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_objective_id = lob.id" +
+            " LEFT JOIN sow_learning_episode as le ON le.id = le_lo.learning_episode_id" +
+            " LEFT JOIN view_child_parent_topics as top ON top.id = lob.topic_id OR top.id = lob.parent_id" +
+            " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id" +
+            " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id" +
+            " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id" +
+            " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id" +
+            " LEFT JOIN auth_user as user ON user.id = lob.created_by" +
+            " WHERE ks.id = {} AND (le.id != {} OR le_lo.learning_objective_id is null)" +
             " ORDER BY top.name;")
 
-    select_sql = select_sql.format(key_stage_id, topic_id, learning_episode_id)
-
-    #raise Exception(select_sql)
-    rows = db.executesql(select_sql)
+    str_select = str_select.format(key_stage_id, topic_id, learning_episode_id)
 
     data = [];
 
-    for row in rows:
-        model = LearningObjectiveModel(
-            id_ = row[0],
-            description = row[1],
-            solo_taxonomy_id = row[2],
-            solo_taxonomy_name = row[3],
-            solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = [7],
-            parent_topic_name = [8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            key_stage_id = row[13],
-            key_stage_name = row[14],
-            learning_episode_id = learning_episode_id,
-            created = row[15],
-            created_by_id = row[16],
-            created_by_name = row[17])
-        data.append(model)
+    try:
+        rows = db.executesql(str_select)
+
+
+        for row in rows:
+            model = LearningObjectiveModel(
+                id_ = row[0],
+                description = row[1],
+                solo_taxonomy_id = row[2],
+                solo_taxonomy_name = row[3],
+                solo_taxonomy_level = row[4],
+                topic_id = row[5],
+                topic_name = row[6],
+                parent_topic_id = [7],
+                parent_topic_name = [8],
+                content_id = row[9],
+                content_description = row[10],
+                exam_board_id = row[11],
+                exam_board_name = row[12],
+                key_stage_id = row[13],
+                key_stage_name = row[14],
+                learning_episode_id = learning_episode_id,
+                created = row[15],
+                created_by_id = row[16],
+                created_by_name = row[17])
+
+            data.append(model)
+
+    except Exception as e:
+        db_helper.last_sql = (str_select, "FAILED")
+        raise Exception("Error getting topics", e)
+
+    db_helper.last_sql = (str_select, "SUCCESS")
 
     return data
 
