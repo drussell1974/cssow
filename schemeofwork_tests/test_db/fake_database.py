@@ -16,3 +16,9 @@ class FakeDb:
     def close(self):
         self.cursor.close()
         self.cnx.close()
+
+def contains_learning_objective(rows, id):
+    for item in rows:
+        if item.id == id:
+            return True
+    return False

@@ -67,6 +67,10 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         ' ctl-content_id SKIP '
 
         elem = self.test_context.find_element_by_id("ctl-content_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "fundamentals of programming":
+                 opt.click()
         elem.send_keys(Keys.TAB)
 
         ' ctl-exam_board_id SKIP '
@@ -135,6 +139,8 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
         elem.send_keys(Keys.TAB)
 
+        import time
+        time.sleep(30)
         ' Submit '
 
         elem = self.test_context.find_element_by_id("saveButton")

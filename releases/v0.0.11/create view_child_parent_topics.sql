@@ -1,3 +1,5 @@
+ALTER TABLE sow_topic ADD COLUMN lvl int1 NULL after parent_id;
+
 ALTER 
     ALGORITHM = UNDEFINED 
     DEFINER = `root`@`localhost` 

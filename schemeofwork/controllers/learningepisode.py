@@ -41,8 +41,8 @@ def edit():
     topic_options = []
     learningobjectives_data = db_learningobjective.get_all(db, id_)
 
-    if(len(learningobjectives_data) == 0 or model.id != 0):
-        topic_options = db_topic.get_options(db, model.topic_id);
+    #if(len(learningobjectives_data) == 0):
+    topic_options = db_topic.get_options(db, model.topic_id, 1) #, model.parent_topic_id);
 
 
     content = {

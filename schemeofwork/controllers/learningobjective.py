@@ -20,11 +20,6 @@ def index():
 
     learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id)
 
-    unassociated_learning_objectives = db_learningobjective.get_unassociated_learning_objectives(db,
-        learning_episode_id=learning_episode.id,
-        key_stage_id=learning_episode.key_stage_id,
-        topic_id=learning_episode.topic_id)
-
     content = {
         "main_heading":"Learning objectives",
         "sub_heading": "for {} - Week {} - {}".format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
@@ -37,8 +32,7 @@ def index():
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
-        learningepisiode_options = learning_episode_options,
-        unassociated_learning_objectives = unassociated_learning_objectives
+        learningepisiode_options = learning_episode_options
     )
 
 
@@ -71,7 +65,7 @@ def edit():
     model.key_stage_id = key_stage_id
 
     solo_taxonomy_options = db_solotaxonomy.get_options(db)
-    topic_options = db_topic.get_options(db, learning_episode.topic_id, learning_episode.parent_topic_id)
+    topic_options = db_topic.get_options(db, learning_episode.topic_id, 2)
     content_options = db_content.get_options(db, key_stage_id)
     exam_board_options = db_examboard.get_options(db)
     parent_learning_objective_options = db_learningobjective.get_parent_options(db, current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)

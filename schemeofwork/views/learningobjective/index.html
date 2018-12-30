@@ -75,40 +75,6 @@
         </div>
 
       </div>
-
-    {{if auth.user and len(unassociated_learning_objectives) > 0:}}
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <!-- Related learning objectives -->
-            <h2>Releated learning objectives</h2>
-            <p>Click to add to {{=content["sub_heading"]}}</p>
-            {{ current_topic_id = 0}}
-          {{ for row in unassociated_learning_objectives: }} <!-- unassociated_learning_objectives ordered by topic -->
-            {{ if current_topic_id != int(row.topic_id): }}
-            {{ current_topic_id = row.topic_id }}
-            <h3>{{=row.topic_name}}</h3>
-            {{ pass }}
-          <div class="post-preview">
-            <p class="post-meta">
-                <a href="{{=URL('learningobjective', 'add_existing_objective', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=row.description}}</a>
-                 <br><i class="small">
-                    by <a href="#">{{=row.created_by_name}}</a>
-                    {{if row.created: }}
-                        on {{=str(row.get_ui_created())}}
-                    {{ pass }}
-                </i>
-
-            </p>
-          </div>
-            {{ pass }}
-          <!-- Related learning objectives END -->
-            <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-          </div>
-        </div>
-    {{pass}}
-        </div>
-      </div>
     </div>
 
     <hr>
