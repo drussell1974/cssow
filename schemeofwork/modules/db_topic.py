@@ -6,7 +6,7 @@ import db_helper
 def get_options(db, topic_id, lvl):
 
     str_select = "SELECT DISTINCT id, name, created, created_by FROM view_child_parent_topics WHERE lvl = %s AND (id  = %s or parent_id = %s or related_topic_id = %s);" % (db_helper.to_db_null(lvl), db_helper.to_db_null(topic_id), db_helper.to_db_null(topic_id), db_helper.to_db_null(topic_id))
-    print(str_select)
+
     data = [];
 
     try:
