@@ -72,11 +72,11 @@
           <!-- Pager -->
           <div class="clearfix">
             <ul class="pagination">
-                <li><a href="#" class="btn">1</a></li>
-                <li><a href="#" class="btn">2</a></li>
-                <li><a href="#" class="btn btn-primary">3</a></li>
-                <li><a href="#" class="btn">4</a></li>
-                <li><a href="#" class="btn">5</a></li>
+                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=1))}}" class="btn {{if page == 1:}} btn-primary {{ pass }}">1</a></li>
+                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=2))}}" class="btn {{if page == 2:}} btn-primary {{ pass }}">2</a></li>
+                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=3))}}" class="btn {{if page == 3:}} btn-primary {{ pass }}">3</a></li>
+                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=4))}}" class="btn {{if page == 4:}} btn-primary {{ pass }}">4</a></li>
+                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=5))}}" class="btn {{if page == 5:}} btn-primary {{ pass }}">5</a></li>
               </ul>
           </div>
             <!-- Pager END -->

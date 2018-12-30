@@ -10,6 +10,7 @@ def index():
     """ index action """
 
     key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
+    page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     content = {
         "main_heading":"Schemes of work",
@@ -19,11 +20,11 @@ def index():
               }
 
     # get the schemes of work
-    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id)
+    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id, page = page_to_display)
 
     key_stage_options = db_keystage.get_options(db)
 
-    return dict(content = content, model = data, key_stage_options = key_stage_options)
+    return dict(content = content, model = data, key_stage_options = key_stage_options, page = page_to_display)
 
 
 def view():
