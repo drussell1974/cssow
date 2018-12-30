@@ -88,9 +88,9 @@
             <!-- Content START -->
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
-                <label>Content</label>
-                <select class="form-control" name="content_id" id="ctl-content_id">
-                    <option value="">- Select content (optional) -</option>
+                <label>Curriculum ontent</label>
+                <select class="form-control" name="content_id" id="ctl-content_id" required data-validation-required-message="Please select the curriculum content">
+                    <option value="">- Select curriculum content -</option>
                     {{ for opt in content_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}

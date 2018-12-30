@@ -1,2 +1,0 @@
-ALTER TABLE sow_topic 
-MODIFY COLUMN parent_id INT(11) NULL;
