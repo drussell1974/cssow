@@ -31,7 +31,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
         # setup
 
-        elem = self.test_context.find_element_by_id("lnk-schemeofwork-11")
+        elem = self.test_context.find_element_by_id("lnk-schemeofwork-58")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -40,7 +40,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for KS3 Computing (Track 1)')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
