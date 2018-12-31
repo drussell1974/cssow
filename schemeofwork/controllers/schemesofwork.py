@@ -5,12 +5,24 @@ import db_keystage  #= exec_environment('applications/schemeofwork/models/db_key
 
 from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
+from pager import Pager
 
 def index():
     """ index action """
 
     key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
+
+    # get the schemes of work
+    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id)
+    # get the key stages to show
+    key_stage_options = db_keystage.get_options(db)
+
+    # page the data
+    pager = Pager(page_size=10)
+    pager_pages = pager.page_collection(data)
+    data = pager.data_to_display( page = page_to_display, data = data)
+
 
     content = {
         "main_heading":"Schemes of work",
@@ -19,12 +31,7 @@ def index():
         "background_img":"home-bg.jpg"
               }
 
-    # get the schemes of work
-    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id, page = page_to_display)
-
-    key_stage_options = db_keystage.get_options(db)
-
-    return dict(content = content, model = data, key_stage_options = key_stage_options, page = page_to_display)
+    return dict(content = content, model = data, key_stage_options = key_stage_options, page = page_to_display, pager_pages = pager_pages)
 
 
 def view():

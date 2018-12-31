@@ -14,8 +14,8 @@ def get_options(db):
     return data
 
 
-def get_all(db, key_stage_id=0, page=1):
-    select_sql = ("SELECT " \
+def get_all(db, key_stage_id=0):
+    select_sql = ("SELECT " +
                   "  sow.id as id, " +  # 0
                   "  sow.name as name, " + # 1
                   "  sow.description as description, " +  # 2
@@ -33,9 +33,6 @@ def get_all(db, key_stage_id=0, page=1):
                   " WHERE sow.key_stage_id = {} or {} = 0;".format(key_stage_id, key_stage_id))
 
     rows = db.executesql(select_sql)
-
-    ' Get next 10 '
-    rows = rows[page-1:page+9]
 
     data = [];
 
