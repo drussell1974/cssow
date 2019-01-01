@@ -6,44 +6,47 @@ class Pager:
 
 
     def __init__(self, page = 1, page_size = 10, pager_size = 10, data = []):
-        self.page = page
-        self.page_size = page_size
-        self.pager_size = pager_size
+        self.page = int(page)
+        self.page_size = int(page_size)
+        self.pager_size = int(pager_size)
         self.data = data
+
+        self.start = (self.page-1)*self.page_size
+        self.end = self.start+self.page_size
 
 
     def data_to_display(self):
         """
         Displays e.g. only 10 records at a time
-
-        :param data: the full data set
-        :return: the data to display
         """
-
-        self.start = (self.page-1)*self.page_size
-        self.end = self.start+self.page_size
-
         return self.data[self.start:self.end]
 
 
     def pager_pages(self):
         """
         Display e.g only 5 groups of 10 records (1 - 5, 6 - 10, 11 - 12)
-
-        :param data: the full data set
-        :return: start and end
+        :return: where the pager should start and end
         """
+        print("\n\n\nfunction pager_pages")
 
+        ' start at page 1 by default '
         start_page = 1
-
+        ' If the page number should be in the next group start the pager at the beginning of the next group '
         if self.page > self.pager_size:
-            start_page = self.page - self.page % self.pager_size
+            start_page = self.page - ((self.page % self.pager_size)-1)
 
-        number_of_records = int(len(self.data_to_display()) / self.page_size)
-        end_page = start_page + number_of_records
+        end_page = start_page + self.pager_size
 
-        if number_of_records % self.page_size > 0:
-          end_page = end_page + 1
+        ' find the number of pages remaining from the trailing data '
+        pages_remaining = int(len(self.data[self.start:]) / self.page_size)
+
+        if pages_remaining == 0:
+            ' only show the remaining pages '
+            end_page = start_page + pages_remaining + 1
+
+        if len(self.data) % self.page_size > 0:
+            ' add an extra page if there are more records '
+            end_page = end_page
 
         return start_page, end_page
 

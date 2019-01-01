@@ -19,9 +19,10 @@ def index():
     key_stage_options = db_keystage.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size=10, pager_size=5)
-    pager_pages = pager.pager_pages(data = data)
-    data = pager.data_to_display(page = page_to_display, data = data)
+    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+
+    pager_pages = pager.pager_pages()
+    data = pager.data_to_display()
 
 
     content = {

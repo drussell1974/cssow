@@ -21,7 +21,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 1), result, "number of pages to display not as expected")
+        self.assertEqual((1, 2), result, "number of pages to display not as expected")
 
 
     def test_show_page_1_in_page_1_of_2_pages_for_11_record(self):
@@ -35,7 +35,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,2), result, "number of pages to display not as expected")
+        self.assertEqual((1,3), result, "number of pages to display not as expected")
 
 
     def test_show_page_2_in_page_1_of_2_pages_for_11_record(self):
@@ -49,7 +49,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,2), result, "number of pages to display not as expected")
+        self.assertEqual((1,3), result, "number of pages to display not as expected")
 
 
     def test_show_page_1_in_page_2_of_2_pages_for_11_record(self):
@@ -63,7 +63,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((2,3), result, "number of pages to display not as expected")
+        self.assertEqual((3,5), result, "number of pages to display not as expected")
 
 
 """

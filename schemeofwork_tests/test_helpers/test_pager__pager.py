@@ -14,42 +14,42 @@ class test_pager__pager_pages(TestCase):
 
     def test_show_1_page_for_1_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10,data = ["Chlorine (Cl)"])
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = ["Chlorine (Cl)"])
 
         # test
         pages = self.test.pager_pages()
 
         # assert
 
-        self.assertEqual((1, 1), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 2), pages, "number of pages to display not as expected")
 
 
     def test_show_1_page_for_3_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10,data = ["Cobalt (Co)","Chlorine (Cl)","Potassium (K)"])
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = ["Cobalt (Co)","Chlorine (Cl)","Potassium (K)"])
 
         # test
         pages = self.test.pager_pages()
 
         # assert
 
-        self.assertEqual((1, 1), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 2), pages, "number of pages to display not as expected")
 
     def test_show_1_page_for_10_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10, data = ["foo","bar","fie","fi","fo","fum","fie","fi","fo","fum"])
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = ["foo","bar","fie","fi","fo","fum","fie","fi","fo","fum"])
 
         # test
         pages = self.test.pager_pages()
 
         # assert
 
-        self.assertEqual((1, 1), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_11_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10, data = [
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = [
             "Cobalt (Co)","Chlorine (Cl)","Potassium (K)","Tin (Sn)","Mercury (Pb)",
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
@@ -58,12 +58,12 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,2), pages, "number of pages to display not as expected")
+        self.assertEqual((1,6), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_17_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10,data = [
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = [
             "Cobalt (Co)","Chlorine (Cl)","Potassium (K)","Tin (Sn)","Mercury (Pb)",
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)",
             "Arsenic (As)","Vanadium (V)","Indium (In)","Sodium (Na)","Beryllium (Be)",
@@ -74,12 +74,12 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,2), pages, "number of pages to display not as expected")
+        self.assertEqual((1,6), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_20_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10, data = [
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = [
             "Cobalt (Co)","Chlorine (Cl)","Potassium (K)","Tin (Sn)","Mercury (Pb)",
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)",
             "Arsenic (As)","Vanadium (V)","Indium (In)","Sodium (Na)","Beryllium (Be)",
@@ -90,12 +90,12 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 2), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6), pages, "number of pages to display not as expected")
 
 
     def test_show_3_pages_for_21_record(self):
         # set up
-        self.test = Pager(page = 1, page_size = 10,data = [
+        self.test = Pager(page = 1, page_size = 10, pager_size = 5, data = [
             "Cobalt (Co)","Chlorine (Cl)","Potassium (K)","Tin (Sn)","Mercury (Pb)",
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)",
             "Arsenic (As)","Vanadium (V)","Indium (In)","Sodium (Na)","Beryllium (Be)",
@@ -106,4 +106,4 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,3), pages, "number of pages to display not as expected")
+        self.assertEqual((1,6), pages, "number of pages to display not as expected")
