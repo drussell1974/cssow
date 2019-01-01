@@ -16,6 +16,8 @@ class Pager:
 
         ' find the number of pages '
         self.no_of_pages = int(math.ceil(len(self.data) / self.page_size))
+        #if self.no_of_pages % self.page_size > 0:
+        #    self.no_of_pages + self.no_of_pages + 1
 
         ' find the number of pages remaining from the trailing data '
         self.no_of_pages_remaining = int(len(self.data[self.start:]) / self.page_size)
@@ -43,11 +45,11 @@ class Pager:
 
         end_page = start_page + self.pager_size
 
-
-
         if self.no_of_pages_remaining == 0:
             ' only show the remaining pages '
             end_page = start_page + self.no_of_pages_remaining + 1
+
+        print(start_page, end_page, self.no_of_pages)
 
         return start_page, end_page, self.no_of_pages
 

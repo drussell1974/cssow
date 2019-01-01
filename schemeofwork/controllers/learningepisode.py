@@ -12,12 +12,13 @@ def index():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
+    page_size = int(request.vars.pagesize if request.vars.pagesize is not None else 10)
 
     data = db_learningepisode.get_all(db, scheme_of_work_id)
     schemeofwork_options = db_schemeofwork.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
 
     pager_pages = pager.pager_pages()
     data = pager.data_to_display()

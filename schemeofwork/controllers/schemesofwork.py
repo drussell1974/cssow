@@ -12,6 +12,7 @@ def index():
 
     key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
+    page_size = int(request.vars.pagesize if request.vars.pagesize is not None else 10)
 
     # get the schemes of work
     data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id)
@@ -19,7 +20,7 @@ def index():
     key_stage_options = db_keystage.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
 
     pager_pages = pager.pager_pages()
     data = pager.data_to_display()

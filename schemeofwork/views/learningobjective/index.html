@@ -51,6 +51,7 @@
 
           <!-- Pager Header -->
           <div class="clearfix">
+            {{ if pager_pages[2] > 1: }}
               <ul class="pagination">
                 {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
                     {{ if page_number == pager_pages[0] and page_number != 1:}}
@@ -63,6 +64,7 @@
                 {{ pass }}
 
                 </ul>
+              {{ pass }}
           </div>
             <!-- Pager Header END -->
 
@@ -89,6 +91,7 @@
 
           <!-- Pager Footer -->
           <div class="clearfix">
+            {{ if pager_pages[2] > 1: }}
               <ul class="pagination">
                 {{ if page_number == pager_pages[0] and page_number != 1:}}
                     {{ if page_number == pager_pages[0]:}}
@@ -101,6 +104,7 @@
                 {{ pass }}
 
                 </ul>
+            {{ pass }}
           </div>
             <!-- Pager Footer END -->
         </div>
