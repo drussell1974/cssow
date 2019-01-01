@@ -51,11 +51,11 @@
           <!-- Header Pager -->
           <div class="clearfix">
             <ul class="pagination">
-                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=1, prev=5))}}" class="btn">&larr;</a></li>
-                {{ for page_number in pager_pages: }}
+                <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[0]-1)) }}" class="btn">&larr;</a></li>
+                {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
                     <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=page_number))}}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
                 {{ pass }}
-                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=5, next=5))}}" class="btn">&rarr;</a></li>
+                <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[1])) }}" class="btn">&rarr;</a></li>
               </ul>
           </div>
             <!-- Header Pager END -->
@@ -66,7 +66,7 @@
           <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">
             <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
               <h2 class="post-title">
-                {{=row.get_ui_title()}}
+                {{ = model.index(row) + 1 }} - {{=row.get_ui_title()}}
               </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
               <h3 class="post-subtitle">
                 {{=row.get_ui_sub_heading()}}
@@ -86,11 +86,11 @@
           <!-- Footer Pager -->
           <div class="clearfix">
             <ul class="pagination">
-                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=1, prev=5))}}" class="btn">&larr;</a></li>
-                {{ for page_number in pager_pages: }}
-                    <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=page_number))}}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
+                <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[0]-1)) }}" class="btn">&larr;</a></li>
+                {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
+                    <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=page_number)) }}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
                 {{ pass }}
-                <li><a href="{{=URL('schemesofwork', 'index', vars=dict(page=5, next=5))}}" class="btn">&rarr;</a></li>
+                <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[1])) }}" class="btn">&rarr;</a></li>
               </ul>
           </div>
             <!-- Footer Pager END -->
