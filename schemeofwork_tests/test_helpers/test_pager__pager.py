@@ -21,7 +21,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 2), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 2, 1), pages, "number of pages to display not as expected")
 
 
     def test_show_1_page_for_3_record(self):
@@ -33,7 +33,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 2), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 2, 1), pages, "number of pages to display not as expected")
 
     def test_show_1_page_for_10_record(self):
         # set up
@@ -44,7 +44,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 6), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6, 1), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_11_record(self):
@@ -58,7 +58,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,6), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6, 2), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_17_record(self):
@@ -74,7 +74,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,6), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6, 2), pages, "number of pages to display not as expected")
 
 
     def test_show_2_pages_for_20_record(self):
@@ -90,7 +90,7 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1, 6), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6, 2), pages, "number of pages to display not as expected")
 
 
     def test_show_3_pages_for_21_record(self):
@@ -106,4 +106,4 @@ class test_pager__pager_pages(TestCase):
 
         # assert
 
-        self.assertEqual((1,6), pages, "number of pages to display not as expected")
+        self.assertEqual((1, 6, 3), pages, "number of pages to display not as expected")

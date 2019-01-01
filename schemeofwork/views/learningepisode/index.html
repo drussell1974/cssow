@@ -48,12 +48,17 @@
           <!-- Pager Header  -->
           <div class="clearfix">
             <ul class="pagination">
-                <li><a href="{{ = URL('learningepisode', 'index', vars=dict( page=pager_pages[0]-1, scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&larr;</a></li>
                 {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
+                    {{ if page_number == pager_pages[0] and page_number != 1:}}
+                        <li><a href="{{ = URL('learningepisode', 'index', vars=dict( page=pager_pages[0]-1, scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&larr;</a></li>
+                    {{ pass }}
                     <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=page_number, scheme_of_work_id=scheme_of_work_id)) }}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
+                    {{ if page_number == pager_pages[2]:}}
+                        <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=pager_pages[1], scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&rarr;</a></li>
+                    {{ pass }}
                 {{ pass }}
-                <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=pager_pages[1], scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&rarr;</a></li>
-              </ul>
+
+                </ul>
           </div>
             <!-- Pager Header END -->
           <!-- Scheme of works -->
@@ -78,12 +83,17 @@
           <!-- Pager Footer -->
           <div class="clearfix">
             <ul class="pagination">
-                <li><a href="{{ = URL('learningepisode', 'index', vars=dict( page=pager_pages[0]-1, scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&larr;</a></li>
                 {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
+                    {{ if page_number == pager_pages[0] and page_number != 1:}}
+                        <li><a href="{{ = URL('learningepisode', 'index', vars=dict( page=pager_pages[0]-1, scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&larr;</a></li>
+                    {{ pass }}
                     <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=page_number, scheme_of_work_id=scheme_of_work_id)) }}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
+                    {{ if page_number == pager_pages[2]:}}
+                        <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=pager_pages[1], scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&rarr;</a></li>
+                    {{ pass }}
                 {{ pass }}
-                <li><a href="{{ = URL('learningepisode', 'index', vars=dict(page=pager_pages[1], scheme_of_work_id=scheme_of_work_id)) }}" class="btn">&rarr;</a></li>
-              </ul>
+
+                </ul>
           </div>
             <!-- Pager Footer END -->
           <!-- Scheme of works END -->
