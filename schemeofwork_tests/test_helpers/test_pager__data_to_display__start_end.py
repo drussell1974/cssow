@@ -17,10 +17,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_1__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 1, data = [])
 
         # test
-        self.test.data_to_display(page = 1, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(0, self.test.start)
@@ -30,10 +30,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_2__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 2, data = [])
 
         # test
-        self.test.data_to_display(page = 2, data = [])
+        self.test.data_to_display()
 
         #assert
         self.assertEqual(1, self.test.start)
@@ -43,10 +43,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_10__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 10, data = [])
 
         # test
-        self.test.data_to_display(page = 10, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(9, self.test.start)
@@ -58,10 +58,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_1__page_size_2(self):
 
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 1, data = [])
 
         # test
-        self.test.data_to_display(page = 1, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(0, self.test.start)
@@ -71,10 +71,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_2__page_size_2(self):
 
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 2, data = [])
 
         # test
-        self.test.data_to_display(page = 2, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(2, self.test.start)
@@ -84,10 +84,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_9__page_size_2(self):
 
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 9, data = [])
 
         # test
-        self.test.data_to_display(page = 9, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(16, self.test.start)
@@ -96,10 +96,10 @@ class test_pager__data_to_display__start_end(TestCase):
 
     def test_page_10__page_size_2(self):
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 10, data = [])
 
         #test
-        self.test.data_to_display(page = 10, data = [])
+        self.test.data_to_display()
 
         self.assertEqual(18, self.test.start)
         self.assertEqual(20, self.test.end)
@@ -110,10 +110,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_1__page_size_9(self):
 
         # set up
-        self.test = Pager(page_size = 9)
+        self.test = Pager(page_size = 9, page = 1, data = [])
 
         # test
-        self.test.data_to_display(page = 1, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(0, self.test.start)
@@ -123,10 +123,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_2__page_size_9(self):
 
         # set up
-        self.test = Pager(page_size = 9)
+        self.test = Pager(page_size = 9, page = 2, data = [])
 
         # test
-        self.test.data_to_display(page = 2, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(9, self.test.start)
@@ -136,10 +136,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_9__page_size_9(self):
 
         # set up
-        self.test = Pager(page_size = 9)
+        self.test = Pager(page_size = 9, page = 9, data = [])
 
         # test
-        self.test.data_to_display(page = 9, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(72, self.test.start)
@@ -149,10 +149,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_10__page_size_9(self):
 
         # set up
-        self.test = Pager(page_size = 9)
+        self.test = Pager(page_size = 9, page = 10, data = [])
 
         # test
-        self.test.data_to_display(page = 10, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(81, self.test.start)
@@ -164,10 +164,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_1__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 1, data = [])
 
         # test
-        self.test.data_to_display(page = 1, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(0, self.test.start)
@@ -177,10 +177,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_2__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 2, data = [])
 
         # test
-        self.test.data_to_display(page = 2, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(10, self.test.start)
@@ -190,10 +190,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_9__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 9, data = [])
 
         # test
-        self.test.data_to_display(page = 9, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(80, self.test.start)
@@ -203,10 +203,10 @@ class test_pager__data_to_display__start_end(TestCase):
     def test_page_10__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 10, data = [])
 
         # test
-        self.test.data_to_display(page = 10, data = [])
+        self.test.data_to_display()
 
         # assert
         self.assertEqual(90, self.test.start)

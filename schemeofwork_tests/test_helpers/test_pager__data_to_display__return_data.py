@@ -37,10 +37,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_1__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 1, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 1, data = self.mock_data)
+        result = self.test.data_to_display()
 
         # assert
         #  "Cobalt (Co)", # record 1
@@ -51,10 +51,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_2__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 2, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 2, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         #  "Chlorine (Cl)", # record 2
@@ -65,10 +65,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_10__page_size_1(self):
 
         # set up
-        self.test = Pager(page_size = 1)
+        self.test = Pager(page_size = 1, page = 10, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 10, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         #  "Oxygen (O)", # record 10
@@ -81,10 +81,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_1__page_size_2(self):
 
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 1, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 1, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         #  "Cobalt (Co)", # record 1
@@ -97,10 +97,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_2__page_size_2(self):
 
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 2, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 2, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         #  "Potassium (K)", # record 3
@@ -112,10 +112,10 @@ class test_pager__data_to_display__return_data(TestCase):
 
     def test_page_10__page_size_2(self):
         # set up
-        self.test = Pager(page_size = 2)
+        self.test = Pager(page_size = 2, page = 10, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 10, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         #  "Phospherus (P)", # record 19
@@ -130,10 +130,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_1__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 1, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 1, data = self.mock_data)
+        result = self.test.data_to_display()
 
         #assert
         """
@@ -148,10 +148,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_2__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 2, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 2, data = self.mock_data)
+        result = self.test.data_to_display()
 
         # assert
         """
@@ -165,10 +165,10 @@ class test_pager__data_to_display__return_data(TestCase):
     def test_page_3__page_size_10(self):
 
         # set up
-        self.test = Pager(page_size = 10)
+        self.test = Pager(page_size = 10, page = 3, data = self.mock_data)
 
         # test
-        result = self.test.data_to_display(page = 3, data = self.mock_data)
+        result = self.test.data_to_display()
 
         # assert
         #  "Helium (He)"] #21
