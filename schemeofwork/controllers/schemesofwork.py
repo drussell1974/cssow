@@ -32,7 +32,11 @@ def index():
         "background_img":"home-bg.jpg"
               }
 
-    return dict(content = content, model = data, key_stage_options = key_stage_options, page = page_to_display, pager_pages = pager_pages)
+    return dict(content = content,
+                model = data,
+                key_stage_options = key_stage_options,
+                page = page_to_display,
+                pager_pages = pager_pages)
 
 
 def view():

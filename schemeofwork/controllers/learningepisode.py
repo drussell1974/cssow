@@ -1,18 +1,26 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
-import db_schemeofwork  #= exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
-import db_learningepisode  #= exec_environment('applications/schemeofwork/models/db_learningepisode.py', request=request)
-import db_learningobjective  #= exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
-import db_topic  #= exec_environment('applications/schemeofwork/models/db_topic.py', request=request)
+from pager import Pager
+import db_schemeofwork
+import db_learningepisode
+import db_learningobjective
+import db_topic
 
 def index():
     """ index action """
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
+    page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     data = db_learningepisode.get_all(db, scheme_of_work_id)
     schemeofwork_options = db_schemeofwork.get_options(db)
+
+    # page the data
+    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+
+    pager_pages = pager.pager_pages()
+    data = pager.data_to_display()
 
     content = {
         "main_heading":"Learning episodes",
@@ -20,7 +28,12 @@ def index():
         "background_img":"home-bg.jpg"
               }
 
-    return dict(content = content, model = data, scheme_of_work_id = scheme_of_work_id, schemeofwork_options = schemeofwork_options)
+    return dict(content = content,
+                model = data,
+                scheme_of_work_id = scheme_of_work_id,
+                schemeofwork_options = schemeofwork_options,
+                page = page_to_display,
+                pager_pages = pager_pages)
 
 
 @auth.requires_login()
@@ -43,7 +56,6 @@ def edit():
 
     #if(len(learningobjectives_data) == 0):
     topic_options = db_topic.get_options(db, model.topic_id, 1) #, model.parent_topic_id);
-
 
     content = {
         "main_heading":"Learning episode",
