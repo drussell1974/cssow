@@ -18,7 +18,8 @@ def index():
     schemeofwork_options = db_schemeofwork.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
+    pager_size = 5
+    pager = Pager(page = page_to_display, page_size = page_size, pager_size = pager_size, data = data)
 
     pager_pages = pager.pager_pages()
     data = pager.data_to_display()
@@ -34,7 +35,8 @@ def index():
                 scheme_of_work_id = scheme_of_work_id,
                 schemeofwork_options = schemeofwork_options,
                 page = page_to_display,
-                pager_pages = pager_pages)
+                pager_pages = pager_pages,
+                pager_size = pager_size)
 
 
 @auth.requires_login()

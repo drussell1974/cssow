@@ -25,7 +25,8 @@ def index():
     learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
+    pager_size = 5
+    pager = Pager(page = page_to_display, page_size = page_size, pager_size = pager_size, data = data)
 
     pager_pages = pager.pager_pages()
     data = pager.data_to_display()
@@ -44,7 +45,8 @@ def index():
         learning_episode_id = learning_episode_id,
         learningepisiode_options = learning_episode_options,
         page = page_to_display,
-        pager_pages = pager_pages
+        pager_pages = pager_pages,
+        pager_size = pager_size
     )
 
 

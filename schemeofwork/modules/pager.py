@@ -14,11 +14,6 @@ class Pager:
         self.start = (self.page-1)*self.page_size
         self.end = self.start+self.page_size
 
-        ' find the number of pages '
-        self.no_of_pages = int(math.ceil(len(self.data) / self.page_size))
-        #if self.no_of_pages % self.page_size > 0:
-        #    self.no_of_pages + self.no_of_pages + 1
-
         ' find the number of pages remaining from the trailing data '
         self.no_of_pages_remaining = int(len(self.data[self.start:]) / self.page_size)
 
@@ -30,12 +25,11 @@ class Pager:
         return self.data[self.start:self.end]
 
 
-    def pager_pages(self):
+    def pager_pages(self, url = ""):
         """
         Display e.g only 5 groups of 10 records (1 - 5, 6 - 10, 11 - 12)
-        :return: where the pager should start and end
+        :return: html
         """
-        print("\n\n\nfunction pager_pages")
 
         ' start at page 1 by default '
         start_page = 1
@@ -49,8 +43,35 @@ class Pager:
             ' only show the remaining pages '
             end_page = start_page + self.no_of_pages_remaining + 1
 
-        print(start_page, end_page, self.no_of_pages)
+        html = ""
 
-        return start_page, end_page, self.no_of_pages
+        for page_number in range(start_page, end_page):
+
+            ' create previous '
+            if page_number > 1 and page_number % self.pager_size == 1:
+                html = html + create_list_item(url, self.page, page_number - 1, "&larr;")
+
+            html = html + create_list_item(url, self.page, page_number, page_number)
+
+            ' create next '
+            if page_number > 1 and page_number % self.pager_size == 0:
+                html = html + create_list_item(url, self.page, page_number + 1, "&rarr;")
+
+        return start_page, end_page, html
+
+
+def create_list_item(url, current_page, page_number, text):
+    html = "<li><a href='{}".format(url)
+    ' append url with ? or &'
+    if "?" in url:
+        html = html + "&"
+    else:
+        html = html + "?"
+    ' add page number to url '
+    html = html + "page={}' class='btn ".format(page_number)
+    if current_page == page_number:
+        html = html + "btn-primary"
+    html = html + "'>{}</a></li>".format(text)
+    return html
 
 

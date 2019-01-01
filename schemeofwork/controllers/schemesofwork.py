@@ -20,9 +20,11 @@ def index():
     key_stage_options = db_keystage.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
+    pager_size = 5
+    pager = Pager(page = page_to_display, page_size = page_size, pager_size = pager_size, data = data)
 
-    pager_pages = pager.pager_pages()
+    pager_pages = pager.pager_pages(URL('schemesofwork', 'index'))
+
     data = pager.data_to_display()
 
 
@@ -37,7 +39,8 @@ def index():
                 model = data,
                 key_stage_options = key_stage_options,
                 page = page_to_display,
-                pager_pages = pager_pages)
+                pager_pages = pager_pages,
+                pager_size = pager_size)
 
 
 def view():

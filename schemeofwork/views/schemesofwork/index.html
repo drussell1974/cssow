@@ -50,20 +50,11 @@
 
           <!-- Pager Header -->
           <div class="clearfix">
-            {{ if pager_pages[2] > 1: }}
-            <ul class="pagination">
-                {{ for page_number in range(pager_pages[0], pager_pages[1]): }}
-                    {{ if page_number == pager_pages[0] and page_number != 1:}}
-                        <li><a href="{{ = URL('schemesofwork', 'index', vars=dict( page=pager_pages[0]-1)) }}" class="btn">&larr;</a></li>
-                    {{ pass }}
-                    <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=page_number)) }}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
-                    {{ if page_number == pager_pages[2]:}}
-                        <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[1])) }}" class="btn">&rarr;</a></li>
-                    {{ pass }}
-                {{ pass }}
 
-                </ul>
-            {{ pass }}
+            <ul class="pagination">
+                {{ =XML(pager_pages[2]) }}
+            </ul>
+
           </div>
             <!-- Pager Header END -->
 
@@ -92,20 +83,10 @@
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">
-            {{ if pager_pages[2] > 1: }}
-                <ul class="pagination">
-                {{ if page_number == pager_pages[0] and page_number != 1:}}
-                    {{ if page_number == pager_pages[0]:}}
-                        <li><a href="{{ = URL('schemesofwork', 'index', vars=dict( page=pager_pages[0]-1)) }}" class="btn">&larr;</a></li>
-                    {{ pass }}
-                    <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=page_number)) }}" class="btn {{if page == page_number:}} btn-primary {{ pass }}">{{=page_number}}</a></li>
-                    {{ if page_number == pager_pages[2]:}}
-                        <li><a href="{{ = URL('schemesofwork', 'index', vars=dict(page=pager_pages[1])) }}" class="btn">&rarr;</a></li>
-                    {{ pass }}
-                {{ pass }}
 
+                <ul class="pagination">
+                    {{ =XML(pager_pages[2]) }}
                 </ul>
-            {{ pass }}
           </div>
             <!-- Pager Footer END -->
           <!-- Scheme of works END -->
