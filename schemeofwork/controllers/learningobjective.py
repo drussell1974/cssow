@@ -1,24 +1,33 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
-import db_schemeofwork  # = exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
-import db_learningobjective  # = exec_environment('applications/schemeofwork/models/db_learningobjective.py', request=request)
-import db_solotaxonomy  #= exec_environment('applications/schemeofwork/models/db_solotaxonomy.py', request=request)
-import db_topic  #= exec_environment('applications/schemeofwork/models/db_topic.py', request=request)
-import db_content  #= exec_environment('applications/schemeofwork/models/db_content.py', request=request)
-import db_examboard  #= exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
-import db_learningepisode  #= exec_environment('applications/schemeofwork/models/db_learningepisode.py', request=request)
+from pager import Pager
+import db_schemeofwork
+import db_learningobjective
+import db_solotaxonomy
+import db_topic
+import db_content
+import db_examboard
+import db_learningepisode
 
 def index():
     """ index action """
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
+    page_to_display = int(request.vars.page if request.vars.page is not None else 1)
+
 
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
     learning_episode = db_learningepisode.get_model(db, learning_episode_id)
     data = db_learningobjective.get_all(db, learning_episode_id)
 
     learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id)
+
+    # page the data
+    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+
+    pager_pages = pager.pager_pages()
+    data = pager.data_to_display()
 
     content = {
         "main_heading":"Learning objectives",
@@ -32,7 +41,9 @@ def index():
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
-        learningepisiode_options = learning_episode_options
+        learningepisiode_options = learning_episode_options,
+        page = page_to_display,
+        pager_pages = pager_pages
     )
 
 
