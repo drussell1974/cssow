@@ -5,23 +5,24 @@ import sys
 sys.path.insert(0, '../../schemeofwork/modules')
 from pager import Pager
 
-class test_pager__pager_pages(TestCase):
+class test_pager__render_html__by_page_number(TestCase):
 
 
     def setUp(self):
         pass #self.test = Pager(page_size = 10, pager_size = 2)
 
 
-    def test_show_page_1_of_1__for_1_record(self):
+    def test_show_page_1__of_1__for_1_record(self):
         # set up
         self.test = Pager(page = 1, page_size = 2, pager_size = 2, data = ["Chlorine (Cl)"])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
 
-        self.assertEqual((1, 2), result, "number of pages to display not as expected")
+        self.assertEqual(1, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(2, self.test.end_pager_at, "end_pager_at not as expected")
 
 
     def test_show_page_1_in_page_1_of_2_pages_for_11_record(self):
@@ -31,11 +32,12 @@ class test_pager__pager_pages(TestCase):
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
 
-        self.assertEqual((1, 3), result, "number of pages to display not as expected")
+        self.assertEqual(1, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(3, self.test.end_pager_at, "end_pager_at not as expected")
 
 
     def test_show_page_2_in_page_1_of_2_pages_for_11_record(self):
@@ -45,11 +47,12 @@ class test_pager__pager_pages(TestCase):
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
 
-        self.assertEqual((1, 3), result, "number of pages to display not as expected")
+        self.assertEqual(1, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(3, self.test.end_pager_at, "end_pager_at not as expected")
 
 
     def test_show_page_1_in_page_2_of_2_pages_for_11_record(self):
@@ -59,10 +62,11 @@ class test_pager__pager_pages(TestCase):
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
-        self.assertEqual((3, 5), result, "number of pages to display not as expected")
+        self.assertEqual(3, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(5, self.test.end_pager_at, "end_pager_at not as expected")
 
 
     def test_show_page_2_in_page_2_of_2_pages_for_11_record(self):
@@ -72,10 +76,11 @@ class test_pager__pager_pages(TestCase):
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
-        self.assertEqual((3, 5), result, "number of pages to display not as expected")
+        self.assertEqual(3, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(5, self.test.end_pager_at, "end_pager_at not as expected")
 
 
     def test_show_page_6_in_page_1_of_2_pages_for_11_record(self):
@@ -85,7 +90,8 @@ class test_pager__pager_pages(TestCase):
             "Iron (Fe)","Gold (Au)","Carbon (C)","Hydroen (H)","Oxygen (O)","Copper (Cu)",])
 
         # test
-        result = self.test.pager_pages()
+        result = self.test.render_html()
 
         # assert
-        self.assertEqual((7, 8), result, "number of pages to display not as expected")
+        self.assertEqual(7, self.test.start_pager_at, "start_pager_at not as expected")
+        self.assertEqual(8, self.test.end_pager_at, "end_pager_at not as expected")

@@ -25,27 +25,27 @@ class Pager:
         return self.data[self.start:self.end]
 
 
-    def pager_pages(self, url = ""):
+    def render_html(self, url = ""):
         """
         Display e.g only 5 groups of 10 records (1 - 5, 6 - 10, 11 - 12)
         :return: html
         """
 
         ' start at page 1 by default '
-        start_page = 1
+        self.start_pager_at = 1
         ' If the page number should be in the next group start the pager at the beginning of the next group '
         if self.page > self.pager_size:
-            start_page = self.page - ((self.page % self.pager_size)-1)
+            self.start_pager_at = self.page - ((self.page % self.pager_size)-1)
 
-        end_page = start_page + self.pager_size
+        self.end_pager_at = self.start_pager_at + self.pager_size
 
         if self.no_of_pages_remaining == 0:
             ' only show the remaining pages '
-            end_page = start_page + self.no_of_pages_remaining + 1
+            self.end_pager_at = self.start_pager_at + self.no_of_pages_remaining + 1
 
         html = ""
 
-        for page_number in range(start_page, end_page):
+        for page_number in range(self.start_pager_at, self.end_pager_at):
 
             ' create previous '
             if page_number > 1 and page_number % self.pager_size == 1:
@@ -57,7 +57,7 @@ class Pager:
             if page_number > 1 and page_number % self.pager_size == 0:
                 html = html + create_list_item(url, self.page, page_number + 1, "&rarr;")
 
-        return start_page, end_page, html
+        return html
 
 
 def create_list_item(url, current_page, page_number, text):

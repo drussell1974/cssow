@@ -21,7 +21,7 @@ def index():
     pager_size = 5
     pager = Pager(page = page_to_display, page_size = page_size, pager_size = pager_size, data = data)
 
-    pager_pages = pager.pager_pages()
+    pager_html = pager.render_html()
     data = pager.data_to_display()
 
     content = {
@@ -35,7 +35,7 @@ def index():
                 scheme_of_work_id = scheme_of_work_id,
                 schemeofwork_options = schemeofwork_options,
                 page = page_to_display,
-                pager_pages = pager_pages,
+                pager_html = pager_html,
                 pager_size = pager_size)
 
 
