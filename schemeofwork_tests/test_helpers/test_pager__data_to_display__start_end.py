@@ -23,8 +23,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(0, self.test.start)
-        self.assertEqual(1, self.test.end)
+        self.assertEqual(0, self.test.display_records_start)
+        self.assertEqual(1, self.test.display_records_end)
 
 
     def test_page_2__page_size_1(self):
@@ -36,8 +36,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         #assert
-        self.assertEqual(1, self.test.start)
-        self.assertEqual(2, self.test.end)
+        self.assertEqual(1, self.test.display_records_start)
+        self.assertEqual(2, self.test.display_records_end)
 
 
     def test_page_10__page_size_1(self):
@@ -49,8 +49,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(9, self.test.start)
-        self.assertEqual(10, self.test.end)
+        self.assertEqual(9, self.test.display_records_start)
+        self.assertEqual(10, self.test.display_records_end)
 
 
     # page size 2
@@ -64,8 +64,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(0, self.test.start)
-        self.assertEqual(2, self.test.end)
+        self.assertEqual(0, self.test.display_records_start)
+        self.assertEqual(2, self.test.display_records_end)
 
 
     def test_page_2__page_size_2(self):
@@ -77,8 +77,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(2, self.test.start)
-        self.assertEqual(4, self.test.end)
+        self.assertEqual(2, self.test.display_records_start)
+        self.assertEqual(4, self.test.display_records_end)
 
 
     def test_page_9__page_size_2(self):
@@ -90,8 +90,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(16, self.test.start)
-        self.assertEqual(18, self.test.end)
+        self.assertEqual(16, self.test.display_records_start)
+        self.assertEqual(18, self.test.display_records_end)
 
 
     def test_page_10__page_size_2(self):
@@ -101,8 +101,8 @@ class test_pager__data_to_display__start_end(TestCase):
         #test
         self.test.data_to_display()
 
-        self.assertEqual(18, self.test.start)
-        self.assertEqual(20, self.test.end)
+        self.assertEqual(18, self.test.display_records_start)
+        self.assertEqual(20, self.test.display_records_end)
 
 
     # page size 9
@@ -116,8 +116,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(0, self.test.start)
-        self.assertEqual(9, self.test.end)
+        self.assertEqual(0, self.test.display_records_start)
+        self.assertEqual(9, self.test.display_records_end)
 
 
     def test_page_2__page_size_9(self):
@@ -129,8 +129,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(9, self.test.start)
-        self.assertEqual(18, self.test.end)
+        self.assertEqual(9, self.test.display_records_start)
+        self.assertEqual(18, self.test.display_records_end)
 
 
     def test_page_9__page_size_9(self):
@@ -142,8 +142,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(72, self.test.start)
-        self.assertEqual(81, self.test.end)
+        self.assertEqual(72, self.test.display_records_start)
+        self.assertEqual(81, self.test.display_records_end)
 
 
     def test_page_10__page_size_9(self):
@@ -155,8 +155,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(81, self.test.start)
-        self.assertEqual(90, self.test.end)
+        self.assertEqual(81, self.test.display_records_start)
+        self.assertEqual(90, self.test.display_records_end)
 
 
     # page size 10
@@ -170,8 +170,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(0, self.test.start)
-        self.assertEqual(10, self.test.end)
+        self.assertEqual(0, self.test.display_records_start)
+        self.assertEqual(10, self.test.display_records_end)
 
 
     def test_page_2__page_size_10(self):
@@ -183,8 +183,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(10, self.test.start)
-        self.assertEqual(20, self.test.end)
+        self.assertEqual(10, self.test.display_records_start)
+        self.assertEqual(20, self.test.display_records_end)
 
 
     def test_page_9__page_size_10(self):
@@ -196,8 +196,8 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(80, self.test.start)
-        self.assertEqual(90, self.test.end)
+        self.assertEqual(80, self.test.display_records_start)
+        self.assertEqual(90, self.test.display_records_end)
 
 
     def test_page_10__page_size_10(self):
@@ -209,5 +209,5 @@ class test_pager__data_to_display__start_end(TestCase):
         self.test.data_to_display()
 
         # assert
-        self.assertEqual(90, self.test.start)
-        self.assertEqual(100, self.test.end)
+        self.assertEqual(90, self.test.display_records_start)
+        self.assertEqual(100, self.test.display_records_end)

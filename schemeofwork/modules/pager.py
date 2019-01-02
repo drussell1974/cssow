@@ -5,24 +5,21 @@ class Pager:
     list_item = "<li><a href='{{=URL('schemesofwork', 'index', vars=dict(page=1))}}' class='btn {{if page == 1:}} btn-primary {{ pass }}'>1</a></li>"
 
 
-    def __init__(self, page = 1, page_size = 10, pager_size = 10, data = []):
+    def __init__(self, page = 1, page_size = 10, pager_size = 5, data = []):
         self.page = int(page)
         self.page_size = int(page_size)
         self.pager_size = int(pager_size)
         self.data = data
         ' range of data to display '
-        self.start = (self.page-1)*self.page_size
-        self.end = self.start+self.page_size
-
-        ' find the number of pages remaining from the trailing data '
-        self.no_of_pages_remaining = int(len(self.data[self.start:]) / self.page_size)
+        self.display_records_start = (self.page-1)*self.page_size
+        self.display_records_end = self.display_records_start+self.page_size
 
 
     def data_to_display(self):
         """
         Displays e.g. only 10 records at a time
         """
-        return self.data[self.start:self.end]
+        return self.data[self.display_records_start:self.display_records_end]
 
 
     def render_html(self, url = ""):
@@ -31,31 +28,44 @@ class Pager:
         :return: html
         """
 
-        ' start at page 1 by default '
-        self.start_pager_at = 1
-        ' If the page number should be in the next group start the pager at the beginning of the next group '
-        if self.page > self.pager_size:
-            self.start_pager_at = self.page - ((self.page % self.pager_size)-1)
+        start_pager_at = 1
+        ' start at beginning of the page group '
+        if  self.page > self.pager_size:
+            start_pager_at = (self.page - (self.page % self.pager_size)) * self.page_size
 
-        self.end_pager_at = self.start_pager_at + self.pager_size
+        print("start={}".format(start_pager_at))
 
-        if self.no_of_pages_remaining == 0:
-            ' only show the remaining pages '
-            self.end_pager_at = self.start_pager_at + self.no_of_pages_remaining + 1
+        ' default end '
+        end_pager_at = start_pager_at + (self.pager_size * self.page_size)
+
+        print("end={}".format(end_pager_at))
+        show_next = True
+
+        ' unless there are fewer pages '
+        if end_pager_at > self.display_records_end:
+            end_pager_at = self.display_records_end
+            show_next = False
+
+        print("end={}, show_next = {}".format(end_pager_at, show_next))
 
         html = ""
+        page_number = int(start_pager_at / self.page_size) + 1
 
-        for page_number in range(self.start_pager_at, self.end_pager_at):
+        ' create previous '
 
-            ' create previous '
-            if page_number > 1 and page_number % self.pager_size == 1:
-                html = html + create_list_item(url, self.page, page_number - 1, "&larr;")
+        if start_pager_at > 1:
+            html = html + create_list_item(url, self.page, page_number - 1, "&larr;")
 
+        ' create list item '
+
+        for x in range(start_pager_at, end_pager_at, self.pager_size):
             html = html + create_list_item(url, self.page, page_number, page_number)
 
             ' create next '
-            if page_number > 1 and page_number % self.pager_size == 0:
+            if start_pager_at == end_pager_at and show_next == True:
                 html = html + create_list_item(url, self.page, page_number + 1, "&rarr;")
+
+            page_number = page_number + 1
 
         return html
 
@@ -68,9 +78,9 @@ def create_list_item(url, current_page, page_number, text):
     else:
         html = html + "?"
     ' add page number to url '
-    html = html + "page={}' class='btn ".format(page_number)
+    html = html + "page={}' class='btn".format(page_number)
     if current_page == page_number:
-        html = html + "btn-primary"
+        html = html + " btn-primary"
     html = html + "'>{}</a></li>".format(text)
     return html
 
