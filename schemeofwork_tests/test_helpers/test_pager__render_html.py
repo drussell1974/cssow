@@ -56,7 +56,7 @@ class test_pager__render_html(TestCase):
 
     def test_show_pages_1_to_5_with_next_for_26_records(self):
         # set up
-        self.test = Pager(page = 5, page_size = 5, pager_size = 5, data = [
+        self.test = Pager(page = 1, page_size = 5, pager_size = 5, data = [
             "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
             "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
             "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
@@ -68,11 +68,11 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual("<li><a href='?page=1' class='btn'>1</a></li>"\
+        self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>"\
                          "<li><a href='?page=2' class='btn'>2</a></li>"\
                          "<li><a href='?page=3' class='btn'>3</a></li>"\
                          "<li><a href='?page=4' class='btn'>4</a></li>"\
-                         "<li><a href='?page=5' class='btn btn-primary'>5</a></li>"\
+                         "<li><a href='?page=5' class='btn'>5</a></li>"\
                          "<li><a href='?page=6' class='btn'>&rarr;</a></li>", result)
 
 

@@ -28,44 +28,32 @@ class Pager:
         :return: html
         """
 
-        start_pager_at = 1
+        start_page = 1
         ' start at beginning of the page group '
-        if  self.page > self.pager_size:
-            start_pager_at = (self.page - (self.page % self.pager_size)) * self.page_size
+        if self.page > self.pager_size:
+            start_page = (self.page - (self.page % self.pager_size)) + 1
 
-        print("start={}".format(start_pager_at))
+        total_number_of_records = len(self.data)
+        remaining = total_number_of_records % (self.pager_size * self.page_size)
 
-        ' default end '
-        end_pager_at = start_pager_at + (self.pager_size * self.page_size)
+        end_page = start_page + self.pager_size
+        if remaining <= end_page:
+            end_page = start_page + int(math.ceil(remaining / self.pager_size))
 
-        print("end={}".format(end_pager_at))
-        show_next = True
-
-        ' unless there are fewer pages '
-        if end_pager_at > self.display_records_end:
-            end_pager_at = self.display_records_end
-            show_next = False
-
-        print("end={}, show_next = {}".format(end_pager_at, show_next))
-
+        print("start {} end {} remaining {}".format(start_page, end_page, remaining))
         html = ""
-        page_number = int(start_pager_at / self.page_size) + 1
 
-        ' create previous '
+        ' create list items '
+        for page_number in range(start_page, end_page):
+            if page_number > 1 and page_number % self.pager_size == 1:
+                ' create previous '
+                html = html + create_list_item(url, self.page, page_number - 1, "&larr;")
 
-        if start_pager_at > 1:
-            html = html + create_list_item(url, self.page, page_number - 1, "&larr;")
-
-        ' create list item '
-
-        for x in range(start_pager_at, end_pager_at, self.pager_size):
             html = html + create_list_item(url, self.page, page_number, page_number)
 
             ' create next '
-            if start_pager_at == end_pager_at and show_next == True:
+            if page_number % self.pager_size == 0:
                 html = html + create_list_item(url, self.page, page_number + 1, "&rarr;")
-
-            page_number = page_number + 1
 
         return html
 
