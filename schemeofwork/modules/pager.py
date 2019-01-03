@@ -2,10 +2,13 @@ import math
 
 class Pager:
 
-    list_item = "<li><a href='{{=URL('schemesofwork', 'index', vars=dict(page=1))}}' class='btn {{if page == 1:}} btn-primary {{ pass }}'>1</a></li>"
 
 
-    def __init__(self, page = 1, page_size = 10, pager_size = 5, data = []):
+    def __init__(self, page = 1, page_size = 10, pager_size = 10, data = []):
+        import datetime
+        print("***************************************************")
+        print("***Pager.__init__ @ {} ***".format(datetime.datetime.now()))
+
         self.page = int(page)
         self.page_size = int(page_size)
         self.pager_size = int(pager_size)
@@ -16,35 +19,50 @@ class Pager:
         self.display_records_start = (self.page-1)*self.page_size
         self.display_records_end = self.display_records_start+self.page_size
 
+        ' show page group '
 
-        ' start page in current group '
+        total_number_of_pages = len(self.data) / self.pager_size
+        if total_number_of_pages <= 1.0:
+            """ there is only one page of records """
 
-        self.start_page_in_current_group = 1
-        self.show_prev_group_of_pages = False
-
-        if self.page > self.pager_size:
-            self.start_page_in_current_group = self.page - (self.page % self.pager_size)
-            self.show_prev_group_of_pages = True
-
-        ' number of pages in current group '
-        total_number_of_records = len(self.data)
-        total_number_of_pages = total_number_of_records / self.page_size + total_number_of_records % self.page_size
-        number_of_pages_remaining = total_number_of_pages - self.start_page_in_current_group
-
-        ' end page in current group '
-
-        if number_of_pages_remaining <= self.pager_size:
-            self.end_page_in_current_group = self.start_page_in_current_group + number_of_pages_remaining
+            self.start_page_in_current_group = 1
+            self.show_prev_group_of_pages = False
+            self.end_page_in_current_group = 1
             self.show_next_group_of_pages = False
+
         else:
-            self.end_page_in_current_group = self.start_page_in_current_group + self.pager_size - 1
-            self.show_next_group_of_pages = True
-        import datetime
-        print("******************** {} *******************".format(datetime.datetime.now()))
-        print("self.start_page = {}, self.end_page = {}, self.show_prev = {}, self.show_next = {}, total_number_of_records = {}, total_number_of_pages = {}, number_of_pages_remaining = {}"
-              .format(self.start_page_in_current_group, self.end_page_in_current_group, self.show_prev_group_of_pages, self.show_next_group_of_pages, total_number_of_records, total_number_of_pages, number_of_pages_remaining))
+            """ there is more than one page """
+
+            if self.page <= self.pager_size:
+                """ first group """
+                self.start_page_in_current_group = 1
+                self.show_prev_group_of_pages = False
+            elif self.page % self.pager_size == 0:
+                """ last page in group """
+                self.start_page_in_current_group = self.page + 1 - self.pager_size
+                self.show_prev_group_of_pages = True
+            else:
+                """ not first page in group """
+                self.start_page_in_current_group = self.page + 1 - (self.page % self.pager_size)
+                self.show_prev_group_of_pages = True
 
 
+            ' check if there are more pages '
+
+            self.starting_record_in_group = (self.start_page_in_current_group - 1) * self.page_size
+            print("self.first_record_in_group={}".format(self.starting_record_in_group))
+            self.remaining_number_of_records = len(self.data[self.starting_record_in_group:])
+            print("self.remaining_number_of_records={}".format(self.remaining_number_of_records))
+
+            self.remaining_number_of_pages = int(math.ceil(self.remaining_number_of_records / self.page_size)) # + (self.remaining_number_of_records % self.page_size))
+            print("self.remaining_number_of_pages={}".format(self.remaining_number_of_pages))
+
+            if self.remaining_number_of_pages > self.pager_size:
+                self.show_next_group_of_pages = True
+                self.end_page_in_current_group = self.start_page_in_current_group + self.pager_size - 1
+            else:
+                self.show_next_group_of_pages = False
+                self.end_page_in_current_group = self.start_page_in_current_group + self.remaining_number_of_pages
 
 
     def data_to_display(self):
@@ -81,6 +99,7 @@ class Pager:
 
         return html
 
+#list_item = "<li><a href='{{=URL('schemesofwork', 'index', vars=dict(page=1))}}' class='btn {{if page == 1:}} btn-primary {{ pass }}'>1</a></li>"
 
 def create_list_item(url, current_page, page_number, text):
     html = "<li><a href='{}".format(url)

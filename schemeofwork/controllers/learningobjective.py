@@ -27,7 +27,7 @@ def index():
     # page the data
     pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
 
-    pager_html = pager.render_html()
+    pager_html = pager.render_html(URL('learningobjective', 'index', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id)))
     data = pager.data_to_display()
 
     content = {
