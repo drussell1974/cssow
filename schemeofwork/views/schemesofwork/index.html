@@ -12,9 +12,7 @@
 {{end}}
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
       <div class="container">
-          {{if auth.user:}}
-              <a class="navbar-brand btn btn-primary" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
-          {{pass}}
+
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                   <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
@@ -27,38 +25,43 @@
 <!-- Main Content -->
     <div class="container">
       <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <!-- SIDE MENU START -->
+            <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Filters
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Show All</a>
+                  </li>
+                {{ for opt in key_stage_options: }}
+                <li class="nav-item">
+                  <a class="nav-link {{ if key_stage_id == opt.id: }} mark {{ pass }}" href="{{=URL('schemesofwork', 'index', vars=dict(key_stage_id=opt.id))}}">{{=opt.name}}</a>
+                </li>
+                {{ pass }}
+            </ul>
+          </div>
+          <hr>
+            <!-- SIDE MENU END -->
+        </div>
         <div class="col-lg-8 col-md-10 mx-auto">
-            <!-- Filters Start -->
-            <form name="filter-schemeofwork" id="schemeofworkFilter" method="post" action="index">
-                <div class="control-group">
-                  <div class="form-group floating-label-form-group controls">
-                    <label>Key stage</label>
-                    <select class="form-control" name="key_stage_id" id="key_stage_id" required data-validation-required-message="Please select a key stage.">
-                        <option value="">- Select a key stage -</option>
-                        {{ for opt in key_stage_options: }}
-                            <option value="{{=opt.id}}">{{=opt.name}}</option>
-                        {{ pass }}
-                    </select>
-                    <p class="help-block text-danger"></p>
-                      <div class="form-group">
-                            <button type="submit" class="btn" id="changeButton">Filter</button>
-                        </div>
-                  </div>
-                </div>
-            </form>
 
 
           <!-- Pager Header -->
           <div class="clearfix">
 
-            <ul class="pagination">
+              <ul class="pagination">
                 {{ =XML(pager_html) }}
-            </ul>
+                </ul>
 
+                {{if auth.user:}}
+                    <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
+                {{pass}}
           </div>
             <!-- Pager Header END -->
 
-            <!-- Filters END -->
           <!-- Scheme of works -->
           {{ for row in model: }}
           <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">

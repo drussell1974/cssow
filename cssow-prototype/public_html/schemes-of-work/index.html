@@ -29,7 +29,6 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <!-- MAIN MENU START -->
-        <a class="navbar-brand" href="new.html">New</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -69,24 +68,53 @@
     <!-- Main Content -->
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            
-            <!-- Filters Start -->
-            <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
-                <label>Key stage</label>
-                <select class="form-control" id="email" required data-validation-required-message="Please select a key stage.">
-                    <option value="0">- Key stage - All -</option>
-                    <option value="1">Key stage 1</option>
-                    <option value="2">Key stage 2</option>
-                    <option value="3">Key stage 3</option>
-                    <option value="4">Key stage 4</option>
-                    <option value="5">Key stage 5</option>
-                </select>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <!-- Filters END -->
+        <div class="col-lg-3 col-md-3">
+            <!-- SIDE MENU START -->
+          <button class="navbar-toggler btn btn-info active" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Filters
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html">All</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html?key_stage_id=1">Key stage 1</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link mark" href="index.html?key_stage_id=2">Key stage 2</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html?key_stage_id=3">Key stage 3</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html?key_stage_id=4">Key stage 4</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html?key_stage_id=5">Key stage 5</a>
+                </li>
+            </ul>
+          </div>
+          <hr>
+          <!-- SIDE MENU END -->
+        </div>
+        <div class="col-lg-6 col-md-8 mx-1">
+
+          <!-- Pager -->
+          <div class="clearfix">
+            <ul class="pagination">
+                <li><a href="#" class="btn">1</a></li>
+                <li><a href="#" class="btn">2</a></li>
+                <li><a href="#" class="btn btn-primary">3</a></li>
+                <li><a href="#" class="btn">4</a></li>
+                <li><a href="#" class="btn">5</a></li>
+              </ul>
+
+            <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="edit_1.html">new</a>
+          </div>
+            <!-- Pager END -->
             
           <!-- Scheme of works -->
           <div class="post-preview">
@@ -108,8 +136,8 @@
           <div class="post-preview">
             <a href="item_2.html">
               <h2 class="post-title">
-                KS3 - ICT and Computing <span class="badge">New</span></a>
-              </h2>
+                KS3 - ICT and Computing
+              </h2><span class="small badge badge-success float-right">New</span></a>
               <h3 class="post-subtitle">
                   KS3
               </h3>
