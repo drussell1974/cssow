@@ -72,11 +72,13 @@ class test_pager__render_html(TestCase):
     def test_show_pages_1_to_5_with_next_for_26_records(self):
         # set up
         self.test = Pager(page = 1, page_size = 5, pager_size = 5, data = [
+            # group 1
             "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
             "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
             "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
             "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
             "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
+            # group 2
             "Neptunium (Np)",])
 
         # test

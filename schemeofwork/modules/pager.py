@@ -50,16 +50,23 @@ class Pager:
             ' check if there are more pages '
 
             self.starting_record_in_group = (self.start_page_in_current_group - 1) * self.page_size
-            print("self.first_record_in_group={}".format(self.starting_record_in_group))
             self.remaining_number_of_records = len(self.data[self.starting_record_in_group:])
-            print("self.remaining_number_of_records={}".format(self.remaining_number_of_records))
+            self.remaining_number_of_pages = int(math.ceil(self.remaining_number_of_records / self.page_size))
 
-            self.remaining_number_of_pages = int(math.ceil(self.remaining_number_of_records / self.page_size)) # + (self.remaining_number_of_records % self.page_size))
+            """ Debug
+            print("self.starting_record_in_group={}".format(self.starting_record_in_group))
+            print("self.remaining_number_of_records={}".format(self.remaining_number_of_records))
             print("self.remaining_number_of_pages={}".format(self.remaining_number_of_pages))
+            """
 
             if self.remaining_number_of_pages > self.pager_size:
+                """ there are more groups """
                 self.show_next_group_of_pages = True
-                self.end_page_in_current_group = self.start_page_in_current_group + self.pager_size - 1
+                self.end_page_in_current_group = self.start_page_in_current_group + (self.pager_size - 1)
+            elif self.start_page_in_current_group == 1:
+                """ handle first page group """
+                self.show_next_group_of_pages = False
+                self.end_page_in_current_group = self.start_page_in_current_group + self.remaining_number_of_pages - 1
             else:
                 self.show_next_group_of_pages = False
                 self.end_page_in_current_group = self.start_page_in_current_group + self.remaining_number_of_pages
