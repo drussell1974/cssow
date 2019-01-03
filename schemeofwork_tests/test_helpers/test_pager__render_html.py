@@ -79,7 +79,7 @@ class test_pager__render_html(TestCase):
             "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
             "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
             # group 2
-            "Neptunium (Np)",])
+            "Neptunium (Np)"])
 
         # test
         result = self.test.render_html()
@@ -106,7 +106,7 @@ class test_pager__render_html(TestCase):
             "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
             "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
             # group 2
-            "Neptunium (Np)",])
+            "Neptunium (Np)"])
 
         # test
         result = self.test.render_html()
