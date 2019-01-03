@@ -27,7 +27,7 @@
       <div class="row">
           <div class="col-lg-3 col-md-3">
             <!-- SIDE MENU START -->
-            <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="true" aria-label="Toggle navigation">
             Filters
             <i class="fas fa-bars"></i>
           </button>
@@ -38,17 +38,20 @@
                   </li>
                 {{ for opt in key_stage_options: }}
                 <li class="nav-item">
-                  <a class="nav-link {{ if key_stage_id == opt.id: }} mark {{ pass }}" href="{{=URL('schemesofwork', 'index', vars=dict(key_stage_id=opt.id))}}">{{=opt.name}}</a>
+                  <a class="nav-link {{ if opt.id == key_stage_id: }} mark {{ pass }}" href="{{=URL('schemesofwork', 'index', vars=dict(key_stage_id=opt.id))}}">{{=opt.name}}</a>
                 </li>
                 {{ pass }}
             </ul>
-          </div>
           <hr>
+          </div>
             <!-- SIDE MENU END -->
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
 
 
+            {{if auth.user:}}
+                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
+            {{pass}}
           <!-- Pager Header -->
           <div class="clearfix">
 
@@ -56,9 +59,6 @@
                 {{ =XML(pager_html) }}
                 </ul>
 
-                {{if auth.user:}}
-                    <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
-                {{pass}}
           </div>
             <!-- Pager Header END -->
 
@@ -86,6 +86,10 @@
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">
+
+                  {{if auth.user:}}
+                      <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
+                  {{pass}}
 
                 <ul class="pagination">
                     {{ =XML(pager_html) }}

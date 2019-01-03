@@ -3,7 +3,7 @@ from cls_learningepisode import LearningEpisodeModel
 
 def get_options(db, scheme_of_work_id):
 
-    str_select = ("SELECT id, order_of_delivery_id FROM sow_learning_episode WHERE scheme_of_work_id = {};".format(scheme_of_work_id))
+    str_select = ("SELECT id, order_of_delivery_id FROM sow_learning_episode WHERE scheme_of_work_id = {} ORDER BY order_of_delivery_id;".format(scheme_of_work_id))
     rows = db.executesql(str_select)
 
     data = [];
@@ -91,7 +91,7 @@ def save(db, model):
 def delete(db, auth_user_id, id_):
 
     model = LearningEpisodeModel(id_)
-    _delete(model);
+    _delete(db, model);
 
 """
 Private CRUD functions 
