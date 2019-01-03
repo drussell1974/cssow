@@ -22,26 +22,20 @@
 <!-- Main Content -->
     <div class="container">
       <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <!-- SIDE MENU START -->
+
+            <ul class="navbar-nav">
+                {{ for opt in schemeofwork_options:}}
+                <li class="nav-item">
+                    <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id = opt.id))}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
+                </li>
+                {{ pass }}
+            </ul>
+          <hr>
+            <!-- SIDE MENU END -->
+        </div>
         <div class="col-lg-8 col-md-10 mx-auto">
-            <!-- Filters Start -->
-                <form name="edit-learningepisode" id="learningepisodeEdit" method="get">
-                    <div class="control-group">
-                      <div class="form-group floating-label-form-group controls">
-                        <label>Scheme of work</label>
-                        <select class="form-control" id="scheme_of_work_id" name="scheme_of_work_id" required data-validation-required-message="Please select a scheme of work.">
-                            <option value="">- Select a scheme of work -</option>
-                            {{ for opt in schemeofwork_options:}}
-                                <option value="{{=opt.id}}" {{if opt.id == scheme_of_work_id :}} selected {{pass}}>{{=opt.name}}</option>
-                            {{ pass }}
-                        </select>
-                        <p class="help-block text-danger"></p>
-                          <div class="form-group">
-                        <button type="submit" class="btn" id="changeButton">Change</button>
-                    </div>
-                     </div>
-                  </div>
-              </form>
-            <!-- Filters END -->
           <!-- Pager Header  -->
           <div class="clearfix">
             <ul class="pagination">

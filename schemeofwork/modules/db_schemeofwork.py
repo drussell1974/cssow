@@ -3,12 +3,12 @@ from cls_schemeofwork import SchemeOfWorkModel
 from db_helper import to_db_null
 
 def get_options(db):
-    rows = db.executesql("SELECT id, name FROM sow_scheme_of_work;")
+    rows = db.executesql("SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id ORDER BY sow.key_stage_id;")
 
     data = [];
 
     for row in rows:
-        model = SchemeOfWorkModel(row[0], row[1])
+        model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
         data.append(model)
 
     return data
