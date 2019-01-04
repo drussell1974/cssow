@@ -19,7 +19,7 @@ def index():
     key_stage_options = db_keystage.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = 10, pager_size = 5, data = data)
+    pager = Pager(page = page_to_display, page_size = 10, data = data)
 
     pager_html = pager.render_html(URL('schemesofwork', 'index', vars=dict(key_stage_id=key_stage_id)))
 

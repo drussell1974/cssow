@@ -18,7 +18,7 @@ def index():
     schemeofwork_options = db_schemeofwork.get_options(db)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = page_size, pager_size = 5, data = data)
+    pager = Pager(page = page_to_display, page_size = page_size, data = data)
 
     pager_html = pager.render_html(URL('learningepisode', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id)))
     data = pager.data_to_display()
