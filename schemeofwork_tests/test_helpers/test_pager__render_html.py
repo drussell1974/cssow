@@ -12,6 +12,22 @@ class test_pager__render_html(TestCase):
         pass #self.test = Pager(page_size = 10)
 
 
+    def test_show_pages__for_ZERO_record(self):
+        # set up
+        self.test = Pager(page = 1, page_size = 5, pager_size = 5, data = [])
+
+        # test
+        result = self.test.render_html()
+
+        # assert
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
+        self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>", result)
+
     def test_show_pages_1_for_1_record(self):
         # set up
         self.test = Pager(page = 1, page_size = 5, pager_size = 5, data = ["Chlorine (Cl)"])
@@ -20,6 +36,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>", result)
 
 
@@ -31,6 +53,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>", result)
 
 
@@ -43,7 +71,33 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>", result)
+
+
+    def test_show_pages_2_for_6_record(self):
+        # set up
+        self.test = Pager(page = 1, page_size = 5, pager_size = 5, data = [
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",     "Tin (Sn)",        "Mercury (Pb)",
+            "Niobium (Nb)"])
+
+        # test
+        result = self.test.render_html()
+
+        # assert
+        self.assertEqual(1, self.test.start_page, "start_page not as expected")
+        self.assertEqual(2, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertTrue(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
+        self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>", result)
+        self.fail('verify')
 
 
     def test_show_pages_1_to_5_for_25_record(self):
@@ -59,9 +113,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual(0, self.test.starting_record_in_group, "starting_record_in_group not as expected")
-        self.assertEqual(25, self.test.remaining_number_of_records, "remaining_number_of_records not as expected")
-        self.assertEqual(5, self.test.remaining_number_of_pages, "remaining_number_of_pages not as expected")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(5, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>"\
                          "<li><a href='?page=2' class='btn'>2</a></li>"\
                          "<li><a href='?page=3' class='btn'>3</a></li>"\
@@ -85,9 +142,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual(0, self.test.starting_record_in_group, "starting_record_in_group not as expected")
-        self.assertEqual(26, self.test.remaining_number_of_records, "remaining_number_of_records not as expected")
-        self.assertEqual(6, self.test.remaining_number_of_pages, "remaining_number_of_pages not as expected")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(0, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li>"\
                          "<li><a href='?page=2' class='btn'>2</a></li>"\
                          "<li><a href='?page=3' class='btn'>3</a></li>"\
@@ -112,9 +172,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual(25, self.test.starting_record_in_group, "starting_record_in_group not as expected")
-        self.assertEqual(1, self.test.remaining_number_of_records, "remaining_number_of_records not as expected")
-        self.assertEqual(1, self.test.remaining_number_of_pages, "remaining_number_of_pages not as expected")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(0, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=5' class='btn'>&larr;</a></li>"\
                          "<li><a href='?page=6' class='btn btn-primary'>6</a></li>", result)
 
@@ -142,9 +205,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual(25, self.test.starting_record_in_group, "starting_record_in_group not as expected")
-        self.assertEqual(35, self.test.remaining_number_of_records, "remaining_number_of_records not as expected")
-        self.assertEqual(7, self.test.remaining_number_of_pages, "remaining_number_of_pages not as expected")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(0, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=5' class='btn'>&larr;</a></li>"\
                          "<li><a href='?page=6' class='btn btn-primary'>6</a></li>"\
                          "<li><a href='?page=7' class='btn'>7</a></li>"\
@@ -177,9 +243,12 @@ class test_pager__render_html(TestCase):
         result = self.test.render_html()
 
         # assert
-        self.assertEqual(50, self.test.starting_record_in_group, "starting_record_in_group not as expected")
-        self.assertEqual(10, self.test.remaining_number_of_records, "remaining_number_of_records not as expected")
-        self.assertEqual(2, self.test.remaining_number_of_pages, "remaining_number_of_pages not as expected")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(0, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_prev_group_of_pages, "show_prev_group_of_pages not as expected")
+        self.assertFalse(self.test.show_next_group_of_pages, "show_next_group_of_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(0, self.test.display_records_end, "display_records_end not as expected")
         self.assertEqual("<li><a href='?page=10' class='btn'>&larr;</a></li>"\
                          "<li><a href='?page=11' class='btn'>11</a></li>"\
                          "<li><a href='?page=12' class='btn btn-primary'>12</a></li>", result)

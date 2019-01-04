@@ -6,8 +6,6 @@ class Pager:
 
     def __init__(self, page = 1, page_size = 10, pager_size = 10, data = []):
         import datetime
-        print("***************************************************")
-        print("***Pager.__init__ @ {} ***".format(datetime.datetime.now()))
 
         self.page = int(page)
         self.page_size = int(page_size)
@@ -19,54 +17,59 @@ class Pager:
         self.display_records_start = (self.page-1)*self.page_size
         self.display_records_end = self.display_records_start+self.page_size
 
-        ' show page group '
+        """ ********** """
+        """ pagination """
+        """ ********** """
 
-        total_number_of_pages = len(self.data) / self.pager_size
-        if total_number_of_pages <= 1.0:
-            """ there is only one page of records """
+        ' number of pages '
+        total_no_of_full_pages = len(self.data) // self.page_size
+        total_no_of_trailing_pages = len(self.data) % self.page_size
+        total_no_of_pages = total_no_of_full_pages + total_no_of_trailing_pages
 
-            self.start_page_in_current_group = 1
+        ' number of page groups '
+        total_no_of_full_page_groups = total_no_of_pages // self.pager_size
+        total_no_of_trailing_page_groups = total_no_of_full_page_groups % self.pager_size
+        total_no_of_page_groups = total_no_of_full_page_groups + total_no_of_trailing_page_groups
+
+        ' selected page '
+        self.start_page = self.page // self.pager_size + 1
+        self.end_page = self.page % self.pager_size
+
+        ' check if first page group '
+        self.is_first_page_group = True if self.page <= self.pager_size else False
+        ' check if last page group '
+        self.is_last_page_group = True if total_no_of_page_groups - self.start_page == 0 else False
+
+        if self.is_first_page_group == True:
+            """ if first page group then there are previous pages and possibly more pages """
             self.show_prev_group_of_pages = False
-            self.end_page_in_current_group = 1
+            self.show_next_group_of_pages = True
+            self.end_page = self.pager_size
+
+        if self.is_last_page_group == True:
+            """ if last group then there are no more pages and possibly previous pages """
             self.show_next_group_of_pages = False
+            self.show_prev_group_of_pages = True
+            self.end_page = self.start_page + total_no_of_trailing_page_groups
 
+        if self.is_first_page_group == True and self.is_last_page_group == True:
+            """ unless the group is both first and last """
+            self.show_prev_group_of_pages = False
+            self.show_next_group_of_pages = False
         else:
-            """ there is more than one page """
+            """ otherwise we must be somewhere in the middle """
+            self.show_prev_group_of_pages = True
+            self.show_next_group_of_pages = True
+            """ """
+            self.end_page = self.start_page + self.pager_size
 
-            if self.page <= self.pager_size:
-                """ first group """
-                self.start_page_in_current_group = 1
-                self.show_prev_group_of_pages = False
-            elif self.page % self.pager_size == 0:
-                """ last page in group """
-                self.start_page_in_current_group = self.page + 1 - self.pager_size
-                self.show_prev_group_of_pages = True
-            else:
-                """ not first page in group """
-                self.start_page_in_current_group = self.page + 1 - (self.page % self.pager_size)
-                self.show_prev_group_of_pages = True
-
-
-            ' check if there are more pages '
-
-            self.starting_record_in_group = (self.start_page_in_current_group - 1) * self.page_size
-            self.remaining_number_of_records = len(self.data[self.starting_record_in_group:])
-            self.remaining_number_of_pages = self.remaining_number_of_records / self.page_size + self.remaining_number_of_records % self.page_size
-            self.remaining_number_of_pages = int(self.remaining_number_of_pages) # ensure integer
-
-            """ Debug """
-            print("self.starting_record_in_group={}".format(self.starting_record_in_group))
-            print("self.remaining_number_of_records={}".format(self.remaining_number_of_records))
-            print("self.remaining_number_of_pages={}".format(self.remaining_number_of_pages))
-
-
-            if self.remaining_number_of_pages > self.pager_size:
-                """ there are more groups """
-                self.show_next_group_of_pages = True
-                self.end_page_in_current_group = self.start_page_in_current_group + self.pager_size - 1
-            else:
-                self.show_next_group_of_pages = False
-                self.end_page_in_current_group = self.start_page_in_current_group + self.remaining_number_of_pages - 1
+        """ DEBUG """
+        print("start_page = {}".format(self.start_page))
+        print("end_page = {}".format(self.end_page))
+        print("show_prev_group_of_pages = {}".format(self.show_prev_group_of_pages))
+        print("show_next_group_of_pages = {}".format(self.show_next_group_of_pages))
+        print("display_records_start = {}".format(self.display_records_start))
+        print("display_records_end = {}".format(self.display_records_end))
 
 
     def data_to_display(self):
@@ -85,14 +88,14 @@ class Pager:
         ' show previous group of pages if not in first group and number of pages '
 
         if self.show_prev_group_of_pages:
-            html = html + create_list_item(url, self.page, self.start_page_in_current_group - 1, "&larr;")
+            html = html + create_list_item(url, self.page, self.start_page - 1, "&larr;")
 
         ' create list items '
         last_page_number = 1
-        for page_number in range(self.start_page_in_current_group, int(self.end_page_in_current_group) + 1):
+        for page_number in range(self.start_page, int(self.end_page) + 1):
             ' create numbered list item'
 
-            html = html + create_list_item(url, self.page, page_number, page_number)
+            html = html + create_list_item(url, self.page, page_number + 1, page_number + 1)
             last_page_number = page_number
 
 
