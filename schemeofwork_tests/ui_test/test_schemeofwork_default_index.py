@@ -37,10 +37,13 @@ class test_schemeofwork_default_index(UITestCase):
 
     def test_page__show_latest_schemesofwork(self):
         # setup
-        self.test_context.find_element_by_id('').click()
+        section = self.test_context.find_elements_by_class_name('post-preview-schemeofwork')
+
+        # test
+        result = len(section)
 
         # assert
-
+        self.assertEqual(5, result, "number of elements not as expected")
 
 
 

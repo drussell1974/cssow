@@ -19,7 +19,7 @@
               <span class="subheading">Latest schemes of work</span>
               <!-- Scheme of works -->
               {{ for row in latest_schemes_of_work: }}
-              <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">
+              <div class="post-preview post-preview-schemeofwork">
                 <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
                   <h2 class="post-title">
                       {{=row.get_ui_title()}}
