@@ -62,7 +62,7 @@ def get_latest_schemes_of_work(db, top = 5):
     :param top: number of records to return
     :return: list of schemes of work models
     """
-    select_sql = "SELECT "\
+    select_sql = "SELECT DISTINCT "\
                  " sow.id as id," \
                  " sow.name as name," \
                  " sow.description as description," \
