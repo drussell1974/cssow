@@ -1,13 +1,10 @@
-import math
+
 
 class Pager:
 
 
 
     def __init__(self, page = 1, page_size = 10, data = []):
-        import datetime
-        print("**********************************************")
-        print("*******{}********".format(datetime.datetime.now()))
 
         self.pager_size = 7
 
@@ -37,39 +34,50 @@ class Pager:
         :return: html
         """
 
+
+        self.start_page = self.page - (self.page % self.pager_size) + 1
+        self.end_page = 0
+        self.trailing_number_of_records = 0
         html = ""
 
-        ' start at increments of 7 '
+        """ we find out where we need to start and end """
 
-        page_number = self.page % self.pager_size
+        self.total_number_of_records = len(self.data)
 
-        first_record = (page_number * self.page_size - self.page_size)
-        last_record = page_number * self.page_size * self.pager_size - 1
+        first_record = (self.start_page * self.page_size) - self.page_size
+        last_record = first_record + 1 * self.page_size * self.pager_size
+        self.number_of_records = len(self.data[first_record:last_record]) # TODO: calculate
+        ' check for leading and trailing pages '
+        self.leading_number_of_records = len(self.data[:first_record]) # TODO: calculate
+        self.trailing_number_of_records = len(self.data[last_record:]) # TODO: calculate
+        self.number_of_pages = self.number_of_records // self.page_size
 
-        self.number_of_pages = len(self.data[first_record:last_record])
-        self.trailing_number_of_records = len(self.data[last_record:])
+        if self.total_number_of_records > self.page_size:
 
-        ' there are previous pages so create a button '
-        if page_number > 1:
-            html = html + create_list_item(url, self.page, page_number, "&larr;")
+            ' add the remainder '
 
-        ' create list items '
-        for x in range(page_number, self.number_of_pages, self.pager_size):
-            html = html + create_list_item(url, self.page, page_number, page_number)
+            remainder = self.number_of_records - (self.number_of_pages * self.page_size)
 
-            ' increment page number '
-            page_number = page_number + 1
+            if remainder > 0 and remainder < self.page_size:
+               self.number_of_pages = self.number_of_pages + 1
 
-        ' there are more pages so create a next button '
-        if self.trailing_number_of_records > 1:
-            html = html + create_list_item(url, self.page, page_number, "&rarr;")
+            self.end_page = self.start_page + self.number_of_pages
 
-        print("page_number = {}".format(page_number))
-        print("first_record = {}".format(first_record))
-        print("last_record = {}".format(last_record))
-        print("self.number_of_pages = {}".format(self.number_of_pages))
-        print("self.trailing_number_of_records = {}".format(self.trailing_number_of_records))
-        print("**********************************************")
+            """ create list items """
+            if self.leading_number_of_records > 0:
+                    """ create previous option """
+                    html = html + create_list_item(url, self.page, self.start_page - 1, "&larr;")
+
+
+            for page_number in range(self.start_page, self.end_page):
+                    """ create the numbered pages """
+                    html = html + create_list_item(url, self.page, page_number, page_number)
+
+
+            if self.trailing_number_of_records > 0:
+                """ create next option """
+                html = html + create_list_item(url, self.page, self.end_page, "&rarr;")
+
 
         return html
 
