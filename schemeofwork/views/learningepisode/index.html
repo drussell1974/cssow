@@ -42,15 +42,14 @@
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
           <!-- Pager Header  -->
-          {{if auth.user:}}
-              <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
-          {{pass}}
           <div class="clearfix">
             <ul class="pagination">
                 {{ =XML(pager_html) }}
             </ul>
           </div>
-
+          {{if auth.user:}}
+              <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
+          {{pass}}
             <!-- Pager Header END -->
           <!-- Scheme of works -->
           {{ for row in model: }}
@@ -73,10 +72,6 @@
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">
-              {{if auth.user:}}
-                  <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
-              {{pass}}
-
                 <ul class="pagination">
                     {{ =XML(pager_html) }}
                 </ul>

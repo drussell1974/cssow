@@ -43,15 +43,16 @@
             <!-- SIDE MENU END -->
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
+
           <!-- Pager Header -->
-            {{if auth.user:}}
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
-            {{pass}}
           <div class="clearfix">
               <ul class="pagination">
                   {{ =XML(pager_html) }}
               </ul>
           </div>
+            {{if auth.user:}}
+                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
+            {{pass}}
             <!-- Pager Header END -->
 
           <!-- Show learning objectives for this learning episode -->
@@ -78,10 +79,6 @@
 
           <!-- Pager Footer -->
           <div class="clearfix">
-            {{if auth.user:}}
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
-            {{pass}}
-
             <ul class="pagination">
                 {{ =XML(pager_html) }}
             </ul>

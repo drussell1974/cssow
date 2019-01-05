@@ -48,18 +48,16 @@
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
 
-
-            {{if auth.user:}}
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
-            {{pass}}
           <!-- Pager Header -->
           <div class="clearfix">
-
               <ul class="pagination">
                 {{ =XML(pager_html) }}
                 </ul>
 
           </div>
+            {{if auth.user:}}
+                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
+            {{pass}}
             <!-- Pager Header END -->
 
           <!-- Scheme of works -->
@@ -86,11 +84,6 @@
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">
-
-                  {{if auth.user:}}
-                      <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('schemesofwork', 'edit')}}">{{=T('new')}}</a>
-                  {{pass}}
-
                 <ul class="pagination">
                     {{ =XML(pager_html) }}
                 </ul>
