@@ -55,7 +55,45 @@ def get_all(db, key_stage_id=0):
 
     return data
 
+def get_latest_schemes_of_work(db, top = 5):
+    select_sql = "SELECT "\
+                 " sow.id as id," \
+                 " sow.name as name," \
+                 " sow.description as description," \
+                 " sow.exam_board_id as exam_board_id," \
+                 " exam.name as exam_board_name," \
+                 " sow.key_stage_id as key_stage_id," \
+                 " kys.name as key_stage_name," \
+                 " sow.created as created," \
+                 " sow.created_by as created_by_id," \
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name" \
+                 " FROM sow_scheme_of_work as sow" \
+                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id" \
+                 " INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
+                 "  LEFT JOIN auth_user as user ON user.id = sow.created_by" \
+                 " ORDER BY sow.created DESC LIMIT {};"
+    select_sql = select_sql.format(top)
 
+    rows = db.executesql(select_sql)
+
+    data = [];
+
+    for row in rows:
+
+        model = SchemeOfWorkModel(id_=row[0],
+                                  name=row[1],
+                                  description=row[2],
+                                  exam_board_id=row[3],
+                                  exam_board_name=row[4],
+                                  key_stage_id=row[5],
+                                  key_stage_name=row[6],
+                                  created=row[7],
+                                  created_by_id=row[8],
+                                  created_by_name=row[9])
+
+        data.append(model)
+
+    return data
 
 def get_model(db, id_):
     model = SchemeOfWorkModel(0);

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import db_schemeofwork  #= exec_environment('applications/schemeofwork/models/db_schemeofwork.py', request=request)
-import db_examboard  #= exec_environment('applications/schemeofwork/models/db_examboard.py', request=request)
-import db_keystage  #= exec_environment('applications/schemeofwork/models/db_keystage.py', request=request)
+import db_schemeofwork
+import db_examboard
+import db_keystage
 
 from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel

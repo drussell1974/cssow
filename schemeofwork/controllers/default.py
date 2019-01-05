@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------
-# This is a sample controller
-# this file is released under public domain and you can use without limitations
-# -------------------------------------------------------------------------
+# -*- coding: utf-8 -*
+import db_schemeofwork
 
-# ---- example index page ----
 def index():
+
+    # get the schemes of work
+    latest_schemes_of_work = db_schemeofwork.get_latest_schemes_of_work(db, 5)
+
     content = {
         "main_heading":"Computing Schemes of work and lessons",
         "sub_heading":"Computing schemes of work lessons across all key stages"
               }
-    return dict(content = content)
+
+    return dict(content = content, latest_schemes_of_work = latest_schemes_of_work)
 
 
 def about():
