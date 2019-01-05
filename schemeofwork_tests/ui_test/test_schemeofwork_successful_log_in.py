@@ -9,7 +9,7 @@ class test_schemeofwork_default(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/default/index")
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/default/index")
         self.test_context.implicitly_wait(4)
 
 
@@ -45,7 +45,7 @@ class test_schemeofwork_default(UITestCase):
 
     def test_page_navigate_to_default_index_after_log_out(self):
         # set up
-        self.try_log_in('http://127.0.0.1:8000/schemeofwork/schemesofwork/index')
+        self.try_log_in('http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/index')
 
         # test
         self.test_context.find_element_by_id('btn-logout').click()

@@ -6,7 +6,7 @@ class UITestCase(TestCase):
         test_learning_episode_id = 35
         test_learning_objective_id = 410
 
-        root_uri = "http://127.0.0.1:8000/schemeofwork/"
+        root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
 
         def assertWebPageTitleAndHeadings(self, title, h1, subheading):
 
@@ -52,7 +52,7 @@ class UITestCase(TestCase):
             Makes an attempt to log in, if the page has been redirected.
             If the inputs for login are not found, then this is handled; it assumes the user is already logged in
             """
-            login_uri = "http://127.0.0.1:8000/schemeofwork/default/user/login"
+            login_uri = "http://dev.computersciencesow.net:8000/schemeofwork/default/user/login"
 
             ' Open uri - if authentication is required this should automatically redirect to login '
             self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))

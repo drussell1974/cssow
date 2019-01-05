@@ -9,7 +9,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/learningepisode/index?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/index?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
         self.test_context.implicitly_wait(4)
 
 

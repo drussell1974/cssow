@@ -9,7 +9,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/edit")
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/edit")
 
 
     def tearDown(self):

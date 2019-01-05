@@ -9,7 +9,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningepisode/edit?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):

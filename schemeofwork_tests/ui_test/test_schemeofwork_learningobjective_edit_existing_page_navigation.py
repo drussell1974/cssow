@@ -9,7 +9,7 @@ class test_schemeofwork_learningobjective_edit_create_existing_navigation(UITest
 
     def setUp(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/learningobjective/edit?id={}&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_objective_id,  self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?id={}&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_objective_id,  self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):

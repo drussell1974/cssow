@@ -9,7 +9,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/index")
         self.test_context.implicitly_wait(4)
 
     def tearDown(self):
@@ -53,7 +53,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
         # setup
-        self.try_log_in("http://127.0.0.1:8000/schemeofwork/schemesofwork/index")
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/index")
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
