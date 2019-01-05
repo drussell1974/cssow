@@ -14,36 +14,38 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-8 mx-auto">
-          <!-- Scheme of works -->
-          <span class="subheading">Latest schemes of work</span>
-          <!-- Scheme of works -->
-          {{ for row in latest_schemes_of_work: }}
-          <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">
-            <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
-              <h2 class="post-title">
-                  {{=row.get_ui_title()}}
-              </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
-              <h3 class="post-subtitle">
-                {{=row.get_ui_sub_heading()}}
-              </h3>
-            </a>
-            <p class="post-meta">Created by
-              <a href="#">{{=row.created_by_name}}</a>
-              {{if row.created: }}
-                on {{=str(row.get_ui_created())}}
-              {{ pass }}
-              {{if auth.user:}}
-                 - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
-              {{pass}}</p>
-          </div>
-          <hr>
-            {{ pass }}
+          <section id="section-latest_schemesofwork" class="jumbotron">
+                <!-- Scheme of works -->
+              <span class="subheading">Latest schemes of work</span>
+              <!-- Scheme of works -->
+              {{ for row in latest_schemes_of_work: }}
+              <div class="post-preview {{ if row.is_recent == True: }}recent{{ pass }}">
+                <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=row.id))}}">
+                  <h2 class="post-title">
+                      {{=row.get_ui_title()}}
+                  </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
+                  <h3 class="post-subtitle">
+                    {{=row.get_ui_sub_heading()}}
+                  </h3>
+                </a>
+                <p class="post-meta">Created by
+                  <a href="#">{{=row.created_by_name}}</a>
+                  {{if row.created: }}
+                    on {{=str(row.get_ui_created())}}
+                  {{ pass }}
+                  {{if auth.user:}}
+                     - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
+                  {{pass}}</p>
+              </div>
+              <hr>
+                {{ pass }}
 
-          <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="{{=URL('schemesofwork', 'index')}}" id="btn-all-schemes-of-work">{{=T("Show all")}} &rarr;</a>
-          </div>
-          <!-- Scheme of works END -->
+              <!-- Pager -->
+              <div class="clearfix">
+                <a class="btn btn-primary float-right" href="{{=URL('schemesofwork', 'index')}}" id="btn-all-schemes-of-work">{{=T("Show all")}} &rarr;</a>
+              </div>
+              <!-- Scheme of works END -->
+          </section>
         </div>
       </div>
     </div>

@@ -35,7 +35,12 @@ class test_schemeofwork_default_index(UITestCase):
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
-    
+    def test_page__show_latest_schemesofwork(self):
+        # setup
+        self.test_context.find_element_by_id('').click()
+
+        # assert
+
 
 
 
