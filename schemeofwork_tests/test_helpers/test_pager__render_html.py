@@ -86,6 +86,32 @@ class test_pager__render_html(TestCase):
         self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li><li><a href='?page=2' class='btn'>2</a></li>", result)
 
 
+    def test_1_page_group_for_34_record(self):
+        # set up
+        self.test = Pager(page = 1, page_size = 5, data = [
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
+            "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
+            "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
+            "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Neon (Ne)",        "Hydroen (H)",
+            "Carbon (C)",   "Fluorine (F)",     "Iron (Fe)",       "Neon (Ne)"])
+
+        # test
+        result = self.test.render_html()
+
+        # assert
+        #self.fail("implement offset for new page group")
+        self.assertEqual(0, self.test.start_page, "start_page not as expected")
+        self.assertEqual(7, self.test.end_page, "end_page not as expected")
+        self.assertFalse(self.test.show_previous_pages, "show_previous_pages not as expected")
+        self.assertFalse(self.test.show_more_pages, "show_more_pages not as expected")
+        self.assertEqual(0, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(5, self.test.display_records_end, "display_records_end not as expected")
+        self.assertEqual("<li><a href='?page=1' class='btn btn-primary'>1</a></li><li><a href='?page=2' class='btn'>2</a></li>", result)
+
+
+
     def test_1_page_groups_for_35_record(self):
         # set up
         self.test = Pager(page = 1, page_size = 5, data = [
