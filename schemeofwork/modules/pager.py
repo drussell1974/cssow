@@ -34,8 +34,10 @@ class Pager:
         :return: html
         """
 
-
-        self.start_page = self.page - (self.page % self.pager_size) + 1
+        if self.page % self.pager_size == 0:
+            self.start_page = self.page - 6
+        else:
+            self.start_page = self.page - (self.page % self.pager_size) + 1
         self.end_page = 0
         self.trailing_number_of_records = 0
         html = ""
@@ -43,16 +45,19 @@ class Pager:
         """ we find out where we need to start and end """
 
         self.total_number_of_records = len(self.data)
-
         first_record = (self.start_page * self.page_size) - self.page_size
         last_record = first_record + 1 * self.page_size * self.pager_size
-        self.number_of_records = len(self.data[first_record:last_record]) # TODO: calculate
+        self.number_of_records = len(self.data[first_record:last_record]) # TODO: calculate from total length of data
+
         ' check for leading and trailing pages '
-        self.leading_number_of_records = len(self.data[:first_record]) # TODO: calculate
-        self.trailing_number_of_records = len(self.data[last_record:]) # TODO: calculate
+
+        self.leading_number_of_records = len(self.data[:first_record]) # TODO: calculate from total length of data
+        self.trailing_number_of_records = len(self.data[last_record:]) # TODO: calculate from total length of data
+
         self.number_of_pages = self.number_of_records // self.page_size
 
         if self.total_number_of_records > self.page_size:
+            """ We only show pagination if there are more than one page """
 
             ' add the remainder '
 

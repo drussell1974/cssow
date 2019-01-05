@@ -164,6 +164,7 @@ class test_pager__render_html(TestCase):
             "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
             "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Neon (Ne)",        "Hydroen (H)",
             "Carbon (C)",   "Fluorine (F)",     "Iron (Fe)",       "Neon (Ne)",        "Indium (In)",
+            # group 2
             "Neptunium (Np)"])
 
         # test
@@ -371,3 +372,74 @@ class test_pager__render_html(TestCase):
         self.assertEqual(0, self.test.trailing_number_of_records, "trailing_number_of_records not as expected")
         self.assertEqual(15, self.test.start_page, "start_page not as expected")
         self.assertEqual(17, self.test.end_page, "end_page not as expected")
+
+
+    def test_group_starts_at_page_1_when_page_7_selected(self):
+        # set up
+        self.test = Pager(page = 7, page_size = 5, data = [
+            # group 1
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
+            "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
+            "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
+            "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Neon (Ne)",        "Hydroen (H)",
+            "Carbon (C)",   "Fluorine (F)",     "Iron (Fe)",       "Neon (Ne)",        "Indium (In)",
+            # group 2
+            "Neptunium (Np)"])
+
+        # test
+        result = self.test.render_html()
+
+        # assert
+        self.assertEqual("<li><a href='?page=1' class='btn'>1</a></li>"\
+                         "<li><a href='?page=2' class='btn'>2</a></li>"\
+                         "<li><a href='?page=3' class='btn'>3</a></li>"\
+                         "<li><a href='?page=4' class='btn'>4</a></li>"\
+                         "<li><a href='?page=5' class='btn'>5</a></li>"\
+                         "<li><a href='?page=6' class='btn'>6</a></li>"\
+                         "<li><a href='?page=7' class='btn btn-primary'>7</a></li>"\
+                         "<li><a href='?page=8' class='btn'>&rarr;</a></li>", result)
+        self.assertEqual(30, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(1, self.test.start_page, "start_page not as expected")
+        self.assertEqual(8, self.test.end_page, "end_page not as expected")
+
+
+    def test_groups_starts_at_page_8_when_page_14_selected(self):
+        # set up
+        self.test = Pager(page = 14, page_size = 5, data = [
+            # group 1
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
+            "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
+            "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
+            "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Neon (Ne)",        "Hydroen (H)",
+            "Carbon (C)",   "Fluorine (F)",     "Iron (Fe)",       "Neon (Ne)",        "Indium (In)",
+            # group 2
+            "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
+            "Nitrogen (N)", "Fluorine (F)",     "Nickel (Ni)",      "Phospherus (P)",   "Magnesium (Mg)",
+            "Iron (Fe)",    "Gold (Au)",        "Carbon (C)",       "Hydroen (H)",      "Oxygen (O)",
+            "Arsenic (As)", "Vanadium (V)",     "Indium (In)",      "Sodium (Na)",      "Beryllium (Be)",
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
+            "Helium (He)",  "Selenium (Se)",    "Niobium (Nb)",     "Francium (Fr)",    "Chromium (Cr)",
+            "Cobalt (Co)",  "Chlorine (Cl)",    "Potassium (K)",    "Tin (Sn)",         "Mercury (Pb)",
+            # group 3
+            "Arsenic (As)"])
+
+        # test
+        result = self.test.render_html()
+
+        # assert
+        self.assertEqual("<li><a href='?page=7' class='btn'>&larr;</a></li>"\
+                         "<li><a href='?page=8' class='btn'>8</a></li>"\
+                         "<li><a href='?page=9' class='btn'>9</a></li>"\
+                         "<li><a href='?page=10' class='btn'>10</a></li>"\
+                         "<li><a href='?page=11' class='btn'>11</a></li>"\
+                         "<li><a href='?page=12' class='btn'>12</a></li>"\
+                         "<li><a href='?page=13' class='btn'>13</a></li>"\
+                         "<li><a href='?page=14' class='btn btn-primary'>14</a></li>"\
+                         "<li><a href='?page=15' class='btn'>&rarr;</a></li>", result)
+        self.assertEqual(65, self.test.display_records_start, "display_records_start not as expected")
+        self.assertEqual(8, self.test.start_page, "start_page not as expected")
+        self.assertEqual(15, self.test.end_page, "end_page not as expected")
