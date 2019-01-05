@@ -166,6 +166,7 @@
 'Rows selected': 'Rows selected',
 'Save model as...': 'Save model as...',
 'Services': 'Services',
+'Show all': 'Show all',
 'Sign Up': 'Register',
 'Sign up': 'Register',
 'Size of cache:': 'Size of cache:',
