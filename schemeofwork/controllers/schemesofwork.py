@@ -10,7 +10,7 @@ from pager import Pager
 def index():
     """ index action """
 
-    key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
+    key_stage_id =  int(request.args(0) if request.args(0) is not None else 0) #int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     # get the schemes of work

@@ -8,7 +8,7 @@ class test_schemeofwork_default_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/default/index")
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork")
         self.test_context.implicitly_wait(4)
 
 
