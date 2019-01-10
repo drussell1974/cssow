@@ -15,13 +15,13 @@ def index():
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
-    data = db_learningepisode.get_all(db, scheme_of_work_id)
-    schemeofwork_options = db_schemeofwork.get_options(db)
+    data = db_learningepisode.get_all(db, scheme_of_work_id, auth.user_id)
+    schemeofwork_options = db_schemeofwork.get_options(db,  auth_user=auth.user_id)
 
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
 
-    pager_html = pager.render_html(URL('learningepisode', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id)))
+    pager_html = pager.render_html(URL('learningepisode', 'index', args=[scheme_of_work_id]))
     data = pager.data_to_display()
 
     content = {
@@ -43,7 +43,7 @@ def edit():
     """ edit action """
     id_ = int(request.vars.id if request.vars.id is not None else 0)
 
-    model = db_learningepisode.get_model(db, id_)
+    model = db_learningepisode.get_model(db, id_, auth.user_id)
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
@@ -53,8 +53,8 @@ def edit():
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id
 
-    topic_options = []
-    learningobjectives_data = db_learningobjective.get_all(db, id_)
+    #topic_options = []
+    #learningobjectives_data = db_learningobjective.get_all(db, id_, auth.user_id)
 
     #if(len(learningobjectives_data) == 0):
     topic_options = db_topic.get_options(db, model.topic_id, 1) #, model.parent_topic_id);
@@ -72,6 +72,8 @@ def edit():
 def save_item():
     """ save_item non-view action """
 
+    published = int(request.vars.published if request.vars.published is not None else 1)
+
     model = LearningEpisodeModel(
         id_ = request.vars.id,
         order_of_delivery_id = request.vars.order_of_delivery_id,
@@ -84,7 +86,7 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        model = db_learningepisode.save(db, model)
+        model = db_learningepisode.save(db, model, published)
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
@@ -92,9 +94,9 @@ def save_item():
     ' the user should be take create learning episodes '
     redirect_to_url = ""
     if int(request.vars.id) == 0:
-        redirect_to_url = URL('learningobjective', 'index', vars=dict(scheme_of_work_id=request.vars.scheme_of_work_id, learning_episode_id=model.id))
+        redirect_to_url = URL('learningobjective', 'index', args=[request.vars.scheme_of_work_id, model.id])
     else:
-        redirect_to_url = URL('learningepisode', 'index', vars=dict(scheme_of_work_id=request.vars.scheme_of_work_id))
+        redirect_to_url = URL('learningepisode', 'index', args=[request.vars.scheme_of_work_id])
 
     return redirect(redirect_to_url)
 

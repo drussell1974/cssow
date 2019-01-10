@@ -16,7 +16,7 @@
                   <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">Learning episodes</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">Learning episodes</a>
                 </li>
             </ul>
     </div>
@@ -35,7 +35,7 @@
                     <ul class="navbar-nav flex-column">
                     {{ for opt in learningepisiode_options:}}
                         <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id = opt.id, scheme_of_work_id = scheme_of_work_id ))}}">{{=opt.get_ui_title()}}</a>
+                            <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', args=[scheme_of_work_id, opt.id])}}">{{=opt.get_ui_title()}}</a>
                         </li>
                     {{ pass }}
                     </ul>

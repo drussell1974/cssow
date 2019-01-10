@@ -4,7 +4,7 @@ import db_schemeofwork
 def index():
 
     # get the schemes of work
-    latest_schemes_of_work = db_schemeofwork.get_latest_schemes_of_work(db, 5)
+    latest_schemes_of_work = db_schemeofwork.get_latest_schemes_of_work(db, top = 5, auth_user = auth.user_id)
 
     content = {
         "main_heading":"Computing Schemes of work and lessons",

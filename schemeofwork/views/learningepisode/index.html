@@ -33,7 +33,7 @@
                     <ul class="navbar-nav flex-column">
                     {{ for opt in schemeofwork_options:}}
                         <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id = opt.id))}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
+                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', args=[opt.id])}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
                         </li>
                     {{ pass }}
                     </ul>
@@ -56,7 +56,7 @@
           <!-- Scheme of works -->
           {{ for row in model: }}
           <div class="post-preview">
-            <a href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=row.id, scheme_of_work_id=row.scheme_of_work_id,))}}">
+            <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>

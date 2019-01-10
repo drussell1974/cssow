@@ -35,7 +35,7 @@ class test_schemeofwork_default_index(UITestCase):
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__show_latest_schemesofwork(self):
+    def test_page__show_only_published_latest_schemesofwork(self):
         # setup
         section = self.test_context.find_elements_by_class_name('post-preview-schemeofwork')
 
@@ -43,6 +43,21 @@ class test_schemeofwork_default_index(UITestCase):
         result = len(section)
 
         # assert
+        # ***** less 5 should be visible to test@localhost for testing purposes
+        self.assertEqual(4, result, "number of elements not as expected")
+
+
+    def test_page__show_published_and_owned_latest_schemesofwork(self):
+        # setup
+        self.do_log_in(redirect_to_uri_on_login="http://dev.computersciencesow.net:8000/schemeofwork")
+
+        section = self.test_context.find_elements_by_class_name('post-preview-schemeofwork')
+
+        # test
+        result = len(section)
+
+        # assert
+        # ***** less 5 should be visible to test@localhost for testing purposes
         self.assertEqual(5, result, "number of elements not as expected")
 
 

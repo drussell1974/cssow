@@ -21,15 +21,15 @@ def index():
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
-    learning_episode = db_learningepisode.get_model(db, learning_episode_id)
-    data = db_learningobjective.get_all(db, learning_episode_id)
+    learning_episode = db_learningepisode.get_model(db, learning_episode_id, auth.user_id)
+    data = db_learningobjective.get_all(db, learning_episode_id, auth.user_id)
 
-    learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id)
+    learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)
 
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
 
-    pager_html = pager.render_html(URL('learningobjective', 'index', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id)))
+    pager_html = pager.render_html(URL('learningobjective', 'index', args=[scheme_of_work_id, learning_episode_id]))
     data = pager.data_to_display()
 
     content = {
@@ -57,10 +57,10 @@ def edit():
     # check if an existing_learning_objective_id has been passed
     if request.vars.learning_objective_id is not None:
         _id = int(request.vars.learning_objective_id if request.vars.learning_objective_id is not None else 0)
-        model = db_learningobjective.get_new_model(db, _id)
+        model = db_learningobjective.get_new_model(db, _id, auth.user_id)
     else:
         _id = int(request.vars.id if request.vars.id is not None else 0)
-        model = db_learningobjective.get_model(db, _id)
+        model = db_learningobjective.get_model(db, _id, auth.user_id)
 
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
@@ -71,7 +71,7 @@ def edit():
     if request.vars.topic_id is not None:
         model.topic_id = int(request.vars.topic_id)
 
-    learning_episode = db_learningepisode.get_model(db, model.learning_episode_id)
+    learning_episode = db_learningepisode.get_model(db, model.learning_episode_id, auth.user_id)
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, int(request.vars.scheme_of_work_id))
 
     model.learning_episode_id = learning_episode.id
@@ -102,6 +102,7 @@ def edit():
 @auth.requires_login()
 def save_item():
     """ save_item non-view action """
+    published = int(request.vars.published if request.vars.published is not None else 1)
 
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
@@ -126,11 +127,11 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        model = db_learningobjective.save(db, model)
+        model = db_learningobjective.save(db, model, published)
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
-    return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
+    return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
 
 
 @auth.requires_login()
@@ -143,7 +144,7 @@ def add_existing_objective():
 
     db_learningobjective.add_existing_objective(db, auth.user.id, id_=learning_objective_id, learning_episode_id=learning_episode_id)
 
-    return redirect(URL('index', vars=dict(scheme_of_work_id = scheme_of_work_id, learning_episode_id = learning_episode_id)))
+    return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
 
 
 @auth.requires_login()
@@ -156,4 +157,4 @@ def delete_item():
 
     db_learningobjective.delete(db, auth.user.id, id_)
 
-    return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)))
+    return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
