@@ -9,7 +9,7 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?id=460&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?id={}&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_objective_id, self.test_learning_episode_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -87,7 +87,7 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
 
 
-    def test_page__should_stay_on_same_page_if_valid(self):
+    def test_page__should_redirect_to_index_if_valid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 

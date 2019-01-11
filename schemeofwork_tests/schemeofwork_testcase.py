@@ -12,7 +12,8 @@ class SchemeOfWork_TestCase(TestCase):
                                      exam_board_id=1,
                                      exam_board_name="test exam board",
                                      key_stage_id=2,
-                                     key_stage_name="test key stage")
+                                     key_stage_name="test key stage",
+                                     published=1)
 
         # test
         test.validate()

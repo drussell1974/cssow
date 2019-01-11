@@ -10,11 +10,11 @@ from pager import Pager
 def index():
     """ index action """
 
-    key_stage_id = int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
+    key_stage_id =  int(request.args(0) if request.args(0) is not None else 0) #int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     # get the schemes of work
-    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id)
+    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id, auth_user=auth.user_id)
     # get the key stages to show
     key_stage_options = db_keystage.get_options(db)
 
@@ -45,7 +45,7 @@ def view():
     """ view action (NOT USED) """
 
     id_ = int(request.vars.id)
-    model = db_schemeofwork.get_model(db, id_=id_)
+    model = db_schemeofwork.get_model(db, id_=id_, auth_user=auth.user_id)
 
     # check results and redirect if necessary
 
@@ -65,7 +65,7 @@ def edit():
     """ edit action """
 
     id_ = int(request.vars.id if request.vars.id is not None else 0)
-    model = db_schemeofwork.get_model(db, id_)
+    model = db_schemeofwork.get_model(db, id_, auth.user_id)
     if(model == None):
         redirect(URL('index', vars=dict(message="item deleted")))
 
@@ -83,6 +83,7 @@ def edit():
 @auth.requires_login()
 def save_item():
     """ save_item non-view action """
+    published = int(request.vars.published if request.vars.published is not None else 1)
 
     # create instance of model from request.vars
 
@@ -99,7 +100,7 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        model = db_schemeofwork.save(db, model)
+        model = db_schemeofwork.save(db, model, published)
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
@@ -107,7 +108,7 @@ def save_item():
     ' the user should be take create learning episodes '
     redirect_to_url = ""
     if int(request.vars.id) == 0:
-        redirect_to_url = URL('learningepisode', 'index', vars=dict(scheme_of_work_id = model.id))
+        redirect_to_url = URL('learningepisode', 'index', args=[model.id])
     else:
         redirect_to_url = URL('schemesofwork', 'index')
 
@@ -120,4 +121,13 @@ def delete_item():
 
     id_ = int(request.vars.id)
     db_schemeofwork.delete(db, auth_user_id=auth.user.id, id_ = id_)
+    return redirect(URL('index'))
+
+
+@auth.requires_login()
+def publish_item():
+    """ delete_item non-view action """
+
+    id_ = int(request.vars.id)
+    db_schemeofwork.publish(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))

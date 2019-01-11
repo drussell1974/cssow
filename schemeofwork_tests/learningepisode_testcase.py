@@ -12,7 +12,8 @@ class LearningEpisode_TestCase(TestCase):
                                  scheme_of_work_id=3,
                                  topic_id=4,
                                  parent_topic_id=5,
-                                 key_stage_id=6)
+                                 key_stage_id=6,
+                                 published=1)
 
 
         # test

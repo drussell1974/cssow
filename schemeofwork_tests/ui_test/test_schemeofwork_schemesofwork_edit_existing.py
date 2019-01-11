@@ -25,10 +25,17 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         """ Check content """
+        # setup
+        #self.do_log_in(redirect_to_uri_on_login="http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/edit?id={}".format(self.test_scheme_of_work_id))
+
         # test
+        save = self.test_context.find_element_by_id('saveButton')
+        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
         self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 - OCR')
+        self.assertEqual("DRAFT", save.text)
+        self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 
     """ navigation """

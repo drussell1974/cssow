@@ -16,11 +16,11 @@
                   <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id=model.scheme_of_work_id))}}">Episodes</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">Episodes</a>
                 </li>
                 {{ if model.id > 0: }}
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=model.id, scheme_of_work_id=model.scheme_of_work_id))}}">Objectives</a>
+                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.id])}}">Objectives</a>
                 </li>
                 {{ pass }}
             </ul>

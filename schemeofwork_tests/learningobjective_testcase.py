@@ -35,7 +35,8 @@ class LearningObjective_TestCase(TestCase):
                                       parent_id = 99,
                                       created = self.current_date_for_test,
                                       created_by_id = 8,
-                                      created_by_name = "Dave Russell")
+                                      created_by_name = "Dave Russell",
+                                      published=1)
 
 
         # test

@@ -4,7 +4,7 @@ from datetime import datetime
 
 class SchemeOfWorkModel(BaseModel):
 
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1):
         self.id = int(id_)
         self.name = name
         self.description = description
@@ -12,10 +12,11 @@ class SchemeOfWorkModel(BaseModel):
         self.exam_board_name = exam_board_name
         self.key_stage_id = self._try_int(key_stage_id)
         self.key_stage_name = key_stage_name
-        self.created = created
-        self.created_by_id = self._try_int(created_by_id)
-        self.created_by_name = created_by_name
         self.is_recent = is_recent
+        self.created=created
+        self.created_by_id=self._try_int(created_by_id)
+        self.created_by_name=created_by_name
+        self.published=published
 
 
     def validate(self):

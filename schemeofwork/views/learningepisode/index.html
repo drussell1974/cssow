@@ -22,22 +22,24 @@
 <!-- Main Content -->
     <div class="container">
       <div class="row">
-          <div class="col-lg-3 col-md-3">
+          <div class="col-lg-4 col-md-4">
             <!-- SIDE MENU START -->
-              <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-                Filters
-                <i class="fas fa-bars"></i>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav">
-                        {{ for opt in schemeofwork_options:}}
+              <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+                <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+                    Scheme of work
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="sidebarResponsive">
+                    <ul class="navbar-nav flex-column">
+                    {{ for opt in schemeofwork_options:}}
                         <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', vars=dict(scheme_of_work_id = opt.id))}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
+                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', args=[opt.id])}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
                         </li>
-                        {{ pass }}
+                    {{ pass }}
                     </ul>
-                <hr>
-              </div>
+                    <hr>
+                </div>
+              </nav>
             <!-- SIDE MENU END -->
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -54,7 +56,7 @@
           <!-- Scheme of works -->
           {{ for row in model: }}
           <div class="post-preview">
-            <a href="{{=URL('learningobjective', 'index', vars=dict(learning_episode_id=row.id, scheme_of_work_id=row.scheme_of_work_id,))}}">
+            <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>

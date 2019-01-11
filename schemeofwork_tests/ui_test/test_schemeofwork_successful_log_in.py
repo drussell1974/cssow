@@ -9,7 +9,7 @@ class test_schemeofwork_default(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/default/index")
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork")
         self.test_context.implicitly_wait(4)
 
 
@@ -31,7 +31,7 @@ class test_schemeofwork_default(UITestCase):
         # test
 
         elem = self.test_context.find_element_by_id("auth_user_email")
-        elem.send_keys("dave@jazzthecat.co.uk")
+        elem.send_keys("test@localhost")
         elem.send_keys(Keys.TAB)
 
         elem = self.test_context.find_element_by_id("auth_user_password")

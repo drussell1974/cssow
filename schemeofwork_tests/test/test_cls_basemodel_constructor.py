@@ -24,7 +24,8 @@ class Test_basemodel_Constructor(TestCase):
         test = BaseModel(0,
                         created = self.created_now,
                         created_by_id = 1,
-                        created_by_name = "Dave Russell")
+                        created_by_name = "Dave Russell",
+                        published = 0)
 
         # test
         test.validate()
@@ -39,7 +40,8 @@ class Test_basemodel_Constructor(TestCase):
         test = BaseModel(0,
                         created = self.created_now,
                         created_by_id = 1,
-                        created_by_name = "Dave Russell")
+                        created_by_name = "Dave Russell",
+                        published = 0)
 
         # assert
         self.assertEqual(0, test.id)
@@ -54,7 +56,8 @@ class Test_basemodel_Constructor(TestCase):
         test = BaseModel(id_=1,
                         created = self.created_now,
                         created_by_id = 1,
-                        created_by_name = "Dave Russell")
+                        created_by_name = "Dave Russell",
+                        published = 0)
 
         # test
         test.validate()
@@ -72,7 +75,8 @@ class Test_basemodel_Constructor(TestCase):
         test = BaseModel(0,
                         created = self.created_now,
                         created_by_id = 1,
-                        created_by_name = "Dave Russell")
+                        created_by_name = "Dave Russell",
+                        published = 0)
 
         # assert
         self.assertEqual(0, test.id)
@@ -84,7 +88,8 @@ class Test_basemodel_Constructor(TestCase):
         test = BaseModel(1,
                         created = self.created_now,
                         created_by_id = 1,
-                        created_by_name = "Dave Russell")
+                        created_by_name = "Dave Russell",
+                        published = 0)
 
         # assert
         self.assertEqual(1, test.id)

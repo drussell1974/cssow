@@ -26,9 +26,13 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         """ Heading blank """
         # test
+        save = self.test_context.find_element_by_id('saveButton')
+        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of work', 'Create a new scheme of work')
+        self.assertEqual("DRAFT", save.text)
+        self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 
     def test_page__breadcrumb_navigate_to_learning_episode_index_not_visible_for_new_schemeofwork(self):
