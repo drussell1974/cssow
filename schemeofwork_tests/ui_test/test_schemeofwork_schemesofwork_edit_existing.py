@@ -34,7 +34,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 - OCR')
-        self.assertEqual("SAVE", save.text)
+        self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 

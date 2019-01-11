@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-class BaseModel:
+class BaseModel(object):
     id = 0
     created = ""
     created_by_id = 0
@@ -9,11 +9,12 @@ class BaseModel:
     is_valid = False
     validation_errors = {}
 
-    def __init__(self, id_, created, created_by_id, created_by_name):
+    def __init__(self, id_, created, created_by_id, created_by_name, published):
         self.id = int(id_)
         self.created = created
         self.created_by_id = created_by_id
         self.created_by_name = created_by_name
+        self.published = True if published == 1 else 0
 
     """
     State members

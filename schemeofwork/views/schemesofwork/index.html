@@ -68,7 +68,8 @@
             <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', args=[row.id])}}">
               <h2 class="post-title">
                   {{=row.get_ui_title()}}
-              </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
+              </h2>
+                {{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
               <h3 class="post-subtitle">
                 {{=row.get_ui_sub_heading()}}
               </h3>
@@ -79,7 +80,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                 - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
+                 {{ if row.published == False: }} <a href="{{=URL('schemesofwork', 'publish_item', vars=dict(id=row.id))}}" class="small badge badge-danger">Not published</a> {{ pass }} - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
               {{pass}}</p>
           </div>
           <hr>

@@ -31,7 +31,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of work', 'Create a new scheme of work')
-        self.assertEqual("SAVE", save.text)
+        self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 

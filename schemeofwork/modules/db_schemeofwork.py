@@ -17,7 +17,7 @@ def get_options(db, auth_user = 0):
 
 
 def get_all(db, key_stage_id=0, auth_user = 0):
-    select_sql = ("SELECT "\
+    select_sql = "SELECT "\
                   "  sow.id as id, "\
                   "  sow.name as name, "\
                   "  sow.description as description, "\
@@ -26,14 +26,16 @@ def get_all(db, key_stage_id=0, auth_user = 0):
                   "  sow.key_stage_id as key_stage_id, "\
                   "  kys.name as key_stage_name, "\
                   "  sow.created as created, "\
-                  "  sow.created_by as created_by_id, "\
-                  "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                  "  sow.created_by as created_by_id,"\
+                  "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                  "  sow.published as published"\
                   " FROM sow_scheme_of_work as sow "\
                   "  LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
                   "  INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
                   "  LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                  " WHERE (sow.key_stage_id = {key_stage_id} or {key_stage_id} = 0) AND (sow.published = 1 OR sow.created_by = {auth_user});".format(key_stage_id=key_stage_id, auth_user=to_db_null(auth_user)))
-    #raise Exception(select_sql)
+                  " WHERE (sow.key_stage_id = {key_stage_id} or {key_stage_id} = 0) AND (sow.published = 1 OR sow.created_by = {auth_user});"
+    select_sql = select_sql.format(key_stage_id=key_stage_id, auth_user=to_db_null(auth_user))
+
     rows = db.executesql(select_sql)
 
     data = [];
@@ -49,7 +51,8 @@ def get_all(db, key_stage_id=0, auth_user = 0):
                                   key_stage_name=row[6],
                                   created=row[7],
                                   created_by_id=row[8],
-                                  created_by_name=row[9])
+                                  created_by_name=row[9],
+                                  published=row[10])
 
         model.set_is_recent()
 
@@ -74,7 +77,8 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
                  " kys.name as key_stage_name," \
                  " sow.created as created," \
                  " sow.created_by as created_by_id," \
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name" \
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
+                 " sow.published as published"\
                  " FROM sow_scheme_of_work as sow" \
                  " LEFT JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id"\
                  " LEFT JOIN sow_learning_objective__has__learning_episode as lo_le ON lo_le.learning_episode_id = le.id"\
@@ -100,8 +104,8 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
                                   key_stage_name=row[6],
                                   created=row[7],
                                   created_by_id=row[8],
-                                  created_by_name=row[9])
-
+                                  created_by_name=row[9],
+                                  published=row[10])
         data.append(model)
 
     return data
@@ -119,7 +123,8 @@ def get_model(db, id_, auth_user):
                   " kys.name as key_stage_name, "\
                   " sow.created as created, "\
                   " sow.created_by as created_by_id, "\
-                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                  " sow.published as published"\
                   " FROM sow_scheme_of_work as sow "\
                   " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
                   " INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
@@ -140,7 +145,8 @@ def get_model(db, id_, auth_user):
                                   key_stage_name=row[6],
                                   created=row[7],
                                   created_by_id=row[8],
-                                  created_by_name=row[9])
+                                  created_by_name=row[9],
+                                  published=row[10])
 
     return model
 
@@ -194,6 +200,12 @@ def delete(db, auth_user_id, id_):
     _delete(db, model);
 
 
+def publish(db, auth_user_id, id_):
+    model = SchemeOfWorkModel(id_)
+    model.publish = True
+    _publish(db, model);
+
+
 def _update(db, model, published):
     str_update = "UPDATE sow_scheme_of_work SET name = '{name}', description = '{description}', exam_board_id = {exam_board_id}, key_stage_id = {key_stage_id}, published = {published} WHERE id =  {scheme_of_work_id};"
     str_update = str_update.format(
@@ -234,6 +246,15 @@ def _insert(db, model, published):
 def _delete(db, model):
     str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id};"
     str_delete = str_delete.format(scheme_of_work_id=model.id)
+
+    rval = db.executesql(str_delete)
+
+    return rval
+
+
+def _publish(db, model):
+    str_delete = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
+    str_delete = str_delete.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
 
     rval = db.executesql(str_delete)
 

@@ -122,3 +122,12 @@ def delete_item():
     id_ = int(request.vars.id)
     db_schemeofwork.delete(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))
+
+
+@auth.requires_login()
+def publish_item():
+    """ delete_item non-view action """
+
+    id_ = int(request.vars.id)
+    db_schemeofwork.publish(db, auth_user_id=auth.user.id, id_ = id_)
+    return redirect(URL('index'))

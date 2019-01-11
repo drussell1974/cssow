@@ -11,7 +11,7 @@ class test_LearningEpisodeModel__validate___on_before_validate(TestCase):
     test = None
 
     def setUp(self):
-        self.test = BaseModel(0, datetime.today(), 0, "")
+        self.test = BaseModel(0, datetime.today(), 0, "", 1)
 
     def tearDown(self):
         pass

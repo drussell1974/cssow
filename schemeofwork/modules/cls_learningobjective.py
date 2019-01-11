@@ -21,7 +21,7 @@ class LearningObjectiveModel (BaseModel):
     key_stage_name = ""
     parent_id = None
 
-    def __init__(self, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = ""):
+    def __init__(self, id_, description = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.description = description
         self.solo_taxonomy_id = int(solo_taxonomy_id)
@@ -40,9 +40,10 @@ class LearningObjectiveModel (BaseModel):
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.parent_id = self._try_int(parent_id)
-        self.created = created
-        self.created_by_id = int(created_by_id)
-        self.created_by_name = created_by_name
+        self.created=created
+        self.created_by_id=self._try_int(created_by_id)
+        self.created_by_name=created_by_name
+        self.published=published
 
 
     def validate(self):
