@@ -152,11 +152,12 @@ def get_model(db, id_, auth_user):
 
 
 def get_schemeofwork_name_only(db, scheme_of_work_id):
-    select_sql = ("SELECT " +
-                  "  sow.name as name "  # 0
-                  " FROM sow_scheme_of_work as sow " +
-                  " LEFT JOIN auth_user as user ON user.id = sow.created_by " +
-                  " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
+    select_sql = "SELECT "\
+                  "  sow.name as name "\
+                  " FROM sow_scheme_of_work as sow "\
+                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
+                  " WHERE sow.id = {scheme_of_work_id};"
+    select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
 
     rows = db.executesql(select_sql)
 
@@ -168,12 +169,11 @@ def get_schemeofwork_name_only(db, scheme_of_work_id):
 
 
 def get_key_stage_id_only(db, scheme_of_work_id):
-    select_sql = ("SELECT " +
-                  "  sow.key_stage_id as key_stage_id "  # 0
-                  " FROM sow_scheme_of_work as sow " +
-                  " LEFT JOIN auth_user as user ON user.id = sow.created_by " +
+    select_sql = ("SELECT "\
+                  "  sow.key_stage_id as key_stage_id "\
+                  " FROM sow_scheme_of_work as sow "\
+                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
                   " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
-
     rows = db.executesql(select_sql)
 
     key_stage_id = 0
