@@ -4,7 +4,7 @@ from basemodel import BaseModel
 class LearningEpisodeModel (BaseModel):
 
 
-    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", key_words = None, summary = None, created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
@@ -15,6 +15,8 @@ class LearningEpisodeModel (BaseModel):
         self.parent_topic_name = parent_topic_name
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
+        self.key_words = key_words
+        self.summary = summary
         self.created=created
         self.created_by_id=self._try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -49,8 +51,19 @@ class LearningEpisodeModel (BaseModel):
 
     def get_ui_sub_heading(self):
         """ show scheme of work name """
-        return "for {}".format(self.scheme_of_work_name)
+        sub_heading_to_show = "for {scheme_of_work_name} - {summary}".format(scheme_of_work_name=self.scheme_of_work_name, summary=self.summary if self.summary is not None else '')
 
+        # trim if needed
+        sub_heading_to_show = sub_heading_to_show.rstrip(" -") # remove hypen
+
+        return sub_heading_to_show
+
+
+    def get_list_of_key_words(self):
+        if self.key_words is None:
+            return []
+        else:
+            return self.key_words.split(',')
 
     def validate(self):
 
@@ -81,7 +94,14 @@ class LearningEpisodeModel (BaseModel):
             self.validation_errors["key_stage_id"] = "{} is not a valid selection".format(self.key_stage_id)
             self.is_valid = False
 
+        # Validate key_words
+        self._validate_optional_list("key_words", self.key_words, sep=",", max_items=15)
+
+        # Validate summary
+        self._validate_optional_string("summary", self.summary, 80)
+
         return self.is_valid
+
 
     def _clean_up(self):
         """ clean up properties """
@@ -97,6 +117,13 @@ class LearningEpisodeModel (BaseModel):
 
         if self.parent_topic_name is not None:
             self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
+
+        if self.key_words is not None:
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ')
+
+        if self.summary is not None:
+            self.summary = self.summary.lstrip(' ').rstrip(' ')
+
 
 
 

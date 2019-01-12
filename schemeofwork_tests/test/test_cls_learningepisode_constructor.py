@@ -46,6 +46,8 @@ class Test_LearningEpisode_Constructor(TestCase):
         self.assertEqual("", test.parent_topic_name)
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
+        self.assertEqual(None, test.key_words, "key_words should be ''")
+        self.assertEqual(None, test.summary, "summary should be ''")
         self.assertEqual(False, test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0)
 
@@ -58,6 +60,8 @@ class Test_LearningEpisode_Constructor(TestCase):
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
                                  topic_id=4,
+                                 key_words='unit,test',
+                                 summary='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.',
                                  parent_topic_id=5,
                                  key_stage_id=6)
 
@@ -69,6 +73,8 @@ class Test_LearningEpisode_Constructor(TestCase):
         self.assertEqual(2, test.order_of_delivery_id)
         self.assertEqual(3, test.scheme_of_work_id)
         self.assertEqual(4, test.topic_id)
+        self.assertEqual('unit,test', test.key_words)
+        self.assertEqual('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.', test.summary)
         self.assertEqual(5, test.parent_topic_id)
         self.assertEqual(6, test.key_stage_id)
         self.assertTrue(test.is_valid)

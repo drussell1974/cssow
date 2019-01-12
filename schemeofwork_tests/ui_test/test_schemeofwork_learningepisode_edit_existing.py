@@ -41,6 +41,11 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
+        ' ctl-key_words '
+        elem = self.test_context.find_element_by_id("ctl-key_words")
+        elem.clear()
+        elem.send_keys("Lorem ipsum dolor sit amet")
+
         elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
@@ -48,7 +53,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -74,7 +79,19 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
             if opt.text == "Algorithms":
                  opt.click()
 
+        elem.send_keys(Keys.TAB)
+
+        ' ctl-key_words '
+        elem = self.test_context.find_element_by_id("ctl-key_words")
+        elem.clear()
+        elem.send_keys("Lorem ipsum dolor sit amet")
+
         elem = self.test_context.find_element_by_id("saveButton")
+
+        ' ctl-summary '
+        elem = self.test_context.find_element_by_id("ctl-summary")
+        elem.clear()
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
         ' submit the form '
         elem.send_keys(Keys.RETURN)

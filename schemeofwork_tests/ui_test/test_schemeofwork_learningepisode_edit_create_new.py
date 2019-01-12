@@ -67,12 +67,24 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem.clear()
         elem.send_keys("1")
 
+        ' ctl-key_words '
+        elem = self.test_context.find_element_by_id("ctl-key_words")
+        elem.clear()
+        elem.send_keys("Lorem ipsum dolor sit amet")
+
+        ' ctl-summary '
+        elem = self.test_context.find_element_by_id("ctl-summary")
+        elem.clear()
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
+
         ' ctl-key_stage_id - select KS4 '
         elem = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem.find_elements_by_tag_name('option')
         for opt in all_options:
             if opt.text == "Algorithms":
                  opt.click()
+
+        elem.send_keys(Keys.TAB)
 
         elem = self.test_context.find_element_by_id("saveButton")
 

@@ -43,6 +43,7 @@ class test_SchemeOfWork_validate__name(SchemeOfWork_TestCase):
         self.assertTrue(test.is_valid, "is_valid should be True")
         self.assertFalse("name" in test.validation_errors, "name should have no validation errors - %s" % test.validation_errors)
 
+
     def test_min__invalid_extreme(self):
         # set up
         test = self._construct_valid_object()

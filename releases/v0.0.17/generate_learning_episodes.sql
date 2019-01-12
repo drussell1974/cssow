@@ -1,6 +1,5 @@
-CREATE PROCEDURE `generate_learning_episodes`()
+ALTER PROCEDURE `generate_learning_episodes`(IN sow_id INT)
 BEGIN
-	DECLARE sow_id INT;
 	DECLARE delivery INT;
 	DECLARE topic_id INT;
 

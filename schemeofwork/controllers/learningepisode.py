@@ -80,6 +80,8 @@ def save_item():
         scheme_of_work_id = request.vars.scheme_of_work_id,
         topic_id = request.vars.topic_id,
         key_stage_id= request.vars.key_stage_id,
+        key_words = request.vars.key_words,
+        summary = request.vars.summary,
         created = datetime.now(),
         created_by_id = auth.user.id
     )

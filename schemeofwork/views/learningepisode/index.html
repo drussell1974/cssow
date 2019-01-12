@@ -61,6 +61,15 @@
                 {{=row.get_ui_title()}}
               </h2>
             </a>
+              {{ if row.summary is not None: }}
+                <h3>{{=row.summary}}</h3>
+              {{ pass }}
+
+              {{ if len(row.get_list_of_key_words()) > 0: }}
+                  {{ for key_word in row.get_list_of_key_words(): }}
+                    <i class="badge badge-info">{{=key_word}}</i>&nbsp;
+                  {{ pass }}
+              {{ pass }}
             <p class="post-meta">Created by
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}

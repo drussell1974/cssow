@@ -29,7 +29,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     """ Breadcrumb """

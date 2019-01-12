@@ -93,6 +93,14 @@ class BaseModel(object):
                 self.is_valid = False
 
 
+    def _validate_optional_list(self, name_of_property, list_to_validate, sep, max_items):
+        if list_to_validate is not None:
+            if len(list_to_validate.split(sep)) > max_items:
+                self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(
+                    len(list_to_validate), max_items)
+                self.is_valid = False
+
+
     def _validate_required_integer(self, name_of_property, value_to_validate, min_value, max_value):
         if value_to_validate is None or value_to_validate < min_value or value_to_validate > max_value:
             self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
