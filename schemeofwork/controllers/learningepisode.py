@@ -7,6 +7,7 @@ import db_learningepisode
 import db_learningobjective
 import db_topic
 
+
 def index():
     """ index action """
     scheme_of_work_id = int(request.args(0)) #int(request.vars.scheme_of_work_id)
@@ -53,11 +54,7 @@ def edit():
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id
 
-    #topic_options = []
-    #learningobjectives_data = db_learningobjective.get_all(db, id_, auth.user_id)
-
-    #if(len(learningobjectives_data) == 0):
-    topic_options = db_topic.get_options(db, model.topic_id, 1) #, model.parent_topic_id);
+    topic_options = db_topic.get_options(db, model.topic_id, 1)
 
     content = {
         "main_heading":"Learning episode",
@@ -113,3 +110,11 @@ def delete_item():
     db_learningepisode.delete(db, auth.user.id, id_)
 
     return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id)))
+
+
+def get_key_words():
+    topic_id = int(request.args(0) if request.args(0) is not None else 0)
+    import gluon.contrib.simplejson
+    key_words = ['red','blue','green','yellow','violet','brown','purple','black','white']
+    return gluon.contrib.simplejson.dumps(key_words)
+

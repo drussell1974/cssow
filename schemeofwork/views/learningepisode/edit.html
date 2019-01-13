@@ -2,6 +2,13 @@
 {{block head}}
     <!-- Bootstrap tokenfield CSS -->
     <link href="{{=URL('static','custom/vendor/sliptree/css/bootstrap-tokenfield.min.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','custom/vendor/sliptree/css/tokenfield-typeahead.min.css')}}" rel="stylesheet">
+    <style>
+        .ui-menu {
+            list-style-type:none;
+            background:white;
+        }
+    </style>
 {{end}}
 
 {{block header}}
@@ -69,10 +76,11 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Key words</label>
-                <input type="text" name="key_words" class="form-control" placeholder="Type a keyword and press enter" id="ctl-key_words"
+                <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
                        value='{{=model.key_words}}'>
-                <p class="help-block text-danger"></p>
+                <p class="help-block text-danger" id="token-error"></p>
               </div>
+                <div id="keywords"></div>
             </div>
             <br>
             <div id="success"></div>
@@ -81,7 +89,7 @@
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
                 <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-              <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
             </div>
           </form>
         </div>
@@ -93,15 +101,27 @@
     <!-- Main Content END -->
 
 {{block page_js}}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Bootstrap tokenfield javascript -->
     <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
+
     <script>
-    $('#ctl-key_words').tokenfield({
-      autocomplete: {
-        source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
-        delay: 100
-      },
-      showAutocompleteOnFocus: true
-    })
+    $.getJSON('{{=URL('get_key_words', args=model.topic_id)}}',
+        function(msg) {
+            var keywords = msg;
+
+            $('#ctl-key_words').tokenfield({
+              autocomplete: {
+                limit: 15,
+                source: keywords,
+                delay: 100
+              },
+              showAutocompleteOnFocus: true
+            })
+        }
+    );
+
+
     </script>
 {{end page_js}}
