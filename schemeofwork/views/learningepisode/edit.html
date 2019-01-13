@@ -1,4 +1,9 @@
 {{extend '__layout.html'}}
+{{block head}}
+    <!-- Bootstrap tokenfield CSS -->
+    <link href="{{=URL('static','custom/vendor/sliptree/css/bootstrap-tokenfield.min.css')}}" rel="stylesheet">
+{{end}}
+
 {{block header}}
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">
@@ -88,4 +93,6 @@
     <!-- Main Content END -->
 
 {{block page_js}}
+    <!-- Bootstrap tokenfield javascript -->
+    <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
 {{end page_js}}
