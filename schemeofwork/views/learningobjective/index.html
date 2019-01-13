@@ -56,7 +56,14 @@
                 <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
             {{pass}}
             <!-- Pager Header END -->
-
+            {{ if len(model) == 0: }}
+                <div class="alert alert-info" role="alert">
+                {{=T('There are no learning objectives for this learning episode.')}}
+                {{if auth.user:}}
+                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('Click here to get started.')}}</a>
+                {{pass}}
+                </div>
+          {{ pass }}
           <!-- Show learning objectives for this learning episode -->
           {{ for row in model: }}
           <div class="post-preview">

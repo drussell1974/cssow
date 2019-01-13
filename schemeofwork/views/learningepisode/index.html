@@ -54,6 +54,14 @@
           {{pass}}
             <!-- Pager Header END -->
           <!-- Scheme of works -->
+          {{ if len(model) == 0: }}
+            <div class="alert alert-info" role="alert">
+            {{=T('There are no learning episodes for this scheme of work.')}}
+            {{if auth.user:}}
+                <br><a href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('Click here to get started.')}}</a>
+            {{pass}}
+            </div>
+          {{ pass }}
           {{ for row in model: }}
           <div class="post-preview">
             <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">

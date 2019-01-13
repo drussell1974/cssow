@@ -10,18 +10,25 @@ from pager import Pager
 def index():
     """ index action """
 
-    key_stage_id =  int(request.args(0) if request.args(0) is not None else 0) #int(request.vars.key_stage_id if request.vars.key_stage_id is not None else 0)
+    filtered_key_stage_id =  int(request.args(0) if request.args(0) is not None else 0)
+
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     # get the schemes of work
-    data = db_schemeofwork.get_all(db, key_stage_id=key_stage_id, auth_user=auth.user_id)
+    data = db_schemeofwork.get_all(db, key_stage_id=filtered_key_stage_id, auth_user=auth.user_id)
     # get the key stages to show
     key_stage_options = db_keystage.get_options(db)
+
+    # get the key stage name to display
+    filtered_key_stage_name = ""
+    for ks in key_stage_options:
+        if ks.id == filtered_key_stage_id:
+            filtered_key_stage_name = ks.name
 
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
 
-    pager_html = pager.render_html(URL('schemesofwork', 'index', vars=dict(key_stage_id=key_stage_id)))
+    pager_html = pager.render_html(URL('schemesofwork', 'index', vars=dict(key_stage_id=filtered_key_stage_id)))
 
     data = pager.data_to_display()
 
@@ -35,7 +42,8 @@ def index():
 
     return dict(content = content,
                 model = data,
-                key_stage_id = key_stage_id,
+                key_stage_id = filtered_key_stage_id,
+                key_stage_name = filtered_key_stage_name,
                 key_stage_options = key_stage_options,
                 page = page_to_display,
                 pager_html = pager_html)

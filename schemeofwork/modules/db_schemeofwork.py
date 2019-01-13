@@ -182,6 +182,7 @@ def get_key_stage_id_only(db, scheme_of_work_id):
 
     return key_stage_id
 
+
 """
 Private CRUD functions
 """

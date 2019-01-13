@@ -114,7 +114,7 @@ def delete_item():
 
     db_learningepisode.delete(db, auth.user.id, id_)
 
-    return redirect(URL('index', vars=dict(scheme_of_work_id=scheme_of_work_id)))
+    return redirect(URL('index', args=[scheme_of_work_id]))
 
 
 def get_key_words():
