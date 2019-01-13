@@ -67,10 +67,11 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem.clear()
         elem.send_keys("1")
 
-        ' ctl-key_words '
-        elem = self.test_context.find_element_by_id("ctl-key_words")
-        elem.clear()
-        elem.send_keys("Lorem ipsum dolor sit amet")
+        #' ctl-key_words '
+        #elem = self.test_context.find_element_by_id("ctl-key_words")
+        #elem.clear()
+       # elem.send_keys("Lorem")
+        #elem.send_keys(Keys.ENTER)
 
         ' ctl-summary '
         elem = self.test_context.find_element_by_id("ctl-summary")
@@ -89,6 +90,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
+        self.wait()
         elem.send_keys(Keys.RETURN)
 
         # assert

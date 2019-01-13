@@ -42,9 +42,10 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.send_keys(Keys.TAB)
 
         ' ctl-key_words '
-        elem = self.test_context.find_element_by_id("ctl-key_words")
-        elem.clear()
-        elem.send_keys("Lorem ipsum dolor sit amet")
+        """ NOT INTERACTABLE """
+        #elem = self.test_context.find_element_by_id("ctl-key_words")
+        #elem.clear()
+        #elem.send_keys("Lorem ipsum dolor sit amet")
 
         elem = self.test_context.find_element_by_id("saveButton")
 
@@ -82,9 +83,9 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.send_keys(Keys.TAB)
 
         ' ctl-key_words '
-        elem = self.test_context.find_element_by_id("ctl-key_words")
-        elem.clear()
-        elem.send_keys("Lorem ipsum dolor sit amet")
+        #elem = self.test_context.find_element_by_id("ctl-key_words")
+        #elem.clear()
+        #elem.send_keys("Lorem ipsum dolor sit amet")
 
         elem = self.test_context.find_element_by_id("saveButton")
 

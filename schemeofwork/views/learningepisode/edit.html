@@ -8,6 +8,14 @@
             list-style-type:none;
             background:white;
         }
+        .ui-helper-hidden-accessible:before {
+            content:' ';
+            display:block;
+        }
+        .ui-helper-hidden-accessible:after {
+            content:' ';
+            display:block;
+        }
     </style>
 {{end}}
 
@@ -107,14 +115,12 @@
     <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
 
     <script>
-    $.getJSON('{{=URL('get_key_words', args=model.topic_id)}}',
-        function(msg) {
-            var keywords = msg;
-
+    $.getJSON('{{=URL('get_key_words')}}',
+        function(result) {
             $('#ctl-key_words').tokenfield({
               autocomplete: {
                 limit: 15,
-                source: keywords,
+                source: result,
                 delay: 100
               },
               showAutocompleteOnFocus: true

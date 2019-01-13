@@ -473,6 +473,7 @@ class test_LearningEpisodeModel_validate__summary(LearningEpisode_TestCase):
 
         # assert
         self.assertTrue(test.is_valid, "is_valid should be True")
+
         self.assertFalse("summary" in test.validation_errors, "summary should not have validation error %s" % test.validation_errors)
 
 

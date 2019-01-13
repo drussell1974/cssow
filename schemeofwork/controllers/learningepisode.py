@@ -4,8 +4,8 @@ from cls_learningepisode import LearningEpisodeModel
 from pager import Pager
 import db_schemeofwork
 import db_learningepisode
-import db_learningobjective
 import db_topic
+import db_keyword
 
 
 def index():
@@ -85,7 +85,12 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
+
+        ' save the learning episode '
         model = db_learningepisode.save(db, model, published)
+        ' save keywords '
+        db_keyword.save(db, model.key_words.split(','))
+
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 
@@ -113,8 +118,9 @@ def delete_item():
 
 
 def get_key_words():
-    topic_id = int(request.args(0) if request.args(0) is not None else 0)
+    """ returns keywords as json """
+    key_words = db_keyword.get_options(db)
+
     import gluon.contrib.simplejson
-    key_words = ['red','blue','green','yellow','violet','brown','purple','black','white']
     return gluon.contrib.simplejson.dumps(key_words)
 
