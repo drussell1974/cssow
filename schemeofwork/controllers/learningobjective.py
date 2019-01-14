@@ -96,7 +96,8 @@ def edit():
         topic_options = topic_options,
         content_options = content_options,
         exam_board_options = exam_board_options,
-        parent_learning_objective_options = parent_learning_objective_options
+        parent_learning_objective_options = parent_learning_objective_options,
+        main_topic_id=learning_episode.topic_id
     )
 
 
@@ -129,10 +130,8 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        ' svae learning objectives'
+        ' save learning objectives'
         model = db_learningobjective.save(db, model, published)
-        ' save keywords '
-        db_keyword.save(db, model.key_words.split(','))
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 

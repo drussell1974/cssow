@@ -115,7 +115,7 @@
     <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
 
     <script>
-    $.getJSON('{{=URL('default', 'get_key_words')}}',
+    $.getJSON('{{=URL('default', 'get_key_words', args=[topic_id])}}',
         function(result) {
             $('#ctl-key_words').tokenfield({
               autocomplete: {

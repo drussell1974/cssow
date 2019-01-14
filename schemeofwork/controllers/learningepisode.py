@@ -62,7 +62,7 @@ def edit():
         "strap_line":model.get_ui_title()
               }
 
-    return dict(content = content, model = model, topic_options = topic_options, has_objectives = True)
+    return dict(content = content, model = model, topic_options = topic_options, has_objectives = True, topic_id = model.topic_id)
 
 
 @auth.requires_login()
@@ -89,7 +89,7 @@ def save_item():
         ' save the learning episode '
         model = db_learningepisode.save(db, model, published)
         ' save keywords '
-        db_keyword.save(db, model.key_words.split(','))
+        db_keyword.save(db, model.key_words.split(','), model.topic_id)
 
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
