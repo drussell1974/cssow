@@ -7,38 +7,39 @@ import db_helper
 def get_all(db, learning_episode_id, auth_user):
 
     select_sql = "SELECT "\
-                 "  lob.id as id, "\
-                 "  lob.description as description, "\
-                 "  solo.id as solo_id, "\
-                 "  solo.name as solo_taxonomy_name, "\
-                 "  solo.lvl as solo_taxonomy_level, "\
-                 "  top.id as topic_id, "\
-                 "  top.name as topic_name, "\
-                 "  pnt_top.id as parent_topic_id, "\
-                 "  pnt_top.name as parent_topic_name, "\
-                 "  cnt.id as content_id, "\
-                 "  cnt.description as content_description, "\
-                 "  exam.id as exam_board_id, "\
-                 "  exam.name as exam_board_name, "\
-                 "  sow.key_stage_id as key_stage_id, "\
-                 "  ks.name as key_stage_name, "\
-                 "  le.id as learning_episode_id, "\
-                 "  le.order_of_delivery_id as learning_episode_name, "\
-                 "  lob.created as created, "\
-                 "  lob.created_by as created_by_id, "\
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                 " lob.id as id, "\
+                 " lob.description as description, "\
+                 " solo.id as solo_id, "\
+                 " solo.name as solo_taxonomy_name, "\
+                 " solo.lvl as solo_taxonomy_level, "\
+                 " top.id as topic_id, "\
+                 " top.name as topic_name, "\
+                 " pnt_top.id as parent_topic_id, "\
+                 " pnt_top.name as parent_topic_name, "\
+                 " cnt.id as content_id, "\
+                 " cnt.description as content_description, "\
+                 " exam.id as exam_board_id, "\
+                 " exam.name as exam_board_name, "\
+                 " sow.key_stage_id as key_stage_id, "\
+                 " ks.name as key_stage_name, "\
+                 " le.id as learning_episode_id, "\
+                 " le.order_of_delivery_id as learning_episode_name, "\
+                 " lob.key_words as key_words,"\
+                 " lob.created as created, "\
+                 " lob.created_by as created_by_id, "\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
                  " FROM sow_scheme_of_work as sow "\
-                 "  INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id "\
-                 "  INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id "\
-                 "  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
-                 "  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
-                 "  LEFT JOIN sow_topic as top ON top.id = lob.topic_id "\
-                 "  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
-                 "  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
-                 "  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
-                 "  LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
-                 "  LEFT JOIN auth_user as user ON user.id = lob.created_by "\
-                 "  WHERE le.id = {learning_episode_id} AND (le.published = 1 or le.created_by = {auth_user});"
+                 " INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id "\
+                 " INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id "\
+                 " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
+                 " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
+                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id "\
+                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
+                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
+                 " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
+                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
+                 " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
+                 " WHERE le.id = {learning_episode_id} AND (le.published = 1 or le.created_by = {auth_user});"
     select_sql = select_sql.format(learning_episode_id=learning_episode_id, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
@@ -64,9 +65,10 @@ def get_all(db, learning_episode_id, auth_user):
             key_stage_name = row[14],
             learning_episode_id = row[15],
             learning_episode_name = row[16],
-            created = row[17],
-            created_by_id = row[18],
-            created_by_name = row[19])
+            key_words=row[17],
+            created = row[18],
+            created_by_id = row[19],
+            created_by_name = row[20])
         data.append(model)
 
     return data
@@ -75,34 +77,36 @@ def get_all(db, learning_episode_id, auth_user):
 def get_new_model(db, id_, auth_user):
     model = LearningObjectiveModel(id_);
 
-    select_sql = ("SELECT " +
-                  "  lob.id AS id," +
-                  "  lob.description AS description," +
-                  "  solo.id AS solo_id," +
-                  "  solo.name AS solo_taxonomy_name," +
-                  "  solo.lvl AS solo_taxonomy_level," +
-                  "  top.id AS topic_id," +
-                  "  top.name AS topic_name," +
-                  "  pnt_top.id AS parent_topic_id," +
-                  "  pnt_top.name AS parent_topic_name," +
-                  "  cnt.id AS content_id," +
-                  "  cnt.description AS content_description," +
-                  "  exam.id AS exam_board_id," +
-                  "  exam.name AS exam_board_name," +
-                  "  0 AS learning_episode_id," +
-                  "  ks.id AS key_stage_id," +
-                  "  ks.name AS key_stage_name," +
-                  "  lob.created AS created," +
-                  "  CONCAT_WS(' ', user.first_name, user.last_name) AS created_by" +
-                  " FROM sow_learning_objective AS lob" +
-                  "  LEFT JOIN sow_topic AS top ON top.id = lob.topic_id" +
-                  "  LEFT JOIN sow_topic AS pnt_top ON pnt_top.id = top.parent_id" +
-                  "  LEFT JOIN sow_solo_taxonomy AS solo ON solo.id = lob.solo_taxonomy_id" +
-                  "  LEFT JOIN sow_content AS cnt ON cnt.id = lob.content_id" +
-                  "  LEFT JOIN sow_key_stage AS ks ON ks.id = cnt.key_stage_id" +
-                  "  LEFT JOIN sow_exam_board AS exam ON exam.id = lob.exam_board_id" +
-                  "  LEFT JOIN auth_user AS user ON user.id = lob.created_by" +
-                  "  WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user};".format(learning_objective_id=id_, auth_user=to_db_null(auth_user)))
+    select_sql = "SELECT "\
+                  " lob.id AS id,"\
+                  " lob.description AS description,"\
+                  " solo.id AS solo_id,"\
+                  " solo.name AS solo_taxonomy_name,"\
+                  " solo.lvl AS solo_taxonomy_level,"\
+                  " top.id AS topic_id,"\
+                  " top.name AS topic_name,"\
+                  " pnt_top.id AS parent_topic_id,"\
+                  " pnt_top.name AS parent_topic_name,"\
+                  " cnt.id AS content_id,"\
+                  " cnt.description AS content_description,"\
+                  " exam.id AS exam_board_id,"\
+                  " exam.name AS exam_board_name,"\
+                  " 0 AS learning_episode_id,"\
+                  " ks.id AS key_stage_id,"\
+                  " ks.name AS key_stage_name,"\
+                  " lob.key_words as key_words,"\
+                  " lob.created AS created,"\
+                  " CONCAT_WS(' ', user.first_name, user.last_name) AS created_by"\
+                  " FROM sow_learning_objective AS lob"\
+                  " LEFT JOIN sow_topic AS top ON top.id = lob.topic_id"\
+                  " LEFT JOIN sow_topic AS pnt_top ON pnt_top.id = top.parent_id"\
+                  " LEFT JOIN sow_solo_taxonomy AS solo ON solo.id = lob.solo_taxonomy_id"\
+                  " LEFT JOIN sow_content AS cnt ON cnt.id = lob.content_id"\
+                  " LEFT JOIN sow_key_stage AS ks ON ks.id = cnt.key_stage_id"\
+                  " LEFT JOIN sow_exam_board AS exam ON exam.id = lob.exam_board_id"\
+                  " LEFT JOIN auth_user AS user ON user.id = lob.created_by"\
+                  " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user};"
+    select_sql = select_sql.format(learning_objective_id=id_, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -124,9 +128,10 @@ def get_new_model(db, id_, auth_user):
             learning_episode_id = row[13],
             key_stage_id = row[14],
             key_stage_name = row[15],
-            created = row[16],
-            created_by_id = row[17],
-            created_by_name = row[18])
+            key_words=row[16],
+            created = row[17],
+            created_by_id = row[18],
+            created_by_name = row[19])
 
     return model
 
@@ -134,38 +139,41 @@ def get_new_model(db, id_, auth_user):
 def get_model(db, id_, auth_user):
     model = LearningObjectiveModel(id_);
 
-    select_sql = ("SELECT " +
-                 "  lob.id as id, " + # 0
-                 "  lob.description as description, " + #1
-                 "  solo.id as solo_id, " + #2
-                 "  solo.name as solo_taxonomy_name, " + #3
-                 "  solo.lvl as solo_taxonomy_level, " + #4
-                 "  top.id as topic_id, " + #5
-                 "  top.name as topic_name, " + #6
-                 "  pnt_top.id as parent_topic_id, " + #7
-                 "  pnt_top.name as parent_topic_name, " + #8
-                 "  cnt.id as content_id, " + #9
-                 "  cnt.description as content_description, " #10
-                 "  exam.id as exam_board_id, " + #11
-                 "  exam.name as exam_board_name, " #12
-                 "  le.id as learning_episode_id, " + #13
-                 "  sow.key_stage_id as key_stage_id, " + #14
-                 "  ks.name as key_stage_name, " + #15
-                 "  lob.created as created, " + #16
-                 "  lob.created_by as created_by_id, " + #17
-                 "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #18
-                 " FROM sow_scheme_of_work as sow " +
-                 "  INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id " +
-                 "  INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id " +
-                 "  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id " +
-                 "  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id " +
-                 "  LEFT JOIN sow_topic as top ON top.id = lob.topic_id " +
-                 "  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
-                 "  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id " +
-                 "  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id " +
-                 "  LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
-                 "  LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-                 "  WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});".format(learning_objective_id=id_, auth_user=to_db_null(auth_user)))
+    select_sql = "SELECT"\
+                 " lob.id as id,"\
+                 " lob.description as description,"\
+                 " solo.id as solo_id,"\
+                 " solo.name as solo_taxonomy_name,"\
+                 " solo.lvl as solo_taxonomy_level,"\
+                 " top.id as topic_id,"\
+                 " top.name as topic_name,"\
+                 " pnt_top.id as parent_topic_id,"\
+                 " pnt_top.name as parent_topic_name,"\
+                 " cnt.id as content_id,"\
+                 " cnt.description as content_description,"\
+                 " exam.id as exam_board_id,"\
+                 " exam.name as exam_board_name,"\
+                 " le.id as learning_episode_id,"\
+                 " sow.key_stage_id as key_stage_id,"\
+                 " ks.name as key_stage_name,"\
+                 " lob.key_words as key_words,"\
+                 " lob.created as created,"\
+                 " lob.created_by as created_by_id,"\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                 " FROM sow_scheme_of_work as sow"\
+                 " INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id"\
+                 " INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id"\
+                 " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id"\
+                 " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id"\
+                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
+                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
+                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
+                 " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
+                 " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
+                 " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
+                 " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});"
+
+    select_sql = select_sql.format(learning_objective_id=id_, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -187,42 +195,46 @@ def get_model(db, id_, auth_user):
             learning_episode_id = row[13],
             key_stage_id = row[14],
             key_stage_name = row[15],
-            created = row[16],
-            created_by_id = row[17],
-            created_by_name = row[18])
+            key_words=row[16],
+            created = row[17],
+            created_by_id = row[18],
+            created_by_name = row[19])
 
     return model
 
 
 def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
-    select_sql = ("SELECT " +
-                    "  lob.id as id, " + # 0
-                     "  lob.description as description, " + #1
-                     "  solo.id as solo_id, " + #2
-                     "  solo.name as solo_taxonomy_name, " + #3
-                     "  solo.lvl as solo_taxonomy_level, " + #4
-                     "  top.id as topic_id, " + #5
-                     "  top.name as topic_name, " + #6
-                     "  pnt_top.id as parent_topic_id, " + #7
-                     "  pnt_top.name as parent_topic_name, " + #8
-                     "  cnt.id as content_id, " + #9
-                     "  cnt.description as content_description, " #10
-                     "  exam.id as exam_board_id, " + #11
-                     "  exam.name as exam_board_name, " #12
-                     "  ks.id as key_stage_id, " + #13
-                     "  ks.name as key_stage_name, " + #14
-                     "  lob.created as created, " + #15
-                     "  lob.created_by as created_by_id, " + #16
-                     "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name " + #17
-                    " FROM sow_learning_objective as lob " +
-                    " LEFT JOIN sow_topic as top ON top.id = lob.topic_id " +
-                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id " +
-                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id " +
-                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id " +
-                    " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id " +
-                    " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id " +
-                    " LEFT JOIN auth_user as user ON user.id = lob.created_by " +
-                    " WHERE ks.id > {current_key_stage_id} AND (top.id = {topic_id} OR pnt_top.id = {topic_id}) ORDER BY solo.lvl;".format(current_key_stage_id=current_key_stage_id, topic_id=topic_id))
+    select_sql = "SELECT"\
+                     " lob.id as id,"\
+                     " lob.description as description,"\
+                     " solo.id as solo_id,"\
+                     " solo.name as solo_taxonomy_name,"\
+                     " solo.lvl as solo_taxonomy_level,"\
+                     " top.id as topic_id,"\
+                     " top.name as topic_name,"\
+                     " pnt_top.id as parent_topic_id,"\
+                     " pnt_top.name as parent_topic_name,"\
+                     " cnt.id as content_id,"\
+                     " cnt.description as content_description,"\
+                     " exam.id as exam_board_id,"\
+                     " exam.name as exam_board_name,"\
+                     " ks.id as key_stage_id,"\
+                     " ks.name as key_stage_name,"\
+                     " lob.key_words as key_words,"\
+                     " lob.created as created,"\
+                     " lob.created_by as created_by_id,"\
+                     " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                    " FROM sow_learning_objective as lob"\
+                    " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
+                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
+                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
+                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
+                    " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
+                    " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
+                    " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
+                    " WHERE ks.id > {current_key_stage_id} AND (top.id = {topic_id} OR pnt_top.id = {topic_id}) ORDER BY solo.lvl;"
+
+    select_sql = select_sql.format(current_key_stage_id=current_key_stage_id, topic_id=topic_id)
 
     rows = db.executesql(select_sql)
 
@@ -245,9 +257,10 @@ def get_parent_options(db, current_key_stage_id = 0, topic_id = 0):
             exam_board_name = row[12],
             key_stage_id = row[13],
             key_stage_name = row[14],
-            created = row[15],
-            created_by_id = row[16],
-            created_by_name = row[17])
+            key_words = row[15],
+            created = row[16],
+            created_by_id = row[17],
+            created_by_name = row[18])
         data.append(model)
 
     return data
@@ -296,8 +309,8 @@ def _update(db, model, published):
 
     # build update statement
 
-    str_update = "UPDATE sow_learning_objective SET description = '{description}', solo_taxonomy_id = {solo_taxonomy_id}, topic_id = {topic_id}, content_id = {content_id}, exam_board_id = {exam_board_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
-    str_update = str_update.format(description=model.description, solo_taxonomy_id=model.solo_taxonomy_id, topic_id=model.topic_id, content_id=to_db_null(model.content_id), exam_board_id=to_db_null(model.exam_board_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
+    str_update = "UPDATE sow_learning_objective SET description = '{description}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, topic_id = {topic_id}, content_id = {content_id}, exam_board_id = {exam_board_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
+    str_update = str_update.format(description=model.description, key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, topic_id=model.topic_id, content_id=to_db_null(model.content_id), exam_board_id=to_db_null(model.exam_board_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
 
     db.executesql(str_update)
 
@@ -318,8 +331,8 @@ def _update(db, model, published):
 
 def _insert(db, model, published):
 
-    str_insert = "INSERT INTO sow_learning_objective (description, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by, published)"
-    str_insert = str_insert + " VALUES ('{description}', {solo_taxonomy_id}, {topic_id}, {content_id}, {exam_board_id}, {parent_id}, '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_learning_objective (description, key_words, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by, published)"
+    str_insert = str_insert + " VALUES ('{description}', '{key_words}', {solo_taxonomy_id}, {topic_id}, {content_id}, {exam_board_id}, {parent_id}, '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
         description=model.description,
         solo_taxonomy_id=model.solo_taxonomy_id,
@@ -327,6 +340,7 @@ def _insert(db, model, published):
         content_id=to_db_null(model.content_id),
         exam_board_id=to_db_null(model.exam_board_id),
         parent_id=to_db_null(model.parent_id),
+        key_words=to_db_null(model.key_words),
         created=model.created,
         created_by=model.created_by_id,
         published=published)

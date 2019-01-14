@@ -117,10 +117,4 @@ def delete_item():
     return redirect(URL('index', args=[scheme_of_work_id]))
 
 
-def get_key_words():
-    """ returns keywords as json """
-    key_words = db_keyword.get_options(db)
-
-    import gluon.contrib.simplejson
-    return gluon.contrib.simplejson.dumps(key_words)
 

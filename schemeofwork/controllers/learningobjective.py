@@ -9,6 +9,7 @@ import db_topic
 import db_content
 import db_examboard
 import db_learningepisode
+import db_keyword
 
 def index():
     """ index action """
@@ -119,6 +120,7 @@ def save_item():
         key_stage_id=request.vars.key_stage_id,
         parent_id=request.vars.parent_id,
         learning_episode_id=request.vars.learning_episode_id,
+        key_words = request.vars.key_words,
         created=datetime.now(),
         created_by_id=auth.user.id
     )
@@ -127,7 +129,10 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
+        ' svae learning objectives'
         model = db_learningobjective.save(db, model, published)
+        ' save keywords '
+        db_keyword.save(db, model.key_words.split(','))
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 

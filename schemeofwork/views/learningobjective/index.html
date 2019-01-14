@@ -72,6 +72,11 @@
               <h2 class="post-title">
                 {{=row.description}}
               </h2>
+                {{ if len(row.get_list_of_key_words()) > 0: }}
+                  {{ for key_word in row.get_list_of_key_words(): }}
+                    <i class="badge badge-info">{{=key_word}}</i>&nbsp;
+                  {{ pass }}
+              {{ pass }}
             </a>
             <p class="post-meta">Created by
               <a href="#">{{=row.created_by_name}}</a>

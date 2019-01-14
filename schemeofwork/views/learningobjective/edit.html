@@ -1,4 +1,23 @@
 {{extend '__layout.html'}}
+{{block head}}
+    <!-- Bootstrap tokenfield CSS -->
+    <link href="{{=URL('static','custom/vendor/sliptree/css/bootstrap-tokenfield.min.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','custom/vendor/sliptree/css/tokenfield-typeahead.min.css')}}" rel="stylesheet">
+    <style>
+        .ui-menu {
+            list-style-type:none;
+            background:white;
+        }
+        .ui-helper-hidden-accessible:before {
+            content:' ';
+            display:block;
+        }
+        .ui-helper-hidden-accessible:after {
+            content:' ';
+            display:block;
+        }
+    </style>
+{{end}}
 {{block header}}
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">
@@ -35,6 +54,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
+            <!-- Description START -->
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Description</label>
@@ -43,6 +63,18 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+            <!-- Description END -->
+            <!-- Key words START -->
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls">
+                <label>Key words</label>
+                <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
+                       value='{{=model.key_words}}'>
+                <p class="help-block text-danger" id="token-error"></p>
+              </div>
+                <div id="keywords"></div>
+            </div>
+            <!-- Key words END -->
             <!-- Parent Objective START -->
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
@@ -133,4 +165,25 @@
     <!-- Main Content END -->
 
 {{block page_js}}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!-- Bootstrap tokenfield javascript -->
+    <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
+
+    <script>
+    $.getJSON('{{=URL('default', 'get_key_words')}}',
+        function(result) {
+            $('#ctl-key_words').tokenfield({
+              autocomplete: {
+                limit: 15,
+                source: result,
+                delay: 100
+              },
+              showAutocompleteOnFocus: true
+            })
+        }
+    );
+
+
+    </script>
 {{end page_js}}

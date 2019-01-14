@@ -3,7 +3,7 @@ from basemodel import BaseModel, try_int
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, description = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, key_words = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.description = description
         self.scheme_of_work_name = scheme_of_work_name
@@ -23,6 +23,7 @@ class LearningObjectiveModel (BaseModel):
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.parent_id = try_int(parent_id)
+        self.key_words = key_words
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -37,6 +38,13 @@ class LearningObjectiveModel (BaseModel):
         return "for {} {}".format(self.scheme_of_work_name, self.learning_episode_name)
 
 
+    def get_list_of_key_words(self):
+        if self.key_words is None:
+            return []
+        else:
+            return self.key_words.split(',')
+
+
     def validate(self):
 
         """ clean up and validate model """
@@ -45,25 +53,38 @@ class LearningObjectiveModel (BaseModel):
 
         # clean properties before validation
         self._clean_up()
+
         print(self.description)
+
         # validate description
         self._validate_required_string("description", self.description, 1, 1000)
+
         # validate exam_board_id
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
+
         # validate topic_id
         self._validate_required_integer("topic_id", self.topic_id, 1, 9999)
+
         # validate parent_topic_id
         self._validate_optional_integer("parent_topic_id", self.parent_topic_id, 1, 9999)
+
         # validate content_id
         self._validate_optional_integer("content_id", self.content_id, 1, 9999)
+
         # validate solo_taxonomy_id
         self._validate_required_integer("solo_taxonomy_id", self.solo_taxonomy_id, 1, 9999)
+
         # validate learning_episode_id
         self._validate_required_integer("learning_episode_id", self.learning_episode_id, 1, 9999)
+
         # validate learning_episode_id
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
+
         # validate parent_id
         self._validate_optional_integer("parent_id", self.parent_id, 1, 9999)
+
+        # Validate key_words
+        self._validate_optional_list("key_words", self.key_words, sep=",", max_items=15)
 
     def _clean_up(self):
         """ clean up properties by removing whitespace etc """
@@ -95,3 +116,6 @@ class LearningObjectiveModel (BaseModel):
         # trim key_stage_name
         if self.key_stage_name is not None:
             self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
+
+        if self.key_words is not None:
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ').lower()

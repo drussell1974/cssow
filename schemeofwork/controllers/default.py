@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*
 import db_schemeofwork
+import db_keyword
 
 def index():
 
@@ -68,3 +69,10 @@ def download():
     http://..../[app]/default/download/[filename]
     """
     return response.download(request, db)
+
+def get_key_words():
+    """ returns keywords as json """
+    key_words = db_keyword.get_options(db)
+
+    import gluon.contrib.simplejson
+    return gluon.contrib.simplejson.dumps(key_words)
