@@ -108,6 +108,7 @@ def save_item():
 
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
+    main_topic_id = int(request.vars.main_topic_id)
 
     # create instance of model from request.vars
 
@@ -132,6 +133,8 @@ def save_item():
     if model.is_valid == True:
         ' save learning objectives'
         model = db_learningobjective.save(db, model, published)
+        ' save keywords '
+        db_keyword.save(db, model.key_words.split(','), main_topic_id)
     else:
         raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
 

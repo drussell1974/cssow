@@ -21,12 +21,12 @@ class test_db_keyword__insert(TestCase):
     def test__save_new(self):
 
         # set up
-        rows_before = db_keyword.get_options(self.fake_db)
+        rows_before = db_keyword.get_options(self.fake_db, topic_id=1)
 
         # test
-        db_keyword.save(self.fake_db, ["foobar"])
+        db_keyword.save(self.fake_db, ["foobar"], topic_id=1)
 
-        rows_after = db_keyword.get_options(self.fake_db)
+        rows_after = db_keyword.get_options(self.fake_db, topic_id=1)
 
         self.assertEqual(len(rows_after), len(rows_before) + 1, "should have added a row: before {} and after {} ".format(len(rows_before), len(rows_after)))
 
@@ -34,15 +34,15 @@ class test_db_keyword__insert(TestCase):
     def test_do_not_save_existing(self):
         # setup
         ' create an existing keyword '
-        db_keyword.save(self.fake_db, ["FooBar"])
+        db_keyword.save(self.fake_db, ["FooBar"], topic_id=1)
 
-        rows_before = db_keyword.get_options(self.fake_db)
+        rows_before = db_keyword.get_options(self.fake_db, topic_id=1)
 
         # test
-        db_keyword.save(self.fake_db, ["foobar"])
+        db_keyword.save(self.fake_db, ["foobar"], topic_id=1)
 
         # assert
-        rows_after = db_keyword.get_options(self.fake_db)
+        rows_after = db_keyword.get_options(self.fake_db, topic_id=1)
         self.assertEqual(len(rows_after), len(rows_before), "should *NOT* have added a row. Before and after should be the same: {} before and {} after".format(len(rows_before), len(rows_after)))
 
 
@@ -50,9 +50,9 @@ class test_db_keyword__insert(TestCase):
         #set up
 
         # test
-        db_keyword.save(self.fake_db, ["FooBar"])
+        db_keyword.save(self.fake_db, ["FooBar"],topic_id=1)
 
-        rows = db_keyword.get_options(self.fake_db)
+        rows = db_keyword.get_options(self.fake_db, topic_id=1)
 
         for item in rows:
             self.assertTrue(item.islower(), "'{}' is not lower case".format(item))
@@ -62,9 +62,9 @@ class test_db_keyword__insert(TestCase):
         #set up
 
         # test
-        db_keyword.save(self.fake_db, [" FooBar "])
+        db_keyword.save(self.fake_db, [" FooBar "], topic_id=1)
 
-        rows = db_keyword.get_options(self.fake_db)
+        rows = db_keyword.get_options(self.fake_db, topic_id=1)
 
         for item in rows:
             self.assertEqual(item.lstrip(' ').rstrip(' '), item, "'{}' is not lower case".format(item))
@@ -74,9 +74,9 @@ class test_db_keyword__insert(TestCase):
         #set up
 
         # test
-        db_keyword.save(self.fake_db, [""])
+        db_keyword.save(self.fake_db, [""], topic_id=1)
 
-        rows = db_keyword.get_options(self.fake_db)
+        rows = db_keyword.get_options(self.fake_db, topic_id=1)
 
         for item in rows:
             self.assertTrue(len(item) > 0, "should not save empty")
