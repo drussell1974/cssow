@@ -51,17 +51,6 @@ class BaseModel(object):
             delta = b - a
             self.is_recent = False if delta.days > 3 else True
 
-    """
-    formatting members
-    """
-
-    def _try_int(self, val):
-        """ convert value to int or None """
-        try:
-            val = int(val)
-        except:
-            val = None
-        return val
 
     """
     Validation members
@@ -112,3 +101,16 @@ class BaseModel(object):
             if value_to_validate < min_value or value_to_validate > max_value:
                 self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
                 self.is_valid = False
+
+"""
+formatting members
+"""
+
+def try_int(val):
+    """ convert value to int or None """
+    try:
+        val = int(val)
+    except:
+        val = None
+    return val
+

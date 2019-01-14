@@ -90,7 +90,6 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
-        self.wait()
         elem.send_keys(Keys.RETURN)
 
         # assert

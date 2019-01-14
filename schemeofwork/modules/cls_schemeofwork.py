@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
+from basemodel import BaseModel, try_int
 from datetime import datetime
 
 class SchemeOfWorkModel(BaseModel):
@@ -8,13 +8,13 @@ class SchemeOfWorkModel(BaseModel):
         self.id = int(id_)
         self.name = name
         self.description = description
-        self.exam_board_id = self._try_int(exam_board_id)
+        self.exam_board_id = try_int(exam_board_id)
         self.exam_board_name = exam_board_name
-        self.key_stage_id = self._try_int(key_stage_id)
+        self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.is_recent = is_recent
         self.created=created
-        self.created_by_id=self._try_int(created_by_id)
+        self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
         self.published=published
 

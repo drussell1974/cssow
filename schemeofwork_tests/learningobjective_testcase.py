@@ -17,6 +17,7 @@ class LearningObjective_TestCase(TestCase):
         # set up
         test = LearningObjectiveModel(1,
                                       description = "lo test description",
+                                      scheme_of_work_name = "GCSE Computer Science",
                                       solo_taxonomy_id = 1,
                                       solo_taxonomy_name = "Unistructural",
                                       solo_taxonomy_level = "B",
@@ -44,6 +45,7 @@ class LearningObjective_TestCase(TestCase):
 
         # assert
         self.assertEqual(test.description, "lo test description", "--- setup --- description failed")
+        self.assertEqual(test.scheme_of_work_name, "GCSE Computer Science", "--- setup --- scheme_of_work_name failed")
         self.assertEqual(test.solo_taxonomy_id, 1, "--- setup --- solo_taxonomy_id failed")
         self.assertEqual(test.solo_taxonomy_name, "Unistructural", "--- setup --- solo_taxonomy_name failed")
         self.assertEqual(test.solo_taxonomy_level, "B", "--- setup --- solo_taxonomy_level failed")

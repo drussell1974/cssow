@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
+from basemodel import BaseModel, try_int
 
 class LearningEpisodeModel (BaseModel):
 
@@ -18,7 +18,7 @@ class LearningEpisodeModel (BaseModel):
         self.key_words = key_words
         self.summary = summary
         self.created=created
-        self.created_by_id=self._try_int(created_by_id)
+        self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
         self.published=published
 

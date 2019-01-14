@@ -38,6 +38,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def test_page__breadcrumb__navigate_to_learningepisodes_index(self):
         # setup
+
         self.test_context.find_element_by_id('lnk-bc-learning_episodes').click()
 
         # assert

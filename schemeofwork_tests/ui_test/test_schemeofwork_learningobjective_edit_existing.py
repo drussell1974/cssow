@@ -96,7 +96,8 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         ' name (cause validation error by entering blank '
         elem = self.test_context.find_element_by_id("ctl-description")
-        elem.send_keys("test_page__should_stay_on_same_page_if_valid")
+        elem.clear()
+        elem.send_keys("test_page__should_stay_on_same_page_if_valid (EDITED)")
 
         ' ctl-parent_id - select VALID '
 
