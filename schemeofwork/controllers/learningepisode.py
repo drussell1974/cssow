@@ -18,7 +18,6 @@ def index():
 
     data = db_learningepisode.get_all(db, scheme_of_work_id, auth.user_id)
     schemeofwork_options = db_schemeofwork.get_options(db,  auth_user=auth.user_id)
-
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
 

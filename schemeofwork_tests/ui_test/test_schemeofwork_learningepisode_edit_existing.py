@@ -96,7 +96,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' submit the form '
         elem.send_keys(Keys.RETURN)
-
+        
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')

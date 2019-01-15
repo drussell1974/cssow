@@ -54,8 +54,6 @@ class LearningObjectiveModel (BaseModel):
         # clean properties before validation
         self._clean_up()
 
-        print(self.description)
-
         # validate description
         self._validate_required_string("description", self.description, 1, 1000)
 

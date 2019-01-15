@@ -10,13 +10,13 @@ def get_options(db, topic_id):
 
     for row in rows:
         data.append(row[0])
-    print("get_options: %s" % data)
+
     return data
 
 
 def save(db, key_words, topic_id):
     """
-    saves keywords not already in the database
+    Saves keywords not already in the database
     :param db: database context
     :param key_words: list of keywords to save
     """

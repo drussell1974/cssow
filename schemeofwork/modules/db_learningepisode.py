@@ -48,11 +48,56 @@ def get_all(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], key_words = row[9], summary = row[10], created=row[11], created_by_id=row[12], created_by_name=row[13])
+        model = LearningEpisodeModel(
+            id_=row[0],
+            order_of_delivery_id=row[1],
+            scheme_of_work_id=row[2],
+            scheme_of_work_name=row[3],
+            topic_id=row[4],
+            topic_name=row[5],
+            parent_topic_id=row[6],
+            parent_topic_name=row[7],
+            key_stage_id=row[8],
+            key_words = row[9],
+            summary = row[10],
+            created=row[11],
+            created_by_id=row[12],
+            created_by_name=row[13])
+
+        model.other_key_words = get_all_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
+
         data.append(model)
 
     return data
 
+
+def get_all_keywords(db, learning_epsiode_id, auth_user):
+    """
+    Append all keywords from learning objectives for this learning episode
+    :param db:
+    :param learning_epsiode_id:
+    :param auth_user:
+    :return: the results as a single list all comma seperated
+    """
+
+    select_sql = "SELECT "\
+                 " lob.key_words as key_words"\
+                 " FROM sow_learning_objective AS lob"\
+                 " INNER JOIN sow_learning_episode AS le"\
+                 " INNER JOIN sow_learning_objective__has__learning_episode AS lo_le ON lo_le.learning_objective_id = lob.id AND lo_le.learning_episode_id = le.id"\
+                 " WHERE le.id = {learning_episode_id} AND (le.published = 1 OR le.created_by = {auth_user});"
+
+    select_sql = select_sql.format(learning_episode_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
+
+    rows = db.executesql(select_sql)
+
+    data = []
+
+    for row in rows:
+        data.append(row[0])
+    #TODO: Fix = <type 'exceptions.TypeError'> sequence item 0: expected string, NoneType found
+    #return ",".join(data)
+    return data
 
 def get_model(db, id_, auth_user):
     model = LearningEpisodeModel(id_);

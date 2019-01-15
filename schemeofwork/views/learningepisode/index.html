@@ -78,6 +78,11 @@
                     <i class="badge badge-info">{{=key_word}}</i>&nbsp;
                   {{ pass }}
               {{ pass }}
+              {{ if len(row.other_key_words) > 0: }}
+                  {{ for key_word in row.other_key_words: }}
+                    <i class="badge badge-info">{{=key_word}}</i>&nbsp;
+                  {{ pass }}
+              {{ pass }}
             <p class="post-meta">Created by
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}

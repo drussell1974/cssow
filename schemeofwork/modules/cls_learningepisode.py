@@ -16,6 +16,7 @@ class LearningEpisodeModel (BaseModel):
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.key_words = key_words
+        self.other_key_words = []
         self.summary = summary
         self.created=created
         self.created_by_id=try_int(created_by_id)
