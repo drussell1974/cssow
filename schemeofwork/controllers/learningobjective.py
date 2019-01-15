@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from cls_learningobjective import LearningObjectiveModel
+from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
 from pager import Pager
 from validation_helper import html_validation_message
-from sort_helper import bubble_sort
 import db_schemeofwork
 import db_learningobjective
 import db_solotaxonomy
@@ -29,7 +28,7 @@ def index():
 
     # bubble sort by solo
 
-    sorted_data = bubble_sort(data) # sort by solo_taxonomy_level
+    sorted_data = sort_by_solo_taxonomy_level(data) # sort by solo_taxonomy_level
 
     learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)
 
