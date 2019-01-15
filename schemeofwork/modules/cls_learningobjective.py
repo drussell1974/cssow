@@ -117,3 +117,31 @@ class LearningObjectiveModel (BaseModel):
 
         if self.key_words is not None:
             self.key_words = self.key_words.lstrip(' ').rstrip(' ').lower()
+
+
+def sort_by_solo_taxonomy_level(unsorted_list):
+    """
+    Bubble sort by solo taxonomy level
+    :param unsorted_list: the unsorted data
+    :return: a sorted list
+    """
+
+    staging_list = unsorted_list
+
+    while True:
+        swapped = False
+        for i in range(len(staging_list)-1):
+            if staging_list[i].solo_taxonomy_level > staging_list[i+1].solo_taxonomy_level:
+                """ put item in the correct position """
+                temp1 = staging_list[i]
+                temp2 = staging_list[i+1]
+
+                staging_list[i] = temp2
+                staging_list[i+1] = temp1
+                swapped = True
+
+        if swapped == False:
+            """ no more sorting required so finish """
+            break
+
+    return staging_list
