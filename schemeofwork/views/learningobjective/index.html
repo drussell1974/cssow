@@ -23,6 +23,13 @@
 </nav>
 <!-- Main Content -->
     <div class="container">
+        {{ if str(content["strap_line"]) != "None": }}
+        <div class="row">
+          <div class="alert alert-light" role="alert">
+            <p class="lead">{{=content["strap_line"]}}</p>
+          </div>
+        </div>
+        {{ pass }}
       <div class="row">
           <div class="col-lg-4 col-md-4">
             <!-- SIDE MENU START -->

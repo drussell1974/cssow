@@ -42,7 +42,8 @@ def index():
     content = {
         "main_heading":"Learning objectives",
         "sub_heading": "for {} - Week {} - {}".format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
-        "background_img":"home-bg.jpg"
+        "background_img":"home-bg.jpg",
+        "strap_line": learning_episode.summary
               }
 
     return dict(
