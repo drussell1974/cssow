@@ -1,7 +1,4 @@
 DELIMITER $$
-DROP PROCEDURE  `generate_learning_episodes`;
-DELIMITER ;
-DELIMITER $$
 CREATE PROCEDURE `generate_learning_episodes`(IN sow_id INT)
 BEGIN
 	DECLARE delivery INT;
@@ -25,4 +22,3 @@ BEGIN
 	END WHILE;
 END$$
 DELIMITER ;
-CALL `cssow`.`generate_learning_episodes`(109);
