@@ -2,6 +2,7 @@
 from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
 from pager import Pager
+from validation_helper import html_validation_message
 import db_schemeofwork
 import db_learningepisode
 import db_topic
@@ -91,7 +92,11 @@ def save_item():
         db_keyword.save(db, model.key_words.split(','), model.topic_id)
 
     else:
-        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
+        """ redirect back to page and show message """
+        session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors
+        if request.env.http_referer:
+            redirect(request.env.http_referer)
+
 
     ' if the request.vars.id was 0 then this is a new scheme of work '
     ' the user should be take create learning episodes '

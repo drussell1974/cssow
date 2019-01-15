@@ -59,7 +59,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Description</label>
                 <input type="text" class="form-control" placeholder="Description" id="ctl-description" name="description" required data-validation-required-message="Please enter a description."
-                       value='{{=model.description}}'>
+                       maxlength="1000" value='{{=model.description}}'>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
@@ -69,7 +69,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Key words</label>
                 <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
-                       value='{{=model.key_words}}'>
+                       maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
               </div>
                 <div id="keywords"></div>

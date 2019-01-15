@@ -56,8 +56,8 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Order of Delivery</label>
                 <!-- in the future select from planner -->
-                <input type="text" name="order_of_delivery_id" class="form-control" placeholder="Title" id="ctl-order_of_delivery_id" required data-validation-required-message="Please specify an order of delivery."
-                       value='{{=model.order_of_delivery_id}}'>
+                <input type="number" name="order_of_delivery_id" class="form-control" placeholder="Order of delivery (enter a number)" id="ctl-order_of_delivery_id" required data-validation-required-message="Please specify an order of delivery."
+                       min="1" max="9999" value='{{=model.order_of_delivery_id}}'>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
@@ -77,7 +77,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Summary</label>
                 <input type="text" name="summary" class="form-control" placeholder="Enter a summary (optional)" id="ctl-summary"
-                       value='{{=model.summary}}'>
+                       maxlength="80" value='{{=model.summary}}'>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
@@ -85,7 +85,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Key words</label>
                 <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
-                       value='{{=model.key_words}}'>
+                       maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
               </div>
                 <div id="keywords"></div>

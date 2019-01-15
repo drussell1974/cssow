@@ -2,6 +2,7 @@
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 from pager import Pager
+from validation_helper import html_validation_message
 import db_schemeofwork
 import db_learningobjective
 import db_solotaxonomy
@@ -136,7 +137,10 @@ def save_item():
         ' save keywords '
         db_keyword.save(db, model.key_words.split(','), main_topic_id)
     else:
-        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
+        """ redirect back to page and show message """
+        session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors
+        if request.env.http_referer:
+            redirect(request.env.http_referer)
 
     return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
 

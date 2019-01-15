@@ -6,6 +6,7 @@ import db_keystage
 from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
 from pager import Pager
+from validation_helper import html_validation_message
 
 def index():
     """ index action """
@@ -110,7 +111,10 @@ def save_item():
     if model.is_valid == True:
         model = db_schemeofwork.save(db, model, published)
     else:
-        raise Exception("Validation errors:/n/n %s" % model.validation_errors) # TODO: redirect
+        """ redirect back to page and show message """
+        session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors
+        if request.env.http_referer:
+            redirect(request.env.http_referer)
 
     ' if the request.vars.id was 0 then this is a new scheme of work '
     ' the user should be take create learning episodes '

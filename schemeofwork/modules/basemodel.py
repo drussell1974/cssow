@@ -86,7 +86,7 @@ class BaseModel(object):
         if list_to_validate is not None:
             if len(list_to_validate.split(sep)) > max_items:
                 self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(
-                    len(list_to_validate), max_items)
+                    len(list_to_validate.split(sep)), max_items)
                 self.is_valid = False
 
 

@@ -37,7 +37,7 @@
               <div class="form-group floating-label-form-group controls">
                 <label>Title</label>
                 <input type="text" name="name" class="form-control" placeholder="Title" id="ctl-name" name="name" required data-validation-required-message="Please enter a title."
-                       value='{{=model.name}}'>
+                      maxlength="40" value='{{=model.name}}'>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
@@ -68,7 +68,7 @@
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>Description</label>
-                <textarea rows="5" class="form-control" name="description" placeholder="Description" id="ctl-description" required data-validation-required-message="Please enter a description.">
+                <textarea rows="5" class="form-control" name="description" placeholder="Description" id="ctl-description" maxlength="1500" required data-validation-required-message="Please enter a description.">
                     {{=model.description}}
                 </textarea>
                 <p class="help-block text-danger"></p>
