@@ -95,9 +95,9 @@ def create_list_item(url, current_page, page_number, text):
     else:
         html = html + "?"
     ' add page number to url '
-    html = html + "page={}' class='btn".format(page_number)
+    html = html + "page={}' class='btn btn-pagination".format(page_number)
     if current_page == page_number:
-        html = html + " btn-primary btn-pagination"
+        html = html + " btn-primary"
     html = html + "'>{}</a></li>".format(text)
     return html
 
