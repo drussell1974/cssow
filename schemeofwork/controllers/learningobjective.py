@@ -3,6 +3,7 @@ from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 from pager import Pager
 from validation_helper import html_validation_message
+from sort_helper import bubble_sort
 import db_schemeofwork
 import db_learningobjective
 import db_solotaxonomy
@@ -26,23 +27,28 @@ def index():
     learning_episode = db_learningepisode.get_model(db, learning_episode_id, auth.user_id)
     data = db_learningobjective.get_all(db, learning_episode_id, auth.user_id)
 
+    # bubble sort by solo
+
+    sorted_data = bubble_sort(data) # sort by solo_taxonomy_level
+
     learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)
 
     # page the data
-    pager = Pager(page = page_to_display, page_size = 10, data = data)
+    pager = Pager(page = page_to_display, page_size = 10, data = sorted_data)
 
     pager_html = pager.render_html(URL('learningobjective', 'index', args=[scheme_of_work_id, learning_episode_id]))
-    data = pager.data_to_display()
+    paged_data = pager.data_to_display()
 
     content = {
         "main_heading":"Learning objectives",
         "sub_heading": "for {} - Week {} - {}".format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
-        "background_img":"home-bg.jpg"
+        "background_img":"home-bg.jpg",
+        "strap_line": learning_episode.summary
               }
 
     return dict(
         content = content,
-        model = data,
+        model = paged_data,
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,

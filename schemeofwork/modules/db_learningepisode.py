@@ -94,9 +94,9 @@ def get_all_keywords(db, learning_epsiode_id, auth_user):
     data = []
 
     for row in rows:
-        data.append(row[0])
-    #TODO: Fix = <type 'exceptions.TypeError'> sequence item 0: expected string, NoneType found
-    #return ",".join(data)
+        if row[0] is not None:
+            data.append(row[0])
+
     return data
 
 def get_model(db, id_, auth_user):

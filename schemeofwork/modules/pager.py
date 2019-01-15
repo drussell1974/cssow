@@ -27,7 +27,7 @@ class Pager:
 
     def render_html(self, url = ""):
         """
-        Display e.g only 5 groups of 10 records (1 - 5, 6 - 10, 11 - 12)
+        Display e.g only 7 groups of 10 records (1 - 7, 8 - 15, 16 - 23)
         :return: html
         """
         self.start_page = 1
@@ -45,12 +45,12 @@ class Pager:
         self.total_number_of_records = len(self.data)
         first_record = (self.start_page * self.page_size) - self.page_size
         last_record = first_record + 1 * self.page_size * self.pager_size
-        self.number_of_records = len(self.data[first_record:last_record]) # TODO: calculate from total length of data
+        self.number_of_records = len(self.data[first_record:last_record])
 
         ' check for leading and trailing pages '
 
-        self.leading_number_of_records = len(self.data[:first_record]) # TODO: calculate from total length of data
-        self.trailing_number_of_records = len(self.data[last_record:]) # TODO: calculate from total length of data
+        self.leading_number_of_records = len(self.data[:first_record])
+        self.trailing_number_of_records = len(self.data[last_record:])
 
         self.number_of_pages = self.number_of_records // self.page_size
 
@@ -95,7 +95,7 @@ def create_list_item(url, current_page, page_number, text):
     else:
         html = html + "?"
     ' add page number to url '
-    html = html + "page={}' class='btn".format(page_number)
+    html = html + "page={}' class='btn btn-pagination".format(page_number)
     if current_page == page_number:
         html = html + " btn-primary"
     html = html + "'>{}</a></li>".format(text)
