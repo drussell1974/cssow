@@ -129,6 +129,7 @@ def save_item():
         parent_id=request.vars.parent_id,
         learning_episode_id=request.vars.learning_episode_id,
         key_words = request.vars.key_words,
+        notes = request.vars.notes,
         created=datetime.now(),
         created_by_id=auth.user.id
     )

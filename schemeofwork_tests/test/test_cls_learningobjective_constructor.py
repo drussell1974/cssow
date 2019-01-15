@@ -40,6 +40,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         # assert
         self.assertEqual(0, test.id)
         self.assertEqual("", test.description)
+        self.assertEqual("", test.notes)
         self.assertEqual(0, test.solo_taxonomy_id)
         self.assertEqual("", test.solo_taxonomy_name)
         self.assertEqual("", test.solo_taxonomy_level)
@@ -67,6 +68,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         # setup
         test = LearningObjectiveModel(1,
                                       description = "lo test description",
+                                      notes = "some notes and stuff",
                                       solo_taxonomy_id = 1,
                                       solo_taxonomy_name = "Unistructural",
                                       solo_taxonomy_level = "B",
@@ -92,6 +94,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
 
         # assert
         self.assertEqual(test.description, "lo test description", "--- setup --- description failed")
+        self.assertEqual(test.notes, "some notes and stuff", "--- setup --- notes failed")
         self.assertEqual(test.solo_taxonomy_id, 1, "--- setup --- solo_taxonomy_id failed")
         self.assertEqual(test.solo_taxonomy_name, "Unistructural", "--- setup --- solo_taxonomy_name failed")
         self.assertEqual(test.solo_taxonomy_level, "B", "--- setup --- solo_taxonomy_level failed")
@@ -120,6 +123,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         # setup
         test = LearningObjectiveModel(1,
                                       description = "lo test description",
+                                      notes = "notes and stuff",
                                       solo_taxonomy_id = "1",
                                       solo_taxonomy_name = "Unistructural",
                                       solo_taxonomy_level = "B",
@@ -136,6 +140,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
                                       key_stage_id = "7",
                                       key_stage_name = "KS7",
                                       parent_id = "99",
+                                      key_words = "",
                                       created = self.current_date_for_test,
                                       created_by_id = "8",
                                       created_by_name = "Dave Russell")
@@ -143,6 +148,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
 
         # assert
         self.assertIsInstance(test.description,  str, "should be str")
+        self.assertIsInstance(test.notes, str, "should be str")
         self.assertIsInstance(test.solo_taxonomy_id, int, "solo_taxonomy_id should be int")
         self.assertIsInstance(test.solo_taxonomy_name, str, "should be str")
         self.assertIsInstance(test.solo_taxonomy_level,  str, "should be str")
@@ -159,6 +165,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertIsInstance(test.key_stage_id, int, "key_stage_id should be int")
         self.assertIsInstance(test.key_stage_name, str, "should be str")
         self.assertIsInstance(test.parent_id,  int, "topic_id should be int")
+        self.assertIsInstance(test.key_words, str, "should be str")
         self.assertIsInstance(test.created,  datetime, "created should be datetime")
         self.assertIsInstance(test.created_by_id, int, "should be int")
         self.assertIsInstance(test.created_by_name,  str, "should be str")

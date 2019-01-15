@@ -111,6 +111,134 @@ class test_LearningObjectiveModel_validate__description(LearningObjective_TestCa
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
+class test_LearningObjectiveModel_validate__notes(LearningObjective_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.notes = "A"
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("notes" in test.validation_errors, "notes should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.notes = " "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("notes" in test.validation_errors, "notes should have no validation errors - %s" % test.validation_errors)
+        self.assertEqual(test.notes, "")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.notes = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("notes" in test.validation_errors, "notes should have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "should not be is_valid")
+
+
+    def test_min__valid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.notes = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("notes" in test.validation_errors, "notes should have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+
+        test.notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis ligula ipsum. Donec lacus justo, accumsan luctus velit vel, " \
+                     "ultricies consectetur nisl. Suspendisse potenti. Mauris lacus sem, congue nec aliquam vitae, imperdiet euismod mi. Morbi at mollis elit. " \
+                     "Vivamus rutrum sollicitudin tincidunt. Nam eleifend ligula massa, vitae bibendum dolor finibus a. Vestibulum laoreet lorem ut ipsum imperdiet, " \
+                     "quis pulvinar neque imperdiet. Pellentesque varius nulla sit amet sagittis volutpat. Proin eros orci, auctor vel neque nec, dapibus suscipit purus. " \
+                     "Phasellus magna risus, congue sit amet dolor at, maximus tempor nisl. Sed sollicitudin viverra posuere. Sed a nulla quis dui bibendum maximus. Praesent in nisi quam."\
+                     "Nullam vehicula eu libero sit amet efficitur. Suspendisse potenti. Suspendisse sed commodo tortor. Nam laoreet nulla eu enim semper, quis vulputate massa " \
+                     "elementum. Quisque ut ante in mauris feugiat mattis tincidunt et elit. Vivamus iaculis commodo feugiat. Suspendisse in urna non magna auctor auctor. In ornare, " \
+                     "nibh quis semper faucibus, quam elit posuere neque, ac consectetur odio augue vitae diam. Mauris accumsan odio a venenatis interdum. Sed pretium arcu dolor. Aliquam " \
+                     "faucibus libero ut erat varius posuere. Vestibulum ultricies augue non tellus interdum mollis. Suspendisse dictum, ligula ac tempus pharetra, dolor erat ornare dui, " \
+                     "eu blandit tortor enim sed urna. Sed rutrum, velit in finibus condimentum, tortor nunc dictum felis, id elementum odio leo quis felis."\
+                     "Mauris sit amet augue orci. Curabitur aliquet finibus risus non luctus. Praesent placerat volutpat mi, id consequat justo semper at. Cras ac semper leo. Proin ac " \
+                     "tortor nulla. Proin non sem in erat ullamcorper ornare. Phasellus ligula nunc, finibus sit amet gravida nec, varius eget erat. Cras non velit turpis. Phasellus vitae " \
+                     "turpis est. Aliquam rhoncus purus non malesuada viverra. Etiam erat nibh, fringilla a diam nec, efficitur pellentesque odio. Quisque malesuada fermentum enim sit amet " \
+                     "tempus. Vestibulum mattis dictum eleifend. Vivamus tincidunt, odio et porta ornare, nisi massa fringilla leo, vel blandit enim mi vel lectus. Aenean gravida ipsum sed " \
+                     "libero blandit sollicitudin id in massa. Nulla malesuada vestibulum libero in tempus." \
+                     "Cras cursus convallis dolor id dapibus. Sed sodales elit et nulla ultrices, vitae malesuada turpis ullamcorper. Nullam non turpis ac dolor suscipit gravida vitae vel urna. " \
+                     "Aliquam ullamcorper dui id gravida iaculis. Fusce commodo ultricies ante amet." # length 2500 characters
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("notes" in test.validation_errors, "notes should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis ligula ipsum. Donec lacus justo, accumsan luctus velit vel, " \
+                     "ultricies consectetur nisl. Suspendisse potenti. Mauris lacus sem, congue nec aliquam vitae, imperdiet euismod mi. Morbi at mollis elit. " \
+                     "Vivamus rutrum sollicitudin tincidunt. Nam eleifend ligula massa, vitae bibendum dolor finibus a. Vestibulum laoreet lorem ut ipsum imperdiet, " \
+                     "quis pulvinar neque imperdiet. Pellentesque varius nulla sit amet sagittis volutpat. Proin eros orci, auctor vel neque nec, dapibus suscipit purus. " \
+                     "Phasellus magna risus, congue sit amet dolor at, maximus tempor nisl. Sed sollicitudin viverra posuere. Sed a nulla quis dui bibendum maximus. Praesent in nisi quam."\
+                     "Nullam vehicula eu libero sit amet efficitur. Suspendisse potenti. Suspendisse sed commodo tortor. Nam laoreet nulla eu enim semper, quis vulputate " \
+                     "massa elementum. Quisque ut ante in mauris feugiat mattis tincidunt et elit. Vivamus iaculis commodo feugiat. Suspendisse in urna non magna auctor auctor. In ornare, " \
+                     "nibh quis semper faucibus, quam elit posuere neque, ac consectetur odio augue vitae diam. Mauris accumsan odio a venenatis interdum. Sed pretium arcu dolor. Aliquam " \
+                     "faucibus libero ut erat varius posuere. Vestibulum ultricies augue non tellus interdum mollis. Suspendisse dictum, ligula ac tempus pharetra, dolor erat ornare dui, " \
+                     "eu blandit tortor enim sed urna. Sed rutrum, velit in finibus condimentum, tortor nunc dictum felis, id elementum odio leo quis felis."\
+                     "Mauris sit amet augue orci. Curabitur aliquet finibus risus non luctus. Praesent placerat volutpat mi, id consequat justo semper at. Cras ac semper leo. Proin ac " \
+                     "tortor nulla. Proin non sem in erat ullamcorper ornare. Phasellus ligula nunc, finibus sit amet gravida nec, varius eget erat. Cras non velit turpis. Phasellus vitae " \
+                     "turpis est. Aliquam rhoncus purus non malesuada viverra. Etiam erat nibh, fringilla a diam nec, efficitur pellentesque odio. Quisque malesuada fermentum enim sit amet " \
+                     "tempus. Vestibulum mattis dictum eleifend. Vivamus tincidunt, odio et porta ornare, nisi massa fringilla leo, vel blandit enim mi vel lectus. Aenean gravida ipsum sed libero " \
+                     "blandit sollicitudin id in massa. Nulla malesuada vestibulum libero in tempusx." \
+                     "Cras cursus convallis dolor id dapibus. Sed sodales elit et nulla ultrices, vitae malesuada turpis ullamcorper. Nullam non turpis ac dolor suscipit gravida vitae vel urna. " \
+                     "Aliquam ullamcorper dui id gravida iaculis. Fusce commodo ultricies ante amet." # length 2501 characters
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("notes" in test.validation_errors, "notes should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
 class test_LearningObjectiveModel_validate__exam_board_id(LearningObjective_TestCase):
 
     test = None
