@@ -65,9 +65,9 @@
               <div class="form-group  controls">
                 <label>Topic</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a topic option.">
-                    <option value="">- Select an option for topic -</option>
+                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- Select an option for topic -</option>
                     {{ for opt in topic_options: }}
-                    <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.topic_id else ""}}>{{=opt.name}}</option>
+                    <option value="{{=opt.id}}" {{ if opt.id == model.topic_id: }} selected {{ elif has_objectives == True: }} disabled {{ pass }}>{{=opt.name}}</option>
                     {{ pass }}
                 </select>
                 <p class="help-block text-danger"></p>

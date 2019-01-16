@@ -56,13 +56,20 @@ def edit():
 
     topic_options = db_topic.get_options(db, model.topic_id, 1)
 
+    has_objectives = False
+    for item in db_learningepisode.get_related_topic_ids(db, model.id, model.topic_id):
+        print(item["disabled"])
+        if item["disabled"] == True:
+            has_objectives = True
+            break
+
     content = {
         "main_heading":"Learning episode",
         "sub_heading":model.get_ui_sub_heading(),
         "strap_line":model.get_ui_title()
               }
 
-    return dict(content = content, model = model, topic_options = topic_options, has_objectives = True, topic_id = model.topic_id)
+    return dict(content = content, model = model, topic_options = topic_options, has_objectives = has_objectives, topic_id = model.topic_id)
 
 
 @auth.requires_login()
