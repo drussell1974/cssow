@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*
 import db_schemeofwork
 import db_keyword
+import db_topic
 
 def index():
 
@@ -79,3 +80,17 @@ def get_key_words():
 
     import gluon.contrib.simplejson
     return gluon.contrib.simplejson.dumps(key_words)
+
+
+def get_related_topics():
+    """ returns topics as json """
+    ' get the topic_id from the url'
+    topic_id = int(request.args(0))
+
+    topics = db_topic.get_options(db, topic_id=topic_id, lvl=2)
+    serializable_list = []
+    for item in topics:
+        serializable_list.append({"id":item.id, "name":item.name})
+
+    import gluon.contrib.simplejson
+    return gluon.contrib.simplejson.dumps(serializable_list)

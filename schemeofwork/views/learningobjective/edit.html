@@ -56,7 +56,7 @@
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
             <!-- Description START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Description</label>
                 <input type="text" class="form-control" placeholder="Description" id="ctl-description" name="description" required data-validation-required-message="Please enter a description."
                        maxlength="1000" value='{{=model.description}}'>
@@ -66,7 +66,7 @@
             <!-- Description END -->
             <!-- Key words START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Key words</label>
                 <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
@@ -77,7 +77,7 @@
             <!-- Key words END -->
             <!-- Parent Objective START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Select a linked Learning objective</label>
                 <select class="form-control" name="parent_id" id="ctl-parent_id">
                     <option value="">- Select a linked learning objective (optional) -</option>
@@ -91,7 +91,7 @@
             <!-- Parent Objective END -->
             <!-- Solo Taxonomy START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Solo Taxonomy</label>
                 <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a solo taxonomy -</option>
@@ -105,7 +105,7 @@
             <!-- Solo Taxonomy END -->
             <!-- Topic START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Topic</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a topic -</option>
@@ -119,7 +119,7 @@
             <!-- Topic END -->
             <!-- Content START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Curriculum ontent</label>
                 <select class="form-control" name="content_id" id="ctl-content_id" required data-validation-required-message="Please select the curriculum content">
                     <option value="">- Select curriculum content -</option>
@@ -133,7 +133,7 @@
             <!-- Content END -->
             <!-- Exam board START -->
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Exam Board</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
                     <option>- Select an exam board (optional) -</option>
@@ -147,7 +147,7 @@
             <!-- Exam Board END -->
             <!-- Notes START -->
               <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Notes</label>
                 <textarea rows="5" class="form-control" name="notes" placeholder="Notes (optional)" id="ctl-notes" maxlength="2500">
                     {{=model.notes}}

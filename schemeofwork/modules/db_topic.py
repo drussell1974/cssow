@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from cls_topic import TopicModel
-import db_helper
+from db_helper import to_db_null
 
 
 def get_options(db, topic_id, lvl):
 
-    str_select = "SELECT DISTINCT id, name, created, created_by FROM view_child_parent_topics WHERE lvl = %s AND (id  = %s or parent_id = %s or related_topic_id = %s);" % (db_helper.to_db_null(lvl), db_helper.to_db_null(topic_id), db_helper.to_db_null(topic_id), db_helper.to_db_null(topic_id))
+    str_select = "SELECT DISTINCT id, name, created, created_by FROM view_child_parent_topics WHERE lvl = {lvl} AND (id  = {topic_id} or parent_id = {topic_id} or related_topic_id = {topic_id});"
+    str_select = str_select.format(lvl=lvl, topic_id=to_db_null(topic_id))
 
     data = [];
 

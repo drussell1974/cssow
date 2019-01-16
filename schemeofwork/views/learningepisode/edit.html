@@ -53,7 +53,7 @@
           <p>Change this learning episode. Fill out the form below then click next to map the pathway and objectives!</p>
           <form name="edit-learningepisode" id="form" method="post" action="save_item">
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group  controls">
                 <label>Order of Delivery</label>
                 <!-- in the future select from planner -->
                 <input type="number" name="order_of_delivery_id" class="form-control" placeholder="Order of delivery (enter a number)" id="ctl-order_of_delivery_id" required data-validation-required-message="Please specify an order of delivery."
@@ -62,7 +62,7 @@
               </div>
             </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group  controls">
                 <label>Topic</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a topic option.">
                     <option value="">- Select an option for topic -</option>
@@ -73,8 +73,15 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+             <div class="control-group">
+              <div class="form-group controls">
+                <div id="div-related_topic_id">
+                </div>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group  controls">
                 <label>Summary</label>
                 <input type="text" name="summary" class="form-control" placeholder="Enter a summary (optional)" id="ctl-summary"
                        maxlength="80" value='{{=model.summary}}'>
@@ -82,7 +89,7 @@
               </div>
             </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group  controls">
                 <label>Key words</label>
                 <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
@@ -128,6 +135,55 @@
         }
     );
 
+    function showRelatedTopic(main_topic_id) {
+        $.getJSON('{{=URL('default', 'get_related_topics')}}/' + main_topic_id,
+            function(result) {
+                divElem =  document.getElementById('div-related_topic_id');
+                // clear
+                while(divElem.hasChildNodes()) {
+                    divElem.removeChild(divElem.lastChild);
+                }
+                // repopulate
+                for (i = 0; i < result.length;i++) {
+                    // create outer div
+                    var formcheck = document.createElement('div');
+                    formcheck.classList.add('form-check');
+
+                    // create checkbox
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'ctl-related_topic_id' + result[i].id;
+                    checkbox.classList.add('form-check-input');
+                    checkbox.name = 'related_topic_id';
+                    checkbox.value = result[i].id;
+                    // add checkbox to div
+                    formcheck.appendChild(checkbox);
+
+                    // create label
+                    var span = document.createElement('label');
+                    span.classList.add('form-check-label');
+                    span.setAttribute('for', 'ctl-related_topic_id' + result[i].id);
+                    var text = document.createTextNode(result[i].name);
+                    // add inner text to span
+                    span.appendChild(text);
+                    // add span to div
+                    formcheck.appendChild(span);
+
+                    // add div to
+                    divElem.appendChild(formcheck);
+                }
+            }
+        )
+    }
+
+    document.getElementById("ctl-topic_id").addEventListener("change", function(e) {
+        showRelatedTopic(e.target.value);
+    });
+
+    window.onload = function(e) {
+        elem = document.getElementById('ctl-topic_id')
+        showRelatedTopic(elem.value);
+    };
 
     </script>
 {{end page_js}}

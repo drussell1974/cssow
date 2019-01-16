@@ -34,7 +34,7 @@
           <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Title</label>
                 <input type="text" name="name" class="form-control" placeholder="Title" id="ctl-name" name="name" required data-validation-required-message="Please enter a title."
                       maxlength="40" value='{{=model.name}}'>
@@ -42,7 +42,7 @@
               </div>
             </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Exam board</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
                     <option value="">- Select an option for exam board (optional) -</option>
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Key stage</label>
                 <select class="form-control" name="key_stage_id" id="ctl-key_stage_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a key stage -</option>
@@ -66,7 +66,7 @@
               </div>
             </div>
             <div class="control-group">
-              <div class="form-group floating-label-form-group controls">
+              <div class="form-group controls">
                 <label>Description</label>
                 <textarea rows="5" class="form-control" name="description" placeholder="Description" id="ctl-description" maxlength="1500" required data-validation-required-message="Please enter a description.">
                     {{=model.description}}
