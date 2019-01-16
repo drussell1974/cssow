@@ -85,7 +85,11 @@ def edit():
     model.key_stage_id = key_stage_id
 
     solo_taxonomy_options = db_solotaxonomy.get_options(db)
-    topic_options = db_topic.get_options(db, learning_episode.topic_id, 2)
+    topic_options = []
+    for item in db_learningepisode.get_related_topic_ids(db, learning_episode.id, learning_episode.topic_id):
+        if item["checked"] == True:
+            topic_options.append(item)
+
     content_options = db_content.get_options(db, key_stage_id)
     exam_board_options = db_examboard.get_options(db)
     parent_learning_objective_options = db_learningobjective.get_parent_options(db, current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)

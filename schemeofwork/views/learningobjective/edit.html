@@ -110,7 +110,7 @@
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a key stage.">
                     <option value="">- Select a topic -</option>
                     {{ for opt in topic_options: }}
-                    <option value="{{=opt.id}}" {{if opt.id == model.topic_id:}} selected {{pass}}>{{=opt.name}}</option>
+                    <option value="{{=opt['id']}}" {{if opt['id'] == model.topic_id:}} selected {{pass}}>{{=opt['name']}}</option>
                     {{ pass }}
                 </select>
                 <p class="help-block text-danger"></p>

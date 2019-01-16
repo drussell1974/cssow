@@ -130,12 +130,8 @@ def get_related_topics():
     parent_topic_id = int(request.args(1))
 
     topics = db_learningepisode.get_related_topic_ids(db, learning_episode_id=learning_episode_id, parent_topic_id=parent_topic_id)
-    print(topics)
-    serializable_list = []
-    for item in topics:
-        serializable_list.append({"id":item[0], "name":item[1], "checked":item[2] is not None, "disabled":item[3] is not None})
 
     import gluon.contrib.simplejson
-    return gluon.contrib.simplejson.dumps(serializable_list)
+    return gluon.contrib.simplejson.dumps(topics)
 
 

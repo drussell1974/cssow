@@ -278,4 +278,9 @@ def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
 
     rows = db.executesql(str_select)
 
-    return rows
+    serializable_list = []
+
+    for row in rows:
+        serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":row[3] is not None})
+
+    return serializable_list
