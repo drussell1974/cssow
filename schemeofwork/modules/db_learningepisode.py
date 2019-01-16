@@ -64,14 +64,16 @@ def get_all(db, scheme_of_work_id, auth_user):
             created_by_id=row[12],
             created_by_name=row[13])
 
-        model.other_key_words = get_all_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
+        #model.related_topic_ids = _get_related_topic_ids(db, model.id)
+
+        model.other_key_words = _get_all_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
 
         data.append(model)
 
     return data
 
 
-def get_all_keywords(db, learning_epsiode_id, auth_user):
+def _get_all_keywords(db, learning_epsiode_id, auth_user):
     """
     Append all keywords from learning objectives for this learning episode
     :param db:
@@ -98,6 +100,7 @@ def get_all_keywords(db, learning_epsiode_id, auth_user):
             data.append(row[0])
 
     return data
+
 
 def get_model(db, id_, auth_user):
     model = LearningEpisodeModel(id_);
@@ -128,7 +131,23 @@ def get_model(db, id_, auth_user):
     rows = db.executesql(select_sql)
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], scheme_of_work_id=row[2], scheme_of_work_name=row[3], topic_id=row[4], topic_name=row[5], parent_topic_id=row[6], parent_topic_name=row[7], key_stage_id=row[8], key_words = row[9], summary = row[10], created=row[11], created_by_id=row[12], created_by_name=row[13])
+        model = LearningEpisodeModel(
+            id_=row[0],
+            order_of_delivery_id=row[1],
+            scheme_of_work_id=row[2],
+            scheme_of_work_name=row[3],
+            topic_id=row[4],
+            topic_name=row[5],
+            parent_topic_id=row[6],
+            parent_topic_name=row[7],
+            key_stage_id=row[8],
+            key_words = row[9],
+            summary = row[10],
+            created=row[11],
+            created_by_id=row[12],
+            created_by_name=row[13])
+
+        #model.related_topic_ids = _get_related_topic_ids(db, model.id, row[4])
 
     return model
 
@@ -152,6 +171,10 @@ Private CRUD functions
 """
 
 def _update(db, model, published):
+    """ updates the sow_learning_episode and sow_learning_episode__has__topics """
+
+    # 1. Update the learning episode
+
     str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {order_of_delivery_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
     str_update = str_update.format(
         order_of_delivery_id=model.order_of_delivery_id,
@@ -164,10 +187,18 @@ def _update(db, model, published):
 
     db.executesql(str_update)
 
+    # 2. upsert related topics
+
+    _upsert_related_topic_ids(db, model)
+
     return True
 
 
 def _insert(db, model, published):
+    """ inserts the sow_learning_episode and sow_learning_episode__has__topics """
+
+    # 1. Insert the learning episode
+
     str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ({order_of_delivery_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
         order_of_delivery_id=model.order_of_delivery_id,
@@ -181,14 +212,37 @@ def _insert(db, model, published):
 
     db.executesql(str_insert)
 
-    # get last inserted row id
-
     rows = db.executesql("SELECT LAST_INSERT_ID();")
 
     for row in rows:
         model.id = int(row[0])
 
+    # 2. insert related topics
+
+    _upsert_related_topic_ids(db, model)
+
     return model.id
+
+
+def _upsert_related_topic_ids(db, model):
+    """ deletes and reinserts sow_learning_episode__has__topics """
+
+    # delete existing
+    str_delete = "DELETE FROM sow_learning_episode__has__topics WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
+
+    db.executesql(str_delete)
+
+    if len(model.related_topic_ids) > 0:
+        # reinsert
+        str_insert = "INSERT INTO sow_learning_episode__has__topics (learning_episode_id, topic_id) VALUES"
+
+        for topic_id in model.related_topic_ids:
+            if topic_id.isdigit():
+                str_insert = str_insert + "({learning_episode_id}, {topic_id}),".format(learning_episode_id=model.id, topic_id=topic_id)
+
+        str_insert = str_insert.rstrip(",") + ";"
+
+        db.executesql(str_insert)
 
 
 def _delete(db, model):
@@ -199,3 +253,29 @@ def _delete(db, model):
 
     return rval
 
+
+def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
+    """
+    gets the related topic ids for the learning episode and whether they are selected or should be disabled
+    :param db: the database context
+    :param learning_episode_id:
+    :param parent_topic_id:
+    :return: all topics and linked
+    """
+
+    str_select = "SELECT DISTINCT top.id as id, top.name as name, letop.topic_id as checked, lob.topic_id as disabled" \
+                 " FROM sow_topic AS top" \
+                 " LEFT JOIN " \
+                 " sow_learning_episode__has__topics AS letop ON top.id = letop.topic_id and letop.learning_episode_id = {learning_episode_id}" \
+                 " LEFT JOIN" \
+                 " sow_learning_objective__has__learning_episode AS lole ON lole.learning_episode_id = letop.learning_episode_id" \
+                 " LEFT JOIN" \
+                 " sow_learning_objective AS lob ON lob.id = lole.learning_objective_id AND lob.topic_id = letop.topic_id" \
+                 " WHERE" \
+                 " letop.learning_episode_id = {learning_episode_id} or top.parent_id = {parent_topic_id}"
+
+    str_select = str_select.format(learning_episode_id=learning_episode_id, parent_topic_id=parent_topic_id)
+
+    rows = db.executesql(str_select)
+
+    return rows

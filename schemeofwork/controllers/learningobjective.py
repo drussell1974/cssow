@@ -175,3 +175,5 @@ def delete_item():
     db_learningobjective.delete(db, auth.user.id, id_)
 
     return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
+
+

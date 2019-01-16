@@ -19,9 +19,9 @@ def get_options(db, topic_id, lvl):
             data.append(model)
 
     except Exception as e:
-        db_helper.last_sql = (str_select, "FAILED")
+        #db_helper.last_sql = (str_select, "FAILED")
         raise Exception("Error getting topics", e)
 
-    db_helper.last_sql = (str_select, "SUCCESS")
+    #db_helper.last_sql = (str_select, "SUCCESS")
 
     return data

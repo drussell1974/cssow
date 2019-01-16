@@ -102,7 +102,8 @@
             <div class="form-group">
               <input type="hidden" name="id" value="{{=model.id}}">
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
-                <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
+              <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
+              <input type="hidden" id="hdn-related_topic_ids" name="related_topic_ids" value="{{=model.related_topic_ids}}">
               <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
               <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
             </div>
@@ -135,8 +136,8 @@
         }
     );
 
-    function showRelatedTopic(main_topic_id) {
-        $.getJSON('{{=URL('default', 'get_related_topics')}}/' + main_topic_id,
+    function showRelatedTopic(learning_episode_id ,main_topic_id) {
+        $.getJSON('{{=URL('learningepisode', 'get_related_topics')}}/' + learning_episode_id + '/' + main_topic_id,
             function(result) {
                 divElem =  document.getElementById('div-related_topic_id');
                 // clear
@@ -154,8 +155,14 @@
                     checkbox.type = 'checkbox';
                     checkbox.id = 'ctl-related_topic_id' + result[i].id;
                     checkbox.classList.add('form-check-input');
-                    checkbox.name = 'related_topic_id';
+                    checkbox.name = 'related_topic_ids';
                     checkbox.value = result[i].id;
+                    // check as necessary
+                    if (result[i].checked == true) {
+                        checked = document.createAttribute('checked');
+                        checkbox.setAttributeNode(checked);
+                    }
+
                     // add checkbox to div
                     formcheck.appendChild(checkbox);
 
@@ -171,18 +178,40 @@
 
                     // add div to
                     divElem.appendChild(formcheck);
+
+                    // disable with javascript
+                    if (result[i].disabled == true) {
+                        // create locked
+                        var locked = document.createElement('i');
+                        locked.classList.add('badge');
+                        locked.classList.add('badge-pill');
+                        locked.classList.add('badge-info');
+                        locked.classList.add('fa');
+                        locked.classList.add('fa-key');
+                        locked.classList.add('icon');
+                        locked.title = 'There is a learning objective associated to this topic';
+                        var text = document.createTextNode(" ");
+                        // add inner text to span
+                        locked.appendChild(text);
+                        formcheck.appendChild(locked);
+
+                        checkbox.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        };
+                    }
                 }
             }
         )
     }
 
-    document.getElementById("ctl-topic_id").addEventListener("change", function(e) {
-        showRelatedTopic(e.target.value);
+    document.getElementById("ctl-topic_id").addEventListener('change', function(e) {
+        showRelatedTopic({{=model.id}}, e.target.value);
     });
 
     window.onload = function(e) {
-        elem = document.getElementById('ctl-topic_id')
-        showRelatedTopic(elem.value);
+        elem = document.getElementById('ctl-topic_id');
+        showRelatedTopic({{=model.id}}, elem.value);
     };
 
     </script>
