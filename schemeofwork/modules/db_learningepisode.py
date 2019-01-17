@@ -263,16 +263,20 @@ def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
     :return: all topics and linked
     """
 
-    str_select = "SELECT DISTINCT top.id as id, top.name as name, letop.topic_id as checked, lob.topic_id as disabled" \
+    str_select = " SELECT" \
+                 " top.id as id," \
+                 " top.name as name," \
+                 " letop.topic_id as checked," \
+                 " (SELECT count(topic_id)" \
+                    " FROM sow_learning_objective AS lob" \
+                    " LEFT JOIN" \
+                    " sow_learning_objective__has__learning_episode AS lole ON lole.learning_objective_id = lob.id" \
+                    " WHERE" \
+                    " lole.learning_episode_id = letop.learning_episode_id and lob.topic_id = top.id) as disabled" \
                  " FROM sow_topic AS top" \
-                 " LEFT JOIN " \
+                 " LEFT JOIN" \
                  " sow_learning_episode__has__topics AS letop ON top.id = letop.topic_id and letop.learning_episode_id = {learning_episode_id}" \
-                 " LEFT JOIN" \
-                 " sow_learning_objective__has__learning_episode AS lole ON lole.learning_episode_id = letop.learning_episode_id" \
-                 " LEFT JOIN" \
-                 " sow_learning_objective AS lob ON lob.id = lole.learning_objective_id AND lob.topic_id = letop.topic_id" \
-                 " WHERE" \
-                 " letop.learning_episode_id = {learning_episode_id} or top.parent_id = {parent_topic_id}"
+                 " WHERE top.parent_id = {parent_topic_id};"
 
     str_select = str_select.format(learning_episode_id=learning_episode_id, parent_topic_id=parent_topic_id)
 
@@ -281,6 +285,6 @@ def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
     serializable_list = []
 
     for row in rows:
-        serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":row[3] is not None})
+        serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
 
     return serializable_list

@@ -32,12 +32,10 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-        ' ctl-key_stage_id - select EMPTY '
-        elem = self.test_context.find_element_by_id("ctl-topic_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "- Select an option for topic -":
-                 opt.click()
+        ' ctl-order_of_delivery_id - 0 INVALID '
+        elem = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
+        elem.clear()
+        elem.send_keys(0)
 
         elem.send_keys(Keys.TAB)
 
@@ -50,6 +48,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
+
         elem.send_keys(Keys.RETURN)
 
         # assert

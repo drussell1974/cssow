@@ -87,7 +87,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Programming and development')
 
 
 
@@ -125,7 +125,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem.find_elements_by_tag_name('option')
         for opt in all_options:
-            if opt.text == "Algorithms":
+            if opt.text == "Operators":
                 opt.click()
         elem.send_keys(Keys.TAB)
 
@@ -143,6 +143,9 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
         elem.send_keys(Keys.TAB)
 
+        ' ctl-notes SKIP '
+        #elem.send_keys(Keys.TAB)
+
         ' Submit '
 
         elem = self.test_context.find_element_by_id("saveButton")
@@ -151,4 +154,4 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Programming and development')

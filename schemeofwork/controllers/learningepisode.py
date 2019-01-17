@@ -54,7 +54,7 @@ def edit():
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id
 
-    topic_options = db_topic.get_options(db, model.topic_id, 1)
+    topic_options = db_topic.get_options(db, lvl=1)
 
     has_objectives = False
     for item in db_learningepisode.get_related_topic_ids(db, model.id, model.topic_id):

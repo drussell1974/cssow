@@ -28,7 +28,7 @@ class test_schemeofwork_learningobjective_edit_create_existing_navigation(UITest
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'for A-Level Computer Science - Week 1 - Programming and development')
 
 
     """ Breadcrumb """
@@ -67,4 +67,4 @@ class test_schemeofwork_learningobjective_edit_create_existing_navigation(UITest
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
