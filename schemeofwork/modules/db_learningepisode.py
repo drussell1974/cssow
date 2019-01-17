@@ -66,14 +66,14 @@ def get_all(db, scheme_of_work_id, auth_user):
 
         #model.related_topic_ids = _get_related_topic_ids(db, model.id)
 
-        model.other_key_words = _get_all_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
+        model.other_key_words = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
 
         data.append(model)
 
     return data
 
 
-def _get_all_keywords(db, learning_epsiode_id, auth_user):
+def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
     """
     Append all keywords from learning objectives for this learning episode
     :param db:
@@ -97,7 +97,9 @@ def _get_all_keywords(db, learning_epsiode_id, auth_user):
 
     for row in rows:
         if row[0] is not None:
-            data.append(row[0])
+            for kw in row[0].split(','):
+                if kw not in data:
+                    data.append(kw)
 
     return data
 
