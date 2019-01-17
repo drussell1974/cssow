@@ -58,7 +58,6 @@ def edit():
 
     has_objectives = False
     for item in db_learningepisode.get_related_topic_ids(db, model.id, model.topic_id):
-        print(item["disabled"])
         if item["disabled"] == True:
             has_objectives = True
             break
