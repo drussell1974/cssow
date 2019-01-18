@@ -1,22 +1,44 @@
 def merge_string_list(list1, list2, sep):
-    staging_list = ""
-    for item1 in list1.split(sep):
+    def _check_for_duplicate(list, item_to_check):
+        """ return true if found otherwise false """
         found = False
-        for item2 in list2.split(sep):
-            if item1 == item2:
+        for item in list:
+            if item == item_to_check:
                 found = True
                 break
-        if found == False:
-            staging_list = staging_list + item1 + ","
+        return found
 
 
-    for item1 in list2.split(sep):
-        found = False
-        for item2 in staging_list.split(sep):
-            if item1 == item2:
-                found = True
-                break
-        if found == False:
-            staging_list = staging_list + item1 + ","
+    staging_list = []
 
-    return staging_list.rstrip(",").lstrip(",")
+    ' check each item from list1 '
+    for item in list1.split(sep):
+        if item == '':
+            continue
+        if _check_for_duplicate(list2.split(sep), item) == False:
+            ' check if it is in the staging list before adding '
+            if _check_for_duplicate(staging_list, item) == False:
+                staging_list.append(item)
+
+    ' check each item in list2 '
+    for item in list2.split(sep):
+        if item == '':
+            continue
+        ' check if it is in the staging list before adding '
+        if _check_for_duplicate(staging_list, item) == False:
+            staging_list.append(item)
+
+    # sort
+    while True:
+        swapped = False
+        for i in range(len(staging_list)-1):
+            temp1 = staging_list[i]
+            temp2 = staging_list[i+1]
+            if temp1 > temp2:
+                staging_list[i+1] = temp1
+                staging_list[i] = temp2
+                swapped = True
+        if swapped == False:
+            break
+
+    return staging_list
