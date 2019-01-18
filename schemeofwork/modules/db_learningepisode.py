@@ -71,38 +71,11 @@ def get_all(db, scheme_of_work_id, auth_user):
         ' merge the learning_objective keywords with the learning episode keywords '
         model.key_words = merge_string_list(model.key_words, learning_objective_key_words, ",")
 
+        model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
+
         data.append(model)
 
     return data
-
-
-def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
-    """
-    Append all keywords from learning objectives for this learning episode
-    :param db:
-    :param learning_epsiode_id:
-    :param auth_user:
-    :return: the results as a single list all comma seperated
-    """
-
-    select_sql = "SELECT "\
-                 " lob.key_words as key_words"\
-                 " FROM sow_learning_objective AS lob"\
-                 " INNER JOIN sow_learning_episode AS le"\
-                 " INNER JOIN sow_learning_objective__has__learning_episode AS lo_le ON lo_le.learning_objective_id = lob.id AND lo_le.learning_episode_id = le.id"\
-                 " WHERE le.id = {learning_episode_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-
-    select_sql = select_sql.format(learning_episode_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
-
-    rows = db.executesql(select_sql)
-
-    all = ""
-
-    for row in rows:
-        if row[0] is not None:
-            all = all + row[0] + ","
-
-    return all.lstrip(",").rstrip(",")
 
 
 def get_model(db, id_, auth_user):
@@ -153,6 +126,56 @@ def get_model(db, id_, auth_user):
         #model.related_topic_ids = _get_related_topic_ids(db, model.id, row[4])
 
     return model
+
+
+def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
+    """
+    Append all keywords from learning objectives for this learning episode
+    :param db:
+    :param learning_epsiode_id:
+    :param auth_user:
+    :return: the results as a single list all comma seperated
+    """
+
+    select_sql = "SELECT "\
+                 " lob.key_words as key_words"\
+                 " FROM sow_learning_objective AS lob"\
+                 " INNER JOIN sow_learning_episode AS le"\
+                 " INNER JOIN sow_learning_objective__has__learning_episode AS lo_le ON lo_le.learning_objective_id = lob.id AND lo_le.learning_episode_id = le.id"\
+                 " WHERE le.id = {learning_episode_id} AND (le.published = 1 OR le.created_by = {auth_user});"
+
+    select_sql = select_sql.format(learning_episode_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
+
+    rows = db.executesql(select_sql)
+
+    all = ""
+
+    for row in rows:
+        if row[0] is not None:
+            all = all + row[0] + ","
+
+    return all.lstrip(",").rstrip(",")
+
+def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
+    """
+    get the number of learning objective for the learning episodes
+    :param db: database context
+    :param learning_epsiode_id:
+    :param auth_user:
+    :return:
+    """
+    count = 0
+
+    select_sql = "SELECT "\
+                 " id"\
+                 " FROM sow_learning_objective__has__learning_episode"\
+                 " WHERE learning_episode_id = {learning_episode_id};"
+
+    select_sql = select_sql.format(learning_episode_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
+
+    rows = db.executesql(select_sql)
+
+    return len(rows)
 
 
 def save(db, model, published=1):

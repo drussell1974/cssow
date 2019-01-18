@@ -77,10 +77,12 @@
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>
+                <i class="badge badge-pill badge-light float-right">{{=T("learning objectives")}} {{=row.number_of_learning_objective}}</i>
               {{ if row.summary != "": }}
                 <h3 class="post-subtitle">{{=row.summary}}</h3>
               {{ pass }}
             </a>
+
               {{ for key_word in row.key_words: }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
