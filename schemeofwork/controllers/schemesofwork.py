@@ -2,7 +2,6 @@
 import db_schemeofwork
 import db_examboard
 import db_keystage
-
 from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
 from pager import Pager
@@ -35,9 +34,9 @@ def index():
 
 
     content = {
-        "main_heading":"Schemes of work",
-        "sub_heading":"Our shared schemes of work by key stage",
-        "strap_line":"",
+        "main_heading":T("schemes of work"),
+        "sub_heading":T("our shared schemes of work by key stage"),
+        "strap_line":None,
         "background_img":"home-bg.jpg"
               }
 
@@ -82,9 +81,9 @@ def edit():
     keystage_options = db_keystage.get_options(db)
 
     content = {
-        "main_heading":"Scheme of work" if model.get_ui_title() == "" else model.get_ui_title(),
-        "sub_heading":"Create a new scheme of work" if model.get_ui_sub_heading() == "" else model.get_ui_sub_heading(),
-        "strap_line": "" if model.name == "" else "Create a new scheme of work. Fill out the form below then click next to select or create learning episode."
+        "main_heading":T("scheme of work") if model.get_ui_title() == "" else model.get_ui_title(),
+        "sub_heading":T("create a new scheme of work") if model.get_ui_sub_heading() == "" else model.get_ui_sub_heading(),
+        "strap_line":T("fill out the form below then click save")
               }
     return dict(content = content, model = model, examboard_options = examboard_options, keystage_options = keystage_options)
 

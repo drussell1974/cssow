@@ -2,7 +2,7 @@
 # try something like
 def index():
     content = {
-        "main_heading":"Lessons",
-        "sub_heading":"Our shared lessons by topic or scheme of work"
+        "main_heading":"lessons",
+        "sub_heading":"our shared lessons by topic or scheme of work"
               }
     return dict(content = content)

@@ -28,37 +28,37 @@
       <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
           {{if auth.user:}}
-              <a class="navbar-brand" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/profile')}}">{{=T('profile')}}</a>
               {{if 'change_password' not in auth.settings.actions_disabled:}}
-              <a class="navbar-brand" href="{{=URL('default','user/change_password')}}">{{=T('Change Password')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/change_password')}}">{{=T('change password')}}</a>
               {{pass}}
-              <a class="navbar-brand" id="btn-logout" href="{{=URL('default','user/logout')}}">{{=T('Logout')}}</a>
+              <a class="navbar-brand" id="btn-logout" href="{{=URL('default','user/logout')}}">{{=T('logout')}}</a>
               {{else:}}
-                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login')}}">{{=T('Login')}}</a>
+                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login')}}">{{=T('login')}}</a>
               {{if 'register' not in auth.settings.actions_disabled:}}
-                <a class="navbar-brand" href="{{=URL('default','user/register')}}">{{=T('Sign up')}}</a>
+                <a class="navbar-brand" href="{{=URL('default','user/register')}}">{{=T('sign up')}}</a>
               {{pass}}
               {{if 'retrieve_password' not in auth.settings.actions_disabled:}}
-              <a class="navbar-brand" href="{{=URL('default','user/retrieve_password')}}">{{=T('Lost Password')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/retrieve_password')}}">{{=T('lost password')}}</a>
               {{pass}}
           {{pass}}
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
+          {{=T("Menu")}}
           <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('default','index')}}">Home</a>
+              <a class="nav-link" href="{{=URL('default','index')}}">{{=T("home")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
+              <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('lessons', 'index')}}">Lessons</a>
+              <a class="nav-link" href="{{=URL('lessons', 'index')}}">{{=T("lessons")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('default', 'about')}}">About</a>
+              <a class="nav-link" href="{{=URL('default', 'about')}}">{{=T("about")}}</a>
             </li>
           </ul>
         </div>

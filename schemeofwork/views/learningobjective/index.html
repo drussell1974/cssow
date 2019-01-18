@@ -13,36 +13,35 @@
       <div class="container">
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">Learning episodes</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">{{=T("learning episodes")}}</a>
                 </li>
             </ul>
     </div>
 </nav>
 <!-- Main Content -->
     <div class="container">
+        {{ if content["strap_line"] is not None: }}
         <div class="row">
           <div class="col-lg-12 col-md-14">
-              <div class="jumbotron" role="alert">
-                  <h1 class="h4">{{=content["main_heading"]}} {{=content["sub_heading"]}}</h1>
-                    {{ if str(content["strap_line"]) != "None": }}
-                        <p class="lead">{{=content["strap_line"]}}</p>
-                    {{ pass }}
+              <div class="alert alert-primary">
+                  <p class="lead">{{=content["strap_line"]}}</p>
               </div>
           </div>
         </div>
+        {{ pass }}
       <div class="row">
           <div class="col-lg-4 col-md-4">
             <!-- SIDE MENU START -->
               <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
                 <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-                    Show learning episodes
+                    {{=T("show learning episodes")}}
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="sidebarResponsive">
-                    <ul class="navbar-nav flex-column">
+                    <ul class="navbar-nav flex-column fillspace">
                     {{ for opt in learningepisiode_options:}}
                         <li class="nav-item">
                             <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', args=[scheme_of_work_id, opt.id])}}">{{=opt.get_ui_title()}}</a>
@@ -68,9 +67,9 @@
             <!-- Pager Header END -->
             {{ if len(model) == 0: }}
                 <div class="alert alert-info" role="alert">
-                {{=T('There are no learning objectives for this learning episode.')}}
+                {{=T('there are no learning objectives for this learning episode.')}}
                 {{if auth.user:}}
-                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('Click here to get started.')}}</a>
+                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('click here to get started.')}}</a>
                 {{pass}}
                 </div>
           {{ pass }}
@@ -82,19 +81,20 @@
               <h2 class="post-title">
                 {{=row.description}}
               </h2>
-                {{ if len(row.get_list_of_key_words()) > 0: }}
-                  {{ for key_word in row.get_list_of_key_words(): }}
-                    <i class="badge badge-info">{{=key_word}}</i>&nbsp;
-                  {{ pass }}
-              {{ pass }}
+                <h3 class="post-subtitle">
+                    {{=row.topic_name}}
+                </h3>
             </a>
-            <p class="post-meta">Created by
+              {{ for key_word in row.get_list_of_key_words(): }}
+                <i class="badge badge-info">{{=key_word}}</i>
+              {{ pass }}
+            <p class="post-meta">created by
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">remove</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">edit</a>
+                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T("remove")}}</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=T("edit")}}</a>
               {{pass}}</p>
           </div>
           <hr>

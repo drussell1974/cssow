@@ -28,7 +28,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for A-Level Computer Science')
 
 
     """ Breadcrumb """
@@ -37,25 +37,25 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
-        self.assertEqual("Schemes of work", elem.text)
+        self.assertEqual("schemes of work", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes Of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
         #test
         elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
-        self.assertEqual("Episodes", elem.text)
+        self.assertEqual("episodes", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science') # needs to show scheme of work
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science') # needs to show scheme of work
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):

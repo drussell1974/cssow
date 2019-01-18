@@ -29,7 +29,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episode', 'for A-Level Computer Science - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for A-Level Computer Science - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     """ Breadcrumb """
@@ -37,38 +37,38 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
-        self.assertEqual("Schemes of work", elem.text)
+        self.assertEqual("schemes of work", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork','Schemes of work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Schemes Of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
         #test
         elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
-        self.assertEqual("Episodes", elem.text)
+        self.assertEqual("episodes", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
 
         #test
         elem = self.test_context.find_element_by_id('lnk-bc-learning_objectives')
-        self.assertEqual("Objectives", elem.text)
+        self.assertEqual("objectives", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
 
 
     def test_page__should_have_related_topic_ids(self):

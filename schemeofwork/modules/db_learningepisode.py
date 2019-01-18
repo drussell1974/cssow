@@ -98,7 +98,7 @@ def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
     for row in rows:
         if row[0] is not None:
             for kw in row[0].split(','):
-                if kw not in data:
+                if kw != "" and kw not in data:
                     data.append(kw)
 
     return data

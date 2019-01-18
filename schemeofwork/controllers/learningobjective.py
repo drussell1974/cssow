@@ -39,10 +39,10 @@ def index():
     paged_data = pager.data_to_display()
 
     content = {
-        "main_heading":"Learning objectives",
-        "sub_heading": "for {} - Week {} - {}".format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
+        "main_heading":T("learning objectives"),
+        "sub_heading":T("for {} - Week {} - {}").format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
         "background_img":"home-bg.jpg",
-        "strap_line": learning_episode.summary
+        "strap_line": None if learning_episode.summary == "" else learning_episode.summary
               }
 
     return dict(
@@ -95,9 +95,9 @@ def edit():
     parent_learning_objective_options = db_learningobjective.get_parent_options(db, current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
 
     content = {
-        "main_heading":"Learning objective",
-        "sub_heading": "for {} - Week {} - {}".format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
-        "strap_line":"Click save to add objective."
+        "main_heading":T("learning objective"),
+        "sub_heading":T("for {} - Week {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
+        "strap_line":T("fill out the form below then click save")
               }
     return dict(
         content = content,

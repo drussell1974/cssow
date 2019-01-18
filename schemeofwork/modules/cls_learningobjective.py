@@ -40,7 +40,7 @@ class LearningObjectiveModel (BaseModel):
 
 
     def get_list_of_key_words(self):
-        if self.key_words is None:
+        if self.key_words == "" or self.key_words is None:
             return []
         else:
             return self.key_words.split(',')

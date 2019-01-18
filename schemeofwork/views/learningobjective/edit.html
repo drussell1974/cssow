@@ -3,20 +3,6 @@
     <!-- Bootstrap tokenfield CSS -->
     <link href="{{=URL('static','custom/vendor/sliptree/css/bootstrap-tokenfield.min.css')}}" rel="stylesheet">
     <link href="{{=URL('static','custom/vendor/sliptree/css/tokenfield-typeahead.min.css')}}" rel="stylesheet">
-    <style>
-        .ui-menu {
-            list-style-type:none;
-            background:white;
-        }
-        .ui-helper-hidden-accessible:before {
-            content:' ';
-            display:block;
-        }
-        .ui-helper-hidden-accessible:after {
-            content:' ';
-            display:block;
-        }
-    </style>
 {{end}}
 {{block header}}
 <div class="row">
@@ -32,33 +18,36 @@
       <div class="container">
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">Episodes</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">{{=T("episodes")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.learning_episode_id])}}">Objectives</a>
+                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.learning_episode_id])}}">{{=T("objectives")}}</a>
                 </li>
             </ul>
     </div>
 </nav>
 <!-- Main Content -->
     <div class="container">
-
+        {{ if content["strap_line"] is not None: }}
         <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                <p>{{=content["strap_line"]}}</p>
-            </div>
+          <div class="col-lg-12 col-md-14">
+              <div class="alert alert-primary">
+                  <p class="lead">{{=content["strap_line"]}}</p>
+              </div>
+          </div>
         </div>
+        {{ pass }}
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
             <!-- Description START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Description</label>
-                <input type="text" class="form-control" placeholder="Description" id="ctl-description" name="description" required data-validation-required-message="Please enter a description."
+                <label>{{=T("description")}}</label>
+                <input type="text" class="form-control" placeholder="{{=T('enter a description')}}" id="ctl-description" name="description" required
                        maxlength="1000" value='{{=model.description}}'>
                 <p class="help-block text-danger"></p>
               </div>
@@ -67,8 +56,8 @@
             <!-- Key words START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Key words</label>
-                <input type="text" name="key_words" class="form-control" placeholder="type a keyword" id="ctl-key_words"
+                <label>{{=T("keywords")}}</label>
+                <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
               </div>
@@ -78,9 +67,9 @@
             <!-- Parent Objective START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Select a linked Learning objective</label>
+                <label>{{=T("select a learning objective from the next key stage")}}</label>
                 <select class="form-control" name="parent_id" id="ctl-parent_id">
-                    <option value="">- Select a linked learning objective (optional) -</option>
+                    <option value="">- {{=T("select an option")}} {{=T("(optional)")}} -</option>
                     {{ for opt in parent_learning_objective_options: }}
                         <option value="{{=opt.id}}" {{if opt.id == model.parent_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}
@@ -92,9 +81,9 @@
             <!-- Solo Taxonomy START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Solo Taxonomy</label>
-                <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required data-validation-required-message="Please select a key stage.">
-                    <option value="">- Select a solo taxonomy -</option>
+                <label>{{=T("solo taxonomy")}}</label>
+                <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
+                    <option value="">- {{=T("select an option")}} -</option>
                     {{ for opt in solo_taxonomy_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.solo_taxonomy_id:}} selected {{pass}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -106,9 +95,9 @@
             <!-- Topic START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Topic</label>
-                <select class="form-control" name="topic_id" id="ctl-topic_id" required data-validation-required-message="Please select a key stage.">
-                    <option value="">- Select a topic -</option>
+                <label>{{=T("topic")}}</label>
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required>
+                    <option value="">- {{=T("select an option")}} -</option>
                     {{ for opt in topic_options: }}
                     <option value="{{=opt['id']}}" {{if opt['id'] == model.topic_id:}} selected {{pass}}>{{=opt['name']}}</option>
                     {{ pass }}
@@ -120,9 +109,9 @@
             <!-- Content START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Curriculum ontent</label>
-                <select class="form-control" name="content_id" id="ctl-content_id" required data-validation-required-message="Please select the curriculum content">
-                    <option value="">- Select curriculum content -</option>
+                <label>{{=T("curriculum content")}}</label>
+                <select class="form-control" name="content_id" id="ctl-content_id" required>
+                    <option value="">- {{=T("select an option")}} -</option>
                     {{ for opt in content_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}
@@ -134,9 +123,9 @@
             <!-- Exam board START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>Exam Board</label>
+                <label>{{=T("exam board")}}</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
-                    <option>- Select an exam board (optional) -</option>
+                    <option>- {{=T("select an option")}} {{=T("(optional)")}} -</option>
                     {{ for opt in exam_board_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.exam_board_id:}} selected {{pass}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -148,8 +137,8 @@
             <!-- Notes START -->
               <div class="control-group">
               <div class="form-group controls">
-                <label>Notes</label>
-                <textarea rows="5" class="form-control" name="notes" placeholder="Notes (optional)" id="ctl-notes" maxlength="2500">
+                <label>{{=T("notes")}}</label>
+                <textarea rows="5" class="form-control" name="notes" placeholder="{{=T('notes')}} {{=T('(optional)')}}" id="ctl-notes" maxlength="2500">
                     {{=model.notes}}
                 </textarea>
                 <p class="help-block text-danger"></p>
@@ -164,8 +153,8 @@
               <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
               <input type="hidden" name="main_topic_id" value="{{=main_topic_id}}">
-              <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-              <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="saveButton">{{=T("save")}}</button>
+              <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("cancel")}}</button>
             </div>
           </form>
         </div>

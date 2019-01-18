@@ -4,7 +4,7 @@ from basemodel import BaseModel, try_int
 class LearningEpisodeModel (BaseModel):
 
 
-    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", key_words = "", summary = None, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
@@ -62,7 +62,7 @@ class LearningEpisodeModel (BaseModel):
 
 
     def get_list_of_key_words(self):
-        if self.key_words is None:
+        if self.key_words == "" or self.key_words is None:
             return []
         else:
             return self.key_words.split(',')

@@ -16,11 +16,11 @@ class UITestCase(TestCase):
         def assertWebPageTitleAndHeadings(self, title, h1, subheading):
 
             # test - subheading
-            self.assertEqual(title, self.test_context.title)
+            self.assertEqual(title, self.test_context.title, "title not as expected")
             # assert - site-heading
             self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text)
             # assert - title
-            self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
+            self.assertEqual(subheading.lower(), self.test_context.find_element_by_class_name("subheading").text)
 
 
         def try_log_in(self, redirect_to_uri_on_login):

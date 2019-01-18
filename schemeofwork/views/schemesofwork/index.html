@@ -15,7 +15,7 @@
 
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">Schemes of work</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
                 </li>
 
 
@@ -24,18 +24,27 @@
 </nav>
 <!-- Main Content -->
     <div class="container">
+        {{ if content["strap_line"] is not None: }}
+        <div class="row">
+          <div class="col-lg-12 col-md-14">
+              <div class="alert alert-primary">
+                  <p class="lead">{{=content["strap_line"]}}</p>
+              </div>
+          </div>
+        </div>
+        {{ pass }}
       <div class="row">
           <div class="col-lg-4 col-md-4">
             <!-- SIDE MENU START -->
               <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
                     <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-                    Show key stages
+                    {{=T("show key stages")}}
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="collapse navbar-collapse" id="sidebarResponsive">
-                    <ul class="navbar-nav flex-column">
+                    <ul class="navbar-nav flex-column fillspace">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">Show All</a>
+                            <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">{{=T("show all")}}</a>
                         </li>
                         {{ for opt in key_stage_options: }}
                             <li class="nav-item">
@@ -65,9 +74,9 @@
           <!-- Scheme of works -->
             {{ if len(model) == 0: }}
             <div class="alert alert-info" role="alert">
-            {{=T('There are no schemes of work for ')}} {{=key_stage_name}}
+            {{=T("there are no schemes of work for ")}} {{=key_stage_name}}
             {{if auth.user:}}
-                <br><a href="{{=URL('schemesofwork', 'edit')}}">{{=T('Click here to get started.')}}</a>
+                <br><a href="{{=URL('schemesofwork', 'edit')}}">{{=T('click here to get started')}}</a>
             {{pass}}
             </div>
       {{ pass }}
@@ -77,18 +86,18 @@
               <h2 class="post-title">
                   {{=row.get_ui_title()}}
               </h2>
-                {{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
+                {{ if row.is_recent == True: }} <i class="small badge badge-success float-right">{{=T("new")}}</i> {{ pass }}
               <h3 class="post-subtitle">
                 {{=row.get_ui_sub_heading()}}
               </h3>
             </a>
-            <p class="post-meta">Created by
+            <p class="post-meta">{{=T("created by")}}
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                 {{ if row.published == False: }} <a href="{{=URL('schemesofwork', 'publish_item', vars=dict(id=row.id))}}" class="small badge badge-danger">Not published</a> {{ pass }} - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
+                 {{ if row.published == False: }} <a href="{{=URL('schemesofwork', 'publish_item', vars=dict(id=row.id))}}" class="small badge badge-danger">{{=T("not published")}}</a> {{ pass }} - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">{{=T("edit")}}</a>
               {{pass}}</p>
           </div>
           <hr>

@@ -2,3 +2,33 @@
     color:#dc3545 !important;
     font-size: small;
 }
+
+.site-heading {
+    text-transform: capitalize;
+}
+
+.subheading, .post-subtitle {
+    text-transform: lowercase;
+}
+
+.form-group > label {
+    text-transform: uppercase;
+}
+
+
+.ui-menu {
+    list-style-type:none;
+    background:white;
+}
+.ui-helper-hidden-accessible:before {
+    content:' ';
+    display:block;
+}
+.ui-helper-hidden-accessible:after {
+    content:' ';
+    display:block;
+}
+
+.fillspace {
+    width: 100%;
+}

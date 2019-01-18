@@ -26,8 +26,9 @@ def index():
     data = pager.data_to_display()
 
     content = {
-        "main_heading":"Learning episodes",
-        "sub_heading": "for {}".format(scheme_of_work_name),
+        "main_heading":T("learning episodes"),
+        "sub_heading": T("for {}").format(scheme_of_work_name),
+        "strap_line":None,
         "background_img":"home-bg.jpg"
               }
 
@@ -63,9 +64,9 @@ def edit():
             break
 
     content = {
-        "main_heading":"Learning episode",
+        "main_heading":T("learning episode"),
         "sub_heading":model.get_ui_sub_heading(),
-        "strap_line":model.get_ui_title()
+        "strap_line":T("fill out the form below then click save")
               }
 
     return dict(content = content, model = model, topic_options = topic_options, has_objectives = has_objectives, topic_id = model.topic_id)
