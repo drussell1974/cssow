@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from cls_learningepisode import LearningEpisodeModel
 from db_helper import to_db_null
+from helper_string import merge_string_list
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -64,9 +65,11 @@ def get_all(db, scheme_of_work_id, auth_user):
             created_by_id=row[12],
             created_by_name=row[13])
 
-        #model.related_topic_ids = _get_related_topic_ids(db, model.id)
+        ' get the key words from the learning objectives '
+        learning_objective_key_words = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
 
-        model.other_key_words = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
+        ' merge the learning_objective keywords with the learning episode keywords '
+        model.key_words = merge_string_list(model.key_words, learning_objective_key_words, ",")
 
         data.append(model)
 
@@ -93,15 +96,13 @@ def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
 
     rows = db.executesql(select_sql)
 
-    data = []
+    all = ""
 
     for row in rows:
         if row[0] is not None:
-            for kw in row[0].split(','):
-                if kw != "" and kw not in data:
-                    data.append(kw)
+            all = all + row[0] + ","
 
-    return data
+    return all.lstrip(",").rstrip(",")
 
 
 def get_model(db, id_, auth_user):
