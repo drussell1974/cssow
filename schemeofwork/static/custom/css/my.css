@@ -19,6 +19,8 @@
 .ui-menu {
     list-style-type:none;
     background:white;
+    width:200px;
+    box-shadow: -1px 1px 10px grey;
 }
 .ui-helper-hidden-accessible:before {
     content:' ';
