@@ -81,7 +81,7 @@
                 <h3 class="post-subtitle">{{=row.summary}}</h3>
               {{ pass }}
             </a>
-              {{ for key_word in row.key_words.split(","): }}
+              {{ for key_word in row.key_words: }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
             <p class="post-meta">created by
