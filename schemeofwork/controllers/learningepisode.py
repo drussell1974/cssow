@@ -41,6 +41,16 @@ def index():
                 pager_html = pager_html)
 
 
+def _pathway_objectives():
+    key_stage_id = 0 if request.vars.key_stage_id is None else request.vars.key_stage_id
+    topic_ids = 0 if request.vars.topic_ids is None else request.vars.topic_ids
+    key_words = "" if request.vars.keywords is None else request.vars.keywords
+
+    data = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, topic_ids = topic_ids, key_words = key_words)
+
+    return dict(data=data)
+
+
 @auth.requires_login()
 def edit():
     """ edit action """
@@ -91,6 +101,8 @@ def save_item():
         created = datetime.now(),
         created_by_id = auth.user.id
     )
+
+    model.pathway_objective_ids = request.vars.pathway_objective_ids
 
     model.validate()
     if model.is_valid == True:
@@ -143,19 +155,14 @@ def get_related_topics():
 
 
 def get_pathway_objectives():
-    key_stage_id = 0 if request.vars.key_stage_id is None else request.vars.key_stage_id
-    topic_ids = 0 if request.vars.topic_ids is None else request.vars.topic_ids
-    key_words = "" if request.vars.keywords is None else request.vars.keywords
+    """
+    Get learning objectives for the learning epsiode
+    :return: json serialised list
+    """
 
-    print("********************************************************")
-    print("********************************************************")
-    print("********************************************************")
-    print("********************************************************")
-    print("********************************************************")
-    print("********************************************************")
-    print("key_stage_id={key_stage_id}, topic_ids={topic_ids}, key_words={key_words}".format(key_stage_id=key_stage_id, topic_ids=topic_ids, key_words=key_words))
+    learning_episode_id = int(request.args(0))
 
-    learning_objectives = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, topic_ids = topic_ids, key_words = key_words)
+    learning_objectives = db_learningepisode.get_pathway_objective_ids(db, learning_episode_id)
 
     import gluon.contrib.simplejson
     return gluon.contrib.simplejson.dumps(learning_objectives)

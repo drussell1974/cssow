@@ -1,0 +1,39 @@
+<div id="accordion">
+  {{
+    key_stage_id = ""
+    solo_taxonomy_name = ""
+    close_card = False
+  }}
+  {{ for item in data: }}
+    {{ if item.key_stage_id != key_stage_id: }}
+      {{ if close_card == True: }}
+          </div><!-- class="card-body" -->
+        </div><!-- id="collapseX" class="collapse show" -->
+       </div><!--  class="card" -->
+      {{ pass }}
+      <div class="card">
+        <div class="card-header" id="heading{{=item.id}}">
+          <h5 class="mb-0">
+            <i class="nav-link" data-toggle="collapse" data-target="#collapse{{=item.id}}" aria-expanded="true" aria-controls="collapse{{=item.id}}">
+              {{ =item.key_stage_name}}
+            </i> <!-- class="btn btn-link" -->
+          </h5><!-- class="mb-0" -->
+        </div><!-- class="card-header" -->
+      <div id="collapse{{=item.id}}" class="collapse show" aria-labelledby="heading{{=item.id}}" data-parent="#accordion">
+        <div class="card-body">
+        {{
+          key_stage_id = item.key_stage_id
+          close_card = True
+         }}
+    {{ pass }}
+          {{ if item.solo_taxonomy_name != solo_taxonomy_name: }}
+            <u>{{=item.solo_taxonomy_name }}</u>
+            {{ solo_taxonomy_name = item.solo_taxonomy_name  }}
+          {{ pass }}
+          <div class="form-check">
+            <input type="checkbox" id="ctl-pathway_objective_id{{=item.id}}" class="form-check-input pathway_objective-form-check-input" name="pathway_objective_ids" value="{{=item.id}}">
+            <label class="form-check-label" for="ctl-pathway_objective_id{{=item.id}}">{{=item.description }}</label>
+          </div>
+
+  {{ pass }}
+</div>

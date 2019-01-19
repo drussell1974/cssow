@@ -216,6 +216,7 @@ def _update(db, model, published):
     # 2. upsert related topics
 
     _upsert_related_topic_ids(db, model)
+    _upsert_pathway_objective_ids(db, model)
 
     return True
 
@@ -271,6 +272,27 @@ def _upsert_related_topic_ids(db, model):
         db.executesql(str_insert)
 
 
+def _upsert_pathway_objective_ids(db, model):
+    """ deletes and reinserts sow_learning_episode__has__topics """
+
+    # delete existing
+    str_delete = "DELETE FROM sow_learning_episode__has__pathway WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
+
+    db.executesql(str_delete)
+
+    if len(model.related_topic_ids) > 0:
+        # reinsert
+        str_insert = "INSERT INTO sow_learning_episode__has__pathway (learning_episode_id, learning_objective_id) VALUES"
+
+        for objective_id in model.pathway_objective_ids:
+            if objective_id.isdigit():
+                str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id)
+
+        str_insert = str_insert.rstrip(",") + ";"
+
+        db.executesql(str_insert)
+
+
 def _delete(db, model):
     str_delete = "DELETE FROM sow_learning_episode WHERE id = {learning_episode_id};"
     str_delete = str_delete.format(learning_episode_id=model.id)
@@ -312,5 +334,31 @@ def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
 
     for row in rows:
         serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
+
+    return serializable_list
+
+
+def get_pathway_objective_ids(db, learning_episode_id):
+    """
+    Get the learning objectives ids for the learning episcde
+    :param db: database context
+    :param learning_episode_id:
+    :return: serialized learning objective ids
+    """
+
+
+    str_select = " SELECT" \
+                 " learning_objective_id"\
+                 " FROM sow_learning_episode__has__pathway" \
+                 " WHERE learning_episode_id = {learning_episode_id};"
+
+    str_select = str_select.format(learning_episode_id=learning_episode_id)
+
+    rows = db.executesql(str_select)
+
+    serializable_list = []
+
+    for row in rows:
+        serializable_list.append({"id":row[0]})
 
     return serializable_list

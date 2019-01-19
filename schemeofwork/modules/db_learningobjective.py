@@ -209,7 +209,13 @@ def get_model(db, id_, auth_user):
     return model
 
 
-def get_pathway_objectives(db, key_stage_id = 0, topic_ids = "", key_words=""):
+def get_pathway_objectives(db, key_stage_id, topic_ids, key_words):
+
+    if topic_ids is None or len(topic_ids) == 0:
+        topic_ids = "0"
+
+
+
     select_sql = "SELECT"\
                  " lob.id as id,"\
                  " lob.description as description,"\
@@ -243,7 +249,7 @@ def get_pathway_objectives(db, key_stage_id = 0, topic_ids = "", key_words=""):
 
     select_sql = select_sql.format(key_stage_id=key_stage_id, topic_ids=topic_ids)
 
-    #raise Exception(select_sql)
+    print(select_sql)
     rows = db.executesql(select_sql)
 
     data = [];
@@ -252,7 +258,7 @@ def get_pathway_objectives(db, key_stage_id = 0, topic_ids = "", key_words=""):
         for keyword in key_words.split(","):
             print("checking if keyword {} is in {}".format(keyword, row[15]))
             if keyword in row[15]:
-                model = dict(
+                model = LearningObjectiveModel(
                     id_ = row[0],
                     description = row[1],
                     solo_taxonomy_id = row[2],
@@ -269,9 +275,9 @@ def get_pathway_objectives(db, key_stage_id = 0, topic_ids = "", key_words=""):
                     key_stage_id = row[13],
                     key_stage_name = row[14],
                     key_words = row[15],
-                    #created = row[16],
-                    #created_by_id = row[17],
-                    #created_by_name = row[18]
+                    created = row[16],
+                    created_by_id = row[17],
+                    created_by_name = row[18]
                     )
 
                 data.append(model)

@@ -206,12 +206,31 @@
         )
     }
 
-    function showPathwayObjectives(key_stage_id, subtopic_ids, keywords) {
-        $.getJSON('get_pathway_objectives?key_stage_id=' + key_stage_id + '&topic_ids=' + subtopic_ids + '&keywords=' + keywords,
+    function set_objectives_to_checked(learning_episode_id) {
+        console.log('setting objectives to checked: starting...');
+        $.getJSON('{{=URL('learningepisode', 'get_pathway_objectives')}}/' + learning_episode_id,
             function(result) {
-                console.log(result);
+
+                console.log('setting objectives to checked: success...');
+
+                $('.pathway_objective-form-check-input').each(function(index) {
+                    for (i = 0; i < result.length;i++) {
+                        if (result[i].id == this.value) {
+                            $(this).prop('checked', true);
+                        }
+                    }
+                });
             }
         );
+    }
+
+    function showPathwayObjectives(key_stage_id, subtopic_ids, keywords) {
+        $.ajax({url: '_pathway_objectives?key_stage_id=' + key_stage_id + '&topic_ids=' + subtopic_ids + '&keywords=' + keywords,
+            success: function(result){
+                $("#div-pathway_objective_id").html(result);
+
+                set_objectives_to_checked({{=model.id}});
+        }});
     }
 
     document.getElementById("ctl-topic_id").addEventListener('change', function(e) {
@@ -236,8 +255,6 @@
         for(i = 0; i < key_words.length; i++) {
             arr_key_words.push(key_words[i].trim());
         }
-        console.log('subtopic_ids="' + subtopic_ids + '"')
-        console.log('arr_key_words="' + arr_key_words + '"')
 
         showPathwayObjectives({{=model.key_stage_id}}, subtopic_ids, arr_key_words);
     };
