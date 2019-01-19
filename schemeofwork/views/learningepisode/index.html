@@ -77,7 +77,7 @@
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>
-                <i class="badge badge-pill badge-light float-right">{{=T("learning objectives")}} {{=row.number_of_learning_objective}}</i>
+
               {{ if row.summary != "": }}
                 <h3 class="post-subtitle">{{=row.summary}}</h3>
               {{ pass }}
@@ -90,10 +90,10 @@
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}
-              {{ pass }}
+              {{ pass }}, {{=T("learning objectives")}} {{=row.number_of_learning_objective}}
               {{if auth.user:}}
                 - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">edit</a>
-              {{pass}}</p>
+                {{pass}}</p>
           </div>
           <hr>
             {{ pass }}
