@@ -5,6 +5,7 @@ from pager import Pager
 from validation_helper import html_validation_message
 import db_schemeofwork
 import db_learningepisode
+import db_learningobjective
 import db_topic
 import db_keyword
 
@@ -129,7 +130,6 @@ def delete_item():
     return redirect(URL('index', args=[scheme_of_work_id]))
 
 
-
 def get_related_topics():
     """ returns topics as json """
     ' get the topic_id from the url'
@@ -142,3 +142,20 @@ def get_related_topics():
     return gluon.contrib.simplejson.dumps(topics)
 
 
+def get_pathway_objectives():
+    key_stage_id = 0 if request.vars.key_stage_id is None else request.vars.key_stage_id
+    topic_ids = 0 if request.vars.topic_ids is None else request.vars.topic_ids
+    key_words = "" if request.vars.keywords is None else request.vars.keywords
+
+    print("********************************************************")
+    print("********************************************************")
+    print("********************************************************")
+    print("********************************************************")
+    print("********************************************************")
+    print("********************************************************")
+    print("key_stage_id={key_stage_id}, topic_ids={topic_ids}, key_words={key_words}".format(key_stage_id=key_stage_id, topic_ids=topic_ids, key_words=key_words))
+
+    learning_objectives = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, topic_ids = topic_ids, key_words = key_words)
+
+    import gluon.contrib.simplejson
+    return gluon.contrib.simplejson.dumps(learning_objectives)

@@ -92,7 +92,6 @@ def edit():
 
     content_options = db_content.get_options(db, key_stage_id)
     exam_board_options = db_examboard.get_options(db)
-    parent_learning_objective_options = db_learningobjective.get_parent_options(db, current_key_stage_id = key_stage_id, topic_id = learning_episode.topic_id)
 
     content = {
         "main_heading":T("learning objective"),
@@ -106,7 +105,6 @@ def edit():
         topic_options = topic_options,
         content_options = content_options,
         exam_board_options = exam_board_options,
-        parent_learning_objective_options = parent_learning_objective_options,
         main_topic_id=learning_episode.topic_id
     )
 

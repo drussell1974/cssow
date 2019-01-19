@@ -91,6 +91,13 @@
               </div>
                 <div id="keywords"></div>
             </div>
+              <!-- Pathway Objectives START -->
+              <div class="control-group">
+              <div class="form-group controls">
+                <label>{{=T("select linked learning objectives")}}</label>
+                    <div id="div-pathway_objective_id">
+                    </div>
+                <p class="help-block text-danger"></p>
             <br>
             <div id="success"></div>
             <div class="form-group">
@@ -199,13 +206,40 @@
         )
     }
 
+    function showPathwayObjectives(key_stage_id, subtopic_ids, keywords) {
+        $.getJSON('get_pathway_objectives?key_stage_id=' + key_stage_id + '&topic_ids=' + subtopic_ids + '&keywords=' + keywords,
+            function(result) {
+                console.log(result);
+            }
+        );
+    }
+
     document.getElementById("ctl-topic_id").addEventListener('change', function(e) {
         showRelatedTopic({{=model.id}}, e.target.value);
+        showPathwayObjectives({{=model.id}}, e.target.value);
     });
 
     window.onload = function(e) {
-        elem = document.getElementById('ctl-topic_id');
-        showRelatedTopic({{=model.id}}, elem.value);
+        topic_elem = document.getElementById('ctl-topic_id');
+        showRelatedTopic({{=model.id}}, topic_elem.value);
+
+        // check for async
+        subtopic_ids = ""
+        $('.form-check-input').each(function(i){
+            if (this.value != "") {
+                subtopic_ids = subtopic_ids + this.value + ',';
+            }
+        })
+
+        key_words = document.getElementById('ctl-key_words').value.split(',');
+        arr_key_words = [];
+        for(i = 0; i < key_words.length; i++) {
+            arr_key_words.push(key_words[i].trim());
+        }
+        console.log('subtopic_ids="' + subtopic_ids + '"')
+        console.log('arr_key_words="' + arr_key_words + '"')
+
+        showPathwayObjectives({{=model.key_stage_id}}, subtopic_ids, arr_key_words);
     };
 
     </script>

@@ -43,48 +43,6 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
-            <!-- Description START -->
-            <div class="control-group">
-              <div class="form-group controls">
-                <label>{{=T("description")}}</label>
-                <input type="text" class="form-control" placeholder="{{=T('enter a description')}}" id="ctl-description" name="description" required
-                       maxlength="1000" value='{{=model.description}}'>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <!-- Description END -->
-            <!-- Key words START -->
-            <div class="control-group">
-              <div class="form-group controls">
-                <label>{{=T("keywords")}}</label>
-                <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
-                       maxlength="250" value='{{=model.key_words}}'>
-                <p class="help-block text-danger" id="token-error"></p>
-              </div>
-                <div id="keywords"></div>
-            </div>
-            <!-- Key words END -->
-            <!-- Parent Objective START -->
-            <div class="control-group">
-              <div class="form-group controls">
-                <label>{{=T("select a learning objective from the next key stage")}}</label>
-                <select class="form-control" name="parent_id" id="ctl-parent_id">
-                    <option value="">- {{=T("select an option")}} {{=T("(optional)")}} -</option>
-                    {{ for opt in parent_learning_objective_options: }}
-                        <option value="{{=opt.id}}" {{if opt.id == model.parent_id:}} selected {{pass}}>{{=opt.description}}</option>
-                    {{ pass }}
-                </select>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-              <div class="control-group">
-              <div class="form-group controls">
-                <div id="div-related_topic_id">
-                </div>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <!-- Parent Objective END -->
             <!-- Solo Taxonomy START -->
             <div class="control-group">
               <div class="form-group controls">
@@ -99,20 +57,16 @@
               </div>
             </div>
             <!-- Solo Taxonomy END -->
-            <!-- Topic START -->
+            <!-- Description START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("topic")}}</label>
-                <select class="form-control" name="topic_id" id="ctl-topic_id" required>
-                    <option value="">- {{=T("select an option")}} -</option>
-                    {{ for opt in topic_options: }}
-                    <option value="{{=opt['id']}}" {{if opt['id'] == model.topic_id:}} selected {{pass}}>{{=opt['name']}}</option>
-                    {{ pass }}
-                </select>
+                <label>{{=T("description")}}</label>
+                <input type="text" class="form-control" placeholder="{{=T('enter a description')}}" id="ctl-description" name="description" required
+                       maxlength="1000" value='{{=model.description}}'>
                 <p class="help-block text-danger"></p>
               </div>
             </div>
-            <!-- Topic END -->
+            <!-- Description END -->
             <!-- Content START -->
             <div class="control-group">
               <div class="form-group controls">
@@ -141,6 +95,32 @@
               </div>
             </div>
             <!-- Exam Board END -->
+            <!-- Topic START -->
+            <div class="control-group">
+              <div class="form-group controls">
+                <label>{{=T("topic")}}</label>
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required>
+                    <option value="">- {{=T("select an option")}} -</option>
+                    {{ for opt in topic_options: }}
+                    <option value="{{=opt['id']}}" {{if opt['id'] == model.topic_id:}} selected {{pass}}>{{=opt['name']}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Topic END -->
+            <!-- Key words START -->
+            <div class="control-group">
+              <div class="form-group controls">
+                <label>{{=T("keywords")}}</label>
+                <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
+                       maxlength="250" value='{{=model.key_words}}'>
+                <p class="help-block text-danger" id="token-error"></p>
+              </div>
+                <div id="keywords"></div>
+            </div>
+            <!-- Key words END -->
+
             <!-- Notes START -->
               <div class="control-group">
               <div class="form-group controls">
