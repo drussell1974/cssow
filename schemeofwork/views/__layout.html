@@ -34,7 +34,7 @@
               {{pass}}
               <a class="navbar-brand" id="btn-logout" href="{{=URL('default','user/logout')}}">{{=T('logout')}}</a>
               {{else:}}
-                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login')}}">{{=T('login')}}</a>
+                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login', vars=dict(_next=request.url))}}">{{=T('login')}}</a>
               {{if 'register' not in auth.settings.actions_disabled:}}
                 <a class="navbar-brand" href="{{=URL('default','user/register')}}">{{=T('sign up')}}</a>
               {{pass}}
