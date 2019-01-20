@@ -218,7 +218,7 @@
 'scheme of work': 'scheme of work',
 'schemes of work': 'schemes of work',
 'select an option': 'select an option',
-'select linked learning objectives': 'select linked learning objectives',
+'prerequisites': 'prerequisites',
 'Services': 'Services',
 'show all': 'show all',
 'show key stages': 'show key stages',

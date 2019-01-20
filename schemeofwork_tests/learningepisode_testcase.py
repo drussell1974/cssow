@@ -28,6 +28,7 @@ class LearningEpisode_TestCase(TestCase):
         self.assertEqual(4, test.topic_id)
         self.assertEqual(5, test.parent_topic_id)
         self.assertEqual(6, test.key_stage_id)
+        self.assertEqual([], test.pathway_objective_ids)
         self.assertEqual("lorem ipsum,sit amet,convallis", test.key_words)
         self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.", test.summary)
         self.assertTrue(test.is_valid)

@@ -19,6 +19,7 @@ class LearningEpisodeModel (BaseModel):
         self.key_words = key_words
         self.other_key_words = []
         self.summary = summary
+        self.pathway_objective_ids = []
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -126,6 +127,13 @@ class LearningEpisodeModel (BaseModel):
         if self.summary is not None:
             self.summary = self.summary.lstrip(' ').rstrip(' ')
 
+        if self.pathway_objective_ids is not None:
+            """ remove duplicates """
+            staging_list = []
+            for ob in self.pathway_objective_ids:
+                if ob not in staging_list:
+                    staging_list.append(ob.lstrip(' ').rstrip(' '));
+            self.pathway_objective_ids = staging_list
 
 
 

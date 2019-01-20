@@ -280,7 +280,7 @@ def _upsert_pathway_objective_ids(db, model):
 
     db.executesql(str_delete)
 
-    if len(model.related_topic_ids) > 0:
+    if model.pathway_objective_ids is not None:
         # reinsert
         str_insert = "INSERT INTO sow_learning_episode__has__pathway (learning_episode_id, learning_objective_id) VALUES"
 
@@ -289,7 +289,7 @@ def _upsert_pathway_objective_ids(db, model):
                 str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id)
 
         str_insert = str_insert.rstrip(",") + ";"
-
+        print(str_insert)
         db.executesql(str_insert)
 
 
@@ -346,7 +346,6 @@ def get_pathway_objective_ids(db, learning_episode_id):
     :return: serialized learning objective ids
     """
 
-
     str_select = " SELECT" \
                  " learning_objective_id"\
                  " FROM sow_learning_episode__has__pathway" \
@@ -356,9 +355,9 @@ def get_pathway_objective_ids(db, learning_episode_id):
 
     rows = db.executesql(str_select)
 
-    serializable_list = []
+    data = []
 
     for row in rows:
-        serializable_list.append({"id":row[0]})
+        data.append(int(row[0]))
 
-    return serializable_list
+    return data

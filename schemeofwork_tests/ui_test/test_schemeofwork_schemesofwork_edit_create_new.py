@@ -109,9 +109,9 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' select the submit button (to remove cursor from textarea '
-        elem = self.test_context.find_element_by_id("saveButton")
 
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert

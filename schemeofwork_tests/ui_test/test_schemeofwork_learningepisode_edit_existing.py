@@ -40,15 +40,15 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.send_keys(Keys.TAB)
 
         ' ctl-key_words '
-        """ NOT INTERACTABLE """
-        #elem = self.test_context.find_element_by_id("ctl-key_words")
-        #elem.clear()
-        #elem.send_keys("Lorem ipsum dolor sit amet")
-
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("ctl-key_words-tokenfield")
+        elem.clear()
+        elem.send_keys("algorithm")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Ipsum")
+        elem.send_keys(Keys.TAB)
 
         ' submit the form '
-
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -72,7 +72,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.clear()
         elem.send_keys("1")
 
-        ' ctl-key_stage_id - select KS4 '
+        ' ctl-topic_id - select KS4 '
         elem = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem.find_elements_by_tag_name('option')
         for opt in all_options:
@@ -81,21 +81,35 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
-        ' ctl-key_words '
-        #elem = self.test_context.find_element_by_id("ctl-key_words")
-        #elem.clear()
-        #elem.send_keys("Lorem ipsum dolor sit amet")
-
-        elem = self.test_context.find_element_by_id("saveButton")
-
         ' ctl-summary '
         elem = self.test_context.find_element_by_id("ctl-summary")
         elem.clear()
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
+        ' ctl-key_words '
+        elem = self.test_context.find_element_by_id("ctl-key_words-tokenfield")
+        elem.clear()
+        elem.send_keys("algorithm")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Ipsum")
+        elem.send_keys(Keys.TAB)
+
+
+        ' div-pathway_objective_id  - select VALID '
+        # expand accordion
+        self.wait(15) # wait for accordion to load from ajax call
+        elem = self.test_context.find_element_by_id('ks3-heading-text')
+        elem.click()
+
+        elem = self.test_context.find_element_by_id('ctl-pathway_objective_id477')
+        elem.click()
+        elem.send_keys(Keys.TAB)
+
+
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
-        
+
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')

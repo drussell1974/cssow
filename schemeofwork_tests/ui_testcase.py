@@ -9,9 +9,10 @@ class UITestCase(TestCase):
         root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
 
 
-        def wait(self):
+        def wait(self, s = 5):
             import time
-            time.sleep(5)
+            time.sleep(s)
+
 
         def assertWebPageTitleAndHeadings(self, title, h1, subheading):
 

@@ -209,12 +209,7 @@ def get_model(db, id_, auth_user):
     return model
 
 
-def get_pathway_objectives(db, key_stage_id, topic_ids, key_words):
-
-    if topic_ids is None or len(topic_ids) == 0:
-        topic_ids = "0"
-
-
+def get_pathway_objectives(db, key_stage_id, key_words):
 
     select_sql = "SELECT"\
                  " lob.id as id,"\
@@ -244,44 +239,43 @@ def get_pathway_objectives(db, key_stage_id, topic_ids, key_words):
                 " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
                 " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
                 " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
-                " WHERE ks.id < {key_stage_id} AND (top.id IN ({topic_ids}) OR 0 IN ({topic_ids}))" \
-                " ORDER BY ks.name, solo.lvl;"
+                " WHERE ks.id < {key_stage_id}" \
+                " ORDER BY ks.name DESC, solo.lvl;"
 
-    select_sql = select_sql.format(key_stage_id=key_stage_id, topic_ids=topic_ids)
+    select_sql = select_sql.format(key_stage_id=key_stage_id)
 
-    print(select_sql)
     rows = db.executesql(select_sql)
 
     data = [];
 
     for row in rows:
-        for keyword in key_words.split(","):
-            print("checking if keyword {} is in {}".format(keyword, row[15]))
-            if keyword in row[15]:
-                model = LearningObjectiveModel(
-                    id_ = row[0],
-                    description = row[1],
-                    solo_taxonomy_id = row[2],
-                    solo_taxonomy_name = row[3],
-                    solo_taxonomy_level = row[4],
-                    topic_id = row[5],
-                    topic_name = row[6],
-                    parent_topic_id = row[7],
-                    parent_topic_name = row[8],
-                    content_id = row[9],
-                    content_description = row[10],
-                    exam_board_id = row[11],
-                    exam_board_name = row[12],
-                    key_stage_id = row[13],
-                    key_stage_name = row[14],
-                    key_words = row[15],
-                    created = row[16],
-                    created_by_id = row[17],
-                    created_by_name = row[18]
-                    )
+        if len(row[15]) > 0:
+            for keyword in key_words.split(","):
+                if len(keyword) > 0 and keyword in row[15]:
+                    model = LearningObjectiveModel(
+                        id_ = row[0],
+                        description = row[1],
+                        solo_taxonomy_id = row[2],
+                        solo_taxonomy_name = row[3],
+                        solo_taxonomy_level = row[4],
+                        topic_id = row[5],
+                        topic_name = row[6],
+                        parent_topic_id = row[7],
+                        parent_topic_name = row[8],
+                        content_id = row[9],
+                        content_description = row[10],
+                        exam_board_id = row[11],
+                        exam_board_name = row[12],
+                        key_stage_id = row[13],
+                        key_stage_name = row[14],
+                        key_words = row[15],
+                        created = row[16],
+                        created_by_id = row[17],
+                        created_by_name = row[18]
+                        )
 
-                data.append(model)
-                break # only add objective once
+                    data.append(model)
+                    break # only add objective once
 
     return data
 

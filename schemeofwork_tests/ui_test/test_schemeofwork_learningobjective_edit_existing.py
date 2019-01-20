@@ -37,15 +37,6 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem.clear()
         elem.send_keys("")
 
-        ' ctl-parent_id - select VALID '
-
-        elem = self.test_context.find_element_by_id("ctl-parent_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "Define the term sequence":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
-
         ' ctl-solo_taxonomy_id - SELECT VALID '
 
         elem = self.test_context.find_element_by_id("ctl-solo_taxonomy_id")
@@ -74,11 +65,8 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
         elem.send_keys(Keys.TAB)
 
-        ' Submit '
-
-        elem = self.test_context.find_element_by_id("saveButton")
-
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -99,15 +87,6 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem.clear()
         elem.send_keys("test_page__should_stay_on_same_page_if_valid (EDITED)")
 
-        ' ctl-parent_id - select VALID '
-
-        elem = self.test_context.find_element_by_id("ctl-parent_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "Define the term sequence":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
-
         ' ctl-solo_taxonomy_id - SELECT VALID '
 
         elem = self.test_context.find_element_by_id("ctl-solo_taxonomy_id")
@@ -136,10 +115,8 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
         elem.send_keys(Keys.TAB)
 
-        ' Submit '
-        elem = self.test_context.find_element_by_id("saveButton")
-
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert

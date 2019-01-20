@@ -57,6 +57,14 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
+                <label>{{=T("summary")}}</label>
+                <input type="text" name="summary" class="form-control" placeholder="{{=T('enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
+                       maxlength="80" value='{{=model.summary}}'>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group  controls">
                 <label>{{=T("topic")}}</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required>
                     <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("select an option")}} -</option>
@@ -76,14 +84,6 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("summary")}}</label>
-                <input type="text" name="summary" class="form-control" placeholder="{{=T('enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
-                       maxlength="80" value='{{=model.summary}}'>
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <div class="control-group">
-              <div class="form-group  controls">
                 <label>{{=T("keywords")}}</label>
                 <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
@@ -94,7 +94,8 @@
               <!-- Pathway Objectives START -->
               <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("select linked learning objectives")}}</label>
+                  <label>{{=T("prerequisites")}} <i id=btn-refresh-pathway_objectives" class="fa fa-refresh icon" aria-hidden="true"></i></label>
+
                     <div id="div-pathway_objective_id">
                     </div>
                 <p class="help-block text-danger"></p>
@@ -124,18 +125,20 @@
     <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
 
     <script>
-    $.getJSON('{{=URL('default', 'get_key_words', args=[topic_id])}}',
-        function(result) {
-            $('#ctl-key_words').tokenfield({
-              autocomplete: {
-                limit: 15,
-                source: result,
-                delay: 100
-              },
-              showAutocompleteOnFocus: true
-            })
-        }
-    );
+    function showPathwayObjectives(key_stage_id, arr_key_words) {
+        var uri = '_view_pathway_objectives?learning_episode_id=' + {{=model.id}} + '&key_stage_id=' + key_stage_id + '&keywords=' + arr_key_words;
+        console.log('calling _view_pathway_objectives...' + uri);
+
+        $.ajax({url: uri,
+            success: function(result){
+                console.log('successful call ... _view_pathway_objectives');
+                $("#div-pathway_objective_id").html(result);
+            },
+            error: function(){
+                $("#div-pathway_objective_id").html('could not get pathway objectives at this time');
+            }
+        });
+    }
 
     function showRelatedTopic(learning_episode_id ,main_topic_id) {
         $.getJSON('{{=URL('learningepisode', 'get_related_topics')}}/' + learning_episode_id + '/' + main_topic_id,
@@ -206,57 +209,53 @@
         )
     }
 
-    function set_objectives_to_checked(learning_episode_id) {
-        console.log('setting objectives to checked: starting...');
-        $.getJSON('{{=URL('learningepisode', 'get_pathway_objectives')}}/' + learning_episode_id,
-            function(result) {
 
-                console.log('setting objectives to checked: success...');
+    $.getJSON('{{=URL('default', 'get_key_words', args=[topic_id])}}',
+        function(result) {
+            $('#ctl-key_words').tokenfield({
+              autocomplete: {
+                limit: 15,
+                source: result,
+                delay: 100
+              },
+              showAutocompleteOnFocus: true
+            })
+        }
+    );
 
-                $('.pathway_objective-form-check-input').each(function(index) {
-                    for (i = 0; i < result.length;i++) {
-                        if (result[i].id == this.value) {
-                            $(this).prop('checked', true);
-                        }
-                    }
-                });
-            }
-        );
-    }
-
-    function showPathwayObjectives(key_stage_id, subtopic_ids, keywords) {
-        $.ajax({url: '_pathway_objectives?key_stage_id=' + key_stage_id + '&topic_ids=' + subtopic_ids + '&keywords=' + keywords,
-            success: function(result){
-                $("#div-pathway_objective_id").html(result);
-
-                set_objectives_to_checked({{=model.id}});
-        }});
-    }
-
-    document.getElementById("ctl-topic_id").addEventListener('change', function(e) {
+    $('#ctl-topic_id').on('change', function(e) {
         showRelatedTopic({{=model.id}}, e.target.value);
-        showPathwayObjectives({{=model.id}}, e.target.value);
     });
+
+
 
     window.onload = function(e) {
         topic_elem = document.getElementById('ctl-topic_id');
         showRelatedTopic({{=model.id}}, topic_elem.value);
 
-        // check for async
-        subtopic_ids = ""
-        $('.form-check-input').each(function(i){
-            if (this.value != "") {
-                subtopic_ids = subtopic_ids + this.value + ',';
-            }
-        })
-
         key_words = document.getElementById('ctl-key_words').value.split(',');
-        arr_key_words = [];
+        var init_key_words = [];
         for(i = 0; i < key_words.length; i++) {
-            arr_key_words.push(key_words[i].trim());
+            init_key_words.push(key_words[i].trim());
         }
+        showPathwayObjectives({{=model.key_stage_id}}, init_key_words);
 
-        showPathwayObjectives({{=model.key_stage_id}}, subtopic_ids, arr_key_words);
+
+        $('#ctl-key_words').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
+            var arr_key_words = [];
+            $('.token-label').each(function(index) {
+                arr_key_words.push($(this).text());
+            })
+            showPathwayObjectives({{=model.key_stage_id}}, arr_key_words);
+        });
+
+        $('#btn-refresh-pathway_objectives').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
+            var arr_key_words = [];
+            $('.token-label').each(function(index) {
+                arr_key_words.push($(this).text());
+            })
+            showPathwayObjectives({{=model.key_stage_id}}, arr_key_words);
+        });
     };
 
     </script>

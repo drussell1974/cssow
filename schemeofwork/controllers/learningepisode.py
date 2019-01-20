@@ -41,14 +41,15 @@ def index():
                 pager_html = pager_html)
 
 
-def _pathway_objectives():
+def _view_pathway_objectives():
+    learning_episode_id = 0 if request.vars.learning_episode_id  is None else request.vars.learning_episode_id
     key_stage_id = 0 if request.vars.key_stage_id is None else request.vars.key_stage_id
-    topic_ids = 0 if request.vars.topic_ids is None else request.vars.topic_ids
     key_words = "" if request.vars.keywords is None else request.vars.keywords
 
-    data = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, topic_ids = topic_ids, key_words = key_words)
+    data = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
+    should_be_checked = db_learningepisode.get_pathway_objective_ids(db, learning_episode_id)
 
-    return dict(data=data)
+    return dict(data=data, should_be_checked=should_be_checked)
 
 
 @auth.requires_login()
@@ -152,17 +153,3 @@ def get_related_topics():
 
     import gluon.contrib.simplejson
     return gluon.contrib.simplejson.dumps(topics)
-
-
-def get_pathway_objectives():
-    """
-    Get learning objectives for the learning epsiode
-    :return: json serialised list
-    """
-
-    learning_episode_id = int(request.args(0))
-
-    learning_objectives = db_learningepisode.get_pathway_objective_ids(db, learning_episode_id)
-
-    import gluon.contrib.simplejson
-    return gluon.contrib.simplejson.dumps(learning_objectives)
