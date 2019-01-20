@@ -289,7 +289,7 @@ def _upsert_pathway_objective_ids(db, model):
                 str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id)
 
         str_insert = str_insert.rstrip(",") + ";"
-        print(str_insert)
+
         db.executesql(str_insert)
 
 
