@@ -76,7 +76,7 @@
           {{ for row in model: }}
 
             {{ if topic_name != row.topic_name: }}
-                <h1>{{=row.topic_name}}</h1>
+                <h1 class="group-heading">{{=row.topic_name}}</h1>
             {{ pass }}
           <div class="post-preview">
             <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">

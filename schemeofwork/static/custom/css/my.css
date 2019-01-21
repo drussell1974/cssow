@@ -11,6 +11,10 @@
     text-transform: lowercase;
 }
 
+.group-heading {
+    text-transform: uppercase;
+}
+
 .form-group > label {
     text-transform: uppercase;
 }

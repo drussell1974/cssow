@@ -72,7 +72,7 @@
           {{ group_name = "" }}
           {{ for row in model: }}
             {{ if group_name != row.group_name and row.group_name is not None: }}
-            <h1><u>{{=row.group_name}}</u></h1>
+            <h1 class="group-heading">{{=row.group_name}}</h1>
             {{
                 group_name = row.group_name
                 pass
