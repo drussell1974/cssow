@@ -69,7 +69,14 @@
                 </div>
           {{ pass }}
           <!-- Show learning objectives for this learning episode -->
+          {{ group_name = "" }}
           {{ for row in model: }}
+            {{ if group_name != row.group_name and row.group_name is not None: }}
+            <h1><u>{{=row.group_name}}</u></h1>
+            {{
+                group_name = row.group_name
+                pass
+            }}
           <div class="post-preview">
               <a name="{{=row.id}}"></a>
             <a href="#{{=row.id}}" class="disabled">
