@@ -1,4 +1,5 @@
 {{extend '__layout.html'}}
+{{ from helper_string import dictionary_to_string, merge_string_list }}
 {{block header}}
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">
@@ -77,13 +78,12 @@
               <h2 class="post-title">
                 {{=row.get_ui_title()}}
               </h2>
-
-              {{ if row.summary != "": }}
-                <h3 class="post-subtitle">{{=row.summary}}</h3>
-              {{ pass }}
+                <h3 class="post-subtitle">{{=dictionary_to_string(row.related_topic_ids,"name", {"checked":True})}}</h3>
             </a>
-
-              {{ for key_word in row.key_words: }}
+              {{ if row.summary != "": }}
+                <span class="intro">{{=row.summary}}</span><br>
+              {{ pass }}
+              {{ for key_word in merge_string_list(row.key_words, row.key_words_from_learning_objectives, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
             <p class="post-meta">created by

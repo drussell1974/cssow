@@ -42,3 +42,16 @@ def merge_string_list(list1, list2, sep):
             break
 
     return staging_list
+
+
+def dictionary_to_string(collection, key, filter = None):
+    """ show key-value as a comma seperated list """
+    return_string = ""
+    for item in collection:
+        if filter is not None:
+            if item[list(filter.keys())[0]] == list(filter.values())[0]:
+                return_string = return_string + "{}, ".format(item[key])
+        else:
+            return_string = return_string + "{}, ".format(item[key])
+
+    return return_string.rstrip(", ")

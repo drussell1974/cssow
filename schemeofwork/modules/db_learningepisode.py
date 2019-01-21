@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from cls_learningepisode import LearningEpisodeModel
 from db_helper import to_db_null
-from helper_string import merge_string_list
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -66,12 +65,11 @@ def get_all(db, scheme_of_work_id, auth_user):
             created_by_name=row[13])
 
         ' get the key words from the learning objectives '
-        learning_objective_key_words = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
-
-        ' merge the learning_objective keywords with the learning episode keywords '
-        model.key_words = merge_string_list(model.key_words, learning_objective_key_words, ",")
-
+        model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
+
+        ' get related topics '
+        model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
         data.append(model)
 

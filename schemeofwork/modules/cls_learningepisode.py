@@ -29,25 +29,9 @@ class LearningEpisodeModel (BaseModel):
     def get_ui_title(self):
         """ display title with order of delivery and topic name """
 
-        """ format topics """
-
-        topics_to_show = ""
-        if self.parent_topic_name is not None or self.parent_topic_name != "":
-            topics_to_show = topics_to_show + "{}".format(self.parent_topic_name)
-
-        if self.topic_name is not None and self.topic_name != "":
-            topics_to_show = topics_to_show + " : {}".format(self.topic_name)
-
-        # trim if needed
-        topics_to_show = topics_to_show.replace("None", "")
-        topics_to_show = topics_to_show.lstrip(" :") # remove spaces and colon
-
         """ format full title with order of delivery """
 
-        title_to_show = "Week {} - {}".format(self.order_of_delivery_id, topics_to_show)
-
-        # trim if needed
-        title_to_show = title_to_show.rstrip(" -") # remove hypen and colon
+        title_to_show = "Week {} - {}".format(self.order_of_delivery_id, self.topic_name)
 
         return title_to_show
 
