@@ -42,21 +42,10 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="sidebarResponsive">
-                    <ul class="navbar-nav flex-column fillspace">
-                    {{ topic_name = "" }}
-                    {{ for opt in learningepisiode_options:}}
-                        {{ if topic_name != opt.topic_name: }}
-                        <b>{{=opt.topic_name}}</b>
-                        {{ pass }}
-                        <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', args=[scheme_of_work_id, opt.id])}}">{{="Week {}".format(opt.order_of_delivery_id)}}</a>
-                        </li>
-                        {{ topic_name = opt.topic_name }}
-                    {{ pass }}
-                    </ul>
-                    <hr>
-                </div>
-              </nav>
+
+                </div><!-- class="collapse navbar-collapse" id="sidebarResponsive" -->
+              </nav><!-- class="navbar navbar-expand-lg navbar-light" id="sidebarNav" -->
+
             <!-- SIDE MENU END -->
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
@@ -123,4 +112,16 @@
 
     <!-- Main Content END -->
 {{block page_js}}
+    <script>
+    window.onload = function(e) {
+        $.ajax({url: '{{=URL("learningepisode", "_view_learning_episiode_menu", args=[scheme_of_work_id, learning_episode_id, topic_id])}}',
+            success: function(result) {
+                $('#sidebarResponsive').html(result);
+            },
+            error: function() {
+                console.log('error getting _view_learning_episiode_menu');
+            }
+        });
+    }
+    </script>
 {{end page_js}}

@@ -77,7 +77,7 @@ def edit():
 
     content = {
         "main_heading":T("learning episode"),
-        "sub_heading":T("for {scheme_of_work_name}: {topic_name} - Week {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
+        "sub_heading":T("for {scheme_of_work_name} {topic_name} - Week {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
         "strap_line":T("{topic_name} - Week {order_of_delivery_id}\n{summary}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id, summary=model.summary)
               }
 
@@ -153,3 +153,14 @@ def get_related_topics():
 
     import gluon.contrib.simplejson
     return gluon.contrib.simplejson.dumps(topics)
+
+
+def _view_learning_episiode_menu():
+
+    scheme_of_work_id = int(request.args(0))
+    learning_episode_id = int(request.args(1))
+    topic_id = int(request.args(2))
+
+    view_model = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)  #TODO: create view_learningepisiode_options: remove this line
+
+    return dict(view_model=view_model, learning_episode_id=learning_episode_id, topic_id=topic_id)

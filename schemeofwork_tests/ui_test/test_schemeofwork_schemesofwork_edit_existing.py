@@ -1,11 +1,10 @@
 from datetime import datetime
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
@@ -33,7 +32,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 - OCR')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 OCR')
         self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
@@ -99,7 +98,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 - OCR')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 OCR')
 
 
     def test_page__edit_existing__should_redirect_to_index_if_valid(self):

@@ -37,8 +37,6 @@ class SchemeOfWorkModel(BaseModel):
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
 
-        return heading
-
 
     def _clean_up(self):
         """ clean up properties """

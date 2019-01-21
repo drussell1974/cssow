@@ -1,11 +1,9 @@
-from datetime import datetime
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
@@ -48,7 +46,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning Episode','for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning Episode','for a-level computer science - week 1')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -92,7 +90,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         ' div-pathway_objective_id  - select VALID '
         # expand accordion
-        self.wait() # wait for accordion to load from ajax call
+        self.test_context.implicitly_wait(4) # wait for accordion to load from ajax call
         elem = self.test_context.find_element_by_id('ks3-heading-text')
         elem.click()
 

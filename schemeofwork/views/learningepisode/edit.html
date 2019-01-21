@@ -126,12 +126,8 @@
 
     <script>
     function showPathwayObjectives(key_stage_id, arr_key_words) {
-        var uri = '_view_pathway_objectives?learning_episode_id=' + {{=model.id}} + '&key_stage_id=' + key_stage_id + '&keywords=' + arr_key_words;
-        console.log('calling _view_pathway_objectives...' + uri);
-
-        $.ajax({url: uri,
+        $.ajax({url: '_view_pathway_objectives?learning_episode_id=' + {{=model.id}} + '&key_stage_id=' + key_stage_id + '&keywords=' + arr_key_words,
             success: function(result){
-                console.log('successful call ... _view_pathway_objectives');
                 $("#div-pathway_objective_id").html(result);
             },
             error: function(){

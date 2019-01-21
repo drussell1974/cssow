@@ -1,10 +1,8 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_default_index(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up

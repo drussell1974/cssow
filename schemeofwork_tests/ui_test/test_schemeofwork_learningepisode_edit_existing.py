@@ -1,16 +1,13 @@
-from datetime import datetime
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
         self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
-
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -53,7 +50,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for A-Level Computer Science - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for a-level computer science programming and development - week 1')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -86,18 +83,12 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.clear()
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
-        ' ctl-key_words '
-        elem = self.test_context.find_element_by_id("ctl-key_words-tokenfield")
-        elem.clear()
-        elem.send_keys("algorithm")
-        elem.send_keys(Keys.TAB)
-        elem.send_keys("Ipsum")
-        elem.send_keys(Keys.TAB)
+        ' ctl-key_words SKIP adds too many '
 
 
         ' div-pathway_objective_id  - select VALID '
         # expand accordion
-        self.wait(15) # wait for accordion to load from ajax call
+        self.test_context.implicitly_wait(8) # wait for accordion to load from ajax call
         elem = self.test_context.find_element_by_id('ks3-heading-text')
         elem.click()
 

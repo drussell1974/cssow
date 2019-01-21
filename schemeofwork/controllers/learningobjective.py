@@ -17,8 +17,8 @@ def index():
 
     # TODO: ensure correct number of args are passed
 
-    scheme_of_work_id = int(request.args(0)) #int(request.vars.scheme_of_work_id)
-    learning_episode_id = int(request.args(1)) #int(request.vars.learning_episode_id)
+    scheme_of_work_id = int(request.args(0))
+    learning_episode_id = int(request.args(1))
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
@@ -48,16 +48,16 @@ def index():
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = sorted_data)
 
-    learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)
+    learning_episode_options = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)  #TODO: create view_learningepisiode_options: remove this line
 
     pager_html = pager.render_html(URL('learningobjective', 'index', args=[scheme_of_work_id, learning_episode_id]))
     paged_data = pager.data_to_display()
 
     content = {
         "main_heading":T("learning objectives"),
-        "sub_heading":T("for {} - Week {} - {}").format(scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
+        "sub_heading":T("for {scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name),
         "background_img":"home-bg.jpg",
-        "strap_line": None if learning_episode.summary == "" else learning_episode.summary
+        "strap_line": T("{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name, summary=learning_episode.summary)
               }
 
     return dict(
@@ -66,7 +66,7 @@ def index():
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
-        learningepisiode_options = learning_episode_options,
+        learningepisiode_options = learning_episode_options, #TODO: create view_learningepisiode_options: remove this line
         page = page_to_display,
         pager_html = pager_html)
 

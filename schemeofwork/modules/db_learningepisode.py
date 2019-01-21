@@ -12,7 +12,10 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3], scheme_of_work_id=scheme_of_work_id)
+        ' get related topics '
+        model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
+
         data.append(model)
 
     return data

@@ -1,11 +1,8 @@
-from selenium import webdriver
-
-from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_learningepsiode_index(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
@@ -44,7 +41,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for a-level computer science - week 1')
 
 
 

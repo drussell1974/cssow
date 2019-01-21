@@ -82,7 +82,7 @@ def edit():
 
     content = {
         "main_heading":T("scheme of work") if model.name == "" else model.name,
-        "sub_heading":T("create a new scheme of work") if model.name == "" else T("edit scheme of work"),
+        "sub_heading":T("create a new scheme of work") if model.name == "" else T("{} {}".format(model.key_stage_name, model.exam_board_name)),
         "strap_line":T("fill out the form below then click save")
               }
     return dict(content = content, model = model, examboard_options = examboard_options, keystage_options = keystage_options)

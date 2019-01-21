@@ -15,9 +15,9 @@
       <div class="card">
         <div class="card-header" id="ks{{=item.key_stage_id}}-heading">
           <h5 class="mb-0">
-            <i id="ks{{=item.key_stage_id}}-heading-text" class="nav-link" data-toggle="collapse" data-target="#ks{{=item.key_stage_id}}-collapse" aria-expanded="true" aria-controls="ks{{=item.key_stage_id}}-collapse">
+            <a id="ks{{=item.key_stage_id}}-heading-text" class="nav-link" data-toggle="collapse" data-target="#ks{{=item.key_stage_id}}-collapse" aria-expanded="true" aria-controls="ks{{=item.key_stage_id}}-collapse">
               {{ =item.key_stage_name}}
-            </i> <!-- class="btn btn-link" -->
+            </a> <!-- class="btn btn-link" -->
           </h5><!-- class="mb-0" -->
         </div><!-- class="card-header" -->
       <div id="ks{{=item.key_stage_id}}-collapse" class="collapse {{ if item.id in should_be_checked: }}show{{ pass }}" aria-labelledby="ks{{=item.key_stage_id}}-heading" data-parent="#accordion">

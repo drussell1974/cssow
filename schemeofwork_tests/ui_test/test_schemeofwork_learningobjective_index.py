@@ -1,11 +1,8 @@
-from selenium import webdriver
-
-from selenium.webdriver.common.keys import Keys
-from ui_testcase import UITestCase
+from ui_testcase import UITestCase, WebBrowserContext
 
 class test_schemeofwork_learningepsiode_index(UITestCase):
 
-    test_context = webdriver.Chrome()
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
@@ -26,6 +23,17 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
+
+
+    def test_page__should_have__sidebar_and_selected_learning_episode(self):
+        # test
+        self.test_context.implicitly_wait(20)
+        elem = self.test_context.find_element_by_id('nav-link-learning-episode-{}'.format(self.test_learning_episode_id))
+
+        # assert
+        self.assertEqual("", elem.text)
+        self.assertEqual("nav-link", elem.get_attribute("class"))
+
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
