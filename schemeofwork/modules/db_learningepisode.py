@@ -4,7 +4,7 @@ from db_helper import to_db_null
 
 def get_options(db, scheme_of_work_id, auth_user):
 
-    str_select = "SELECT id, order_of_delivery_id FROM sow_learning_episode WHERE scheme_of_work_id = {scheme_of_work_id} AND (published = 1 OR created_by = {auth_user}) ORDER BY order_of_delivery_id;"
+    str_select = "SELECT le.id as id, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name FROM sow_learning_episode as le INNER JOIN sow_topic as top ON top.id = le.topic_id WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.order_of_delivery_id;"
     str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(str_select)
@@ -12,7 +12,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(row[0], row[1])
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3])
         data.append(model)
 
     return data

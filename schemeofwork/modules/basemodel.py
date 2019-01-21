@@ -30,13 +30,6 @@ class BaseModel(object):
     Friendly names
     """
 
-    def get_ui_title(self):
-        pass
-
-
-    def get_ui_sub_heading(self):
-        pass
-
 
     def get_ui_created(self):
         return datetime.strftime(self.created, "%d %B %Y")

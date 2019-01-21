@@ -26,32 +26,6 @@ class LearningEpisodeModel (BaseModel):
         self.published=published
 
 
-    def get_ui_title(self):
-        """ display title with order of delivery and topic name """
-
-        """ format full title with order of delivery """
-
-        title_to_show = "Week {} - {}".format(self.order_of_delivery_id, self.topic_name)
-
-        return title_to_show
-
-
-    def get_ui_sub_heading(self):
-        """ show scheme of work name """
-        sub_heading_to_show = "for {scheme_of_work_name} - {summary}".format(scheme_of_work_name=self.scheme_of_work_name, summary=self.summary if self.summary is not None else '')
-
-        # trim if needed
-        sub_heading_to_show = sub_heading_to_show.rstrip(" -") # remove hypen
-
-        return sub_heading_to_show
-
-
-    def get_list_of_key_words(self):
-        if self.key_words == "" or self.key_words is None:
-            return []
-        else:
-            return self.key_words.split(',')
-
     def validate(self):
 
         """ clean up and validate model """

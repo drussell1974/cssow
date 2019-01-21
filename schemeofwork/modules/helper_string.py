@@ -55,3 +55,10 @@ def dictionary_to_string(collection, key, filter = None):
             return_string = return_string + "{}, ".format(item[key])
 
     return return_string.rstrip(", ")
+
+
+def string_to_list(string, SEP):
+    if string == "" or string is None:
+        return []
+    else:
+        return string.split(SEP)

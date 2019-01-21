@@ -22,10 +22,10 @@
               <div class="post-preview post-preview-schemeofwork">
                 <a id="lnk-schemeofwork-{{=row.id}}" href="{{=URL('learningepisode', 'index', args=[row.id])}}">
                   <h2 class="post-title">
-                      {{=row.get_ui_title()}}
+                      {{=row.name}}
                   </h2>{{ if row.is_recent == True: }} <i class="small badge badge-success float-right">New</i> {{ pass }}
                   <h3 class="post-subtitle">
-                    {{=row.get_ui_sub_heading()}}
+                    {{=row.key_stage_name}}
                   </h3>
                 </a>
                 <p class="post-meta">created by

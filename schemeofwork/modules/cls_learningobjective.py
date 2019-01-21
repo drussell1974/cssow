@@ -31,21 +31,6 @@ class LearningObjectiveModel (BaseModel):
         self.published=published
 
 
-    def get_ui_title(self):
-        return self.description
-
-
-    def get_ui_sub_heading(self):
-        return "for {} {}".format(self.scheme_of_work_name, self.learning_episode_name)
-
-
-    def get_list_of_key_words(self):
-        if self.key_words == "" or self.key_words is None:
-            return []
-        else:
-            return self.key_words.split(',')
-
-
     def validate(self):
 
         """ clean up and validate model """
@@ -87,6 +72,7 @@ class LearningObjectiveModel (BaseModel):
 
         # Validate key_words
         self._validate_optional_list("key_words", self.key_words, sep=",", max_items=15)
+
 
     def _clean_up(self):
         """ clean up properties by removing whitespace etc """

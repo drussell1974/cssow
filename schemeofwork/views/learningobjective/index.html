@@ -1,4 +1,5 @@
 {{extend '__layout.html'}}
+{{ from helper_string import string_to_list }}
 {{block header}}
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">
@@ -42,10 +43,15 @@
                 </button>
                 <div class="collapse navbar-collapse" id="sidebarResponsive">
                     <ul class="navbar-nav flex-column fillspace">
+                    {{ topic_name = "" }}
                     {{ for opt in learningepisiode_options:}}
+                        {{ if topic_name != opt.topic_name: }}
+                        <b>{{=opt.topic_name}}</b>
+                        {{ pass }}
                         <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', args=[scheme_of_work_id, opt.id])}}">{{=opt.get_ui_title()}}</a>
+                            <a class="nav-link {{ if opt.id == learning_episode_id: }} mark {{ pass }}" href="{{=URL('learningobjective', 'index', args=[scheme_of_work_id, opt.id])}}">{{="Week {}".format(opt.order_of_delivery_id)}}</a>
                         </li>
+                        {{ topic_name = opt.topic_name }}
                     {{ pass }}
                     </ul>
                     <hr>
@@ -85,10 +91,10 @@
                     {{=row.topic_name}}
                 </h3>
             </a>
-              {{ for key_word in row.get_list_of_key_words(): }}
+              {{ for key_word in string_to_list(row.key_words, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>
               {{ pass }}
-            <p class="post-meta">created by
+            <p class="post-meta">{{=T("created by")}}
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}

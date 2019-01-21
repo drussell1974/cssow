@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
-from datetime import datetime
+
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -36,25 +36,6 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
-
-
-    def get_ui_title(self):
-        self._clean_up()
-        return self.name
-
-
-    def get_ui_sub_heading(self):
-        self._clean_up()
-
-        heading = ""
-
-        if self.key_stage_name is not None:
-            heading = "{}".format(self.key_stage_name)
-        if self.exam_board_name is not None:
-            heading = heading + " - {}".format(self.exam_board_name)
-
-        heading = heading.rstrip("- ")
-        heading = heading.lstrip(" -")
 
         return heading
 

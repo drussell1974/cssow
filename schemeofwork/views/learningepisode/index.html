@@ -43,7 +43,7 @@
                     <ul class="navbar-nav flex-column fillspace">
                     {{ for opt in schemeofwork_options:}}
                         <li class="nav-item">
-                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', args=[opt.id])}}">{{=opt.get_ui_title()}} <div class="small">{{=opt.get_ui_sub_heading()}}</div></a>
+                            <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', args=[opt.id])}}">{{=opt.name}} <div class="small">{{=opt.key_stage_name}}</div></a>
                         </li>
                     {{ pass }}
                     </ul>
@@ -72,17 +72,21 @@
             {{pass}}
             </div>
           {{ pass }}
+            {{ topic_name = "" }}
           {{ for row in model: }}
+
+            {{ if topic_name != row.topic_name: }}
+                <h1>{{=row.topic_name}}</h1>
+            {{ pass }}
           <div class="post-preview">
             <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
               <h2 class="post-title">
-                {{=row.get_ui_title()}}
+                {{="Week {}".format(row.order_of_delivery_id)}} - {{=dictionary_to_string(row.related_topic_ids,"name", {"checked":True})}}
               </h2>
-                <h3 class="post-subtitle">{{=dictionary_to_string(row.related_topic_ids,"name", {"checked":True})}}</h3>
-            </a>
               {{ if row.summary != "": }}
-                <span class="intro">{{=row.summary}}</span><br>
+                <h3 class="post-subtitle">{{=row.summary}}</h3>
               {{ pass }}
+            </a>
               {{ for key_word in merge_string_list(row.key_words, row.key_words_from_learning_objectives, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
@@ -96,6 +100,8 @@
                 {{pass}}</p>
           </div>
           <hr>
+
+                {{ topic_name = row.topic_name }}
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">

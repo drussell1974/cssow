@@ -77,8 +77,8 @@ def edit():
 
     content = {
         "main_heading":T("learning episode"),
-        "sub_heading":model.get_ui_sub_heading(),
-        "strap_line":T("fill out the form below then click save")
+        "sub_heading":T("for {scheme_of_work_name}: {topic_name} - Week {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
+        "strap_line":T("{topic_name} - Week {order_of_delivery_id}\n{summary}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id, summary=model.summary)
               }
 
     return dict(content = content, model = model, topic_options = topic_options, has_objectives = has_objectives, topic_id = model.topic_id)
