@@ -3,7 +3,7 @@ from basemodel import BaseModel, try_int
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, key_words = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, key_words = "", group_name = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.description = description
         self.notes = notes
@@ -25,6 +25,7 @@ class LearningObjectiveModel (BaseModel):
         self.key_stage_name = key_stage_name
         self.parent_id = try_int(parent_id)
         self.key_words = key_words
+        self.group_name = group_name
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -42,6 +43,9 @@ class LearningObjectiveModel (BaseModel):
 
         # validate description
         self._validate_required_string("description", self.description, 1, 1000)
+
+        # validate group_name
+        self._validate_optional_string("group_name", self.group_name, 15)
 
         # validate notes
         self._validate_optional_string("notes", self.notes, 2500)
@@ -111,6 +115,10 @@ class LearningObjectiveModel (BaseModel):
 
         if self.key_words is not None:
             self.key_words = self.key_words.lstrip(' ').rstrip(' ').lower()
+
+        # trim group_name
+        if self.group_name is not None:
+            self.group_name = self.group_name.lstrip(' ').rstrip(' ')
 
 
 def sort_by_solo_taxonomy_level(unsorted_list):

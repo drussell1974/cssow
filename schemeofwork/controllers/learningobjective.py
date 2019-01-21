@@ -57,7 +57,7 @@ def index():
         "main_heading":T("learning objectives"),
         "sub_heading":T("for {scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name),
         "background_img":"home-bg.jpg",
-        "strap_line": T("{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name, summary=learning_episode.summary)
+        "strap_line":learning_episode.summary
               }
 
     return dict(
@@ -147,6 +147,7 @@ def save_item():
         learning_episode_id=request.vars.learning_episode_id,
         key_words = request.vars.key_words,
         notes = request.vars.notes,
+        group_name = request.vars.group_name,
         created=datetime.now(),
         created_by_id=auth.user.id
     )

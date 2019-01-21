@@ -84,9 +84,14 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-        ' name (cause validation error by entering blank '
+        ' description (cause validation error by entering blank '
         elem = self.test_context.find_element_by_id("ctl-description")
         elem.send_keys("test_page__should_stay_on_same_page_if_valid")
+
+        ' group_name Enter Valid '
+        elem = self.test_context.find_element_by_id("ctl-group_name")
+        elem.clear()
+        elem.send_keys("Loerm ipsum dol")
 
         ' ctl-solo_taxonomy_id - SELECT VALID '
 

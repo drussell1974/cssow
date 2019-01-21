@@ -895,23 +895,7 @@ class test_LearningObjectiveModel_validate__parent_topic_id(LearningObjective_Te
         self.assertTrue("parent_topic_id" in test.validation_errors, "parent_topic_id should have validation error %s" % test.validation_errors)
 
 
-
-"""
-class test_SchemeOfWork_clean_up__exam_board_name(LearningObjective_TestCase):
-
-    def test__trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.exam_board_name = " x "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual(test.exam_board_name, "x")
-
-
-class est_SchemeOfWork_validate__key_stage_id(LearningObjective_TestCase):
+class test_LearningObjectiveModel_validate__group_name(LearningObjective_TestCase):
 
     test = None
 
@@ -927,69 +911,69 @@ class est_SchemeOfWork_validate__key_stage_id(LearningObjective_TestCase):
         # set up
         test = self._construct_valid_object()
 
-        test.key_stage_id = 1
+        test.group_name = ""
 
         # test
         test.validate()
 
         # assert
+        self.assertEqual(test.group_name, "")
         self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+        self.assertFalse("group_name" in test.validation_errors, "group_name should not have validation error %s" % test.validation_errors)
 
 
-    def test_min__invalid_extreme(self):
-        # set up
+    def test_min__valid_extreme_trim_whitespace(self):
         test = self._construct_valid_object()
 
-        test.key_stage_id = 0
+        test.group_name = "  "
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertEqual(test.group_name, "")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("group_name" in test.validation_errors, "group_name should have no validation errors - %s" % test.validation_errors)
 
 
-    def test_min__invalid_extreme_when_None(self):
+    def test_min__valid_extreme_when_None(self):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = None
+        test.group_name = None
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue(test.is_valid, "is_valid should be False")
+        self.assertFalse("group_name" in test.validation_errors, "group_name should have validation error %s" % test.validation_errors)
 
 
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 9999
+        test.group_name = "Loerm ipsum dol" # 15 characters
 
         # test
         test.validate()
 
         # assert
         self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("key_stage_id" in test.validation_errors, "key_stage_id should not have validation error %s" % test.validation_errors)
+
+        self.assertFalse("group_nam" in test.validation_errors, "group_name should not have validation error %s" % test.validation_errors)
 
 
     def test_max__invalid_extreme(self):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 10000  # too far out of possible range
+        test.group_name = "Lorem ipsum dolc" # 16 characters + 1
 
         # test
         test.validate()
 
         # assert
-        self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
+        self.assertTrue("group_name" in test.validation_errors, "group_name should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
-"""
-

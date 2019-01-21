@@ -26,6 +26,7 @@ def get_all(db, learning_episode_id, auth_user):
                  " le.order_of_delivery_id as learning_episode_name, "\
                  " lob.key_words as key_words,"\
                  " lob.notes as notes,"\
+                 " lob.group_name as group_name,"\
                  " lob.created as created, "\
                  " lob.created_by as created_by_id, "\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
@@ -68,9 +69,10 @@ def get_all(db, learning_episode_id, auth_user):
             learning_episode_name = row[16],
             key_words=row[17],
             notes=row[18],
-            created = row[19],
-            created_by_id = row[20],
-            created_by_name = row[21])
+            group_name=row[19],
+            created = row[20],
+            created_by_id = row[21],
+            created_by_name = row[22])
         data.append(model)
 
     return data
@@ -97,7 +99,8 @@ def get_new_model(db, id_, auth_user):
                   " ks.id AS key_stage_id,"\
                   " ks.name AS key_stage_name,"\
                   " lob.key_words as key_words,"\
-                 " lob.notes as notes,"\
+                  " lob.notes as notes,"\
+                  " lob.group_name as group_name,"\
                   " lob.created AS created,"\
                   " CONCAT_WS(' ', user.first_name, user.last_name) AS created_by"\
                   " FROM sow_learning_objective AS lob"\
@@ -133,9 +136,10 @@ def get_new_model(db, id_, auth_user):
             key_stage_name = row[15],
             key_words=row[16],
             notes=row[17],
-            created = row[18],
-            created_by_id = row[19],
-            created_by_name = row[20])
+            group_name=row[18],
+            created = row[19],
+            created_by_id = row[20],
+            created_by_name = row[21])
 
     return model
 
@@ -162,6 +166,7 @@ def get_model(db, id_, auth_user):
                  " ks.name as key_stage_name,"\
                  " lob.key_words as key_words,"\
                  " lob.notes as notes,"\
+                 " lob.group_name as group_name,"\
                  " lob.created as created,"\
                  " lob.created_by as created_by_id,"\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
@@ -202,9 +207,10 @@ def get_model(db, id_, auth_user):
             key_stage_name = row[15],
             key_words=row[16],
             notes=row[17],
-            created = row[18],
-            created_by_id = row[19],
-            created_by_name = row[20])
+            group_name=row[18],
+            created = row[19],
+            created_by_id = row[20],
+            created_by_name = row[21])
 
     return model
 
@@ -228,6 +234,7 @@ def get_pathway_objectives(db, key_stage_id, key_words):
                  " ks.id as key_stage_id,"\
                  " ks.name as key_stage_name,"\
                  " lob.key_words as key_words,"\
+                 " lob.group_name as group_name,"\
                  " lob.created as created,"\
                  " lob.created_by as created_by_id,"\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
@@ -269,9 +276,10 @@ def get_pathway_objectives(db, key_stage_id, key_words):
                         key_stage_id = row[13],
                         key_stage_name = row[14],
                         key_words = row[15],
-                        created = row[16],
-                        created_by_id = row[17],
-                        created_by_name = row[18]
+                        group_name = row[16],
+                        created = row[17],
+                        created_by_id = row[18],
+                        created_by_name = row[19]
                         )
 
                     data.append(model)
@@ -323,8 +331,8 @@ def _update(db, model, published):
 
     # build update statement
 
-    str_update = "UPDATE sow_learning_objective SET description = '{description}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, topic_id = {topic_id}, content_id = {content_id}, exam_board_id = {exam_board_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
-    str_update = str_update.format(description=model.description, notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, topic_id=model.topic_id, content_id=to_db_null(model.content_id), exam_board_id=to_db_null(model.exam_board_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
+    str_update = "UPDATE sow_learning_objective SET description = '{description}', group_name = '{group_name}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, topic_id = {topic_id}, content_id = {content_id}, exam_board_id = {exam_board_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
+    str_update = str_update.format(description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, topic_id=model.topic_id, content_id=to_db_null(model.content_id), exam_board_id=to_db_null(model.exam_board_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
 
     db.executesql(str_update)
 
@@ -345,10 +353,11 @@ def _update(db, model, published):
 
 def _insert(db, model, published):
 
-    str_insert = "INSERT INTO sow_learning_objective (description, notes, key_words, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by, published)"
-    str_insert = str_insert + " VALUES ('{description}', '{notes}', '{key_words}', {solo_taxonomy_id}, {topic_id}, {content_id}, {exam_board_id}, {parent_id}, '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_learning_objective (description, group_name, notes, key_words, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by, published)"
+    str_insert = str_insert + " VALUES ('{description}', '{group_name}', '{notes}', '{key_words}', {solo_taxonomy_id}, {topic_id}, {content_id}, {exam_board_id}, {parent_id}, '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
         description=model.description,
+        group_name=model.group_name,
         solo_taxonomy_id=model.solo_taxonomy_id,
         topic_id=model.topic_id,
         content_id=to_db_null(model.content_id),

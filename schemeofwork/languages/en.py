@@ -90,6 +90,7 @@
 'Email and SMS': 'Email and SMS',
 'Email sent': 'Email sent',
 'enter a description': 'enter a description',
+'enter a group name (optional)': 'enter a group name (optional)',
 'enter a summary': 'enter a summary',
 'enter a title': 'enter a title',
 'Enter a value': 'Enter a value',
@@ -113,6 +114,7 @@
 'Free Applications': 'Free Applications',
 'Graph Model': 'Graph Model',
 'Grid Example': 'Grid Example',
+'group name': 'group name',
 'Group uniquely assigned to user %(id)s': 'Group uniquely assigned to user %(id)s',
 'Groups': 'Groups',
 'Hello World': 'Hello World',
@@ -276,6 +278,7 @@
 'You have not addeed any learning episodes.': 'You have not addeed any learning episodes.',
 'You visited the url %s': 'You visited the url %s',
 '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}': '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}',
+'{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}<br>{summary}': '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}<br>{summary}',
 '{topic_name} - Week {order_of_delivery_id}': '{topic_name} - Week {order_of_delivery_id}',
 '{topic_name} - Week {order_of_delivery_id}\n{summary}': '{topic_name} - Week {order_of_delivery_id}\n{summary}',
 }
