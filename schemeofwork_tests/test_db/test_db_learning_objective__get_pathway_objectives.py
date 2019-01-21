@@ -19,52 +19,52 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
     def test_return_nothing_when_empty_keywords(self):
         # test
         test_keywords = ""
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 0, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 0, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 0)
+        self.assertEqual(0, len(result))
 
 
     def test_return_nothing_when_list_is_empty_strings(self):
         # test
         test_keywords = ","
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 0, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 0, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 0)
+        self.assertEqual(0, len(result))
 
 
     def test_when_keywords_single_keyword(self):
         # test
         test_keywords = "algorithm"
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 2)
+        self.assertEqual(2, len(result))
 
 
     def test_when_multiple_keyword(self):
         # test
         test_keywords = "algorithm,abstract,abstraction"
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 3)
+        self.assertEqual(4, len(result))
 
 
     def test_when_multiple_keywords_duplicate(self):
         # test
         test_keywords = "algorithm,abstract,algorithm"
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 3)
+        self.assertEqual(4, len(result))
 
 
     def test_return_results_only_for_previous_key_stages(self):
         # test
         test_keywords = "algorithm,abstract"
-        result = db_learningobjective.get_pathway_objectives(self.fake_db, key_stage_id = 3, key_words=test_keywords)
+        result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 3, key_words=test_keywords)
 
         # assert
-        self.assertTrue(len(result) == 2)
+        self.assertEqual(2, len(result))

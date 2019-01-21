@@ -49,7 +49,11 @@
             <!-- SIDE MENU END -->
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
+            <!-- Prerequisites -->
+            <div id="div-pathway_objective">
 
+            </div>
+            <!-- Prerequisites END -->
           <!-- Pager Header -->
           <div class="clearfix">
               <ul class="pagination">
@@ -71,12 +75,14 @@
           <!-- Show learning objectives for this learning episode -->
           {{ group_name = "" }}
           {{ for row in model: }}
-            {{ if group_name != row.group_name and row.group_name is not None: }}
+            {{ if row.group_name is not None: }}
+            {{ if group_name != row.group_name.upper(): }}
             <h1 class="group-heading">{{=row.group_name}}</h1>
             {{
                 group_name = row.group_name
                 pass
             }}
+            {{ pass }}
           <div class="post-preview">
               <a name="{{=row.id}}"></a>
             <a href="#{{=row.id}}" class="disabled">
@@ -127,6 +133,15 @@
             },
             error: function() {
                 console.log('error getting _view_learning_episiode_menu');
+            }
+        });
+
+        $.ajax({url: '{{=URL("learningepisode", "_view_pathway_objectives_readonly", vars=dict(learning_episode_id=learning_episode_id))}}',
+            success: function(result){
+                $("#div-pathway_objective").html(result);
+            },
+            error: function(){
+                $("#div-pathway_objective").html('could not get pathway objectives at this time');
             }
         });
     }

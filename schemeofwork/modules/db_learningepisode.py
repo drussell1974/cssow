@@ -157,6 +157,7 @@ def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
 
     return all.lstrip(",").rstrip(",")
 
+
 def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     """
     get the number of learning objective for the learning episodes
@@ -217,6 +218,9 @@ def _update(db, model, published):
     # 2. upsert related topics
 
     _upsert_related_topic_ids(db, model)
+
+    # 3. insert pathway objectives
+
     _upsert_pathway_objective_ids(db, model)
 
     return True
@@ -249,6 +253,10 @@ def _insert(db, model, published):
 
     _upsert_related_topic_ids(db, model)
 
+    # 3. insert pathway objectives
+
+    _upsert_pathway_objective_ids(db, model)
+
     return model.id
 
 
@@ -280,6 +288,8 @@ def _upsert_pathway_objective_ids(db, model):
     str_delete = "DELETE FROM sow_learning_episode__has__pathway WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
 
     db.executesql(str_delete)
+
+    print("model.pathway_objective_ids={}".format(model.pathway_objective_ids))
 
     if model.pathway_objective_ids is not None:
         # reinsert

@@ -1,0 +1,36 @@
+<div id="accordion">
+  {{
+    key_stage_id = ""
+    solo_taxonomy_name = ""
+    first_item = True
+  }}
+  {{ for item in data: }}
+    {{ if item.key_stage_id != key_stage_id: }}
+      {{ if first_item == False: }}
+          </div><!-- class="card-body" -->
+        </div><!-- id="collapseX" class="collapse show" -->
+       </div><!--  class="card" -->
+      {{ pass }}
+      <div class="card">
+        <div class="card-header" id="ks{{=item.key_stage_id}}-heading">
+          <h5 class="mb-0">
+            <a id="ks{{=item.key_stage_id}}-heading-text" class="nav-link" data-toggle="collapse" data-target="#ks{{=item.key_stage_id}}-collapse" aria-expanded="true" aria-controls="ks{{=item.key_stage_id}}-collapse">
+              {{ =item.key_stage_name}}
+            </a> <!-- class="btn btn-link" -->
+          </h5><!-- class="mb-0" -->
+        </div><!-- class="card-header" -->
+      <div id="ks{{=item.key_stage_id}}-collapse" class="collapse {{ if first_item == True: }}show{{ pass }}" aria-labelledby="ks{{=item.key_stage_id}}-heading" data-parent="#accordion">
+        <div class="card-body">
+        {{
+          key_stage_id = item.key_stage_id
+          first_item = False
+         }}
+    {{ pass }}
+          {{ if item.solo_taxonomy_name != solo_taxonomy_name: }}
+            <u>{{=item.solo_taxonomy_name }}</u>
+            {{ solo_taxonomy_name = item.solo_taxonomy_name  }}
+          {{ pass }}
+            <p>{{=item.description }}</p>
+
+  {{ pass }}
+</div>

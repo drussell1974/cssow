@@ -46,10 +46,18 @@ def _view_pathway_objectives():
     key_stage_id = 0 if request.vars.key_stage_id is None else request.vars.key_stage_id
     key_words = "" if request.vars.keywords is None else request.vars.keywords
 
-    data = db_learningobjective.get_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
+    data = db_learningobjective.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
     should_be_checked = db_learningepisode.get_pathway_objective_ids(db, learning_episode_id)
 
     return dict(data=data, should_be_checked=should_be_checked)
+
+
+def _view_pathway_objectives_readonly():
+    learning_episode_id = 0 if request.vars.learning_episode_id  is None else request.vars.learning_episode_id
+
+    data = db_learningobjective.get_linked_pathway_objectives(db, learning_episode_id = learning_episode_id)
+
+    return dict(data=data)
 
 
 @auth.requires_login()
@@ -90,6 +98,7 @@ def save_item():
 
     published = int(request.vars.published if request.vars.published is not None else 1)
 
+
     model = LearningEpisodeModel(
         id_ = request.vars.id,
         order_of_delivery_id = request.vars.order_of_delivery_id,
@@ -103,9 +112,17 @@ def save_item():
         created_by_id = auth.user.id
     )
 
-    model.pathway_objective_ids = request.vars.pathway_objective_ids
+    # ensure pathway_objective_ids is assigned as a list
+    if type(request.vars.pathway_objective_ids) is str:
+        model.pathway_objective_ids = []
+        model.pathway_objective_ids.append(request.vars.pathway_objective_ids)
+    else:
+        model.pathway_objective_ids = request.vars.pathway_objective_ids
+
+    print("save_item:pathway_objective_ids={}".format(model.pathway_objective_ids))
 
     model.validate()
+
     if model.is_valid == True:
 
         ' save the learning episode '
@@ -164,3 +181,5 @@ def _view_learning_episiode_menu():
     view_model = db_learningepisode.get_options(db, scheme_of_work_id, auth.user_id)  #TODO: create view_learningepisiode_options: remove this line
 
     return dict(view_model=view_model, learning_episode_id=learning_episode_id, topic_id=topic_id)
+
+
