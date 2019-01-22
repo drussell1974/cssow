@@ -312,7 +312,7 @@ def get_linked_pathway_objectives(db, learning_episode_id):
                  " lob.created_by as created_by_id,"\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
                 " FROM sow_learning_objective as lob"\
-                " INNER JOIN sow_learning_episode__has__pathway as pw ON pw.learning_episode_id = lob.id"\
+                " INNER JOIN sow_learning_episode__has__pathway as pw ON pw.learning_objective_id = lob.id"\
                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
@@ -324,40 +324,36 @@ def get_linked_pathway_objectives(db, learning_episode_id):
                 " ORDER BY ks.name DESC, solo.lvl;"
 
     select_sql = select_sql.format(learning_episode_id=learning_episode_id)
-
+    print(select_sql)
     rows = db.executesql(select_sql)
 
     data = [];
 
     for row in rows:
-        if len(row[15]) > 0:
-            for keyword in key_words.split(","):
-                if len(keyword) > 0 and keyword in row[15]:
-                    model = LearningObjectiveModel(
-                        id_ = row[0],
-                        description = row[1],
-                        solo_taxonomy_id = row[2],
-                        solo_taxonomy_name = row[3],
-                        solo_taxonomy_level = row[4],
-                        topic_id = row[5],
-                        topic_name = row[6],
-                        parent_topic_id = row[7],
-                        parent_topic_name = row[8],
-                        content_id = row[9],
-                        content_description = row[10],
-                        exam_board_id = row[11],
-                        exam_board_name = row[12],
-                        key_stage_id = row[13],
-                        key_stage_name = row[14],
-                        key_words = row[15],
-                        group_name = row[16],
-                        created = row[17],
-                        created_by_id = row[18],
-                        created_by_name = row[19]
-                        )
+        model = LearningObjectiveModel(
+            id_ = row[0],
+            description = row[1],
+            solo_taxonomy_id = row[2],
+            solo_taxonomy_name = row[3],
+            solo_taxonomy_level = row[4],
+            topic_id = row[5],
+            topic_name = row[6],
+            parent_topic_id = row[7],
+            parent_topic_name = row[8],
+            content_id = row[9],
+            content_description = row[10],
+            exam_board_id = row[11],
+            exam_board_name = row[12],
+            key_stage_id = row[13],
+            key_stage_name = row[14],
+            key_words = row[15],
+            group_name = row[16],
+            created = row[17],
+            created_by_id = row[18],
+            created_by_name = row[19]
+            )
 
-                    data.append(model)
-                    break # only add objective once
+        data.append(model)
 
     return data
 

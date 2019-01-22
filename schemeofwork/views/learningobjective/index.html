@@ -50,9 +50,9 @@
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
             <!-- Prerequisites -->
-            <div id="div-pathway_objective">
+            <section class="alert alert-info" id="div-pathway_objective">
 
-            </div>
+            </section><!-- id="div-pathway_objective" -->
             <!-- Prerequisites END -->
           <!-- Pager Header -->
           <div class="clearfix">
@@ -73,11 +73,12 @@
                 </div>
           {{ pass }}
           <!-- Show learning objectives for this learning episode -->
+            <h2 class="group-heading">{{=T("learning objectives")}}</h2>
           {{ group_name = "" }}
           {{ for row in model: }}
             {{ if row.group_name is not None: }}
             {{ if group_name != row.group_name.upper(): }}
-            <h1 class="group-heading">{{=row.group_name}}</h1>
+            <h3 class="group-heading">{{=row.group_name}}</h3>
             {{
                 group_name = row.group_name
                 pass
@@ -86,12 +87,12 @@
           <div class="post-preview">
               <a name="{{=row.id}}"></a>
             <a href="#{{=row.id}}" class="disabled">
-              <h2 class="post-title">
+              <h4 class="post-title">
                 {{=row.description}}
-              </h2>
-                <h3 class="post-subtitle">
+              </h4>
+                <h5 class="post-subtitle">
                     {{=row.topic_name}}
-                </h3>
+                </h5>
             </a>
               {{ for key_word in string_to_list(row.key_words, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>
@@ -126,7 +127,6 @@
     <!-- Main Content END -->
 {{block page_js}}
     <script>
-    window.onload = function(e) {
         $.ajax({url: '{{=URL("learningepisode", "_view_learning_episiode_menu", args=[scheme_of_work_id, learning_episode_id, topic_id])}}',
             success: function(result) {
                 $('#sidebarResponsive').html(result);
@@ -136,14 +136,16 @@
             }
         });
 
-        $.ajax({url: '{{=URL("learningepisode", "_view_pathway_objectives_readonly", vars=dict(learning_episode_id=learning_episode_id))}}',
+        uri = '{{=URL("learningepisode", "_view_pathway_objectives_readonly", vars=dict(learning_episode_id=learning_episode_id))}}';
+        console.log('calling _view_pathway_objectives_readonly...' + uri);
+        $.ajax({url: uri,
             success: function(result){
+                console.log('_view_pathway_objectives_readonly=' + result);
                 $("#div-pathway_objective").html(result);
             },
             error: function(){
                 $("#div-pathway_objective").html('could not get pathway objectives at this time');
             }
         });
-    }
     </script>
 {{end page_js}}
