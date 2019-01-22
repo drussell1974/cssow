@@ -55,33 +55,33 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
-        elem = self.test_context.find_element_by_tag_name("form")
+        elem_form = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem_form)
 
         # test
 
         ' Create valid information '
 
         ' ctl-order_of_delivery_id '
-        elem = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
-        elem.clear()
-        elem.send_keys("1")
+        elem_order_of_delivery_id = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
+        elem_order_of_delivery_id.clear()
+        elem_order_of_delivery_id.send_keys("1")
 
         ' ctl-topic_id - select KS4 '
-        elem = self.test_context.find_element_by_id("ctl-topic_id")
-        all_options = elem.find_elements_by_tag_name('option')
+        elem_topic_id = self.test_context.find_element_by_id("ctl-topic_id")
+        all_options = elem_topic_id.find_elements_by_tag_name('option')
         for opt in all_options:
             if opt.text == "Algorithms":
                  opt.click()
 
-        elem.send_keys(Keys.TAB)
+        elem_topic_id.send_keys(Keys.TAB)
 
         ' ctl-summary '
-        elem = self.test_context.find_element_by_id("ctl-summary")
-        elem.clear()
-        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
+        elem_summary = self.test_context.find_element_by_id("ctl-summary")
+        elem_summary.clear()
+        elem_summary.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
         ' ctl-key_words SKIP adds too many '
 
@@ -89,17 +89,18 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         ' div-pathway_objective_id  - select VALID '
         # expand accordion
         self.test_context.implicitly_wait(8) # wait for accordion to load from ajax call
-        elem = self.test_context.find_element_by_id('ks3-heading-text')
-        elem.click()
+        elem_pathway_objective_id477 = self.test_context.find_element_by_id('ctl-pathway_objective_id477')
+        elem_pathway_objective_id477.click()
+        ' WORKAROUND: accordion is not interactable so ensure the the check box is checked again '
+        if elem_pathway_objective_id477.is_selected() == False:
+            elem_pathway_objective_id477.click()
 
-        elem = self.test_context.find_element_by_id('ctl-pathway_objective_id477')
-        elem.click()
-        elem.send_keys(Keys.TAB)
+        elem_pathway_objective_id477.send_keys(Keys.TAB)
 
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
-        elem.send_keys(Keys.RETURN)
+        elem_saveButton = self.test_context.find_element_by_id("saveButton")
+        elem_saveButton.send_keys(Keys.RETURN)
 
         # assert
         ' should still be on the same page '
