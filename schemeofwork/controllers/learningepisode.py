@@ -137,13 +137,12 @@ def save_item():
             redirect(request.env.http_referer)
 
 
-    ' if the request.vars.id was 0 then this is a new scheme of work '
-    ' the user should be take create learning episodes '
+    ' redirect if necessary '
     redirect_to_url = ""
-    if int(request.vars.id) == 0:
-        redirect_to_url = URL('learningobjective', 'index', args=[request.vars.scheme_of_work_id, model.id])
+    if request.vars._next == "":
+        redirect_to_url = request.vars._next
     else:
-        redirect_to_url = URL('learningepisode', 'index', args=[request.vars.scheme_of_work_id])
+        redirect_to_url = URL('learningobjective', 'index', args=[request.vars.scheme_of_work_id, model.id])
 
     return redirect(redirect_to_url)
 

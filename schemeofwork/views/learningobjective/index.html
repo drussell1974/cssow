@@ -24,15 +24,19 @@
 </nav>
 <!-- Main Content -->
     <div class="container">
-        {{ if content["strap_line"] != "": }}
         <div class="row">
           <div class="col-lg-12 col-md-14">
               <div class="alert alert-primary">
-                  <p class="lead">{{=content["strap_line"]}}</p>
+                {{if auth.user:}}
+                    <a class="float-right" id="btn-new" href="{{=URL('learningepisode', 'edit', vars=dict(id=learning_episode_id, scheme_of_work_id=scheme_of_work_id,_next=request.url))}}">{{=T('edit')}}</a>
+                {{pass}}
+                  <h5>{{=content["sub_heading"]}}</h5>
+                  <p class="lead">
+                      {{=content["strap_line"]}}
+                  </p>
               </div>
           </div>
         </div>
-        {{ pass }}
       <div class="row">
           <div class="col-lg-4 col-md-4">
             <!-- SIDE MENU START -->
@@ -51,7 +55,6 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             <!-- Prerequisites -->
             <section class="alert alert-info" id="div-pathway_objective">
-
             </section><!-- id="div-pathway_objective" -->
             <!-- Prerequisites END -->
           <!-- Pager Header -->
@@ -72,12 +75,13 @@
                 {{pass}}
                 </div>
           {{ pass }}
+
           <!-- Show learning objectives for this learning episode -->
             <h2 class="group-heading">{{=T("learning objectives")}}</h2>
           {{ group_name = "" }}
           {{ for row in model: }}
             {{ if row.group_name is not None: }}
-            {{ if group_name != row.group_name.upper(): }}
+            {{ if group_name.upper() != row.group_name.upper(): }}
             <h3 class="group-heading">{{=row.group_name}}</h3>
             {{
                 group_name = row.group_name

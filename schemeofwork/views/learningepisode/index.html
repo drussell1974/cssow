@@ -98,7 +98,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}, {{=T("learning objectives")}} {{=row.number_of_learning_objective}}
               {{if auth.user:}}
-                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">edit</a>
+                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">edit</a>
                 {{pass}}</p>
           </div>
           <hr>

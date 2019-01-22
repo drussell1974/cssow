@@ -106,6 +106,7 @@
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
               <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <input type="hidden" id="hdn-related_topic_ids" name="related_topic_ids" value="{{=model.related_topic_ids}}">
+              <input type="hidden" name="_next" value="{{=request.vars._next}}">
               <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
               <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
             </div>
