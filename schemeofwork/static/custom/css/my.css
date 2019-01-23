@@ -16,6 +16,13 @@
     padding-top:40px;
 }
 
+.secondary-heading {
+    text-transform: capitalize;
+    padding-top:15px;
+}
+
+
+
 .form-group > label {
     text-transform: uppercase;
 }
