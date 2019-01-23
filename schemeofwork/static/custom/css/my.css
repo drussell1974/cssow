@@ -3,6 +3,14 @@
     font-size: small;
 }
 
+h1, h2, h3 {
+    padding-top:15px;
+}
+
+h4, h5, h6 {
+    padding-top:5px;
+}
+
 .site-heading {
     text-transform: capitalize;
 }
@@ -20,8 +28,6 @@
     text-transform: capitalize;
     padding-top:15px;
 }
-
-
 
 .form-group > label {
     text-transform: uppercase;
