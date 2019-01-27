@@ -119,8 +119,6 @@ def save_item():
     else:
         model.pathway_objective_ids = request.vars.pathway_objective_ids
 
-    print("save_item:pathway_objective_ids={}".format(model.pathway_objective_ids))
-
     model.validate()
 
     if model.is_valid == True:
@@ -139,7 +137,7 @@ def save_item():
 
     ' redirect if necessary '
     redirect_to_url = ""
-    if request.vars._next == "":
+    if request.vars._next != "None"  and request.vars._next != "":
         redirect_to_url = request.vars._next
     else:
         redirect_to_url = URL('learningobjective', 'index', args=[request.vars.scheme_of_work_id, model.id])

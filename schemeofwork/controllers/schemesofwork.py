@@ -117,11 +117,11 @@ def save_item():
 
     ' redirect if necessary '
     redirect_to_url = ""
-    if request.vars._next is not None:
+
+    if request.vars._next != "None" and request.vars._next != "":
         redirect_to_url = request.vars._next
     else:
         redirect_to_url = URL('learningepisode', 'index', args=[model.id])
-
     return redirect(redirect_to_url)
 
 

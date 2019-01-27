@@ -324,7 +324,7 @@ def get_linked_pathway_objectives(db, learning_episode_id):
                 " ORDER BY ks.name DESC, solo.lvl;"
 
     select_sql = select_sql.format(learning_episode_id=learning_episode_id)
-    print(select_sql)
+
     rows = db.executesql(select_sql)
 
     data = [];

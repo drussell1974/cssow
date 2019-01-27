@@ -98,7 +98,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                 {{ if row.published == False: }} <a href="{{=URL('schemesofwork', 'publish_item', vars=dict(id=row.id))}}" class="small badge badge-danger">{{=T("not published")}}</a> {{ pass }} - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">{{=T("edit")}}</a>
+                 {{ if row.published == False: }} <a href="{{=URL('schemesofwork', 'publish_item', vars=dict(id=row.id))}}" class="small badge badge-danger">{{=T("not published")}}</a> {{ pass }} - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id, _next=request.url))}}">{{=T("edit")}}</a>
               {{pass}}</p>
           </div>
           <hr>

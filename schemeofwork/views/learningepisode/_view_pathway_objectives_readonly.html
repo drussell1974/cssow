@@ -1,25 +1,29 @@
 <h2 class="group-heading">{{=T("Prerequisites")}}</h2>
-{{
-  key_stage_id = ""
-  solo_taxonomy_name = ""
-  first_item = True
-}}
-{{ for item in data: }}
-  {{ if item.key_stage_id != key_stage_id: }}
-    {{ if first_item == False: }}
-      </div><!-- id="ks{{=item.key_stage_id}}" -->
+{{ if len(data) == 0: }}
+  {{=T('there are no prerequisites for this learning episode.')}}
+{{ else: }}
+  {{
+    key_stage_id = ""
+    solo_taxonomy_name = ""
+    first_item = True
+  }}
+  {{ for item in data: }}
+    {{ if item.key_stage_id != key_stage_id: }}
+      {{ if first_item == False: }}
+        </div><!-- id="ks{{=item.key_stage_id}}" -->
+      {{ pass }}
+      <h5>{{ =item.key_stage_name}}</h5>
+      <div id="ks{{=item.key_stage_id}}">
+        {{
+          key_stage_id = item.key_stage_id
+          first_item = False
+         }}
     {{ pass }}
-    <h5>{{ =item.key_stage_name}}</h5>
-    <div id="ks{{=item.key_stage_id}}">
-      {{
-        key_stage_id = item.key_stage_id
-        first_item = False
-       }}
-  {{ pass }}
-        {{ if item.solo_taxonomy_name != solo_taxonomy_name: }}
-          <h6>{{=item.solo_taxonomy_name }}</h6>
-          {{ solo_taxonomy_name = item.solo_taxonomy_name  }}
-        {{ pass }}
-          <span>{{=item.description }}<br></span>
+          {{ if item.solo_taxonomy_name != solo_taxonomy_name: }}
+            <h6>{{=item.solo_taxonomy_name }}</h6>
+            {{ solo_taxonomy_name = item.solo_taxonomy_name  }}
+          {{ pass }}
+            <span>{{=item.description }}<br></span>
 
+  {{ pass }}
 {{ pass }}

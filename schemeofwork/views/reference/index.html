@@ -1,0 +1,73 @@
+{{ extend '__layout.html' }}
+{{block header}}
+<div class="row">
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="site-heading">
+      <h1>{{=content["main_heading"]}}</h1>
+      <span class="subheading">{{=content["sub_heading"]}}</span>
+    </div>
+  </div>
+</div>
+{{end}}
+
+<!-- Main Content -->
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-14 content-heading">
+              <div class="alert alert-secondary">
+                  <h5 class="secondary-heading">{{=content["main_heading"]}} {{=content["sub_heading"]}}</h5>
+                  {{ if content["strap_line"] is not None: }}
+                    <p class="lead">{{=content["strap_line"]}}</p>
+                  {{ pass }}
+              </div>
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-10 mx-auto">
+            <!-- Pager Header  -->
+          <div class="clearfix">
+            <ul class="pagination">
+                {{ =XML(pager_html) }}
+            </ul>
+          </div>
+          {{if auth.user:}}
+              <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit')}}">{{=T('new')}}</a>
+          {{pass}}
+            <!-- Pager Header END -->
+          <!-- Scheme of works -->
+          {{ if len(model) == 0: }}
+            <div class="alert alert-info" role="alert">
+            {{=T('there are no references for this scheme of work.')}}
+            {{if auth.user:}}
+                <br><a href="{{=URL('edit', vars=dict(_next=request.url))}}">{{=T('click here to get started.')}}</a>
+            {{pass}}
+            </div>
+          {{ pass }}
+            {{ topic_name = "" }}
+          {{ for row in model: }}
+
+            <div class="post-preview">
+            <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
+              <h2 class="post-title">
+                {{=row.title}}
+              </h2><!-- class="post-title" -->
+                <h3 class="post-subtitle">{{=row.publisher}}</h3>
+            </a>
+                {{=row.author }}
+            <p class="post-meta">created by
+              <a href="#">{{=row.created_by_name}}</a>
+              {{if row.created: }}
+                on {{=str(row.get_ui_created())}}
+              {{ pass }}
+              {{if auth.user:}}
+                - <a href="{{=URL('delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('edit', vars=dict(id=row.id,_next=request.url))}}">{{=T("edit")}}</a>
+                {{pass}}</p>
+          </div><!-- class="post-preview" -->
+           {{ pass }}
+        </div>
+      </div>
+    </div>
+    <hr>
+<!-- Main Content END -->
+{{block page_js}}
+{{end page_js}}

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import re
+
 
 class BaseModel(object):
     id = 0
@@ -94,6 +96,18 @@ class BaseModel(object):
             if value_to_validate < min_value or value_to_validate > max_value:
                 self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
                 self.is_valid = False
+
+
+    def _validate_optional_uri(self, name_of_property, value_to_validate):
+        # 1. check the string does not exceed the maximum for a url
+        self._validate_optional_string(name_of_property, value_to_validate, 2083)
+        # 2. check the string is a url
+        if value_to_validate is not None:
+            if len(value_to_validate) > 0:
+                if re.search("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", value_to_validate) == None:
+                    self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
+                    self.is_valid = False
+
 
 """
 formatting members

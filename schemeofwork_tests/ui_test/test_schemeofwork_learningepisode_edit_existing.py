@@ -7,7 +7,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={learning_episode_id}&scheme_of_work_id={scheme_of_work_id}&_next=%2Fschemeofwork%2Flearningepisode%2Findex%2F{scheme_of_work_id}".format(learning_episode_id=self.test_learning_episode_id, scheme_of_work_id=self.test_scheme_of_work_id))
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()

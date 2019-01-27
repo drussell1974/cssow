@@ -124,8 +124,6 @@ def get_model(db, id_, auth_user):
             created_by_id=row[12],
             created_by_name=row[13])
 
-        #model.related_topic_ids = _get_related_topic_ids(db, model.id, row[4])
-
     return model
 
 
@@ -288,8 +286,6 @@ def _upsert_pathway_objective_ids(db, model):
     str_delete = "DELETE FROM sow_learning_episode__has__pathway WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
 
     db.executesql(str_delete)
-
-    print("model.pathway_objective_ids={}".format(model.pathway_objective_ids))
 
     if model.pathway_objective_ids is not None:
         # reinsert

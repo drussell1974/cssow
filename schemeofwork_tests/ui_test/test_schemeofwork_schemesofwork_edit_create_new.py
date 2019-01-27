@@ -112,7 +112,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
-
+        self.wait(10)
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for should_redirect_to_index_if_valid')

@@ -87,6 +87,7 @@
             <div id="success"></div>
             <div class="form-group">
               <input type="hidden" name="id" value="{{=model.id}}">
+              <input type="hidden" name="_next" value="{{=request.vars._next}}">
               <button type="submit" name="published" value="0" class="btn btn-primary" id="saveButton">{{=T("draft")}}</button>
               <button type="submit" name="published" value="1" class="btn btn-primary" id="saveAndPublishButton">{{=T("save and publish")}}</button>
               <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("cancel")}}</button>
