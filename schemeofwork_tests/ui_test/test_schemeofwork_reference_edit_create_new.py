@@ -16,7 +16,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("add-reference")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.click()
-
+        self.wait()
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -34,6 +34,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
+        self.wait()
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -41,6 +42,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         ' ctl-title - leave EMPTY '
         elem = self.test_context.find_element_by_id("ctl-title")
+        elem.clear()
         elem.send_keys(Keys.TAB)
 
 
