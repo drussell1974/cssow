@@ -9,11 +9,11 @@ def WebBrowserContext():
 
 
 class UITestCase(TestCase):
+    root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
     test_scheme_of_work_id = 11
     test_learning_episode_id = 35
     test_learning_objective_id = 410
-
-    root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
+    test_reference = 10
 
 
     def wait(self, s = 5):

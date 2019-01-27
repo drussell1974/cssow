@@ -119,8 +119,6 @@ def save_item():
     else:
         model.pathway_objective_ids = request.vars.pathway_objective_ids
 
-    print("save_item:pathway_objective_ids={}".format(model.pathway_objective_ids))
-
     model.validate()
 
     if model.is_valid == True:
