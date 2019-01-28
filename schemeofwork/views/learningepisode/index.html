@@ -114,6 +114,11 @@
 
           </div>
             <!-- Pager Footer END -->
+            <section class="alert alert-info" >
+                <div id="div-references">
+                </div>
+                <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('add reference')}}</a>
+            </section><!-- id="div-pathway_objective" -->
           <!-- Scheme of works END -->
         </div>
       </div>
@@ -123,4 +128,17 @@
 
     <!-- Main Content END -->
 {{block page_js}}
+    <script>
+        uri = '{{=URL("reference", "_view_references_readonly", vars=dict(scheme_of_work_id=scheme_of_work_id,_next=request.url))}}';
+        $.ajax({url: uri,
+            success: function(result){
+                console.log('_view_references_readonly=' + result);
+                $("#div-references").html(result);
+            },
+            error: function(e){
+                console.log(e)
+                $("#div-pathway_objective").html('could not get references at this time');
+            }
+        });
+    </script>
 {{end page_js}}

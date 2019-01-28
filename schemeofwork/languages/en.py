@@ -249,8 +249,8 @@
 'show all': 'show all',
 'show key stages': 'show key stages',
 'show learning episodes': 'show learning episodes',
-'sign up': 'sign up',
 'Sign Up': 'Sign Up',
+'sign up': 'sign up',
 'Sign up': 'Sign up',
 'Size of cache:': 'Size of cache:',
 'solo taxonomy': 'solo taxonomy',
@@ -306,6 +306,7 @@
 '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}': '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}',
 '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}<br>{summary}': '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}<br>{summary}',
 '{title} ({year_published}) {authors}, {publisher} for {scheme_of_work_name}': '{title} ({year_published}) {authors}, {publisher} for {scheme_of_work_name}',
+'{title} from {publisher} for {scheme_of_work_name}': '{title} from {publisher} for {scheme_of_work_name}',
 '{topic_name} - Week {order_of_delivery_id}': '{topic_name} - Week {order_of_delivery_id}',
 '{topic_name} - Week {order_of_delivery_id}\n{summary}': '{topic_name} - Week {order_of_delivery_id}\n{summary}',
 }
