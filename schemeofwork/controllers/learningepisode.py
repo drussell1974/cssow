@@ -3,11 +3,12 @@ from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
 from pager import Pager
 from validation_helper import html_validation_message
-import db_schemeofwork
+import db_keyword
 import db_learningepisode
 import db_learningobjective
+import db_reference
+import db_schemeofwork
 import db_topic
-import db_keyword
 
 
 def index():
@@ -119,12 +120,31 @@ def save_item():
     else:
         model.pathway_objective_ids = request.vars.pathway_objective_ids
 
+    # ensure learning_episode_page_reference_id is assigned as a list
+    print("request.vars.learning_episode_page_reference_id={}".format(request.vars.learning_episode_page_reference_id))
+    if type(request.vars.learning_episode_page_reference_id) is str:
+        model.page_reference_ids = []
+        model.page_reference_ids.append(request.vars.learning_episode_page_reference_id)
+    else:
+        model.page_reference_ids = request.vars.learning_episode_page_reference_id
+
+   # ensure learning_episode_page_reference_notes is assigned as a list
+    print("request.vars.learning_episode_page_reference_notes={}".format(request.vars.learning_episode_page_reference_notes))
+    if type(request.vars.learning_episode_page_reference_notes) is str:
+        model.page_reference_notes = []
+        model.page_reference_notes.append(request.vars.learning_episode_page_reference_notes)
+    else:
+        model.page_reference_notes = request.vars.learning_episode_page_reference_notes
+
+
     model.validate()
 
     if model.is_valid == True:
 
         ' save the learning episode '
         model = db_learningepisode.save(db, model, published)
+        ' save page references '
+        db_reference.upsert_learning_episode_page_references(db, model)
         ' save keywords '
         db_keyword.save(db, model.key_words.split(','), model.topic_id)
 

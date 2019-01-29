@@ -5,7 +5,17 @@ from db_helper import to_db_null
 
 def get_options(db, scheme_of_work_id, auth_user):
 
-    str_select = "SELECT ref.id as id, ref.title as title, ref.publisher as publisher, ref.year_published as year_published, ref.authors as authors, ref.uri as uri FROM sow_reference as ref WHERE ref.scheme_of_work_id = {scheme_of_work_id} AND (ref.published = 1 OR ref.created_by = {auth_user});"
+    str_select = "SELECT" \
+                 " ref.id as id," \
+                 " ref.title as title," \
+                 " ref.publisher as publisher," \
+                 " ref.year_published as year_published," \
+                 " ref.authors as authors," \
+                 " ref.uri as uri " \
+                 "FROM sow_reference as ref " \
+                 "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
+                 " AND (ref.published = 1 OR ref.created_by = {auth_user});"
+
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id)
 
     rows = db.executesql(str_select)
@@ -14,6 +24,37 @@ def get_options(db, scheme_of_work_id, auth_user):
 
     for row in rows:
         model = ReferenceModel(id_=row[0], title=row[1], publisher=row[2], year_published=row[3], authors=row[4], uri=row[5], scheme_of_work_id = scheme_of_work_id)
+        data.append(model)
+
+    return data
+
+
+def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth_user):
+
+    str_select = "SELECT " \
+                 " ref.id as id," \
+                 " ref.title as title," \
+                 " ref.publisher as publisher," \
+                 " ref.year_published as year_published," \
+                 " ref.authors as authors," \
+                 " ref.uri as uri, " \
+                 " le_ref.page_notes, " \
+                 " le_ref.page_uri " \
+                 "FROM sow_reference as ref " \
+                 "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
+                 "LEFT JOIN sow_learning_episode__has__references as le_ref ON le_ref.learning_episode_id = le.id AND le_ref.reference_id = ref.id " \
+                 "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
+                 " OR (ref.published = 1 OR ref.created_by = {auth_user});"
+
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
+    #raise Exception(str_select)
+    rows = db.executesql(str_select)
+
+    data = [];
+
+    for row in rows:
+        model = ReferenceModel(id_=row[0], title=row[1], publisher=row[2], year_published=row[3], authors=row[4], uri=row[5], scheme_of_work_id = scheme_of_work_id)
+        model.page_notes = row[6] if row[6] is not None else ''
         data.append(model)
 
     return data
@@ -123,22 +164,27 @@ def _insert(db, model):
 
     return model.id
 
-"""
-def _upsert_sow_scheme_of_work__has__reference(db, model, scheme_of_work_id):
-    ""deletes and reinserts sow_scheme_of_work__has__reference ""
+
+def upsert_learning_episode_page_references(db, model):
+    """ deletes and reinserts sow_learning_episode__has__references """
 
     # delete existing
-    str_delete = "DELETE FROM sow_scheme_of_work__has__reference WHERE scheme_of_work_id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id)
+    str_delete = "DELETE FROM sow_learning_episode__has__references WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
 
     db.executesql(str_delete)
 
-    if len(model.related_topic_ids) > 0:
-        # reinsert
-        str_insert = "INSERT INTO sow_scheme_of_work__has__reference (scheme_of_work_id, reference_id) VALUES"
-        str_insert = str_insert + "({scheme_of_work_id}, {reference_id});".format(scheme_of_work_id=scheme_of_work_id, reference_id=model.id)
+    # reinsert
+    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes) VALUES "
+    str_insert_values = ""
+    for index in range(len(model.page_reference_ids)):
+        note = model.page_reference_notes[index].lstrip(' ').rstrip(' ') # clean up
+        if len(note) > 0: # and ensure it has a value worth inserting
+            str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}'),".format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note)
 
-        db.executesql(str_insert)
-"""
+    if len(str_insert_values) > 0: # have we added any notes
+        str_insert_values = str_insert_values.rstrip(",")
+        db.executesql(str_insert + str_insert_values + ";")
+
 
 def _delete(db, id_):
     str_delete = "DELETE FROM sow_reference WHERE id = {id_};"

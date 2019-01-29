@@ -10,7 +10,7 @@ def index():
     """ index action """
     scheme_of_work_id = int(request.args(0))
 
-    data = db_reference.get_options(db, scheme_of_work_id, auth.user_id)
+    data = db_reference.get_scheme_of_work_options(db, scheme_of_work_id, auth.user_id)
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     # page the data
@@ -110,10 +110,18 @@ def delete_item():
     return redirect(request.vars._next)
 
 
-def _view_references_readonly():
+def _view_scheme_of_work_references():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
     view_model = db_reference.get_options(db, scheme_of_work_id, auth.user_id)
 
     return dict(view_model=view_model)
 
+
+def _edit_learning_episode_references():
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    learning_episode_id = int(request.vars.learning_episode_id)
+
+    view_model = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
+
+    return dict(view_model=view_model)

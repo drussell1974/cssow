@@ -1,0 +1,13 @@
+{{ if len(view_model) == 0: }}
+  {{=T('there are no references for this scheme of work.')}}
+{{ else: }}
+  {{ for item in view_model: }}
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">{{=item.title}}</span>
+          </div>
+          <input type="text" max="250" name="learning_episode_page_reference_notes" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_notes}}">
+        </div>
+        <input type="hidden" name="learning_episode_page_reference_id" value="{{=item.id}}"/>
+  {{ pass }}
+{{ pass }}
