@@ -7,6 +7,7 @@ def get_options(db, scheme_of_work_id, auth_user):
 
     str_select = "SELECT" \
                  " ref.id as id," \
+                 " ref.reference_type_id as reference_type_id," \
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
@@ -23,7 +24,8 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], title=row[1], publisher=row[2], year_published=row[3], authors=row[4], uri=row[5], scheme_of_work_id = scheme_of_work_id)
+        model = ReferenceModel(id_=row[0], reference_type_id = row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id = scheme_of_work_id)
+
         data.append(model)
 
     return data
@@ -33,6 +35,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
 
     str_select = "SELECT " \
                  " ref.id as id," \
+                 " ref.reference_type_id as reference_type_id," \
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
@@ -47,14 +50,15 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " OR (ref.published = 1 OR ref.created_by = {auth_user});"
 
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
-    #raise Exception(str_select)
+
     rows = db.executesql(str_select)
 
     data = [];
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], title=row[1], publisher=row[2], year_published=row[3], authors=row[4], uri=row[5], scheme_of_work_id = scheme_of_work_id)
-        model.page_notes = row[6] if row[6] is not None else ''
+        model = ReferenceModel(id_=row[0], reference_type_id=row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id = scheme_of_work_id)
+        model.page_notes = row[7] if row[7] is not None else ''
+        model.page_uri = row[8] if row[8] is not None else ''
         data.append(model)
 
     return data
@@ -62,10 +66,11 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
 
 def get_model(db, id_, scheme_of_work_id, auth_user):
     now = datetime.now()
-    model = ReferenceModel(id_=0, title="", publisher="", year_published=now.year, authors="", uri="", scheme_of_work_id = scheme_of_work_id)
+    model = ReferenceModel(id_=0, reference_type_id = 6, title="", publisher="", year_published=now.year, authors="", uri="", scheme_of_work_id = scheme_of_work_id)
 
     str_select = "SELECT" \
                  " ref.id as id," \
+                 " ref.reference_type_id as reference_type_id, " \
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
@@ -78,7 +83,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
     rows = db.executesql(str_select)
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], title=row[1], publisher=row[2], year_published=row[3], authors=row[4], uri=row[5], scheme_of_work_id=scheme_of_work_id)
+        model = ReferenceModel(id_=row[0], reference_type_id=row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id=scheme_of_work_id)
 
     return model
 
@@ -116,9 +121,10 @@ def _update(db, model):
 
     # 1. Update the learning episode
 
-    str_update = "UPDATE sow_reference SET title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, uri = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
+    str_update = "UPDATE sow_reference SET reference_type_id = {reference_type_id}, title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, uri = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
+        reference_type_id=model.reference_type_id,
         title=model.title,
         authors=to_db_null(model.authors),
         publisher=model.publisher,
@@ -140,8 +146,9 @@ def _insert(db, model):
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_reference (title, authors, publisher, year_published, uri, scheme_of_work_id, created, created_by) VALUES ('{title}', '{authors}', '{publisher}', {year_published}, '{uri}', {scheme_of_work_id}, '{created}', {created_by});"
+    str_insert = "INSERT INTO sow_reference (reference_type_id, title, authors, publisher, year_published, uri, scheme_of_work_id, created, created_by) VALUES ({reference_type_id}, '{title}', '{authors}', '{publisher}', {year_published}, '{uri}', {scheme_of_work_id}, '{created}', {created_by});"
     str_insert = str_insert.format(
+        reference_type_id = model.reference_type_id,
         title=model.title,
         authors=to_db_null(model.authors),
         publisher=model.publisher,
@@ -174,12 +181,14 @@ def upsert_learning_episode_page_references(db, model):
     db.executesql(str_delete)
 
     # reinsert
-    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes) VALUES "
+    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES "
     str_insert_values = ""
     for index in range(len(model.page_reference_ids)):
         note = model.page_reference_notes[index].lstrip(' ').rstrip(' ') # clean up
+        uri = model.page_reference_uri[index].lstrip(' ').rstrip(' ') # clean up
         if len(note) > 0: # and ensure it has a value worth inserting
-            str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}'),".format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note)
+            str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}'),"\
+                .format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note, page_uri=uri)
 
     if len(str_insert_values) > 0: # have we added any notes
         str_insert_values = str_insert_values.rstrip(",")

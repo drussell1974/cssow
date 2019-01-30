@@ -7,7 +7,7 @@ from unittest import TestCase
 class test_cls_reference__clean_up(TestCase):
 
     def setUp(self):
-        self.test = ReferenceModel(1, title = "", publisher = "", year_published = 2016, scheme_of_work_id = 0)
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "", publisher = "", year_published = 2016, scheme_of_work_id = 0)
 
 
     def test_title__trim_whitespace(self):

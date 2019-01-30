@@ -129,13 +129,12 @@
     <!-- Main Content END -->
 {{block page_js}}
     <script>
-        uri = '{{=URL("reference", "_view_learning_episode_references", vars=dict(scheme_of_work_id=scheme_of_work_id,_next=request.url))}}';
+        uri = '{{=URL("reference", "_view_scheme_of_work_references", vars=dict(scheme_of_work_id=scheme_of_work_id,_next=request.url))}}';
         $.ajax({url: uri,
             success: function(result){
                 $("#div-references").html(result);
             },
             error: function(e){
-                console.log(e)
                 $("#div-references").html('could not get references at this time');
             }
         });

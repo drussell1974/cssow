@@ -1,0 +1,28 @@
+<h2 class="group-heading">{{=T("References")}}</h2>
+{{ if len(view_model) == 0: }}
+  {{=T('there are no references for this scheme of work.')}}
+{{ else: }}
+  {{ for item in view_model: }}
+      {{ if len(item.uri) > 0: }}
+      <a href="{{=item.uri}}">
+          <h5 class="secondary-heading">{{=item.title}} </h5>
+      </a>
+      {{ else: }}
+        <h5 class="secondary-heading">{{=item.title}} </h5>
+      {{ pass }}
+     {{ if len(item.page_uri) > 0: }}
+      <a href="{{=item.page_uri}}">
+          {{=item.page_notes}}
+      </a>
+     {{ else: }}
+          {{=item.page_notes}}
+     {{ pass }}
+      <div id="reference-{{=item.id}}">
+            <h6>{{=item.publisher}}</h6>
+            {{=item.authors }} {{=item.year_published}}
+            {{if auth.user:}}
+                - <a href="{{=URL('delete_item', vars=dict(id=item.id, scheme_of_work_id=item.scheme_of_work_id, _next=request.vars._next))}}" id="delete-reference-{{=item.id}}">{{=T("delete")}}</a> - <a href="{{=URL('edit', vars=dict(id=item.id, scheme_of_work_id=item.scheme_of_work_id, _next=request.vars._next))}}" id="edit-reference-{{=item.id}}">{{=T("edit")}}</a>
+            {{pass}}
+      </div><!-- id="reference-id" -->
+  {{ pass }}
+{{ pass }}

@@ -6,7 +6,8 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-sm">{{=item.title}}</span>
           </div>
-          <input type="text" max="250" name="learning_episode_page_reference_notes" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_notes}}">
+          <input type="text" max="250" name="learning_episode_page_reference_notes" placeholder="page reference" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_notes}}">
+          <input type="text" max="250" name="learning_episode_page_reference_uri" placeholder="website link" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_uri}}">
         </div>
         <input type="hidden" name="learning_episode_page_reference_id" value="{{=item.id}}"/>
   {{ pass }}

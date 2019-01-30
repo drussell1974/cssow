@@ -121,20 +121,25 @@ def save_item():
         model.pathway_objective_ids = request.vars.pathway_objective_ids
 
     # ensure learning_episode_page_reference_id is assigned as a list
-    print("request.vars.learning_episode_page_reference_id={}".format(request.vars.learning_episode_page_reference_id))
     if type(request.vars.learning_episode_page_reference_id) is str:
         model.page_reference_ids = []
         model.page_reference_ids.append(request.vars.learning_episode_page_reference_id)
     else:
         model.page_reference_ids = request.vars.learning_episode_page_reference_id
 
-   # ensure learning_episode_page_reference_notes is assigned as a list
-    print("request.vars.learning_episode_page_reference_notes={}".format(request.vars.learning_episode_page_reference_notes))
+    # ensure learning_episode_page_reference_notes is assigned as a list
     if type(request.vars.learning_episode_page_reference_notes) is str:
         model.page_reference_notes = []
         model.page_reference_notes.append(request.vars.learning_episode_page_reference_notes)
     else:
         model.page_reference_notes = request.vars.learning_episode_page_reference_notes
+
+    # ensure learning_episode_page_reference_uri is assigned as a list
+    if type(request.vars.learning_episode_page_reference_uri) is str:
+        model.page_reference_uri = []
+        model.page_reference_uri.append(request.vars.learning_episode_page_reference_uri)
+    else:
+        model.page_reference_uri = request.vars.learning_episode_page_reference_uri
 
 
     model.validate()

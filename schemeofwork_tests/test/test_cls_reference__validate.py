@@ -9,7 +9,7 @@ class test_cls_reference_validate__title(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceModel(1, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
 
 
     def tearDown(self):
@@ -105,7 +105,7 @@ class test_cls_reference_validate__authors(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceModel(1, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
 
 
     def tearDown(self):
@@ -197,7 +197,7 @@ class test_cls_reference_validate__uri(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceModel(1, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
 
 
     def tearDown(self):
@@ -365,7 +365,7 @@ class test_cls_reference_validate__year_published(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceModel(1, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
 
 
     def tearDown(self):
@@ -431,7 +431,7 @@ class test_cls_reference_validate__year_published(TestCase):
 
         # assert
         self.assertTrue(self.test.is_valid, "is_valid should be True")
-        self.assertFalse("exam_board_id" in self.test.validation_errors, "exam_board_id should not have validation error %s" % self.test.validation_errors)
+        self.assertFalse("year_published" in self.test.validation_errors, "year_published should not have validation error %s" % self.test.validation_errors)
 
 
     def test_max__invalid_extreme(self):
@@ -444,3 +444,89 @@ class test_cls_reference_validate__year_published(TestCase):
         # assert
         self.assertFalse(self.test.is_valid, "is_valid should be False")
         self.assertTrue("year_published" in self.test.validation_errors, "year_published should have validation error %s" % self.test.validation_errors)
+
+
+class test_cls_reference_validate__reference_type_id(TestCase):
+
+    test = None
+
+    def setUp(self):
+        self.test = ReferenceModel(1, reference_type_id = 6, title = "title here!", publisher = "penguin", year_published = 2016, scheme_of_work_id = 0)
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_valid_mid(self):
+        # set up
+
+        self.test.reference_type_id = 7
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+        self.assertFalse("reference_type_id" in self.test.validation_errors, "reference_type_id should not have validation error %s" % self.test.validation_errors)
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.reference_type_id = 15
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+        self.assertFalse("reference_type_id" in self.test.validation_errors, "reference_type_id should not have validation error %s" % self.test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        self.test.reference_type_id = 0
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+        self.assertTrue("reference_type_id" in self.test.validation_errors, "reference_type_id should not have validation error %s" % self.test.validation_errors)
+
+
+    def test_min__invalid_extreme_when_None(self):
+        # setup
+        self.test.reference_type_id = None
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse(self.test.is_valid, "is_valid should be True")
+        self.assertTrue("reference_type_id" in self.test.validation_errors, "reference_type_id should not have validation error %s" % self.test.validation_errors)
+
+
+    def test_max__valid_extreme(self):
+        #setup
+        self.test.reference_type_id = 15
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+        self.assertFalse("reference_type_id" in self.test.validation_errors, "reference_type_id should not have validation error %s" % self.test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+        # setup
+        self.test.reference_type_id = 16 # too far out of possible range
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+        self.assertTrue("reference_type_id" in self.test.validation_errors, "reference_type_id should have validation error %s" % self.test.validation_errors)

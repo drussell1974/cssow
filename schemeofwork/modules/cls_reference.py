@@ -3,8 +3,9 @@ from basemodel import BaseModel, try_int
 
 class ReferenceModel (BaseModel):
 
-    def __init__(self, id_, title, publisher, year_published, scheme_of_work_id, authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, reference_type_id, title, publisher, year_published, scheme_of_work_id, authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
+        self.reference_type_id = int(reference_type_id)
         self.title = title
         self.publisher = publisher
         self.year_published = try_int(year_published)
@@ -26,6 +27,9 @@ class ReferenceModel (BaseModel):
 
         # clean properties before validation
         self._clean_up()
+
+        # validate reference_type_id
+        self._validate_required_integer("reference_type_id", self.reference_type_id, 1, 15)
 
         # validate title
         self._validate_required_string("title", self.title, 1, 300)

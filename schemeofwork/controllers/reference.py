@@ -4,7 +4,7 @@ from datetime import datetime
 from cls_reference import ReferenceModel
 from pager import Pager
 from validation_helper import html_validation_message
-import db_reference, db_schemeofwork
+import db_reference, db_schemeofwork, db_reference_type
 
 def index():
     """ index action """
@@ -40,6 +40,7 @@ def edit():
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     model = db_reference.get_model(db, id_, scheme_of_work_id=scheme_of_work_id, auth_user=auth.user_id)
+    reference_type_options = db_reference_type.get_options(db)
 
     sub_heading = ""
     if model.is_new():
@@ -53,18 +54,19 @@ def edit():
         "strap_line":None
     }
 
-    return dict(content = content, model = model)
+    return dict(content = content, model = model, reference_type_options = reference_type_options)
 
 
 @auth.requires_login()
 def save_item():
     """ save_item non-view action """
 
-    published = int(request.vars.published if request.vars.published is not None else 1)
-
+    #published = int(request.vars.published if request.vars.published is not None else 1)
+    print("request.vars.reference_type_id={}".format(request.vars.reference_type_id))
 
     model = ReferenceModel(
         id_ = request.vars.id,
+        reference_type_id = request.vars.reference_type_id,
         title = request.vars.title,
         authors = request.vars.authors,
         publisher = request.vars.publisher,
@@ -114,6 +116,15 @@ def _view_scheme_of_work_references():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
     view_model = db_reference.get_options(db, scheme_of_work_id, auth.user_id)
+
+    return dict(view_model=view_model)
+
+
+def _view_learning_episode_references():
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
+    learning_episode_id = int(request.vars.learning_episode_id)
+
+    view_model = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
     return dict(view_model=view_model)
 

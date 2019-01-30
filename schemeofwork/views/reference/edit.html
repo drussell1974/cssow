@@ -33,9 +33,23 @@
         </div>
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <!-- Title START -->
           <form name="edit-reference" id="form" method="post" action="save_item">
+           <!-- Topic START -->
             <div class="control-group">
+              <div class="form-group controls">
+                <label>{{=T("reference type")}}</label>
+                <select class="form-control" name="reference_type_id" id="ctl-reference_type_id" required>
+                    <option value="">- {{=T("select an option")}} -</option>
+                    {{ for opt in reference_type_options: }}
+                        <option value="{{=opt['id']}}" {{if opt['id'] == model.reference_type_id:}} selected {{pass}}>{{=opt['name']}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <!-- Topic END -->
+            <!-- Title START -->
+           <div class="control-group">
               <div class="form-group  controls">
                 <label>{{=T("title")}}</label>
                 <input type="text" name="title" class="form-control" placeholder="{{=T('enter a title')}}" id="ctl-title" required
