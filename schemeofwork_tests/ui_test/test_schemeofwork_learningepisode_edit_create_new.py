@@ -100,7 +100,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(10)
+        self.wait(20)
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork','Learning Objectives','for A-Level Computer Science - Week 1 - Algorithms')

@@ -175,24 +175,25 @@ def _insert(db, model):
 def upsert_learning_episode_page_references(db, model):
     """ deletes and reinserts sow_learning_episode__has__references """
 
-    # delete existing
-    str_delete = "DELETE FROM sow_learning_episode__has__references WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
+    if model.page_reference_ids is not None:
+        # delete existing
+        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
 
-    db.executesql(str_delete)
+        db.executesql(str_delete)
 
-    # reinsert
-    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES "
-    str_insert_values = ""
-    for index in range(len(model.page_reference_ids)):
-        note = model.page_reference_notes[index].lstrip(' ').rstrip(' ') # clean up
-        uri = model.page_reference_uri[index].lstrip(' ').rstrip(' ') # clean up
-        if len(note) > 0: # and ensure it has a value worth inserting
-            str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}'),"\
-                .format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note, page_uri=uri)
+        # reinsert
+        str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES "
+        str_insert_values = ""
+        for index in range(len(model.page_reference_ids)):
+            note = model.page_reference_notes[index].lstrip(' ').rstrip(' ') # clean up
+            uri = model.page_reference_uri[index].lstrip(' ').rstrip(' ') # clean up
+            if len(note) > 0: # and ensure it has a value worth inserting
+                str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}'),"\
+                    .format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note, page_uri=uri)
 
-    if len(str_insert_values) > 0: # have we added any notes
-        str_insert_values = str_insert_values.rstrip(",")
-        db.executesql(str_insert + str_insert_values + ";")
+        if len(str_insert_values) > 0: # have we added any notes
+            str_insert_values = str_insert_values.rstrip(",")
+            db.executesql(str_insert + str_insert_values + ";")
 
 
 def _delete(db, id_):
