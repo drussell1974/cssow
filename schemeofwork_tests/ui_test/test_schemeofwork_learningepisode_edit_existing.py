@@ -64,6 +64,14 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' Create valid information '
 
+        ' ctl-year_id - select Yr13 VALID '
+        elem = self.test_context.find_element_by_id("ctl-year_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "Yr13":
+                 opt.click()
+        elem.send_keys(Keys.TAB)
+
         ' ctl-order_of_delivery_id '
         elem_order_of_delivery_id = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
         elem_order_of_delivery_id.clear()

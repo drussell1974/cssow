@@ -9,18 +9,19 @@ import db_learningobjective
 import db_reference
 import db_schemeofwork
 import db_topic
+import db_year
 
 
 def index():
     """ index action """
     scheme_of_work_id = int(request.args(0)) #int(request.vars.scheme_of_work_id)
-
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     data = db_learningepisode.get_all(db, scheme_of_work_id, auth.user_id)
     schemeofwork_options = db_schemeofwork.get_options(db,  auth_user=auth.user_id)
+
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
 
@@ -76,6 +77,8 @@ def edit():
     key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id
 
+    year_options = db_year.get_options(db, key_stage_id)
+
     topic_options = db_topic.get_options(db, lvl=1)
 
     has_objectives = False
@@ -90,7 +93,7 @@ def edit():
         "strap_line":T("{topic_name} - Week {order_of_delivery_id}\n{summary}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id, summary=model.summary)
               }
 
-    return dict(content = content, model = model, topic_options = topic_options, has_objectives = has_objectives, topic_id = model.topic_id)
+    return dict(content = content, model = model, topic_options = topic_options, year_options = year_options, has_objectives = has_objectives, topic_id = model.topic_id)
 
 
 @auth.requires_login()
@@ -107,6 +110,7 @@ def save_item():
         topic_id = request.vars.topic_id,
         related_topic_ids = request.vars.related_topic_ids,
         key_stage_id= request.vars.key_stage_id,
+        year_id = request.vars.year_id,
         key_words = request.vars.key_words,
         summary = request.vars.summary,
         created = datetime.now(),

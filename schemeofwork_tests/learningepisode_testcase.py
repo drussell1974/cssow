@@ -13,6 +13,7 @@ class LearningEpisode_TestCase(TestCase):
                                  topic_id=4,
                                  parent_topic_id=5,
                                  key_stage_id=6,
+                                 year_id=9,
                                  key_words = "Lorem ipsum,sit amet,convallis",
                                  summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.",
                                  published=1)

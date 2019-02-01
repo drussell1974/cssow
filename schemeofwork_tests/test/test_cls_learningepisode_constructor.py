@@ -46,6 +46,8 @@ class Test_LearningEpisode_Constructor(TestCase):
         self.assertEqual("", test.parent_topic_name)
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
+        self.assertEqual(0, test.year_id, "year_id should be 0")
+        self.assertEqual("", test.year_name, "year_name should be ''")
         self.assertEqual("", test.key_words, "key_words should be ''")
         self.assertEqual("", test.summary, "summary should be ''")
         self.assertEqual(False, test.is_valid, "is_valid should be False")
@@ -63,7 +65,8 @@ class Test_LearningEpisode_Constructor(TestCase):
                                  key_words='unit,test',
                                  summary='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.',
                                  parent_topic_id=5,
-                                 key_stage_id=6)
+                                 key_stage_id=6,
+                                 year_id=9)
 
         # test
         test.validate()

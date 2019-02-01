@@ -49,6 +49,18 @@
           <form name="edit-learningepisode" id="form" method="post" action="save_item">
             <div class="control-group">
               <div class="form-group  controls">
+                <label>{{=T("year group")}}</label>
+                <select class="form-control" name="year_id" id="ctl-year_id" required>
+                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("select an option")}} -</option>
+                    {{ for opt in year_options: }}
+                    <option value="{{=opt.id}}" {{ if opt.id == model.year_id: }} selected {{ pass }}>{{=opt.name}}</option>
+                    {{ pass }}
+                </select>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group  controls">
                 <label>{{=T("order of delivery")}}</label>
                 <!-- in the future select from planner -->
                 <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{=T('enter an order of delivery')}}" id="ctl-order_of_delivery_id" required

@@ -60,6 +60,14 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         ' Create valid information '
 
+        ' ctl-year_id - select Yr12 VALID '
+        elem = self.test_context.find_element_by_id("ctl-year_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "Yr12":
+                 opt.click()
+        elem.send_keys(Keys.TAB)
+
         ' ctl-order_of_delivery_id '
         elem = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
         elem.clear()
@@ -100,7 +108,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(20)
+
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork','Learning Objectives','for A-Level Computer Science - Week 1 - Algorithms')

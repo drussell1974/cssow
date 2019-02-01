@@ -489,3 +489,83 @@ class test_LearningEpisodeModel_validate__summary(LearningEpisode_TestCase):
         # assert
         self.assertTrue("summary" in test.validation_errors, "summary should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+class test_LearningEpisodeModel__validate__year_id(LearningEpisode_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.year_id = 1
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("year_id" in test.validation_errors, "year_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.year_id = 0
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("year_id" in test.validation_errors, "year_id should not have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.year_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("year_id" in test.validation_errors, "year_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+        test.year_id = 13
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("year_id" in test.validation_errors, "year_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.year_id = 14  # too far out of possible range
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("year_id" in test.validation_errors, "year_id should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")

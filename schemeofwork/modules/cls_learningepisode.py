@@ -4,7 +4,7 @@ from basemodel import BaseModel, try_int
 class LearningEpisodeModel (BaseModel):
 
 
-    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
@@ -16,6 +16,8 @@ class LearningEpisodeModel (BaseModel):
         self.related_topic_ids = related_topic_ids
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
+        self.year_id = int(year_id)
+        self.year_name = year_name
         self.key_words = key_words
         self.other_key_words = []
         self.summary = summary
@@ -53,6 +55,11 @@ class LearningEpisodeModel (BaseModel):
         # Validate key_stage_id
         if self.key_stage_id is None or self.key_stage_id < 1 or self.key_stage_id > 9999:
             self.validation_errors["key_stage_id"] = "{} is not a valid selection".format(self.key_stage_id)
+            self.is_valid = False
+
+        # Validate year_id
+        if self.year_id is None or self.year_id < 1 or self.year_id > 13:
+            self.validation_errors["year_id"] = "{} is not a valid selection".format(self.key_stage_id)
             self.is_valid = False
 
         # Validate key_words

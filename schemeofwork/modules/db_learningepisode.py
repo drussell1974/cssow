@@ -4,7 +4,17 @@ from db_helper import to_db_null
 
 def get_options(db, scheme_of_work_id, auth_user):
 
-    str_select = "SELECT le.id as id, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name FROM sow_learning_episode as le INNER JOIN sow_topic as top ON top.id = le.topic_id WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.order_of_delivery_id;"
+    str_select = "SELECT le.id as id," \
+                 " le.order_of_delivery_id as order_of_delivery_id," \
+                 " top.id as topic_id," \
+                 " top.name as name," \
+                 " yr.id as year_id," \
+                 " yr.name as year_name " \
+                 "FROM sow_learning_episode as le" \
+                 " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
+                 " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
+                 "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.order_of_delivery_id;"
+
     str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(str_select)
@@ -12,7 +22,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3], scheme_of_work_id=scheme_of_work_id)
+        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3], year_id=row[4], year_name=row[5], scheme_of_work_id=scheme_of_work_id)
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
@@ -32,14 +42,16 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " top.name as topic_name," \
                  " pnt_top.id as parent_topic_id,"\
                  " pnt_top.name as parent_topic_name,"\
-                 " sow.key_stage_id as key_stage_id,"\
+                 " sow.key_stage_id as key_stage_id," \
+                 " yr.id as year_id," \
                  " le.key_words as key_words,"\
                  " le.summary as summary,"\
                  " le.created as created,"\
                  " le.created_by as created_by_id,"\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
                  " FROM sow_learning_episode as le "\
-                 " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id "\
+                 " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
+                 " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
                  " LEFT JOIN sow_topic as top ON top.id = le.topic_id "\
                  " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
@@ -61,11 +73,12 @@ def get_all(db, scheme_of_work_id, auth_user):
             parent_topic_id=row[6],
             parent_topic_name=row[7],
             key_stage_id=row[8],
-            key_words = row[9],
-            summary = row[10],
-            created=row[11],
-            created_by_id=row[12],
-            created_by_name=row[13])
+            year_id=row[9],
+            key_words = row[10],
+            summary = row[11],
+            created=row[12],
+            created_by_id=row[13],
+            created_by_name=row[14])
 
         ' get the key words from the learning objectives '
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
@@ -92,13 +105,15 @@ def get_model(db, id_, auth_user):
                  " pnt_top.id as parent_topic_id,"\
                  " pnt_top.name as parent_topic_name,"\
                  " sow.key_stage_id as key_stage_id,"\
+                 " yr.id as year_id,"\
                  " le.key_words as key_words,"\
                  " le.summary as summary,"\
                  " le.created as created,"\
                  " le.created_by as created_by_id,"\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
                  " FROM sow_learning_episode as le"\
-                 " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id"\
+                 " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
+                 " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
                  " INNER JOIN sow_topic as top ON top.id = le.topic_id"\
                  " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                  " LEFT JOIN auth_user as user ON user.id = sow.created_by"\
@@ -118,11 +133,12 @@ def get_model(db, id_, auth_user):
             parent_topic_id=row[6],
             parent_topic_name=row[7],
             key_stage_id=row[8],
-            key_words = row[9],
-            summary = row[10],
-            created=row[11],
-            created_by_id=row[12],
-            created_by_name=row[13])
+            year_id=row[9],
+            key_words = row[10],
+            summary = row[11],
+            created=row[12],
+            created_by_id=row[13],
+            created_by_name=row[14])
 
     return model
 
@@ -201,9 +217,10 @@ def _update(db, model, published):
 
     # 1. Update the learning episode
 
-    str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {order_of_delivery_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
+    str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
     str_update = str_update.format(
         order_of_delivery_id=model.order_of_delivery_id,
+        year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,
         topic_id=model.topic_id,
         key_words=to_db_null(model.key_words),
@@ -229,9 +246,10 @@ def _insert(db, model, published):
 
     # 1. Insert the learning episode
 
-    str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ({order_of_delivery_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, year_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ({order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
         order_of_delivery_id=model.order_of_delivery_id,
+        year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,
         topic_id=model.topic_id,
         key_words=to_db_null(model.key_words),
