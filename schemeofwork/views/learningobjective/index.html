@@ -55,8 +55,9 @@
             <!-- Prerequisites -->
             <section class="alert alert-info">
                 <div id="div-pathway_objective">
-
                 </div><!-- id="div-pathway_objective" -->
+                <div id="div-pathway_ks123">
+                </div><!-- id="div-pathway_ks123" -->
             </section><!-- class="alert alert-info" -->
             <!-- Prerequisites END -->
           <!-- Pager Header -->
@@ -153,7 +154,16 @@
                 $("#div-pathway_objective").html(result);
             },
             error: function(){
-                $("#div-pathway_objective").html('could not get pathway objectives at this time');
+                $("#div-pathway_objective").html('could not get linked objectives at this time');
+            }
+        });
+
+        $.ajax({url: '{{=URL("learningepisode", "_view_pathway_ks123_readonly", vars=dict(learning_episode_id=learning_episode_id))}}',
+            success: function(result){
+                $("#div-pathway_ks123").html(result);
+            },
+            error: function(){
+                $("#div-pathway_ks123").html('could not get linked pathways at this time');
             }
         });
 

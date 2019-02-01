@@ -17,12 +17,14 @@ def get_options(db, year_id, topic_id):
     return data
 
 
-def get_pathway_ks123_ids(db, learning_episode_id):
+def get_linked_pathway_ks123(db, learning_episode_id):
 
     select_sql = "SELECT"\
-                 " pw.ks123_pathway_id as ks123_pathway_id"\
-                 " FROM sow_learning_episode__has__ks123_pathway as pw"\
-                 " WHERE pw.learning_episode_id = {learning_episode_id};"
+                 " pw.id as id,"\
+                 " pw.objective as objective "\
+                 "FROM sow_learning_episode__has__ks123_pathway as le_pw" \
+                 " INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id"\
+                 " WHERE le_pw.learning_episode_id = {learning_episode_id};"
 
     select_sql = select_sql.format(learning_episode_id=learning_episode_id)
 
@@ -31,6 +33,6 @@ def get_pathway_ks123_ids(db, learning_episode_id):
     data = [];
 
     for row in rows:
-        data.append(int(row[0]))
+        data.append([int(row[0]), row[1]])
 
     return data

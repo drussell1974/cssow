@@ -69,18 +69,27 @@ def _view_pathway_ks123():
     topic_id = 0 if request.vars.topic_id is None else request.vars.topic_id
 
     data = db_ks123pathway.get_options(db, year_id = year_id, topic_id = topic_id)
-    should_be_checked = db_ks123pathway.get_pathway_ks123_ids(db, learning_episode_id)
+    should_be_checked = db_ks123pathway.get_linked_pathway_ks123(db, learning_episode_id)
 
     view_model = []
     for item in data:
-        if item.id in should_be_checked:
-            item.is_checked = True
-        else:
-            item.is_checked = False
+        for check in should_be_checked:
+            if item.id == check[0]:
+                item.is_checked = True
+            else:
+                item.is_checked = False
 
         view_model.append(item)
 
     return dict(view_model=view_model)
+
+
+def _view_pathway_ks123_readonly():
+    learning_episode_id = 0 if request.vars.learning_episode_id  is None else request.vars.learning_episode_id
+
+    data = db_ks123pathway.get_linked_pathway_ks123(db, learning_episode_id = learning_episode_id)
+
+    return dict(data=data)
 
 
 @auth.requires_login()
