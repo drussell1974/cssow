@@ -238,6 +238,10 @@ def _update(db, model, published):
 
     _upsert_pathway_objective_ids(db, model)
 
+    # 4. insert pathway ks123
+
+    _upsert_pathway_ks123_ids(db, model)
+
     return True
 
 
@@ -272,6 +276,10 @@ def _insert(db, model, published):
     # 3. insert pathway objectives
 
     _upsert_pathway_objective_ids(db, model)
+
+    # 4. insert pathway ks123
+
+    _upsert_pathway_ks123_ids(db, model)
 
     return model.id
 
@@ -312,6 +320,27 @@ def _upsert_pathway_objective_ids(db, model):
         for objective_id in model.pathway_objective_ids:
             if objective_id.isdigit():
                 str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id)
+
+        str_insert = str_insert.rstrip(",") + ";"
+
+        db.executesql(str_insert)
+
+
+def _upsert_pathway_ks123_ids(db, model):
+    """ deletes and reinserts sow_learning_episode__has__topics """
+
+    # delete existing
+    str_delete = "DELETE FROM sow_learning_episode__has__ks123_pathway WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
+
+    db.executesql(str_delete)
+
+    if model.pathway_ks123_ids is not None:
+        # reinsert
+        str_insert = "INSERT INTO sow_learning_episode__has__ks123_pathway (learning_episode_id, ks123_pathway_id) VALUES"
+
+        for objective_id in model.pathway_ks123_ids:
+            if objective_id.isdigit():
+                str_insert = str_insert + "({learning_episode_id}, {ks123_pathway_id}),".format(learning_episode_id=model.id, ks123_pathway_id=objective_id)
 
         str_insert = str_insert.rstrip(",") + ";"
 

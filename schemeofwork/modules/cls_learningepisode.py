@@ -22,6 +22,7 @@ class LearningEpisodeModel (BaseModel):
         self.other_key_words = []
         self.summary = summary
         self.pathway_objective_ids = []
+        self.pathway_ks123_ids = []
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name

@@ -61,9 +61,6 @@ def edit():
 def save_item():
     """ save_item non-view action """
 
-    #published = int(request.vars.published if request.vars.published is not None else 1)
-    print("request.vars.reference_type_id={}".format(request.vars.reference_type_id))
-
     model = ReferenceModel(
         id_ = request.vars.id,
         reference_type_id = request.vars.reference_type_id,

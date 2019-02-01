@@ -112,6 +112,7 @@
 'for {scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}': 'for {scheme_of_work_name} - lesson {order_of_delivery_id} - {topic_name}',
 'for {scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}\n{summary}': 'for {scheme_of_work_name} - lesson {order_of_delivery_id} - {topic_name}\n{summary}',
 'for {scheme_of_work_name} - {summary}': 'for {scheme_of_work_name} - {summary}',
+'for {scheme_of_work_name} {topic_name} - Lesson {order_of_delivery_id}': 'for {scheme_of_work_name} {topic_name} - Lesson {order_of_delivery_id}',
 'for {scheme_of_work_name} {topic_name} - Week {order_of_delivery_id}': 'for {scheme_of_work_name} {topic_name} - lesson {order_of_delivery_id}',
 'for {scheme_of_work_name}: {topic_name} - Week {order_of_delivery_id}': 'for {scheme_of_work_name}: {topic_name} - lesson {order_of_delivery_id}',
 'for {title} ({year_published}) {authors}, {publisher}': 'for {title} ({year_published}) {authors}, {publisher}',
@@ -154,6 +155,7 @@
 'learning objective': 'learning objective',
 'learning objectives': 'learning objectives',
 'lessons': 'lessons',
+'link to pathway': 'link to pathway',
 'link to website': 'link to website',
 'list of teaching and learning resources': 'list of teaching and learning resources',
 'Live Chat': 'Live Chat',
@@ -312,6 +314,7 @@
 '{scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}<br>{summary}': '{scheme_of_work_name} - lesson {order_of_delivery_id} - {topic_name}<br>{summary}',
 '{title} ({year_published}) {authors}, {publisher} for {scheme_of_work_name}': '{title} ({year_published}) {authors}, {publisher} for {scheme_of_work_name}',
 '{title} from {publisher} for {scheme_of_work_name}': '{title} from {publisher} for {scheme_of_work_name}',
+'{topic_name} - Lesson {order_of_delivery_id}\n{summary}': '{topic_name} - Lesson {order_of_delivery_id}\n{summary}',
 '{topic_name} - Week {order_of_delivery_id}': '{topic_name} - lesson {order_of_delivery_id}',
 '{topic_name} - Week {order_of_delivery_id}\n{summary}': '{topic_name} - lesson {order_of_delivery_id}\n{summary}',
 }

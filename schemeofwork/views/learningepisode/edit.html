@@ -67,6 +67,7 @@
                        min="1" max="9999" value='{{=model.order_of_delivery_id}}'>
                 <p class="help-block text-danger"></p>
               </div>
+                <hr>
             </div>
             <div class="control-group">
               <div class="form-group  controls">
@@ -75,6 +76,7 @@
                        maxlength="80" value='{{=model.summary}}'>
                 <p class="help-block text-danger"></p>
               </div>
+                <hr>
             </div>
             <div class="control-group">
               <div class="form-group  controls">
@@ -95,6 +97,17 @@
                 <p class="help-block text-danger"></p>
               </div>
             </div>
+              <!-- KS123 Pathway START -->
+              <div class="control-group">
+                <div class="form-group controls">
+                  <label>{{=T("link to pathway")}}</label>
+                    <div id="div-pathway_ks123_id">
+                    </div>
+                    <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
+                    <p class="help-block text-danger"></p>
+                </div>
+              </div>
+              <!-- KS123 Pathway END -->
             <div class="control-group">
               <div class="form-group  controls">
                 <label>{{=T("keywords")}}</label>
@@ -103,15 +116,16 @@
                 <p class="help-block text-danger" id="token-error"></p>
               </div>
                 <div id="keywords"></div>
+                <hr>
             </div>
               <!-- Pathway Objectives START -->
               <div class="control-group">
-              <div class="form-group controls">
-                  <label>{{=T("prerequisites")}} <i id=btn-refresh-pathway_objectives" class="fa fa-refresh icon" aria-hidden="true"></i></label>
-
+                <div class="form-group controls">
+                  <label>{{=T("prerequisites")}}</label>
                     <div id="div-pathway_objective_id">
                     </div>
-                <p class="help-block text-danger"></p>
+                    <p class="help-block text-danger"></p>
+                </div>
               </div>
             <div class="control-group">
               <div class="form-group  controls">
@@ -155,6 +169,20 @@
             },
             error: function(){
                 $("#div-pathway_objective_id").html('could not get pathway objectives at this time');
+            }
+        });
+    }
+
+    function showPathwayKS123() {
+        year_id = $('#ctl-year_id option:selected').val();
+        topic_id = $('#ctl-topic_id option:selected').val();
+
+        $.ajax({url: '_view_pathway_ks123?learning_episode_id=' + {{=model.id}} + '&year_id=' + year_id + '&topic_id=' + topic_id,
+            success: function(result){
+                $("#div-pathway_ks123_id").html(result);
+            },
+            error: function(){
+                $("#div-pathway_ks123_id").html('could not get pathway objectives at this time');
             }
         });
     }
@@ -258,7 +286,7 @@
             init_key_words.push(key_words[i].trim());
         }
         showPathwayObjectives({{=model.key_stage_id}}, init_key_words);
-
+        showPathwayKS123();
 
         $('#ctl-key_words').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
             var arr_key_words = [];
@@ -268,12 +296,8 @@
             showPathwayObjectives({{=model.key_stage_id}}, arr_key_words);
         });
 
-        $('#btn-refresh-pathway_objectives').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
-            var arr_key_words = [];
-            $('.token-label').each(function(index) {
-                arr_key_words.push($(this).text());
-            })
-            showPathwayObjectives({{=model.key_stage_id}}, arr_key_words);
+        $('#ctl-topic_id, #ctl-year_id').on('change', function(e) {
+            showPathwayKS123();
         });
     };
 

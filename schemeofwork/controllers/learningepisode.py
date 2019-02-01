@@ -4,6 +4,7 @@ from cls_learningepisode import LearningEpisodeModel
 from pager import Pager
 from validation_helper import html_validation_message
 import db_keyword
+import db_ks123pathway
 import db_learningepisode
 import db_learningobjective
 import db_reference
@@ -60,6 +61,26 @@ def _view_pathway_objectives_readonly():
     data = db_learningobjective.get_linked_pathway_objectives(db, learning_episode_id = learning_episode_id)
 
     return dict(data=data)
+
+
+def _view_pathway_ks123():
+    learning_episode_id = 0 if request.vars.learning_episode_id  is None else request.vars.learning_episode_id
+    year_id = 0 if request.vars.year_id is None else request.vars.year_id
+    topic_id = 0 if request.vars.topic_id is None else request.vars.topic_id
+
+    data = db_ks123pathway.get_options(db, year_id = year_id, topic_id = topic_id)
+    should_be_checked = db_ks123pathway.get_pathway_ks123_ids(db, learning_episode_id)
+
+    view_model = []
+    for item in data:
+        if item.id in should_be_checked:
+            item.is_checked = True
+        else:
+            item.is_checked = False
+
+        view_model.append(item)
+
+    return dict(view_model=view_model)
 
 
 @auth.requires_login()
@@ -123,6 +144,13 @@ def save_item():
         model.pathway_objective_ids.append(request.vars.pathway_objective_ids)
     else:
         model.pathway_objective_ids = request.vars.pathway_objective_ids
+
+    # ensure pathway_ks123_ids is assigned as a list
+    if type(request.vars.pathway_ks123_ids) is str:
+        model.pathway_ks123_ids = []
+        model.pathway_ks123_ids.append(request.vars.pathway_ks123_ids)
+    else:
+        model.pathway_ks123_ids = request.vars.pathway_ks123_ids
 
     # ensure learning_episode_page_reference_id is assigned as a list
     if type(request.vars.learning_episode_page_reference_id) is str:
