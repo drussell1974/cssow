@@ -22,7 +22,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -41,7 +41,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for a-level computer science - week 1')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'for a-level computer science - lesson 1')
 
 
 

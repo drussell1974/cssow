@@ -17,7 +17,7 @@
                   <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">{{=T("learning episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">{{=T("episodes")}}</a>
                 </li>
             </ul>
     </div>
@@ -53,11 +53,14 @@
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
             <!-- Prerequisites -->
-            <section class="alert alert-info">
+            <section class="alert alert-info alert-dismissible">
                 <div id="div-pathway_objective">
                 </div><!-- id="div-pathway_objective" -->
                 <div id="div-pathway_ks123">
                 </div><!-- id="div-pathway_ks123" -->
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </section><!-- class="alert alert-info" -->
             <!-- Prerequisites END -->
           <!-- Pager Header -->

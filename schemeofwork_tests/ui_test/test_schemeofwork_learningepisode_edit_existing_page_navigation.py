@@ -25,7 +25,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for a-level computer science programming and development - week 1')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'for a-level computer science programming and development - lesson 1')
 
 
     """ Breadcrumb """
@@ -51,7 +51,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
@@ -64,7 +64,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Lesson 1 - Programming and development')
 
 
     def test_page__should_have_related_topic_ids(self):

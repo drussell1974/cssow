@@ -37,7 +37,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for KS3 Computing (Track 1)')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for KS3 Computing (Track 1)')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):

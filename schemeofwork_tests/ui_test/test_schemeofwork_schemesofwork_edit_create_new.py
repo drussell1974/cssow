@@ -115,7 +115,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         self.wait(10)
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for should_redirect_to_index_if_valid')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for should_redirect_to_index_if_valid')
 
 
 

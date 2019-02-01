@@ -50,7 +50,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episode', 'for a-level computer science programming and development - week 1')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'for a-level computer science programming and development - lesson 1')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -105,12 +105,13 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         elem_pathway_objective_id477.send_keys(Keys.TAB)
 
-
+        self.wait()
         ' submit the form '
         elem_saveButton = self.test_context.find_element_by_id("saveButton")
         elem_saveButton.send_keys(Keys.RETURN)
+        self.wait()
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for A-Level Computer Science')
 

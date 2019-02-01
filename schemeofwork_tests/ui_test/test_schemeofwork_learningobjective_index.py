@@ -22,7 +22,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Lesson 1 - Programming and development')
 
 
     def test_page__should_have__sidebar_and_selected_learning_episode(self):
@@ -50,7 +50,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_id('lnk-bc-learning_episodes').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Episodes', 'for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for A-Level Computer Science')
 
 
     def not_test_page__submenu__navigate_to_learningepisode_new(self):

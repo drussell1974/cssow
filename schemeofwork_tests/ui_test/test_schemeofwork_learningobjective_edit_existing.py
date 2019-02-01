@@ -69,7 +69,7 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objective', 'for A-Level Computer Science - Week 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objective', 'for A-Level Computer Science - Lesson 1 - Programming and development')
 
 
 
@@ -119,4 +119,4 @@ class test_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Week 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning Objectives', 'for A-Level Computer Science - Lesson 1 - Programming and development')

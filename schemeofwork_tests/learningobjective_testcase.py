@@ -30,7 +30,7 @@ class LearningObjective_TestCase(TestCase):
                                       exam_board_id = 5,
                                       exam_board_name = "AQA",
                                       learning_episode_id = 6,
-                                      learning_episode_name = "Week 30",
+                                      learning_episode_name = "Lesson 30",
                                       key_stage_id = 7,
                                       key_stage_name = "KS7",
                                       parent_id = 99,
@@ -58,7 +58,7 @@ class LearningObjective_TestCase(TestCase):
         self.assertEqual(test.exam_board_id, 5, "--- setup --- exam_board_id failed")
         self.assertEqual(test.exam_board_name, "AQA", "--- setup --- exam_board_name failed")
         self.assertEqual(test.learning_episode_id, 6, "--- setup --- learning_episode_id failed")
-        self.assertEqual(test.learning_episode_name, "Week 30", "--- setup --- learning_episode_name  failed")
+        self.assertEqual(test.learning_episode_name, "Lesson 30", "--- setup --- learning_episode_name  failed")
         self.assertEqual(test.key_stage_id, 7, "--- setup --- key_stage_id failed")
         self.assertEqual(test.key_stage_name, "KS7", "--- setup --- key_stage_name failed")
         self.assertEqual(test.parent_id, 99, "--- setup --- parent_id failed")

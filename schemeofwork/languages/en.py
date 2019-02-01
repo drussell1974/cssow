@@ -102,7 +102,7 @@
 'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an order of delivery': 'enter an order of delivery',
 'enter the authors': 'enter the authors',
-'episodes': 'episodes',
+'episodes': 'lessons',
 'Errors': 'Errors',
 'exam board': 'exam board',
 'export as csv file': 'export as csv file',
