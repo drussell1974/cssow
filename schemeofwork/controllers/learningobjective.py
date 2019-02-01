@@ -40,7 +40,7 @@ def index():
 
     content = {
         "main_heading":T("learning objectives"),
-        "sub_heading":T("for {scheme_of_work_name} - Week {order_of_delivery_id} - {topic_name}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name),
+        "sub_heading":T("for {scheme_of_work_name} - lesson {order_of_delivery_id} - {topic_name}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name),
         "background_img":"home-bg.jpg",
         "strap_line":learning_episode.summary
               }
@@ -133,7 +133,7 @@ def edit():
 
     content = {
         "main_heading":T("learning objective"),
-        "sub_heading":T("for {} - Week {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
+        "sub_heading":T("for {} - lesson {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
         "strap_line":T("fill out the form below then click save")
               }
     return dict(

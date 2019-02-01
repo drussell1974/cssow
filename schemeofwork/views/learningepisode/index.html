@@ -84,7 +84,7 @@
           <div class="post-preview">
             <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
               <h2 class="post-title">
-                {{="Week {}".format(row.order_of_delivery_id)}} - {{=dictionary_to_string(row.related_topic_ids,"name", {"checked":True})}}
+                {{=T("Week {}").format(row.order_of_delivery_id)}} - {{=dictionary_to_string(row.related_topic_ids,"name", {"checked":True})}}
               </h2>
               {{ if row.summary != "": }}
                 <h3 class="post-subtitle">{{=row.summary}}</h3>
