@@ -137,13 +137,20 @@
                 <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('add reference')}}</a>
             </section><!-- class="alert alert-info" -->
         </div>
-
+        {{if auth.user:}}
+          <section class="alert alert-secondary">
+            <a href="{{=URL('learningobjective', 'whiteboard_view', args=[scheme_of_work_id,learning_episode_id])}}" target="_blank" class="btn btn-dark">{{=T("Blackboard display")}}</a>
+            <a href="{{=URL('learningobjective', 'whiteboard_view', args=[scheme_of_work_id,learning_episode_id])}}" target="_blank" class="btn btn-light">{{=T("Whiteboard display")}}</a>
+          </section>
+        {{pass}}
       </div>
     </div>
 
     <hr>
 
     <!-- Main Content END -->
+
+
 {{block page_js}}
     <script>
         $.ajax({url: '{{=URL("learningepisode", "_view_learning_episiode_menu", args=[scheme_of_work_id, learning_episode_id, topic_id])}}',
@@ -157,7 +164,7 @@
                 $("#div-pathway_objective").html(result);
             },
             error: function(){
-                $("#div-pathway_objective").html('could not get linked objectives at this time');
+                $("#div-pathway_objective").html('could not get prior learning at this time');
             }
         });
 
@@ -176,7 +183,7 @@
                 $("#div-references").html(result);
             },
             error: function(e){
-                $("#div-references").html('could not get references at this time');
+                $("#div-references").html('could not get learning materials at this time');
             }
         });
     </script>

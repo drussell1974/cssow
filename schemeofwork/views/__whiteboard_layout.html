@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{=response.title or request.application}}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{=URL('static','custom/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+       h1, h2, h3, h4, p, .keyword {
+        font-family: 'Josefin Sans', sans-serif;
+        text-transform: capitalize;
+       }
+       h1, h2 {
+         text-decoration:underline;
+       }
+       h1, h2, h3, h4 {
+        padding-top:30px;
+       }
+    </style>
+    <script>
+      function set_font_size(font_size){
+        $('.chalk').attr('style', 'font-size:' + font_size);
+      }
+    </script>
+    {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+  </head>
+  <body>
+      <p>Font size:
+      <a href="#" onclick="set_font_size('larger')" style="font-size:12px;">A</i>
+      <a href="#" onclick="set_font_size('x-large')" style="font-size:14px;">A</a>
+      <a href="#" onclick="set_font_size('xx-large')" style="font-size:16px;">A</a>
+      </p>
+    <!-- Main ========================================= -->
+    <!-- Begin page content -->
+    <div class="container-fluid main-container">
+
+      {{include}}
+    </div>
+    <!-- Main Content END -->
+
+    {{block footer}} <!-- this is default footer -->
+    {{end}}
+    <!-- The javascript =============================== -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{=URL('static','custom/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{=URL('static','custom/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{{=URL('static','custom/js/clean-blog.min.js')}}"></script>
+
+  {{block page_js}}{{end page_js}}
+    {{if response.google_analytics_id:}}
+    <!-- Analytics ==================================== -->
+    <script src="{{=URL('static','js/analytics.min.js')}}"></script>
+    <script type="text/javascript">
+      analytics.initialize({
+      'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
+      });
+    </script>
+
+{{pass}}
+  </body>
+</html>

@@ -62,3 +62,14 @@ def string_to_list(string, SEP):
         return []
     else:
         return string.split(SEP)
+
+
+def date_to_string(date):
+    suffix = ""
+    if 4 <= date.day <= 20 or 24 <= date.day <= 30:
+        suffix = "th"
+    else:
+        suffix = ["st", "nd", "rd"][date.day % 10 - 1]
+
+    return date.strftime("%A, %d{suffix} %B %Y".format(suffix=suffix))
+

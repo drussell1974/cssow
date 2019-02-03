@@ -3,6 +3,7 @@ from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
 from pager import Pager
 from validation_helper import html_validation_message
+from helper_string import date_to_string
 import db_schemeofwork
 import db_learningobjective
 import db_solotaxonomy
@@ -11,6 +12,8 @@ import db_content
 import db_examboard
 import db_learningepisode
 import db_keyword
+import db_ks123pathway
+import db_reference
 
 def index():
     """ index action """
@@ -54,6 +57,70 @@ def index():
         learningepisiode_options = learning_episode_options, #TODO: create view_learningepisiode_options: remove this line
         page = page_to_display,
         pager_html = pager_html)
+
+
+def whiteboard_view():
+    """ index action """
+
+    # TODO: ensure correct number of args are passed
+
+    scheme_of_work_id = int(request.args(0))
+    learning_episode_id = int(request.args(1))
+
+    learning_episode = db_learningepisode.get_model(db, learning_episode_id, auth.user_id)
+
+    learning_objectives = db_learningobjective.get_all(db, learning_episode_id, auth.user_id)
+    learning_objectives = _sort_by_solo_and_group(learning_objectives)
+
+    key_words = learning_episode.key_words.split(",")
+    prior_learning = db_learningobjective.get_linked_pathway_objectives(db, learning_episode_id = learning_episode_id)
+
+    learning_materials = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
+
+    for learning_objective in learning_objectives:
+        for key_word in learning_objective.key_words.split(","):
+            in_list = False
+            for kw in key_words:
+                if kw.strip() == key_word.strip():
+                    in_list = True
+
+            if in_list == False:
+                key_words.append(key_word.strip())
+
+    key_words = _sort_keywords(key_words)
+
+    return dict(
+        display_date = date_to_string(datetime.today()),
+        lesson_title = learning_episode.summary,
+        prior_learning = prior_learning,
+        learning_materials = learning_materials,
+        learning_objectives = learning_objectives,
+        key_words = key_words,
+        scheme_of_work_id = scheme_of_work_id,
+        learning_episode_id =learning_episode_id
+    )
+
+
+def _sort_keywords(data):
+    sorted_data = data
+
+    while True:
+        swapped = False
+        for i in range(len(sorted_data) - 1):
+            if sorted_data[i] > sorted_data[i + 1]:
+                """ put item in the correct position """
+                temp1 = sorted_data[i]
+                temp2 = sorted_data[i + 1]
+
+                sorted_data[i] = temp2
+                sorted_data[i + 1] = temp1
+                swapped = True
+
+        if swapped == False:
+            """ no more sorting required so finish """
+            break
+
+    return sorted_data
 
 
 def _sort_by_solo_and_group(data):

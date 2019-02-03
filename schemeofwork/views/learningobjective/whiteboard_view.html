@@ -1,0 +1,70 @@
+{{extend '__whiteboard_layout.html'}}
+<!-- Main Content -->
+
+<div class="row">
+  <div class="col-lg-8 col-md-8 mx-auto">
+    <section class="heading">
+        <h1 align="center" class="chalk">{{=lesson_title}}</h1>
+    </section>
+  </div>
+  <div class="col-lg-4 col-md-4 mx-auto">
+    <p class="h4 float-right">{{=display_date}}</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 col-md-4 mx-auto">
+    <!-- Prior Learning -->
+  {{ if len(prior_learning) > 0: }}
+    <h3>{{=T("prior learning")}}</h3>
+      {{ for item in prior_learning: }}
+        <span>{{=item.description }}<br></span>
+      {{ pass }}
+    {{ pass }}
+    <!-- Prior Learning END -->
+      <!-- Keywords -->
+        <h2 class="chalk">{{=T("today's keywords")}}</h2>
+        <ul>
+        {{ for key_word in key_words: }}
+            {{ if len(key_word) > 0: }}
+            <li class="chalk keyword">{{=key_word}}</li>
+            {{ pass }}
+        {{ pass }}
+        </ul>
+      <!-- Keywords END-->
+  </div>
+  <div class="col-lg-8 col-md-8 mx-auto">
+      <!-- Learning Objectives -->
+      <h2 class="chalk">{{=T("today's learning objectives")}}</h2>
+        {{ group_name = "" }}
+        <ol>
+          {{ for row in learning_objectives: }}
+            {{ if row.group_name is not None: }}
+                {{ if group_name.upper() != row.group_name.upper(): }}
+
+                    <p>{{=row.group_name}}</p>
+                {{
+                    group_name = row.group_name
+                    pass
+                }}
+            {{ pass }}
+            <li class="chalk">{{=row.description}}</li>
+           {{ pass }}
+        </ol>
+        <!-- Learning Objectives END-->
+
+      <!-- Learning Materials -->
+        {{ if len(learning_materials) > 0: }}
+        <h3 class="chalk">{{=T("learning materials")}}</h3>
+          <ul>
+          {{ for item in learning_materials: }}
+            <li class="chalk">{{=item.publisher}}<br>{{=item.title }}<br><span class="small">{{=item.page_notes}} {{=item.page_uri}}</span></li>
+          {{ pass }}
+          </ul>
+        {{ pass }}
+      <!-- Learning materials END -->
+  </div>
+</div>
+
+
+<!-- Main Content END -->
