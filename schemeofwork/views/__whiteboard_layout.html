@@ -16,6 +16,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
+      body {
+        background-color: 'Peach';
+      }
        h1, h2, h3, h4, p, .keyword {
         font-family: 'Josefin Sans', sans-serif;
         text-transform: capitalize;
@@ -31,19 +34,58 @@
       function set_font_size(font_size){
         $('.chalk').attr('style', 'font-size:' + font_size);
       }
+
+      function set_background(r, g, b, a){
+        $('body').attr('style', 'background-color:rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')');
+      }
     </script>
     {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
   </head>
   <body>
-      <p>Font size:
-      <a href="#" onclick="set_font_size('larger')" style="font-size:12px;">A</i>
-      <a href="#" onclick="set_font_size('x-large')" style="font-size:14px;">A</a>
-      <a href="#" onclick="set_font_size('xx-large')" style="font-size:16px;">A</a>
-      </p>
+
     <!-- Main ========================================= -->
     <!-- Begin page content -->
     <div class="container-fluid main-container">
-
+      <div class="row">
+        <div class="accessibility">
+          <p>
+            <a class="btn btn-light" data-toggle="collapse" href="#collapseAccessibility" role="button" aria-expanded="false" aria-controls="collapseAccessibility">
+              {{=T("Accessibility")}}
+            </a>
+          </p>
+          <div class="collapse" id="collapseAccessibility">
+            <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("larger")' style='font-size:12px;background-color:rgba(245, 245, 245, 1);'>A</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("x-large")' style='font-size:14px;background-color:rgba(245, 245, 245, 1);'>A</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("xx-large")' style='font-size:16px;background-color:rgba(245, 245, 245, 1);'>A</span>&nbsp;
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 250, 1)' style='background-color:rgba(245, 245, 245, 1);'>snow</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(245, 245, 245, 1)' style='background-color:rgba(245, 245, 245, 1);'>smoke</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 250, 1)' style='background-color:rgba(255, 250, 240, 1);'>floral</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 205, 0.5)' style='background-color:rgba(255, 250, 205, 1);'>lemon</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 222, 173, 0.5)' style='background-color:rgba(255, 222, 173, 1);'>navajo</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 218, 185, 1)' style='background-color:rgba(255, 218, 185, 1);'>peach</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
       {{include}}
     </div>
     <!-- Main Content END -->
@@ -59,7 +101,7 @@
     <!-- Custom scripts for this template -->
     <script src="{{=URL('static','custom/js/clean-blog.min.js')}}"></script>
 
-  {{block page_js}}{{end page_js}}
+    {{block page_js}}{{end page_js}}
     {{if response.google_analytics_id:}}
     <!-- Analytics ==================================== -->
     <script src="{{=URL('static','js/analytics.min.js')}}"></script>
@@ -68,7 +110,6 @@
       'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
       });
     </script>
-
-{{pass}}
+    {{pass}}
   </body>
 </html>
