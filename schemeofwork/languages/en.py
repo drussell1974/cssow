@@ -282,7 +282,7 @@
 'there are no linked pathways for this learning episode.': 'there are no linked pathways for this lesson.',
 'there are no references for this scheme of work.': 'there are no references for this scheme of work.',
 'there are no schemes of work for ': 'There are no schemes of work for ',
-'there is no identified prior learning for this learning episode.': 'there is no identified prior learning for this learning episode.',
+'there is no prior learning identified for this learning episode.': 'there is no prior learning identified for this lesson.',
 'This App': 'This App',
 'This email already has an account': 'This email already has an account',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
