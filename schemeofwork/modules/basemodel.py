@@ -104,8 +104,8 @@ class BaseModel(object):
         # 2. check the string is a url
         if value_to_validate is not None:
             if len(value_to_validate) > 0:
-                if re.search("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", value_to_validate) == None:
-                    self.validation_errors[name_of_property] = "{} is not a valid range".format(value_to_validate)
+                if re.search("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,5})?(\/.*)?$", value_to_validate) == None:
+                    self.validation_errors[name_of_property] = "{} is not a valid url".format(value_to_validate)
                     self.is_valid = False
 
 

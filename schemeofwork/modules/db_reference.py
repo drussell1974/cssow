@@ -47,7 +47,8 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
                  "LEFT JOIN sow_learning_episode__has__references as le_ref ON le_ref.learning_episode_id = le.id AND le_ref.reference_id = ref.id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
-                 " OR (ref.published = 1 OR ref.created_by = {auth_user});"
+                 " OR (ref.published = 1 OR ref.created_by = {auth_user}) " \
+                 "ORDER BY reference_type_id, title, authors;"
 
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
 
