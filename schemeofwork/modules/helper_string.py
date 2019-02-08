@@ -70,6 +70,5 @@ def date_to_string(date):
         suffix = "th"
     else:
         suffix = ["st", "nd", "rd"][date.day % 10 - 1]
-
-    return date.strftime("%A, %d{suffix} %B %Y".format(suffix=suffix))
-
+    strday = date.strftime("%A, ")
+    return strday + date.strftime("%d{suffix} %B %Y".format(suffix=suffix)).lstrip('0')
