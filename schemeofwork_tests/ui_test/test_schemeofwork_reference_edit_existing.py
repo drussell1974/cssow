@@ -12,7 +12,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' click the add reference button '
         self.test_context.implicitly_wait(10)
-        elem = self.test_context.find_element_by_id("edit-reference-{}".format(self.test_reference))
+        elem = self.test_context.find_element_by_id("add-reference")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         elem.click()
@@ -34,6 +34,9 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
+
+        self.wait()
+
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -48,9 +51,10 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
+
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','ocr as and a level computer science from pg online limited for a-level computer science')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','text book, website or video for a-level computer science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
