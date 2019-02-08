@@ -58,7 +58,9 @@
         <h3 class="chalk">{{=T("learning materials")}}</h3>
           <ul>
           {{ for item in learning_materials: }}
+            {{ if len(item.page_notes) > 0: }}
               <li class="chalk"><a href="{{=item.uri}}" target="_blank">{{=item.title}}</a> {{=item.publisher}}<br><span class="small"><a href="{{=item.page_uri}}" target="_blank">{{=item.page_notes}}</a></span></li>
+             {{ pass }}
           {{ pass }}
           </ul>
         {{ pass }}
