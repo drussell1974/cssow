@@ -37,12 +37,11 @@
       <!-- Learning Objectives -->
       <h2 class="chalk">{{=T("today's learning objectives")}}</h2>
         {{ group_name = "" }}
-        <ol>
+        <ul>
           {{ for row in learning_objectives: }}
             {{ if row.group_name is not None: }}
                 {{ if group_name.upper() != row.group_name.upper(): }}
-
-                    <p>{{=row.group_name}}</p>
+                    <span><b>{{=row.group_name}}</b></span>
                 {{
                     group_name = row.group_name
                     pass
@@ -50,7 +49,7 @@
             {{ pass }}
             <li class="chalk">{{=row.description}}</li>
            {{ pass }}
-        </ol>
+        </ul>
         <!-- Learning Objectives END-->
 
       <!-- Learning Materials -->
