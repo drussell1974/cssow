@@ -23,7 +23,7 @@
 
             <li class="nav-item {{ if item.id == learning_episode_id: }}mark{{pass}} fillspace">
               <a href="{{=URL('learningobjective', 'index', args=[item.scheme_of_work_id, item.id])}}" class="nav-link" id="nav-link-learning-episode-{{=learning_episode_id}}">
-                {{=T("Week {}: {}").format(item.order_of_delivery_id, dictionary_to_string(item.related_topic_ids,"name", {"checked":True}))}}
+                {{=T("Week {}: {}").format(item.order_of_delivery_id, item.title)}}
               </a>
             </li>
   {{ pass }}

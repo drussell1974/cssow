@@ -44,9 +44,9 @@ def index():
 
     content = {
         "main_heading":T("learning objectives"),
-        "sub_heading":T("for {scheme_of_work_name} - lesson {order_of_delivery_id} - {topic_name}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id, topic_name=learning_episode.topic_name),
+        "sub_heading":learning_episode.title,
         "background_img":"home-bg.jpg",
-        "strap_line":learning_episode.summary
+        "strap_line":T("{scheme_of_work_name} - lesson {order_of_delivery_id}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id)
               }
 
     return dict(
