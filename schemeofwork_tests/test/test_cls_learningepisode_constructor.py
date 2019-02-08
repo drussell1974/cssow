@@ -21,7 +21,7 @@ class Test_LearningEpisode_Constructor(TestCase):
     def test_validate_for_default_instance_returns_false(self):
 
         # setup
-        test = LearningEpisodeModel(0)
+        test = LearningEpisodeModel(0, "Data Representation: Images")
 
         # test
         test.validate()
@@ -33,10 +33,11 @@ class Test_LearningEpisode_Constructor(TestCase):
     def test_constructor_default(self):
 
         # test
-        test = LearningEpisodeModel(0)
+        test = LearningEpisodeModel(0, "Data Representation: Images")
 
         # assert
         self.assertEqual(0, test.id)
+        self.assertEqual("Data Representation: Images", test.title)
         self.assertEqual(1, test.order_of_delivery_id, "order_of_delivery_id should be 0")
         self.assertEqual(0, test.scheme_of_work_id, "scheme_of_work_id should be 0")
         self.assertEqual("", test.scheme_of_work_name, "scheme_of_work_name should be ''")
@@ -59,6 +60,7 @@ class Test_LearningEpisode_Constructor(TestCase):
         # setup
 
         test = LearningEpisodeModel(1,
+                                 title="Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
                                  topic_id=4,
@@ -73,6 +75,7 @@ class Test_LearningEpisode_Constructor(TestCase):
 
         # assert
         self.assertEqual(1, test.id)
+        self.assertEqual("Data Representation: Images", test.title)
         self.assertEqual(2, test.order_of_delivery_id)
         self.assertEqual(3, test.scheme_of_work_id)
         self.assertEqual(4, test.topic_id)

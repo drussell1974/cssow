@@ -71,6 +71,15 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
+                <label>{{=T("title")}}</label>
+                <input type="text" name="title" class="form-control" placeholder="{{=T('enter a title')}}" id="ctl-title"
+                       maxlength="80" value='{{=model.title}}'>
+                <p class="help-block text-danger"></p>
+              </div>
+                <hr>
+            </div>
+            <div class="control-group">
+              <div class="form-group  controls">
                 <label>{{=T("summary")}}</label>
                 <input type="text" name="summary" class="form-control" placeholder="{{=T('enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
                        maxlength="80" value='{{=model.summary}}'>

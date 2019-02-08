@@ -73,6 +73,11 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         elem.clear()
         elem.send_keys("1")
 
+        ' ctl-title '
+        elem = self.test_context.find_element_by_id("ctl-title")
+        elem.clear()
+        elem.send_keys("Data Representation: Sound")
+
         ' ctl-summary '
         elem = self.test_context.find_element_by_id("ctl-summary")
         elem.clear()

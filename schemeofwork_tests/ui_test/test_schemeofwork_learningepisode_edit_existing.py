@@ -77,6 +77,11 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem_order_of_delivery_id.clear()
         elem_order_of_delivery_id.send_keys("1")
 
+        ' ctl-title '
+        elem_title = self.test_context.find_element_by_id("ctl-title")
+        elem_title.clear()
+        elem_title.send_keys("Data Representation: Sound")
+
         ' ctl-topic_id - select KS4 '
         elem_topic_id = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem_topic_id.find_elements_by_tag_name('option')
@@ -105,12 +110,10 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         elem_pathway_objective_id477.send_keys(Keys.TAB)
 
-        self.wait()
         ' submit the form '
         elem_saveButton = self.test_context.find_element_by_id("saveButton")
         elem_saveButton.send_keys(Keys.RETURN)
         self.wait()
-
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for A-Level Computer Science')

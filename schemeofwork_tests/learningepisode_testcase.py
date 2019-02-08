@@ -8,6 +8,7 @@ class LearningEpisode_TestCase(TestCase):
         """ Create a valid Object """
         # set up
         test = LearningEpisodeModel(1,
+                                 title = "Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
                                  topic_id=4,
@@ -24,6 +25,7 @@ class LearningEpisode_TestCase(TestCase):
 
         # assert
         self.assertEqual(1, test.id)
+        self.assertEqual("Data Representation: Images", test.title)
         self.assertEqual(2, test.order_of_delivery_id)
         self.assertEqual(3, test.scheme_of_work_id)
         self.assertEqual(4, test.topic_id)

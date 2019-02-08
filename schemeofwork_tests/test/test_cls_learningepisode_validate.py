@@ -4,6 +4,119 @@ sys.path.append('../../schemeofwork/modules')
 from learningepisode_testcase import LearningEpisode_TestCase
 
 
+class test_LearningEpisodeModel_validate__title(LearningEpisode_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.title = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.title, "")
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("title" in test.validation_errors, "title should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.title = "  "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.title, "")
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("title" in test.validation_errors, "title should have no validation errors - %s" % test.validation_errors)
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.title = "Data Representation: Sound"
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.title, "Data Representation: Sound")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("summary" in test.validation_errors, "summary should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__valid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.title = " Data Representation: Sound "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(test.title, "Data Representation: Sound")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("title" in test.validation_errors, "title should have no validation errors - %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.title = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("title" in test.validation_errors, "title should have validation error %s" % test.validation_errors)
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.title = "Lorem ipsum dolor sit amet, consectetur adipi" # 45 characters
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+        self.assertFalse("title" in test.validation_errors, "title should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.title = "Lorem ipsum dolor sit amet, consectetur adipis" # 46 characters + 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("title" in test.validation_errors, "title should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
 class test_LearningEpisodeModel__validate__order_of_delivery_id(LearningEpisode_TestCase):
 
     test = None

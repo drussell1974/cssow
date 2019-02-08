@@ -31,4 +31,4 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
         result = db_learningobjective.get_linked_pathway_objectives(self.fake_db, learning_episode_id = 35)
 
         # assert
-        self.assertEqual(3, len(result))
+        self.assertEqual(1, len(result))

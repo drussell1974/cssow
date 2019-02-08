@@ -135,6 +135,7 @@ def save_item():
 
     model = LearningEpisodeModel(
         id_ = request.vars.id,
+        title = request.vars.title,
         order_of_delivery_id = request.vars.order_of_delivery_id,
         scheme_of_work_id = request.vars.scheme_of_work_id,
         topic_id = request.vars.topic_id,

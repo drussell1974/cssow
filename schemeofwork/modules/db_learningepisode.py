@@ -5,6 +5,7 @@ from db_helper import to_db_null
 def get_options(db, scheme_of_work_id, auth_user):
 
     str_select = "SELECT le.id as id," \
+                 " le.title as title," \
                  " le.order_of_delivery_id as order_of_delivery_id," \
                  " top.id as topic_id," \
                  " top.name as name," \
@@ -22,7 +23,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = LearningEpisodeModel(id_=row[0], order_of_delivery_id=row[1], topic_id=row[2], topic_name=row[3], year_id=row[4], year_name=row[5], scheme_of_work_id=scheme_of_work_id)
+        model = LearningEpisodeModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
@@ -34,7 +35,8 @@ def get_options(db, scheme_of_work_id, auth_user):
 def get_all(db, scheme_of_work_id, auth_user):
 
     select_sql = "SELECT "\
-                 " le.id as id,"\
+                 " le.id as id," \
+                 " le.title as title,"\
                  " le.order_of_delivery_id as order_of_delivery_id,"\
                  " le.scheme_of_work_id as scheme_of_work_id,"\
                  " sow.name as scheme_of_work_name,"\
@@ -65,20 +67,21 @@ def get_all(db, scheme_of_work_id, auth_user):
     for row in rows:
         model = LearningEpisodeModel(
             id_=row[0],
-            order_of_delivery_id=row[1],
-            scheme_of_work_id=row[2],
-            scheme_of_work_name=row[3],
-            topic_id=row[4],
-            topic_name=row[5],
-            parent_topic_id=row[6],
-            parent_topic_name=row[7],
-            key_stage_id=row[8],
-            year_id=row[9],
-            key_words = row[10],
-            summary = row[11],
-            created=row[12],
-            created_by_id=row[13],
-            created_by_name=row[14])
+            title = row[1],
+            order_of_delivery_id=row[2],
+            scheme_of_work_id=row[3],
+            scheme_of_work_name=row[4],
+            topic_id=row[5],
+            topic_name=row[6],
+            parent_topic_id=row[7],
+            parent_topic_name=row[8],
+            key_stage_id=row[9],
+            year_id=row[10],
+            key_words = row[11],
+            summary = row[12],
+            created=row[13],
+            created_by_id=row[14],
+            created_by_name=row[15])
 
         ' get the key words from the learning objectives '
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
@@ -93,10 +96,11 @@ def get_all(db, scheme_of_work_id, auth_user):
 
 
 def get_model(db, id_, auth_user):
-    model = LearningEpisodeModel(id_);
+    model = LearningEpisodeModel(id_, "");
 
     select_sql = "SELECT "\
                   " le.id as id,"\
+                 " le.title as title," \
                  " le.order_of_delivery_id as order_of_delivery_id,"\
                  " le.scheme_of_work_id as scheme_of_work_id,"\
                  " sow.name as scheme_of_work_name,"\
@@ -125,20 +129,21 @@ def get_model(db, id_, auth_user):
     for row in rows:
         model = LearningEpisodeModel(
             id_=row[0],
-            order_of_delivery_id=row[1],
-            scheme_of_work_id=row[2],
-            scheme_of_work_name=row[3],
-            topic_id=row[4],
-            topic_name=row[5],
-            parent_topic_id=row[6],
-            parent_topic_name=row[7],
-            key_stage_id=row[8],
-            year_id=row[9],
-            key_words = row[10],
-            summary = row[11],
-            created=row[12],
-            created_by_id=row[13],
-            created_by_name=row[14])
+            title = row[1],
+            order_of_delivery_id=row[2],
+            scheme_of_work_id=row[3],
+            scheme_of_work_name=row[4],
+            topic_id=row[5],
+            topic_name=row[6],
+            parent_topic_id=row[7],
+            parent_topic_name=row[8],
+            key_stage_id=row[9],
+            year_id=row[10],
+            key_words = row[11],
+            summary = row[12],
+            created=row[13],
+            created_by_id=row[14],
+            created_by_name=row[15])
 
     return model
 
@@ -217,8 +222,9 @@ def _update(db, model, published):
 
     # 1. Update the learning episode
 
-    str_update = "UPDATE sow_learning_episode SET order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
+    str_update = "UPDATE sow_learning_episode SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
     str_update = str_update.format(
+        title = model.title,
         order_of_delivery_id=model.order_of_delivery_id,
         year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,
@@ -250,8 +256,9 @@ def _insert(db, model, published):
 
     # 1. Insert the learning episode
 
-    str_insert = "INSERT INTO sow_learning_episode (order_of_delivery_id, year_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ({order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_learning_episode (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
+        title = model.title,
         order_of_delivery_id=model.order_of_delivery_id,
         year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,

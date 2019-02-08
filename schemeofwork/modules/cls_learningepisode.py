@@ -4,8 +4,9 @@ from basemodel import BaseModel, try_int
 class LearningEpisodeModel (BaseModel):
 
 
-    def __init__(self, id_, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, title, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
+        self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
         self.scheme_of_work_name = scheme_of_work_name
@@ -37,6 +38,10 @@ class LearningEpisodeModel (BaseModel):
 
         # clean properties before validation
         self._clean_up()
+
+        # Validate summary
+        self._validate_required_string("title", self.title, 1, 45)
+
 
         # Validate order_of_delivery_id
         if self.order_of_delivery_id is None or self.order_of_delivery_id < 1 or self.order_of_delivery_id > 9999:
@@ -74,6 +79,9 @@ class LearningEpisodeModel (BaseModel):
 
     def _clean_up(self):
         """ clean up properties """
+
+        if self.title is not None:
+            self.title = self.title.lstrip(' ').rstrip(' ')
 
         if self.scheme_of_work_name is not None:
             self.scheme_of_work_name = self.scheme_of_work_name.lstrip(' ').rstrip(' ')

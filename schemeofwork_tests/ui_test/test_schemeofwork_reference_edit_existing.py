@@ -35,8 +35,6 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
 
-        self.wait()
-
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
