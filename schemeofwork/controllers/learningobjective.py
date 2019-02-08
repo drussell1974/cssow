@@ -92,7 +92,8 @@ def whiteboard_view():
 
     return dict(
         display_date = date_to_string(datetime.today()),
-        lesson_title = learning_episode.summary,
+        lesson_title = learning_episode.title,
+        lesson_summary = learning_episode.summary,
         prior_learning = prior_learning,
         learning_materials = learning_materials,
         learning_objectives = learning_objectives,
