@@ -34,7 +34,7 @@
                     on {{=str(row.get_ui_created())}}
                   {{ pass }}
                   {{if auth.user:}}
-                     - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">{{=T("Edit")}}</a>
+                     - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">{{=T("Delete")}}</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">{{=T("Edit")}}</a>
                   {{pass}}</p>
               </div>
               <hr>
