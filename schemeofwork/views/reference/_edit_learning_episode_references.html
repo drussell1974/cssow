@@ -4,7 +4,8 @@
   {{ for item in view_model: }}
         <div class="input-group input-group-sm mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">{{=item.title}}</span>
+              <span class="input-group-text" id="inputGroup-sizing-sm">{{=item.title}}
+              <span class="small">{{=item.publisher}}</span></span>
           </div>
           <input type="text" max="250" name="learning_episode_page_reference_notes" placeholder="page notes" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_notes}}">
           <input type="text" max="2083" name="learning_episode_page_reference_uri" placeholder="website link" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{=item.page_uri}}">

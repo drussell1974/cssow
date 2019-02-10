@@ -11,7 +11,7 @@
       {{ pass }}
           <h5>
             <a id="topic-{{=item.topic_id}}-heading-text" class="nav-link" data-toggle="collapse" data-target="#topic-{{=item.topic_id}}-collapse" aria-expanded="true" aria-controls="topic-{{=item.topic_id}}-collapse">
-              {{ =item.topic_name}}
+              {{=item.year_name}} {{ =item.topic_name}}
             </a> <!-- class="nav-link" -->
           </h5><!-- class="mb-0" -->
       <nav id="topic-{{=item.topic_id}}-collapse" class="collapse {{ if topic_id == item.topic_id: }}show{{ pass }} nav flex-column" aria-labelledby="topic-{{=item.topic_id}}-heading" data-parent="#accordion">
@@ -23,7 +23,8 @@
 
             <li class="nav-item {{ if item.id == learning_episode_id: }}mark{{pass}} fillspace">
               <a href="{{=URL('learningobjective', 'index', args=[item.scheme_of_work_id, item.id])}}" class="nav-link" id="nav-link-learning-episode-{{=learning_episode_id}}">
-                {{=T("Week {}: {}").format(item.order_of_delivery_id, item.title)}}
+                {{=item.title}}<br>
+                <i class='small'>{{=T("Week {}").format(item.order_of_delivery_id)}}</i>
               </a>
             </li>
   {{ pass }}

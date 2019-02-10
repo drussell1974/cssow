@@ -15,7 +15,7 @@ def get_options(db, scheme_of_work_id, auth_user):
                  "FROM sow_learning_episode as le" \
                  " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
                  " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
-                 "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.order_of_delivery_id;"
+                 "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.year_id, le.order_of_delivery_id;"
 
     str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
@@ -47,6 +47,7 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " pnt_top.name as parent_topic_name,"\
                  " sow.key_stage_id as key_stage_id," \
                  " yr.id as year_id," \
+                 " yr.name as year_name,"\
                  " le.key_words as key_words,"\
                  " le.summary as summary,"\
                  " le.created as created,"\
@@ -59,7 +60,8 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " LEFT JOIN sow_topic as top ON top.id = le.topic_id "\
                  " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                 " WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.order_of_delivery_id;"
+                 " WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user})" \
+                 " ORDER BY le.year_id, le.order_of_delivery_id;"
     select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
@@ -79,12 +81,13 @@ def get_all(db, scheme_of_work_id, auth_user):
             parent_topic_name=row[8],
             key_stage_id=row[9],
             year_id=row[10],
-            key_words = row[11],
-            summary = row[12],
-            created=row[13],
-            created_by_id=row[14],
-            created_by_name=row[15],
-            published = row[16]
+            year_name=row[11],
+            key_words = row[12],
+            summary = row[13],
+            created=row[14],
+            created_by_id=row[15],
+            created_by_name=row[16],
+            published = row[17]
         )
 
         ' get the key words from the learning objectives '
