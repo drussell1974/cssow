@@ -93,13 +93,13 @@
               {{ for key_word in merge_string_list(row.key_words, row.key_words_from_learning_objectives, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
-            <p class="post-meta">created by
+            <p class="post-meta">{{=T("Created by")}}
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}
               {{ pass }}, {{=T("Learning objectives")}} {{=row.number_of_learning_objective}}
               {{if auth.user:}}
-                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a>
+                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">{{=T("Delete")}}</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a>
                 {{pass}}</p>
           </div>
           <hr>

@@ -111,7 +111,7 @@
               {{ for key_word in string_to_list(row.key_words, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>
               {{ pass }}
-            <p class="post-meta">{{=T("created by")}}
+            <p class="post-meta">{{=T("Created by")}}
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
                 on {{=str(row.get_ui_created())}}

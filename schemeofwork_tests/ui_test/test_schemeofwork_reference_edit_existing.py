@@ -53,7 +53,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','Text book, Website or Video for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning materials','Text book, Website or Video for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
