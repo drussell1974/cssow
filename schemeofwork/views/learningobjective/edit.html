@@ -99,7 +99,7 @@
             <!-- Topic START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("topic")}}</label>
+                <label>{{=T("Topic")}}</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required>
                     <option value="">- {{=T("select an option")}} -</option>
                     {{ for opt in topic_options: }}
@@ -124,7 +124,7 @@
             <div class="control-group">
               <div class="form-group controls">
                 <label>{{=T("Keywords")}}</label>
-                <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
+                <input type="text" name="key_words" class="form-control" placeholder="{{=T('Type a keyword then press tab or enter')}}" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
               </div>

@@ -61,7 +61,7 @@
             </ul>
           </div>
           {{if auth.user:}}
-              <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
+              <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('New')}}</a>
           {{pass}}
             <!-- Pager Header END -->
           <!-- Scheme of works -->
@@ -99,7 +99,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}, {{=T("Learning objectives")}} {{=row.number_of_learning_objective}}
               {{if auth.user:}}
-                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">edit</a>
+                - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">delete</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a>
                 {{pass}}</p>
           </div>
           <hr>

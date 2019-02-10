@@ -20,8 +20,8 @@ def index():
     data = pager.data_to_display()
 
     content = {
-        "main_heading":T("learning materials"),
-        "sub_heading": T("list of learning materials"),
+        "main_heading":T("Learning materials"),
+        "sub_heading": T("List of learning materials"),
         "strap_line":None,
         "background_img":"home-bg.jpg"
               }

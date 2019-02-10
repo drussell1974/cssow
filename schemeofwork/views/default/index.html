@@ -34,7 +34,7 @@
                     on {{=str(row.get_ui_created())}}
                   {{ pass }}
                   {{if auth.user:}}
-                     - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">edit</a>
+                     - <a href="{{=URL('schemesofwork', 'delete_item', vars=dict(id=row.id))}}">delete</a> - <a href="{{=URL('schemesofwork', 'edit', vars=dict(id=row.id))}}">{{=T("Edit")}}</a>
                   {{pass}}</p>
               </div>
               <hr>
@@ -42,7 +42,7 @@
 
               <!-- Pager -->
               <div class="clearfix">
-                <a class="btn btn-primary float-right" href="{{=URL('schemesofwork', 'index')}}" id="btn-all-schemes-of-work">{{=T("show all")}} &rarr;</a>
+                <a class="btn btn-primary float-right" href="{{=URL('schemesofwork', 'index')}}" id="btn-all-schemes-of-work">{{=T("Show all")}} &rarr;</a>
               </div>
               <!-- Scheme of works END -->
           </section>
