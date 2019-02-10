@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-def get_options(db, topic_id):
+def get_options(db, topic_id=0):
     select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 AND topic_id = {topic_id} OR {topic_id} = 0 ORDER BY name;"
     select_sql = select_sql.format(topic_id=topic_id)
 

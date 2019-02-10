@@ -181,7 +181,7 @@ def edit():
     content = {
         "main_heading":T("Learning objective"),
         "sub_heading":T("{} - Lesson {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
-        "strap_line":T("fill out the form below then click save")
+        "strap_line":T("Fill out the form below then click save")
               }
     return dict(
         content = content,

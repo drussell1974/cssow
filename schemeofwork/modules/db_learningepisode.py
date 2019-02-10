@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from cls_learningepisode import LearningEpisodeModel
 from db_helper import to_db_null
+import db_keyword
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -147,6 +148,12 @@ def get_model(db, id_, auth_user):
             created=row[13],
             created_by_id=row[14],
             created_by_name=row[15])
+
+    # TODO: Clean up keywords - Remove once fixed
+    sanitised_keywords = db_keyword.get_options(db)
+    for skw in sanitised_keywords:
+        model.key_words = model.key_words.replace(skw.lower(), skw)
+    print(model.key_words)
 
     return model
 

@@ -18,7 +18,7 @@
                 <!-- SHOULD ONLY DISPLAY IF EXISTING -->
                 {{ if model.id > 0: }}
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.id])}}">{{=T("Episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.id])}}">{{=T("Lessons")}}</a>
                 </li>
                 {{ pass }}
             </ul>
