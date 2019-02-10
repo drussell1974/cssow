@@ -34,8 +34,8 @@ def index():
 
 
     content = {
-        "main_heading":T("schemes of work"),
-        "sub_heading":T("our shared schemes of work by key stage"),
+        "main_heading":T("Schemes of Work"),
+        "sub_heading":T("Our shared schemes of work by key stage"),
         "strap_line":None,
         "background_img":"home-bg.jpg"
               }
@@ -81,9 +81,9 @@ def edit():
     keystage_options = db_keystage.get_options(db)
 
     content = {
-        "main_heading":T("scheme of work") if model.name == "" else model.name,
-        "sub_heading":T("create a new scheme of work") if model.name == "" else T("{} {}".format(model.key_stage_name, model.exam_board_name)),
-        "strap_line":T("fill out the form below then click save")
+        "main_heading":T("Scheme of Work") if model.name == "" else model.name,
+        "sub_heading":T("Create a new scheme of work") if model.name == "" else T("{} {}".format(model.key_stage_name, model.exam_board_name)),
+        "strap_line":T("Fill out the form below then click save")
               }
     return dict(content = content, model = model, examboard_options = examboard_options, keystage_options = keystage_options)
 

@@ -39,23 +39,11 @@ class test_db_keyword__insert(TestCase):
         rows_before = db_keyword.get_options(self.fake_db, topic_id=1)
 
         # test
-        db_keyword.save(self.fake_db, ["foobar"], topic_id=1)
+        db_keyword.save(self.fake_db, ["FooBar"], topic_id=1)
 
         # assert
         rows_after = db_keyword.get_options(self.fake_db, topic_id=1)
         self.assertEqual(len(rows_after), len(rows_before), "should *NOT* have added a row. Before and after should be the same: {} before and {} after".format(len(rows_before), len(rows_after)))
-
-
-    def test__should_save_all_lowercase(self):
-        #set up
-
-        # test
-        db_keyword.save(self.fake_db, ["FooBar"],topic_id=1)
-
-        rows = db_keyword.get_options(self.fake_db, topic_id=1)
-
-        for item in rows:
-            self.assertTrue(item.islower(), "'{}' is not lower case".format(item))
 
 
     def test__should_not_save_leading_or_trailing_whitespace(self):
@@ -67,7 +55,7 @@ class test_db_keyword__insert(TestCase):
         rows = db_keyword.get_options(self.fake_db, topic_id=1)
 
         for item in rows:
-            self.assertEqual(item.lstrip(' ').rstrip(' '), item, "'{}' is not lower case".format(item))
+            self.assertEqual(item.lstrip(' ').rstrip(' '), item, "'{}' has not been trimmed".format(item))
 
 
     def test__should_not_save_empty(self):

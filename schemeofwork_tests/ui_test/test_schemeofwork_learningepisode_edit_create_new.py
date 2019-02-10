@@ -46,7 +46,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Lesson','for a-level computer science - lesson 1')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Lesson','A-Level Computer Science - Lesson 1')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -116,4 +116,4 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning Objectives','for A-Level Computer Science - Lesson 1 - Algorithms')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','Data Representation: Sound')

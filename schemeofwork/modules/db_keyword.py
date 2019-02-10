@@ -25,8 +25,8 @@ def save(db, key_words, topic_id):
 
     ' insert the keywords not already in the database '
     for key_word in key_words:
-        ' trim white space and set to lower case '
-        key_word = key_word.lstrip(' ').rstrip(' ').lower()
+        ' trim white space '
+        key_word = key_word.lstrip(' ').rstrip(' ')
         ' check if the keyword exists and insert as necessary  '
         if key_word in existing_keywords or len(key_word) == 0:
             pass

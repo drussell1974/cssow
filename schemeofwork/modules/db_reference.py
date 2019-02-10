@@ -120,7 +120,7 @@ Private CRUD functions
 def _update(db, model):
     """ updates the sow_learning_episode and sow_learning_episode__has__topics """
 
-    # 1. Update the learning episode
+    # 1. Update the lesson
 
     str_update = "UPDATE sow_reference SET reference_type_id = {reference_type_id}, title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, uri = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
     str_update = str_update.format(

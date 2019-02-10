@@ -21,7 +21,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes Of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__navigate_to_learning_episode_index(self):
@@ -37,7 +37,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for KS3 Computing (Track 1)')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'KS3 Computing (Track 1)')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -45,7 +45,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes Of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):

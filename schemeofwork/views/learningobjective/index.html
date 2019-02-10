@@ -14,10 +14,10 @@
       <div class="container">
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("Schemes of Work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">{{=T("episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[scheme_of_work_id])}}">{{=T("Episodes")}}</a>
                 </li>
             </ul>
     </div>
@@ -41,7 +41,7 @@
             <!-- SIDE MENU START -->
               <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
                 <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-                    {{=T("show learning episodes")}}
+                    {{=T("Show lessons")}}
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="sidebarResponsive">
@@ -71,19 +71,19 @@
           </div>
             <!-- Pager Header END -->
 
-          <!-- Show learning objectives for this learning episode -->
-            <h2 class="group-heading">{{=T("learning objectives")}}</h2>
+          <!-- Show learning objectives for this lesson -->
+            <h2 class="group-heading">{{=T("Learning objectives")}}</h2>
             {{ if len(model) == 0: }}
                 <div class="alert alert-info" role="alert">
-                {{=T('there are no learning objectives for this learning episode.')}}
+                {{=T('There are no learning objectives for this learning episode.')}}
                 {{if auth.user:}}
-                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}" class="btn btn-warning">{{=T('click here to get started.')}}</a>
+                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}" class="btn btn-warning">{{=T('Click here to get started.')}}</a>
                 {{pass}}
                 </div>
             {{ else: }}
 
             {{if auth.user:}}
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('new')}}</a>
+                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('New')}}</a>
             {{pass}}
           {{ group_name = "" }}
           {{ for row in model: }}
@@ -117,12 +117,12 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}} ">{{=T("remove")}}</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=T("edit")}}</a>
+                - <a href="{{=URL('learningobjective', 'delete_item', vars=dict(id=row.id, learning_episode_id=row.learning_episode_id, scheme_of_work_id=scheme_of_work_id))}} ">{{=T("Remove")}}</a> - <a href="{{=URL('learningobjective', 'edit', vars=dict(id=row.id,learning_episode_id=row.learning_episode_id,scheme_of_work_id=scheme_of_work_id))}}">{{=T("edit")}}</a>
               {{pass}}</p>
           </div>
           <hr>
             {{ pass }}
-          <!-- Show learning objectives for this learning episode  END -->
+          <!-- Show learning objectives for this lesson  END -->
             {{ pass }}
           <!-- Pager Footer -->
           <div class="clearfix">
@@ -134,7 +134,7 @@
             <section class="alert alert-info" >
                 <div id="div-references">
                 </div><!-- id="div-refernces" -->
-                <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('add reference')}}</a>
+                <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('Add reference')}}</a>
             </section><!-- class="alert alert-info" -->
         </div>
           <section class="alert alert-secondary">

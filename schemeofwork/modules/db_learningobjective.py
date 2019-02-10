@@ -371,7 +371,7 @@ def save(db, model, published=1):
 def add_existing_objective(db, auth_user_id, id_, learning_episode_id):
     model = LearningObjectiveModel(id_ = id_, learning_episode_id = learning_episode_id)
 
-    # insert into linking table between objective and learning episode
+    # insert into linking table between objective and lesson
     str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({learning_objective_id}, {learning_episode_id});"
     str_insert = str_insert.format(learning_objective_id=model.id, learning_episode_id=model.learning_episode_id)
     db.executesql(str_insert)
@@ -447,7 +447,7 @@ def _insert(db, model, published):
     for row in rows:
         model.id = int(row[0])
 
-    # insert into linking table between objective and learning episode
+    # insert into linking table between objective and lesson
     str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({learning_objective_id}, {learning_episode_id});"
     str_insert = str_insert.format(learning_objective_id=model.id, learning_episode_id=model.learning_episode_id)
     db.executesql(str_insert)

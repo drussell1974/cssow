@@ -114,7 +114,7 @@ class LearningObjectiveModel (BaseModel):
             self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ').lower()
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ')
 
         # trim group_name
         if self.group_name is not None:

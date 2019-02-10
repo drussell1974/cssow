@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">
     <div class="site-heading">
-      <h1>{{=T("lesson")}}</h1>
+      <h1>{{=T("Lesson")}}</h1>
       <span class="subheading">{{=content["sub_heading"]}}</span>
     </div>
   </div>
@@ -19,14 +19,14 @@
       <div class="container">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("Schemes of Work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">{{=T("episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">{{=T("Lessons")}}</a>
                 </li>
                 {{ if model.id > 0: }}
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.id])}}">{{=T("objectives")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.id])}}">{{=T("Objectives")}}</a>
                 </li>
                 {{ pass }}
             </ul>
@@ -49,9 +49,9 @@
           <form name="edit-learningepisode" id="form" method="post" action="save_item">
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("year group")}}</label>
+                <label>{{=T("Year group")}}</label>
                 <select class="form-control" name="year_id" id="ctl-year_id" required>
-                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("select an option")}} -</option>
+                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("Select an option")}} -</option>
                     {{ for opt in year_options: }}
                     <option value="{{=opt.id}}" {{ if opt.id == model.year_id: }} selected {{ pass }}>{{=opt.name}}</option>
                     {{ pass }}
@@ -61,7 +61,7 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("order of delivery")}}</label>
+                <label>{{=T("Order of delivery")}}</label>
                 <!-- in the future select from planner -->
                 <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{=T('enter an order of delivery')}}" id="ctl-order_of_delivery_id" required
                        min="1" max="9999" value='{{=model.order_of_delivery_id}}'>
@@ -71,7 +71,7 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("title")}}</label>
+                <label>{{=T("Title")}}</label>
                 <input type="text" name="title" class="form-control" placeholder="{{=T('enter a title')}}" id="ctl-title"
                        maxlength="80" value='{{=model.title}}'>
                 <p class="help-block text-danger"></p>
@@ -80,7 +80,7 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("summary")}}</label>
+                <label>{{=T("Summary")}}</label>
                 <input type="text" name="summary" class="form-control" placeholder="{{=T('enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
                        maxlength="80" value='{{=model.summary}}'>
                 <p class="help-block text-danger"></p>
@@ -89,9 +89,9 @@
             </div>
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("topic")}}</label>
+                <label>{{=T("Topic")}}</label>
                 <select class="form-control" name="topic_id" id="ctl-topic_id" required>
-                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("select an option")}} -</option>
+                    <option value="" {{if has_objectives == True: }} disabled {{ pass }}>- {{=T("Select an option")}} -</option>
                     {{ for opt in topic_options: }}
                     <option value="{{=opt.id}}" {{ if opt.id == model.topic_id: }} selected {{ elif has_objectives == True: }} disabled {{ pass }}>{{=opt.name}}</option>
                     {{ pass }}
@@ -109,7 +109,7 @@
               <!-- KS123 Pathway START -->
               <div class="control-group">
                 <div class="form-group controls">
-                  <label>{{=T("linked to pathway")}}</label>
+                  <label>{{=T("Linked to pathway")}}</label>
                     <div id="div-pathway_ks123_id">
                     </div>
                     <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
@@ -119,7 +119,7 @@
               <!-- KS123 Pathway END -->
             <div class="control-group">
               <div class="form-group  controls">
-                <label>{{=T("keywords")}}</label>
+                <label>{{=T("Keywords")}}</label>
                 <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
@@ -130,7 +130,7 @@
               <!-- Pathway Objectives START -->
               <div class="control-group">
                 <div class="form-group controls">
-                  <label>{{=T("prior learning")}}</label>
+                  <label>{{=T("Prior learning")}}</label>
                     <div id="div-pathway_objective_id">
                     </div>
                     <p class="help-block text-danger"></p>
@@ -152,8 +152,9 @@
               <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <input type="hidden" id="hdn-related_topic_ids" name="related_topic_ids" value="{{=model.related_topic_ids}}">
               <input type="hidden" name="_next" value="{{=request.vars._next}}">
-              <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">Cancel</button>
+              <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{=T("Draft")}}</button>
+              <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{=T("Save and Publish")}}</button>
+              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">((=T("Cancel")}}</button>
             </div>
           </form>
         </div>
@@ -177,7 +178,7 @@
                 $("#div-pathway_objective_id").html(result);
             },
             error: function(){
-                $("#div-pathway_objective_id").html('could not get pathway objectives at this time');
+                $("#div-pathway_objective_id").html('Could not get pathway objectives at this time');
             }
         });
     }
@@ -191,7 +192,7 @@
                 $("#div-pathway_ks123_id").html(result);
             },
             error: function(){
-                $("#div-pathway_ks123_id").html('could not get pathway objectives at this time');
+                $("#div-pathway_ks123_id").html('Could not get pathway objectives at this time');
             }
         });
     }

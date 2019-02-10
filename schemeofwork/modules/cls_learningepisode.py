@@ -96,7 +96,7 @@ class LearningEpisodeModel (BaseModel):
             self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ').lower()
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ')
 
         if self.summary is not None:
             self.summary = self.summary.lstrip(' ').rstrip(' ')

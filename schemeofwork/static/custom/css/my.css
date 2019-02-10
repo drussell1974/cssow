@@ -11,29 +11,6 @@ h4, h5, h6 {
     padding-top:5px;
 }
 
-.site-heading {
-    text-transform: capitalize;
-}
-
-.subheading, .post-subtitle {
-    text-transform: lowercase;
-}
-
-.group-heading {
-    text-transform: uppercase;
-    padding-top:40px;
-}
-
-.secondary-heading {
-    text-transform: capitalize;
-    padding-top:15px;
-}
-
-.form-group > label {
-    text-transform: uppercase;
-}
-
-
 .ui-menu {
     list-style-type:none;
     background:white;

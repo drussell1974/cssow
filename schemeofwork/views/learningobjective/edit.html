@@ -18,13 +18,13 @@
       <div class="container">
           <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T("Schemes of Work")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">{{=T("episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.scheme_of_work_id])}}">{{=T("Episodes")}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.learning_episode_id])}}">{{=T("objectives")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_objectives" href="{{=URL('learningobjective', 'index', args=[model.scheme_of_work_id, model.learning_episode_id])}}">{{=T("Objectives")}}</a>
                 </li>
             </ul>
     </div>
@@ -47,9 +47,9 @@
             <!-- Solo Taxonomy START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("solo taxonomy")}}</label>
+                <label>{{=T("Solo taxonomy")}}</label>
                 <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
-                    <option value="">- {{=T("select an option")}} -</option>
+                    <option value="">- {{=T("Select an option")}} -</option>
                     {{ for opt in solo_taxonomy_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.solo_taxonomy_id:}} selected {{pass}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -61,7 +61,7 @@
             <!-- Description START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("description")}}</label>
+                <label>{{=T("Description")}}</label>
                 <input type="text" class="form-control" placeholder="{{=T('enter a description')}}" id="ctl-description" name="description" required
                        maxlength="1000" value='{{=model.description}}'>
                 <p class="help-block text-danger"></p>
@@ -71,9 +71,9 @@
             <!-- Content START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("curriculum content")}}</label>
+                <label>{{=T("Curriculum content")}}</label>
                 <select class="form-control" name="content_id" id="ctl-content_id" required>
-                    <option value="">- {{=T("select an option")}} -</option>
+                    <option value="">- {{=T("Select an option")}} -</option>
                     {{ for opt in content_options: }}
                     <option value="{{=opt.id}}" {{if opt.id == model.content_id:}} selected {{pass}}>{{=opt.description}}</option>
                     {{ pass }}
@@ -85,7 +85,7 @@
             <!-- Exam board START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("exam board")}}</label>
+                <label>{{=T("Exam board")}}</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
                     <option>- {{=T("select an option")}} {{=T("(optional)")}} -</option>
                     {{ for opt in exam_board_options: }}
@@ -113,7 +113,7 @@
             <!-- Group Name START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("group name")}}</label>
+                <label>{{=T("Group name")}}</label>
                 <input type="text" class="form-control" placeholder="{{=T('enter a group name (optional)')}}" id="ctl-group_name" name="group_name"
                        maxlength="15" value='{{=model.group_name}}'>
                 <p class="help-block text-danger"></p>
@@ -123,7 +123,7 @@
             <!-- Key words START -->
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("keywords")}}</label>
+                <label>{{=T("Keywords")}}</label>
                 <input type="text" name="key_words" class="form-control" placeholder="{{=T('type a keyword then press tab or enter')}}" id="ctl-key_words"
                        maxlength="250" value='{{=model.key_words}}'>
                 <p class="help-block text-danger" id="token-error"></p>
@@ -135,7 +135,7 @@
             <!-- Notes START -->
               <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("notes")}}</label>
+                <label>{{=T("Notes")}}</label>
                 <textarea rows="5" class="form-control" name="notes" placeholder="{{=T('notes')}} {{=T('(optional)')}}" id="ctl-notes" maxlength="2500">
                     {{=model.notes}}
                 </textarea>
@@ -151,8 +151,8 @@
               <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
               <input type="hidden" name="main_topic_id" value="{{=main_topic_id}}">
-              <button type="submit" class="btn btn-primary" id="saveButton">{{=T("save")}}</button>
-              <button type="submit" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("cancel")}}</button>
+              <button type="submit" class="btn btn-primary" id="saveButton">{{=T("Save")}}</button>
+              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("Cancel")}}</button>
             </div>
           </form>
         </div>

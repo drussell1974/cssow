@@ -35,6 +35,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
 
+        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -52,7 +53,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','text book, website or video for a-level computer science')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','Text book, Website or Video for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -97,4 +98,4 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning Objectives','for a-level computer science - lesson 1 - programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','Data Representation: Sound')

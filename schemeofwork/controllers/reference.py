@@ -44,12 +44,12 @@ def edit():
 
     sub_heading = ""
     if model.is_new():
-        sub_heading = T("text book, website or video for {scheme_of_work_name}".format(scheme_of_work_name=scheme_of_work_name))
+        sub_heading = T("Text book, Website or Video for {scheme_of_work_name}".format(scheme_of_work_name=scheme_of_work_name))
     else:
         sub_heading = T("{title} from {publisher} for {scheme_of_work_name}").format(title=model.title, publisher=model.publisher, scheme_of_work_name=scheme_of_work_name)
 
     content = {
-        "main_heading":T("reference"),
+        "main_heading":T("Reference"),
         "sub_heading":sub_heading,
         "strap_line":None
     }
@@ -77,7 +77,7 @@ def save_item():
     model.validate()
 
     if model.is_valid == True:
-        """ save the learning episode """
+        """ save the lesson """
         db_reference.save(db, model)
 
     else:

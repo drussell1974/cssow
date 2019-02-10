@@ -26,5 +26,5 @@ class test_schemeofwork_default_login(UITestCase):
         self.test_context.find_element_by_id("btn-login").click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Log In', 'register to create schemes of work and lessons')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Log In', 'Register to create schemes of work and lessons')
 

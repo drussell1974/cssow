@@ -29,7 +29,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme Of Work', 'Create a new scheme of work')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of Work', 'Create a new scheme of work')
         self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
@@ -43,13 +43,13 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # test
         elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
-        self.assertEqual("schemes of work", elem.text)
+        self.assertEqual("Schemes of Work", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes Of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     """ edit """
@@ -73,7 +73,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme Of Work', 'Create a new scheme of work')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of Work', 'Create a new scheme of work')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -115,7 +115,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'for should_redirect_to_index_if_valid')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'should_redirect_to_index_if_valid')
 
 
 

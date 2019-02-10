@@ -43,10 +43,10 @@ def index():
     paged_data = pager.data_to_display()
 
     content = {
-        "main_heading":T("learning objectives"),
+        "main_heading":T("Learning objectives"),
         "sub_heading":learning_episode.title,
         "background_img":"home-bg.jpg",
-        "strap_line":T("{scheme_of_work_name} - lesson {order_of_delivery_id}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id)
+        "strap_line":T("{scheme_of_work_name} - Lesson {order_of_delivery_id}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id)
               }
 
     return dict(
@@ -179,8 +179,8 @@ def edit():
     exam_board_options = db_examboard.get_options(db)
 
     content = {
-        "main_heading":T("learning objective"),
-        "sub_heading":T("for {} - lesson {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
+        "main_heading":T("Learning objective"),
+        "sub_heading":T("{} - Lesson {} - {}").format(learning_episode.scheme_of_work_name, learning_episode.order_of_delivery_id, learning_episode.topic_name),
         "strap_line":T("fill out the form below then click save")
               }
     return dict(

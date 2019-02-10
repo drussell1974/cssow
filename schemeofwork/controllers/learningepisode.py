@@ -30,8 +30,8 @@ def index():
     data = pager.data_to_display()
 
     content = {
-        "main_heading":T("learning episodes"),
-        "sub_heading": T("for {}").format(scheme_of_work_name),
+        "main_heading":T("Lessons"),
+        "sub_heading": T("{}").format(scheme_of_work_name),
         "strap_line":None,
         "background_img":"home-bg.jpg"
               }
@@ -118,8 +118,8 @@ def edit():
             break
 
     content = {
-        "main_heading":T("learning episode"),
-        "sub_heading":T("for {scheme_of_work_name} {topic_name} - Lesson {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
+        "main_heading":T("Lesson"),
+        "sub_heading":T("{scheme_of_work_name} {topic_name} - Lesson {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
         "strap_line":T("{topic_name} - Lesson {order_of_delivery_id}\n{summary}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id, summary=model.summary)
               }
 
@@ -188,7 +188,7 @@ def save_item():
 
     if model.is_valid == True:
 
-        ' save the learning episode '
+        ' save the lesson '
         model = db_learningepisode.save(db, model, published)
         ' save page references '
         db_reference.upsert_learning_episode_page_references(db, model)

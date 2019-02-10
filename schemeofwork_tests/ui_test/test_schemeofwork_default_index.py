@@ -22,7 +22,7 @@ class test_schemeofwork_default_index(UITestCase):
         # test
         self
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Computing Schemes Of Work And Lessons', 'Computing schemes of work lessons across all key stages')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Computing Schemes of Work and Lessons', 'Schemes of Work across all key stages')
 
 
     def test_page__navigate_to_all_schemesofwork_index(self):
@@ -30,7 +30,7 @@ class test_schemeofwork_default_index(UITestCase):
         self.test_context.find_element_by_id('btn-all-schemes-of-work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes Of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__show_only_published_latest_schemesofwork(self):

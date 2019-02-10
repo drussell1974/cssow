@@ -9,7 +9,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         # setup
         self.test_context.implicitly_wait(10)
         self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_learning_episode_id))
-
+        self.wait()
         ' click the add reference button '
 
         self.test_context.implicitly_wait(10)
@@ -50,7 +50,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','text book, website or video for a-level computer science')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Reference','Text book, Website or Video for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -92,4 +92,4 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning Objectives','for a-level computer science - lesson 1 - programming and development')
+        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','Data Representation: Sound')

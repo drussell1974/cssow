@@ -28,18 +28,18 @@
       <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
           {{if auth.user:}}
-              <a class="navbar-brand" href="{{=URL('default','user/profile')}}">{{=T('profile')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/profile')}}">{{=T('Profile')}}</a>
               {{if 'change_password' not in auth.settings.actions_disabled:}}
-              <a class="navbar-brand" href="{{=URL('default','user/change_password')}}">{{=T('change password')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/change_password')}}">{{=T('Change password')}}</a>
               {{pass}}
-              <a class="navbar-brand" id="btn-logout" href="{{=URL('default','user/logout')}}">{{=T('logout')}}</a>
+              <a class="navbar-brand" id="btn-logout" href="{{=URL('default','user/logout')}}">{{=T('Logout')}}</a>
               {{else:}}
-                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login', vars=dict(_next=request.url))}}">{{=T('login')}}</a>
+                <a class="navbar-brand" id="btn-login" href="{{=URL('default','user/login', vars=dict(_next=request.url))}}">{{=T('Login')}}</a>
               {{if 'register' not in auth.settings.actions_disabled:}}
-                <a class="navbar-brand" href="{{=URL('default','user/register')}}">{{=T('sign up')}}</a>
+                <a class="navbar-brand" href="{{=URL('default','user/register')}}">{{=T('Sign up')}}</a>
               {{pass}}
               {{if 'retrieve_password' not in auth.settings.actions_disabled:}}
-              <a class="navbar-brand" href="{{=URL('default','user/retrieve_password')}}">{{=T('lost password')}}</a>
+              <a class="navbar-brand" href="{{=URL('default','user/retrieve_password')}}">{{=T('Lost password')}}</a>
               {{pass}}
           {{pass}}
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,16 +49,16 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('default','index')}}">{{=T("home")}}</a>
+              <a class="nav-link" href="{{=URL('default','index')}}">{{=T("Home")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">{{=T("schemes of work")}}</a>
+              <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">{{=T("Schemes of Work")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('lessons', 'index')}}">{{=T("lessons")}}</a>
+              <a class="nav-link" href="{{=URL('lessons', 'index')}}">{{=T("Learning Episode")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{=URL('default', 'about')}}">{{=T("about")}}</a>
+              <a class="nav-link" href="{{=URL('default', 'about')}}">{{=T("About")}}</a>
             </li>
           </ul>
         </div>

@@ -60,7 +60,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}
               {{if auth.user:}}
-                - <a href="{{=URL('delete_item', vars=dict(id=row.id))}}">{{=T("delete")}}</a> - <a href="{{=URL('edit', vars=dict(id=row.id,_next=request.url))}}">{{=T("edit")}}</a>
+                - <a href="{{=URL('delete_item', vars=dict(id=row.id))}}">{{=T("Delete")}}</a> - <a href="{{=URL('edit', vars=dict(id=row.id,_next=request.url))}}">{{=T("Edit")}}</a>
                 {{pass}}</p>
           </div><!-- class="post-preview" -->
            {{ pass }}

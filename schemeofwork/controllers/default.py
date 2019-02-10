@@ -9,8 +9,8 @@ def index():
     latest_schemes_of_work = db_schemeofwork.get_latest_schemes_of_work(db, top = 5, auth_user = auth.user_id)
 
     content = {
-        "main_heading":T("computing Schemes of work and lessons"),
-        "sub_heading":T("computing schemes of work lessons across all key stages")
+        "main_heading":T("Computing Schemes of Work and Lessons"),
+        "sub_heading":T("Schemes of Work across all key stages")
               }
 
     return dict(content = content, latest_schemes_of_work = latest_schemes_of_work)
@@ -18,8 +18,8 @@ def index():
 
 def about():
     content = {
-        "main_heading":T("about us"),
-        "sub_heading":T("computing schemes of work and lessons")
+        "main_heading":T("About us"),
+        "sub_heading":T("Computing Schemes of Work and Lessons")
               }
     return dict(content = content)
 

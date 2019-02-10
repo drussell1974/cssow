@@ -13,12 +13,12 @@
       <div class="container">
         <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T('schemes of work')}}</a>
+                  <a class="nav-link" id="lnk-bc-schemes_of_work" href="{{=URL('schemesofwork', 'index')}}">{{=T('Schemes of Work')}}</a>
                 </li>
                 <!-- SHOULD ONLY DISPLAY IF EXISTING -->
                 {{ if model.id > 0: }}
                 <li class="nav-item">
-                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.id])}}">{{=T("episodes")}}</a>
+                  <a class="nav-link" id="lnk-bc-learning_episodes" href="{{=URL('learningepisode', 'index', args=[model.id])}}">{{=T("Episodes")}}</a>
                 </li>
                 {{ pass }}
             </ul>
@@ -44,7 +44,7 @@
           <form name="edit-schemeofwork" id="form" method="post" action="save_item">
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("title")}}</label>
+                <label>{{=T("Title")}}</label>
                 <input type="text" name="name" class="form-control" placeholder="{{=T('enter a title')}}" id="ctl-name" name="name" required
                       maxlength="40" value='{{=model.name}}'>
                 <p class="help-block text-danger"></p>
@@ -52,9 +52,9 @@
             </div>
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("exam board")}}</label>
+                <label>{{=T("Exam board")}}</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
-                    <option value="">- {{=T("select an option")}} {{=T("(optional)")}} -</option>
+                    <option value="">- {{=T("Select an option")}} {{=T("(Optional)")}} -</option>
                     {{ for opt in examboard_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.exam_board_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -64,9 +64,9 @@
             </div>
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("key stage")}}</label>
+                <label>{{=T("Key stage")}}</label>
                 <select class="form-control" name="key_stage_id" id="ctl-key_stage_id" required>
-                    <option value="">- {{=T("select an option")}} -</option>
+                    <option value="">- {{=T("Select an option")}} -</option>
                     {{ for opt in keystage_options: }}
                     <option value="{{=opt.id}}" {{ = "selected" if opt.id == model.key_stage_id else ""}}>{{=opt.name}}</option>
                     {{ pass }}
@@ -76,7 +76,7 @@
             </div>
             <div class="control-group">
               <div class="form-group controls">
-                <label>{{=T("description")}}</label>
+                <label>{{=T("Description")}}</label>
                 <textarea rows="5" class="form-control" name="description" placeholder="{{=T('enter a description')}}" id="ctl-description" maxlength="1500" required>
                           {{=model.description}}
                 </textarea>
@@ -88,9 +88,9 @@
             <div class="form-group">
               <input type="hidden" name="id" value="{{=model.id}}">
               <input type="hidden" name="_next" value="{{=request.vars._next}}">
-              <button type="submit" name="published" value="0" class="btn btn-primary" id="saveButton">{{=T("draft")}}</button>
-              <button type="submit" name="published" value="1" class="btn btn-primary" id="saveAndPublishButton">{{=T("save and publish")}}</button>
-              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("cancel")}}</button>
+              <button type="submit" name="published" value="0" class="btn btn-primary" id="saveButton">{{=T("Draft")}}</button>
+              <button type="submit" name="published" value="1" class="btn btn-primary" id="saveAndPublishButton">{{=T("Save and publish")}}</button>
+              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("Cancel")}}</button>
             </div>
           </form>
         </div>

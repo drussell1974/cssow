@@ -150,7 +150,7 @@ def get_model(db, id_, auth_user):
 
 def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
     """
-    Append all keywords from learning objectives for this learning episode
+    Append all keywords from learning objectives for this lesson
     :param db:
     :param learning_epsiode_id:
     :param auth_user:
@@ -179,7 +179,7 @@ def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
 
 def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     """
-    get the number of learning objective for the learning episodes
+    get the number of learning objective for the lessons
     :param db: database context
     :param learning_epsiode_id:
     :param auth_user:
@@ -220,7 +220,7 @@ Private CRUD functions
 def _update(db, model, published):
     """ updates the sow_learning_episode and sow_learning_episode__has__topics """
 
-    # 1. Update the learning episode
+    # 1. Update the lesson
 
     str_update = "UPDATE sow_learning_episode SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {learning_episode_id};"
     str_update = str_update.format(
@@ -254,7 +254,7 @@ def _update(db, model, published):
 def _insert(db, model, published):
     """ inserts the sow_learning_episode and sow_learning_episode__has__topics """
 
-    # 1. Insert the learning episode
+    # 1. Insert the lesson
 
     str_insert = "INSERT INTO sow_learning_episode (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
@@ -365,7 +365,7 @@ def _delete(db, model):
 
 def get_related_topic_ids(db, learning_episode_id, parent_topic_id):
     """
-    gets the related topic ids for the learning episode and whether they are selected or should be disabled
+    gets the related topic ids for the lesson and whether they are selected or should be disabled
     :param db: the database context
     :param learning_episode_id:
     :param parent_topic_id:
