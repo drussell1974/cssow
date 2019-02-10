@@ -15,7 +15,7 @@ import db_year
 
 def index():
     """ index action """
-    scheme_of_work_id = int(request.args(0)) #int(request.vars.scheme_of_work_id)
+    scheme_of_work_id = int(request.args(0))
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
@@ -222,6 +222,16 @@ def delete_item():
     db_learningepisode.delete(db, auth.user.id, id_)
 
     return redirect(URL('index', args=[scheme_of_work_id]))
+
+
+@auth.requires_login()
+def publish_item():
+    """ delete_item non-view action """
+
+    id_ = int(request.vars.id)
+    _next = request.vars._next
+    db_learningepisode.publish(db, auth_user_id=auth.user.id, id_ = id_)
+    return redirect(_next)
 
 
 def get_related_topics():

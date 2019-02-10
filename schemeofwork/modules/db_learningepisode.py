@@ -50,7 +50,8 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " le.summary as summary,"\
                  " le.created as created,"\
                  " le.created_by as created_by_id,"\
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
+                 " le.published as published"\
                  " FROM sow_learning_episode as le "\
                  " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
                  " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
@@ -81,7 +82,9 @@ def get_all(db, scheme_of_work_id, auth_user):
             summary = row[12],
             created=row[13],
             created_by_id=row[14],
-            created_by_name=row[15])
+            created_by_name=row[15],
+            published = row[16]
+        )
 
         ' get the key words from the learning objectives '
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
@@ -212,6 +215,13 @@ def delete(db, auth_user_id, id_):
 
     model = LearningEpisodeModel(id_)
     _delete(db, model);
+
+
+def publish(db, auth_user_id, id_):
+    model = LearningEpisodeModel(id_=id_, title="")
+    model.publish = True
+    _publish(db, model);
+
 
 """
 Private CRUD functions 
@@ -359,6 +369,15 @@ def _delete(db, model):
     str_delete = str_delete.format(learning_episode_id=model.id)
 
     rval = db.executesql(str_delete)
+
+    return rval
+
+
+def _publish(db, model):
+    str_publish = "UPDATE sow_learning_episode SET published = {published} WHERE id = {learning_episode_id};"
+    str_publish = str_publish.format(published=1 if model.published else 0, learning_episode_id=model.id)
+
+    rval = db.executesql(str_publish)
 
     return rval
 
