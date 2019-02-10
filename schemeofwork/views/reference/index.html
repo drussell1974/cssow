@@ -37,9 +37,9 @@
           <!-- Scheme of works -->
           {{ if len(model) == 0: }}
             <div class="alert alert-info" role="alert">
-            {{=T('there are no references for this scheme of work.')}}
+                <span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
             {{if auth.user:}}
-                <br><a href="{{=URL('edit', vars=dict(_next=request.url))}}">{{=T('click here to get started.')}}</a>
+                <br><a href="{{=URL('edit', vars=dict(_next=request.url))}}">{{=T('Click here to get started.')}}</a>
             {{pass}}
             </div>
           {{ pass }}

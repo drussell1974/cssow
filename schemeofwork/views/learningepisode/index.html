@@ -67,7 +67,7 @@
           <!-- Scheme of works -->
           {{ if len(model) == 0: }}
             <div class="alert alert-info" role="alert">
-            {{=T('There are no lessons for this scheme of work.')}}
+                <span class="small">{{=T('There are no lessons for this scheme of work.')}}</span>
             {{if auth.user:}}
                 <br><a href="{{=URL('edit', vars=dict(scheme_of_work_id=scheme_of_work_id))}}">{{=T('Click here to get started.')}}</a>
             {{pass}}
@@ -117,7 +117,7 @@
             <section class="alert alert-info" >
                 <div id="div-references">
                 </div><!-- id="div-pathway_objective" -->
-                <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('add reference')}}</a>
+                <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('Add learning materials')}}</a>
             </section><!-- class="alert alert-info" -->
           <!-- Scheme of works END -->
         </div>

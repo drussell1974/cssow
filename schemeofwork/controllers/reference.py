@@ -49,7 +49,7 @@ def edit():
         sub_heading = T("{title} from {publisher} for {scheme_of_work_name}").format(title=model.title, publisher=model.publisher, scheme_of_work_name=scheme_of_work_name)
 
     content = {
-        "main_heading":T("Reference"),
+        "main_heading":T("Learning materials"),
         "sub_heading":sub_heading,
         "strap_line":None
     }

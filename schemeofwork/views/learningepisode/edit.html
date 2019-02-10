@@ -63,7 +63,7 @@
               <div class="form-group  controls">
                 <label>{{=T("Order of delivery")}}</label>
                 <!-- in the future select from planner -->
-                <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{=T('enter an order of delivery')}}" id="ctl-order_of_delivery_id" required
+                <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{=T('Enter an order of delivery')}}" id="ctl-order_of_delivery_id" required
                        min="1" max="9999" value='{{=model.order_of_delivery_id}}'>
                 <p class="help-block text-danger"></p>
               </div>
@@ -72,8 +72,8 @@
             <div class="control-group">
               <div class="form-group  controls">
                 <label>{{=T("Title")}}</label>
-                <input type="text" name="title" class="form-control" placeholder="{{=T('enter a title')}}" id="ctl-title"
-                       maxlength="80" value='{{=model.title}}'>
+                <input type="text" name="title" class="form-control" placeholder="{{=T('Enter a title')}}" id="ctl-title" required
+                       maxlength="45" value='{{=model.title}}'>
                 <p class="help-block text-danger"></p>
               </div>
                 <hr>
@@ -81,7 +81,7 @@
             <div class="control-group">
               <div class="form-group  controls">
                 <label>{{=T("Summary")}}</label>
-                <input type="text" name="summary" class="form-control" placeholder="{{=T('enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
+                <input type="text" name="summary" class="form-control" placeholder="{{=T('Enter a summary')}} {{=T('(optional)')}}" id="ctl-summary"
                        maxlength="80" value='{{=model.summary}}'>
                 <p class="help-block text-danger"></p>
               </div>
@@ -138,7 +138,7 @@
               </div>
             <div class="control-group">
               <div class="form-group  controls">
-                  <label>{{=T("Reference notes")}}</label>
+                  <label>{{=T("Notes on learning materials")}}</label>
                     <div id="div-references">
                     </div><!-- id="div-references" -->
                   <p class="help-block text-danger"></p>
@@ -154,7 +154,7 @@
               <input type="hidden" name="_next" value="{{=request.vars._next}}">
               <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{=T("Draft")}}</button>
               <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{=T("Save and Publish")}}</button>
-              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">((=T("Cancel")}}</button>
+              <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("Cancel")}}</button>
             </div>
           </form>
         </div>

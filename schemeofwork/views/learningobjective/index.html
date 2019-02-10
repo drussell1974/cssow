@@ -75,7 +75,7 @@
             <h2 class="group-heading">{{=T("Learning objectives")}}</h2>
             {{ if len(model) == 0: }}
                 <div class="alert alert-info" role="alert">
-                {{=T('There are no learning objectives for this learning episode.')}}
+                    <span class="small">{{=T('There are no learning objectives for this learning episode.')}}</span>
                 {{if auth.user:}}
                     <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}" class="btn btn-warning">{{=T('Click here to get started.')}}</a>
                 {{pass}}

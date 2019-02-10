@@ -75,7 +75,7 @@
           <!-- Scheme of works -->
             {{ if len(model) == 0: }}
             <div class="alert alert-info" role="alert">
-            {{=T("There are no schemes of work for ")}} {{=key_stage_name}}
+                <span class="small">{{=T("There are no schemes of work for ")}} {{=key_stage_name}}</span>
             {{if auth.user:}}
                 <br><a href="{{=URL('schemesofwork', 'edit')}}">{{=T('Click here to get started')}}</a>
             {{pass}}

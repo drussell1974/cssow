@@ -1,6 +1,6 @@
 <h2 class="group-heading">{{=T("Learning materials")}}</h2>
 {{ if len(view_model) == 0: }}
-  {{=T('there are no references for this scheme of work.')}}
+<span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
 {{ else: }}
   {{ for item in view_model: }}
       <a href="{{=item.uri}}">

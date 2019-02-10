@@ -1,5 +1,5 @@
 {{ if len(view_model) == 0: }}
-  {{=T('there are no references for this scheme of work.')}}
+<span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
 {{ else: }}
   {{ for item in view_model: }}
         <div class="input-group input-group-sm mb-3">
