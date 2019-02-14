@@ -98,7 +98,6 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' ctl-key_words SKIP adds too many '
 
-
         ' div-pathway_objective_id  - select VALID '
         # expand accordion
         self.test_context.implicitly_wait(8) # wait for accordion to load from ajax call

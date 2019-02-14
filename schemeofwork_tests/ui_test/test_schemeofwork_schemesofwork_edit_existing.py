@@ -68,7 +68,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
         # setup
         elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
-        self.assertEqual("Episodes", elem.text)
+        self.assertEqual("Lessons", elem.text)
 
         # test
         elem.click()

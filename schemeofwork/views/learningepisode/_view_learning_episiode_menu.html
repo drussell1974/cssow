@@ -24,7 +24,7 @@
             <li class="nav-item {{ if item.id == learning_episode_id: }}mark{{pass}} fillspace">
               <a href="{{=URL('learningobjective', 'index', args=[item.scheme_of_work_id, item.id])}}" class="nav-link" id="nav-link-learning-episode-{{=learning_episode_id}}">
                 {{=item.title}}<br>
-                <i class='small'>{{=T("Week {}").format(item.order_of_delivery_id)}}</i>
+                <i class='small'>{{=T("Lesson {}").format(item.order_of_delivery_id)}}</i>
               </a>
             </li>
   {{ pass }}
