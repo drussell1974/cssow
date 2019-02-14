@@ -96,7 +96,7 @@ def _view_pathway_ks123_readonly():
 def edit():
     """ edit action """
     id_ = int(request.vars.id if request.vars.id is not None else 0)
-    make_a_copy = int(request.vars.duplicate if request.vars.duplicate is not None else 0)
+    duplicate = int(request.vars.duplicate if request.vars.duplicate is not None else 0)
 
     model = db_learningepisode.get_model(db, id_, auth.user_id)
 
@@ -121,7 +121,7 @@ def edit():
 
 
     ' reset id to zero if a copy '
-    if make_a_copy == 1:
+    if duplicate == 1:
         model.copy()
 
     content = {
@@ -195,7 +195,8 @@ def save_item():
 
     # reset id if a copy
     print("bool(request.vars.is_copy) = {}".format(bool(request.vars.is_copy)))
-    if bool(request.vars.is_copy) == True:
+    if int(request.vars.orig_id) > 0:
+        print("making copy")
         model.id = 0
 
     model.validate()

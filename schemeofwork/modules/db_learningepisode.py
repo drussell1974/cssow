@@ -218,7 +218,7 @@ def save(db, model, published=1):
 
 def delete(db, auth_user_id, id_):
 
-    model = LearningEpisodeModel(id_)
+    model = LearningEpisodeModel(id_=id_, title="")
     _delete(db, model);
 
 
@@ -360,7 +360,7 @@ def _copy_objective_ids(db, model):
 
     objective_ids = db.executesql(str_select)
 
-    if model.pathway_objective_ids is not None:
+    if len(objective_ids) > 0:
         # reinsert
         str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_episode_id, learning_objective_id) VALUES"
 
@@ -368,7 +368,7 @@ def _copy_objective_ids(db, model):
             str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id[0])
 
         str_insert = str_insert.rstrip(",") + ";"
-
+        print(str_insert)
         db.executesql(str_insert)
 
 

@@ -122,5 +122,5 @@ class test_schemeofwork_learningepisode_copy_existing(UITestCase):
         self.assertEqual(10, len(elems_post_previews), "This should show the learning objectives")
 
         ' should redirect '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', "Data Representation: Sound")
 
