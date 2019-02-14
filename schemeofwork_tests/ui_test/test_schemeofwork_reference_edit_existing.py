@@ -97,6 +97,9 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        
         elem.send_keys(Keys.RETURN)
 
         # assert
