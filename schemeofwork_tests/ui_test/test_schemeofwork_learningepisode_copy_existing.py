@@ -1,13 +1,13 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepisode_edit_existing(UITestCase):
+class test_schemeofwork_learningepisode_copy_existing(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={learning_episode_id}&scheme_of_work_id={scheme_of_work_id}&_next=%2Fschemeofwork%2Flearningepisode%2Findex%2F{scheme_of_work_id}".format(learning_episode_id=self.test_learning_episode_id, scheme_of_work_id=self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={learning_episode_id}&scheme_of_work_id={scheme_of_work_id}&duplicate=1&_next=%2Fschemeofwork%2Flearningepisode%2Findex%2F{scheme_of_work_id}".format(learning_episode_id=self.test_learning_episode_id, scheme_of_work_id=self.test_scheme_of_work_id))
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -25,6 +25,12 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
+
+        # test
+
+        ' copy-of-35 '
+        elem_copy = self.test_context.find_element_by_id("copy-of-35")
+        self.assertIsNotNone(elem_copy, "cannot find element copy-of-35 or element not appearing")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -49,6 +55,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
 
         # assert
+
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'A-Level Computer Science Programming and development - Lesson 1')
 
@@ -62,15 +69,21 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # test
 
+        ' Check for Copy '
+
+        ' copy-of-35 '
+        elem_copy = self.test_context.find_element_by_id("copy-of-35")
+        self.assertIsNotNone(elem_copy, "cannot find element copy-of-35 or element not appearing")
+
         ' Create valid information '
 
         ' ctl-year_id - select Yr13 VALID '
-        elem = self.test_context.find_element_by_id("ctl-year_id")
-        all_options = elem.find_elements_by_tag_name('option')
+        elem_year_id = self.test_context.find_element_by_id("ctl-year_id")
+        all_options = elem_year_id.find_elements_by_tag_name('option')
         for opt in all_options:
             if opt.text == "Yr13":
                  opt.click()
-        elem.send_keys(Keys.TAB)
+        elem_year_id.send_keys(Keys.TAB)
 
         ' ctl-order_of_delivery_id '
         elem_order_of_delivery_id = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
@@ -101,7 +114,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         ' submit the form '
         elem_saveButton = self.test_context.find_element_by_id("saveButton")
         elem_saveButton.send_keys(Keys.RETURN)
-        self.wait()
+        self.wait() # do not delete
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')

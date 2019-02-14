@@ -51,6 +51,8 @@ class Test_LearningEpisode_Constructor(TestCase):
         self.assertEqual("", test.year_name, "year_name should be ''")
         self.assertEqual("", test.key_words, "key_words should be ''")
         self.assertEqual("", test.summary, "summary should be ''")
+        self.assertEqual(0, test.orig_id)
+
         self.assertEqual(False, test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0)
 
@@ -84,3 +86,28 @@ class Test_LearningEpisode_Constructor(TestCase):
         self.assertEqual(5, test.parent_topic_id)
         self.assertEqual(6, test.key_stage_id)
         self.assertTrue(test.is_valid)
+
+
+    def test_is_copy(self):
+        # setup
+        test = LearningEpisodeModel(1, "Data Representation: Images")
+
+        # test
+        test.copy()
+        result = test.is_copy()
+
+        # validate
+        self.assertTrue(result)
+        self.assertEqual(1, test.orig_id)
+
+
+    def test_is_not_copy(self):
+        # setup
+        test = LearningEpisodeModel(1, "Data Representation: Images")
+
+        # test
+        result = test.is_copy()
+
+        # validate
+        self.assertFalse(result)
+        self.assertEqual(0, test.orig_id)

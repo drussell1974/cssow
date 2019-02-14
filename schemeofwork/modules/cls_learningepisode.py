@@ -28,6 +28,19 @@ class LearningEpisodeModel (BaseModel):
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
         self.published=published
+        self.orig_id = 0
+
+
+    def copy(self):
+        self.orig_id = self.id
+        self.id = 0
+
+
+    def is_copy(self):
+        if self.orig_id > 0:
+            return True
+        else:
+            return False
 
 
     def validate(self):

@@ -207,6 +207,7 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
 
 
 def save(db, model, published=1):
+
     if model.is_new() == True:
         model.id = _insert(db, model, published)
     else:

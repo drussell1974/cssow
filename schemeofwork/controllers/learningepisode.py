@@ -96,8 +96,14 @@ def _view_pathway_ks123_readonly():
 def edit():
     """ edit action """
     id_ = int(request.vars.id if request.vars.id is not None else 0)
+    make_a_copy = int(request.vars.duplicate if request.vars.duplicate is not None else 0)
 
     model = db_learningepisode.get_model(db, id_, auth.user_id)
+
+    ' reset id to zero if a copy '
+    if make_a_copy == 1:
+        model.copy()
+
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
