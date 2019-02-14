@@ -53,6 +53,7 @@
 'Config.ini': 'Config.ini',
 'Confirm Password': 'confirm password',
 'Controller': 'Controller',
+'Copy': 'Copy',
 'Copyright': 'Copyright',
 'Create a new scheme of work': 'Create a new scheme of work',
 'Created by': 'Created by',

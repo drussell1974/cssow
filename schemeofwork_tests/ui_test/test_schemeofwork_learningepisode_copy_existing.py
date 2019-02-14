@@ -7,7 +7,7 @@ class test_schemeofwork_learningepisode_copy_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={learning_episode_id}&scheme_of_work_id={scheme_of_work_id}&duplicate=1&_next=%2Fschemeofwork%2Flearningepisode%2Findex%2F{scheme_of_work_id}".format(learning_episode_id=self.test_learning_episode_id, scheme_of_work_id=self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={learning_episode_id}&scheme_of_work_id={scheme_of_work_id}&duplicate=1".format(learning_episode_id=self.test_learning_episode_id, scheme_of_work_id=self.test_scheme_of_work_id))
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -115,7 +115,12 @@ class test_schemeofwork_learningepisode_copy_existing(UITestCase):
         elem_saveButton = self.test_context.find_element_by_id("saveButton")
         elem_saveButton.send_keys(Keys.RETURN)
         self.wait() # do not delete
+
         # assert
-        ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')
+        ' check it has learning objectives '
+        elems_post_previews = self.test_context.find_elements_by_class_name("post-preview")
+        self.assertEqual(10, len(elems_post_previews), "This should show the learning objectives")
+
+        ' should redirect '
+        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'Data Representation: Sound')
 

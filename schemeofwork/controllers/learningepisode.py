@@ -100,10 +100,6 @@ def edit():
 
     model = db_learningepisode.get_model(db, id_, auth.user_id)
 
-    ' reset id to zero if a copy '
-    if make_a_copy == 1:
-        model.copy()
-
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
@@ -123,6 +119,11 @@ def edit():
             has_objectives = True
             break
 
+
+    ' reset id to zero if a copy '
+    if make_a_copy == 1:
+        model.copy()
+
     content = {
         "main_heading":T("Lesson"),
         "sub_heading":T("{scheme_of_work_name} {topic_name} - Lesson {order_of_delivery_id}").format(scheme_of_work_name=model.scheme_of_work_name, topic_name=model.topic_name, order_of_delivery_id=model.order_of_delivery_id),
@@ -141,6 +142,7 @@ def save_item():
 
     model = LearningEpisodeModel(
         id_ = request.vars.id,
+        orig_id = int(request.vars.orig_id),
         title = request.vars.title,
         order_of_delivery_id = request.vars.order_of_delivery_id,
         scheme_of_work_id = request.vars.scheme_of_work_id,
@@ -153,6 +155,8 @@ def save_item():
         created = datetime.now(),
         created_by_id = auth.user.id
     )
+
+
 
     # ensure pathway_objective_ids is assigned as a list
     if type(request.vars.pathway_objective_ids) is str:
@@ -189,6 +193,10 @@ def save_item():
     else:
         model.page_reference_uri = request.vars.learning_episode_page_reference_uri
 
+    # reset id if a copy
+    print("bool(request.vars.is_copy) = {}".format(bool(request.vars.is_copy)))
+    if bool(request.vars.is_copy) == True:
+        model.id = 0
 
     model.validate()
 

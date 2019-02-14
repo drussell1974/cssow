@@ -4,7 +4,7 @@ from basemodel import BaseModel, try_int
 class LearningEpisodeModel (BaseModel):
 
 
-    def __init__(self, id_, title, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, title, orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
@@ -28,12 +28,11 @@ class LearningEpisodeModel (BaseModel):
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
         self.published=published
-        self.orig_id = 0
+        self.orig_id = orig_id
 
 
     def copy(self):
         self.orig_id = self.id
-        self.id = 0
 
 
     def is_copy(self):

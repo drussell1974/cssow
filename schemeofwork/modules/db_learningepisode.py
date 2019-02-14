@@ -303,6 +303,10 @@ def _insert(db, model, published):
 
     _upsert_pathway_ks123_ids(db, model)
 
+    # 5. insert objectives
+    if model.is_copy():
+        _copy_objective_ids(db, model)
+
     return model.id
 
 
@@ -344,6 +348,30 @@ def _upsert_pathway_objective_ids(db, model):
                 str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id)
 
         str_insert = str_insert.rstrip(",") + ";"
+
+        print(str_insert)
+
+        db.executesql(str_insert)
+
+
+def _copy_objective_ids(db, model):
+    """ inserts sow_learning_objective__has__learning_episode """
+
+    # delete existing
+    str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__learning_episode WHERE learning_episode_id = {id}".format(id=model.orig_id)
+    print(str_select)
+    objective_ids = db.executesql(str_select)
+
+    if model.pathway_objective_ids is not None:
+        # reinsert
+        str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_episode_id, learning_objective_id) VALUES"
+
+        for objective_id in objective_ids:
+            str_insert = str_insert + "({learning_episode_id}, {learning_objective_id}),".format(learning_episode_id=model.id, learning_objective_id=objective_id[0])
+
+        str_insert = str_insert.rstrip(",") + ";"
+
+        print(str_insert)
 
         db.executesql(str_insert)
 

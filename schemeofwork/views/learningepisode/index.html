@@ -99,7 +99,7 @@
                 on {{=str(row.get_ui_created())}}
               {{ pass }}, {{=T("Learning objectives")}} {{=row.number_of_learning_objective}}
               {{if auth.user:}}
-                {{ if row.published == False: }} <a href="{{=URL('learningepisode', 'publish_item', vars=dict(id=row.id,_next=request.url))}}" class="small badge badge-danger">{{=T("not published")}}</a> {{ pass }} - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">{{=T("Delete")}}</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a>
+                {{ if row.published == False: }} <a href="{{=URL('learningepisode', 'publish_item', vars=dict(id=row.id,_next=request.url))}}" class="small badge badge-danger">{{=T("not published")}}</a> {{ pass }} - <a href="{{=URL('learningepisode', 'delete_item', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id))}}">{{=T("Delete")}}</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a> - <a href="{{=URL('learningepisode', 'edit', vars=dict(id=row.id, scheme_of_work_id=row.scheme_of_work_id,duplicate=1))}}">{{=T("Copy")}}</a>
                 {{pass}}</p>
           </div>
           <hr>
