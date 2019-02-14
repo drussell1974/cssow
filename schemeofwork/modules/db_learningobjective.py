@@ -212,12 +212,6 @@ def get_model(db, id_, auth_user):
             created_by_id = row[20],
             created_by_name = row[21])
 
-    # TODO: Clean up keywords - Remove once fixed
-    sanitised_keywords = db_keyword.get_options(db)
-    for skw in sanitised_keywords:
-        model.key_words = model.key_words.replace(skw.lower(), skw)
-    print(model.key_words)
-
     return model
 
 
