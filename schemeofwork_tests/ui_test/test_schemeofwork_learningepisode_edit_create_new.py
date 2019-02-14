@@ -86,7 +86,7 @@ class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
         ' ctl-key_words '
         elem = self.test_context.find_element_by_id("ctl-key_words-tokenfield")
         elem.clear()
-        elem.send_keys("algorithm")
+        elem.send_keys("Algorithm")
         elem.send_keys(Keys.TAB)
         elem.send_keys("Ipsum")
         elem.send_keys(Keys.TAB)
