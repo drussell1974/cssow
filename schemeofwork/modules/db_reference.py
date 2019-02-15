@@ -41,7 +41,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
                  " ref.uri as uri," \
-                 " le_ref.id," \
+                 " le_ref.id as page_id," \
                  " le_ref.page_notes, " \
                  " le_ref.page_uri " \
                  "FROM sow_reference as ref " \

@@ -35,7 +35,9 @@
         <a name="reference-{{=item.id}}"></a>
 
         {{ if curr_reference != item.id: }}
-            <h4>{{=item.title}}</h4>
+            <a href="{{=item.uri}}" target="_blank">
+                <h4>{{=item.title}}</h4>
+            </a>
             {{if auth.user:}}
                 <!-- Button trigger modal -->
                 <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}')">
