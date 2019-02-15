@@ -2,10 +2,11 @@
 <div id="accordion">
   {{
     topic_name = ""
+    year_name = ""
     first_item = True
   }}
   {{ for item in view_model: }}
-    {{ if item.topic_name != topic_name: }}
+    {{ if item.topic_name != topic_name or item.year_name != year_name: }}
       {{ if first_item == False: }}
         </nav><!-- id="collapseX" class="collapse show" -->
       {{ pass }}
@@ -17,6 +18,7 @@
       <nav id="topic-{{=item.topic_id}}-collapse" class="collapse {{ if topic_id == item.topic_id: }}show{{ pass }} nav flex-column" aria-labelledby="topic-{{=item.topic_id}}-heading" data-parent="#accordion">
         {{
           topic_name = item.topic_name
+          year_name = item.year_name
           first_item = False
          }}
     {{ pass }}
