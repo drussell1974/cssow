@@ -2,28 +2,126 @@
 {{ if len(view_model) == 0: }}
 <span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
 {{ else: }}
+  <script>
+    function editReference(page_id, reference_id, page_note, page_uri, title) {
+        // clear
+        $('#feedback').html('');
+
+        // populate controls
+        $('#modal-page_id').val(page_id);
+        $('#modal-reference_id').val(reference_id);
+        $('#modal-page_note').val(page_note);
+        $('#modal-page_uri').val(page_uri);
+        $('#modal-page_title').val(title);
+
+        // open
+        $('#addReferenceModal').modal();
+    };
+
+    function deleteReference(note_id) {
+         $.ajax({
+            type: 'POST',
+            url: '{{=URL("reference", "delete_page_note")}}',
+            data: { id:note_id },
+            error: function(error){
+                alert("Error");
+            }
+        });
+        refreshReferences()
+    }
+  </script>
+    {{ curr_reference = 0 }}
   {{ for item in view_model: }}
-    {{ if len(item.page_notes) > 0: }}
-        {{ if len(item.uri) > 0: }}
-          <a href="{{=item.uri}}">
-              <h5 class="secondary-heading">{{=item.title}}, {{=item.publisher}} </h5>
-          </a>
-          {{ else: }}
-            <h5 class="secondary-heading">{{=item.title}} </h5>
-          {{ pass }}
-         {{ if len(item.page_uri) > 0: }}
-          <a href="{{=item.page_uri}}">
-              <i class="fa fa-link"></i> {{=item.page_notes}}
-          </a>
-         {{ else: }}
-              {{=item.page_notes}}
-         {{ pass }}
-          <div id="reference-{{=item.id}}" class="small">
-                {{=item.authors }} {{=item.year_published}}
-                {{if auth.user:}}
-                    - <a href="{{=URL('delete_item', vars=dict(id=item.id, scheme_of_work_id=item.scheme_of_work_id, _next=request.vars._next))}}" id="delete-reference-{{=item.id}}">{{=T("Delete")}}</a> - <a href="{{=URL('edit', vars=dict(id=item.id, scheme_of_work_id=item.scheme_of_work_id, _next=request.vars._next))}}" id="edit-reference-{{=item.id}}">{{=T("Edit")}}</a>
-                {{pass}}
-          </div><!-- id="reference-id" -->
+        <a name="reference-{{=item.id}}"></a>
+
+        {{ if curr_reference != item.id: }}
+            <h4>{{=item.title}}</h4>
+            {{if auth.user:}}
+                <!-- Button trigger modal -->
+                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}')">
+                  {{=T("Add page or link reference")}}
+                </a><br>
+            {{ pass }}
+            {{ curr_reference = item.id }}
         {{ pass }}
+        {{ if len(item.page_note) > 0: }}
+             {{ if len(item.page_uri) > 0: }}
+              <a href="{{=item.page_uri}}">
+                  <i class="fa fa-link"></i> {{=item.page_note}}
+              </a>
+             {{ else: }}
+                  {{=item.page_note}}
+             {{ pass }}
+            {{if auth.user:}}
+                <!-- Button trigger modal -->
+                - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}','{{=item.title}}')">{{=T("Edit")}}</a>
+                - <a class="small" href="#reference-{{=item.id}}" onclick="deleteReference({{=item.page_id}})">{{=T("Delete")}}</a><br>
+            {{ pass }}
+        {{ pass }}
+  {{ pass }}
+
+    {{if auth.user:}}
+        <!-- Modal -->
+        <div class="modal fade" id="addReferenceModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <a href="{{=item.uri}}" target="_blank">
+                    <h5 class="modal-title" id="modal-title">{{=item.title}}</h5>
+                  </a>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form id="notes">
+              <div class="modal-body">
+                    <div class="control-group">
+                      <div class="form-group controls">
+                        <i class="fa fa-bookmark"></i>
+                          <input type="text" max="250" name="page_note" placeholder="page notes" class="form-control" id="modal-page_note">
+                        <p class="help-block text-danger"></p>
+                      </div>
+                    </div><!-- class="control-group"-->
+                    <div class="control-group">
+                      <div class="form-group controls">
+                        <i class="fa fa-link"></i>
+                        <input type="text" max="2083" name="page_uri" placeholder="website link" class="form-control" id="modal-page_uri">
+                         <p class="help-block text-danger"></p>
+                      </div>
+                        <hr>
+                    </div><!-- class="control-group"-->
+                    <div id="feedback"></div>
+              </div><!-- class="modal-body"-->
+              <div class="modal-footer">
+                <input type="hidden" name="page_id" id="modal-page_id">
+                <input type="hidden" name="reference_id" id="modal-reference_id">
+                <input type="hidden" name="learning_episode_id" value="{{=learning_episode_id}}">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{=T("Close")}}</button>
+                <button type="button" class="btn btn-primary" id="saveReference">{{=T("Save")}}</button>
+              </div><!-- class="modal-footer"-->
+              </form><!-- id="notes"-->
+            </div>
+          </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $('button#saveReference').click(function(){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{=URL("reference", "save_page_note")}}',
+                        data: $('form#notes').serialize(),
+                        success: function(message){
+                            $('#feedback').html(message);
+                            $('#addReferenceModal').modal('hide');
+                        },
+                        error: function(error){
+                            alert("Error");
+                        }
+                    });
+                });
+
+                $('#addReferenceModal').on('hidden.bs.modal', refreshReferences);
+            });
+        </script>
     {{ pass }}
 {{ pass }}

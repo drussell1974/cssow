@@ -172,31 +172,10 @@ def save_item():
     else:
         model.pathway_ks123_ids = request.vars.pathway_ks123_ids
 
-    # ensure learning_episode_page_reference_id is assigned as a list
-    if type(request.vars.learning_episode_page_reference_id) is str:
-        model.page_reference_ids = []
-        model.page_reference_ids.append(request.vars.learning_episode_page_reference_id)
-    else:
-        model.page_reference_ids = request.vars.learning_episode_page_reference_id
-
-    # ensure learning_episode_page_reference_notes is assigned as a list
-    if type(request.vars.learning_episode_page_reference_notes) is str:
-        model.page_reference_notes = []
-        model.page_reference_notes.append(request.vars.learning_episode_page_reference_notes)
-    else:
-        model.page_reference_notes = request.vars.learning_episode_page_reference_notes
-
-    # ensure learning_episode_page_reference_uri is assigned as a list
-    if type(request.vars.learning_episode_page_reference_uri) is str:
-        model.page_reference_uri = []
-        model.page_reference_uri.append(request.vars.learning_episode_page_reference_uri)
-    else:
-        model.page_reference_uri = request.vars.learning_episode_page_reference_uri
 
     # reset id if a copy
     print("bool(request.vars.is_copy) = {}".format(bool(request.vars.is_copy)))
     if int(request.vars.orig_id) > 0:
-        print("making copy")
         model.id = 0
 
     model.validate()
@@ -205,8 +184,7 @@ def save_item():
 
         ' save the lesson '
         model = db_learningepisode.save(db, model, published)
-        ' save page references '
-        db_reference.upsert_learning_episode_page_references(db, model)
+
         ' save keywords '
         db_keyword.save(db, model.key_words.split(','), model.topic_id)
 

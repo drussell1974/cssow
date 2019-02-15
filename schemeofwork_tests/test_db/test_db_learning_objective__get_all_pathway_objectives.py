@@ -40,7 +40,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
         result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertEqual(2, len(result))
+        self.assertEqual(1, len(result))
 
 
     def test_when_multiple_keyword(self):
@@ -49,7 +49,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
         result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertEqual(4, len(result))
+        self.assertEqual(3, len(result))
 
 
     def test_when_multiple_keywords_duplicate(self):
@@ -58,7 +58,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
         result = db_learningobjective.get_all_pathway_objectives(self.fake_db, key_stage_id = 5, key_words=test_keywords)
 
         # assert
-        self.assertEqual(4, len(result))
+        self.assertEqual(3, len(result))
 
 
     def test_return_results_only_for_previous_key_stages(self):

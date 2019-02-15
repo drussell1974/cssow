@@ -139,14 +139,6 @@
                     <p class="help-block text-danger"></p>
                 </div>
               </div>
-            <div class="control-group">
-              <div class="form-group  controls">
-                  <label>{{=T("Notes on learning materials")}}</label>
-                    <div id="div-references">
-                    </div><!-- id="div-references" -->
-                  <p class="help-block text-danger"></p>
-              </div>
-             </div>
             <br>
             <div id="success"></div>
             <div class="form-group">
@@ -315,16 +307,5 @@
         });
     };
 
-    </script>
-    <script>
-        uri = '{{=URL("reference", "_edit_learning_episode_references", vars=dict(scheme_of_work_id=model.scheme_of_work_id, learning_episode_id=model.id))}}';
-        $.ajax({url: uri,
-            success: function(result){
-                $("#div-references").html(result);
-            },
-            error: function(e){
-                $("#div-references").html('could not get references at this time');
-            }
-        });
     </script>
 {{end page_js}}

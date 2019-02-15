@@ -2,6 +2,7 @@
 # try something like
 from datetime import datetime
 from cls_reference import ReferenceModel
+from cls_reference_note import ReferenceNoteModel
 from pager import Pager
 from validation_helper import html_validation_message
 import db_reference, db_schemeofwork, db_reference_type
@@ -109,6 +110,39 @@ def delete_item():
     return redirect(request.vars._next)
 
 
+@auth.requires_login()
+def save_page_note():
+    page_id = request.vars.page_id
+    page_note = request.vars.page_note
+    page_uri = request.vars.page_uri
+    learning_episode_id = request.vars.learning_episode_id
+    reference_id = int(request.vars.reference_id)
+    print("saving page note id=%s" % page_id)
+    model = ReferenceNoteModel(page_id, reference_id=reference_id, learning_episode_id=learning_episode_id, page_note=page_note, page_uri=page_uri)
+
+    model.validate()
+
+    if model.is_valid == True:
+        print("saving page notes...")
+        if model.is_new():
+            db_reference.insert_page_note(db, model)
+        else:
+            db_reference.update_page_note(db, model)
+    else:
+        return model.validation_errors
+
+    return "saved"
+
+
+@auth.requires_login()
+def delete_page_note():
+    id = request.vars.id
+
+    db_reference.delete_page_note(db, id)
+
+    return "deleted"
+
+
 def _view_scheme_of_work_references():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
 
@@ -123,9 +157,9 @@ def _view_learning_episode_references():
 
     view_model = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
-    return dict(view_model=view_model)
+    return dict(view_model=view_model, learning_episode_id = learning_episode_id)
 
-
+"""
 def _edit_learning_episode_references():
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
@@ -133,3 +167,4 @@ def _edit_learning_episode_references():
     view_model = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
     return dict(view_model=view_model)
+"""

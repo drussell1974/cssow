@@ -40,7 +40,8 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
-                 " ref.uri as uri, " \
+                 " ref.uri as uri," \
+                 " le_ref.id," \
                  " le_ref.page_notes, " \
                  " le_ref.page_uri " \
                  "FROM sow_reference as ref " \
@@ -58,8 +59,9 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
 
     for row in rows:
         model = ReferenceModel(id_=row[0], reference_type_id=row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id = scheme_of_work_id)
-        model.page_notes = row[7] if row[7] is not None else ''
-        model.page_uri = row[8] if row[8] is not None else ''
+        model.page_id = row[7]
+        model.page_note = row[8] if row[7] is not None else ''
+        model.page_uri = row[9] if row[8] is not None else ''
         data.append(model)
 
     return data
@@ -166,35 +168,38 @@ def _insert(db, model):
     for row in rows:
         model.id = int(row[0])
 
-    ## 2. insert related topics
-    #if scheme_of_work_id > 0:
-    #    _upsert_sow_scheme_of_work__has__reference(db, model, scheme_of_work_id)
-
     return model.id
 
 
-def upsert_learning_episode_page_references(db, model):
-    """ deletes and reinserts sow_learning_episode__has__references """
 
-    if model.page_reference_ids is not None:
+def insert_page_note(db, model):
+    """ deletes and reinserts sow_learning_episode__has__references """
+    # insert
+    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}');"
+    str_insert = str_insert.format(reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri)
+
+    db.executesql(str_insert)
+
+
+def update_page_note(db, model):
+    """ deletes and reinserts sow_learning_episode__has__references """
+    # insert
+    str_update = "UPDATE sow_learning_episode__has__references SET" \
+                 " reference_id = {reference_id}," \
+                 " learning_episode_id = {learning_episode_id}," \
+                 " page_notes = '{page_notes}'," \
+                 " page_uri = '{page_uri}' " \
+                 "WHERE id = {id};"
+    str_update = str_update.format(id=model.id, reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri)
+
+    db.executesql(str_update)
+
+
+def delete_page_note(db, id_):
         # delete existing
-        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE learning_episode_id = {learning_episode_id};".format(learning_episode_id=model.id)
+        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE id = {id};".format(id=id_)
 
         db.executesql(str_delete)
-
-        # reinsert
-        str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES "
-        str_insert_values = ""
-        for index in range(len(model.page_reference_ids)):
-            note = model.page_reference_notes[index].lstrip(' ').rstrip(' ') # clean up
-            uri = model.page_reference_uri[index].lstrip(' ').rstrip(' ') # clean up
-            if len(note) > 0: # and ensure it has a value worth inserting
-                str_insert_values = str_insert_values + "({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}'),"\
-                    .format(reference_id=model.page_reference_ids[index], learning_episode_id=model.id, page_notes=note, page_uri=uri)
-
-        if len(str_insert_values) > 0: # have we added any notes
-            str_insert_values = str_insert_values.rstrip(",")
-            db.executesql(str_insert + str_insert_values + ";")
 
 
 def _delete(db, id_):
