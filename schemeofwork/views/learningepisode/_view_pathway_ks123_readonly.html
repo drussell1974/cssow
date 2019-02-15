@@ -2,9 +2,9 @@
 {{ if len(data) == 0: }}
 <span class="small">{{=T('There are no linked pathways for this lesson.')}}</span>
 {{ else: }}
-<ul class="list-group">
+<ul class="my-list">
   {{ for item in data: }}
-    <li class="list-group-item">{{=item[1]}}</li>
+    <li>{{=item[1]}}</li>
   {{ pass }}
 </ul>
 <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
