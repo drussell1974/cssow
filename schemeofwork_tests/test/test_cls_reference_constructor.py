@@ -18,7 +18,7 @@ class test_cls_reference_constructor(TestCase):
     def test_constructor_default(self):
 
         # self.test
-        self.test = ReferenceModel(0, reference_type_id = 0, title="Title here!", year_published = 2019, publisher="Penguin", scheme_of_work_id = 0)
+        self.test = ReferenceModel(0, reference_type_id = 0, reference_type_name = "Website", title="Title here!", year_published = 2019, publisher="Penguin", scheme_of_work_id = 0)
 
         # assert
         self.assertEqual(0, self.test.id)
@@ -35,6 +35,7 @@ class test_cls_reference_constructor(TestCase):
 
         self.test = ReferenceModel(1,
                                  reference_type_id=6,
+                                 reference_type_name = "Website",
                                  title="Title here",
                                  publisher="Penguin",
                                  year_published = 2019,
@@ -47,6 +48,7 @@ class test_cls_reference_constructor(TestCase):
 
         # assert
         self.assertEqual(6, self.test.reference_type_id)
+        self.assertEqual("Website", self.test.reference_type_name)
         self.assertEqual("Title here", self.test.title)
         self.assertEqual("Penguin", self.test.publisher)
         self.assertEqual("Russell, D.;Russell, A;", self.test.authors)

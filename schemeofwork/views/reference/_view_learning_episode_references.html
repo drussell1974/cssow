@@ -31,8 +31,13 @@
         refreshReferences()
     }
   </script>
-    {{ curr_reference = 0 }}
+    {{ curr_reference = 0
+        curr_type_id = 0 }}
   {{ for item in view_model: }}
+        {{ if curr_type_id != item.reference_type_id: }}
+        <h3><b>{{=item.reference_type_name}}</b></h3>
+        {{ curr_type_id = item.reference_type_id
+            pass }}
         <a name="reference-{{=item.id}}"></a>
 
         {{ if curr_reference != item.id: }}
@@ -106,7 +111,7 @@
             </div>
           </div>
         </div>
-        <script>s
+        <script>
             $(document).ready(function(){
                 $('button#saveReference').click(function(){
                     $.ajax({

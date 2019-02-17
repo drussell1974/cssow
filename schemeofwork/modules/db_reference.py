@@ -8,12 +8,14 @@ def get_options(db, scheme_of_work_id, auth_user):
     str_select = "SELECT" \
                  " ref.id as id," \
                  " ref.reference_type_id as reference_type_id," \
+                 " type.name as reference_type_name," \
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
                  " ref.uri as uri " \
                  "FROM sow_reference as ref " \
+                 "INNER JOIN sow_reference as type ON type.id = ref.reference_type_id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " AND (ref.published = 1 OR ref.created_by = {auth_user});"
 
@@ -24,7 +26,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     data = [];
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], reference_type_id = row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id = scheme_of_work_id)
+        model = ReferenceModel(id_=row[0], reference_type_id = row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
 
         data.append(model)
 
@@ -36,6 +38,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
     str_select = "SELECT " \
                  " ref.id as id," \
                  " ref.reference_type_id as reference_type_id," \
+                 " ref_type.name as reference_type_name,"\
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
@@ -47,6 +50,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
                  "LEFT JOIN sow_learning_episode__has__references as le_ref ON le_ref.learning_episode_id = le.id AND le_ref.reference_id = ref.id " \
+                 "LEFT JOIN sow_reference_type as ref_type ON ref.reference_type_id = ref_type.id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " OR (ref.published = 1 OR ref.created_by = {auth_user}) " \
                  "ORDER BY reference_type_id, title, authors;"
@@ -58,10 +62,10 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
     data = [];
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], reference_type_id=row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id = scheme_of_work_id)
-        model.page_id = row[7]
-        model.page_note = row[8] if row[7] is not None else ''
-        model.page_uri = row[9] if row[8] is not None else ''
+        model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
+        model.page_id = row[8]
+        model.page_note = row[9] if row[9] is not None else ''
+        model.page_uri = row[10] if row[10] is not None else ''
         data.append(model)
 
     return data
@@ -69,24 +73,26 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
 
 def get_model(db, id_, scheme_of_work_id, auth_user):
     now = datetime.now()
-    model = ReferenceModel(id_=0, reference_type_id = 6, title="", publisher="", year_published=now.year, authors="", uri="", scheme_of_work_id = scheme_of_work_id)
+    model = ReferenceModel(id_=0, reference_type_id = 6, reference_type_name = "Website", title="", publisher="", year_published=now.year, authors="", uri="", scheme_of_work_id = scheme_of_work_id)
 
     str_select = "SELECT" \
                  " ref.id as id," \
                  " ref.reference_type_id as reference_type_id, " \
+                 " ref_type.name as reference_type_name," \
                  " ref.title as title," \
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
                  " ref.uri as uri " \
-                 "FROM sow_reference as ref" \
+                 "FROM sow_reference as ref " \
+                 "INNER JOIN sow_reference_type as ref_type ON ref_type.id = ref.reference_type_id" \
                  " WHERE ref.id = {id_} AND (ref.published = 1 OR ref.created_by = {auth_user});"
     str_select = str_select.format(id_=id_, auth_user=to_db_null(auth_user))
 
     rows = db.executesql(str_select)
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], reference_type_id=row[1], title=row[2], publisher=row[3], year_published=row[4], authors=row[5], uri=row[6], scheme_of_work_id=scheme_of_work_id)
+        model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name=row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id=scheme_of_work_id)
 
     return model
 

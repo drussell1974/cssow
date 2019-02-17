@@ -3,9 +3,10 @@ from basemodel import BaseModel, try_int
 
 class ReferenceModel (BaseModel):
 
-    def __init__(self, id_, reference_type_id, title, publisher, year_published, scheme_of_work_id, authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, reference_type_id, title, publisher, year_published, scheme_of_work_id, reference_type_name = "", authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.reference_type_id = int(reference_type_id)
+        self.reference_type_name = reference_type_name
         self.title = title
         self.publisher = publisher
         self.year_published = try_int(year_published)
