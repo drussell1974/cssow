@@ -3,7 +3,7 @@
 <span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
 {{ else: }}
   <script>
-    function editReference(page_id, reference_id, page_note, page_uri, title) {
+    function editReference(page_id, reference_id, page_note, page_uri, title, uri) {
         // clear
         $('#feedback').html('');
 
@@ -12,7 +12,8 @@
         $('#modal-reference_id').val(reference_id);
         $('#modal-page_note').val(page_note);
         $('#modal-page_uri').val(page_uri);
-        $('#modal-page_title').val(title);
+        $('#modal-page_title').text(title);
+        $('#modal-uri').attr('href', uri);
 
         // open
         $('#addReferenceModal').modal();
@@ -40,7 +41,7 @@
             </a>
             {{if auth.user:}}
                 <!-- Button trigger modal -->
-                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}')">
+                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}', '{{=item.uri}}')">
                   {{=T("Add page or link reference")}}
                 </a><br>
             {{ pass }}
@@ -56,8 +57,8 @@
              {{ pass }}
             {{if auth.user:}}
                 <!-- Button trigger modal -->
-                - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}','{{=item.title}}')">{{=T("Edit")}}</a>
-                - <a class="small" href="#reference-{{=item.id}}" onclick="deleteReference({{=item.page_id}})">{{=T("Delete")}}</a><br>
+                - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}', '{{=item.title}}', '{{=item.uri}}')">{{=T("Edit")}}</a>
+                - <a class="small" href="#reference-{{=item.id}}" onclick="deleteReference({{=item.page_id}})">{{=T('Delete')}}</a><br>
             {{ pass }}
         {{ pass }}
   {{ pass }}
@@ -68,8 +69,8 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                  <a href="{{=item.uri}}" target="_blank">
-                    <h5 class="modal-title" id="modal-title">{{=item.title}}</h5>
+                  <a href="{{=item.uri}}" target="_blank" id="modal-uri">
+                    <h5 class="modal-title" id="modal-page_title"></h5>
                   </a>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -105,7 +106,7 @@
             </div>
           </div>
         </div>
-        <script>
+        <script>s
             $(document).ready(function(){
                 $('button#saveReference').click(function(){
                     $.ajax({
