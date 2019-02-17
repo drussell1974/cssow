@@ -174,7 +174,6 @@ def save_item():
 
 
     # reset id if a copy
-    print("bool(request.vars.is_copy) = {}".format(bool(request.vars.is_copy)))
     if int(request.vars.orig_id) > 0:
         model.id = 0
 

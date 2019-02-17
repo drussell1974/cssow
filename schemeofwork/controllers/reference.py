@@ -117,13 +117,12 @@ def save_page_note():
     page_uri = request.vars.page_uri
     learning_episode_id = request.vars.learning_episode_id
     reference_id = int(request.vars.reference_id)
-    print("saving page note id=%s" % page_id)
+
     model = ReferenceNoteModel(page_id, reference_id=reference_id, learning_episode_id=learning_episode_id, page_note=page_note, page_uri=page_uri)
 
     model.validate()
 
     if model.is_valid == True:
-        print("saving page notes...")
         if model.is_new():
             db_reference.insert_page_note(db, model)
         else:
