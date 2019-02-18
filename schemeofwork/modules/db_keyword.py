@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from cls_keyword import KeywordModel
 
 def get_options(db, topic_id=0):
     select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 AND topic_id = {topic_id} OR {topic_id} = 0 ORDER BY name;"
@@ -10,6 +11,27 @@ def get_options(db, topic_id=0):
 
     for row in rows:
         data.append(row[0])
+
+    return data
+
+
+def get(db, key_words_list):
+    """
+    Get a full list of terms and definitions
+    :param db:
+    :param key_words_list: not seperated keywords
+    :return: list of terms and defintion
+    """
+
+    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE name IN ('%s') AND published = 1 ORDER BY name;"
+    select_sql = select_sql % "','".join(key_words_list.split(','))
+
+    rows = db.executesql(select_sql)
+
+    data = []
+
+    for row in rows:
+        data.append(KeywordModel(row[0], row[1], row[2]))
 
     return data
 
@@ -32,6 +54,18 @@ def save(db, key_words, topic_id):
             pass
         else:
             _insert(db, key_word, topic_id)
+
+
+def delete(db, key_word):
+    """
+    Delete the keyword by term
+    :param db: database context
+    :param key_word:
+    :return:
+    """
+
+    str_delete = "DELETE FROM sow_key_word WHERE name = '%s'" % key_word
+    db.executesql(str_delete)
 
 
 def _insert(db, key_word, topic_id):

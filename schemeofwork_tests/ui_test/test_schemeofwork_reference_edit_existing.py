@@ -56,7 +56,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning materials','Text book, Website or Video for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Learning materials','Text book, Website or Video for A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -72,6 +72,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         ' ctl-title '
         elem = self.test_context.find_element_by_id("ctl-title")
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.clear()
         elem.send_keys("OCR AS and A Level Computer Science")
 
@@ -104,4 +105,4 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork','Learning objectives','Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Learning objectives','Data Representation: Sound')

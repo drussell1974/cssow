@@ -25,7 +25,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'A-Level Computer Science - Lesson 1')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lesson', 'A-Level Computer Science - Lesson 1')
 
 
     """ Breadcrumb """
@@ -40,7 +40,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
@@ -52,7 +52,7 @@ class test_schemeofwork_learningepisode_edit_create_new_page_navigation(UITestCa
         elem.click()
 
         # asserts
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science') # needs to show scheme of work
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science') # needs to show scheme of work
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):

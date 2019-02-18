@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{=response.title or request.application}}</title>
+    <title>{{=T("Dave Russell - Teach Computer Science") or response.title or request.application}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{=URL('static','custom/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -53,6 +53,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{=URL('schemesofwork', 'index')}}">{{=T("Schemes of Work")}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{=URL('lessons', 'index')}}">{{=T("Lessons")}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{=URL('default', 'about')}}">{{=T("About")}}</a>

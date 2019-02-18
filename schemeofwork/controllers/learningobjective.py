@@ -4,7 +4,6 @@ from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_
 from pager import Pager
 from validation_helper import html_validation_message
 from helper_string import date_to_string
-from helper_sort_and_search import sort_array
 import db_schemeofwork
 import db_learningobjective
 import db_solotaxonomy
@@ -77,18 +76,18 @@ def whiteboard_view():
 
     learning_materials = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
-    key_words = learning_episode.key_words.split(",")
+    key_words = db_keyword.get(db, learning_episode.key_words)
     for learning_objective in learning_objectives:
-        for key_word in learning_objective.key_words.split(","):
+        for key_word in db_keyword.get(db, learning_objective.key_words):
             in_list = False
             for kw in key_words:
-                if kw.strip() == key_word.strip():
+                if kw.term == key_word.term:
                     in_list = True
 
             if in_list == False:
-                key_words.append(key_word.strip())
+                key_words.append(key_word)
 
-    sorted_key_words = sort_array(key_words)
+    sorted_key_words = sort_keywords_by_term(key_words)
 
     return dict(
         display_date = date_to_string(datetime.today()),
@@ -126,6 +125,28 @@ def _sort_by_solo_and_group(data):
         swapped = False
         for i in range(len(sorted_data) - 1):
             if sorted_data[i].group_name > sorted_data[i + 1].group_name:
+                """ put item in the correct position """
+                temp1 = sorted_data[i]
+                temp2 = sorted_data[i + 1]
+
+                sorted_data[i] = temp2
+                sorted_data[i + 1] = temp1
+                swapped = True
+
+        if swapped == False:
+            """ no more sorting required so finish """
+            break
+
+    return sorted_data
+
+
+def sort_keywords_by_term(data):
+    sorted_data = data
+
+    while True:
+        swapped = False
+        for i in range(len(sorted_data) - 1):
+            if sorted_data[i].term > sorted_data[i + 1].term:
                 """ put item in the correct position """
                 temp1 = sorted_data[i]
                 temp2 = sorted_data[i + 1]

@@ -29,7 +29,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of Work', 'Create a new scheme of work')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Scheme of Work', 'Create a new scheme of work')
         self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
@@ -49,7 +49,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     """ edit """
@@ -73,7 +73,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Scheme of Work', 'Create a new scheme of work')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Scheme of Work', 'Create a new scheme of work')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -115,7 +115,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'should_redirect_to_index_if_valid')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'should_redirect_to_index_if_valid')
 
 
 

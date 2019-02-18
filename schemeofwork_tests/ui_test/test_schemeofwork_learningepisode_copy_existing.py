@@ -57,7 +57,7 @@ class test_schemeofwork_learningepisode_copy_existing(UITestCase):
         # assert
 
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lesson', 'A-Level Computer Science Programming and development - Lesson 1')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lesson', 'A-Level Computer Science Programming and development - Lesson 1')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -122,5 +122,5 @@ class test_schemeofwork_learningepisode_copy_existing(UITestCase):
         self.assertEqual(10, len(elems_post_previews), "This should show the learning objectives")
 
         ' should redirect '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', "Data Representation: Sound")
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', "Data Representation: Sound")
 

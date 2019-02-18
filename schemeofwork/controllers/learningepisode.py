@@ -15,6 +15,7 @@ import db_year
 
 def index():
     """ index action """
+
     scheme_of_work_id = int(request.args(0))
     scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 

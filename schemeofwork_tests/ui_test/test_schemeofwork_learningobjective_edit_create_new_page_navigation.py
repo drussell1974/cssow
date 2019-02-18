@@ -25,7 +25,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
 
 
     """ Breadcrumb """
@@ -40,7 +40,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
@@ -52,7 +52,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
@@ -64,4 +64,4 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')

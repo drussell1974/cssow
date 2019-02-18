@@ -73,7 +73,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
 
 
 
@@ -133,4 +133,4 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')

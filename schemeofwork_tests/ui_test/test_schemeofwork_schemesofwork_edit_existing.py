@@ -32,7 +32,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 OCR')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'KS5 OCR')
         self.assertEqual("DRAFT", save.text)
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
@@ -50,7 +50,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -62,7 +62,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisode_index(self):
@@ -74,7 +74,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
 
 
     """ editing """
@@ -98,7 +98,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'A-Level Computer Science', 'KS5 OCR')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'KS5 OCR')
 
 
     def test_page__edit_existing__should_redirect_to_index_if_valid(self):
@@ -122,7 +122,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
 

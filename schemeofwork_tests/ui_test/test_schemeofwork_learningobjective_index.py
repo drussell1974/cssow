@@ -22,7 +22,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
 
 
     def test_page__should_have__sidebar_and_selected_learning_episode(self):
@@ -35,13 +35,12 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertEqual("nav-link", elem.get_attribute("class"))
 
 
-
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
     def test_page__breadcrumb__navigate_to_learningepisodes_index(self):
@@ -50,19 +49,15 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_id('lnk-bc-learning_episodes').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
 
 
-    def not_test_page__submenu__navigate_to_learningepisode_new(self):
+    def test_page__breadcrumb__navigate_to_whiteboard_view(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_learning_episode_id))
 
-        # test
-        self.test_context.find_element_by_id('btn-new').click()
+        self.test_context.find_element_by_id('lnk-whiteboard_view').click()
+        self.test_context.implicitly_wait(4)
 
-        # assert
-        self.assertWebPageTitleAndHeadings('schemeofwork', '', '')
-
-
-
+        # assert (TEST parent page is still open)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
 
