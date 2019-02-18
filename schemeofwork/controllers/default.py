@@ -74,9 +74,8 @@ def download():
 def get_key_words():
     """ returns keywords as json """
     ' get the topic_id from the url'
-    topic_id = int(request.args(0))
 
-    key_words = db_keyword.get_options(db, topic_id)
+    key_words = db_keyword.get_options(db)
 
     import gluon.contrib.simplejson
     return gluon.contrib.simplejson.dumps(key_words)

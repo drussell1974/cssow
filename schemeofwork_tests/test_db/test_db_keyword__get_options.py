@@ -19,13 +19,13 @@ class test_db_keyword__get_options(TestCase):
 
 
     def test__get_options__should_return__everything(self):
-        db_keyword.save(self.fake_db, ["something"], 6)
-        rows = db_keyword.get_options(self.fake_db, topic_id=0)
+        db_keyword.save(self.fake_db, ["something"])
+        rows = db_keyword.get_options(self.fake_db)
         self.assertTrue(len(rows) > 0)
 
 
     def test__get_options__should_return__topic_only(self):
-        db_keyword.save(self.fake_db, ["something"], 6)
-        rows = db_keyword.get_options(self.fake_db, topic_id=6)
+        db_keyword.save(self.fake_db, ["something"])
+        rows = db_keyword.get_options(self.fake_db)
         self.assertTrue(len(rows) > 0)
 

@@ -210,8 +210,7 @@ def edit():
         solo_taxonomy_options = solo_taxonomy_options,
         topic_options = topic_options,
         content_options = content_options,
-        exam_board_options = exam_board_options,
-        main_topic_id=learning_episode.topic_id
+        exam_board_options = exam_board_options
     )
 
 
@@ -222,7 +221,6 @@ def save_item():
 
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
-    main_topic_id = int(request.vars.main_topic_id)
 
     # create instance of model from request.vars
 
@@ -250,7 +248,7 @@ def save_item():
         ' save learning objectives'
         model = db_learningobjective.save(db, model, published)
         ' save keywords '
-        db_keyword.save(db, model.key_words.split(','), main_topic_id)
+        db_keyword.save(db, model.key_words.split(','))
     else:
         """ redirect back to page and show message """
         session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors

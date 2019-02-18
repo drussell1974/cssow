@@ -24,15 +24,15 @@ class test_db_keyword__get_options(TestCase):
 
 
     def test__get__single_keyword(self):
-        db_keyword.save(self.fake_db, ["something"], 6)
+        db_keyword.save(self.fake_db, ["something"])
         rows = db_keyword.get(self.fake_db, "something")
         self.assertTrue(1, len(rows))
 
 
     def test__get__multiple_keyword(self):
-        db_keyword.save(self.fake_db, ["something"], 6)
-        db_keyword.save(self.fake_db, ["or"], 6)
-        db_keyword.save(self.fake_db, ["nothing"], 6)
+        db_keyword.save(self.fake_db, ["something"])
+        db_keyword.save(self.fake_db, ["or"])
+        db_keyword.save(self.fake_db, ["nothing"])
 
         rows = db_keyword.get(self.fake_db, "something,or,nothing")
         self.assertEqual(3, len(rows))

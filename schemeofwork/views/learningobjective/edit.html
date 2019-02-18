@@ -150,7 +150,6 @@
               <input type="hidden" name="scheme_of_work_id" value="{{=model.scheme_of_work_id}}">
               <input type="hidden" name="key_stage_id" value="{{=model.key_stage_id}}">
               <input type="hidden" name="learning_episode_id" value="{{=model.learning_episode_id}}">
-              <input type="hidden" name="main_topic_id" value="{{=main_topic_id}}">
               <button type="submit" class="btn btn-primary" id="saveButton">{{=T("Save")}}</button>
               <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{=T("Cancel")}}</button>
             </div>
@@ -170,7 +169,7 @@
     <script src="{{=URL('static','custom/vendor/sliptree/js/bootstrap-tokenfield.min.js')}}"></script>
 
     <script>
-    $.getJSON('{{=URL('default', 'get_key_words', args=[main_topic_id])}}',
+    $.getJSON('{{=URL('default', 'get_key_words')}}',
         function(result) {
             $('#ctl-key_words').tokenfield({
               autocomplete: {
