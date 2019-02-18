@@ -2,7 +2,7 @@
 <!-- Main Content -->
 <div class="row">
   <div class="col-lg-14 col-md-10 mx-auto">
-    <p class="h4 chalk float-right">{{=display_date}}</p>
+    <p class="h4 chalk float-right d-print-none">{{=display_date}}</p>
   </div>
 </div>
 <div class="row">
@@ -26,7 +26,7 @@
     </div>
     <!-- Prior Learning END -->
       <!-- Keywords -->
-        <h2 class="chalk" id="heading-key_words">{{=T("today's keywords")}}</h2>
+        <h2 class="chalk" id="heading-key_words">{{=T("keywords")}}</h2>
         <div id="accordion-keywords">
             {{ order = 0 }}
         {{ for key_word in key_words: }}
@@ -53,7 +53,7 @@
   </div>
   <div class="col-lg-8 col-md-8 mx-auto print-span">
       <!-- Learning Objectives -->
-      <h2 class="chalk" id="heading-learning_objectives">{{=T("today's learning objectives")}}</h2>
+      <h2 class="chalk" id="heading-learning_objectives">{{=T("learning objectives")}}</h2>
         <div id="accordion-learning_objectives">
             {{ group_name = ""
                order = 0 }}

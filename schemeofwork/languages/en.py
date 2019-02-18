@@ -269,8 +269,6 @@
 'This email already has an account': 'This email already has an account',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Title': 'Title',
-"today's keywords": "today's keywords",
-"today's learning objectives": "today's learning objectives",
 'Too short': 'Too short',
 'Topic': 'Topic',
 'Traceback': 'Traceback',
