@@ -4,22 +4,21 @@
 <div class="row">
   <div class="col-lg-8 col-md-8 mx-auto">
     <section class="heading" align="center">
-        <h1 class="chalk">{{=lesson_title}}</h1>
-        <p class="subheading">{{=lesson_summary}}</p>
+        <h1>{{=lesson_title}}</h1>
+        <p class="subheading chalk">{{=lesson_summary}}</p>
     </section>
   </div>
   <div class="col-lg-4 col-md-4 mx-auto">
-    <p class="h4 float-right">{{=display_date}}</p>
+    <p class="h4 float-right chalk">{{=display_date}}</p>
   </div>
 </div>
-
 <div class="row">
   <div class="col-lg-4 col-md-4 mx-auto">
     <!-- Prior Learning -->
   {{ if len(prior_learning) > 0: }}
-    <h2 id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
+    <h2 class="chalk" id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
       {{ for item in prior_learning: }}
-        <span>{{=item.description }}<br></span>
+        <span class="chalk">{{=item.description }}<br></span>
       {{ pass }}
     {{ pass }}
     <!-- Prior Learning END -->

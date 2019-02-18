@@ -202,6 +202,7 @@
 'Preface': 'Preface',
 'previous %s rows': 'previous %s rows',
 'Prior learning': 'Prior learning',
+'prior learning': 'prior learning',
 'Profile': 'Profile',
 'Profile updated': 'Profile updated',
 'Publisher': 'Publisher',

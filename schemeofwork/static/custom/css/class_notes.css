@@ -1,0 +1,26 @@
+.body {
+    color: black;
+    background-color: white;
+}
+
+.chalk {
+    font-size: medium;
+}
+
+h1 {
+    font-size: xx-large;
+}
+
+h2, h3, h4 {
+    font-size: x-large;
+}
+
+.accessibility {
+    display: none;
+}
+
+.collapse {
+    height: auto !important;
+    display:block !important;
+}
+
