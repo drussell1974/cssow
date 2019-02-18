@@ -1,26 +1,29 @@
 {{extend '__whiteboard_layout.html'}}
 <!-- Main Content -->
-
 <div class="row">
-  <div class="col-lg-8 col-md-8 mx-auto">
+  <div class="col-lg-14 col-md-10 mx-auto">
+    <p class="h4 chalk float-right">{{=display_date}}</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-8 col-md-8 mx-auto print-span">
     <section class="heading" align="center">
         <h1>{{=lesson_title}}</h1>
         <p class="subheading chalk">{{=lesson_summary}}</p>
     </section>
   </div>
-  <div class="col-lg-4 col-md-4 mx-auto">
-    <p class="h4 float-right chalk">{{=display_date}}</p>
-  </div>
 </div>
 <div class="row">
-  <div class="col-lg-4 col-md-4 mx-auto">
+  <div class="col-lg-4 col-md-4 mx-auto print-span">
     <!-- Prior Learning -->
   {{ if len(prior_learning) > 0: }}
-    <h2 class="chalk" id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
-      {{ for item in prior_learning: }}
-        <span class="chalk">{{=item.description }}<br></span>
-      {{ pass }}
-    {{ pass }}
+    <div class="d-print-none">
+      <h2 class="chalk" id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
+          {{ for item in prior_learning: }}
+            <span class="chalk">{{=item.description }}<br></span>
+          {{ pass }}
+        {{ pass }}
+    </div>
     <!-- Prior Learning END -->
       <!-- Keywords -->
         <h2 class="chalk" id="heading-key_words">{{=T("today's keywords")}}</h2>
@@ -48,7 +51,7 @@
         </div>
       <!-- Keywords END-->
   </div>
-  <div class="col-lg-8 col-md-8 mx-auto">
+  <div class="col-lg-8 col-md-8 mx-auto print-span">
       <!-- Learning Objectives -->
       <h2 class="chalk" id="heading-learning_objectives">{{=T("today's learning objectives")}}</h2>
         <div id="accordion-learning_objectives">

@@ -4,7 +4,7 @@
 }
 
 .chalk {
-    font-size: medium;
+    font-size: x-large;
 }
 
 h1 {
@@ -13,6 +13,7 @@ h1 {
 
 h2, h3, h4 {
     font-size: x-large;
+    font-weight: 700;
 }
 
 .accessibility {
@@ -24,3 +25,8 @@ h2, h3, h4 {
     display:block !important;
 }
 
+.print-span {
+    flex:0 0 100% !important;
+    max-width:100% !important;
+    overflow-wrap: break-word !important;
+}
