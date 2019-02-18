@@ -17,7 +17,7 @@
   <div class="col-lg-4 col-md-4 mx-auto">
     <!-- Prior Learning -->
   {{ if len(prior_learning) > 0: }}
-    <h3 id="heading-prior_learning_objectives">{{=T("prior learning")}}</h3>
+    <h2 id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
       {{ for item in prior_learning: }}
         <span>{{=item.description }}<br></span>
       {{ pass }}
@@ -57,6 +57,7 @@
                order = 0 }}
 
           {{ for row in learning_objectives: }}
+            {{ order = order + 1 }}
             {{ if row.group_name is not None: }}
                 {{ if group_name.upper() != row.group_name.upper(): }}
                     <span><b>{{=row.group_name}}</b></span>
@@ -67,12 +68,14 @@
             {{ pass }}
             <div class="learning_objective-expand">
                 <div class="expand-header" id="heading-learning_objective{{=order}}">
-                    <u class="chalk">{{=row.description}}</u>
+                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{=order}}" aria-expanded="false" aria-controls="collapse-learning_objective{{=order}}">
+                        <u class="chalk">{{=row.description}}</u>
+                    </a>
                 </div>
-                {{ if row.notes is not None: }}
+                {{ if len(row.notes.strip(' ')) > 0: }}
                 <div id="collapse-learning_objective{{=order}}" class="collapse" aria-labelledby="heading-learning_objective{{=order}}" data-parent="#accordion-learning_objectives">
                     <div class="expand-body chalk">
-                        {{=row.notes}}
+                        {{=row.notes.strip(' ')}}
                     </div>
                 </div>
                 {{ pass }}
@@ -83,7 +86,7 @@
 
       <!-- Learning Materials -->
         {{ if len(learning_materials) > 0: }}
-        <h3 class="chalk"  id="heading-learning_materials">{{=T("Learning materials")}}</h3>
+        <h2 class="chalk"  id="heading-learning_materials">{{=T("Learning materials")}}</h2>
           <ul>
           {{ for item in learning_materials: }}
             {{ if len(item.page_note) > 0: }}
