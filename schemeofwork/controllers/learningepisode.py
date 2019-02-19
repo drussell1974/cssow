@@ -186,7 +186,7 @@ def save_item():
         model = db_learningepisode.save(db, model, published)
 
         ' save keywords '
-        db_keyword.save(db, model.key_words.split(','))
+        db_keyword.save_keywords_only(db, model.key_words.split(','))
 
     else:
         """ redirect back to page and show message """

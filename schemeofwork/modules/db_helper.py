@@ -9,5 +9,9 @@ def to_db_null(val):
     return "NULL" if val is None else val
 
 
+def to_empty(val):
+    return "" if val is None else val
+
+
 def add_escape_chars(string):
     return string.replace("'", "\"")

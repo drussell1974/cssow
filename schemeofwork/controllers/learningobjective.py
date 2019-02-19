@@ -76,10 +76,10 @@ def whiteboard_view():
 
     learning_materials = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
-    key_words = db_keyword.get(db, learning_episode.key_words)
+    key_words = db_keyword.get_by_terms(db, learning_episode.key_words)
 
     for learning_objective in learning_objectives:
-        for key_word in db_keyword.get(db, learning_objective.key_words):
+        for key_word in db_keyword.get_by_terms(db, learning_objective.key_words):
             in_list = False
             for kw in key_words:
                 if kw.term.strip() == key_word.term.strip():
@@ -249,7 +249,7 @@ def save_item():
         ' save learning objectives'
         model = db_learningobjective.save(db, model, published)
         ' save keywords '
-        db_keyword.save(db, model.key_words.split(','))
+        db_keyword.save_keywords_only(db, model.key_words.split(','))
     else:
         """ redirect back to page and show message """
         session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors
