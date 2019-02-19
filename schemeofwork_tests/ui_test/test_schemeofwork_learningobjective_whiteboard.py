@@ -31,7 +31,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         elem = self.test_context.find_element_by_id('heading-key_words')
 
         # assert
-        self.assertEqual("Today's Keywords", elem.text)
+        self.assertEqual("Keywords", elem.text)
 
 
     def test_page__should_have__prior_learning_objectives(self):
@@ -47,7 +47,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         elem = self.test_context.find_element_by_id('heading-learning_objectives')
 
         # assert
-        self.assertEqual("Today's Learning Objectives", elem.text)
+        self.assertEqual("Learning Objectives", elem.text)
 
 
     def test_page__should_have__learning_materials(self):
