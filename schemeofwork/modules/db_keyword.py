@@ -21,8 +21,11 @@ def get(db, key_words_list):
     :param key_words_list: not seperated keywords
     :return: list of terms and defintion
     """
+    ' remove whitespace and use upper'
+    key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
-    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE name IN ('%s') AND published = 1 ORDER BY name;"
+
+    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE LOWER(name) IN ('%s') AND published = 1 ORDER BY name;"
     select_sql = select_sql % "','".join(key_words_list.split(','))
 
     rows = db.executesql(select_sql)

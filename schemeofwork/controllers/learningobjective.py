@@ -77,11 +77,12 @@ def whiteboard_view():
     learning_materials = db_reference.get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth.user_id)
 
     key_words = db_keyword.get(db, learning_episode.key_words)
+
     for learning_objective in learning_objectives:
         for key_word in db_keyword.get(db, learning_objective.key_words):
             in_list = False
             for kw in key_words:
-                if kw.term == key_word.term:
+                if kw.term.strip() == key_word.term.strip():
                     in_list = True
 
             if in_list == False:

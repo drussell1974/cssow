@@ -17,13 +17,11 @@
   <div class="col-lg-4 col-md-4 mx-auto print-span">
     <!-- Prior Learning -->
   {{ if len(prior_learning) > 0: }}
-    <div class="d-print-none">
-      <h2 class="chalk" id="heading-prior_learning_objectives">{{=T("prior learning")}}</h2>
+      <h2 class="chalk" class="d-print-none">{{=T("prior learning")}}</h2>
           {{ for item in prior_learning: }}
             <span class="chalk">{{=item.description }}<br></span>
           {{ pass }}
         {{ pass }}
-    </div>
     <!-- Prior Learning END -->
       <!-- Keywords -->
         <h2 class="chalk" id="heading-key_words">{{=T("keywords")}}</h2>
@@ -100,6 +98,5 @@
       <!-- Learning materials END -->
   </div>
 </div>
-
-
+</div>
 <!-- Main Content END -->
