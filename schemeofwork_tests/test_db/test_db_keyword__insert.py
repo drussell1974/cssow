@@ -24,7 +24,7 @@ class test_db_keyword__insert(TestCase):
         rows_before = db_keyword.get_options(self.fake_db)
 
         # test
-        db_keyword.save(self.fake_db, ["foobar"])
+        db_keyword.save_keywords_only(self.fake_db, ["foobar"])
 
         rows_after = db_keyword.get_options(self.fake_db)
 
@@ -34,12 +34,12 @@ class test_db_keyword__insert(TestCase):
     def test_do_not_save_existing(self):
         # setup
         ' create an existing keyword '
-        db_keyword.save(self.fake_db, ["FooBar"])
+        db_keyword.save_keywords_only(self.fake_db, ["FooBar"])
 
         rows_before = db_keyword.get_options(self.fake_db)
 
         # test
-        db_keyword.save(self.fake_db, ["FooBar"])
+        db_keyword.save_keywords_only(self.fake_db, ["FooBar"])
 
         # assert
         rows_after = db_keyword.get_options(self.fake_db)
@@ -50,7 +50,7 @@ class test_db_keyword__insert(TestCase):
         #set up
 
         # test
-        db_keyword.save(self.fake_db, [" FooBar "])
+        db_keyword.save_keywords_only(self.fake_db, [" FooBar "])
 
         rows = db_keyword.get_options(self.fake_db)
 
@@ -62,7 +62,7 @@ class test_db_keyword__insert(TestCase):
         #set up
 
         # test
-        db_keyword.save(self.fake_db, [""])
+        db_keyword.save_keywords_only(self.fake_db, [""])
 
         rows = db_keyword.get_options(self.fake_db)
 

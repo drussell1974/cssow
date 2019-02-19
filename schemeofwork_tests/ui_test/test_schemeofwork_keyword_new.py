@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_keyword_index(UITestCase):
+class test_schemeofwork_keyword_new(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -16,20 +16,6 @@ class test_schemeofwork_keyword_index(UITestCase):
     def tearDownClass(cls):
         # tear down
         cls.test_context.close()
-
-    def test_page__should_have__title__title_heading__and__sub_heading(self):
-        # test
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Key terms and definitions', 'Key terms and their definitions for all key stages')
-
-
-    def test_page__should_show__keywords_page_1(self):
-        # test
-        elems = self.test_context.find_elements_by_class_name("card")
-
-        # assert
-        self.assertEqual(10, len(elems))
 
 
     def test_page__should_show__keywords_page_2(self):
