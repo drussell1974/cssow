@@ -1,20 +1,9 @@
 # -*- coding: utf-8 -*-
-from db_keyword import KeywordModel, get_by_id, get_all, save
+from db_keyword import KeywordModel, get_by_id, get_by_terms, save
 from pager import Pager
 
 @auth.requires_login()
 def index():
-
-    page_to_display = int(request.vars.page if request.vars.page is not None else 1)
-
-    # TODO: get keywords
-    data = get_all(db)
-
-    # page the data
-    pager = Pager(page = page_to_display, page_size = 10, data = data)
-
-    pager_html = pager.render_html(URL('keyword', 'index'))
-    data = pager.data_to_display()
 
     content = {
         "main_heading":T("Key terms and definitions"),
@@ -22,7 +11,15 @@ def index():
         "strap_line":""
               }
 
-    return dict(content = content, pager_html = pager_html, view_model = data)
+    return dict(content = content)
+
+
+def _search_keywords():
+    search_term = request.vars.s if request.vars.s is not None else ""
+    # TODO: get keywords
+    data = get_by_terms(db, search_term)
+
+    return dict(view_model = data)
 
 
 @auth.requires_login()

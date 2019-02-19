@@ -1,0 +1,26 @@
+{{ if len(view_model) == 0: }}
+    <div class="alert alert-info" role="alert">
+        <span class="small">{{=T('There are no key terms that match the search criteria.')}}</span>
+    </div>
+{{ else: }}
+    {{ for row in view_model: }}
+        <form class="form{{=row.id}}">
+            <div class="card w-90">
+              <div class="card-body">
+                  <a name="keyword{{=row.id}}"></a>
+                <div class="control-group">
+                  <div class="form-group controls">
+                      <h5 class="card-title" id="ctl-term-{{=row.id}}">{{=row.term}}</h5>
+                    <p class="card-text">
+                        <textarea rows="2" class="form-control" name="definition" placeholder="{{=T('Enter a definition')}}" id="ctl-definition-{{=row.id}}" maxlength="250">{{=row.definition}}</textarea>
+                    </p>
+                   <p class="help-block text-danger small" id="error{{=row.id}}"></p>
+                  </div>
+                </div>
+                <a href="#keyword{{=row.id}}" class="badge badge-secondary" onclick="revertDefintion({{=row.id}})">{{=T("Cancel")}}</a>
+                <a href="#keyword{{=row.id}}" class="badge badge-primary" onclick="saveDefintion({{=row.id}})">{{=T("Save")}}</a>
+              </div>
+            </div>
+        </form>
+    {{ pass }}
+{{ pass }}

@@ -15,13 +15,18 @@ def get_options(db):
     return data
 
 
-def get_all(db):
+def get_all(db, search_term = ""):
     """
     Get a full list of terms and definitions
     :param db: database context
     :return: list of terms and defintion
     """
-    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
+
+    if len(search_term) > 0:
+        select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=search_term)
+
+    select_sql = select_sql + " ORDER BY name;"
 
     rows = db.executesql(select_sql)
 

@@ -94,6 +94,9 @@
               {{ for key_word in merge_string_list(row.key_words, row.key_words_from_learning_objectives, ","): }}
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
+              {{ if auth.user and (len(row.key_words) > 0 or len(row.key_words_from_learning_objectives) > 0) : }}
+                  <br><a href='{{=URL("keyword", "index", vars=dict(s=row.key_words + "," + row.key_words_from_learning_objectives))}}' class="small" target="_blank">Edit definitions</a>
+              {{ pass }}
             <p class="post-meta">{{=T("Created by")}}
               <a href="#">{{=row.created_by_name}}</a>
               {{if row.created: }}
