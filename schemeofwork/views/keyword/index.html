@@ -1,39 +1,4 @@
 {{ extend '__layout.html' }}
-{{block head}}
-<script>
-function revertDefintion(keyword_id) {
-    $.ajax({url: 'keyword/get?id='+keyword_id,
-            success: function(result){
-                definition = JSON.parse(result)
-                console.log(definition.found)
-                if (definition.found === true) {
-                    $('#ctl-definition-'+keyword_id).val(definition.val);
-                } else {
-                    $('#error'+keyword_id).html('could not find definition');
-                }
-            },
-            error: function(){
-                $('#error'+keyword_id).html('could not get definition at this time');
-            }
-        });
-}
-
-function saveDefintion(keyword_id) {
-
-    term = $('#ctl-term-'+keyword_id).text();
-    definition = $('#ctl-definition-'+keyword_id).val();
-    $.ajax({
-            type: 'POST',
-            url: '{{=URL("keyword", "update")}}',
-            data: { id:keyword_id, term:term, definition:definition },
-            error: function(error){
-                $('#error'+keyword_id).html('could not update definition at this time');
-            }
-        });
-}
-</script>
-{{end}}
-
 {{block header}}
 <div class="row">
   <div class="col-lg-8 col-md-10 mx-auto">

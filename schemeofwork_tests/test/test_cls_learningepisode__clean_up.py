@@ -67,3 +67,29 @@ class test_LearningEpisodeModel_clean_up__pathway_objective_ids(LearningEpisode_
 
         # assert
         self.assertEqual(["x", "y", "z"], test.pathway_objective_ids)
+
+
+class test_LearningEpisodeModel_clean_up__keywords(LearningEpisode_TestCase):
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.key_words = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual("x", test.key_words)
+
+
+    def test__multiple_items(self):
+        test = self._construct_valid_object()
+
+        test.key_words = "w x, y, z "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual("w x,y,z", test.key_words)

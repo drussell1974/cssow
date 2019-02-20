@@ -24,7 +24,7 @@ class LearningObjectiveModel (BaseModel):
         self.key_stage_id = int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.parent_id = try_int(parent_id)
-        self.key_words = key_words
+        self.key_words = key_words.replace(', ', ',')
         self.group_name = group_name
         self.created=created
         self.created_by_id=try_int(created_by_id)
@@ -114,7 +114,7 @@ class LearningObjectiveModel (BaseModel):
             self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ')
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ').replace(', ',',')
 
         # trim group_name
         if self.group_name is not None:

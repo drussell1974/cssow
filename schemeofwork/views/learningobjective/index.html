@@ -111,8 +111,10 @@
               {{ for key_word in string_to_list(row.key_words, ","): }}
                  <i class="badge badge-info">{{=key_word}}</i>
               {{ pass }}
-              {{ if auth.user and len(row.key_words) > 0: }}
-                  <br><a href='{{=URL("keyword", "index", vars=dict(s=row.key_words))}}' class="small" target="_blank">Edit definitions</a>
+              {{ if auth.user and len(row.key_words) > 0 : }}
+                  <br><a href="#{{=row.id}}" class="btn-keyword-modal small" data-keywords='{{=row.key_words}}'>
+                    {{=T("Edit definitions")}}
+                    </a>
               {{ pass }}
             <p class="post-meta">{{=T("Created by")}}
               <a href="#">{{=row.created_by_name}}</a>
@@ -150,6 +152,25 @@
 
     <!-- Main Content END -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{=T("Key terms")}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-keywords">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{=T("Close")}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 {{block page_js}}
     <script>
@@ -193,5 +214,29 @@
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
+    </script>
+    <script>
+        function showKeywords(search_term) {
+            $("#div-keywords").html('searching...');
+
+            uri = '{{=URL("keyword", "_search_keywords")}}';
+            if (search_term !== '') {
+                uri = uri + '?s=' + search_term
+            }
+
+            $.ajax({url: uri,
+                success: function(result){
+                    $("#modal-keywords").html(result);
+                },
+                error: function(){
+                    $("#modal-keywords").html('Could not get pathway objectives at this time');
+                }
+            });
+        }
+
+        $('.btn-keyword-modal').click(function(e){
+            showKeywords($(this).data('keywords'));
+            $('#keywordModal').modal()
+        });
     </script>
 {{end page_js}}

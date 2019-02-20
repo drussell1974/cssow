@@ -83,6 +83,7 @@
             {{ pass }}
             {{ pass }}
           <div class="post-preview">
+            <a name="{{=row.id}}"></a>
             <a href="{{=URL('learningobjective', 'index', args=[row.scheme_of_work_id,row.id])}}">
               <h2 class="post-title">
                 {{=T("Lesson {}").format(row.order_of_delivery_id)}} - {{=row.title}}
@@ -95,7 +96,9 @@
                 <i class="badge badge-info">{{=key_word}}</i>&nbsp;
               {{ pass }}
               {{ if auth.user and (len(row.key_words) > 0 or len(row.key_words_from_learning_objectives) > 0) : }}
-                  <br><a href='{{=URL("keyword", "index", vars=dict(s=row.key_words + "," + row.key_words_from_learning_objectives))}}' class="small" target="_blank">Edit definitions</a>
+                  <br><a href="#{{=row.id}}" class="btn-keyword-modal small" data-keywords='{{=row.key_words + "," + row.key_words_from_learning_objectives}}'>
+                    {{=T("Edit definitions")}}
+                    </a>
               {{ pass }}
             <p class="post-meta">{{=T("Created by")}}
               <a href="#">{{=row.created_by_name}}</a>
@@ -131,6 +134,26 @@
     <hr>
 
     <!-- Main Content END -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{=T("Key terms")}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-keywords">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{=T("Close")}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
 {{block page_js}}
     <script>
         uri = '{{=URL("reference", "_view_scheme_of_work_references", vars=dict(scheme_of_work_id=scheme_of_work_id,_next=request.url))}}';
@@ -141,6 +164,30 @@
             error: function(e){
                 $("#div-references").html('could not get references at this time');
             }
+        });
+    </script>
+    <script>
+        function showKeywords(search_term) {
+            $("#div-keywords").html('searching...');
+
+            uri = '{{=URL("keyword", "_search_keywords")}}';
+            if (search_term !== '') {
+                uri = uri + '?s=' + search_term
+            }
+
+            $.ajax({url: uri,
+                success: function(result){
+                    $("#modal-keywords").html(result);
+                },
+                error: function(){
+                    $("#modal-keywords").html('Could not get pathway objectives at this time');
+                }
+            });
+        }
+
+        $('.btn-keyword-modal').click(function(e){
+            showKeywords($(this).data('keywords'));
+            $('#keywordModal').modal()
         });
     </script>
 {{end page_js}}

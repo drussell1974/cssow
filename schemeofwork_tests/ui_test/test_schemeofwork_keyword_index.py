@@ -24,25 +24,37 @@ class test_schemeofwork_keyword_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Key terms and definitions', 'Key terms and their definitions for all key stages')
 
 
-    def test_page__should_show__keywords_page_1(self):
+    def test_page__should_show__all_keywords(self):
         # test
         elems = self.test_context.find_elements_by_class_name("card")
 
         # assert
-        self.assertEqual(10, len(elems))
+        self.assertTrue(len(elems) > 0)
 
 
-    def test_page__should_show__keywords_page_2(self):
+    def test_page__should_show__one_filtered_keywords(self):
         # setup
-        page2 = self.test_context.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div[1]/ul/li[2]/a")
-        self.test_context.implicitly_wait(20)
-        page2.click()
+        elem = self.test_context.find_element_by_id("ctl-search")
+        elem.send_keys("algorithm")
+        self.wait() # do not remove
 
         # test
         elems = self.test_context.find_elements_by_class_name("card")
 
         # assert
-        self.assertEqual(10, len(elems))
+        self.assertEqual(1, len(elems))
 
 
+    def test_page__should_show__multiple_filtered_keywords(self):
+        # setup
+        elem = self.test_context.find_element_by_id("ctl-search")
+        elem.send_keys("abstract,")
+        elem.send_keys("algorithm")
+        self.wait() # do not remove
+
+        # test
+        elems = self.test_context.find_elements_by_class_name("card")
+
+        # assert
+        self.assertEqual(2, len(elems))
 

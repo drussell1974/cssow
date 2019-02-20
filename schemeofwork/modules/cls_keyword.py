@@ -35,3 +35,4 @@ class KeywordModel(BaseModel):
         # trim definition
         if self.definition is not None:
             self.definition = self.definition.lstrip(' ').rstrip(' ')
+

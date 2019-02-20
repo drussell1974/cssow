@@ -95,6 +95,7 @@
 'E-mail': 'email',
 'Edit': 'Edit',
 'Edit current record': 'Edit current record',
+'Edit definitions': 'Edit definitions',
 'Edit page notes': 'Edit page notes',
 'Email and SMS': 'Email and SMS',
 'Email sent': 'Email sent',

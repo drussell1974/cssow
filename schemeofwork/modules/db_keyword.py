@@ -45,12 +45,17 @@ def get_by_terms(db, key_words_list):
     :param key_words_list: not seperated keywords
     :return: list of terms and defintion
     """
+
+
+    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw"
+
     ' remove whitespace and use upper'
     key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
+    if len(key_words_list) > 0:
+        select_sql = select_sql + " WHERE LOWER(name) IN ('%s') AND published = 1" % "','".join(key_words_list.split(','))
 
-    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE LOWER(name) IN ('%s') AND published = 1 ORDER BY name;"
-    select_sql = select_sql % "','".join(key_words_list.split(','))
+    select_sql = select_sql + " ORDER BY name;"
 
     rows = db.executesql(select_sql)
 

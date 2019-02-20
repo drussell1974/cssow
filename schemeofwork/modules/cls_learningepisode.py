@@ -19,7 +19,7 @@ class LearningEpisodeModel (BaseModel):
         self.key_stage_name = key_stage_name
         self.year_id = int(year_id)
         self.year_name = year_name
-        self.key_words = key_words
+        self.key_words = key_words.replace(', ', ',')
         self.other_key_words = []
         self.summary = summary
         self.pathway_objective_ids = []
@@ -81,7 +81,7 @@ class LearningEpisodeModel (BaseModel):
             self.is_valid = False
 
         # Validate key_words
-        self._validate_optional_list("key_words", self.key_words, sep=",", max_items=15)
+        self._validate_optional_list("key_words", self.key_words, sep=",", max_items=30)
 
         # Validate summary
         self._validate_optional_string("summary", self.summary, 80)
@@ -108,7 +108,7 @@ class LearningEpisodeModel (BaseModel):
             self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ')
+            self.key_words = self.key_words.lstrip(' ').rstrip(' ').replace(', ', ',')
 
         if self.summary is not None:
             self.summary = self.summary.lstrip(' ').rstrip(' ')

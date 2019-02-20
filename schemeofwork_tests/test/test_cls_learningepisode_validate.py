@@ -496,7 +496,7 @@ class test_LearningEpisodeModel_validate__key_words(LearningEpisode_TestCase):
 
         test = self._construct_valid_object()
 
-        test.key_words = "Lorem, ipsum, dolor, sit,amet, consectetur, adipiscing, ut elit, Mauris, elementum torro, suscipit, faucibus, Quisque, malesuada, lorem" # l5 keywords
+        test.key_words = "Lorem, ipsum, dolor, sit,amet, consectetur, adipiscing, ut elit, Mauris, elementum torro, suscipit, faucibus, Quisque, malesuada, lorem, Lorem 2, ipsum 2, dolor 2, sit 2,amet 2, consectetur 2, adipiscing 2, ut elit 2, Mauris 2, elementum torro 2, suscipit 2, faucibus 2, Quisque 2, malesuada 2, lorem 2" # l5 keywords
 
         # test
         test.validate()
@@ -510,7 +510,7 @@ class test_LearningEpisodeModel_validate__key_words(LearningEpisode_TestCase):
 
         test = self._construct_valid_object()
 
-        test.key_words = "Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, Nulla, ut nunc, quis, est ornare, tincidunt, Vivamus, aliquet elementum, ipsum vel." # 15 keywords + 1
+        test.key_words = "Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, Nulla, ut nunc, quis, est ornare, tincidunt, Vivamus, aliquet elementum, ipsum vel., Lorem2, ipsum2, dolor2, sit2, amet2, consectetur2, adipiscing2, elit2, Nulla2, ut nunc 2, quis2, est ornare 2, tincidunt 2, Vivamus 2, aliquet elementum 2" # 15 keywords + 1
 
         # test
         test.validate()
