@@ -15,7 +15,7 @@ def get_options(db, scheme_of_work_id, auth_user):
                  " ref.authors as authors," \
                  " ref.uri as uri " \
                  "FROM sow_reference as ref " \
-                 "INNER JOIN sow_reference as type ON type.id = ref.reference_type_id " \
+                 "INNER JOIN sow_reference_type as type ON type.id = ref.reference_type_id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " AND (ref.published = 1 OR ref.created_by = {auth_user});"
 
