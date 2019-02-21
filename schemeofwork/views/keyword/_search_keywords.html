@@ -5,7 +5,7 @@
 {{ else: }}
     <script>
     function revertDefintion(keyword_id) {
-        $.ajax({url: 'keyword/get?id='+keyword_id,
+        $.ajax({url: '/keyword/get?id='+keyword_id,
                 success: function(result){
                     definition = JSON.parse(result)
                     console.log(definition.found)

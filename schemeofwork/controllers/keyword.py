@@ -16,8 +16,8 @@ def index():
 
 def _search_keywords():
     search_term = request.vars.s if request.vars.s is not None else ""
-    # TODO: get keywords
-    data = get_by_terms(db, search_term)
+
+    data = get_by_terms(db, search_term, True)
 
     return dict(view_model = data)
 

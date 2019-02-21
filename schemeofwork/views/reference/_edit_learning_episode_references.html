@@ -6,7 +6,7 @@
   {{ for item in view_model: }}
         {{ if curr_title != item.title: }}
             {{ if is_first == False: }} </ul> {{ pass }}
-            <a href="{{=item.uri}}" target="_blank">{{=item.title}} <i class="small">{{=item.publisher}}</i></a>
+            <a href="{{=item.uri}}">{{=item.title}} <i class="small">{{=item.publisher}}</i></a>
             <ul class="my-list">
             {{ curr_title = item.title
                 is_first = False }}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from cls_keyword import KeywordModel
 from db_helper import to_empty
+import log
 
 def get_options(db):
     select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
@@ -28,6 +29,8 @@ def get_all(db, search_term = ""):
 
     select_sql = select_sql + " ORDER BY name;"
 
+    log.write(db, select_sql)
+
     rows = db.executesql(select_sql)
 
     data = []
@@ -38,13 +41,15 @@ def get_all(db, search_term = ""):
     return data
 
 
-def get_by_terms(db, key_words_list):
+def get_by_terms(db, key_words_list, allow_all):
     """
     Get a full list of terms and definitions
     :param db:
     :param key_words_list: not seperated keywords
     :return: list of terms and defintion
     """
+    if len(key_words_list) == 0 and allow_all == False:
+        return []
 
 
     select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw"
@@ -56,6 +61,8 @@ def get_by_terms(db, key_words_list):
         select_sql = select_sql + " WHERE LOWER(name) IN ('%s') AND published = 1" % "','".join(key_words_list.split(','))
 
     select_sql = select_sql + " ORDER BY name;"
+
+    log.write(db, select_sql)
 
     rows = db.executesql(select_sql)
 
