@@ -25,7 +25,7 @@ class test_db_keyword__get_options(TestCase):
 
     def test__get__single_keyword(self):
         db_keyword.save_keywords_only(self.fake_db, ["something"])
-        rows = db_keyword.get_by_terms(self.fake_db, "something")
+        rows = db_keyword.get_by_terms(self.fake_db, "something", True)
         self.assertTrue(1, len(rows))
 
 
@@ -34,5 +34,23 @@ class test_db_keyword__get_options(TestCase):
         db_keyword.save_keywords_only(self.fake_db, ["or"])
         db_keyword.save_keywords_only(self.fake_db, ["nothing"])
 
-        rows = db_keyword.get_by_terms(self.fake_db, "something,or,nothing")
+        rows = db_keyword.get_by_terms(self.fake_db, "something,or,nothing", True)
         self.assertEqual(3, len(rows))
+
+
+    def test__empty_string__show_all(self):
+        db_keyword.save_keywords_only(self.fake_db, ["something"])
+        db_keyword.save_keywords_only(self.fake_db, ["or"])
+        db_keyword.save_keywords_only(self.fake_db, ["nothing"])
+
+        rows = db_keyword.get_by_terms(self.fake_db, "", True)
+        self.assertEqual(27, len(rows))
+
+
+    def test__empty_string__do_not_show_all(self):
+        db_keyword.save_keywords_only(self.fake_db, ["something"])
+        db_keyword.save_keywords_only(self.fake_db, ["or"])
+        db_keyword.save_keywords_only(self.fake_db, ["nothing"])
+
+        rows = db_keyword.get_by_terms(self.fake_db, "", False)
+        self.assertEqual(0, len(rows))

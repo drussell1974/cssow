@@ -90,7 +90,14 @@
           <ul>
           {{ for item in learning_materials: }}
             {{ if len(item.page_note) > 0: }}
-              <li class="chalk my-list"><i>{{=item.title}} ({{=item.publisher}})</i> - <span><a href="{{=item.page_uri}}">{{=item.page_note}}</a></span></li>
+              <li class="chalk my-list">
+                  <i>{{=item.title}} ({{=item.publisher}})</i> -
+                  <span><a href="{{=item.page_uri}}">{{=item.page_note}}</a>
+                  {{ for icon in item.task_icon.split(","): }}
+                    {{ if len(item.task_icon) > 0 : }} <i class="fa {{=icon}}"></i> {{ pass }}
+                  {{ pass }}
+                    </span>
+              </li>
              {{ pass }}
           {{ pass }}
           </ul>

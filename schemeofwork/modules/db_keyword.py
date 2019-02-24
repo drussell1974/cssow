@@ -29,8 +29,6 @@ def get_all(db, search_term = ""):
 
     select_sql = select_sql + " ORDER BY name;"
 
-    log.write(db, select_sql)
-
     rows = db.executesql(select_sql)
 
     data = []
@@ -61,8 +59,6 @@ def get_by_terms(db, key_words_list, allow_all):
         select_sql = select_sql + " WHERE LOWER(name) IN ('%s') AND published = 1" % "','".join(key_words_list.split(','))
 
     select_sql = select_sql + " ORDER BY name;"
-
-    log.write(db, select_sql)
 
     rows = db.executesql(select_sql)
 

@@ -3,6 +3,7 @@
 from datetime import datetime
 from cls_reference import ReferenceModel
 from cls_reference_note import ReferenceNoteModel
+from helper_string import to_cs_string
 from pager import Pager
 from validation_helper import html_validation_message
 import db_reference, db_schemeofwork, db_reference_type
@@ -115,10 +116,21 @@ def save_page_note():
     page_id = request.vars.page_id
     page_note = request.vars.page_note
     page_uri = request.vars.page_uri
+
+    task_icon = to_cs_string(request.vars.group_task_icon,
+                        request.vars.individual_task_icon,
+                        request.vars.hands_up_task_icon,
+                        request.vars.discussion_task_icon,
+                        request.vars.listening_task_icon,
+                        request.vars.reading_task_icon,
+                        request.vars.watching_task_icon,
+                        request.vars.question_task_icon,
+                        request.vars.research_task_icon)
+
     learning_episode_id = request.vars.learning_episode_id
     reference_id = int(request.vars.reference_id)
 
-    model = ReferenceNoteModel(page_id, reference_id=reference_id, learning_episode_id=learning_episode_id, page_note=page_note, page_uri=page_uri)
+    model = ReferenceNoteModel(page_id, reference_id=reference_id, learning_episode_id=learning_episode_id, page_note=page_note, page_uri=page_uri, task_icon = task_icon)
 
     model.validate()
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from cls_reference import ReferenceModel
-from db_helper import to_db_null
+from db_helper import to_db_null, to_empty
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -45,8 +45,9 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " ref.authors as authors," \
                  " ref.uri as uri," \
                  " le_ref.id as page_id," \
-                 " le_ref.page_notes, " \
-                 " le_ref.page_uri " \
+                 " le_ref.page_notes," \
+                 " le_ref.page_uri," \
+                 " le_ref.task_icon " \
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
                  "LEFT JOIN sow_learning_episode__has__references as le_ref ON le_ref.learning_episode_id = le.id AND le_ref.reference_id = ref.id " \
@@ -66,6 +67,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
         model.page_id = row[8]
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
+        model.task_icon = row[11] if row[11] is not None else ''
         data.append(model)
 
     return data
@@ -181,8 +183,8 @@ def _insert(db, model):
 def insert_page_note(db, model):
     """ deletes and reinserts sow_learning_episode__has__references """
     # insert
-    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}');"
-    str_insert = str_insert.format(reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri)
+    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri, task_icon) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
+    str_insert = str_insert.format(reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_db_null(model.task_icon))
 
     db.executesql(str_insert)
 
@@ -194,9 +196,10 @@ def update_page_note(db, model):
                  " reference_id = {reference_id}," \
                  " learning_episode_id = {learning_episode_id}," \
                  " page_notes = '{page_notes}'," \
-                 " page_uri = '{page_uri}' " \
+                 " page_uri = '{page_uri}'," \
+                 " task_icon = '{task_icon}' " \
                  "WHERE id = {id};"
-    str_update = str_update.format(id=model.id, reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri)
+    str_update = str_update.format(id=model.id, reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_empty(model.task_icon))
 
     db.executesql(str_update)
 

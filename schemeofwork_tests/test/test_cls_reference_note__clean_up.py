@@ -30,3 +30,14 @@ class test_cls_reference__clean_up(TestCase):
 
         # assert
         self.assertEqual("x", self.test.page_uri)
+
+
+    def test_task_icon__trim_whitespace(self):
+
+        self.test.task_icon = " x, y, z "
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x, y, z", self.test.task_icon)

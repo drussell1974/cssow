@@ -265,3 +265,106 @@ class test_cls_reference_validate__page_uri(TestCase):
         # assert
         self.assertTrue("page_uri" in self.test.validation_errors, "page_uri should not have validation error %s" % self.test.validation_errors)
         self.assertFalse(self.test.is_valid, "is_valid should be True")
+
+
+class test_cls_reference_validate__task_icon(TestCase):
+
+    test = None
+
+    def setUp(self):
+        self.test = ReferenceNoteModel(1, reference_id = 1, learning_episode_id = 6, page_note = "Test note", task_icon = "fa-icon")
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.task_icon = ""
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("task_icon" in self.test.validation_errors, "task_icon should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme_trim_whitespace(self):
+        # set up
+
+        self.test.task_icon = " "
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("task_icon" in self.test.validation_errors, "task_icon should have no validation errors - %s" % self.test.validation_errors)
+        self.assertEqual(self.test.task_icon, "")
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.task_icon = ""
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("task_icon" in self.test.validation_errors, "task_icon should have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+        # set up
+
+        self.test.task_icon = None
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("task_icon" in self.test.validation_errors, "task_icon should have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+        # set up
+
+        self.test.task_icon = "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89, " \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon, faz" # length 500 characters
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("task_icon" in self.test.validation_errors, "task_icon should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+        # set up
+
+        self.test.task_icon = "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89, " \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon1, fa-icon2, fa-icon3, fa-icon4, fa-icon5, fa-icon6, fa-icon7, fa-iconic89" \
+                              "fa-icon, fa-1" # length 501 characters
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("task_icon" in self.test.validation_errors, "task_icon should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")

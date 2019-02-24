@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from db_helper import add_escape_chars
 
-def is_enabled():
-    return False
+class Log:
 
-def write(db, details):
-    """ inserts the detail into the sow_logging table """
-    if is_enabled() == True:
-        str_insert = "INSERT INTO sow_logging (details, created) VALUES ('{details}', '{created}');"
-        str_insert = str_insert.format(
-            details = details,
-            created=datetime.utcnow())
+    def __init__(self):
+        self.is_enabled = False
 
-        db.executesql(str_insert)
+    def write(self, db, details):
+        """ inserts the detail into the sow_logging table """
+        if self.is_enabled == True:
+            print(details)
+            str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (add_escape_chars(details), datetime.utcnow())
+            print(str_insert)
+            db.executesql(str_insert)

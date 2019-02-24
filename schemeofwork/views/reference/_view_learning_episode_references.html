@@ -3,7 +3,7 @@
 <span class="small">{{=T('There are no learning materials for this scheme of work.')}}</span>
 {{ else: }}
   <script>
-    function editReference(page_id, reference_id, page_note, page_uri, title, uri) {
+    function editReference(page_id, reference_id, page_note, page_uri, title, uri, task_icon) {
         // clear
         $('#feedback').html('');
 
@@ -15,6 +15,10 @@
         $('#modal-page_title').text(title);
         $('#modal-uri').attr('href', uri);
 
+        for (i = 0; i < task_icon.split(',').length; i++) {
+            console.log(task_icon.split(',')[i]);
+            $('#ctl-' + task_icon.split(',')[i]).prop('checked', 'checked');
+        }
         // open
         $('#addReferenceModal').modal();
     };
@@ -62,7 +66,7 @@
              {{ pass }}
             {{if auth.user:}}
                 <!-- Button trigger modal -->
-                - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}', '{{=item.title}}', '{{=item.uri}}')">{{=T("Edit")}}</a>
+                - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}', '{{=item.title}}', '{{=item.uri}}', '{{=item.task_icon}}')">{{=T("Edit")}}</a>
                 - <a class="small" href="#reference-{{=item.id}}" onclick="deleteReference({{=item.page_id}})">{{=T('Delete')}}</a><br>
             {{ pass }}
         {{ pass }}
@@ -94,6 +98,66 @@
                       <div class="form-group controls">
                         <i class="fa fa-link"></i>
                         <input type="text" max="2083" name="page_uri" placeholder="website link" class="form-control" id="modal-page_uri">
+                         <p class="help-block text-danger"></p>
+                      </div>
+                        <hr>
+                    </div><!-- class="control-group"-->
+                    <div class="control-group">
+                      <div class="form-group controls">
+                          <div class="form-check">
+                              <input class="form-check-input" name="group_task_icon" type="checkbox" value="fa-group" id="ctl-fa-group">
+                              <label class="form-check-label" for="ctl-fa-group">
+                                <i class="fa fa-group"></i> {{=T("Group task")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="individual_task_icon" type="checkbox" value="fa-user" id="ctl-fa-user">
+                              <label class="form-check-label" for="ctl-fa-user">
+                                <i class="fa fa-user"></i> {{=T("Individual task")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="hands_up_task_icon" type="checkbox" value="fa-hand-o-up" id="ctl-fa-hand-o-up">
+                              <label class="form-check-label" for="ctl-fa-hand-o-up">
+                                  <i class="fa fa-hand-o-up"></i>{{=T("Hands up")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="discussion_task_icon" type="checkbox" value="fa-comments" id="ctl-fa-comments">
+                              <label class="form-check-label" for="ctl-fa-comments">
+                                  <i class="fa fa-comments"></i> {{=T("Discussion")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="listening_task_icon" type="checkbox" value="fa-headphones" id="ctl-fa-headphones">
+                              <label class="form-check-label" for="ctl-fa-headphones">
+                                <i class="fa fa-headphones"></i> {{=T("Listen")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="reading_task_icon" type="checkbox" value="fa-book" id="ctl-fa-book">
+                              <label class="form-check-label" for="ctl-fa-book">
+                                <i class="fa fa-book"></i> {{=T("Read")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="watching_task_icon" type="checkbox" value="fa-film" id="ctl-fa-film">
+                              <label class="form-check-label" for="ctl-fa-film">
+                                <i class="fa fa-film"></i> {{=T("Watch")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="question_task_icon" type="checkbox" value="fa-question" id="ctl-fa-question">
+                              <label class="form-check-label" for="ctl-fa-question">
+                                <i class="fa fa-question"></i> {{=T("Questions")}}
+                              </label>
+                            </div>
+                          <div class="form-check">
+                              <input class="form-check-input" name="research_task_icon" type="checkbox" value="fa-balance-scale" id="ctl-fa-balance-scale">
+                              <label class="form-check-label" for="ctl-fa-balance-scale">
+                                <i class="fa fa-balance-scale"></i> {{=T("Research")}}
+                              </label>
+                            </div>
                          <p class="help-block text-danger"></p>
                       </div>
                         <hr>

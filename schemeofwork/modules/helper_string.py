@@ -64,6 +64,14 @@ def string_to_list(string, SEP):
         return string.split(SEP)
 
 
+def to_cs_string(*argv):
+    rval=""
+    for arg in argv:
+        if arg is not None:
+            rval = rval + arg + ","
+    return rval.rstrip(',')
+
+
 def date_to_string(date):
     suffix = ""
     if 4 <= date.day <= 20 or 24 <= date.day <= 30:

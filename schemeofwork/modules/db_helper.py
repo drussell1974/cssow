@@ -14,4 +14,4 @@ def to_empty(val):
 
 
 def add_escape_chars(string):
-    return string.replace("'", "\"")
+    return str(string).replace("'", "\"")
