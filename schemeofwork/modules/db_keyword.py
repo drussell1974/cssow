@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from cls_keyword import KeywordModel
-from db_helper import to_empty
+from db_helper import to_empty, sql_safe
 import log
 
 def get_options(db):
@@ -25,7 +25,7 @@ def get_all(db, search_term = ""):
     select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
 
     if len(search_term) > 0:
-        select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=search_term)
+        select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=sql_safe(search_term))
 
     select_sql = select_sql + " ORDER BY name;"
 
@@ -56,7 +56,7 @@ def get_by_terms(db, key_words_list, allow_all):
     key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
     if len(key_words_list) > 0:
-        select_sql = select_sql + " WHERE LOWER(name) IN ('%s') AND published = 1" % "','".join(key_words_list.split(','))
+        select_sql = select_sql + " WHERE LOWER(name) IN ('{key_words}') AND published = 1".format(key_words="','".join(sql_safe(key_words_list).split(',')))
 
     select_sql = select_sql + " ORDER BY name;"
 
@@ -78,8 +78,8 @@ def get_by_id(db, id):
     :return: term and defintion
     """
 
-    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = %s AND published = 1;"
-    select_sql = select_sql % id
+    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = {id} AND published = 1;"
+    select_sql = select_sql.format(int(id))
 
     rows = db.executesql(select_sql)
 
@@ -131,7 +131,7 @@ def delete(db, key_word):
     :return:
     """
 
-    str_delete = "DELETE FROM sow_key_word WHERE name = '%s'" % key_word
+    str_delete = "DELETE FROM sow_key_word WHERE name = '{key_word}'".format(key_word=sql_safe(key_word))
     db.executesql(str_delete)
 
 
@@ -143,7 +143,7 @@ def _insert(db, key_word, definition):
     :param definition: key definition
     :return:
     """
-    db.executesql("INSERT INTO sow_key_word (name, definition) VALUES ('%s', '%s');" % (key_word, definition))
+    db.executesql("INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(key_word), definition=sql_safe(definition)))
 
 
 def _update(db, model):
@@ -154,5 +154,5 @@ def _update(db, model):
     :param definition: key definition
     :return:
     """
-    db.executesql("UPDATE sow_key_word SET definition = '{definition}' WHERE id = {id};".format(definition=model.definition, id=model.id))
+    db.executesql("UPDATE sow_key_word SET definition = '{definition}' WHERE id = {id};".format(definition=model.definition), id=model.id)
 

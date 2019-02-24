@@ -62,7 +62,7 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
                  " WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user})" \
                  " ORDER BY le.year_id, le.order_of_delivery_id;"
-    select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(scheme_of_work_id=int(scheme_of_work_id), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -129,7 +129,7 @@ def get_model(db, id_, auth_user):
                  " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                  " LEFT JOIN auth_user as user ON user.id = sow.created_by"\
                   " WHERE le.id = {learning_episode_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-    select_sql = select_sql.format(learning_episode_id=id_, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(learning_episode_id=int(id_), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 

@@ -39,7 +39,7 @@ class test_cls_reference_constructor(TestCase):
                                  title="Title here",
                                  publisher="Penguin",
                                  year_published = 2019,
-                                 authors="Russell, D.;Russell, A;",
+                                 authors="Russell, D.;Russell, A.;",
                                  uri="http://jazzthecat.co.uk",
                                  scheme_of_work_id = 1)
 
@@ -51,7 +51,7 @@ class test_cls_reference_constructor(TestCase):
         self.assertEqual("Website", self.test.reference_type_name)
         self.assertEqual("Title here", self.test.title)
         self.assertEqual("Penguin", self.test.publisher)
-        self.assertEqual("Russell, D.;Russell, A;", self.test.authors)
+        self.assertEqual("Russell, D.\;Russell, A.\;", self.test.authors)
         self.assertEqual("http://jazzthecat.co.uk", self.test.uri)
         self.assertEqual(1, self.test.scheme_of_work_id)
         self.assertTrue(self.test.is_valid)

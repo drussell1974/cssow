@@ -17,6 +17,7 @@ class test_SchemeOfWork_clean_up__key_stage_name(SchemeOfWork_TestCase):
         # assert
         self.assertEqual(test.key_stage_name, "x")
 
+
 class test_SchemeOfWork_clean_up__exam_board_name(SchemeOfWork_TestCase):
 
     def test__trim_whitespace(self):

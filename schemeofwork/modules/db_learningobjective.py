@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
-from db_helper import to_db_null
+from db_helper import to_db_null, to_empty, sql_safe
 import db_keyword
 
 def get_all(db, learning_episode_id, auth_user):
@@ -42,7 +42,7 @@ def get_all(db, learning_episode_id, auth_user):
                  " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
                  " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
                  " WHERE le.id = {learning_episode_id} AND (le.published = 1 or le.created_by = {auth_user});"
-    select_sql = select_sql.format(learning_episode_id=learning_episode_id, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -112,7 +112,7 @@ def get_new_model(db, id_, auth_user):
                   " LEFT JOIN sow_exam_board AS exam ON exam.id = lob.exam_board_id"\
                   " LEFT JOIN auth_user AS user ON user.id = lob.created_by"\
                   " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user};"
-    select_sql = select_sql.format(learning_objective_id=id_, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -183,7 +183,7 @@ def get_model(db, id_, auth_user):
                  " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
                  " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});"
 
-    select_sql = select_sql.format(learning_objective_id=id_, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 
@@ -249,7 +249,7 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
                 " WHERE ks.id < {key_stage_id}" \
                 " ORDER BY ks.name DESC, solo.lvl;"
 
-    select_sql = select_sql.format(key_stage_id=key_stage_id)
+    select_sql = select_sql.format(key_stage_id=int(key_stage_id))
 
     rows = db.executesql(select_sql)
 
@@ -323,7 +323,7 @@ def get_linked_pathway_objectives(db, learning_episode_id):
                 " WHERE pw.learning_episode_id = {learning_episode_id}" \
                 " ORDER BY ks.name DESC, solo.lvl;"
 
-    select_sql = select_sql.format(learning_episode_id=learning_episode_id)
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id))
 
     rows = db.executesql(select_sql)
 

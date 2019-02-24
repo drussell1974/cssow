@@ -26,7 +26,7 @@ def get_linked_pathway_ks123(db, learning_episode_id):
                  " INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id"\
                  " WHERE le_pw.learning_episode_id = {learning_episode_id};"
 
-    select_sql = select_sql.format(learning_episode_id=learning_episode_id)
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id))
 
     rows = db.executesql(select_sql)
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
+from db_helper import sql_safe
 
 class LearningEpisodeModel (BaseModel):
 
@@ -90,35 +91,37 @@ class LearningEpisodeModel (BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties """
+        """ clean up properties by casting and ensuring safe for inserting etc """
+
+        self.id = int(self.id)
 
         if self.title is not None:
-            self.title = self.title.lstrip(' ').rstrip(' ')
+            self.title = sql_safe(self.title)
 
         if self.scheme_of_work_name is not None:
-            self.scheme_of_work_name = self.scheme_of_work_name.lstrip(' ').rstrip(' ')
+            self.scheme_of_work_name = sql_safe(self.scheme_of_work_name)
 
         if self.key_stage_name is not None:
-            self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
+            self.key_stage_name = sql_safe(self.key_stage_name)
 
         if self.topic_name is not None:
-            self.topic_name = self.topic_name.lstrip(' ').rstrip(' ')
+            self.topic_name = sql_safe(self.topic_name)
 
         if self.parent_topic_name is not None:
-            self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
+            self.parent_topic_name = sql_safe(self.parent_topic_name)
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ').replace(', ', ',')
+            self.key_words = sql_safe(self.key_words).replace(', ', ',')
 
         if self.summary is not None:
-            self.summary = self.summary.lstrip(' ').rstrip(' ')
+            self.summary = sql_safe(self.summary)
 
         if self.pathway_objective_ids is not None:
             """ remove duplicates """
             staging_list = []
             for ob in self.pathway_objective_ids:
                 if ob not in staging_list:
-                    staging_list.append(ob.lstrip(' ').rstrip(' '));
+                    staging_list.append(sql_safe(ob))
             self.pathway_objective_ids = staging_list
 
 

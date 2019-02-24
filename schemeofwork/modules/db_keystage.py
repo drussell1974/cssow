@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from cls_keystage import KeyStageModel
+from db_helper import last_sql
 
 def get_options(db):
 

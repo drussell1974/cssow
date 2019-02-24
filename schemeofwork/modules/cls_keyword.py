@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel
-
+from db_helper import sql_safe
 
 class KeywordModel(BaseModel):
     def __init__(self, id_, term, definition):
@@ -26,13 +26,16 @@ class KeywordModel(BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties by removing whitespace etc """
+        """ clean up properties by removing by casting and ensuring safe for inserting etc """
+
+        # id
+        self.id = int(self.id)
 
         # trim term
         if self.term is not None:
-            self.term = self.term.lstrip(' ').rstrip(' ')
+            self.term = sql_safe(self.term)
 
         # trim definition
         if self.definition is not None:
-            self.definition = self.definition.lstrip(' ').rstrip(' ')
+            self.definition = sql_safe(self.definition)
 

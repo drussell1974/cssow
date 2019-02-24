@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
+from db_helper import sql_safe
 
 
 class SchemeOfWorkModel(BaseModel):
@@ -39,15 +40,18 @@ class SchemeOfWorkModel(BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties """
+        """ clean up properties by casting and ensuring safe for inserting etc """
+
+        self.id = int(self.id)
+
         if self.name is not None:
-            self.name = self.name.lstrip(' ').rstrip(' ')
+            self.name = sql_safe(self.name)
 
         if self.description is not None:
-            self.description = self.description.lstrip(' ').rstrip(' ')
+            self.description = sql_safe(self.description)
 
         if self.key_stage_name is not None:
-            self.key_stage_name = self.key_stage_name.strip(' ').rstrip(' ')
+            self.key_stage_name = sql_safe(self.key_stage_name)
 
         if self.exam_board_name is not None:
-            self.exam_board_name = self.exam_board_name.strip(' ').rstrip(' ')
+            self.exam_board_name = sql_safe(self.exam_board_name)

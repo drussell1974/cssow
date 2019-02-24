@@ -19,7 +19,7 @@ def get_options(db, scheme_of_work_id, auth_user):
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " AND (ref.published = 1 OR ref.created_by = {auth_user});"
 
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id)
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id))
 
     rows = db.executesql(str_select)
 
@@ -56,7 +56,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " OR (ref.published = 1 OR ref.created_by = {auth_user}) " \
                  "ORDER BY reference_type_id, title, authors;"
 
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), learning_episode_id=int(learning_episode_id))
 
     rows = db.executesql(str_select)
 
@@ -89,7 +89,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_reference_type as ref_type ON ref_type.id = ref.reference_type_id" \
                  " WHERE ref.id = {id_} AND (ref.published = 1 OR ref.created_by = {auth_user});"
-    str_select = str_select.format(id_=id_, auth_user=to_db_null(auth_user))
+    str_select = str_select.format(id_=int(id_), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(str_select)
 
@@ -206,14 +206,14 @@ def update_page_note(db, model):
 
 def delete_page_note(db, id_):
         # delete existing
-        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE id = {id};".format(id=id_)
+        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE id = {id};".format(id=int(id_))
 
         db.executesql(str_delete)
 
 
 def _delete(db, id_):
     str_delete = "DELETE FROM sow_reference WHERE id = {id_};"
-    str_delete = str_delete.format(id_=id_)
+    str_delete = str_delete.format(id_=int(id_))
 
     rval = db.executesql(str_delete)
 

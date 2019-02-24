@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
+from db_helper import sql_safe
 
 class LearningObjectiveModel (BaseModel):
 
@@ -79,46 +80,48 @@ class LearningObjectiveModel (BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties by removing whitespace etc """
+        """ clean up properties by casting and ensuring safe for inserting etc """
+
+        self.id = int(self.id)
 
         # trim description
         if self.description is not None:
-            self.description = self.description.lstrip(' ').rstrip(' ')
+            self.description = sql_safe(self.description)
 
         # trim notes
         if self.notes is not None:
-            self.notes = self.notes.lstrip(' ').rstrip(' ')
+            self.notes = sql_safe(self.notes)
 
         # trim topic_name
         if self.topic_name is not None:
-            self.topic_name = self.topic_name.lstrip(' ').rstrip(' ')
+            self.topic_name = sql_safe(self.topic_name)
 
         # trim parent_topic_name
         if self.parent_topic_name is not None:
-            self.parent_topic_name = self.parent_topic_name.lstrip(' ').rstrip(' ')
+            self.parent_topic_name = sql_safe(self.parent_topic_name)
 
         # trim content_description
         if self.content_description is not None:
-            self.content_description = self.content_description.lstrip(' ').rstrip(' ')
+            self.content_description = sql_safe(self.content_description)
 
         # trim exam_board_name
         if self.exam_board_name is not None:
-            self.exam_board_name = self.exam_board_name.lstrip(' ').rstrip(' ')
+            self.exam_board_name = sql_safe(self.exam_board_name)
 
         # trim learning_episode_name
         if self.learning_episode_name is not None:
-            self.learning_episode_name = self.learning_episode_name.lstrip(' ').rstrip(' ')
+            self.learning_episode_name = sql_safe(self.learning_episode_name)
 
         # trim key_stage_name
         if self.key_stage_name is not None:
-            self.key_stage_name = self.key_stage_name.lstrip(' ').rstrip(' ')
+            self.key_stage_name = sql_safe(self.key_stage_name)
 
         if self.key_words is not None:
-            self.key_words = self.key_words.lstrip(' ').rstrip(' ').replace(', ',',')
+            self.key_words = sql_safe(self.key_words).replace(', ',',')
 
         # trim group_name
         if self.group_name is not None:
-            self.group_name = self.group_name.lstrip(' ').rstrip(' ')
+            self.group_name = sql_safe(self.group_name)
 
 
 def sort_by_solo_taxonomy_level(unsorted_list):

@@ -35,7 +35,7 @@ def get_all(db, key_stage_id=0, auth_user = 0):
                   "  LEFT JOIN auth_user as user ON user.id = sow.created_by "\
                   " WHERE (sow.key_stage_id = {key_stage_id} or {key_stage_id} = 0) AND (sow.published = 1 OR sow.created_by = {auth_user})" \
                   " ORDER BY sow.key_stage_id;"
-    select_sql = select_sql.format(key_stage_id=key_stage_id, auth_user=to_db_null(auth_user))
+    select_sql = select_sql.format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
 
     rows = db.executesql(select_sql)
 

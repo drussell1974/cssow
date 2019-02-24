@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
+from db_helper import sql_safe
 
 class ReferenceModel (BaseModel):
 
@@ -49,20 +50,22 @@ class ReferenceModel (BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties by removing whitespace etc """
+        """ clean up properties by casting and ensuring safe for inserting etc """
+
+        self.id = int(self.id)
 
         # trim title
         if self.title is not None:
-            self.title = self.title.lstrip(' ').rstrip(' ')
+            self.title = sql_safe(self.title)
 
         # trim authors
         if self.authors is not None:
-            self.authors = self.authors.lstrip(' ').rstrip(' ')
+            self.authors = sql_safe(self.authors)
 
         # trim publisher
         if self.publisher is not None:
-            self.publisher = self.publisher.lstrip(' ').rstrip(' ')
+            self.publisher = sql_safe(self.publisher)
 
         # trim uri
         if self.uri is not None:
-            self.uri = self.uri.lstrip(' ').rstrip(' ')
+            self.uri = sql_safe(self.uri)
