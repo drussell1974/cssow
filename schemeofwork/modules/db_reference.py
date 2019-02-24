@@ -13,7 +13,7 @@ def get_options(db, scheme_of_work_id, auth_user):
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
-                 " ref.uri as uri " \
+                 " ref.url as uri " \
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_reference_type as type ON type.id = ref.reference_type_id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
@@ -43,10 +43,10 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
-                 " ref.uri as uri," \
+                 " ref.url as uri," \
                  " le_ref.id as page_id," \
                  " le_ref.page_notes," \
-                 " le_ref.page_uri," \
+                 " le_ref.page_url," \
                  " le_ref.task_icon " \
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
@@ -85,7 +85,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                  " ref.publisher as publisher," \
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
-                 " ref.uri as uri " \
+                 " ref.url as uri " \
                  "FROM sow_reference as ref " \
                  "INNER JOIN sow_reference_type as ref_type ON ref_type.id = ref.reference_type_id" \
                  " WHERE ref.id = {id_} AND (ref.published = 1 OR ref.created_by = {auth_user});"
@@ -183,7 +183,7 @@ def _insert(db, model):
 def insert_page_note(db, model):
     """ deletes and reinserts sow_learning_episode__has__references """
     # insert
-    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_uri, task_icon) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
+    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_url, task_icon) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
     str_insert = str_insert.format(reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_db_null(model.task_icon))
 
     db.executesql(str_insert)
@@ -196,7 +196,7 @@ def update_page_note(db, model):
                  " reference_id = {reference_id}," \
                  " learning_episode_id = {learning_episode_id}," \
                  " page_notes = '{page_notes}'," \
-                 " page_uri = '{page_uri}'," \
+                 " page_url = '{page_uri}'," \
                  " task_icon = '{task_icon}' " \
                  "WHERE id = {id};"
     str_update = str_update.format(id=model.id, reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_empty(model.task_icon))
