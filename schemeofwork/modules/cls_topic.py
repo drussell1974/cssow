@@ -3,9 +3,11 @@ from basemodel import BaseModel
 from db_helper import sql_safe
 
 class TopicModel(BaseModel):
-    def __init__(self, id_, name):
+    def __init__(self, id_, name, created = "", created_by = ""):
         self.id = id_
         self.name = name
+        self.created = created
+        self.created_by = created_by
 
 
     def _clean_up(self):

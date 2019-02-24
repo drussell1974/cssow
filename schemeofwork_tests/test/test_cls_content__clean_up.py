@@ -21,7 +21,7 @@ class test_cls_content__clean_up(TestCase):
         self.assertEqual("x", self.test.description)
 
 
-    def test_description__remove_sqlterminator(self):
+    def test_description__escape_sqlterminator(self):
 
         self.test.description = "x;"
 
@@ -30,3 +30,14 @@ class test_cls_content__clean_up(TestCase):
 
         # assert
         self.assertEqual("x\;", self.test.description)
+
+
+    def test_description__escape_quote(self):
+
+        self.test.description = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.description)

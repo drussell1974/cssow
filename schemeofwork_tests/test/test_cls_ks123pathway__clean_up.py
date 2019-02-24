@@ -19,3 +19,25 @@ class test_cls_ks123pathway__clean_up(TestCase):
 
         # assert
         self.assertEqual("x", self.test.objective)
+
+
+    def test_term__escape_sqlterminator(self):
+
+        self.test.objective = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.objective)
+
+
+    def test_term__escape_quote(self):
+
+        self.test.objective = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.objective)
