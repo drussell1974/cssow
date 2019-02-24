@@ -90,7 +90,7 @@
           <ul>
           {{ for item in learning_materials: }}
             {{ if len(item.page_note) > 0: }}
-              <li class="chalk my-list"><i>{{=item.title}}</i> - <span><a href="{{=item.page_uri}}">{{=item.page_note}}</a></span></li>
+              <li class="chalk my-list"><i>{{=item.title}} ({{=item.publisher}})</i> - <span><a href="{{=item.page_uri}}">{{=item.page_note}}</a></span></li>
              {{ pass }}
           {{ pass }}
           </ul>
