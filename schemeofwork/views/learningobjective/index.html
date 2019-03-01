@@ -104,10 +104,12 @@
                   <i class="fa fa-sticky-note-o" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>
                   {{ pass }}
               </h4>
+                {{ if auth.user: }}
                 <div class="custom-control custom-checkbox">
                   <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{=row.id}}" {{if row.is_key_objective: }} checked {{ pass }} value="{{=row.id}}">
                   <label class="custom-control-label small" for="chk-is_key_objective-{{=row.id}}" id="lbl-is_key_objective-{{=row.id}}">{{=T("This is a key learning objective")}}</label>
                 </div>
+                {{ pass }}
                 <h5 class="post-subtitle">
                     {{=row.topic_name}}
                 </h5>

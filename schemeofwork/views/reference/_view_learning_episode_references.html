@@ -48,13 +48,6 @@
             <a href="{{=item.uri}}">
                 <h4>{{=item.title}}</h4>
             </a>
-            {{if auth.user:}}
-                <!-- Button trigger modal -->
-                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}', '{{=item.uri}}', '{{=item.task_icon}}')">
-                  {{=T("Add page or link reference")}}
-                </a><br>
-            {{ pass }}
-            {{ curr_reference = item.id }}
         {{ pass }}
         {{ if len(item.page_note) > 0: }}
              {{ if len(item.page_uri) > 0: }}
@@ -69,6 +62,15 @@
                 - <a class="small" href="#reference-{{=item.id}}" onclick="editReference({{=item.page_id}}, {{=item.id}}, '{{=item.page_note}}', '{{=item.page_uri}}', '{{=item.title}}', '{{=item.uri}}', '{{=item.task_icon}}')">{{=T("Edit")}}</a>
                 - <a class="small" href="#reference-{{=item.id}}" onclick="deleteReference({{=item.page_id}})">{{=T('Delete')}}</a><br>
             {{ pass }}
+        {{ pass }}
+        {{ if curr_reference != item.id: }}
+            {{if auth.user:}}
+                <!-- Button trigger modal -->
+                <a href="#" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}', '{{=item.uri}}', '{{=item.task_icon}}')">
+                    <i class="fa fa-plus small"> {{=T("Add")}}</i>
+                </a><br>
+            {{ pass }}
+            {{ curr_reference = item.id }}
         {{ pass }}
   {{ pass }}
 
