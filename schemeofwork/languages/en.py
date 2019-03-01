@@ -284,6 +284,7 @@
 'There are no key terms that match the search criteria.': 'There are no key terms that match the search criteria.',
 'There are no learning materials for this scheme of work.': 'There are no learning materials for this scheme of work.',
 'There are no learning objectives for this lesson.': 'There are no learning objectives for this lesson.',
+'There are no lessons for this scheme of work.': 'There are no lessons for this scheme of work.',
 'There are no linked pathways for this lesson.': 'There are no linked pathways for this lesson.',
 'There is no prior learning identified for this lesson.': 'There is no prior learning identified for this lesson.',
 'This App': 'This App',

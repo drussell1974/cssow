@@ -4,7 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_content
+import cls_content as db_content
 import db_helper
 
 class test_db_content__get_options(TestCase):

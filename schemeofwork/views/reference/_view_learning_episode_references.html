@@ -50,7 +50,7 @@
             </a>
             {{if auth.user:}}
                 <!-- Button trigger modal -->
-                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}', '{{=item.uri}}')">
+                <a href="#" class="badge badge-pill badge-secondary" onclick="editReference(0, {{=item.id}}, '', '', '{{=item.title}}', '{{=item.uri}}', '{{=item.task_icon}}')">
                   {{=T("Add page or link reference")}}
                 </a><br>
             {{ pass }}

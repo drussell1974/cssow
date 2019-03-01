@@ -4,7 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_ks123pathway
+import cls_ks123pathway as db_ks123pathway
 import db_helper
 
 class test_db_ks123pathway__get_options__year_1(TestCase):

@@ -22,3 +22,19 @@ class SoloTaxonomyModel(BaseModel):
         # lvl
         if self.lvl is not None:
             self.lvl = sql_safe(self.lvl)
+
+"""
+DAL
+"""
+
+def get_options(db):
+
+    rows = db.executesql("SELECT id, name, lvl FROM sow_solo_taxonomy;")
+
+    data = [];
+
+    for row in rows:
+        model = SoloTaxonomyModel(row[0], row[1], row[2])
+        data.append(model)
+
+    return data

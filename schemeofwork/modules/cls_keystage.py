@@ -17,3 +17,20 @@ class KeyStageModel(BaseModel):
         # name
         if self.name is not None:
             self.name = sql_safe(self.name)
+
+"""
+DAL
+"""
+from db_helper import last_sql
+
+def get_options(db):
+
+    rows = db.executesql("SELECT id, name FROM sow_key_stage;")
+
+    data = [];
+
+    for row in rows:
+        model = KeyStageModel(row[0], row[1])
+        data.append(model)
+
+    return data

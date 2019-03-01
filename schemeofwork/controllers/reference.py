@@ -6,7 +6,7 @@ from cls_reference_note import ReferenceNoteModel
 from helper_string import to_cs_string
 from pager import Pager
 from validation_helper import html_validation_message
-import db_reference, db_schemeofwork, db_reference_type
+import cls_reference as db_reference, cls_schemeofwork, cls_reference_type
 
 def index():
     """ index action """
@@ -39,10 +39,10 @@ def edit():
     """ edit action """
     id_ = int(request.vars.id if request.vars.id is not None else 0)
     scheme_of_work_id = request.vars.scheme_of_work_id
-    scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     model = db_reference.get_model(db, id_, scheme_of_work_id=scheme_of_work_id, auth_user=auth.user_id)
-    reference_type_options = db_reference_type.get_options(db)
+    reference_type_options = cls_reference_type.get_options(db)
 
     sub_heading = ""
     if model.is_new():

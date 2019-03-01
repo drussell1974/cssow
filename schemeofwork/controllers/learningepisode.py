@@ -3,26 +3,26 @@ from datetime import datetime
 from cls_learningepisode import LearningEpisodeModel
 from pager import Pager
 from validation_helper import html_validation_message
-import db_keyword
-import db_ks123pathway
-import db_learningepisode
-import db_learningobjective
-import db_reference
-import db_schemeofwork
-import db_topic
-import db_year
+import cls_keyword as db_keyword
+import cls_ks123pathway as db_ks123pathway
+import cls_learningepisode as db_learningepisode
+import cls_learningobjective as db_learningobjective
+import cls_reference as db_reference
+import cls_schemeofwork
+import cls_topic as db_topic
+import cls_year as db_year
 
 
 def index():
     """ index action """
 
     scheme_of_work_id = int(request.args(0))
-    scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     data = db_learningepisode.get_all(db, scheme_of_work_id, auth.user_id)
-    schemeofwork_options = db_schemeofwork.get_options(db,  auth_user=auth.user_id)
+    schemeofwork_options = cls_schemeofwork.get_options(db,  auth_user=auth.user_id)
 
     # page the data
     pager = Pager(page = page_to_display, page_size = 10, data = data)
@@ -104,10 +104,10 @@ def edit():
     if request.vars.scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(request.vars.scheme_of_work_id)
-        model.scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, model.scheme_of_work_id)
+        model.scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, model.scheme_of_work_id)
 
 
-    key_stage_id = db_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
+    key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, model.scheme_of_work_id)
     model.key_stage_id = key_stage_id
 
     year_options = db_year.get_options(db, key_stage_id)

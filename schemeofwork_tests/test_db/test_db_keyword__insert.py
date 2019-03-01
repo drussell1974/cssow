@@ -4,7 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_keyword
+import cls_keyword as db_keyword
 import db_helper
 
 class test_db_keyword__insert(TestCase):

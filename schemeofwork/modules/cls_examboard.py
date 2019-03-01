@@ -17,3 +17,19 @@ class ExamBoardModel(BaseModel):
         # name
         if self.name is not None:
             self.name = sql_safe(self.name)
+
+"""
+DAL
+"""
+
+def get_options(db):
+
+    rows = db.executesql("SELECT id, name FROM sow_exam_board;")
+
+    data = [];
+
+    for row in rows:
+        model = ExamBoardModel(row[0], row[1])
+        data.append(model)
+
+    return data
