@@ -235,6 +235,7 @@ def get_all(db, learning_episode_id, auth_user):
 
     return data
 
+
 def get_key_objectives(db, learning_episode_id, auth_user):
 
     select_sql = "SELECT "\
@@ -589,6 +590,42 @@ def get_linked_pathway_objectives(db, learning_episode_id):
             )
 
         data.append(model)
+
+    return data
+
+
+def get_other_objectives(db, learning_episode_id, key_words):
+    print(len(key_words.split(',')))
+
+    select_sql = "SELECT DISTINCT"\
+                 " lob.id as id,"\
+                 " lob.description as description,"\
+                 " lob.key_words as key_words "\
+                 " FROM sow_learning_objective as lob"\
+                 " INNER JOIN sow_learning_episode__has__pathway as pw ON pw.learning_objective_id = lob.id"\
+                 " WHERE pw.learning_episode_id != {learning_episode_id}"
+
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id))
+
+    #raise Exception(select_sql)
+
+    rows = db.executesql(select_sql)
+
+    data = [];
+
+    for row in rows:
+        if len(row[2]) > 0:
+            for keyword in key_words.split(","):
+                if len(keyword) > 0 and keyword in row[2]:
+                    model = LearningObjectiveModel(
+                        id_ = row[0],
+                        description = row[1],
+                        key_words = row[2]
+                    )
+
+                    data.append(model)
+
+                    break # only add objective once
 
     return data
 

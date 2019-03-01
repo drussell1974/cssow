@@ -49,11 +49,12 @@ def index():
 
     return dict(
         content = content,
-        model = paged_data,
+        paged_data = paged_data,
+        key_words = learning_episode.key_words,
         scheme_of_work_id = scheme_of_work_id,
         topic_id = learning_episode.topic_id,
         learning_episode_id = learning_episode_id,
-        learningepisiode_options = learning_episode_options, #TODO: create view_learningepisiode_options: remove this line
+        learning_episiode_options = learning_episode_options,
         page = page_to_display,
         pager_html = pager_html)
 
@@ -104,6 +105,17 @@ def whiteboard_view():
         learning_episode_id =learning_episode_id
     )
 
+def _suggested_objectives():
+    """
+    Get suggested learning objectives based on key words
+    :return: view_model
+    """
+    learning_episode_id = int(request.vars.learning_episode_id)
+    key_words = request.vars.key_words
+
+    suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, key_words)
+
+    return dict(view_model=suggested_learning_objectives)
 
 def _sort_by_solo_and_group(data):
     sorted_data = data

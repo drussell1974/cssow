@@ -38,6 +38,11 @@
         </div>
       <div class="row">
           <div class="col-lg-4 col-md-4">
+              <!-- Blackboard display button START -->
+              <section class="alert alert-secondary">
+                <a href="{{=URL('learningobjective', 'whiteboard_view', args=[scheme_of_work_id,learning_episode_id])}}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">{{=T("Blackboard display")}}</a>
+              </section>
+              <!-- Blackboard display button END -->
             <!-- SIDE MENU START -->
               <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
                 <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
@@ -70,10 +75,30 @@
               </ul>
           </div>
             <!-- Pager Header END -->
-
-          <!-- Show learning objectives for this lesson -->
+            <!-- Show learning objectives for this lesson -->
             <h2 class="group-heading">{{=T("Learning objectives")}}</h2>
-            {{ if len(model) == 0: }}
+            <!-- New and Suggested Objectives START -->
+            {{if auth.user:}}
+            <p>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    {{=T("Suggested")}}</a>
+                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">
+                    {{=T("New")}}</a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <select onchange="" id="suggested-objectives">
+                    {{ for item in learning_episiode_options: }}
+                        <option value="{{=item.id}}">{{=item.order_of_delivery_id}} {{=item.title}}</option>
+                    {{ pass }}
+                </select>
+                <div id="div-suggested_objectives" class="card card-body">
+
+                </div>
+            </div>
+            {{pass}}
+            <!-- New and Suggested Objectives END -->
+
+            {{ if len(paged_data) == 0: }}
                 <div class="alert alert-info" role="alert">
                     <span class="small">{{=T('There are no learning objectives for this lesson.')}}</span>
                 {{if auth.user:}}
@@ -82,11 +107,8 @@
                 </div>
             {{ else: }}
 
-            {{if auth.user:}}
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">{{=T('New')}}</a>
-            {{pass}}
-          {{ group_name = "" }}
-          {{ for row in model: }}
+            {{ group_name = "" }}
+          {{ for row in paged_data: }}
             {{ if row.group_name is not None: }}
             {{ if group_name.upper() != row.group_name.upper(): }}
             <h3 class="group-heading">{{=row.group_name}}</h3>
@@ -101,7 +123,7 @@
               <h4 class="post-title">
                 {{=row.description}}
                   {{ if len(row.notes.strip()) > 0: }}
-                  <i class="fa fa-comment" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}" onclick="responsiveVoice.speak(row.notes);"></i>
+                  <i class="fa fa-comment" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>
                   {{ pass }}
               </h4>
                 {{ if auth.user: }}
@@ -148,9 +170,6 @@
                 <a href="{{=URL('reference', 'edit', vars=dict(scheme_of_work_id=scheme_of_work_id, _next=request.url))}}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{=T('Add learning materials')}}</a>
            </section><!-- class="alert alert-info" -->
         </div>
-          <section class="alert alert-secondary">
-            <a href="{{=URL('learningobjective', 'whiteboard_view', args=[scheme_of_work_id,learning_episode_id])}}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">{{=T("Blackboard display")}}</a>
-          </section>
       </div>
     </div>
 
@@ -203,6 +222,7 @@
                 $("#div-pathway_ks123").html('could not get linked pathways at this time');
             }
         });
+
         function refreshReferences() {
             uri = '{{=URL("reference", "_view_learning_episode_references", vars=dict(scheme_of_work_id=scheme_of_work_id,learning_episode_id=learning_episode_id,_next=request.url))}}';
             $.ajax({url: uri,
@@ -258,8 +278,27 @@
                 error: function(e){
 
                     elem = $('#lbl-is_key_objective-' + this.value);
-                    elem.text = 'Could not set key objective!' + e.responseText;
+                    elem.text = 'Could not set key objective!';
                     elem.addClass('text-danger');
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#suggested-objectives').on('change', function(e){
+
+            console.log(e.value);
+
+            $.ajax({url: '/learningobjective/_suggested_objectives',
+                data: {
+                    learning_episode_id:{{=learning_episode_id}},
+                    key_words:'{{=key_words}}'
+                },
+                success: function(result){
+                    $("#div-suggested_objectives").html(result);
+                },
+                error: function(){
+                    $("#div-suggested_objectives").html('could not get suggested objectives at this time');
                 }
             });
         });

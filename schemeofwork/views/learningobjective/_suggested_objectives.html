@@ -1,0 +1,7 @@
+{{ if len(view_model) == 0: }}
+    {{=T("There are no suggested learning objectives")}}
+{{ else: }}
+    {{ for item in view_model: }}
+        <h4><i class="fa fa-plus small"></i> {{=item.description}}</h4>
+    {{ pass }}
+{{ pass }}

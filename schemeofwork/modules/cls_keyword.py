@@ -44,7 +44,6 @@ DAL
 """
 
 from db_helper import to_empty, sql_safe
-import log
 
 def get_options(db):
     select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
