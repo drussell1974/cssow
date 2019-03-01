@@ -21,6 +21,28 @@ class test_cls_reference__clean_up(TestCase):
         self.assertEqual("x", self.test.page_note)
 
 
+    def test_page_note__escape_sqlterminator(self):
+
+        self.test.page_note = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.page_note)
+
+
+    def test_page_note__escape_quote(self):
+
+        self.test.page_note = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.page_note)
+
+
     def test_page_uri__trim_whitespace(self):
 
         self.test.page_uri = " x "
@@ -32,6 +54,28 @@ class test_cls_reference__clean_up(TestCase):
         self.assertEqual("x", self.test.page_uri)
 
 
+    def test_page_uri__escape_sqlterminator(self):
+
+        self.test.page_uri = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.page_uri)
+
+
+    def test_page_uri__escape_quote(self):
+
+        self.test.page_uri = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.page_uri)
+
+
     def test_task_icon__trim_whitespace(self):
 
         self.test.task_icon = " x, y, z "
@@ -41,3 +85,25 @@ class test_cls_reference__clean_up(TestCase):
 
         # assert
         self.assertEqual("x, y, z", self.test.task_icon)
+
+
+    def test_task_icon__escape_sqlterminator(self):
+
+        self.test.task_icon = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.task_icon)
+
+
+    def test_task_icon__escape_quote(self):
+
+        self.test.task_icon = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.task_icon)

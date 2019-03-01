@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel
+from db_helper import sql_safe
 
 class ReferenceNoteModel (BaseModel):
     def __init__(self, id_, reference_id, learning_episode_id, page_note, page_uri="", task_icon = ""):
@@ -31,16 +32,18 @@ class ReferenceNoteModel (BaseModel):
 
 
     def _clean_up(self):
-        """ clean up properties by removing whitespace etc """
+        """ clean up properties by casting and ensuring safe for inserting etc """
+
+        self.id = int(self.id)
 
         # trim title
         if self.page_note is not None:
-            self.page_note = self.page_note.lstrip(' ').rstrip(' ')
+            self.page_note = sql_safe(self.page_note)
 
         # trim task_icon
         if self.task_icon is not None:
-            self.task_icon = self.task_icon.lstrip(' ').rstrip(' ')
+            self.task_icon = sql_safe(self.task_icon)
 
         # trim page_uri
         if self.page_uri is not None:
-            self.page_uri = self.page_uri.lstrip(' ').rstrip(' ')
+            self.page_uri = sql_safe(self.page_uri)

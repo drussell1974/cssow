@@ -4,7 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_learningepisode
+import cls_learningepisode as db_learningepisode
 import db_helper
 
 class test_db_learningepisode__get_related_topics(TestCase):

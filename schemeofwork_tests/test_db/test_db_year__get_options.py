@@ -4,8 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_year
-import db_helper
+import cls_year as db_year
 
 class test_db_year__get_options__level_1(TestCase):
 

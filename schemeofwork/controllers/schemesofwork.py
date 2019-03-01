@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import db_schemeofwork
-import db_examboard
-import db_keystage
+import cls_schemeofwork
+import cls_examboard as db_examboard
+import cls_keystage as db_keystage
 from datetime import datetime
 from cls_schemeofwork import SchemeOfWorkModel
 from pager import Pager
@@ -15,7 +15,7 @@ def index():
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
     # get the schemes of work
-    data = db_schemeofwork.get_all(db, key_stage_id=filtered_key_stage_id, auth_user=auth.user_id)
+    data = cls_schemeofwork.get_all(db, key_stage_id=filtered_key_stage_id, auth_user=auth.user_id)
     # get the key stages to show
     key_stage_options = db_keystage.get_options(db)
 
@@ -53,7 +53,7 @@ def view():
     """ view action (NOT USED) """
 
     id_ = int(request.vars.id)
-    model = db_schemeofwork.get_model(db, id_=id_, auth_user=auth.user_id)
+    model = cls_schemeofwork.get_model(db, id_=id_, auth_user=auth.user_id)
 
     # check results and redirect if necessary
 
@@ -73,7 +73,7 @@ def edit():
     """ edit action """
 
     id_ = int(request.vars.id if request.vars.id is not None else 0)
-    model = db_schemeofwork.get_model(db, id_, auth.user_id)
+    model = cls_schemeofwork.get_model(db, id_, auth.user_id)
     if(model == None):
         redirect(URL('index', vars=dict(message="item deleted")))
 
@@ -108,7 +108,7 @@ def save_item():
 
     model.validate()
     if model.is_valid == True:
-        model = db_schemeofwork.save(db, model, published)
+        model = cls_schemeofwork.save(db, model, published)
     else:
         """ redirect back to page and show message """
         session.alert_message = html_validation_message(model.validation_errors) #model.validation_errors
@@ -130,7 +130,7 @@ def delete_item():
     """ delete_item non-view action """
 
     id_ = int(request.vars.id)
-    db_schemeofwork.delete(db, auth_user_id=auth.user.id, id_ = id_)
+    cls_schemeofwork.delete(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))
 
 
@@ -139,5 +139,5 @@ def publish_item():
     """ delete_item non-view action """
 
     id_ = int(request.vars.id)
-    db_schemeofwork.publish(db, auth_user_id=auth.user.id, id_ = id_)
+    cls_schemeofwork.publish(db, auth_user_id=auth.user.id, id_ = id_)
     return redirect(URL('index'))

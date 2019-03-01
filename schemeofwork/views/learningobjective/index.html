@@ -104,6 +104,10 @@
                   <i class="fa fa-sticky-note-o" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>
                   {{ pass }}
               </h4>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{=row.id}}" {{if row.is_key_objective: }} checked {{ pass }} value="{{=row.id}}">
+                  <label class="custom-control-label small" for="chk-is_key_objective-{{=row.id}}" id="lbl-is_key_objective-{{=row.id}}">{{=T("This is a key learning objective")}}</label>
+                </div>
                 <h5 class="post-subtitle">
                     {{=row.topic_name}}
                 </h5>
@@ -237,6 +241,25 @@
         $('.btn-keyword-modal').click(function(e){
             showKeywords($(this).data('keywords'));
             $('#keywordModal').modal()
+        });
+    </script>
+    <script>
+        $('.is_key_objective').on('click', function() {
+            $.ajax({url: '{{=URL("learningobjective", "update_is_key_objective", vars=dict(learning_episode_id=learning_episode_id))}}',
+                data: {
+                    learning_objective_id:this.value,
+                    is_key_objective:$('#chk-is_key_objective-' + this.value).is(':checked')
+                },
+                success: function(result) {
+                    console.log(result);
+                },
+                error: function(e){
+
+                    elem = $('#lbl-is_key_objective-' + this.value);
+                    elem.text = 'Could not set key objective!' + e.responseText;
+                    elem.addClass('text-danger');
+                }
+            });
         });
     </script>
 {{end page_js}}

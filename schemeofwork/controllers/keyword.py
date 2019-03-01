@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from db_keyword import KeywordModel, get_by_id, get_by_terms, save
+from cls_keyword import KeywordModel, get_by_id, get_by_terms, save, delete as db_delete
 from pager import Pager
 
 @auth.requires_login()
@@ -61,4 +61,13 @@ def update():
         raise Exception(model.validation_errors) #model.validation_errors
 
     return "definition updated"
+
+
+@auth.requires_login()
+def delete():
+
+    id = int(request.vars.id)
+    db_delete(db, id)
+
+    return "definition deleted"
 

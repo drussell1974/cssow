@@ -21,6 +21,29 @@ class test_cls_reference__clean_up(TestCase):
         self.assertEqual("x", self.test.title)
 
 
+    def test_title__escape_sqlterminator(self):
+
+        self.test.title = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.title)
+
+
+    def test_title__escape_quote(self):
+
+        self.test.title = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.title)
+
+
+
     def test_authors__trim_whitespace(self):
 
         self.test.authors = " x "
@@ -41,3 +64,25 @@ class test_cls_reference__clean_up(TestCase):
 
         # assert
         self.assertEqual("x", self.test.publisher)
+
+
+    def test_publisher__escape_sqlterminator(self):
+
+        self.test.publisher = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.publisher)
+
+
+    def test_publisher__escape_quote(self):
+
+        self.test.publisher = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.publisher)
