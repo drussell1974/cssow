@@ -71,6 +71,7 @@
                     <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{=order}}" aria-expanded="false" aria-controls="collapse-learning_objective{{=order}}">
                         <u class="chalk">{{=row.description}}</u>
                     </a>
+                    <i class="h4 far fa-smile float-right"></i> <i class="h4 far fa-meh float-right "></i> <i class="h4 far fa-frown float-right "></i>
                 </div>
                 {{ if len(row.notes.strip(' ')) > 0: }}
                 <div id="collapse-learning_objective{{=order}}" class="collapse" aria-labelledby="heading-learning_objective{{=order}}" data-parent="#accordion-learning_objectives">
@@ -87,20 +88,22 @@
       <!-- Learning Materials -->
         {{ if len(learning_materials) > 0: }}
         <h2 class="chalk"  id="heading-learning_materials">{{=T("Learning materials")}}</h2>
-          <ul>
+
           {{ for item in learning_materials: }}
             {{ if len(item.page_note) > 0: }}
-              <li class="chalk my-list">
-                  <i>{{=item.title}} ({{=item.publisher}})</i> -
-                  <span><a href="{{=item.page_uri}}">{{=item.page_note}}</a>
+              <div class="learning-material-expand">
+                <div class="expand-header" id="heading-learning_material{{=item.id}}">
+                    <i class="chalk">{{=item.title}} ({{=item.publisher}})</i> -
+                    <span><a href="{{=item.page_uri}}" class="chalk">{{=item.page_note}}</a>
                   {{ for icon in item.task_icon.split(","): }}
                     {{ if len(item.task_icon) > 0 : }} <i class="fa {{=icon}}"></i> {{ pass }}
                   {{ pass }}
                     </span>
-              </li>
+                </div>
+
+              </div>
              {{ pass }}
           {{ pass }}
-          </ul>
         {{ pass }}
       <!-- Learning materials END -->
   </div>
