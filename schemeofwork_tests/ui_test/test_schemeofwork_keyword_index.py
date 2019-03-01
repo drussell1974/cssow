@@ -113,4 +113,4 @@ class test_schemeofwork_keyword_index(UITestCase):
         # assert
         self.assertEqual("reverted", msg348.text, "Success message not as expected")
         self.assertEqual("", err348.text, "Error message not as expected")
-        self.assertEqual("Step-by-step instruction designed to solve a problem.", elem_text348, "Text has not been reverted")
+        self.assertEqual("Step-by-step instructions designed to solve a problem.", elem_text348.text, "Text has not been reverted")

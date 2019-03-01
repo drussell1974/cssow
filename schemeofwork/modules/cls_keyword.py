@@ -155,6 +155,8 @@ def save_keywords_only(db, key_words):
     ' get all the keywords from the database '
     existing_keywords = get_options(db)
 
+    new_id = 0
+
     ' insert the keywords not already in the database '
     for key_word in key_words:
         ' trim white space '
@@ -163,8 +165,9 @@ def save_keywords_only(db, key_words):
         if key_word in existing_keywords or len(key_word) == 0:
             pass
         else:
-            _insert(db, key_word, "")
+            new_id = _insert(db, key_word, "")
 
+    return new_id
 
 def delete(db, id):
     """
@@ -187,6 +190,12 @@ def _insert(db, key_word, definition):
     :return:
     """
     db.executesql("INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(key_word), definition=sql_safe(definition)))
+
+    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    new_id = 0
+    for row in rows:
+        new_id = int(row[0])
+    return new_id
 
 
 def _update(db, model):
