@@ -44,7 +44,7 @@ class test_db_keyword__get_options(TestCase):
         self.ids.append(db_keyword.save_keywords_only(self.fake_db, ["nothing"]))
 
         rows = db_keyword.get_by_terms(self.fake_db, "", True)
-        self.assertEqual(25, len(rows))
+        self.assertEqual(31, len(rows))
 
 
     def test__empty_string__do_not_show_all(self):
