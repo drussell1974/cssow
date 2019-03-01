@@ -285,3 +285,19 @@ def delete_item():
     return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
 
 
+@auth.requires_login()
+def update_is_key_objective():
+    learning_objective_id = int(request.vars.learning_objective_id)
+    learning_episode_id = int(request.vars.learning_episode_id)
+
+    is_key_objective = request.vars.is_key_objective
+
+    if is_key_objective == "true":
+        is_key_objective = True
+    elif is_key_objective == "false":
+        is_key_objective = False
+
+    db_learningobjective.update_is_key_objective(db, learning_objective_id, learning_episode_id, is_key_objective)
+
+    return "updated"
+

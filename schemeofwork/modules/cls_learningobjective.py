@@ -27,6 +27,7 @@ class LearningObjectiveModel (BaseModel):
         self.parent_id = try_int(parent_id)
         self.key_words = key_words.replace(', ', ',')
         self.group_name = group_name
+        self.is_key_objective = True
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -157,7 +158,7 @@ DAL
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
-from db_helper import to_db_null, to_empty, sql_safe
+from db_helper import to_db_null, to_empty, sql_safe, to_db_bool
 
 def get_all(db, learning_episode_id, auth_user):
 
@@ -537,6 +538,15 @@ def delete(db, auth_user_id, id_):
     model = LearningObjectiveModel(id_)
     _delete(db, model);
 
+
+def update_is_key_objective(db, learning_objective_id, learning_episode_id, is_key_objective):
+
+    str_update = "UPDATE sow_learning_objective__has__learning_episode SET is_key_objective = {is_key_objective} WHERE learning_objective_id = {learning_objective_id};"
+    str_update = str_update.format(learning_objective_id=int(learning_objective_id), learning_episode_id=int(learning_episode_id), is_key_objective=to_db_bool(is_key_objective))
+
+    db.executesql(str_update)
+
+    return "updated"
 
 """
 Private CRUD functions 
