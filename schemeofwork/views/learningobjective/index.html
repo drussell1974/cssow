@@ -101,7 +101,7 @@
               <h4 class="post-title">
                 {{=row.description}}
                   {{ if len(row.notes.strip()) > 0: }}
-                  <i class="fa fa-sticky-note-o" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>
+                  <i class="fa fa-comment" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}" onclick="responsiveVoice.speak(row.notes);"></i>
                   {{ pass }}
               </h4>
                 {{ if auth.user: }}
