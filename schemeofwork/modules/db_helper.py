@@ -12,8 +12,14 @@ def to_db_null(val):
 def to_empty(val):
     return "" if val is None else val
 
+
 def to_db_bool(val):
-    return 1 if bool(val) == True else 0
+    return 1 if val == True else 0
+
+
+def from_db_bool(val):
+    return True if val == 1 else False
+
 
 def sql_safe(string):
     return str(string)\

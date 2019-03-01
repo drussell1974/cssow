@@ -61,14 +61,12 @@ def index():
 def whiteboard_view():
     """ index action """
 
-    # TODO: ensure correct number of args are passed
-
     scheme_of_work_id = int(request.args(0))
     learning_episode_id = int(request.args(1))
 
     learning_episode = db_learningepisode.get_model(db, learning_episode_id, auth.user_id)
 
-    learning_objectives = db_learningobjective.get_all(db, learning_episode_id, auth.user_id)
+    learning_objectives = db_learningobjective.get_key_objectives(db, learning_episode_id, auth.user_id)
     learning_objectives = _sort_by_solo_and_group(learning_objectives)
 
     prior_learning = db_learningobjective.get_linked_pathway_objectives(db, learning_episode_id = learning_episode_id)

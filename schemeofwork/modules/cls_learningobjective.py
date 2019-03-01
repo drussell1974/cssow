@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from basemodel import BaseModel, try_int
-from db_helper import sql_safe
+from db_helper import sql_safe, from_db_bool
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, key_words = "", group_name = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, is_key_objective, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", learning_episode_id = 0, learning_episode_name = "", parent_id = None, key_words = "", group_name = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.description = description
         self.notes = notes
@@ -27,7 +27,7 @@ class LearningObjectiveModel (BaseModel):
         self.parent_id = try_int(parent_id)
         self.key_words = key_words.replace(', ', ',')
         self.group_name = group_name
-        self.is_key_objective = True
+        self.is_key_objective = from_db_bool(is_key_objective)
         self.created=created
         self.created_by_id=try_int(created_by_id)
         self.created_by_name=created_by_name
@@ -182,7 +182,8 @@ def get_all(db, learning_episode_id, auth_user):
                  " le.order_of_delivery_id as learning_episode_name, "\
                  " lob.key_words as key_words,"\
                  " lob.notes as notes,"\
-                 " lob.group_name as group_name,"\
+                 " lob.group_name as group_name," \
+                 " le_lo.is_key_objective as is_key_objective,"\
                  " lob.created as created, "\
                  " lob.created_by as created_by_id, "\
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
@@ -226,9 +227,86 @@ def get_all(db, learning_episode_id, auth_user):
             key_words=row[17],
             notes=row[18],
             group_name=row[19],
-            created = row[20],
-            created_by_id = row[21],
-            created_by_name = row[22])
+            is_key_objective= row[20],
+            created = row[21],
+            created_by_id = row[22],
+            created_by_name = row[23])
+        data.append(model)
+
+    return data
+
+def get_key_objectives(db, learning_episode_id, auth_user):
+
+    select_sql = "SELECT "\
+                 " lob.id as id, "\
+                 " lob.description as description, "\
+                 " solo.id as solo_id, "\
+                 " solo.name as solo_taxonomy_name, "\
+                 " solo.lvl as solo_taxonomy_level, "\
+                 " top.id as topic_id, "\
+                 " top.name as topic_name, "\
+                 " pnt_top.id as parent_topic_id, "\
+                 " pnt_top.name as parent_topic_name, "\
+                 " cnt.id as content_id, "\
+                 " cnt.description as content_description, "\
+                 " exam.id as exam_board_id, "\
+                 " exam.name as exam_board_name, "\
+                 " sow.key_stage_id as key_stage_id, "\
+                 " ks.name as key_stage_name, "\
+                 " le.id as learning_episode_id, "\
+                 " le.order_of_delivery_id as learning_episode_name, "\
+                 " lob.key_words as key_words,"\
+                 " lob.notes as notes,"\
+                 " lob.group_name as group_name," \
+                 " le_lo.is_key_objective as is_key_objective,"\
+                 " lob.created as created, "\
+                 " lob.created_by as created_by_id, "\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                 " FROM sow_scheme_of_work as sow "\
+                 " INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = sow.id "\
+                 " INNER JOIN sow_learning_objective__has__learning_episode as le_lo ON le_lo.learning_episode_id = le.id "\
+                 " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
+                 " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
+                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id "\
+                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
+                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
+                 " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
+                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
+                 " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
+                 " WHERE le.id = {learning_episode_id} AND le_lo.is_key_objective = 1 AND (le.published = 1 or le.created_by = {auth_user});"
+
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id), auth_user=to_db_null(auth_user))
+
+    rows = db.executesql(select_sql)
+
+    data = [];
+
+    for row in rows:
+        model = LearningObjectiveModel(
+            id_ = row[0],
+            description = row[1],
+            solo_taxonomy_id = row[2],
+            solo_taxonomy_name = row[3],
+            solo_taxonomy_level = row[4],
+            topic_id = row[5],
+            topic_name = row[6],
+            parent_topic_id = [7],
+            parent_topic_name = [8],
+            content_id = row[9],
+            content_description = row[10],
+            exam_board_id = row[11],
+            exam_board_name = row[12],
+            key_stage_id = row[13],
+            key_stage_name = row[14],
+            learning_episode_id = row[15],
+            learning_episode_name = row[16],
+            key_words=row[17],
+            notes=row[18],
+            group_name=row[19],
+            is_key_objective= row[20],
+            created = row[21],
+            created_by_id = row[22],
+            created_by_name = row[23])
         data.append(model)
 
     return data
@@ -257,6 +335,7 @@ def get_new_model(db, id_, auth_user):
                   " lob.key_words as key_words,"\
                   " lob.notes as notes,"\
                   " lob.group_name as group_name,"\
+                  " le_lo.is_key_objective as is_key_objective,"\
                   " lob.created AS created,"\
                   " CONCAT_WS(' ', user.first_name, user.last_name) AS created_by"\
                   " FROM sow_learning_objective AS lob"\
