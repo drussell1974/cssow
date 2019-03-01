@@ -23,7 +23,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Learn Computer Science', 'Data Representation: Sound', 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nam Convallis Volutpat.')
+        self.assertWebPageTitleAndHeadings('Data Representation: Sound', 'Data Representation: Sound', 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nam Convallis Volutpat.')
 
 
     def test_page__should_have__key_words(self):

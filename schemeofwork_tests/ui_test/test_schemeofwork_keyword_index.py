@@ -65,7 +65,9 @@ class test_schemeofwork_keyword_index(UITestCase):
     def test_update_definition(self):
         # setup
         elem = self.test_context.find_element_by_id("ctl-search")
-        elem.send_keys("algorithm")
+        elem.send_keys("algorith")
+        elem.send_keys("m")
+        elem.send_keys(Keys.TAB)
         self.wait() # do not remove
 
         # test

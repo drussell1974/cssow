@@ -88,6 +88,10 @@ def whiteboard_view():
 
     sorted_key_words = sort_keywords_by_term(key_words)
 
+    # view data
+
+    response.title = learning_episode.title
+
     return dict(
         display_date = date_to_string(datetime.today()),
         lesson_title = learning_episode.title,
