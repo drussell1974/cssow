@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*
-import db_schemeofwork
-import db_keyword
-import db_topic
+import cls_schemeofwork
+import cls_keyword as db_keyword
+import cls_topic as db_topic
 
 def index():
 
     # get the schemes of work
-    latest_schemes_of_work = db_schemeofwork.get_latest_schemes_of_work(db, top = 5, auth_user = auth.user_id)
+    latest_schemes_of_work = cls_schemeofwork.get_latest_schemes_of_work(db, top = 5, auth_user = auth.user_id)
 
     content = {
         "main_heading":T("Teach Computer Science"),

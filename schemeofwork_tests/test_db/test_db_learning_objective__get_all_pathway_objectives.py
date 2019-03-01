@@ -4,7 +4,7 @@ from fake_database import FakeDb
 # import test context
 import sys
 sys.path.insert(0, '../../schemeofwork/modules')
-import db_learningobjective
+import cls_learningobjective as db_learningobjective
 
 class test_db_learning_objective__get_pathway_objectives(TestCase):
     def setUp(self):

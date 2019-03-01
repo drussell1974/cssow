@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from db_helper import add_escape_chars
+from db_helper import sql_safe
 
 class Log:
 
@@ -11,6 +11,6 @@ class Log:
         """ inserts the detail into the sow_logging table """
         if self.is_enabled == True:
             print(details)
-            str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (add_escape_chars(details), datetime.utcnow())
+            str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (sql_safe(details), datetime.utcnow())
             print(str_insert)
             db.executesql(str_insert)

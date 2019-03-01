@@ -4,16 +4,15 @@ from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_
 from pager import Pager
 from validation_helper import html_validation_message
 from helper_string import date_to_string
-import db_schemeofwork
-import db_learningobjective
-import db_solotaxonomy
-import db_topic
-import db_content
-import db_examboard
-import db_learningepisode
-import db_keyword
-import db_ks123pathway
-import db_reference
+import cls_schemeofwork
+import cls_learningobjective as db_learningobjective
+import cls_solotaxonomy as db_solotaxonomy
+import cls_topic as db_topic
+import cls_content
+import cls_examboard as db_examboard
+import cls_learningepisode as db_learningepisode
+import cls_keyword as db_keyword
+import cls_reference as db_reference
 
 def index():
     """ index action """
@@ -25,7 +24,7 @@ def index():
 
     page_to_display = int(request.vars.page if request.vars.page is not None else 1)
 
-    scheme_of_work_name = db_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
     learning_episode = db_learningepisode.get_model(db, learning_episode_id, auth.user_id)
     data = db_learningobjective.get_all(db, learning_episode_id, auth.user_id)
 
@@ -187,7 +186,7 @@ def edit():
         model.topic_id = int(request.vars.topic_id)
 
     learning_episode = db_learningepisode.get_model(db, model.learning_episode_id, auth.user_id)
-    key_stage_id = db_schemeofwork.get_key_stage_id_only(db, int(request.vars.scheme_of_work_id))
+    key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(request.vars.scheme_of_work_id))
 
     model.learning_episode_id = learning_episode.id
     model.key_stage_id = key_stage_id
@@ -198,7 +197,7 @@ def edit():
         if item["checked"] == True:
             topic_options.append(item)
 
-    content_options = db_content.get_options(db, key_stage_id)
+    content_options = cls_content.get_options(db, key_stage_id)
     exam_board_options = db_examboard.get_options(db)
 
     content = {

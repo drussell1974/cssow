@@ -29,10 +29,10 @@ class test__db_helper__to_db_null(TestCase):
     def test__should_retain_int(self):
         result = to_db_null(0)
 
-        self.assertEqual(0, result)
+        self.assertEqual("0", result)
 
 
     def test__should_retain_float(self):
         result = to_db_null(0.1)
 
-        self.assertEqual(0.1, result)
+        self.assertEqual("0.1", result)

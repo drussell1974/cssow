@@ -58,3 +58,59 @@ class test_schemeofwork_keyword_index(UITestCase):
         # assert
         self.assertEqual(2, len(elems))
 
+
+    def test_update_definition(self):
+        # setup
+        elem = self.test_context.find_element_by_id("ctl-search")
+        elem.send_keys("algorithm")
+        self.wait() # do not remove
+
+        # test
+        elem_text348 = self.test_context.find_element_by_id("ctl-definition-348")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem_text348)
+
+        elem_text348.clear()
+        elem_text348.send_keys('Step-by-step instructions designed to solve a problem.')
+
+        elem_save348 = self.test_context.find_element_by_id("save348")
+        elem_save348.click()
+
+        self.wait() # do not remove
+
+        msg348 = self.test_context.find_element_by_id("message348")
+        err348 = self.test_context.find_element_by_id("error348")
+
+        # assert
+        self.assertEqual("updated", msg348.text, "Success message not as expected")
+        self.assertEqual("", err348.text, "Error message not as expected")
+
+
+    def test_revert_definition(self):
+        # setup
+        elem = self.test_context.find_element_by_id("ctl-search")
+        elem.send_keys("algorithm")
+        self.wait() # do not remove
+
+        # test
+        elem_text348 = self.test_context.find_element_by_id("ctl-definition-348")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem_text348)
+
+        elem_text348.clear()
+        elem_text348.send_keys('Step-by-step instructiondfdasfsas designed to solve a problem.')
+
+        elem_save348 = self.test_context.find_element_by_id("cancel348")
+        elem_save348.click()
+
+        self.wait() # do not remove
+
+        msg348 = self.test_context.find_element_by_id("message348")
+        err348 = self.test_context.find_element_by_id("error348")
+
+        # assert
+        self.assertEqual("reverted", msg348.text, "Success message not as expected")
+        self.assertEqual("", err348.text, "Error message not as expected")
+        self.assertEqual("Step-by-step instructions designed to solve a problem.", elem_text348.text, "Text has not been reverted")
