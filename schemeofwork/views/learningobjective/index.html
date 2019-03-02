@@ -27,7 +27,7 @@
         <div class="row">
           <div class="col-lg-12 col-md-14 content-heading">
               <div class="alert alert-secondary">
-                  <h5 class="secondary-heading">{{=content["sub_heading"]}} {{if auth.user:}}- <a class="small" id="btn-new" href="{{=URL('learningepisode', 'edit', vars=dict(id=learning_episode_id, scheme_of_work_id=scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a> - <a class="small" id="btn-copy" href="{{=URL('learningepisode', 'edit', vars=dict(id=learning_episode_id, scheme_of_work_id=scheme_of_work_id,duplicate=1))}}">{{=T("Copy")}}</a>{{pass}}</h5>
+                  <h5 class="secondary-heading">{{=content["sub_heading"]}} {{if auth.user:}}- <a class="small" id="btn-edit" href="{{=URL('learningepisode', 'edit', vars=dict(id=learning_episode_id, scheme_of_work_id=scheme_of_work_id,_next=request.url))}}">{{=T("Edit")}}</a> - <a class="small" id="btn-copy" href="{{=URL('learningepisode', 'edit', vars=dict(id=learning_episode_id, scheme_of_work_id=scheme_of_work_id,duplicate=1))}}">{{=T("Copy")}}</a>{{pass}}</h5>
                   {{ if content["strap_line"] is not None: }}
                   <p class="lead">
                       {{=content["strap_line"]}}
@@ -80,17 +80,18 @@
             <!-- New and Suggested Objectives START -->
             {{if auth.user:}}
             <p>
+                <a class="navbar-brand btn btn-warning" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">
+                    {{=T("New")}}</a>
                 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                     {{=T("Suggested")}}</a>
-                <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}">
-                    {{=T("New")}}</a>
             </p>
             <div class="collapse" id="collapseExample">
-                <select onchange="" id="suggested-objectives">
+                <select id="suggested-objectives">
                     {{ for item in learning_episiode_options: }}
                         <option value="{{=item.id}}">{{=item.order_of_delivery_id}} {{=item.title}}</option>
                     {{ pass }}
                 </select>
+                <p class="small">{{=T("The following objectives match {key_words}".format(key_words=key_words))}}</>
                 <div id="div-suggested_objectives" class="card card-body">
 
                 </div>
@@ -101,9 +102,6 @@
             {{ if len(paged_data) == 0: }}
                 <div class="alert alert-info" role="alert">
                     <span class="small">{{=T('There are no learning objectives for this lesson.')}}</span>
-                {{if auth.user:}}
-                    <br><a href="{{=URL('learningobjective', 'edit', vars=dict(learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}" class="btn btn-warning">{{=T('Click here to get started.')}}</a>
-                {{pass}}
                 </div>
             {{ else: }}
 
@@ -287,11 +285,11 @@
     <script>
         $('#suggested-objectives').on('change', function(e){
 
-            console.log(e.value);
-
             $.ajax({url: '/learningobjective/_suggested_objectives',
                 data: {
-                    learning_episode_id:{{=learning_episode_id}},
+                    learning_episode_id:$(this).children("option:selected"). val(),
+                    not_learning_episode_id:{{=learning_episode_id}},
+                    scheme_of_work_id: {{=scheme_of_work_id}},
                     key_words:'{{=key_words}}'
                 },
                 success: function(result){

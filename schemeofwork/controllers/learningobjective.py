@@ -111,11 +111,14 @@ def _suggested_objectives():
     :return: view_model
     """
     learning_episode_id = int(request.vars.learning_episode_id)
+    not_learning_episode_id = int(request.vars.not_learning_episode_id)
+    scheme_of_work_id = int(request.vars.scheme_of_work_id)
     key_words = request.vars.key_words
 
-    suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, key_words)
+    suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, not_learning_episode_id, key_words)
 
-    return dict(view_model=suggested_learning_objectives)
+    return dict(learning_objectives=suggested_learning_objectives, scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
+
 
 def _sort_by_solo_and_group(data):
     sorted_data = data
@@ -276,12 +279,11 @@ def save_item():
 @auth.requires_login()
 def add_existing_objective():
     """ add objective non-view action """
-
-    learning_objective_id = int(request.vars.id)
+    learning_objective_id = int(request.vars.learning_objective_id)
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
     learning_episode_id = int(request.vars.learning_episode_id)
 
-    db_learningobjective.add_existing_objective(db, auth.user.id, id_=learning_objective_id, learning_episode_id=learning_episode_id)
+    db_learningobjective.add_existing_objective(db, learning_objective_id=learning_objective_id, learning_episode_id=learning_episode_id, auth_user_id=auth.user.id)
 
     return redirect(URL('index', args=[scheme_of_work_id, learning_episode_id]))
 

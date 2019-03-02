@@ -594,7 +594,7 @@ def get_linked_pathway_objectives(db, learning_episode_id):
     return data
 
 
-def get_other_objectives(db, learning_episode_id, key_words):
+def get_other_objectives(db, learning_episode_id, not_learning_episode_id, key_words):
     print(len(key_words.split(',')))
 
     select_sql = "SELECT DISTINCT"\
@@ -602,10 +602,10 @@ def get_other_objectives(db, learning_episode_id, key_words):
                  " lob.description as description,"\
                  " lob.key_words as key_words "\
                  " FROM sow_learning_objective as lob"\
-                 " INNER JOIN sow_learning_episode__has__pathway as pw ON pw.learning_objective_id = lob.id"\
-                 " WHERE pw.learning_episode_id != {learning_episode_id}"
+                 " INNER JOIN sow_learning_objective__has__learning_episode as lo_le ON lo_le.learning_objective_id = lob.id"\
+                 " WHERE lo_le.learning_episode_id = {learning_episode_id} AND lob.id NOT IN (SELECT id FROM sow_learning_objective WHERE id = {not_learning_episode_id});"
 
-    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id))
+    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id), not_learning_episode_id=not_learning_episode_id)
 
     #raise Exception(select_sql)
 
@@ -640,8 +640,8 @@ def save(db, model, published=1):
     return model
 
 
-def add_existing_objective(db, auth_user_id, id_, learning_episode_id):
-    model = LearningObjectiveModel(id_ = id_, learning_episode_id = learning_episode_id)
+def add_existing_objective(db, learning_objective_id, learning_episode_id, auth_user_id):
+    model = LearningObjectiveModel(id_ = learning_objective_id, learning_episode_id = learning_episode_id)
 
     # insert into linking table between objective and lesson
     str_insert = "INSERT INTO sow_learning_objective__has__learning_episode (learning_objective_id, learning_episode_id) VALUES ({learning_objective_id}, {learning_episode_id});"
