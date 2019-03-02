@@ -111,11 +111,10 @@ def _suggested_objectives():
     :return: view_model
     """
     learning_episode_id = int(request.vars.learning_episode_id)
-    not_learning_episode_id = int(request.vars.not_learning_episode_id)
     scheme_of_work_id = int(request.vars.scheme_of_work_id)
-    key_words = request.vars.key_words
+    key_word = request.vars.key_word
 
-    suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, not_learning_episode_id, key_words)
+    suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, scheme_of_work_id, key_word)
 
     return dict(learning_objectives=suggested_learning_objectives, scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
 

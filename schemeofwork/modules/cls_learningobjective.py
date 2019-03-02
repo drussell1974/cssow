@@ -594,38 +594,32 @@ def get_linked_pathway_objectives(db, learning_episode_id):
     return data
 
 
-def get_other_objectives(db, learning_episode_id, not_learning_episode_id, key_words):
-    print(len(key_words.split(',')))
+def get_other_objectives(db, learning_episode_id, scheme_of_work_id, key_word):
 
     select_sql = "SELECT DISTINCT"\
                  " lob.id as id,"\
                  " lob.description as description,"\
                  " lob.key_words as key_words "\
                  " FROM sow_learning_objective as lob"\
-                 " INNER JOIN sow_learning_objective__has__learning_episode as lo_le ON lo_le.learning_objective_id = lob.id"\
-                 " WHERE lo_le.learning_episode_id = {learning_episode_id} AND lob.id NOT IN (SELECT id FROM sow_learning_objective WHERE id = {not_learning_episode_id});"
+                 " INNER JOIN sow_learning_objective__has__learning_episode as lo_le ON lo_le.learning_objective_id = lob.id" \
+                 " INNER JOIN sow_learning_episode as le ON le.id = lo_le.learning_episode_id" \
+                 " WHERE le.scheme_of_work_id = {scheme_of_work_id}" \
+                 " AND lob.id NOT IN (SELECT learning_objective_id FROM sow_learning_objective__has__learning_episode WHERE learning_episode_id = {learning_episode_id});"
 
-    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id), not_learning_episode_id=not_learning_episode_id)
-
-    #raise Exception(select_sql)
+    select_sql = select_sql.format(scheme_of_work_id=int(scheme_of_work_id),learning_episode_id=int(learning_episode_id), key_word=sql_safe(key_word))
 
     rows = db.executesql(select_sql)
 
     data = [];
 
     for row in rows:
-        if len(row[2]) > 0:
-            for keyword in key_words.split(","):
-                if len(keyword) > 0 and keyword in row[2]:
-                    model = LearningObjectiveModel(
-                        id_ = row[0],
-                        description = row[1],
-                        key_words = row[2]
-                    )
-
-                    data.append(model)
-
-                    break # only add objective once
+        if len(key_word) > 0 and key_word.lower() in row[2].lower():
+            model = LearningObjectiveModel(
+                id_ = row[0],
+                description = row[1],
+                key_words = row[2]
+            )
+            data.append(model)
 
     return data
 
