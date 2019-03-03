@@ -71,6 +71,13 @@
                     <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{=order}}" aria-expanded="false" aria-controls="collapse-learning_objective{{=order}}">
                         <u class="chalk">{{=row.description}}</u>
                     </a>
+                    {{ if row.solo_taxonomy_level == "B": }}
+                        <i class="far fa-star"></i>
+                    {{ elif row.solo_taxonomy_level == "C": }}
+                        <i class="fas fa-star"></i>
+                    {{ elif row.solo_taxonomy_level == "D": }}
+                        <i class="fas fa-trophy"></i>
+                    {{ pass }}
                     <i class="h4 far fa-smile float-right"></i> <i class="h4 far fa-meh float-right "></i> <i class="h4 far fa-frown float-right "></i>
                 </div>
                 {{ if len(row.notes.strip(' ')) > 0: }}
