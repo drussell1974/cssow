@@ -11,5 +11,5 @@ class Log:
         """ inserts the detail into the sow_logging table """
         if self.is_enabled == True:
             str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (sql_safe(details), datetime.utcnow())
-            print(str_insert)
+
             db.executesql(str_insert)

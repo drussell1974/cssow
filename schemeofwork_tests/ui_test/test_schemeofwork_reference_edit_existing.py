@@ -102,7 +102,7 @@ class test_schemeofwork_learningepisode_edit_existing(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         
         elem.send_keys(Keys.RETURN)
-        self.wait()
+
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Learning objectives','Data Representation: Sound')
