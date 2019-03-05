@@ -41,9 +41,8 @@ def index():
     paged_data = pager.data_to_display()
 
     content = {
-        "main_heading":T("Learning objectives"),
-        "sub_heading":learning_episode.title,
-        "background_img":"home-bg.jpg",
+        "main_heading":learning_episode.title,
+        "sub_heading":learning_episode.summary,
         "strap_line":T("{scheme_of_work_name} - Lesson {order_of_delivery_id}").format(scheme_of_work_name=scheme_of_work_name, order_of_delivery_id=learning_episode.order_of_delivery_id)
               }
 
