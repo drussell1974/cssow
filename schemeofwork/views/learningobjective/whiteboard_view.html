@@ -24,7 +24,7 @@
         {{ pass }}
     <!-- Prior Learning END -->
       <!-- Keywords -->
-        <h2 class="chalk" id="heading-key_words">{{=T("keywords")}}</h2>
+        <h2 class="chalk" id="heading-key_words">{{=T("Keywords")}}</h2>
         <div id="accordion-keywords">
             {{ order = 0 }}
         {{ for key_word in key_words: }}
@@ -51,7 +51,7 @@
   </div>
   <div class="col-lg-8 col-md-8 mx-auto print-span">
       <!-- Learning Objectives -->
-      <h2 class="chalk" id="heading-learning_objectives">{{=T("learning objectives")}}</h2>
+      <h2 class="chalk" id="heading-learning_objectives">{{=T("Learning objectives")}}</h2>
         <div id="accordion-learning_objectives">
             {{ group_name = ""
                order = 0 }}
@@ -68,9 +68,6 @@
             {{ pass }}
             <div class="learning_objective-expand">
                 <div class="expand-header" id="heading-learning_objective{{=order}}">
-                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{=order}}" aria-expanded="false" aria-controls="collapse-learning_objective{{=order}}">
-                        <u class="chalk">{{=row.description}}</u>
-                    </a>
                     {{ if row.solo_taxonomy_level == "B": }}
                         <i class="far fa-star"></i>
                     {{ elif row.solo_taxonomy_level == "C": }}
@@ -78,6 +75,9 @@
                     {{ elif row.solo_taxonomy_level == "D": }}
                         <i class="fas fa-trophy"></i>
                     {{ pass }}
+                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{=order}}" aria-expanded="false" aria-controls="collapse-learning_objective{{=order}}">
+                        <u class="chalk">{{=row.description}}</u>
+                    </a>
                     <i class="h4 far fa-smile float-right"></i> <i class="h4 far fa-meh float-right "></i> <i class="h4 far fa-frown float-right "></i>
                 </div>
                 {{ if len(row.notes.strip(' ')) > 0: }}

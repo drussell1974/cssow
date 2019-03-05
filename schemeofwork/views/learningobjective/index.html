@@ -119,6 +119,13 @@
               <a name="{{=row.id}}"></a>
             <a href="#{{=row.id}}" class="disabled">
               <h4 class="post-title">
+               {{ if row.solo_taxonomy_level == "B": }}
+                    <i class="far fa-star"></i>
+                {{ elif row.solo_taxonomy_level == "C": }}
+                    <i class="fas fa-star"></i>
+                {{ elif row.solo_taxonomy_level == "D": }}
+                    <i class="fas fa-trophy"></i>
+                {{ pass }}
                 {{=row.description}}
                   {{ if len(row.notes.strip()) > 0: }}
                   <i class="fa fa-comment" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>

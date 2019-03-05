@@ -46,7 +46,7 @@
 
         {{ if curr_reference != item.id: }}
             <a href="{{=item.uri}}">
-                <h4>{{=item.title}}</h4>
+                <h4>{{=item.title}} ({{=item.publisher}})</h4>
             </a>
         {{ pass }}
         {{ if len(item.page_note) > 0: }}
