@@ -127,9 +127,6 @@
                     <i class="fas fa-trophy"></i>
                 {{ pass }}
                 {{=row.description}}
-                  {{ if len(row.notes.strip()) > 0: }}
-                  <i class="fa fa-comment" data-toggle="tooltip" data-placement="left" title="{{=row.notes.strip()}}"></i>
-                  {{ pass }}
               </h4>
                 {{ if auth.user: }}
                 <div class="custom-control custom-checkbox">

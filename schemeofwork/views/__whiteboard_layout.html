@@ -38,6 +38,20 @@
        .expand-header {
          padding-top:10px;
        }
+
+      @media print {
+        .notes > b {
+          visibility: hidden;
+        }
+        .notes > b:before {
+            content: '...';
+            visibility:visible;
+        }
+        .notes > b:after {
+            content: '...';
+            visibility:visible;
+        }
+      }
     </style>
     <script>
       function set_font_size(font_size){

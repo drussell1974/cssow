@@ -82,8 +82,8 @@
                 </div>
                 {{ if len(row.notes.strip(' ')) > 0: }}
                 <div id="collapse-learning_objective{{=order}}" class="collapse" aria-labelledby="heading-learning_objective{{=order}}" data-parent="#accordion-learning_objectives">
-                    <div class="expand-body chalk">
-                        {{=row.notes.strip(' ')}}
+                    <div class="expand-body chalk notes">
+                        {{=XML(row.notes.strip(' '))}}
                     </div>
                 </div>
                 {{ pass }}
