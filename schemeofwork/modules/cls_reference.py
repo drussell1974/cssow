@@ -205,7 +205,7 @@ def _update(db, model):
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_reference SET reference_type_id = {reference_type_id}, title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, uri = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
+    str_update = "UPDATE sow_reference SET reference_type_id = {reference_type_id}, title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, url = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
         reference_type_id=model.reference_type_id,

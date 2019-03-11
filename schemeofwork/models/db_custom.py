@@ -129,7 +129,7 @@ db.define_table("sow_learning_episode__has__references",
                 Field("reference_id", "integer",notnull=True),
                 Field("learning_episode_id", "integer", notnull=True),
                 Field("page_notes", length=250, notnull=False, default=None),
-                Field("page_uri", length=2083, notnull=False, default=""),
+                Field("page_url", length=2083, notnull=False, default=""),
                 Field("task_icon", length=80, notnull=False, default=""),
                 migrate = False
                 )
