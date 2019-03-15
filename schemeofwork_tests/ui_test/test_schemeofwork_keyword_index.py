@@ -68,7 +68,7 @@ class test_schemeofwork_keyword_index(UITestCase):
         elem.send_keys("algorith")
         elem.send_keys("m")
         elem.send_keys(Keys.TAB)
-        self.wait() # do not remove
+        self.wait(30) # do not remove
 
         # test
         elem_text348 = self.test_context.find_element_by_id("ctl-definition-348")

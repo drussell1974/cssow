@@ -23,7 +23,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Data Representation: Sound', 'Data Representation: Sound', 'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Nam Convallis Volutpat.')
+        self.assertWebPageTitleAndHeadings('Data Representation: Sound', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     def test_page__should_have__key_words(self):
@@ -39,7 +39,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         elem = self.test_context.find_element_by_id('heading-prior_learning_objectives')
 
         # assert
-        self.assertEqual("Prior Learning", elem.text)
+        self.assertEqual("Prior learning", elem.text)
 
 
     def test_page__should_have__learning_objectives(self):
@@ -47,7 +47,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         elem = self.test_context.find_element_by_id('heading-learning_objectives')
 
         # assert
-        self.assertEqual("Learning Objectives", elem.text)
+        self.assertEqual("Learning objectives", elem.text)
 
 
     def test_page__should_have__learning_materials(self):
@@ -55,7 +55,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
         elem = self.test_context.find_element_by_id('heading-learning_materials')
 
         # assert
-        self.assertEqual("Learning Materials", elem.text)
+        self.assertEqual("Learning materials", elem.text)
 
 
 

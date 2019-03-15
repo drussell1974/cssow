@@ -64,7 +64,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     def test_page__should_have_related_topic_ids(self):

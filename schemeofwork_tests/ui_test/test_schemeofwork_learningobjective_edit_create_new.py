@@ -133,4 +133,4 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')

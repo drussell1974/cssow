@@ -22,7 +22,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
 
     def test_page__should_have__sidebar_and_selected_learning_episode(self):
@@ -59,5 +59,5 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.implicitly_wait(4)
 
         # assert (TEST parent page is still open)
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objectives', 'Data Representation: Sound')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
 
