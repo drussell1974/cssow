@@ -61,39 +61,53 @@ DAL
 from datetime import datetime
 from db_helper import to_db_null, to_empty
 
-def get_all(db, learning_episode_id):
-    model = LessonPlanModel(id_=0, title="", description="")
+def get_all(db, learning_episode_id, auth_user):
+    """
+    Get all the lesson plan for this learning episode
+    :param db: database context
+    :param learning_episode_id: the learning episode
+    :param auth_user: TODO: Use to only show the user who created the lesson plan the information
+    :return: the lesson plan_model
+    """
 
     str_select = "SELECT" \
                  " pln.id as id," \
                  " pln.title as title," \
                  " pln.description as description," \
                  " pln.duration_minutes as duration," \
-                 " pln.task_icon "\
+                 " pln.task_icon, " \
+                 " pln.order_of_delivery_id "\
                  "FROM sow_lesson_plan as pln " \
                  "INNER JOIN sow_learning_episode as le ON le.id = pln.learning_episode_id" \
-                 " WHERE pln.id = {id_} AND le.id = {learning_episode_id};"
+                 " WHERE le.id = {learning_episode_id}" \
+                 " ORDER BY pln.order_of_delivery_id;"
 
-    str_select = str_select.format(id_=int(id_), learning_episode_id=int(learning_episode_id))
+    str_select = str_select.format(learning_episode_id=int(learning_episode_id))
 
     rows = db.executesql(str_select)
 
+    lesson_duration = 0
+    data = []
     for row in rows:
-        model = LessonPlanModel(id_=row[0], title=row[1], description=row[2], duration=row[3], task_icon=row[4])
+        lesson_duration = lesson_duration + int(row[3])
+        data.append(LessonPlanModel(id_=row[0], learning_episode_id=learning_episode_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5]))
 
-    return model
+    lesson_duration_h = lesson_duration / 60
+    lesson_duration_m = lesson_duration % 60
+
+    return data, lesson_duration_h, lesson_duration_m
 
 
 def get_model(db, id_, learning_episode_id, auth_user):
-    now = datetime.now()
-    model = LessonPlanModel(id_=0, title="", description="")
+    model = LessonPlanModel(id_=id_, learning_episode_id=learning_episode_id, title="", description="")
 
     str_select = "SELECT" \
                  " pln.id as id," \
                  " pln.title as title," \
                  " pln.description as description," \
                  " pln.duration_minutes as duration," \
-                 " pln.task_icon "\
+                 " pln.task_icon, " \
+                 " pln.order_of_delivery_id "\
                  "FROM sow_lesson_plan as pln " \
                  "INNER JOIN sow_learning_episode as le ON le.id = pln.learning_episode_id" \
                  " WHERE pln.id = {id_} AND le.id = {learning_episode_id};"
@@ -103,10 +117,35 @@ def get_model(db, id_, learning_episode_id, auth_user):
     rows = db.executesql(str_select)
 
     for row in rows:
-        model = LessonPlanModel(id_=row[0], title=row[1], description=row[2], duration=row[3], task_icon=row[4])
+        model = LessonPlanModel(id_=row[0], learning_episode_id = learning_episode_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
 
     return model
 
+
+def get_last_item(db, learning_episode_id):
+    model = LessonPlanModel(id_=0, learning_episode_id=learning_episode_id, title="", description="")
+
+    str_select = "SELECT" \
+                 " pln.id as id," \
+                 " pln.title as title," \
+                 " pln.description as description," \
+                 " pln.duration_minutes as duration," \
+                 " pln.task_icon, " \
+                 " pln.order_of_delivery_id "\
+                 "FROM sow_lesson_plan as pln " \
+                 "INNER JOIN sow_learning_episode as le ON le.id = pln.learning_episode_id" \
+                 " WHERE le.id = {learning_episode_id}" \
+                 " ORDER BY pln.order_of_delivery_id DESC " \
+                 " LIMIT 1;"
+
+    str_select = str_select.format(learning_episode_id=int(learning_episode_id))
+
+    rows = db.executesql(str_select)
+
+    for row in rows:
+        model = LessonPlanModel(id_=row[0], learning_episode_id = learning_episode_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
+
+    return model
 
 def save(db, model):
     """
@@ -141,7 +180,7 @@ def _update(db, model):
 
     # Update the lesson plan step
 
-    str_update = "UPDATE sow_lesson_plan SET learning_episode_id = {learning_episode_id}, order_of_delivery_id = {order_of_delivery_id}, title = '{title}', description = '{description}', duration_minutes = {duration}, task_icon = 'task_icon' WHERE id = {id};"
+    str_update = "UPDATE sow_lesson_plan SET learning_episode_id = {learning_episode_id}, order_of_delivery_id = {order_of_delivery_id}, title = '{title}', description = '{description}', duration_minutes = {duration}, task_icon = '{task_icon}' WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
         learning_episode_id=model.learning_episode_id,
@@ -168,7 +207,7 @@ def _insert(db, model):
         order_of_delivery_id=model.order_of_delivery_id,
         title=model.title,
         description=model.description,
-        duration=model.duration,
+        duration_minutes=model.duration,
         task_icon=model.task_icon)
 
     db.executesql(str_insert)
@@ -179,6 +218,22 @@ def _insert(db, model):
         model.id = int(row[0])
 
     return model.id
+
+
+def update_order_of_delivery(db, id_, learning_episode_id, order_of_delivery_id):
+
+    """ updates the order of delivery for sow_lesson_plan """
+
+    # Update the lesson plan step
+
+    str_update = "UPDATE sow_lesson_plan SET order_of_delivery_id = {order_of_delivery_id} WHERE id = {id} AND learning_episode_id = {learning_episode_id};"
+    str_update = str_update.format(
+        id= id_,
+        order_of_delivery_id=order_of_delivery_id,
+        learning_episode_id=learning_episode_id
+    )
+
+    db.executesql(str_update)
 
 
 def _delete(db, id_):

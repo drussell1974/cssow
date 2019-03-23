@@ -4,6 +4,7 @@ from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_
 from pager import Pager
 from validation_helper import html_validation_message
 from helper_string import date_to_string
+from helper_sort_and_search import _sort_by_solo_and_group
 import cls_schemeofwork
 import cls_learningobjective as db_learningobjective
 import cls_solotaxonomy as db_solotaxonomy
@@ -13,6 +14,7 @@ import cls_examboard as db_examboard
 import cls_learningepisode as db_learningepisode
 import cls_keyword as db_keyword
 import cls_reference as db_reference
+
 
 def index():
     """ index action """
@@ -58,6 +60,7 @@ def index():
         pager_html = pager_html)
 
 
+@auth.requires_login()
 def whiteboard_view():
     """ index action """
 
@@ -104,6 +107,7 @@ def whiteboard_view():
         learning_episode_id =learning_episode_id
     )
 
+
 def _suggested_objectives():
     """
     Get suggested learning objectives based on key words
@@ -116,44 +120,6 @@ def _suggested_objectives():
     suggested_learning_objectives = db_learningobjective.get_other_objectives(db, learning_episode_id, scheme_of_work_id, key_word)
 
     return dict(learning_objectives=suggested_learning_objectives, scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
-
-
-def _sort_by_solo_and_group(data):
-    sorted_data = data
-
-    while True:
-        swapped = False
-        for i in range(len(sorted_data) - 1):
-            if sorted_data[i].solo_taxonomy_level > sorted_data[i + 1].solo_taxonomy_level:
-                """ put item in the correct position """
-                temp1 = sorted_data[i]
-                temp2 = sorted_data[i + 1]
-
-                sorted_data[i] = temp2
-                sorted_data[i + 1] = temp1
-                swapped = True
-
-        if swapped == False:
-            """ no more sorting required so finish """
-            break
-    # bubble sort by group_name
-    while True:
-        swapped = False
-        for i in range(len(sorted_data) - 1):
-            if sorted_data[i].group_name > sorted_data[i + 1].group_name:
-                """ put item in the correct position """
-                temp1 = sorted_data[i]
-                temp2 = sorted_data[i + 1]
-
-                sorted_data[i] = temp2
-                sorted_data[i + 1] = temp1
-                swapped = True
-
-        if swapped == False:
-            """ no more sorting required so finish """
-            break
-
-    return sorted_data
 
 
 def sort_keywords_by_term(data):

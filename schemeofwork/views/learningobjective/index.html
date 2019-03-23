@@ -41,6 +41,7 @@
               <!-- Blackboard display button START -->
               <section class="alert alert-secondary">
                 <a href="{{=URL('learningobjective', 'whiteboard_view', args=[scheme_of_work_id,learning_episode_id])}}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">{{=T("Blackboard display")}}</a>
+                <a href="{{=URL('lessonplan', 'index', vars=dict(scheme_of_work_id=scheme_of_work_id,learning_episode_id=learning_episode_id))}}" target="_blank" class="btn btn-light" id="lnk-lesson_plan">{{=T("Lesson plan")}}</a>
               </section>
               <!-- Blackboard display button END -->
             <!-- SIDE MENU START -->

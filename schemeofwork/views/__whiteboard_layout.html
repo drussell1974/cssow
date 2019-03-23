@@ -53,6 +53,7 @@
         }
       }
     </style>
+    {{block head_css }} {{end}}
     <script>
       function set_font_size(font_size){
         $('.chalk').attr('style', 'font-size:' + font_size);
@@ -63,6 +64,7 @@
       }
     </script>
     {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+     {{block head_js }} {{end}}
   </head>
   <body>
 

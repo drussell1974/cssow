@@ -1,0 +1,98 @@
+<form id="form-lesson_plan">
+    <!-- Title START -->
+    <div class="control-group">
+      <div class="form-group controls">
+        <label>{{=T("Title")}}</label>
+        <input type="text" class="form-control" placeholder="{{=T('Enter a title')}}" id="ctl-title" name="title" required
+               maxlength="20" value='{{=view_model.title}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <!-- Title END -->
+    <!-- Description START -->
+    <div class="control-group">
+      <div class="form-group controls">
+        <label>{{=T("Description")}}</label>
+        <input type="text" class="form-control" placeholder="{{=T('Enter a description')}}" id="ctl-description" name="description" required
+               maxlength="1000" value='{{=view_model.description}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <!-- Description END -->
+    <!-- Duration START -->
+    <div class="control-group">
+      <div class="form-group controls">
+        <label>{{=T("Duration")}}</label>
+        <input type="number" class="form-control" placeholder="{{=T('Enter a duration')}}" id="ctl-duration" name="duration" required
+                min="1" max="120" value='{{=view_model.duration}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <!-- Duration END -->
+    <!-- Task icon START -->
+    <div class="control-group">
+      <div class="form-group controls">
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fa-door-open" id="ctl-door-open">
+              <label class="form-check-label" for="ctl-door-open">
+                <i class="fa fa-door-open"></i> {{=T("Starter")}}
+              </label>
+            </div>
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fa-user-friends" id="ctl-user-friends">
+              <label class="form-check-label" for="ctl-user-friends">
+                <i class="fa fa-user-friends"></i> {{=T("Group task")}}
+              </label>
+            </div>
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fa-user" id="ctl-fa-user">
+              <label class="form-check-label" for="ctl-fa-user">
+                <i class="fa fa-user"></i> {{=T("Individual task")}}
+              </label>
+            </div>
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fa-comments" id="ctl-fa-comments">
+              <label class="form-check-label" for="ctl-fa-comments">
+                  <i class="fa fa-comments"></i> {{=T("Discussion")}}
+              </label>
+            </div>
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fas fa-question-circle" id="ctl-fa-question-circle">
+              <label class="form-check-label" for="ctl-fa-question-circle">
+                  <i class="fas fa-question-circle"></i> {{=T("Questions")}}
+              </label>
+            </div>
+          <div class="form-check">
+              <input class="form-check-input" name="task_icon" type="checkbox" value="fa-door-closed" id="ctl-flag-checkered">
+              <label class="form-check-label" for="ctl-flag-checkered">
+                <i class="fa fa-flag-checkered"></i> {{=T("Plenary")}}
+              </label>
+            </div>
+         <p class="help-block text-danger" id="error"></p>
+      </div>
+        <hr>
+    </div><!-- class="control-group"-->
+    <!-- Task icon END -->
+    <div class="form-group">
+      <input type="hidden" name="id" value="{{=view_model.id}}">
+      <input type="hidden" name="order_of_delivery_id" value="{{=view_model.order_of_delivery_id}}">
+      <input type="hidden" name="learning_episode_id" value="{{=view_model.learning_episode_id}}">
+      <button type="submit" class="btn btn-primary" id="saveButton">{{=T("Save")}}</button>
+    </div>
+</form>
+
+<script>
+    $('#form-lesson_plan').submit(function(e) {
+        e.preventDefault();
+        console.log($(this).serialize());
+        $.ajax({url: 'lessonplan/save_item',
+                data:$(this).serialize(),
+                success: function(result) {
+                    console.log(result);
+                },
+                error: function(e){
+                    $('#error').text = 'Could not save lesson plan!';
+                }
+            });
+    });
+</script>
