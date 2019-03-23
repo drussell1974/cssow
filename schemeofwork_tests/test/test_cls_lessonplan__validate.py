@@ -87,7 +87,7 @@ class test_cls_lessonplan_validate__title(TestCase):
     def test_max__valid_extreme(self):
         # set up
 
-        self.test.title = "Lorem ipsum dolor si" # length 20 characters
+        self.test.title = "Lorem ipsum dolor siLorem ipsum dolor si" # length 40 characters
 
         # test
         self.test.validate()
@@ -100,7 +100,7 @@ class test_cls_lessonplan_validate__title(TestCase):
     def test_max__invalid_extreme(self):
         # set up
 
-        self.test.title = "Lorem ipsum dolor sit" # length 21 characters
+        self.test.title = "Lorem ipsum dolor sitLorem ipsum dolor si" # length 41 characters
 
         # test
         self.test.validate()

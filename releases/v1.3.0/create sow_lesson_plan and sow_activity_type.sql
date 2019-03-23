@@ -9,3 +9,7 @@ CREATE TABLE `sow_lesson_plan` (
   PRIMARY KEY (`id`),
   CONSTRAINT `sow_lesson_plan__has__learning_episode` FOREIGN KEY (`learning_episode_id`) REFERENCES `sow_learning_episode` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ALTER TABLE `sow_lesson_plan` 
+MODIFY COLUMN `title` varchar(40) NOT NULL;

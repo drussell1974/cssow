@@ -23,7 +23,7 @@ class LessonPlanModel (BaseModel):
         self._clean_up()
 
         # validate title
-        self._validate_required_string("title", self.title, 1, 20)
+        self._validate_required_string("title", self.title, 1, 40)
 
         # validate description
         self._validate_required_string("description", self.description, 1, 1000)
