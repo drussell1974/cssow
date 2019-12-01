@@ -116,3 +116,7 @@ venv.bak/
 /schemeofwork/errors
 *.bak
 appconfig.production.ini
+
+# yarn
+/node_modules
+yarn.lock

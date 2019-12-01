@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "clean": "cleandir build/",
+	"build": "cleandir build/ && copyfiles --all schemeofwork/** build/"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/runtime": "^7.7.4",
+    "jest": "^24.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "dependencies": {
+    "clean-dir": "^1.0.3",
+    "copyfiles": "^2.1.1"
+  }
+}
