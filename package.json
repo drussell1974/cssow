@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "clean": "cleandir build/",
-	"build": "cleandir build/ && copyfiles --all schemeofwork/** build/"
-  },
+    "clean": "cleandir build/ & cleandir dist/web2py/applications/schemeofwork/",
+	"build": "cleandir build/ && copyfiles --all schemeofwork/** build/ && copyfiles schemeofwork/** dist/web2py/applications"
+	},
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
