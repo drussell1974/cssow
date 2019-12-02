@@ -6,7 +6,7 @@ import mysql.connector
 import sys
 
 sys.path.append('../')
-sys.path.append('../../api/schemeofwork/modules')
+sys.path.append('../../schemeofwork/modules')
 
 class TestCase(CoreTestCase):
         pass
