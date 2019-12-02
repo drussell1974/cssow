@@ -20,7 +20,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_1_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 1);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 1)
 
         # assert
         self.assertEqual(7, len(rows), "number of rows not as expected")
@@ -34,7 +34,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_2_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 2);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 2)
 
         # assert
         self.assertEqual(16, len(rows), "number of rows not as expected")
@@ -48,7 +48,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_3_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 3);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 3)
 
         # assert
         self.assertEqual(8, len(rows), "number of rows not as expected")
@@ -62,7 +62,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_4_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 4);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 4)
 
         # assert
         self.assertEqual(8, len(rows), "number of rows not as expected")
@@ -76,7 +76,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_5_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 5);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 5)
 
         # assert
         self.assertEqual(15, len(rows), "number of rows not as expected")
@@ -90,7 +90,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_0_for_topic_6_should_all_subtopics(self):
         # test
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 6);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 0, 6)
 
         # assert
         self.assertEqual(12, len(rows), "number of rows not as expected")
@@ -104,7 +104,7 @@ class test_db_learningepisode__get_related_topics(TestCase):
 
     def test__learning_episode_id_35__should_return__all_topics(self):
 
-        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 35, 2);
+        rows = db_learningepisode.get_related_topic_ids(self.fake_db, 35, 2)
 
         # assert
         self.assertEqual(16, len(rows), "number of rows not as expected")

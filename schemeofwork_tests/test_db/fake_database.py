@@ -5,7 +5,7 @@ class FakeDb:
     def connect(self):
         self.cnx = mysql.connector.connect(user='drussell1974', password='password',
                               host='127.0.0.1',
-                              database='cssow')
+                              database='cssow_api')
 
     def executesql(self, query):
         self.cursor = self.cnx.cursor()
