@@ -1,9 +1,4 @@
-from unittest import TestCase
-from fake_database import FakeDb
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
+from _unittest import TestCase, FakeDb
 import cls_ks123pathway as db_ks123pathway
 import db_helper
 

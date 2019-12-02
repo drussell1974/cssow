@@ -1,9 +1,5 @@
-from unittest import TestCase, skip
-from fake_database import FakeDb
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
+from _unittest import TestCase, FakeDb
+from unittest import skip
 import cls_learningobjective as db_learningobjective
 
 class test_db_learning_objective__get_pathway_objectives(TestCase):

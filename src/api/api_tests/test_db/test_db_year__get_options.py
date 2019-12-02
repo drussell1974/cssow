@@ -1,9 +1,4 @@
-from unittest import TestCase
-from fake_database import FakeDb
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
+from _unittest import TestCase, FakeDb
 import cls_year as db_year
 
 class test_db_year__get_options__level_1(TestCase):

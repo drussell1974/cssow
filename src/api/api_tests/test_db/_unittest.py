@@ -1,5 +1,17 @@
-# create db connection
+'''
+import this file into test cases to ensure paths are included 
+'''
+from unittest import TestCase as CoreTestCase, skip as CoreSkip
 import mysql.connector
+import sys
+
+sys.path.append('../')
+sys.path.append('../../api/schemeofwork/modules')
+
+class TestCase(CoreTestCase):
+        pass
+
+
 class FakeDb:
 
     def connect(self):
