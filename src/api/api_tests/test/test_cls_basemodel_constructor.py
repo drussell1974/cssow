@@ -1,10 +1,6 @@
-from unittest import TestCase
-import sys
-sys.path.append('../../schemeofwork/modules')
-
-from _datetime import datetime
+from datetime import datetime
+from _unittest import TestCase
 from basemodel import BaseModel
-
 
 class Test_basemodel_Constructor(TestCase):
 

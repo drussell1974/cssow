@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
-sys.path.append('../')
-
+from _unittest import TestCase
 from learningobjective_testcase import LearningObjective_TestCase
 
 

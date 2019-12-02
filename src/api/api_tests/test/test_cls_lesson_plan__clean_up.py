@@ -1,8 +1,6 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_lessonplan import LessonPlanModel
 
-from unittest import TestCase
 
 class test_cls_lesson_plan__clean_up(TestCase):
 

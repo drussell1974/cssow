@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../../schemeofwork/modules/')
-
-from unittest import TestCase
+from _unittest import TestCase
 from cls_schemeofwork import SchemeOfWorkModel
 
 from datetime import datetime

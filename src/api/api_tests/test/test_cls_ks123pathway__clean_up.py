@@ -1,8 +1,6 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_ks123pathway import KS123PathwayModel
 
-from unittest import TestCase
 
 class test_cls_ks123pathway__clean_up(TestCase):
 

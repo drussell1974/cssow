@@ -1,8 +1,4 @@
-from unittest import TestCase
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
 
 

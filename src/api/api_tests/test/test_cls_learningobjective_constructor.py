@@ -1,9 +1,4 @@
-import sys
-sys.path.append('../../schemeofwork/modules/')
-sys.path.append('../')
-
-from unittest import TestCase
-
+from _unittest import TestCase
 from datetime import datetime
 from cls_learningobjective import LearningObjectiveModel
 

@@ -1,8 +1,6 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_year import YearModel
 
-from unittest import TestCase
 
 class test_cls_year__clean_up(TestCase):
 

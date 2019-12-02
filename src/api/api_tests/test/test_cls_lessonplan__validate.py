@@ -1,7 +1,5 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_lessonplan import LessonPlanModel
-from unittest import TestCase
 
 
 class test_cls_lessonplan_validate__title(TestCase):

@@ -1,8 +1,6 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_examboard import ExamBoardModel
 
-from unittest import TestCase
 
 class test_cls_examboard__clean_up(TestCase):
 

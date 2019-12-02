@@ -1,5 +1,4 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_reference import ReferenceModel
 
 from unittest import TestCase

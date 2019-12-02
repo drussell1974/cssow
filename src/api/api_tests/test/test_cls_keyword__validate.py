@@ -1,7 +1,5 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_keyword import KeywordModel
-from unittest import TestCase
 
 
 class test_cls_keyword__validate__definition(TestCase):

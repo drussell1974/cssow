@@ -1,8 +1,5 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_content import ContentModel
-
-from unittest import TestCase
 
 class test_cls_content__clean_up(TestCase):
 

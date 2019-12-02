@@ -1,8 +1,6 @@
-import sys
-sys.path.append('../../schemeofwork/modules')
+from _unittest import TestCase
 from cls_solotaxonomy import SoloTaxonomyModel
 
-from unittest import TestCase
 
 class test_cls_solotaxonomy__clean_up(TestCase):
 
