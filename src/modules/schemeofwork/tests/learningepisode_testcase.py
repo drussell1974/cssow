@@ -1,6 +1,6 @@
 from unittest import TestCase
 import sys
-from cls_learningepisode import LearningEpisodeModel
+from learningepisode import LearningEpisodeModel
 
 class LearningEpisode_TestCase(TestCase):
     """ Shared functions """

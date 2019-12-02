@@ -1,6 +1,6 @@
 from _unittest import TestCase
 from learningepisode_testcase import LearningEpisode_TestCase
-from cls_learningepisode import LearningEpisodeModel
+from learningepisode import LearningEpisodeModel
 
 
 class Test_LearningEpisode_Constructor(TestCase):
