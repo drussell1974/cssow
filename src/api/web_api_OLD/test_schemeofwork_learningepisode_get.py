@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 from django.urls import reverse
-from lessons.views import get
+#from lessons.views import get
 
 class test_schemeofwork_learningepsiode_get(UITestCase):
 
@@ -22,7 +22,7 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
 
 
     def test__should_resolve_url(self):
-        found = reverse("api/lessons/get")
+        found = reverse("lessons")
         self.assertIsNone(found)
 
 
