@@ -1,4 +1,4 @@
-"""web_api URL Configuration
+"""api_example URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -15,18 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from lessons import views
-
-#router = routers.DefaultRouter()
-#router.register(r'lesson', views.get_lesson)
-#router.register(r'lessons', views.get_all_lessons)
-#router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    #path('api/schemeofwork/<int:id>/lesson/<int:id>', views.get_lesson),
-    path('api/schemeofwork/<int:scheme_of_work_id>/lessons', views.get_all_lessons),
-    path('api/schemeofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>', views.get_lesson),
-    #path('', include(router.urls)),
-    path('admin/', include('rest_framework.urls', namespace='rest_framework')),
+    path('admin/', admin.site.urls),
+    path('api/', include('lessons.urls')),
 ]

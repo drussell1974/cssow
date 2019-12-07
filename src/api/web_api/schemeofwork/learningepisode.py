@@ -6,7 +6,7 @@ from .core.db_helper import sql_safe
 class LearningEpisodeListModel(models.Model):
     lessons = []
     def __init__(self, data):
-        self.lessons = data
+        self.lessons = get_all_dict(None, 11, None)
 
 class LearningEpisodeModel (BaseModel):
     title = models.CharField(max_length=100, blank=True, default='')
