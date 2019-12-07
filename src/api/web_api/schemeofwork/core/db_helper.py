@@ -21,13 +21,14 @@ def _closeSqlConn(cnx, cursor):
         cursor.close()
         cnx.close()
 
-def execCRUDSql(db, sql):
+def execCRUDSql(db, sql, result=None):
     ''' run the sql statement without results '''
     if db == None:
         cnx, cursor = _execSql(db, sql)
-        cnx.commit()        
+        for tup in cursor:
+            result.append(tup)
+        cnx.commit()    
         _closeSqlConn(cnx, cursor)
-
 
 def execSql(db, sql, result):
     ''' run the sql statement '''

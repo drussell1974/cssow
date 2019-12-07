@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from schemeofwork.learningepisode import get_model, get_all
+from schemeofwork.cls_learningepisode import get_model, get_all
 from .serializers import LessonSerializer, LessonListSerializer
 
 
@@ -23,8 +23,5 @@ class LessonListViewSet(APIView):
     #serializer_class = LessonListSerializer
 
     def get (self, request, scheme_of_work_id):
-        lessons = []
-        for lesson in get_all(None, scheme_of_work_id, None):
-            lessons.append(lesson.__dict__)
-
+        lessons = get_all(None, scheme_of_work_id, None)
         return Response({"lessons": lessons})

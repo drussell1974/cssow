@@ -2,11 +2,12 @@
 from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe
+from .cls_learningobjective import get_all as get_all_objectives
 
 class LearningEpisodeListModel(models.Model):
     lessons = []
     def __init__(self, data):
-        self.lessons = get_all_dict(None, 11, None)
+        self.lessons = get_all(None, 11, None).__dict__
 
 class LearningEpisodeModel (BaseModel):
     title = models.CharField(max_length=100, blank=True, default='')
@@ -143,7 +144,7 @@ def log_info(msg):
     
 
 from .core.db_helper import to_db_null, execSql
-import keyword as db_keyword
+#import cls_keyword as db_keyword
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -239,11 +240,12 @@ def get_all(db, scheme_of_work_id, auth_user):
         ' get the key words from the learning objectives '
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
+        #model.learning_objectives = get_all_objectives(db, model.id, auth_user)
 
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
-        data.append(model)
+        data.append(model.__dict__)
 
     return data
 
@@ -299,7 +301,7 @@ def get_model(db, id_, auth_user):
             created_by_id=row[14],
             created_by_name=row[15])
 
-    return model
+    return model.__dict__
 
 
 def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
