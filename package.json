@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "@babel/runtime": "^7.7.4",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "@babel/runtime": "^7.6.3",
     "clean-dir": "^1.0.3",
-    "copyfiles": "^2.1.1"
+    "copyfiles": "^2.1.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
   },
   "scripts": {
     "test": "jest",
@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",
-    "@babel/plugin-transform-runtime": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.5",
+    "@babel/preset-env": "^7.7.5",
     "@babel/preset-react": "^7.7.4",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
