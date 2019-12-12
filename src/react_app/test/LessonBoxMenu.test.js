@@ -1,4 +1,4 @@
-import { LessonBoxMenu, LessonBoxMenuItem } from '../pages/LessonBoxMenu';
+import { LessonBoxMenuWidget, LessonBoxMenuItem } from '../widgets/LessonBoxMenuWidget';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -109,13 +109,13 @@ describe('LessonBoxMenu', () => {
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<LessonBoxMenu data={lessons} />, container);
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
         
         expect(container.textContent).toMatch('')
     })
 
     it('renders lessons container', () => {    
-        ReactDOM.render(<LessonBoxMenu data={lessons} />, container);
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
         
         expect(
             container.querySelector('.lessons').getAttribute('class')
@@ -123,7 +123,7 @@ describe('LessonBoxMenu', () => {
     })
 
     it('has a single box', () => {
-        ReactDOM.render(<LessonBoxMenu data={lessons.slice(0,1)} />, container);
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons.slice(0,1)} />, container);
 
         expect(
             container.querySelectorAll('.box')
@@ -132,7 +132,7 @@ describe('LessonBoxMenu', () => {
 
     
     it('has a multiple boxes', () => {
-        ReactDOM.render(<LessonBoxMenu data={lessons} />, container);
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
 
         expect(
             container.querySelectorAll('.box')

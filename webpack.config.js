@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
    mode: "development",
-   entry: './reactapp/App.js',
+   entry: './src/react_app/App.js',
    output: {
       path: path.join(__dirname, '/build/'),
       filename: 'bundle.js'
@@ -11,7 +11,7 @@ module.exports = {
    devServer: {
       inline: true,
       port: 8001,
-      contentBase:'./build',
+      contentBase:path.join(__dirname,'./build'),
    },
    module: {
       rules: [
@@ -22,12 +22,39 @@ module.exports = {
             query: {
                presets: ["@babel/preset-env", "@babel/react"]
             }
+         },
+         {
+            test:/\.css$/,
+            use:[
+               'style-loader',
+               'css-loader',
+               ],
+         },
+         {
+            test:/\.eot$/,
+            use:'file-loader',
+         },
+         {
+            test:/\.jpg(2*)$/,
+            use:'file-loader',
+         },
+         {
+            test:/\.svg$/,
+            use:'file-loader',
+         },
+         {
+            test:/\.ttf$/,
+            use:'file-loader',
+         },
+         {
+            test:/\.woff(2*)$/,
+            use:'file-loader',
          }
       ]
    },
    plugins:[
       new HtmlWebpackPlugin({
-         template: './reactapp/index.html'
+         template: './src/react_app/index.html'
       })
    ]
 }
