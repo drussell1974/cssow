@@ -1,4 +1,4 @@
-from schemeofwork.cls_learningepisode import LearningEpisodeModel, LearningEpisodeListModel
+from models.cls_learningepisode import LearningEpisodeModel, LearningEpisodeListModel
 from rest_framework import serializers, status
 from django.db import models
 

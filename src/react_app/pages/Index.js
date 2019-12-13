@@ -1,10 +1,12 @@
 import React from 'react';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
+import BannerWidget from '../widgets/BannerWidget';
 
 class Index extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            SchemeOfWork: {},
             Lessons: [],
             hasError: false,
         }
@@ -13,7 +15,27 @@ class Index extends React.Component {
     componentDidMount() {
         //handleRefresh();
         
-        fetch("http://127.0.0.1:8000/api/schemeofwork/11/lessons?format=json"   )
+        fetch("http://127.0.0.1:8000/api/schemeofwork/127?format=json"   )
+            .then(res => { 
+                return res.json();
+            })
+            .then(
+            (data) => {
+                console.log(data);
+                this.setState({
+                    SchemeOfWork: data, 
+                    hasError:false,
+                });
+            },  
+            (error) => {
+                this.setState({
+                    Lessons: {},
+                    hasError: true,
+                });
+            }
+        )
+
+        fetch("http://127.0.0.1:8000/api/schemeofwork/127/lessons?format=json"   )
             .then(res => { 
                 return res.json();
             })
@@ -51,17 +73,9 @@ class Index extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <section id="banner" data-video="images/banner">
-                        <div className="inner">
-                            <header>
-                                <h1>Full Motion</h1>
-                                <p>A responsive video gallery template with a functional lightbox<br />
-                                designed by <a href="https://templated.co/">Templated</a> and released under the Creative Commons License.</p>
-                            </header>
-                            <a href="#main" className="more">Learn More</a>
-                        </div>
-                    </section>
-
+                
+                <BannerWidget />
+                
                 <div id="main">
                         <div className="inner">
                             <LessonBoxMenuWidget data={this.state.Lessons} />

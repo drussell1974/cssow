@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from schemeofwork.cls_learningepisode import get_model, get_all
+from models.cls_learningepisode import get_model, get_all
 from .serializers import LessonSerializer, LessonListSerializer
 
 
