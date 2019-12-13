@@ -19,8 +19,9 @@ class Index extends React.Component {
             })
             .then(
             (data) => {
+                console.log(data);
                 this.setState({
-                    Lessons: data, 
+                    Lessons: data.Lessons, 
                     hasError:false,
                 });
             },  
