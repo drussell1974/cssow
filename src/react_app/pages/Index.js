@@ -21,7 +21,7 @@ class Index extends React.Component {
             (data) => {
                 console.log(data);
                 this.setState({
-                    Lessons: data.Lessons, 
+                    Lessons: data.lessons, 
                     hasError:false,
                 });
             },  
