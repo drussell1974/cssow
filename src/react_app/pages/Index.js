@@ -23,7 +23,7 @@ class Index extends React.Component {
             (data) => {
                 console.log(data);
                 this.setState({
-                    SchemeOfWork: data, 
+                    SchemeOfWork: data.schemeofwork, 
                     hasError: false,
                 });
             },  

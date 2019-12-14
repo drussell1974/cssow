@@ -8,7 +8,7 @@ const BannerWidget = ({data}) => {
             <section id="banner" data-video="images/banner">
                 <div className="inner">
                     <header>
-                        <h1>{data.title}</h1>
+                        <h1>{data.className}</h1>
                         <p>{data.description}</p>
                     </header>
                     <a href="#main" className="more">Learn More</a>

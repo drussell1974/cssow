@@ -7,7 +7,7 @@ describe ('BannerWidget', () => {
     let container;
     let schemesofwork = {
         id: 1,
-        title: "CPU Architecture",
+        name: "CPU Architecture",
         description: "CPU components: ALU, Control Unit, Registers and Buses",
     };
      
