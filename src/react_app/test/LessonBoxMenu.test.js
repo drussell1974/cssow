@@ -51,7 +51,7 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<LessonBoxMenuItem data={lesson}/>, container);
+        ReactDOM.render(<LessonBoxMenuItem />, container);
 
         expect(container.textContent).toMatch('');
     })

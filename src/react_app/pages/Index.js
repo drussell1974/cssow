@@ -24,12 +24,12 @@ class Index extends React.Component {
                 console.log(data);
                 this.setState({
                     SchemeOfWork: data, 
-                    hasError:false,
+                    hasError: false,
                 });
             },  
             (error) => {
                 this.setState({
-                    Lessons: {},
+                    SchemeOfWork: {},
                     hasError: true,
                 });
             }
@@ -44,7 +44,7 @@ class Index extends React.Component {
                 console.log(data);
                 this.setState({
                     Lessons: data.lessons, 
-                    hasError:false,
+                    hasError: false,
                 });
             },  
             (error) => {
@@ -74,7 +74,7 @@ class Index extends React.Component {
         return (
             <React.Fragment>
                 
-                <BannerWidget />
+                <BannerWidget data={this.state.SchemeOfWork} />
                 
                 <div id="main">
                         <div className="inner">

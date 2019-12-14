@@ -5,7 +5,12 @@ import BannerWidget from '../widgets/BannerWidget';
 
 describe ('BannerWidget', () => {
     let container;
-
+    let schemesofwork = {
+        id: 1,
+        title: "CPU Architecture",
+        description: "CPU components: ALU, Control Unit, Registers and Buses",
+    };
+     
     beforeEach(() => {
         container = document.createElement('div');
     })
@@ -17,7 +22,7 @@ describe ('BannerWidget', () => {
     })
     
     it('is a data-video images/banner section', () => {
-        ReactDOM.render(<BannerWidget />, container);
+        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
 
         expect(
             container.querySelector('section#banner').getAttribute('data-video')
@@ -25,7 +30,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has an heading', () => {
-        ReactDOM.render(<BannerWidget heading="CPU Architecture" />, container);
+        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
 
         expect(
             container.querySelector('section#banner .inner header h1').textContent
@@ -33,7 +38,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a summary', () => {
-        ReactDOM.render(<BannerWidget summary='CPU components: ALU, Control Unit, Registers and Buses'/>, container);
+        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
 
         expect(
             container.querySelector('section#banner .inner header p').textContent
@@ -41,7 +46,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a jump to #main link', () => {
-        ReactDOM.render(<BannerWidget />, container);
+        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
         
         const elem = container.querySelector('section#banner .inner a.more');
 
