@@ -4,6 +4,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
 
 class Index extends React.Component {
+    
     constructor(props){
         super(props);
         this.state = {
@@ -11,10 +12,34 @@ class Index extends React.Component {
             Lessons: [],
             hasError: false,
         }
+    
+        self.socialmediadata = [];
     }
 
     componentDidMount() {
         //handleRefresh();
+        self.socialmediadata = [
+            {
+                "name":"Twitter",
+                "iconClass":"icon fa-twitter",
+                "url":"http://twitter.com",
+            },
+            {
+                "name":"Facebook",
+                "iconClass":"icon fa-facebook",
+                "url":"http://www.facebook.com",
+            },
+            {
+                "name":"Instagram",
+                "iconClass":"icon fa-instagram",
+                "url":"http://www.instagram.com",
+            },
+            {
+                "name":"Email",
+                "iconClass":"icon fa-envelope",
+                "url":"mail://noaddress@example.com",
+            },
+        ];
         
         fetch("http://127.0.0.1:8000/api/schemeofwork/127?format=json"   )
             .then(res => { 
@@ -83,7 +108,7 @@ class Index extends React.Component {
                     </div>
                 </div>
 
-                <FooterWidget />
+                <FooterWidget heading="Computer Science SOW" summary='' socialmedia={socialmediadata} />
 
             </React.Fragment>
         )
