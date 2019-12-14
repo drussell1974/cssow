@@ -1,7 +1,10 @@
 import React from 'react';
 
-const FooterWidget = ({heading, summary}) => {
+const FooterWidget = ({heading, summary, socialmedia}) => {
     if(heading !== undefined && summary !== undefined) {
+
+        let socialmediadata = socialmedia === undefined ? [] : socialmedia;
+        
         return (
             <footer id="footer">
                 <div className="inner">
@@ -9,10 +12,11 @@ const FooterWidget = ({heading, summary}) => {
                     <p>{summary}</p>
 
                     <ul className="icons">
-                        <li><a href="#" className="icon fa-twitter"><span className="label">Twitter</span></a></li>
-                        <li><a href="#" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
-                        <li><a href="#" className="icon fa-instagram"><span className="label">Instagram</span></a></li>
-                        <li><a href="#" className="icon fa-envelope"><span className="label">Email</span></a></li>
+                        {
+                            socialmediadata.map((item) => (
+                                <li><a href={item.url} className={item.iconClass}><span className="label">{item.name}</span></a></li>
+                               )
+                            )}
                     </ul>
                     <p className="copyright">&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com/">Unsplash</a>. Videos: <a href="http://coverr.co/">Coverr</a>.</p>
                 </div>
