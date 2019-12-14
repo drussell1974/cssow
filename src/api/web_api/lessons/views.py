@@ -10,18 +10,15 @@ from .serializers import LessonSerializer, LessonListSerializer
 
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
-    #serializer_class = LessonSerializer
 
     def get(self, request, scheme_of_work_id, lesson_id):
-        lesson = get_model(None, lesson_id, None).__dict__
-        return JsonResponse({"lesson":lesson})
+        lesson = get_model(None, lesson_id, None)
+        return JsonResponse({"lesson": lesson})
     
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
-    #queryset =  get_all(None, 11, None)
-    #serializer_class = LessonListSerializer
-
+    
     def get (self, request, scheme_of_work_id):
         lessons = get_all(None, scheme_of_work_id, None)
         return JsonResponse({"lessons": lessons})

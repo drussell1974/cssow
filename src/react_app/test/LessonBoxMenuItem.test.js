@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 let lesson = {
-    id:1,
+    id: 1,
     title: "Curabitur id purus feugiat, porttitor.",
     summary: "In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus",
     image_url: "images/pic01.jpg",
