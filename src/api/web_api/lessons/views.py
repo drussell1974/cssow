@@ -14,7 +14,7 @@ class LessonViewSet(APIView):
 
     def get(self, request, scheme_of_work_id, lesson_id):
         lesson = get_model(None, lesson_id, None).__dict__
-        return Response({"lesson":lesson})
+        return JsonResponse({"lesson":lesson})
     
     
 class LessonListViewSet(APIView):
@@ -24,4 +24,4 @@ class LessonListViewSet(APIView):
 
     def get (self, request, scheme_of_work_id):
         lessons = get_all(None, scheme_of_work_id, None)
-        return Response({"lessons": lessons})
+        return JsonResponse({"lessons": lessons})

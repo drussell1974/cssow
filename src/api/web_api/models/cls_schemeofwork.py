@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel, try_int
-from db_helper import sql_safe
+from django.db import models
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import sql_safe, execSql, execCRUDSql
+
+class SchemeOfWorkListModel(models.Model):
+    schemesofwork = []
+    def __init__(self, data):
+        self.schemesofwork = get_all(None, 11, None).__dict__
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -59,15 +65,16 @@ class SchemeOfWorkModel(BaseModel):
 DAL
 """
 
-from cls_schemeofwork import SchemeOfWorkModel
-from db_helper import to_db_null
+#from cls_schemeofwork import SchemeOfWorkModel
+from .core.db_helper import to_db_null
 
 def get_options(db, auth_user = 0):
     str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
     str_select = str_select.format(auth_user=to_db_null(auth_user))
-    rows = db.executesql(str_select)
+    rows = []
+    execSql(db, str_select, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
@@ -97,9 +104,10 @@ def get_all(db, key_stage_id=0, auth_user = 0):
                   " ORDER BY sow.key_stage_id;"
     select_sql = select_sql.format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
 
@@ -117,7 +125,7 @@ def get_all(db, key_stage_id=0, auth_user = 0):
 
         model.set_is_recent()
 
-        data.append(model)
+        data.append(model.__dict__)
 
     return data
 
@@ -151,7 +159,8 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
                  " ORDER BY sow.created DESC LIMIT {top};"
     select_sql = select_sql.format(auth_user=to_db_null(auth_user), top=top)
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     data = [];
 
@@ -174,7 +183,7 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
 
 
 def get_model(db, id_, auth_user):
-    model = SchemeOfWorkModel(0);
+    model = SchemeOfWorkModel(0)
 
     select_sql = "SELECT "\
                   " sow.id as id, "\
@@ -196,7 +205,8 @@ def get_model(db, id_, auth_user):
 
     select_sql = select_sql.format(scheme_of_work_id=id_, auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     for row in rows:
         model = SchemeOfWorkModel(id_=row[0],
@@ -222,7 +232,8 @@ def get_schemeofwork_name_only(db, scheme_of_work_id):
                   " WHERE sow.id = {scheme_of_work_id};"
     select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     scheme_of_work_name = ""
     for row in rows:
@@ -237,7 +248,8 @@ def get_key_stage_id_only(db, scheme_of_work_id):
                   " FROM sow_scheme_of_work as sow "\
                   " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
                   " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     key_stage_id = 0
     for row in rows:
@@ -280,7 +292,7 @@ def _update(db, model, published):
         scheme_of_work_id = to_db_null(model.id),
         published=published)
 
-    db.executesql(str_update)
+    execCRUDSql(db, str_update)
 
     return True
 
@@ -296,10 +308,11 @@ def _insert(db, model, published):
         created_by=to_db_null(model.created_by_id),
         published=published)
 
-    db.executesql(str_insert)
+    execCRUDSql(db, str_insert)
 
     # get last inserted row id
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    rows = []
+    execCRUDSql(db, "SELECT LAST_INSERT_ID();", rows)
 
     for row in rows:
         model.id = int(row[0])
@@ -311,7 +324,8 @@ def _delete(db, model):
     str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id};"
     str_delete = str_delete.format(scheme_of_work_id=model.id)
 
-    rval = db.executesql(str_delete)
+    rval = []
+    execCRUDSql(db, str_delete, rval)
 
     return rval
 
@@ -320,6 +334,7 @@ def _publish(db, model):
     str_delete = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
     str_delete = str_delete.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
 
-    rval = db.executesql(str_delete)
+    rval = []
+    execCRUDSql(db, str_delete, rval)
 
     return rval

@@ -21,9 +21,9 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
         cls.test_context.close()
 
 
-    def test__should_resolve_url(self):
-        found = reverse("lessons")
-        self.assertEqual(found, "/api/schemeofwork/11/lessons")
+#    def test__should_resolve_url(self):
+#        found = reverse("lessons")
+#        self.assertEqual(found, "/api/schemeofwork/11/lessons")
 
 
     def test__should_return_a_payload(self):
@@ -36,4 +36,4 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
         # act
         
         # assert
-        self.assertIsNone(payload)
+        self.assertIsNotNone(payload)
