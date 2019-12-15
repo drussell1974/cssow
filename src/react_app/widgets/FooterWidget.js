@@ -14,7 +14,7 @@ const FooterWidget = ({heading, summary, socialmedia}) => {
                     <ul className="icons">
                         {
                             socialmediadata.map((item) => (
-                                <li><a href={item.url} className={item.iconClass}><span className="label">{item.name}</span></a></li>
+                                <li key={item.name}><a href={item.url} className={item.iconClass}><span className="label">{item.name}</span></a></li>
                                )
                             )}
                     </ul>

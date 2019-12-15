@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LessonBoxMenuItem = ({data}) => {
+export const LessonBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
@@ -10,23 +10,24 @@ export const LessonBoxMenuItem = ({data}) => {
                     <img src={data.image_url} alt="" />
                 </a>
                 <div className="inner">
+                    <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.title}</h3>
                     <p>{data.summary}</p>
-                    <a href={data.url} className="button fit" data-poptrox="youtube,800x400">Watch</a>
+                    <a href={data.url} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
                 </div>
             </div>
         )
     }
 }
 
-export const LessonBoxMenuWidget = ({data}) => {
+export const LessonBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
         return (
             <div className="thumbnails lessons">
                 {data.map(item => (
-                    <LessonBoxMenuItem key={item.id} data={item} />
+                    <LessonBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
                 ))}
             </div>
         )

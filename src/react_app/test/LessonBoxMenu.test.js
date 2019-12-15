@@ -51,7 +51,7 @@ describe('LessonBoxMenu', () => {
     it('renders empty model', () => {
         ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
         
-        expect(container.textContent).toMatch('')
+        expect(container.textContent).toMatch('');
     })
 
     it('renders lessons container', () => {    
@@ -59,7 +59,7 @@ describe('LessonBoxMenu', () => {
         
         expect(
             container.querySelector('.lessons').getAttribute('class')
-        ).toMatch('')
+        ).toMatch('');
     })
 
     it('has a single box', () => {
@@ -67,7 +67,7 @@ describe('LessonBoxMenu', () => {
 
         expect(
             container.querySelectorAll('.box')
-        ).toHaveLength(1)
+        ).toHaveLength(1);
     })
 
     
@@ -76,6 +76,23 @@ describe('LessonBoxMenu', () => {
 
         expect(
             container.querySelectorAll('.box')
-        ).toHaveLength(6)
+        ).toHaveLength(6);
+    })
+
+    it('renders buttons with typeLabelText', () => {
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons} typeLabelText="lesson" />, container);
+
+        expect(
+            container.querySelector('.box .inner label.label').textContent
+        ).toMatch('lesson');
+    })
+
+    
+    it('renders buttons with typeButtonText', () => {
+        ReactDOM.render(<LessonBoxMenuWidget data={lessons} typeButtonText="View" />, container);
+
+        expect(
+            container.querySelector('.box .inner a.button').textContent
+        ).toMatch('View');
     })
 });

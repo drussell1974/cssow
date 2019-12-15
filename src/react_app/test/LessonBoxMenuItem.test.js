@@ -45,7 +45,7 @@ describe ('LessonBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner h3').textContent
-        ).toMatch('Curabitur id purus feugiat, porttitor.')
+        ).toMatch('Curabitur id purus feugiat, porttitor.');
     })
 
     it('has a summary', () => {
@@ -53,18 +53,26 @@ describe ('LessonBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner p').textContent
-        ).toMatch('In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus')
+        ).toMatch('In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus');
     })
 
-    it('has a watch button', () => {
-        ReactDOM.render(<LessonBoxMenuItem data={lesson} />, container);
+    it('has a view button', () => {
+        ReactDOM.render(<LessonBoxMenuItem data={lesson} typeButtonText='View'/>, container);
 
         expect(
             container.querySelector('div.inner a.button').textContent
-        ).toMatch('Watch')
+        ).toMatch('View');
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('https://youtu.be/s6zR2T9vn2a')
+        ).toMatch('https://youtu.be/s6zR2T9vn2a');
+    })
+
+    it('has type label heading', () => {
+        ReactDOM.render(<LessonBoxMenuItem data={lesson} typeLabelText="lesson" />, container);
+
+        expect(
+            container.querySelector('div.inner label.label').textContent
+        ).toMatch('lesson');
     })
 })
