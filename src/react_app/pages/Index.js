@@ -1,5 +1,5 @@
 import React from 'react';
-import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
+import { SOWBoxMenuWidget } from '../widgets/SOWBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import apiReactServices from '../services/apiReactServices';
@@ -46,12 +46,11 @@ class Index extends React.Component {
                 
                 <BannerWidget data={this.state.SchemeOfWork} />
                 
-                <div id="main">
-                    <div className="inner">
-                        <LessonBoxMenuWidget data={this.state.Lessons} typeLabelText="lesson" typeButtonText="View" />
+                    <div id="main">
+                        <div className="inner">
+                            <SOWBoxMenuWidget data={this.state.Lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />
+                        </div>
                     </div>
-                </div>
-
                 <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
 
             </React.Fragment>
