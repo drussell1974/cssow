@@ -48,7 +48,7 @@ class Index extends React.Component {
                 
                 <div id="main">
                     <div className="inner">
-                        <LessonBoxMenuWidget data={this.state.Lessons} />
+                        <LessonBoxMenuWidget data={this.state.Lessons} typeLabelText="lesson" typeButtonText="View" />
                     </div>
                 </div>
 
