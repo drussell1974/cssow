@@ -2,6 +2,7 @@ import React from 'react';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
+import apiReactServices from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -13,73 +14,16 @@ class Index extends React.Component {
             hasError: false,
         }
     
-        self.socialmediadata = [];
+        this.socialmediadata = [];
     }
 
     componentDidMount() {
-        //handleRefresh();
-        self.socialmediadata = [
-            {
-                "name":"Twitter",
-                "iconClass":"icon fa-twitter",
-                "url":"http://twitter.com",
-            },
-            {
-                "name":"Facebook",
-                "iconClass":"icon fa-facebook",
-                "url":"http://www.facebook.com",
-            },
-            {
-                "name":"Instagram",
-                "iconClass":"icon fa-instagram",
-                "url":"http://www.instagram.com",
-            },
-            {
-                "name":"Email",
-                "iconClass":"icon fa-envelope",
-                "url":"mail://noaddress@example.com",
-            },
-        ];
-        
-        fetch("http://127.0.0.1:8000/api/schemeofwork/127?format=json"   )
-            .then(res => { 
-                return res.json();
-            })
-            .then(
-            (data) => {
-                console.log(data);
-                this.setState({
-                    SchemeOfWork: data.schemeofwork, 
-                    hasError: false,
-                });
-            },  
-            (error) => {
-                this.setState({
-                    SchemeOfWork: {},
-                    hasError: true,
-                });
-            }
-        )
 
-        fetch("http://127.0.0.1:8000/api/schemeofwork/127/lessons?format=json"   )
-            .then(res => { 
-                return res.json();
-            })
-            .then(
-            (data) => {
-                console.log(data);
-                this.setState({
-                    Lessons: data.lessons, 
-                    hasError: false,
-                });
-            },  
-            (error) => {
-                this.setState({
-                    Lessons: [],
-                    hasError: true,
-                });
-            }
-        )
+        this.socialmediadata = apiReactServices.getSocialMediaLinks();
+        
+        apiReactServices.getSchemeOfWork(this);
+
+        apiReactServices.getLessons(this);   
     }
     
     static getDerivedStateFromError(error) {
@@ -108,7 +52,7 @@ class Index extends React.Component {
                     </div>
                 </div>
 
-                <FooterWidget heading="Computer Science SOW" summary='' socialmedia={socialmediadata} />
+                <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
 
             </React.Fragment>
         )
