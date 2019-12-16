@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export const SOWBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
     if(data === undefined) {
@@ -14,7 +13,7 @@ export const SOWBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
                     <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.title}</h3>
                     <p>{data.summary}</p>
-                    <a href={data.url} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
+                    <a href="https://youtu.be/s6zR2T9vn2a" className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
                 </div>
             </div>
         )
