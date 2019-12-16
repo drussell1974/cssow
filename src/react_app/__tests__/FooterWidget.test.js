@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { createContainer } from '../helpers/domManipulators';
 import FooterWidget from '../widgets/FooterWidget';
 
-describe('', () => {
-    let container;
+describe('FooterWidget', () => {
+    let render, container;
 
     beforeEach(() => {
-        container = document.createElement('div');
+        ({render, container} = createContainer());
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<FooterWidget />, container);
+        render(<FooterWidget />);
 
         expect(
             container.textContent
@@ -19,7 +20,7 @@ describe('', () => {
     })
 
     it('has a heading', () => {
-        ReactDOM.render(<FooterWidget heading='Etiam veroeros lorem' summary='' />, container);
+        render(<FooterWidget heading='Etiam veroeros lorem' summary='' />);
 
         expect(
             container.querySelector('footer#footer h2').textContent
@@ -27,7 +28,7 @@ describe('', () => {
     })
 
     it('has a summary', () => {
-        ReactDOM.render(<FooterWidget heading='' summary='Pellentesque eleifend malesuada efficitur. Curabitur volutpat dui mi, ac imperdiet dolor tincidunt nec. Ut erat lectus, dictum sit amet lectus a, aliquet rutrum mauris. Etiam nec lectus hendrerit, consectetur risus viverra, iaculis orci. Phasellus eu nibh ut mi luctus auctor. Donec sit amet dolor in diam feugiat venenatis.' />, container);
+        render(<FooterWidget heading='' summary='Pellentesque eleifend malesuada efficitur. Curabitur volutpat dui mi, ac imperdiet dolor tincidunt nec. Ut erat lectus, dictum sit amet lectus a, aliquet rutrum mauris. Etiam nec lectus hendrerit, consectetur risus viverra, iaculis orci. Phasellus eu nibh ut mi luctus auctor. Donec sit amet dolor in diam feugiat venenatis.' />);
 
         expect(
             container.querySelector('footer#footer p').textContent
@@ -37,7 +38,7 @@ describe('', () => {
     it('shows no social media links when undefined', () => {
         let socialmediadata = undefined
 
-        ReactDOM.render(<FooterWidget heading='' summary='' socialmedia={socialmediadata} />, container);
+        render(<FooterWidget heading='' summary='' socialmedia={socialmediadata} />);
 
         expect(
             container.querySelectorAll('footer#footer .icons li')
@@ -68,7 +69,7 @@ describe('', () => {
             },
         ];
         
-        ReactDOM.render(<FooterWidget heading='' summary='' socialmedia={socialmediadata} />, container);
+        render(<FooterWidget heading='' summary='' socialmedia={socialmediadata} />);
 
         expect(
             container.querySelectorAll('footer#footer .icons li')

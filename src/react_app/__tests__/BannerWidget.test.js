@@ -1,36 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { createContainer } from '../helpers/domManipulators';
 import BannerWidget from '../widgets/BannerWidget';
-
+    
 describe ('BannerWidget', () => {
-    let container;
+    let render, container;
     let schemesofwork = {
         id: 1,
         name: "CPU Architecture",
         description: "CPU components: ALU, Control Unit, Registers and Buses",
     };
+    
      
     beforeEach(() => {
-        container = document.createElement('div');
+        (
+            {render, container} = createContainer(container)
+        )
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<BannerWidget />, container);
+        render(<BannerWidget />);
         
         expect(container.textContent).toMatch('');
     })
     
     it('is a data-video images/banner section', () => {
-        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
+        render(<BannerWidget data={schemesofwork} />);
 
         expect(
             container.querySelector('section#banner').getAttribute('data-video')
         ).toMatch('images/banner');
     })
 
-    it('has an heading', () => {
-        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
+    it('has a heading', () => {
+        render(<BannerWidget data={schemesofwork} />);
 
         expect(
             container.querySelector('section#banner .inner header h1').textContent
@@ -38,7 +42,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a summary', () => {
-        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
+        render(<BannerWidget data={schemesofwork} />);
 
         expect(
             container.querySelector('section#banner .inner header p').textContent
@@ -46,7 +50,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a jump to #main link', () => {
-        ReactDOM.render(<BannerWidget data={schemesofwork} />, container);
+        render(<BannerWidget data={schemesofwork} />);
         
         const elem = container.querySelector('section#banner .inner a.more');
 

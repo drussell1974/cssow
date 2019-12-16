@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Lesson from '../pages/Lesson';
 
 export const SOWBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
     if(data === undefined) {

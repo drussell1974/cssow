@@ -1,7 +1,8 @@
-import { SOWBoxMenuWidget, SOWBoxMenuItem } from '../widgets/SOWBoxMenuWidget';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { LessonBoxMenuWidget, LessonBoxMenuItem } from '../widgets/LessonBoxMenuWidget';
+import { createContainer } from '../helpers/domManipulators';
 
 let lesson = {
     id: 1,
@@ -11,21 +12,21 @@ let lesson = {
     url: "https://youtu.be/s6zR2T9vn2a",
 }
 
-describe ('SOWBoxMenuItem', () => {
-    let container;
+describe ('LessonBoxMenuItem', () => {
+    let render, container;
     
     beforeEach(() => {
-        container = document.createElement('div');
+        ({render, container} = createContainer());
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<SOWBoxMenuItem />, container);
+        render(<LessonBoxMenuItem />);
 
         expect(container.textContent).toMatch('');
     })
 
     it('has a link from image', () => {
-        ReactDOM.render(<SOWBoxMenuItem data={lesson} />, container);
+        render(<LessonBoxMenuItem data={lesson} />);
 
         expect(
             container.querySelector('div.box a').getAttribute('href')
@@ -33,7 +34,7 @@ describe ('SOWBoxMenuItem', () => {
     })
 
     it('has a image', () => {
-        ReactDOM.render(<SOWBoxMenuItem  data={lesson} />, container);
+        render(<LessonBoxMenuItem  data={lesson} />);
 
         expect(
             container.querySelector('div.box a img').getAttribute('src')
@@ -41,7 +42,7 @@ describe ('SOWBoxMenuItem', () => {
     })
 
     it('has a title', () => {
-        ReactDOM.render(<SOWBoxMenuItem  data={lesson} />, container);
+        render(<LessonBoxMenuItem  data={lesson} />);
 
         expect(
             container.querySelector('div.inner h3').textContent
@@ -49,7 +50,7 @@ describe ('SOWBoxMenuItem', () => {
     })
 
     it('has a summary', () => {
-        ReactDOM.render(<SOWBoxMenuItem  data={lesson} />, container);
+        render(<LessonBoxMenuItem  data={lesson} />);
 
         expect(
             container.querySelector('div.inner p').textContent
@@ -57,7 +58,7 @@ describe ('SOWBoxMenuItem', () => {
     })
 
     it('has a view button', () => {
-        ReactDOM.render(<SOWBoxMenuItem data={lesson} typeButtonText='View'/>, container);
+        render(<LessonBoxMenuItem data={lesson} typeButtonText='View'/>);
 
         expect(
             container.querySelector('div.inner a.button').textContent
@@ -69,7 +70,7 @@ describe ('SOWBoxMenuItem', () => {
     })
 
     it('has type label heading', () => {
-        ReactDOM.render(<SOWBoxMenuItem data={lesson} typeLabelText="lesson" />, container);
+        render(<LessonBoxMenuItem data={lesson} typeLabelText="lesson" />);
 
         expect(
             container.querySelector('div.inner label.label').textContent

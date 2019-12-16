@@ -2,7 +2,7 @@ import React from 'react';
 import { SOWBoxMenuWidget } from '../widgets/SOWBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import apiReactServices from '../services/apiReactServices';
+import { getSchemeOfWork, getLessons, getSocialMediaLinks } from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -19,11 +19,11 @@ class Index extends React.Component {
 
     componentDidMount() {
 
-        this.socialmediadata = apiReactServices.getSocialMediaLinks();
+        this.socialmediadata = getSocialMediaLinks();
         
-        apiReactServices.getSchemeOfWork(this);
+        getSchemeOfWork(this);
 
-        apiReactServices.getLessons(this);   
+        getLessons(this);   
     }
     
     static getDerivedStateFromError(error) {
@@ -45,7 +45,6 @@ class Index extends React.Component {
             <React.Fragment>
                 
                 <BannerWidget data={this.state.SchemeOfWork} />
-                
                     <div id="main">
                         <div className="inner">
                             <SOWBoxMenuWidget data={this.state.Lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />

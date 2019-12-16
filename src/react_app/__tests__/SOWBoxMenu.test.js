@@ -1,7 +1,8 @@
-import { LessonBoxMenuWidget, LessonBoxMenuItem } from '../widgets/LessonBoxMenuWidget';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { SOWBoxMenuWidget, SOWBoxMenuItem } from '../widgets/SOWBoxMenuWidget';
+import { createContainer } from '../helpers/domManipulators';
 
 let lessons = [{
     id:1,
@@ -41,21 +42,25 @@ let lessons = [{
     url: "https://youtu.be/s6zR2T9vn2f",
 }]
 
-describe('LessonBoxMenu', () => {
-    let container;
+describe('SOWBoxMenu', () => {
+    let render, container;
 
     beforeEach(() => {
-        container = document.createElement('div');
+        ({render, container} = createContainer());
     })
 
     it('renders empty model', () => {
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
+        render(
+            <SOWBoxMenuWidget data={lessons} />
+            );
         
         expect(container.textContent).toMatch('');
     })
 
     it('renders lessons container', () => {    
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
+        render(
+            <SOWBoxMenuWidget data={lessons} />
+            );
         
         expect(
             container.querySelector('.lessons').getAttribute('class')
@@ -63,7 +68,7 @@ describe('LessonBoxMenu', () => {
     })
 
     it('has a single box', () => {
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons.slice(0,1)} />, container);
+        render(<SOWBoxMenuWidget data={lessons.slice(0,1)} />);
 
         expect(
             container.querySelectorAll('.box')
@@ -72,7 +77,7 @@ describe('LessonBoxMenu', () => {
 
     
     it('has a multiple boxes', () => {
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons} />, container);
+        render(<SOWBoxMenuWidget data={lessons} />);
 
         expect(
             container.querySelectorAll('.box')
@@ -80,7 +85,7 @@ describe('LessonBoxMenu', () => {
     })
 
     it('renders buttons with typeLabelText', () => {
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons} typeLabelText="lesson" />, container);
+        render(<SOWBoxMenuWidget data={lessons} typeLabelText="lesson" />);
 
         expect(
             container.querySelector('.box .inner label.label').textContent
@@ -89,7 +94,7 @@ describe('LessonBoxMenu', () => {
 
     
     it('renders buttons with typeButtonText', () => {
-        ReactDOM.render(<LessonBoxMenuWidget data={lessons} typeButtonText="View" />, container);
+        render(<SOWBoxMenuWidget data={lessons} typeButtonText="View" />);
 
         expect(
             container.querySelector('.box .inner a.button').textContent
