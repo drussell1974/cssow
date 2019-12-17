@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const LessonBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
+export const LessonBoxMenuItem = ({data, typeButtonText}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
@@ -10,7 +10,7 @@ export const LessonBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
                     <img src={data.image_url} alt="" />
                 </a>
                 <div className="inner">
-                    <label className="label"><u>{typeLabelText}</u></label>
+                    <label className="label"><u>{data.reference_type_name}</u></label>
                     <h3>{data.title}</h3>
                     <p>{data.publisher}</p>
                     <a href={data.uri} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>

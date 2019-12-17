@@ -163,11 +163,11 @@ describe ('LessonBoxMenuItem', () => {
         ).toMatch('https://www.youtube.com/playlist?list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da');
     })
 
-    it('has type label heading', () => {
-        render(<LessonBoxMenuItem data={lesson.resources[1]} typeLabelText="lesson" />);
+    it('has type label heading from reference type name', () => {
+        render(<LessonBoxMenuItem data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.inner label.label').textContent
-        ).toMatch('lesson');
+        ).toMatch('Video');
     })
 })

@@ -51,7 +51,7 @@ class Index extends React.Component {
                     <div className="inner">
                         <LessonObjectivesWidget data={this.state.Lesson} />
 
-                        <LessonBoxMenuWidget data={this.state.Lesson } />
+                        <LessonBoxMenuWidget data={this.state.Lesson } typeButtonText="View" />
                     </div>
                 </div>
                 

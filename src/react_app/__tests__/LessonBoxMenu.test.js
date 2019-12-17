@@ -383,11 +383,11 @@ describe('LessonBoxMenu', () => {
     })
 
     it('renders buttons with typeLabelText', () => {
-        render(<LessonBoxMenuWidget data={lessons[0]} typeLabelText="lesson" />);
+        render(<LessonBoxMenuWidget data={lessons[0]} />);
 
         expect(
             container.querySelector('.box .inner label.label').textContent
-        ).toMatch('lesson');
+        ).toMatch('Book');
     })
 
     
