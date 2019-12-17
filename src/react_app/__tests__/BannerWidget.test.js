@@ -26,7 +26,7 @@ describe ('BannerWidget', () => {
     })
     
     it('is a data-video images/banner section', () => {
-        render(<BannerWidget data={schemesofwork} />);
+        render(<BannerWidget heading={schemesofwork.name} description={schemesofwork.description} />);
 
         expect(
             container.querySelector('section#banner').getAttribute('data-video')
@@ -34,7 +34,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a heading', () => {
-        render(<BannerWidget data={schemesofwork} />);
+        render(<BannerWidget heading={schemesofwork.name} description={schemesofwork.description} />);
 
         expect(
             container.querySelector('section#banner .inner header h1').textContent
@@ -42,7 +42,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a summary', () => {
-        render(<BannerWidget data={schemesofwork} />);
+        render(<BannerWidget heading={schemesofwork.name} description={schemesofwork.description} />);
 
         expect(
             container.querySelector('section#banner .inner header p').textContent
@@ -50,7 +50,7 @@ describe ('BannerWidget', () => {
     })
 
     it('has a jump to #main link', () => {
-        render(<BannerWidget data={schemesofwork} />);
+        render(<BannerWidget heading={schemesofwork.name} description={schemesofwork.description} />);
         
         const elem = container.querySelector('section#banner .inner a.more');
 

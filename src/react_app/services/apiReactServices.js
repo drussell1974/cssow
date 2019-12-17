@@ -40,6 +40,27 @@ const getLessons = (reactComponent) => {
     )
 }
 
+const getLesson = (reactComponent) => {
+    fetch("http://127.0.0.1:8000/api/schemeofwork/127/lessons/131?format=json")
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Lesson: data.lesson, 
+                hasError: false,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Lesson: {},
+                hasError: true,
+            });
+        }
+    )
+}
+
 const getSocialMediaLinks = () => {
     return [
         {
@@ -65,4 +86,4 @@ const getSocialMediaLinks = () => {
     ];
 }
 
-export { getSchemeOfWork, getLessons, getSocialMediaLinks };
+export { getSchemeOfWork, getLessons, getLesson, getSocialMediaLinks };

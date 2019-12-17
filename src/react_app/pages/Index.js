@@ -43,8 +43,8 @@ class Index extends React.Component {
     render() {
         return (
             <React.Fragment>
-                
-                <BannerWidget data={this.state.SchemeOfWork} />
+                 
+                <BannerWidget heading={this.state.SchemeOfWork.name} description={this.state.SchemeOfWork.description} />
                     <div id="main">
                         <div className="inner">
                             <SOWBoxMenuWidget data={this.state.Lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />

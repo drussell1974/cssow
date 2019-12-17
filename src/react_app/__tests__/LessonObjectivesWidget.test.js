@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from '../helpers/domManipulators';
 import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
 
-let lesson = {
-    lesson:
+let lesson = 
     {
         id: 1,
         title: "Curabitur id purus feugiat, porttitor.",
@@ -41,8 +40,7 @@ let lesson = {
                 solo_taxonomy_level: "C",
             }
         ],
-    }
-};
+    };
 
 describe('LessonObjectivesWidget', () => {
     let render, container;

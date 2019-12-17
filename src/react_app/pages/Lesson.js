@@ -1,8 +1,9 @@
 import React from 'react';
+import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLessons, getSocialMediaLinks } from '../services/apiReactServices';
+import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -10,7 +11,7 @@ class Index extends React.Component {
         super(props);
         this.state = {
             SchemeOfWork: {},
-            Lessons: [],
+            Lesson: {},
             hasError: false,
         }
     
@@ -23,7 +24,7 @@ class Index extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLessons(this);   
+        getLesson(this);   
     }
     
     static getDerivedStateFromError(error) {
@@ -44,11 +45,11 @@ class Index extends React.Component {
         return (
             <React.Fragment>
                 
-                <BannerWidget data={this.state.SchemeOfWork} />
+                <BannerWidget heading={this.state.Lesson.title} description={this.state.Lesson.summary} />
 
                 <div id="main">
                     <div className="inner">
-                        <LessonBoxMenuWidget data={this.state.Lessons} typeLabelText="Resource" typeButtonText="Watch" />
+                        <LessonObjectivesWidget data={this.state.Lesson} />
                     </div>
                 </div>
                 
