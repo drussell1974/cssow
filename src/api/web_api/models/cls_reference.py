@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel, try_int
-from db_helper import sql_safe
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import sql_safe, execSql
 
 class ReferenceModel (BaseModel):
 
@@ -74,7 +74,7 @@ class ReferenceModel (BaseModel):
 DAL
 """
 from datetime import datetime
-from db_helper import to_db_null, to_empty
+from .core.db_helper import to_db_null, to_empty
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -131,7 +131,8 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
 
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), learning_episode_id=int(learning_episode_id))
 
-    rows = db.executesql(str_select)
+    rows = []
+    execSql(db, str_select, rows)
 
     data = [];
 
@@ -141,7 +142,7 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
         model.task_icon = row[11] if row[11] is not None else ''
-        data.append(model)
+        data.append(model.__dict__)
 
     return data
 

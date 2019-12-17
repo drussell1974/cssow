@@ -3,6 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe
 from .cls_learningobjective import get_all as get_all_objectives
+from .cls_reference import get_learning_episode_options
 
 class LearningEpisodeListModel(models.Model):
     lessons = []
@@ -302,7 +303,7 @@ def get_model(db, id_, auth_user):
             created_by_name=row[15])
 
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
-
+        model.resources = get_learning_episode_options(db, model.scheme_of_work_id, model.id, auth_user)
 
     return model.__dict__
 

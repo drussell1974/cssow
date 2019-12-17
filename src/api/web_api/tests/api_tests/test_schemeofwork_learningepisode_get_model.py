@@ -55,4 +55,10 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
     def test__should_have_lesson_objectives(self):
         # assert
         self.assertEquals(9, len(self.payload["lesson"]["learning_objectives"]))
+
+
+    @tag("learningepisode should have resources")
+    def test__should_have_resources(self):
+        # assert
+        self.assertEquals(14, len(self.payload["lesson"]["resources"]))
         

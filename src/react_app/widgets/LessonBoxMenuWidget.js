@@ -6,14 +6,14 @@ export const LessonBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
     } else {
         return (
             <div className="box">
-                <a href={data.url} className="image fit">
+                <a href={data.uri} className="image fit">
                     <img src={data.image_url} alt="" />
                 </a>
                 <div className="inner">
                     <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.title}</h3>
-                    <p>{data.summary}</p>
-                    <a href={data.url} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
+                    <p>{data.publisher}</p>
+                    <a href={data.uri} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
                 </div>
             </div>
         )
@@ -21,12 +21,15 @@ export const LessonBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
 }
 
 export const LessonBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
-    if(data === undefined) {
+    if(data === undefined || data.resources === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
+        
+        let resources = data.resources; // TODO: get resources from lesson
+        
         return (
             <div className="thumbnails lessons">
-                {data.map(item => (
+                {resources.map(item => (
                     <LessonBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
                 ))}
             </div>
