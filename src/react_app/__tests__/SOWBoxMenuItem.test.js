@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import { SOWBoxMenuItem } from '../widgets/SOWBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
@@ -21,7 +22,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('renders empty model', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem />
+            </MemoryRouter>
             );
 
         expect(container.textContent).toMatch('');
@@ -29,7 +32,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has a link from image', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem data={lesson} />
+            </MemoryRouter>
             );
 
         expect(
@@ -39,7 +44,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has a image', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem  data={lesson} />
+            </MemoryRouter>
             );
 
         expect(
@@ -49,7 +56,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has a title', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem  data={lesson} />
+            </MemoryRouter>
             );
 
         expect(
@@ -59,7 +68,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has a summary', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem  data={lesson} />
+            </MemoryRouter>
             );
 
         expect(
@@ -69,7 +80,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has a view button', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem data={lesson} typeButtonText='View'/>
+            </MemoryRouter>
             );
 
         expect(
@@ -83,7 +96,9 @@ describe ('SOWBoxMenuItem', () => {
 
     it('has type label heading', () => {
         render(
+            <MemoryRouter>
             <SOWBoxMenuItem data={lesson} typeLabelText="lesson" />
+            </MemoryRouter>
             );
 
         expect(

@@ -23,7 +23,7 @@ class Index extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLessons(this);   
+        getLessons(this);
     }
     
     static getDerivedStateFromError(error) {

@@ -2,9 +2,9 @@ import React from 'react';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import apiReactServices from '../services/apiReactServices';
+import { getSchemeOfWork, getLessons, getSocialMediaLinks } from '../services/apiReactServices';
 
-class Lesson extends React.Component {
+class Index extends React.Component {
     
     constructor(props){
         super(props);
@@ -19,11 +19,11 @@ class Lesson extends React.Component {
 
     componentDidMount() {
 
-        this.socialmediadata = apiReactServices.getSocialMediaLinks();
+        this.socialmediadata = getSocialMediaLinks();
         
-        apiReactServices.getSchemeOfWork(this);
+        getSchemeOfWork(this);
 
-        apiReactServices.getLessons(this);   
+        getLessons(this);   
     }
     
     static getDerivedStateFromError(error) {
@@ -45,13 +45,13 @@ class Lesson extends React.Component {
             <React.Fragment>
                 
                 <BannerWidget data={this.state.SchemeOfWork} />
-                
+
                 <div id="main">
                     <div className="inner">
-                        <LessonBoxMenuWidget data={this.state.Lessons} />
+                        <LessonBoxMenuWidget data={this.state.Lessons} typeLabelText="Resource" typeButtonText="Watch" />
                     </div>
                 </div>
-
+                
                 <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
 
             </React.Fragment>
@@ -59,4 +59,4 @@ class Lesson extends React.Component {
     }
 };
 
-export default Lesson;
+export default Index;
