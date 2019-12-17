@@ -240,7 +240,7 @@ def get_all(db, scheme_of_work_id, auth_user):
         ' get the key words from the learning objectives '
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
-        #model.learning_objectives = get_all_objectives(db, model.id, auth_user)
+        model.learning_objectives = get_all_objectives(db, model.id, auth_user)
 
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
@@ -300,6 +300,9 @@ def get_model(db, id_, auth_user):
             created=row[13],
             created_by_id=row[14],
             created_by_name=row[15])
+
+        model.learning_objectives = get_all_objectives(db, model.id, auth_user)
+
 
     return model.__dict__
 

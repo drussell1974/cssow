@@ -50,3 +50,9 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
     def test__should_have_summary(self):
         # assert
         self.assertEqual('CPU components: ALU, Control Unit, Registers and Buses', self.payload["lesson"]["summary"])
+
+    @tag("learningepisode should have lesson objectives")
+    def test__should_have_lesson_objectives(self):
+        # assert
+        self.assertEquals(9, len(self.payload["lesson"]["learning_objectives"]))
+        

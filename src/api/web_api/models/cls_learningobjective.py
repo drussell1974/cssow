@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, from_db_bool
+from .core.db_helper import sql_safe, from_db_bool, execSql
 
 class LearningObjectiveModel (BaseModel):
 
@@ -201,7 +201,8 @@ def get_all(db, learning_episode_id, auth_user):
                  " WHERE le.id = {learning_episode_id} AND (le.published = 1 or le.created_by = {auth_user});"
     select_sql = select_sql.format(learning_episode_id=int(learning_episode_id), auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     data = [];
 
@@ -231,7 +232,7 @@ def get_all(db, learning_episode_id, auth_user):
             created = row[21],
             created_by_id = row[22],
             created_by_name = row[23])
-        data.append(model)
+        data.append(model.__dict__)
 
     return data
 
