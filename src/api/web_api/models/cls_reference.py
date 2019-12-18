@@ -172,6 +172,25 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
 
     return model
 
+def get_number_of_resources(db, learning_episode_id, auth_user):
+    """
+    get the number of learning objective for the lessons
+    :param db: database context
+    :param learning_epsiode_id:
+    :param auth_user:
+    :return:
+    """
+    select_sql = "SELECT " \
+                 " learning_episode_id " \
+                 "FROM sow_learning_episode__has__references "\
+                 "WHERE learning_episode_id = {learning_episode_id};"
+
+    select_sql = select_sql.format(learning_episode_id=learning_episode_id, auth_user=to_db_null(auth_user))
+
+    rows = []
+    execSql(db, select_sql, rows)
+
+    return len(rows)
 
 def save(db, model):
     """

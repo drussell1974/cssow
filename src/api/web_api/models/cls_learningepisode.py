@@ -3,7 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe
 from .cls_learningobjective import get_all as get_all_objectives
-from .cls_reference import get_learning_episode_options
+from .cls_reference import get_learning_episode_options, get_number_of_resources
 
 class LearningEpisodeListModel(models.Model):
     lessons = []
@@ -242,7 +242,7 @@ def get_all(db, scheme_of_work_id, auth_user):
         model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
-
+        model.number_of_resource = get_number_of_resources(db, model.id, auth_user)
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
@@ -346,7 +346,6 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     :param auth_user:
     :return:
     """
-    count = 0
 
     select_sql = "SELECT "\
                  " id"\
