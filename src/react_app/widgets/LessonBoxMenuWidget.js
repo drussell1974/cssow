@@ -6,14 +6,14 @@ export const LessonBoxMenuItem = ({data, typeButtonText}) => {
     } else {
         return (
             <div className="box">
-                <a href={data.uri} className="image fit">
+                <a href={data.page_uri} className="image fit">
                     <img src={data.image_url} alt="" />
                 </a>
                 <div className="inner">
                     <label className="label"><u>{data.reference_type_name}</u></label>
-                    <h3>{data.title}</h3>
-                    <p>{data.publisher}</p>
-                    <a href={data.uri} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
+                    <h3>{data.page_note}</h3>
+                    <p>{data.title}</p>
+                    <a href={data.page_uri} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</a>
                 </div>
             </div>
         )

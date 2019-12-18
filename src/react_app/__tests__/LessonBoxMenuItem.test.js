@@ -77,8 +77,8 @@ let lesson = {
         created_by_name: "",
         published: 1,
         page_id: null,
-        page_note: "",
-        page_uri: "",
+        page_note: "OCR A'Level Multicore and parallel systems",
+        page_uri: "https://www.youtube.com/watch?v=CntADU-4_Gw&list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da&index=9&t=0s",
         task_icon: "",
         image_url: "images/pic07.jpg",
     },
@@ -98,8 +98,8 @@ let lesson = {
         created_by_name: "",
         published: 1,
         page_id: null,
-        page_note: "",
-        page_uri: "",
+        page_note: "From REST To GraphQL",
+        page_uri: "https://www.youtube.com/watch?v=ntBU5UXGbM8",
         task_icon: "",
         image_url: "images/pic30.jpg",
     },
@@ -124,7 +124,7 @@ describe ('LessonBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.box a').getAttribute('href')
-        ).toMatch('https://www.youtube.com/playlist?list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da');
+        ).toMatch('https://www.youtube.com/watch?v=CntADU-4_Gw&list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da&index=9&t=0s');
     })
 
     it('has a image', () => {
@@ -140,15 +140,15 @@ describe ('LessonBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner h3').textContent
-        ).toMatch('A level: OCR Specification Order');
+        ).toMatch('OCR A\'Level Multicore and parallel systems');
     })
 
-    it('has a publisher', () => {
+    it('has a master heading', () => {
         render(<LessonBoxMenuItem  data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.inner p').textContent
-        ).toMatch('YouTube');
+        ).toMatch('A level: OCR Specification Order');
     })
 
     it('has a view button', () => {
@@ -160,7 +160,7 @@ describe ('LessonBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('https://www.youtube.com/playlist?list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da');
+        ).toMatch('https://www.youtube.com/watch?v=CntADU-4_Gw&list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da&index=9&t=0s');
     })
 
     it('has type label heading from reference type name', () => {
