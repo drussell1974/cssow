@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 export const LessonBoxMenuItem = ({data, typeButtonText}) => {
     if(data === undefined) {
@@ -28,11 +28,14 @@ export const LessonBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
         let resources = data.resources; // TODO: get resources from lesson
         
         return (
-            <div className="thumbnails lessons">
-                {resources.map(item => (
-                    <LessonBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
-                ))}
-            </div>
+            <Fragment>
+                <h2>Objectives</h2>
+                <div className="thumbnails lessons">
+                    {resources.map(item => (
+                        <LessonBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
+                    ))}
+                </div>
+            </Fragment>
         )
     }
 }

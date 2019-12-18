@@ -9,7 +9,7 @@ ReactDOM.render(
     <Router>
         <Switch>
             <Route exact path="/" component={Index} />
-            <Route path="/Lesson" component={Lesson} />
+            <Route exact path="/Lesson/:learning_episode_id" component={Lesson} />
         </Switch>
     </Router>
 , document.getElementById('app'));

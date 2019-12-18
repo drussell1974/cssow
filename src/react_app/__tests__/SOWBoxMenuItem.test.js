@@ -23,7 +23,7 @@ describe ('SOWBoxMenuItem', () => {
     it('renders empty model', () => {
         render(
             <MemoryRouter>
-            <SOWBoxMenuItem />
+                <SOWBoxMenuItem />
             </MemoryRouter>
             );
 
@@ -33,7 +33,7 @@ describe ('SOWBoxMenuItem', () => {
     it('has a link from image', () => {
         render(
             <MemoryRouter>
-            <SOWBoxMenuItem data={lesson} />
+                <SOWBoxMenuItem data={lesson} />
             </MemoryRouter>
             );
 

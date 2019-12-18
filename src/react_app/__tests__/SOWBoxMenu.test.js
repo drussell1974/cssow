@@ -72,6 +72,18 @@ describe('SOWBoxMenu', () => {
         ).toMatch('');
     })
 
+    it('has a heading', () => {
+        render(
+            <MemoryRouter>
+                <SOWBoxMenuWidget data={lessons} />
+            </MemoryRouter>
+        )
+
+        expect(
+            container.querySelector('h2').textContent
+        ).toMatch('Lessons');
+    })
+
     it('has a single box', () => {
         render(
             <MemoryRouter>

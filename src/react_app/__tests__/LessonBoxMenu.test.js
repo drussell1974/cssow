@@ -365,6 +365,14 @@ describe('LessonBoxMenu', () => {
         ).toBeNull();
     })
 
+    it('has a heading', () => {
+        render(<LessonBoxMenuWidget data={lessons[0]} />);
+
+        expect(
+            container.querySelector('h2').textContent
+        ).toMatch('Objectives');
+    })
+
     it('has a single box', () => {
         render(<LessonBoxMenuWidget data={lessons[1]} />);
 
