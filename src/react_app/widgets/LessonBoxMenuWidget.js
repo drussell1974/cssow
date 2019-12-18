@@ -29,7 +29,7 @@ export const LessonBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
         
         return (
             <Fragment>
-                <h2>Objectives</h2>
+                <h2>Resources</h2>
                 <div className="thumbnails lessons">
                     {resources.filter(item => item.page_uri !== "").map(item => (
                         <LessonBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />

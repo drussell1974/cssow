@@ -371,7 +371,7 @@ describe('LessonBoxMenu', () => {
 
         expect(
             container.querySelector('h2').textContent
-        ).toMatch('Objectives');
+        ).toMatch('Resources');
     })
 
     it('has a single box', () => {
