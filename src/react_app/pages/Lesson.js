@@ -16,6 +16,8 @@ class Index extends React.Component {
         }
     
         this.socialmediadata = [];
+
+        this.learning_episode_id = props.match.params.learning_episode_id;
     }
 
     componentDidMount() {
@@ -24,7 +26,7 @@ class Index extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLesson(this);   
+        getLesson(this, this.learning_episode_id);   
     }
     
     static getDerivedStateFromError(error) {

@@ -40,8 +40,8 @@ const getLessons = (reactComponent) => {
     )
 }
 
-const getLesson = (reactComponent) => {
-    fetch("http://127.0.0.1:8000/api/schemeofwork/127/lessons/131?format=json")
+const getLesson = (reactComponent, learning_episode_id) => {
+    fetch(`http://127.0.0.1:8000/api/schemeofwork/127/lessons/${learning_episode_id}?format=json`)
         .then(res => { 
             return res.json();
         })
