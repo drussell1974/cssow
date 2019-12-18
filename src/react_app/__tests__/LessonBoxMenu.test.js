@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { LessonBoxMenuWidget, LessonBoxMenuItem } from '../widgets/LessonBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
+import expectExport from 'expect';
 
 let lessons = [{
         id: 1,
@@ -56,8 +57,8 @@ let lessons = [{
             created_by_name: "",
             published: 1,
             page_id: null,
-            page_note: "",
-            page_uri: "",
+            page_note: "OCR A'Level CISC vs RISC",
+            page_uri: "https://www.youtube.com/watch?v=BJpMmq9gQE8&list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da&index=6",
             task_icon: "",
             image_url: "images/pic04.jpg",
         },
@@ -77,8 +78,8 @@ let lessons = [{
             created_by_name: "",
             published: 1,
             page_id: null,
-            page_note: "",
-            page_uri: "",
+            page_note: "OCR A'Level von Neumann and Harvard",
+            page_uri: "https://www.youtube.com/watch?v=4WFzOyUNkaM&list=PLCiOXwirraUBj7HtVHfNZsnwjyZQj97da&index=6&t=0s",
             task_icon: "",
             image_url: "images/pic07.jpg",
         },
@@ -98,8 +99,8 @@ let lessons = [{
             created_by_name: "",
             published: 1,
             page_id: null,
-            page_note: "",
-            page_uri: "",
+            page_note: "Open Source Quantum Computing: Write Your Own Quantum Programs",
+            page_uri: "https://www.youtube.com/watch?v=UgqLi1itWmk",
             task_icon: "",
             image_url: "images/pic30.jpg",
         },
@@ -139,8 +140,8 @@ let lessons = [{
                 created_by_name: "",
                 published: 1,
                 page_id: null,
-                page_note: "",
-                page_uri: "",
+                page_note: "Logic Gate Combinations",
+                page_uri: "https://www.youtube.com/watch?v=BnB2m1nXZ84",
                 task_icon: "",
                 image_url: "images/pic27.jpg",
             },
@@ -287,7 +288,7 @@ let lessons = [{
                 published: 1,
                 page_id: null,
                 page_note: "",
-                page_uri: "",
+                page_uri: "https://www.bbc.com/bitesize/subjects/zxmh34j?page=1",
                 task_icon: "",
                 image_url: "images/pic23.jpg",
             },
@@ -388,6 +389,14 @@ describe('LessonBoxMenu', () => {
         expect(
             container.querySelectorAll('.box')
         ).toHaveLength(3);
+    })
+
+    it('only shows resources with page_url', () => {
+        render(<LessonBoxMenuWidget data={lessons[5]} />);
+
+        expect(
+            container.querySelectorAll('.box')
+        ).toHaveLength(1);
     })
 
     it('renders buttons with typeLabelText', () => {
