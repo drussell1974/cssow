@@ -1,9 +1,0 @@
-{{ if len(learning_objectives) == 0: }}
-    {{=T("There are no suggested learning objectives")}}
-{{ else: }}
-    {{ for item in learning_objectives: }}
-        <a href='{{=URL("learningobjective","add_existing_objective", vars=dict(learning_objective_id=item.id, learning_episode_id=learning_episode_id, scheme_of_work_id=scheme_of_work_id))}}'>
-            <h4><i class="fa fa-plus small"></i> {{=item.description}}</h4>
-        </a>
-    {{ pass }}
-{{ pass }}
