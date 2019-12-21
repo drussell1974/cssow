@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
    mode: "development",
-   entry: './src/react_app/App.js',
+   entry: './src/student_web/app/App.js',
    output: {
       path: path.join(__dirname, '/build/'),
       filename: 'bundle.js'
@@ -55,10 +55,10 @@ module.exports = {
    },
    plugins:[
       new HtmlWebpackPlugin({
-         template: './src/react_app/index.html'
+         template: './src/student_web/app/index.html'
       }),
       new CopyPlugin([
-         { from: 'src/assets', to: 'assets' },
+         { from: 'src/student_web/assets', to: 'assets' },
        ]),
    ]
 }
