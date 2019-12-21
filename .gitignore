@@ -118,5 +118,5 @@ venv.bak/
 appconfig.production.ini
 
 # yarn
-/node_modules
+node_modules
 yarn.lock
