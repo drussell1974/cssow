@@ -11,8 +11,9 @@
   "scripts": {
     "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "build-dev": "webpack && webpack-dev-server --mode development",
-    "build": "webpack && webpack-dev-server --mode production"
+    "build-react": "webpack && webpack-dev-server --mode development",
+    "build-api": "python ./src/api/web_api/manage.py runserver",
+    "build-all": "webpack && webpack-dev-server --mode production"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",
