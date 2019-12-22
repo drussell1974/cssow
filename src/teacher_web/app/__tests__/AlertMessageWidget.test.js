@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { createContainer } from '../helpers/domManipulators';
-import { AlertMessageWidget } from '../widgets/AlertMessageWidget';
+import AlertMessageWidget from '../widgets/AlertMessageWidget';
 
 describe('AlertMessageWidget', () => {
     
     let render, container;
 
-    beforeEach(() => {
-       ( { render, container } = createContainer())
-    })
+    beforeEach(() => (
+         { render, container } = createContainer())
+    )
 
     it('renders empty container', () => {
         render(<AlertMessageWidget />);

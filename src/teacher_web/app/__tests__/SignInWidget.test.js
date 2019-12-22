@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { SignInWidget } from '../widgets/SignInWidget';
+import SignInWidget from '../widgets/SignInWidget';
 
 describe('SignInWidget', () => {
     
-    let container, render;
+    let render, container;
 
     beforeEach(() => {
      (
-        { container, render } = createContainer(container)
+        { render, container } = createContainer()
      )
     })
 
