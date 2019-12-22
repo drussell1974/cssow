@@ -23,7 +23,7 @@ export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
                         </h3>
                     </a>
                     <p className="post-meta">
-                       Created by <a href="#">{row.created_by_name}</a> on {row.get_ui_created()} - <i className="editable" style={editable}><a href={del_link} className="delete">Delete</a> - <a href={edit_link} className="edit">Edit</a></i>
+                       Created by <a href="#">{row.created_by_name}</a> on {row.created} - <i className="editable" style={editable}><a href={del_link} className="delete">Delete</a> - <a href={edit_link} className="edit">Edit</a></i>
                     </p>
                 </div>
                 <hr />

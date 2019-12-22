@@ -1,18 +1,29 @@
 import React, { Fragment } from 'react';
 import BannerWidget from '../widgets/BannerWidget';
 import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
+import  getSchemesOfWork  from '../services/ApiReactService';
 
 class Index extends React.Component {
-    
+    constructor(props){
+        super(props);
+        this.state = {
+            SchemesOfWork: [],
+            hasError: false,
+        }
+    }
+
+    componentDidMount() {
+        getSchemesOfWork(this);
+    }
+
     render() {
-        let latest_schemes_of_work = [];
 
         return (        
             <Fragment>
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8 col-md-8 mx-auto">
-                            <LatestSchemesOfWorkJumbotronWidget data={latest_schemes_of_work} />
+                            <LatestSchemesOfWorkJumbotronWidget data={this.state.SchemesOfWork} />
                         </div>
                     </div>
                 </div>

@@ -7,9 +7,7 @@ const FakeApiService = {
             key_stage_name: 'Key Stage 4',
             created_by_name: 'Dave Russell',
             is_recent: true,
-            get_ui_created: function(){
-                return "22nd December 2019";
-            },
+            created: '21st December 2019',
         };
     },
 
@@ -20,9 +18,7 @@ const FakeApiService = {
             key_stage_name: 'Key Stage 3',
             created_by_name: 'Dave Russell',
             is_recent: false,
-            get_ui_created: function(){
-                return "22nd December 2019";
-            },
+            created: '22nd December 2019',
         },
         {
             id: 1,
@@ -30,9 +26,7 @@ const FakeApiService = {
             key_stage_name: 'Key Stage 4',
             created_by_name: 'Dave Russell',
             is_recent: true,
-            get_ui_created: function(){
-                return "22nd November 2019";
-            },
+            created: '22nd November 2019',
         },
         {
             id: 3,
@@ -40,9 +34,7 @@ const FakeApiService = {
             key_stage_name: 'Key Stage 5',
             created_by_name: 'Dave Russell',
             is_recent: false,
-            get_ui_created: function(){
-                return "1st July 2019";
-            },
+            created: '1st July 2019',
         }];
     }
 }

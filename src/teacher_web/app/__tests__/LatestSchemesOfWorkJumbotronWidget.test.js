@@ -74,7 +74,7 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
 
         expect(
             container.querySelector('.post-preview p.post-meta').textContent
-        ).toMatch('Created by Dave Russell on 22nd December 2019');
+        ).toMatch('Created by Dave Russell on 21st December 2019');
     })
 
     it('hides editable links if not authenticated', () => {
@@ -90,7 +90,7 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
 
         expect(
             container.querySelector('.post-preview p.post-meta').textContent
-        ).toMatch('Created by Dave Russell on 22nd December 2019 - Delete - Edit');
+        ).toMatch('Created by Dave Russell on 21st December 2019 - Delete - Edit');
 
         expect(
             container.querySelector('.post-preview p.post-meta i.editable').getAttribute('style')
