@@ -44,7 +44,7 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
 
         expect(
             container.querySelector('.post-preview a h3.post-subtitle').textContent
-        ).toMatch('Key Stage 3');
+        ).toMatch('Key Stage 4');
     })
 
     it('has new label', () => {
@@ -108,10 +108,14 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
 
 describe('LatestSchemesOfWorkJumbotronWidget', () => {
     let render, container;
+    let schemesofwork;
 
-    beforeEach(() => (
-        {render, container} = createContainer()
-    ))
+    beforeEach(() => {
+        (
+            {render, container} = createContainer()
+        ),
+        schemesofwork = FakeApiService.getSchemesOfWork();
+    })
 
     it('renders empty container', () => {
         render(<LatestSchemesOfWorkJumbotronWidget />);
@@ -119,5 +123,35 @@ describe('LatestSchemesOfWorkJumbotronWidget', () => {
         expect(
             container.textContent
         ).toMatch('');
+    })
+
+    it('has heading', () => {
+        render(<LatestSchemesOfWorkJumbotronWidget data={[]} />);
+
+        expect(
+            container.querySelector('section.jumbotron span.subheading').textContent
+        ).toMatch('Latest Schemes of Work');
+    })
+
+    it('has show all button', () => {
+        render(<LatestSchemesOfWorkJumbotronWidget data={[]} />);
+        
+        let button = container.querySelector('section.jumbotron #btn-all-schemes-of-work');
+
+        expect(
+            button.textContent
+        ).toMatch('Show all →');
+
+        expect(
+            button.getAttribute('href')
+        ).toMatch('/schemesofwork');
+    })
+
+    it('show a list of schemes of work', () => {
+        render(<LatestSchemesOfWorkJumbotronWidget data={schemesofwork} />);
+
+        expect(
+            container.querySelectorAll('section.jumbotron .post-preview')
+        ).toHaveLength(3);
     })
 })
