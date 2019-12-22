@@ -9,9 +9,9 @@ class Index extends React.Component {
 
         return (        
             <Fragment>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8 mx-auto">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8 col-md-8 mx-auto">
                             <LatestSchemesOfWorkJumbotronWidget data={latest_schemes_of_work} />
                         </div>
                     </div>

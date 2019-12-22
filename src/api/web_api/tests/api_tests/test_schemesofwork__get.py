@@ -13,7 +13,7 @@ class test_schemeofwork__get(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://localhost:8000/api/schemeofwork/{}".format(self.test_scheme_of_work_id))
+        self.test_context.get("http://localhost:8000/api/schemeofwork")
         self.test_context.implicitly_wait(4)
 
         #arrange
@@ -33,20 +33,11 @@ class test_schemeofwork__get(UITestCase):
 
 
     """def test__should_resolve_url(self):
-        found = reverse("schemeofwork")
-        self.assertEqual(found,"/api/schemeofwork/11")"""
+        found = reverse("schemesofwork")
+        self.assertEqual(found,"/api/schemeofwork")"""
 
     @tag("schemeofwork should return a payload")
     def test__should_return_a_payload(self):
         # assert
         self.assertIsNotNone(self.payload)
-        self.assertIsNotNone(self.payload["schemeofwork"])
-
-    @tag("schemeofwork should have name")
-    def test__should_have_name(self):
-        self.assertEqual('A-Level Computer Science', self.payload["schemeofwork"]["name"])
-
-
-    @tag("schemeofwork should have description")
-    def test__should_have_desription(self):
-        self.assertEqual('Computing curriculum for A-Level', self.payload["schemeofwork"]["description"].rstrip())
+        self.assertIsNotNone(self.payload["schemesofwork"])

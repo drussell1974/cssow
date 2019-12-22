@@ -6,9 +6,9 @@ const BannerWidget = ({main_heading, sub_heading}) => {
         return (<Fragment></Fragment>);
     } else {
         return(
-            <div class="site-heading">
+            <div className="site-heading">
                 <h1>{main_heading}</h1>
-                <span class="subheading">{sub_heading}</span>
+                <span className="subheading">{sub_heading}</span>
             </div>
         );
     }

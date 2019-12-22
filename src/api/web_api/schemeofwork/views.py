@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 #from django.forms.models import model_to_dict
 from django.http import JsonResponse
 #from django.views.decorators.csrf import csrf_exempt
-from models.cls_schemeofwork import get_model
+from models.cls_schemeofwork import get_model, get_all
 #from .serializers import SchemeOfWorkListViewSet
 
 
@@ -16,13 +16,12 @@ class SchemeOfWorkViewSet(APIView):
         schemeofwork = get_model(None, scheme_of_work_id, None).__dict__
         return JsonResponse({"schemeofwork":schemeofwork})
 
-"""    
+
 class SchemeOfWorkListViewSet(APIView):
     ''' API endpoint for list of lessons '''
     #queryset =  get_all(None, 11, None)
     #serializer_class = LessonListSerializer
 
     def get (self, request):
-        lessons = get_all(None, scheme_of_work_id, None)
-        return JsonResponse({"schemesofwork": lessons})
-"""
+        schemesofwork = get_all(None, 0, None)
+        return JsonResponse({"schemesofwork": schemesofwork})

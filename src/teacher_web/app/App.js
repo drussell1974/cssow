@@ -13,7 +13,7 @@ import NavbarWidget from './widgets/NavbarWidget';
 import BannerWidget from './widgets/BannerWidget';
 import FooterWidget from './widgets/FooterWidget';
 let mastHeadStyle = {
-    "background-image": "url('custom/img/computerscience-blackboard.jpg')",
+    backgroundImage: "url('custom/img/computerscience-blackboard.jpg')",
 };
 
 ReactDOM.render(
