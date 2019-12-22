@@ -1,6 +1,7 @@
 import React from 'react';
 import { createContainer } from '../helpers/domManipulators';
 import FakeApiService from '../helpers/FakeApiService';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import { LatestSchemesOfWorkJumbotronWidgetItem, LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
 
@@ -16,7 +17,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('renders empty container', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem />
+            </Router>);
 
         expect(
             container.textContent
@@ -24,7 +28,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('has link to schemeofwork', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />
+            </Router>);
 
         expect(
             container.querySelector('.post-preview a').getAttribute('href')
@@ -32,7 +39,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('has a title', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />
+            </Router>);
 
         expect(
             container.querySelector('.post-preview a h2.post-title').textContent
@@ -40,7 +50,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('has a subtitle for keystage', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />
+            </Router>);
 
         expect(
             container.querySelector('.post-preview a h3.post-subtitle').textContent
@@ -51,7 +64,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
         // explicitly change for testing
         schemeofwork.is_recent = true;
         
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />
+            </Router>);
 
         expect(
             container.querySelector('.post-preview a i').textContent
@@ -62,7 +78,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
         // explicitly change for testing
         schemeofwork.is_recent = false;
         
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} />
+            </Router>);
 
         expect(
             container.querySelector('.post-preview a i').textContent
@@ -70,7 +89,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('has created by', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={false} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={false}/>
+            </Router>);     
 
         expect(
             container.querySelector('.post-preview p.post-meta').textContent
@@ -78,7 +100,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('hides editable links if not authenticated', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={false} />);        
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={false}/>
+            </Router>);            
 
         expect(
             container.querySelector('.post-preview p.post-meta i.editable').getAttribute('style')
@@ -86,7 +111,10 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
     })
 
     it('show editable links if authenticated', () => {
-        render(<LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={true}/>);        
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidgetItem data={schemeofwork} auth={true}/>
+            </Router>);        
 
         expect(
             container.querySelector('.post-preview p.post-meta').textContent
@@ -148,7 +176,10 @@ describe('LatestSchemesOfWorkJumbotronWidget', () => {
     })
 
     it('show a list of schemes of work', () => {
-        render(<LatestSchemesOfWorkJumbotronWidget data={schemesofwork} />);
+        render(
+            <Router>
+                <LatestSchemesOfWorkJumbotronWidget data={schemesofwork} />
+            </Router>);
 
         expect(
             container.querySelectorAll('section.jumbotron .post-preview')

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
     
@@ -6,7 +7,7 @@ export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
         return (<Fragment></Fragment>)
     } else {
         let row = data;
-        let link = `/learningepisode/${row.id}`;
+        let to_link = `/learningepisode/${row.id}`;
         let edit_link = `/schemesofwork/edit/${row.id}`;
         let del_link = `/schemesofwork/delete_item/${row.id}`;
         let editable = auth == true ? {display:'inline'} : {display:'none'};
@@ -14,14 +15,14 @@ export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
         return (
             <Fragment>
                 <div className="post-preview post-preview-schemeofwork">
-                    <a id="lnk-schemeofwork-{row.id}" href={link}>
+                    <Link id="lnk-schemeofwork-{row.id}" to={to_link}>
                         <h2 className="post-title">
                             {row.name}
                         </h2>{row.is_recent == true ? <i className="small badge badge-success float-right">New</i> : <i></i>}
                         <h3 className="post-subtitle">
                             {row.key_stage_name}
                         </h3>
-                    </a>
+                    </Link>
                     <p className="post-meta">
                        Created by <a href="#">{row.created_by_name}</a> on {row.created} - <i className="editable" style={editable}><a href={del_link} className="delete">Delete</a> - <a href={edit_link} className="edit">Edit</a></i>
                     </p>
