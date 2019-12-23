@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import BannerWidget from '../widgets/BannerWidget';
 import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
-import  getSchemesOfWork  from '../services/ApiReactService';
+import ApiReactService from '../services/ApiReactService';
 
 class Index extends React.Component {
     constructor(props){
@@ -13,7 +13,7 @@ class Index extends React.Component {
     }
 
     componentDidMount() {
-        getSchemesOfWork(this);
+        ApiReactService.getSchemesOfWork(this);
     }
 
     render() {

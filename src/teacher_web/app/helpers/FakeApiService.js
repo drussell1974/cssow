@@ -36,6 +36,64 @@ const FakeApiService = {
             is_recent: false,
             created: '1st July 2019',
         }];
+    },
+    
+    getLessonEpisode() { 
+        return {
+            id: 1,
+            order_of_delivery_id: 1,
+            title: 'Components of the CPU',
+            summary: 'Program Counter, ALU, Cache',
+            year_name: 'Year 10',
+            topic_name: 'Hardware',
+            created: '2019-12-23T10:17:00',
+            created_by_name: 'Dave Russell',
+            number_of_learning_objectives: 2,
+        }
+    },
+
+    getLessonEpisodes() { 
+        return [{
+            id: 973,
+            order_of_delivery_id: 1,
+            title: 'CPU Architecture',
+            summary: 'Von Neumann architecture and the CPU',
+            year_name: 'Yr10',
+            topic_name: 'Hardware and architecture',
+            created: '2019-12-23T10:17:00',
+            created_by_name: 'Dave Russell',
+            number_of_learning_objectives: 12,
+        },{
+            id: 397,
+            order_of_delivery_id: 2,
+            title: 'Memory',
+            summary: 'Random Access Memory (RAM), virtual memory and cache',
+            year_name: 'Yr10',
+            topic_name: 'Hardware and architecture',
+            created: '2019-12-23T10:17:00',
+            created_by_name: 'Dave Russell',
+            number_of_learning_objectives: 2,
+        },{
+            id: 398,
+            order_of_delivery_id: 3,
+            title: 'Computer architecture',
+            summary: 'Types of computer including embedded systems',
+            year_name: 'Yr10',
+            topic_name: 'Hardware and architecture',
+            created: '2019-12-23T10:17:00',
+            created_by_name: 'Dave Russell',
+            number_of_learning_objectives: 6,
+        },{
+            id: 399,
+            order_of_delivery_id: 1,
+            title: 'Intro to Networks',
+            summary: 'Types of networks and transmission media',
+            year_name: 'Yr10',
+            topic_name: 'Communication and networks',
+            created: '2019-12-23T10:17:00',
+            created_by_name: 'Dave Russell',
+            number_of_learning_objectives: 5,
+        }]
     }
 }
 
