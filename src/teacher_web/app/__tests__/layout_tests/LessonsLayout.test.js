@@ -6,9 +6,13 @@ import FakeApiService from '../../helpers/FakeApiService';
 
 import { LessonsPageLayout } from '../../pages/Lessons';
 
-describe('LessonsLayout', () => {
+describe('LessonsPageLayout', () => {
     let render, container;
     let schemesofwork, lessons;
+
+    const getContentHeading = function() {
+        return container.querySelector("div.container > .col-lg-12, .col-md-14, .content-heading");
+    }
 
     const getLeftColumm = function() {
         return container.querySelector("div.container > div.col-lg-4, div.col-md-4");
@@ -26,6 +30,10 @@ describe('LessonsLayout', () => {
 
     it('renders empty content', () => {
         render(<LessonsPageLayout />);
+
+        expect(
+            getContentHeading().textContent
+        ).toEqual('');
 
         expect(
             getLeftColumm().textContent

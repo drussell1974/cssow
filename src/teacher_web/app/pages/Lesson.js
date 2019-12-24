@@ -1,7 +1,27 @@
 import React, { Fragment } from 'react';
 import BannerWidget from '../widgets/BannerWidget';
-import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
+import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import ApiReactService from '../services/ApiReactService';
+
+export const LessonPageLayout = ({lessons, lesson}) => {
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-12 col-md-14 content-heading">
+                    <ContentHeadingWidget />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-lg-4 col-md-4">
+                    
+                </div>
+                <div className="col-lg-8 col-md-10 mx-auto">
+                    
+                </div>
+            </div>
+        </div>
+    )
+}
 
 class Lesson extends React.Component {
     constructor(props){
@@ -22,8 +42,7 @@ class Lesson extends React.Component {
 
         return (        
             <Fragment>
-                <h1>Lesson</h1>
-                <p>{this.state.Lesson.title}</p>
+                <LessonPageLayout />
             </Fragment>
         )
     }
