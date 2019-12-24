@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { createContainer } from '../../helpers/domManipulators';
 import FakeApiService from '../../helpers/FakeApiService';
 
-import { LessonPageLayout } from '../../pages/Lesson';
+import Lesson, { LessonPageLayout } from '../../pages/Lesson';
 
 describe('LessonPageLayout', () => {
     let render, container;
@@ -25,7 +25,8 @@ describe('LessonPageLayout', () => {
     beforeEach(() => {
         (
             { render, container } = createContainer()
-        )
+        ),
+        lesson = FakeApiService.getLessonEpisode();
     })
 
     it('renders empty content', () => {
@@ -44,19 +45,14 @@ describe('LessonPageLayout', () => {
         ).toEqual('');
     })
 
-    it('has two columns', () => {
-        render(<LessonPageLayout lessons={[]} lesson={[]}/>);
+    it('has blackboard display buttons', () => {
+        render(
+            <Router>
+                <LessonPageLayout lesson={lesson} />
+            </Router>)
 
         expect(
-            getContentHeading()
-        ).not.toBeNull();
-
-        expect(
-            getLeftColumm()
-        ).not.toBeNull();
-
-        expect(
-            getMainContent()
+            getLeftColumm().querySelector('.blackboard')
         ).not.toBeNull();
     })
 })

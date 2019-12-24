@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
-import BannerWidget from '../widgets/BannerWidget';
-import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import ApiReactService from '../services/ApiReactService';
+
+import BannerWidget from '../widgets/BannerWidget';
+import BlackboardDisplayButton from '../widgets/BlackboardDisplayButton';
+import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 
 export const LessonPageLayout = ({lessons, lesson}) => {
     return (
@@ -13,7 +15,7 @@ export const LessonPageLayout = ({lessons, lesson}) => {
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-4">
-                    
+                    <BlackboardDisplayButton lesson={lesson} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     
