@@ -7,9 +7,9 @@ export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
         return (<Fragment></Fragment>)
     } else {
         let row = data;
-        let to_link = `/schemesofwork/${row.id}/lessons`;
-        let edit_link = `/schemesofwork/edit/${row.id}`;
-        let del_link = `/schemesofwork/delete_item/${row.id}`;
+        let to_link = `/schemeofwork/${row.id}/lessons`;
+        let edit_link = `/schemeofwork/edit/${row.id}`;
+        let del_link = `/schemeofwork/delete_item/${row.id}`;
         let editable = auth == true ? {display:'inline'} : {display:'none'};
         
         return (
@@ -45,7 +45,7 @@ export const LatestSchemesOfWorkJumbotronWidget = ({data}) => {
                     <LatestSchemesOfWorkJumbotronWidgetItem key={row.id} data={row} />
                 ))}
                 <div className="clearfix">
-                    <a className="btn btn-primary float-right" href="/schemesofwork" id="btn-all-schemes-of-work">Show all &rarr;</a>
+                    <a className="btn btn-primary float-right" href="/schemeofwork" id="btn-all-schemes-of-work">Show all &rarr;</a>
                 </div>
             </section>
         );

@@ -126,11 +126,11 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
         
         expect(
             container.querySelector('.post-preview p.post-meta i.editable a.edit').getAttribute('href')
-        ).toMatch('/schemesofwork/edit/1');
+        ).toMatch('/schemeofwork/edit/1');
         
         expect(
             container.querySelector('.post-preview p.post-meta i.editable a.delete').getAttribute('href')
-        ).toMatch('/schemesofwork/delete_item/1');
+        ).toMatch('/schemeofwork/delete_item/1');
     })
 })
 
@@ -172,7 +172,7 @@ describe('LatestSchemesOfWorkJumbotronWidget', () => {
 
         expect(
             button.getAttribute('href')
-        ).toMatch('/schemesofwork');
+        ).toMatch('/schemeofwork');
     })
 
     it('show a list of schemes of work', () => {

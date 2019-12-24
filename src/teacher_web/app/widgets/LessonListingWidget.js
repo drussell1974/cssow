@@ -15,7 +15,7 @@ export const LessonListingWidgetItem = ({row, current_topic_name, auth}) => {
           <Fragment>
             <TopicGroupHeadingWidget row={row} current_topic_name={current_topic_name} />
             <div className="post-preview">
-                <Link to={`/lesson/${row.id}/learningobjective`} name={`lesson${row.id}`}>
+                <Link to={`/schemeofwork/${row.scheme_of_work_id}/lessons/${row.id}`} name={`lesson${row.id}`}>
                   <h2 className="post-title">
                     {`Lesson ${row.order_of_delivery_id} - ${row.title}`}
                   </h2>

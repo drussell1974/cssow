@@ -13,7 +13,7 @@ const NavbarWidget = () => {
                     <a className="nav-link home" href="/">Home</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link schemeofwork" href="/schemesofwork">Schemes of Work</a>
+                    <a className="nav-link schemeofwork" href="/schemeofwork">Schemes of Work</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link keywords" href="/keyword">Key terms</a>
