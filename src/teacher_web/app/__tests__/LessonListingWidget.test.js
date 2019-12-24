@@ -47,7 +47,7 @@ describe('LessonListingWidgetItem', () => {
 
         expect(
             container.querySelector('.post-preview a').getAttribute('href')
-        ).toEqual('/lesson/1/learningobjective');
+        ).toEqual('/schemeofwork/99/lessons/1');
 
         expect(
             container.querySelector('.post-preview a').getAttribute('name')

@@ -3,6 +3,18 @@ import BannerWidget from '../widgets/BannerWidget';
 import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
 import ApiReactService from '../services/ApiReactService';
 
+export const IndexLayout = ({data}) => {
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-8 col-md-8 mx-auto">
+                    <LatestSchemesOfWorkJumbotronWidget data={data} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
 class Index extends React.Component {
     constructor(props){
         super(props);
@@ -20,13 +32,7 @@ class Index extends React.Component {
 
         return (        
             <Fragment>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-8 col-md-8 mx-auto">
-                            <LatestSchemesOfWorkJumbotronWidget data={this.state.SchemesOfWork} />
-                        </div>
-                    </div>
-                </div>
+                <IndexLayout data={this.state.SchemesOfWork} />
                 <hr/>
             </Fragment>
         )

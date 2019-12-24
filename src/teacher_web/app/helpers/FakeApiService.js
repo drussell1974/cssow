@@ -41,6 +41,7 @@ const FakeApiService = {
     getLessonEpisode() { 
         return {
             id: 1,
+            scheme_of_work_id: 99,
             order_of_delivery_id: 1,
             title: 'Components of the CPU',
             summary: 'Program Counter, ALU, Cache',
@@ -48,13 +49,14 @@ const FakeApiService = {
             topic_name: 'Hardware',
             created: '2019-12-23T10:17:00',
             created_by_name: 'Dave Russell',
-            number_of_learning_objectives: 2,
+            number_of_learning_objective: 2,
         }
     },
 
     getLessonEpisodes() { 
         return [{
             id: 973,
+            scheme_of_work_id: 99,
             order_of_delivery_id: 1,
             title: 'CPU Architecture',
             summary: 'Von Neumann architecture and the CPU',
@@ -62,9 +64,10 @@ const FakeApiService = {
             topic_name: 'Hardware and architecture',
             created: '2019-12-23T10:17:00',
             created_by_name: 'Dave Russell',
-            number_of_learning_objectives: 12,
+            number_of_learning_objective: 12,
         },{
             id: 397,
+            scheme_of_work_id: 99,
             order_of_delivery_id: 2,
             title: 'Memory',
             summary: 'Random Access Memory (RAM), virtual memory and cache',
@@ -72,9 +75,10 @@ const FakeApiService = {
             topic_name: 'Hardware and architecture',
             created: '2019-12-23T10:17:00',
             created_by_name: 'Dave Russell',
-            number_of_learning_objectives: 2,
+            number_of_learning_objective: 2,
         },{
             id: 398,
+            scheme_of_work_id: 99,
             order_of_delivery_id: 3,
             title: 'Computer architecture',
             summary: 'Types of computer including embedded systems',
@@ -82,9 +86,10 @@ const FakeApiService = {
             topic_name: 'Hardware and architecture',
             created: '2019-12-23T10:17:00',
             created_by_name: 'Dave Russell',
-            number_of_learning_objectives: 6,
+            number_of_learning_objective: 6,
         },{
             id: 399,
+            scheme_of_work_id: 99,
             order_of_delivery_id: 1,
             title: 'Intro to Networks',
             summary: 'Types of networks and transmission media',
@@ -92,7 +97,7 @@ const FakeApiService = {
             topic_name: 'Communication and networks',
             created: '2019-12-23T10:17:00',
             created_by_name: 'Dave Russell',
-            number_of_learning_objectives: 5,
+            number_of_learning_objective: 5,
         }]
     }
 }

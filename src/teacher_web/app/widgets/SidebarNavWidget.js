@@ -31,7 +31,7 @@ const SidebarNavWidget = ({buttonText, data}) => {
                         <SidebarNavWidgetItem 
                             key={item.id} 
                             displayName={item.name} 
-                            subName={item.summary} 
+                            subName={item.key_stage_name} 
                             to={`/schemeofwork/${item.id}/lessons`}
                             highlight = {item.scheme_of_work_id == 127} />
                     ))}

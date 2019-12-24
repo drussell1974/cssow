@@ -35,7 +35,7 @@ describe('LatestSchemesOfWorkJumbotronWidgetItem', () => {
 
         expect(
             container.querySelector('.post-preview a').getAttribute('href')
-        ).toMatch('/learningepisode/1');
+        ).toMatch('/schemeofwork/1/lessons');
     })
 
     it('has a title', () => {

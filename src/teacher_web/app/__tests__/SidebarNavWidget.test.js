@@ -1,16 +1,22 @@
 import React from 'react';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
+import FakeApiService from '../helpers/FakeApiService';
+
 import SidebarNavWidget, { SidebarNavWidgetItem } from '../widgets/SidebarNavWidget';
 
 describe('SidebarNavWidget', () => {
     
     let render, container;
 
+    let schemesOfWork
+
     beforeEach(() => {
         (
             { render, container } = createContainer()
-        )
+        ),
+        schemesOfWork = FakeApiService.getSchemesOfWork();
     })
     
     it('renders default component', () => {
@@ -57,12 +63,10 @@ describe('SidebarNavWidget', () => {
     })
 
     it('has single item', () => {
-        let schemeofworkmapping = [{
-            displayName:"GCSE Computer Science",
-            subName:"key stage 4",
-        }];
-
-        render(<SidebarNavWidget data={schemeofworkmapping} />);
+        render(
+            <Router>
+                <SidebarNavWidget data={[schemesOfWork[0]]} />
+            </Router>);
 
         let list = container.querySelector('#sidebarResponsive ul.navbar-nav');
 
@@ -72,21 +76,10 @@ describe('SidebarNavWidget', () => {
     })
 
     it('has multiple items', () => {
-        let schemeofworkmapping = [
-            {
-                displayName:"Computing",
-                subName:"key stage 3",
-            },
-            {
-                displayName:"GCSE Computer Science",
-                subName:"key stage 4",
-            },
-            {
-                displayName:"A-Level Computer Science",
-                subName:"key stage 5",
-            }];
-
-        render(<SidebarNavWidget data={schemeofworkmapping} />);
+        render(
+            <Router>
+                <SidebarNavWidget data={schemesOfWork} />       
+            </Router>);
             
         let list = container.querySelector('#sidebarResponsive ul.navbar-nav');
 
@@ -122,7 +115,10 @@ describe('SidebarNavWidgetItem', () =>{
     })
 
     it('has displayName', () => {
-        render(<SidebarNavWidgetItem displayName='Lorum' subName='x' />);
+        render(
+            <Router>
+                <SidebarNavWidgetItem displayName='Lorum' subName='x' />
+            </Router>);
 
         expect(
             container.querySelector('li.nav-item a.nav-link').textContent
@@ -130,7 +126,10 @@ describe('SidebarNavWidgetItem', () =>{
     })
 
     it('has subName', () => {
-        render(<SidebarNavWidgetItem displayName='Lorum' subName="ipsum"/>);
+        render(
+            <Router>
+                <SidebarNavWidgetItem displayName='Lorum' subName="ipsum"/>
+            </Router>);
 
         expect(
             container.querySelector('li.nav-item a.nav-link .small').textContent
@@ -138,10 +137,13 @@ describe('SidebarNavWidgetItem', () =>{
     })
 
     it('has url', () => {
-        render(<SidebarNavWidgetItem displayName='Lorum' subName="ipsum" url='/esconte' />);
+        render(
+            <Router>
+                <SidebarNavWidgetItem displayName='Lorum' subName="ipsum" to='/esconte' />
+            </Router>);
 
         expect(
             container.querySelector('li.nav-item a.nav-link').getAttribute('href')
-        ).toMatch('x');
+        ).toEqual('/esconte');
     })
 })
