@@ -28,13 +28,15 @@ class Lessons extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            SchemesOfWork: [],
             Lessons: [],
             hasError: false,
         }
     }
 
     componentDidMount() {
-        ApiReactService.getLessons(this, 76);
+        ApiReactService.getSchemesOfWork(this);
+        ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
     }
 
     render() {
@@ -50,23 +52,23 @@ class Lessons extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-lg-4 col-md-4">
-                            <SidebarNavWidget />
+                            <SidebarNavWidget data={this.state.SchemesOfWork}/>
                         </div>
                         <div className="col-lg-8 col-md-10 mx-auto">
-                        <div className="clearfix">
-                            <PaginationWidget />
-                        </div>
-                        <AdminButtonWidget />
+                            <div className="clearfix">
+                                <PaginationWidget />
+                            </div>
+                            <AdminButtonWidget />
 
-                        <LessonListingWidget data={this.state.Lessons}/>
-                         
-                        <div className="clearfix">
-                            <PaginationWidget />    
+                            <LessonListingWidget data={this.state.Lessons}/>
+                            
+                            <div className="clearfix">
+                                <PaginationWidget />    
+                            </div>
+                            <AddLearningMaterialsWidget />
+                            <hr/>
                         </div>
-                        <AddLearningMaterialsWidget />
-                        <hr/>
                     </div>
-                </div>
                 </div>
 
                 <hr/>

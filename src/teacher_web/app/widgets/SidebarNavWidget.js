@@ -1,12 +1,16 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
-export const SidebarNavWidgetItem = ({displayName, subName}) => {
+export const SidebarNavWidgetItem = ({displayName, subName, to, highlight}) => {
     if(displayName === undefined) {
         return (<Fragment></Fragment>);
     } else {
+        let navlinkClass = highlight === true ? 'nav-link' : 'nav-link mark';
         return (
-            <li class="nav-item">
-                <a class="nav-link {{ if opt.id == scheme_of_work_id: }} mark {{ pass }}" href="{{=URL('learningepisode', 'index', args=[opt.id])}}">{displayName} <div class="small">{subName}</div></a>
+            <li className="nav-item">
+                <Link className={navlinkClass} to={to}>
+                    {displayName} <div className="small">{subName}</div>
+                </Link>
             </li>
         )
     }
@@ -17,14 +21,19 @@ const SidebarNavWidget = ({buttonText, data}) => {
         return (<Fragment></Fragment>);
     } else {
         return (
-            <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-                <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-                    {buttonText} <i class="fas fa-bars"></i>
+            <nav className="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+                <button className="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+                    {buttonText} <i className="fas fa-bars"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="sidebarResponsive">
-                    <ul class="navbar-nav flex-column fillspace">
+                <div className="collapse navbar-collapse" id="sidebarResponsive">
+                    <ul className="navbar-nav flex-column fillspace">
                     {data.map(item => (
-                        <SidebarNavWidgetItem displayName={item.displayName} subName={item.subName} url={item.url} />
+                        <SidebarNavWidgetItem 
+                            key={item.id} 
+                            displayName={item.name} 
+                            subName={item.summary} 
+                            to={`/schemeofwork/${item.id}/lessons`}
+                            highlight = {item.scheme_of_work_id == 127} />
                     ))}
                     </ul>
                     <hr />

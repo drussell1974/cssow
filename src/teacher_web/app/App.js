@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import Lessons from './pages/Lessons';
+import Lesson from './pages/Lesson';
 
 import '../assets/css/class_notes.css';    
-import '../assets/css/clean-blog.css';    
+import '../assets/css/clean-blog.min.css';    
 import '../assets/css/my.css';    
 
 import GoogleAnalyticsWidget from './widgets/GoogleAnalyticsWidget';
@@ -15,7 +16,7 @@ import NavbarWidget from './widgets/NavbarWidget';
 import BannerWidget from './widgets/BannerWidget';
 import FooterWidget from './widgets/FooterWidget';
 let mastHeadStyle = {
-    backgroundImage: "url('custom/img/computerscience-blackboard.jpg')",
+    backgroundImage: "url('/custom/img/computerscience-blackboard.jpg')",
 };
 
 ReactDOM.render(
@@ -46,7 +47,7 @@ ReactDOM.render(
         <Switch>
             <Route exact path="/" component={Index} />
             <Route exact path="/schemeofwork/:scheme_of_work_id/lessons/" component={Lessons} />
-            <Route exact path="/schemeofwork/:scheme_of_work_id/lessons/:learning_episode_id" component={Lessons} />
+            <Route exact path="/schemeofwork/:scheme_of_work_id/lessons/:learning_episode_id" component={Lesson} />
         </Switch>
         
         <footer>
