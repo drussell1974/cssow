@@ -1,13 +1,32 @@
 import React, { Fragment } from 'react';
 
-const PaginationWidget = ({pager}) => {
-    if(pager === undefined || pager.length === 0) {
+export const Mapper = {
+    TransformLessons: (list) => {
+        return list.map(
+            function(item) {
+                
+                let to_SchemeOfWork = `/schemeofwork/${item.scheme_of_work_id}/lesson/${item.id}`;
+                
+                return {
+                    id: item.id,
+                    pageNumber: "x",
+                    to: to_SchemeOfWork,
+                }
+            }
+        )
+    }
+}
+
+const PaginationWidget = ({data, page, pageSize = 10}) => {
+    if(data === undefined || data.length === 0) {
         return (<Fragment></Fragment>);
     } else {
         return (
             <ul className="pagination">
-                {pager.map(item => (
-                    <li key={item}>1</li>
+                {data.map(item => (
+                    <li key={item.id}>
+                        {item.pageNumber}
+                    </li>
                 ))}
             </ul>
         );

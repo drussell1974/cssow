@@ -1,14 +1,20 @@
 import React from 'react';
-import { createContainer } from '../helpers/domManipulators';
 
-import PaginationWidget from '../widgets/PaginationWidget';
+import { createContainer } from '../helpers/domManipulators';
+import FakeApiService from '../helpers/FakeApiService';
+
+import PaginationWidget, { Mapper } from '../widgets/PaginationWidget';
 
 describe('PaginationWidget', () => {
     let render, container;
+    let lessons;
 
-    beforeEach(() => (
-        { render, container} = createContainer()
-    ))
+    beforeEach(() => {
+        (
+            { render, container} = createContainer()
+        ),
+        lessons = FakeApiService.getLessonEpisodes();
+    })
 
     it('renders empty container', () => {
         render(<PaginationWidget />);
@@ -18,8 +24,8 @@ describe('PaginationWidget', () => {
         ).toMatch('');
     })
 
-    it('renders empty container when pager items empty', () => {
-        render(<PaginationWidget pager={[]} />);
+    it('renders empty container when data items empty', () => {
+        render(<PaginationWidget data={ Mapper.TransformLessons([])} />);
 
         expect(
             container.textContent
@@ -27,27 +33,26 @@ describe('PaginationWidget', () => {
     })
     
     it('shows a single page', () => {
-        render(<PaginationWidget pager={[0]} />);
+        render(<PaginationWidget data={ Mapper.TransformLessons([lessons[0]])} />);
 
         expect(
             container.querySelectorAll('ul.pagination li')
         ).toHaveLength(1);
-
-        expect(
-            container.querySelector('ul.pagination').textContent
-        ).toMatch('1');
     })
 
     it('shows multiple pages', () => {
-        render(<PaginationWidget pager={[0]} />);
+        render(<PaginationWidget data={ Mapper.TransformLessons(lessons)} />);
 
         expect(
             container.querySelectorAll('ul.pagination li')
-        ).toHaveLength(1);
+        ).toHaveLength(4);
+    })
+
+    it.skip('show given number of pages based on page size', () => {
+        render(<PaginationWidget data={ Mapper.TransformLessons(lessons)} page={1} pageSize={3} />);
 
         expect(
-            container.querySelector('ul.pagination').textContent
-        ).toMatch('1');
+            container.querySelectorAll('ul.pagination li')
+        ).toHaveLength(2);
     })
-    
 })
