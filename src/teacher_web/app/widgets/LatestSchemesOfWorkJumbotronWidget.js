@@ -7,7 +7,7 @@ export const LatestSchemesOfWorkJumbotronWidgetItem = ({data, auth}) => {
         return (<Fragment></Fragment>)
     } else {
         let row = data;
-        let to_link = `/learningepisode/${row.id}`;
+        let to_link = `/schemesofwork/${row.id}/lessons`;
         let edit_link = `/schemesofwork/edit/${row.id}`;
         let del_link = `/schemesofwork/delete_item/${row.id}`;
         let editable = auth == true ? {display:'inline'} : {display:'none'};
@@ -42,7 +42,7 @@ export const LatestSchemesOfWorkJumbotronWidget = ({data}) => {
             <section id="section-latest_schemesofwork" className="jumbotron">
                 <span className="subheading">Latest Schemes of Work</span>
                 {data.map(row => (
-                    <LatestSchemesOfWorkJumbotronWidgetItem data={row} />
+                    <LatestSchemesOfWorkJumbotronWidgetItem key={row.id} data={row} />
                 ))}
                 <div className="clearfix">
                     <a className="btn btn-primary float-right" href="/schemesofwork" id="btn-all-schemes-of-work">Show all &rarr;</a>

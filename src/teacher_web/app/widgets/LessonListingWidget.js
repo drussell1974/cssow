@@ -19,7 +19,7 @@ export const LessonListingWidgetItem = ({row, current_topic_name, auth}) => {
                   <h2 className="post-title">
                     {`Lesson ${row.order_of_delivery_id} - ${row.title}`}
                   </h2>
-                  { row.summary != "" } : (<h3 class="post-subtitle">{row.summary}</h3>)
+                  <h3 className="post-subtitle">{row.summary}</h3>
                 </Link>
                 <TopicBadgeWidget list1={row.key_words} list2={row.key_words_from_learning_objectives} />
 
@@ -38,8 +38,8 @@ export const LessonListingWidget = ({data, auth}) => {
         return (<Fragment></Fragment>);
     } else if (data.length === 0) {
         return (
-            <div class="alert alert-info" role="alert">
-                <span class="small">There are no lessons for this scheme of work.</span>
+            <div className="alert alert-info" role="alert">
+                <span className="small">There are no lessons for this scheme of work.</span>
                 <AdminButtonWidget buttonText="Click here to get started." auth={auth} to='/lesson/new' />
             </div>
         );
@@ -48,7 +48,7 @@ export const LessonListingWidget = ({data, auth}) => {
 
         return (
             data.map(item => (
-                  <LessonListingWidgetItem row={item} topic_name={current_topic_name} auth={auth} />
+                  <LessonListingWidgetItem key={item.id} row={item} topic_name={current_topic_name} auth={auth} />
               )
             )
       )

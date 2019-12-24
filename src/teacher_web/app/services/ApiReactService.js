@@ -21,7 +21,7 @@ const ApiReactService = {
         )
     },
 
-    getLearningEpisodes(reactComponent, schemeOfWorkId) {
+    getLessons(reactComponent, schemeOfWorkId) {
         let uri = `http://127.0.0.1:8000/api/schemeofwork/${schemeOfWorkId}/lessons`
 
         fetch(uri)

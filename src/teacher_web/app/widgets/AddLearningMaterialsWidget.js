@@ -11,11 +11,11 @@ const AddLearningMaterials = ({scheme_of_work_id, return_url}) => {
         let link_to = `reference:/${scheme_of_work_id}?_next=${return_url}`;
 
         return (
-            <section class="alert alert-info" >
+            <section className="alert alert-info" >
                 <div id="div-references">
                     {content}
                 </div>
-                <Link to={link_to} style={{'margin-top':'30px'}} class="btn btn-info" id="add-reference">Add learning materials</Link>
+                <Link to={link_to} style={{'margin-top':'30px'}} className="btn btn-info" id="add-reference">Add learning materials</Link>
             </section>
         )
     }

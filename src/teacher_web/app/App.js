@@ -45,7 +45,7 @@ ReactDOM.render(
         </div>
         <Switch>
             <Route exact path="/" component={Index} />
-            <Route exact path="/learningepisode/:learning_episode_id" component={Lessons} />
+            <Route exact path="/schemesofwork/:scheme_of_work_id/lessons/" component={Lessons} />
         </Switch>
         
         <footer>

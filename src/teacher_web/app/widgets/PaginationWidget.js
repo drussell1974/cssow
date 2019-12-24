@@ -5,7 +5,7 @@ const PaginationWidget = ({pager}) => {
         return (<Fragment></Fragment>);
     } else {
         return (
-            <ul class="pagination">
+            <ul className="pagination">
                 {pager.map(item => (
                     <li>1</li>
                 ))}

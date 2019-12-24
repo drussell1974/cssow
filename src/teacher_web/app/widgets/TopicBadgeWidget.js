@@ -1,16 +1,17 @@
 import React, { Fragment } from 'react';
 
-const merge_string_list = function(list1, list2, sep) {
-    _check_for_duplicate = function(list, item_to_check) {
-        let found = false;
-        for(let i = 0; i < list.length; i++) {
-            if(list[i] == item_to_check) {
-                found = true;
-                break;
-            }
+const _check_for_duplicate = function(list, item_to_check) {
+    let found = false;
+    for(let i = 0; i < list.length; i++) {
+        if(list[i] == item_to_check) {
+            found = true;
+            break;
         }
-        return found
     }
+    return found
+}
+
+const merge_string_list = function(list1, list2, sep) {
 
     let staging_list = []
 
@@ -38,7 +39,7 @@ const merge_string_list = function(list1, list2, sep) {
     }
     // sort
     while(true) {
-        swapped = False
+        let swapped = false;
         for(let i = 0; i < staging_list.length -1; i++) {
             temp1 = staging_list[i]
             temp2 = staging_list[i+1]
@@ -47,9 +48,12 @@ const merge_string_list = function(list1, list2, sep) {
                 staging_list[i] = temp2
                 swapped = true
             }
-            if(swapped == false) {
-                break
+            if(swapped === false) {
+                break;
             }
+        }
+        if(swapped === false) {
+            break;
         }
     }
 

@@ -5,10 +5,10 @@ const ContentHeadingWidget = ({main_heading, sub_heading, strap_line}) => {
         return (<Fragment></Fragment>);
     } else {
         return (
-            <div class="alert alert-secondary">
-                <h5 class="secondary-heading">{main_heading}</h5>
+            <div className="alert alert-secondary">
+                <h5 className="secondary-heading">{main_heading}</h5>
                 <b>{sub_heading}</b>
-                <p class="lead">{strap_line}</p>
+                <p className="lead">{strap_line}</p>
             </div>
         )
     }
