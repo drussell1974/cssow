@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import ApiReactService from '../services/ApiReactService';
 
 import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
-import SidebarNavWidget from '../widgets/SidebarNavWidget';
+import SidebarNavWidget, { Mapper } from '../widgets/SidebarNavWidget';
 import AdminButtonWidget from '../widgets/AdminButtonWidget';
 import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
@@ -24,7 +24,7 @@ const PageMenu = () => {
     )
 }
 
-export const LessonsPageLayout = ({schemesOfWork, lessons}) => {
+export const LessonsPageLayout = ({schemesOfWork = [], lessons = []}) => {
     return (
         <div className="container">
             <div className="row">
@@ -34,13 +34,13 @@ export const LessonsPageLayout = ({schemesOfWork, lessons}) => {
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-4">
-                    <SidebarNavWidget data={schemesOfWork}/>
+                    <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork)}/>
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix">
                         <PaginationWidget />
                     </div>
-                    <AdminButtonWidget />
+                    <AdminButtonWidget to={`/schemeofwork/edit/{${9999999}`} />
 
                     <LessonListingWidget data={lessons}/>
                     

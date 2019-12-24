@@ -1,7 +1,34 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-export const SidebarNavWidgetItem = ({displayName, subName, to, highlight}) => {
+export const Mapper = {
+    TransformSchemesOfWork: (list) => {
+        return list.map(
+            function(item) {
+                return {
+                    id: item.id,
+                    displayName: item.name,
+                    subName: item.key_stage_name,
+                }
+            }
+        )
+    },
+
+    TransformLessons: (list) => {
+        return list.map( 
+            function(item) {
+                var subName = `Lesson ${item.order_of_delivery_id}`;
+                return {
+                    id: item.id,
+                    displayName: item.title,
+                    subName: subName,
+                }
+            }
+        );
+    },
+}
+
+export const SidebarNavWidgetItem = ({id, displayName, subName, to, highlight=false}) => {
     if(displayName === undefined) {
         return (<Fragment></Fragment>);
     } else {
@@ -30,8 +57,8 @@ const SidebarNavWidget = ({buttonText, data}) => {
                     {data.map(item => (
                         <SidebarNavWidgetItem 
                             key={item.id} 
-                            displayName={item.name} 
-                            subName={item.key_stage_name} 
+                            displayName={item.displayName} 
+                            subName={item.subName} 
                             to={`/schemeofwork/${item.id}/lessons`}
                             highlight = {item.scheme_of_work_id == 127} />
                     ))}

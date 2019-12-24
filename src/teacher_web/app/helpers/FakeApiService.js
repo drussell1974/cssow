@@ -21,7 +21,7 @@ const FakeApiService = {
             created: '22nd December 2019',
         },
         {
-            id: 1,
+            id: 2,
             name: 'GCSE Computer Science',
             key_stage_name: 'Key Stage 4',
             created_by_name: 'Dave Russell',
@@ -55,7 +55,7 @@ const FakeApiService = {
 
     getLessonEpisodes() { 
         return [{
-            id: 973,
+            id: 396,
             scheme_of_work_id: 99,
             order_of_delivery_id: 1,
             title: 'CPU Architecture',

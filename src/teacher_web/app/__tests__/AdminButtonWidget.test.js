@@ -15,7 +15,7 @@ describe('AdminButtonWidget', () => {
     it('render empty component', () => {
         render(
             <Router>
-                <AdminButtonWidget buttonText='' />
+                <AdminButtonWidget buttonText='' to={`/schemeofwork/edit/{${9999}`} />
             </Router>);
 
         expect(
@@ -26,7 +26,7 @@ describe('AdminButtonWidget', () => {
     it('render empty component if not authorised', () => {
         render(
             <Router>
-                <AdminButtonWidget auth={false} />
+                <AdminButtonWidget auth={false} to={`/schemeofwork/edit/{${9999}`}/>
             </Router>);
 
         expect(
@@ -37,7 +37,7 @@ describe('AdminButtonWidget', () => {
     it('shows new button if authorised', () => {
         render(
             <Router>
-                <AdminButtonWidget buttonText='New' auth={true} />
+                <AdminButtonWidget buttonText='New' auth={true} to={`/schemeofwork/new/{${9999}`} />
             </Router>);
 
         expect(
@@ -52,7 +52,7 @@ describe('AdminButtonWidget', () => {
     it('is aligned right', () => {
         render(
             <Router>
-                <AdminButtonWidget buttonText='New' auth={true} />
+                <AdminButtonWidget buttonText='New' auth={true} to={`/schemeofwork/edit/{${9999}`} />
             </Router>);
 
         expect(
@@ -63,7 +63,7 @@ describe('AdminButtonWidget', () => {
     it('is a warning button', () => {
         render(
             <Router>
-                <AdminButtonWidget buttonText='New' auth={true} />
+                <AdminButtonWidget buttonText='New' auth={true} to={`/schemeofwork/edit/{${9999}`}/>
             </Router>);
 
         expect(
@@ -74,7 +74,7 @@ describe('AdminButtonWidget', () => {
     it('has jump to', () => {
         render(
             <Router>
-                <AdminButtonWidget buttonText='New' auth={true} to="/new" />
+                <AdminButtonWidget buttonText='New' auth={true} to={`/schemeofwork/new/{${9999}`} />
             </Router>);
 
         expect(

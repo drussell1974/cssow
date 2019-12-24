@@ -4,19 +4,20 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { createContainer } from '../helpers/domManipulators';
 import FakeApiService from '../helpers/FakeApiService';
 
-import SidebarNavWidget, { SidebarNavWidgetItem } from '../widgets/SidebarNavWidget';
+import SidebarNavWidget, { SidebarNavWidgetItem, Mapper } from '../widgets/SidebarNavWidget';
 
 describe('SidebarNavWidget', () => {
     
     let render, container;
 
-    let schemesOfWork
+    let schemesOfWork, lessons
 
     beforeEach(() => {
         (
             { render, container } = createContainer()
         ),
         schemesOfWork = FakeApiService.getSchemesOfWork();
+        lessons = FakeApiService.getLessonEpisodes();
     })
     
     it('renders default component', () => {
@@ -28,7 +29,10 @@ describe('SidebarNavWidget', () => {
     })
 
     it('has toggle menu button', () => {
-        render(<SidebarNavWidget buttonText='scheme of work' data={[0]} />);
+        render(
+            <Router>
+                <SidebarNavWidget buttonText='scheme of work' data={Mapper.TransformSchemesOfWork([schemesOfWork[0]])} />
+            </Router>);
         
         let button = container.querySelector('button.navbar-toggler');
 
@@ -65,7 +69,7 @@ describe('SidebarNavWidget', () => {
     it('has single item', () => {
         render(
             <Router>
-                <SidebarNavWidget data={[schemesOfWork[0]]} />
+                <SidebarNavWidget data={Mapper.TransformSchemesOfWork([schemesOfWork[0]])} />
             </Router>);
 
         let list = container.querySelector('#sidebarResponsive ul.navbar-nav');
@@ -74,26 +78,44 @@ describe('SidebarNavWidget', () => {
             list.querySelectorAll('.nav-item')
         ).toHaveLength(1);
     })
+    
+    it('renders empty component if data is empty', () => {
+        render(<SidebarNavWidget buttonText='scheme of work' data={[]} />);
+        
+        expect(
+            container.textContent
+        ).toEqual('');
+    })
 
-    it('has multiple items', () => {
+    it('has multiple schemesofwork', () => {
         render(
             <Router>
-                <SidebarNavWidget data={schemesOfWork} />       
+                <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork)} />       
+            </Router>);
+            
+        let list = container.querySelector('#sidebarResponsive ul.navbar-nav');
+    
+        expect(
+            list.querySelectorAll('.nav-item')
+        ).not.toBeNull();
+    
+        expect(
+            list.querySelectorAll('.nav-item')
+        ).toHaveLength(3);
+    })
+
+    it('has multiple lessons', () => {
+
+        render(
+            <Router>
+                <SidebarNavWidget data={Mapper.TransformLessons(lessons)} />       
             </Router>);
             
         let list = container.querySelector('#sidebarResponsive ul.navbar-nav');
 
         expect(
             list.querySelectorAll('.nav-item')
-        ).toHaveLength(3);
-    })
-
-    it('renders empty component if data is empty', () => {
-        render(<SidebarNavWidget buttonText='scheme of work' data={[]} />);
-        
-        expect(
-            container.textContent
-        ).toMatch('');
+        ).toHaveLength(4);
     })
 })
 
@@ -117,7 +139,7 @@ describe('SidebarNavWidgetItem', () =>{
     it('has displayName', () => {
         render(
             <Router>
-                <SidebarNavWidgetItem displayName='Lorum' subName='x' />
+                <SidebarNavWidgetItem displayName='Lorum' subName='x' to='/home' />
             </Router>);
 
         expect(
@@ -128,7 +150,7 @@ describe('SidebarNavWidgetItem', () =>{
     it('has subName', () => {
         render(
             <Router>
-                <SidebarNavWidgetItem displayName='Lorum' subName="ipsum"/>
+                <SidebarNavWidgetItem displayName='Lorum' subName="ipsum" to='/home' />
             </Router>);
 
         expect(

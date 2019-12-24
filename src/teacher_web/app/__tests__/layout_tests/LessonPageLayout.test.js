@@ -27,10 +27,14 @@ describe('LessonPageLayout', () => {
             { render, container } = createContainer()
         ),
         lesson = FakeApiService.getLessonEpisode();
+        lessons = FakeApiService.getLessonEpisodes();
     })
 
     it('renders empty content', () => {
-        render(<LessonPageLayout />);
+        render(
+            <Router>
+                <LessonPageLayout />
+            </Router>);
 
         expect(
             getContentHeading().textContent
@@ -53,6 +57,17 @@ describe('LessonPageLayout', () => {
 
         expect(
             getLeftColumm().querySelector('.blackboard')
+        ).not.toBeNull();
+    })
+
+    it('has sideNav', () => {
+        render(
+            <Router>
+                <LessonPageLayout lessons={lessons} />
+            </Router>);
+            
+        expect(
+            getLeftColumm().querySelector('#sidebarNav')
         ).not.toBeNull();
     })
 })

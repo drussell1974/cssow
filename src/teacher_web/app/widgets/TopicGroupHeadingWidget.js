@@ -5,7 +5,7 @@ const TopicGroupHeadingWidget = ({row, current_topic_name}) => {
         return (<Fragment></Fragment>);
     } else {
         return (
-          <h1 class="group-heading">{row.year_name} {row.topic_name}</h1>
+          <h1 className="group-heading">{row.year_name} {row.topic_name}</h1>
         )
     }
 };

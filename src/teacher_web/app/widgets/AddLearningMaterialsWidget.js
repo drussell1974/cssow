@@ -15,7 +15,7 @@ const AddLearningMaterials = ({scheme_of_work_id, return_url}) => {
                 <div id="div-references">
                     {content}
                 </div>
-                <Link to={link_to} style={{'margin-top':'30px'}} className="btn btn-info" id="add-reference">Add learning materials</Link>
+                <Link to={link_to} style={{'marginTop':'30px'}} className="btn btn-info" id="add-reference">Add learning materials</Link>
             </section>
         )
     }

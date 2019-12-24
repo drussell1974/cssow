@@ -4,8 +4,9 @@ import ApiReactService from '../services/ApiReactService';
 import BannerWidget from '../widgets/BannerWidget';
 import BlackboardDisplayButton from '../widgets/BlackboardDisplayButton';
 import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
+import SidebarNavWidget, { Mapper }from '../widgets/SidebarNavWidget';
 
-export const LessonPageLayout = ({lessons, lesson}) => {
+export const LessonPageLayout = ({lessons = [], lesson = []}) => {
     return (
         <div className="container">
             <div className="row">
@@ -16,6 +17,7 @@ export const LessonPageLayout = ({lessons, lesson}) => {
             <div className="row">
                 <div className="col-lg-4 col-md-4">
                     <BlackboardDisplayButton lesson={lesson} />
+                    <SidebarNavWidget data={Mapper.TransformLessons(lessons)} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     

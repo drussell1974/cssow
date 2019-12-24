@@ -41,7 +41,7 @@ describe('LessonsPageLayout', () => {
 
         expect(
             getMainContent().textContent
-        ).toEqual('');
+        ).toEqual('There are no lessons for this scheme of work.');
     })
 
     it('has two columns', () => {

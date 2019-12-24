@@ -7,7 +7,7 @@ const PaginationWidget = ({pager}) => {
         return (
             <ul className="pagination">
                 {pager.map(item => (
-                    <li>1</li>
+                    <li key={item}>1</li>
                 ))}
             </ul>
         );
