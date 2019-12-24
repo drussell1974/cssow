@@ -44,7 +44,7 @@ class Lesson extends React.Component {
 
         return (        
             <Fragment>
-                <LessonPageLayout />
+                <LessonPageLayout lesson={this.state.Lesson} />
             </Fragment>
         )
     }
