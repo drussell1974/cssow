@@ -30,7 +30,7 @@ const CreatedByWidget = ({row, auth, request}) => {
       return (<Fragment></Fragment>)
     } else {
       return(
-        <p className="post-meta">Created by <a href="#">{row.created_by_name}</a> {row.created} Learning objectives {row.number_of_learning_objectives}
+        <p className="post-meta">Created by <a href="#">{row.created_by_name}</a> {row.created} Learning objectives {row.number_of_learning_objective}
             <AdminOptions row={row} auth={auth} request={request} />
         </p>
       )
