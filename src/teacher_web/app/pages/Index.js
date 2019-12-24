@@ -3,7 +3,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWorkJumbotronWidget';
 import ApiReactService from '../services/ApiReactService';
 
-export const IndexLayout = ({data}) => {
+export const IndexPageLayout = ({data}) => {
     return (
         <div className="container">
             <div className="row">
@@ -32,7 +32,7 @@ class Index extends React.Component {
 
         return (        
             <Fragment>
-                <IndexLayout data={this.state.SchemesOfWork} />
+                <IndexPageLayout data={this.state.SchemesOfWork} />
                 <hr/>
             </Fragment>
         )

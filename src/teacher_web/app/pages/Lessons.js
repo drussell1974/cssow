@@ -24,6 +24,37 @@ const PageMenu = () => {
     )
 }
 
+export const LessonsPageLayout = ({schemesOfWork, lessons}) => {
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-12 col-md-14 content-heading">
+                    <ContentHeadingWidget />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-lg-4 col-md-4">
+                    <SidebarNavWidget data={schemesOfWork}/>
+                </div>
+                <div className="col-lg-8 col-md-10 mx-auto">
+                    <div className="clearfix">
+                        <PaginationWidget />
+                    </div>
+                    <AdminButtonWidget />
+
+                    <LessonListingWidget data={lessons}/>
+                    
+                    <div className="clearfix">
+                        <PaginationWidget />    
+                    </div>
+                    <AddLearningMaterialsWidget />
+                    <hr/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 class Lessons extends React.Component {
     constructor(props){
         super(props);
@@ -44,32 +75,7 @@ class Lessons extends React.Component {
         return (        
             <Fragment>
                 
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-12 col-md-14 content-heading">
-                            <ContentHeadingWidget />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-4 col-md-4">
-                            <SidebarNavWidget data={this.state.SchemesOfWork}/>
-                        </div>
-                        <div className="col-lg-8 col-md-10 mx-auto">
-                            <div className="clearfix">
-                                <PaginationWidget />
-                            </div>
-                            <AdminButtonWidget />
-
-                            <LessonListingWidget data={this.state.Lessons}/>
-                            
-                            <div className="clearfix">
-                                <PaginationWidget />    
-                            </div>
-                            <AddLearningMaterialsWidget />
-                            <hr/>
-                        </div>
-                    </div>
-                </div>
+                <LessonsPageLayout schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
 
                 <hr/>
                 <div className="modal fade" id="keywordModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

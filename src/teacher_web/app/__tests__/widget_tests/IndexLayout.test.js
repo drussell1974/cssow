@@ -4,9 +4,9 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { createContainer } from '../../helpers/domManipulators';
 import FakeApiService from '../../helpers/FakeApiService';
 
-import { IndexLayout } from '../../pages/Index';
+import { IndexPageLayout } from '../../pages/Index';
 
-describe('IndexLayout', () => {
+describe('IndexPageLayout', () => {
     let render, container;
 
     let contentRow;
@@ -19,7 +19,7 @@ describe('IndexLayout', () => {
     })
 
     it('has single column', () => {
-        render(<IndexLayout data={[]} />);
+        render(<IndexPageLayout data={[]} />);
 
         expect(
             container.querySelector('.container .row > .col-lg-8, .col-md-8, .mx-auto')
@@ -32,7 +32,7 @@ describe('IndexLayout', () => {
         
         render(
             <Router>
-                <IndexLayout data={schemesofwork} />
+                <IndexPageLayout data={schemesofwork} />
             </Router>);
 
         expect(
