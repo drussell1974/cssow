@@ -40,7 +40,7 @@ export const LessonsPageLayout = ({schemesOfWork = [], lessons = []}) => {
                     <div className="clearfix">
                         <PaginationWidget />
                     </div>
-                    <AdminButtonWidget to={`/schemeofwork/edit/{${9999999}`} />
+                    <AdminButtonWidget />
 
                     <LessonListingWidget data={lessons}/>
                     

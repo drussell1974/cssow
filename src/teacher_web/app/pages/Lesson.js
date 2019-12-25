@@ -6,7 +6,7 @@ import BlackboardDisplayButton from '../widgets/BlackboardDisplayButton';
 import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper }from '../widgets/SidebarNavWidget';
 import PaginationWidget, { Mapper as PaginationMapper } from '../widgets/PaginationWidget';
-import LessonObjectiveListingWidget, { LessonObjectiveListingWidgetItem } from '../widgets/LessonObjectiveListingWidget';
+import { LessonObjectiveListingWidget } from '../widgets/LessonObjectiveListingWidget';
 
 export const LessonPageLayout = ({lessons = [], lesson = []}) => {
     return (
@@ -23,7 +23,7 @@ export const LessonPageLayout = ({lessons = [], lesson = []}) => {
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <PaginationWidget data={PaginationMapper.TransformLessons(lessons)} />
-                    <LessonObjectiveListingWidgetItem data={lesson} />
+                    <LessonObjectiveListingWidget data={lesson} />
                     <PaginationWidget data={PaginationMapper.TransformLessons(lessons)} />
                 </div>
             </div>
@@ -43,14 +43,14 @@ class Lesson extends React.Component {
 
     componentDidMount() {
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
-        ApiReactService.getLesson(this, this.props.match.params.scheme_of_work_id, this.props.match.params.learning_objective_id);
+        ApiReactService.getLesson(this, this.props.match.params.scheme_of_work_id, this.props.match.params.learning_episode_id);
     }
 
     render() {
 
         return (        
             <Fragment>
-                <LessonPageLayout lesson={this.state.Lesson} />
+                <LessonPageLayout lessons={this.state.Lessons} lesson={this.state.Lesson} />
             </Fragment>
         )
     }

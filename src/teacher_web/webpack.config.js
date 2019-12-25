@@ -15,6 +15,7 @@ module.exports = {
       port: 8002,
       contentBase:path.join(__dirname,'./build'),
       historyApiFallback: true,
+      disableHostCheck: true,
    },
    module: {
       rules: [

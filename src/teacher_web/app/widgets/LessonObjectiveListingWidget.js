@@ -14,13 +14,16 @@ export const LessonObjectiveListingWidgetItem = ({row, auth}) => {
       return (
           <Fragment>
               <div className="post-preview">
-                  <h2 className="post-title">
-                    <SoloBadgeWidget solo_taxonomy_level={row.solo_taxonomy_level} /> {row.description}
-                  </h2>
-                  <h3 className="post-subtitle">{row.topic_name}</h3>
+                  <a href={`#${row.id}`}>
+                    <h4 className="post-title">
+                        <SoloBadgeWidget solo_taxonomy_level={row.solo_taxonomy_level} /> {row.description}
+                    </h4>
+                    <h5 className="post-subtitle">{row.topic_name}</h5>
+                  </a>
                   <TopicBadgeWidget list1={row.key_words} />
                   <TopicEditWidget auth={auth} />
               </div>
+              <hr/>
           </Fragment>
         )
     }
