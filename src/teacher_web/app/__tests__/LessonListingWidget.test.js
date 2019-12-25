@@ -64,6 +64,26 @@ describe('LessonListingWidgetItem', () => {
             container.querySelector('.post-preview a h3.post-subtitle').textContent
         ).toEqual('Program Counter, ALU, Cache');
     })
+
+    it('has keyword badges', () => {
+        render(
+            <Router>
+                <LessonListingWidgetItem row={learningEpisode} />
+            </Router>
+        )
+
+        expect(
+            container.querySelector('i.badge-info').textContent
+        ).toEqual('Arithmetic Logic Unit (ALU)');
+
+        expect(
+            container.querySelector('i.badge-info:nth-child(3)').textContent
+        ).toEqual('Cache');
+
+        expect(
+            container.querySelectorAll('i.badge-info')
+        ).toHaveLength(3);
+    })
 })
 
 describe('LessonListingWidget', () => {
