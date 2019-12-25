@@ -46,7 +46,18 @@ describe('LessonPageLayout', () => {
 
         expect(
             getMainContent().textContent
-        ).toEqual('');
+        ).toEqual('There are no learning objectives for this lesson.');
+    })
+
+    it('has content heading', () => {
+        render(
+            <Router>
+                <LessonPageLayout lesson={lesson} />
+            </Router>);
+
+        expect(
+            getContentHeading().textContent
+        ).toEqual('Components of the CPU');
     })
 
     it('has blackboard display buttons', () => {

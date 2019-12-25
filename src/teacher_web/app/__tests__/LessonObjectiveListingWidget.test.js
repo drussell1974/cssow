@@ -19,9 +19,10 @@ describe('LessonObjectiveListingWidgetItem', () => {
     })
     
     it('renders empty component', () => {
-        render(<Router>
-            <LessonObjectiveListingWidgetItem />
-        </Router>);
+        render(
+            <Router>
+                <LessonObjectiveListingWidgetItem />
+            </Router>);
 
         expect(
             container.textContent
@@ -30,12 +31,12 @@ describe('LessonObjectiveListingWidgetItem', () => {
 
     it('has a title', () => {
         render(
-        <Router>
-            <LessonObjectiveListingWidgetItem row={learningObjective}/>
-        </Router>);
+            <Router>
+                <LessonObjectiveListingWidgetItem row={learningObjective}/>
+            </Router>);
 
         expect(
-            container.querySelector('.post-preview h2.post-title').textContent
+            container.querySelector('.post-preview a h4.post-title').textContent
         ).toMatch('Describe the function of the Arithmetic Logic Unit (ALU)');
     })
 
@@ -46,7 +47,7 @@ describe('LessonObjectiveListingWidgetItem', () => {
         </Router>);
 
         expect(
-            container.querySelector('.post-preview h3.post-subtitle').textContent
+            container.querySelector('.post-preview a h5.post-subtitle').textContent
         ).toEqual('CPU');
     })
 

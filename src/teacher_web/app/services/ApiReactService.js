@@ -1,5 +1,27 @@
 const ApiReactService = {
     
+    getSchemeOfWork(reactComponent, schemeOfWorkId) {
+        var uri = `http://127.0.0.1:8000/api/schemeofwork/${schemeOfWorkId}`;
+        fetch(uri)
+            .then(res => { 
+                return res.json();
+            })
+            .then(
+            (data) => {
+                reactComponent.setState({
+                    SchemeOfWork: data.schemeofwork, 
+                    hasError: false,
+                });
+            },  
+            (error) => {
+                reactComponent.setState({
+                    SchemeOfWork: {},
+                    hasError: true,
+                });
+            }
+        )
+    },
+
     getSchemesOfWork(reactComponent) {
         fetch("http://127.0.0.1:8000/api/schemeofwork")
             .then(res => { 
@@ -23,7 +45,7 @@ const ApiReactService = {
 
     getLessons(reactComponent, schemeOfWorkId) {
         let uri = `http://127.0.0.1:8000/api/schemeofwork/${schemeOfWorkId}/lessons`;
-        
+
         fetch(uri)
             .then(res => { 
                 return res.json();

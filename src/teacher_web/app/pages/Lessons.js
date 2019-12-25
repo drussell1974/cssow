@@ -24,12 +24,12 @@ const PageMenu = () => {
     )
 }
 
-export const LessonsPageLayout = ({schemesOfWork = [], lessons = []}) => {
+export const LessonsPageLayout = ({schemeofwork = {}, schemesOfWork = [], lessons = []}) => {
     return (
         <div className="container">
             <div className="row">
                 <div className="col-lg-12 col-md-14 content-heading">
-                    <ContentHeadingWidget />
+                    <ContentHeadingWidget main_heading={schemeofwork.name} />
                 </div>
             </div>
             <div className="row">
@@ -59,6 +59,7 @@ class Lessons extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            SchemeOfWork: {},
             SchemesOfWork: [],
             Lessons: [],
             hasError: false,
@@ -67,6 +68,7 @@ class Lessons extends React.Component {
 
     componentDidMount() {
         ApiReactService.getSchemesOfWork(this);
+        ApiReactService.getSchemeOfWork(this, this.props.match.params.scheme_of_work_id);
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
     }
 
@@ -75,7 +77,7 @@ class Lessons extends React.Component {
         return (        
             <Fragment>
                 
-                <LessonsPageLayout schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
+                <LessonsPageLayout schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
 
                 <hr/>
                 <div className="modal fade" id="keywordModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

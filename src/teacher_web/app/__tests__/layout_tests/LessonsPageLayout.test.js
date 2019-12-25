@@ -8,7 +8,7 @@ import { LessonsPageLayout } from '../../pages/Lessons';
 
 describe('LessonsPageLayout', () => {
     let render, container;
-    let schemesofwork, lessons;
+    let schemeofwork, schemesofwork, lessons;
 
     const getContentHeading = function() {
         return container.querySelector("div.container > .col-lg-12, .col-md-14, .content-heading");
@@ -42,6 +42,20 @@ describe('LessonsPageLayout', () => {
         expect(
             getMainContent().textContent
         ).toEqual('There are no lessons for this scheme of work.');
+    })
+
+    it('has content heading', () => {
+        
+        schemeofwork = FakeApiService.getSchemeOfWork();
+
+        render(
+            <Router>
+                <LessonsPageLayout schemeofwork={schemeofwork} />
+            </Router>);
+
+        expect(
+            getContentHeading().textContent
+        ).toEqual('GCSE Computer Science');
     })
 
     it('has two columns', () => {

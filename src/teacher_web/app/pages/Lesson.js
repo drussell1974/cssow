@@ -13,7 +13,7 @@ export const LessonPageLayout = ({lessons = [], lesson = []}) => {
         <div className="container">
             <div className="row">
                 <div className="col-lg-12 col-md-14 content-heading">
-                    <ContentHeadingWidget />
+                    <ContentHeadingWidget main_heading={lesson.title} sub_heading={lesson.scheme_of_work_name} strap_line={lesson.strap_line} />
                 </div>
             </div>
             <div className="row">
