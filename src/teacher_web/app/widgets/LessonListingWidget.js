@@ -27,16 +27,17 @@ export const LessonListingWidgetItem = ({row, current_topic_name, auth}) => {
 
                 <CreatedByWidget row={row} />
             </div>
+            <hr />
           </Fragment>
         )
     }
 }
 
-export const LessonListingWidget = ({data, auth}) => {
+export const LessonListingWidget = ({pager, page, auth}) => {
 
-    if(data === undefined) {
+    if(pager === undefined) {
         return (<Fragment></Fragment>);
-    } else if (data.length === 0) {
+    } else if (pager.allData.length === 0) {
         return (
             <div className="alert alert-info" role="alert">
                 <span className="small">There are no lessons for this scheme of work.</span>
@@ -44,13 +45,18 @@ export const LessonListingWidget = ({data, auth}) => {
             </div>
         );
     } else {
+      
         let current_topic_name = '';
-
+        let pagedData = pager.GetPagedData(page);
+        
         return (
-            data.map(item => (
-                  <LessonListingWidgetItem key={item.id} row={item} topic_name={current_topic_name} auth={auth} />
-              )
-            )
+          <Fragment>
+            {pagedData.map(item => (
+                    <LessonListingWidgetItem key={item.id} row={item} topic_name={current_topic_name} auth={auth} />
+                )
+              )}
+            <p className="paging-info small">{`Showing page ${pager.page} of ${pager.pagerSize} (total records: ${pager.allData.length})`}</p>
+          </Fragment>
       )
     };
 };

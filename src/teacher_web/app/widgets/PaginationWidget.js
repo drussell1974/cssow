@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 
-const PaginationWidget = ({data, uri, pageSize = 10}) => {
-    if(data === undefined || data.length === 0 || uri === undefined  || uri === "") {
+const PaginationWidget = ({uri, pager}) => {
+    if(pager === undefined || pager.allData === undefined || pager.pagerSize === 1 || uri === undefined  || uri === "") {
         return (<Fragment></Fragment>);
     } else {
-        let pager = []
-            
-        for(var i = 1; i < Math.ceil(data.length / pageSize) + 1; i++) {
-            pager.push({
+        let bookmarks = [];
+
+        for(var i = 1; i < pager.pagerSize + 1; i++) {
+            bookmarks.push({            
                 pageNumber: i,
                 to: `${uri}?page=${i}`,
             })
@@ -15,7 +15,7 @@ const PaginationWidget = ({data, uri, pageSize = 10}) => {
         
         return (
             <ul className="pagination">
-                {pager.map(item => (
+                {bookmarks.map(item => (
                     <li key={item.pageNumber}>
                         <a href={item.to}>{item.pageNumber}</a>
                     </li>

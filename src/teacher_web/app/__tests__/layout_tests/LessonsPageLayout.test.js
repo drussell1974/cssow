@@ -118,6 +118,6 @@ describe('LessonsPageLayout', () => {
 
         expect(
             getMainContent().querySelectorAll(".post-preview")
-        ).toHaveLength(12);
+        ).toHaveLength(10);
     })
 })

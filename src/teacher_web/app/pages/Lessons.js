@@ -6,25 +6,13 @@ import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper } from '../widgets/SidebarNavWidget';
 import AdminButtonWidget from '../widgets/AdminButtonWidget';
 import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
-import PaginationWidget, { Mapper as PaginationMapper } from '../widgets/PaginationWidget';
+import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-const PageMenu = () => {
-    
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light" id="itemNav">
-            <div className="container">
-                <ul className="navbar-nav ml-auto">
-                    <li className="nav-item">
-                        <Link className="nav-link" id="lnk-bc-schemes_of_work" href="/">Schemes of Work</Link>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    )
-}
+export const LessonsPageLayout = ({page = 1, schemeofwork = {}, schemesOfWork = [], lessons = []}) => {
+    var Pager = require('../services/Pager.js');
+    let pager = new Pager(lessons);
 
-export const LessonsPageLayout = ({schemeofwork = {}, schemesOfWork = [], lessons = []}) => {
     return (
         <div className="container">
             <div className="row">
@@ -38,14 +26,14 @@ export const LessonsPageLayout = ({schemeofwork = {}, schemesOfWork = [], lesson
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix pagination-top">
-                        <PaginationWidget data={lessons} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
+                        <PaginationWidget uri={`/schemeofwork/${schemeofwork.id}/lessons`} pager={pager} />
                     </div>
                     <AdminButtonWidget />
 
-                    <LessonListingWidget data={lessons}/>
+                    <LessonListingWidget pager={pager} page={page} />
                     
                     <div className="clearfix pagination-bottom">
-                        <PaginationWidget data={lessons} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
+                        <PaginationWidget uri={`/schemeofwork/${schemeofwork.id}/lessons`} pager={pager}/>
                     </div>
                     <AddLearningMaterialsWidget />
                     <hr/>
@@ -59,6 +47,7 @@ class Lessons extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            Page: 1,
             SchemeOfWork: {},
             SchemesOfWork: [],
             Lessons: [],
@@ -77,7 +66,7 @@ class Lessons extends React.Component {
         return (        
             <Fragment>
                 
-                <LessonsPageLayout schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
+                <LessonsPageLayout page={this.state.Page} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
 
                 <hr/>
                 <div className="modal fade" id="keywordModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

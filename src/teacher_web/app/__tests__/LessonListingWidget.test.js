@@ -90,12 +90,14 @@ describe('LessonListingWidget', () => {
     let render, container;
 
     let learningEpisodes;
+    var Pager = require('../services/Pager.js');
+    let pager;
 
     beforeEach(()=> {
         (
             { render, container} = createContainer()
         ),
-        learningEpisodes = FakeApiService.getLessonEpisodes()
+        learningEpisodes = FakeApiService.getLessonEpisodes();
     })
 
     it('renders empty component', () => {
@@ -107,8 +109,10 @@ describe('LessonListingWidget', () => {
     })
 
     it('renders alert if list empty', () => {
+        pager = new Pager([]);
+
         render(<Router>
-            <LessonListingWidget data={[]} auth={true} />
+            <LessonListingWidget pager={pager} page={1} auth={true} />
         </Router>);
 
         expect(
@@ -124,14 +128,80 @@ describe('LessonListingWidget', () => {
         ).toHaveLength(0);
     })
 
-    it('has multiple item', () => {
+    it('has multiple items (default paging 10 per page)', () => {
+        pager = new Pager(learningEpisodes);
+        
         render(<Router>
-            <LessonListingWidget data={learningEpisodes} auth={true} />
+            <LessonListingWidget pager={pager} page={1} auth={true} />
         </Router>)
 
         expect(
             container.querySelectorAll('.post-preview')
-        ).toHaveLength(12);
+        ).toHaveLength(10);
+        
+        // TODO: Fix when show headings
+
+        expect(
+            container.querySelectorAll('.group-heading')
+        ).toHaveLength(0);
+
+        expect(
+            container.querySelector('.paging-info').textContent
+        ).toEqual('Showing page 1 of 2 (total records: 12)');
+    })
+
+    it('has paged items 1 of 3', () => {
+        pager = new Pager(learningEpisodes, 4, 1);
+
+        render(<Router>
+            <LessonListingWidget pager={pager} page={1} auth={true} />
+        </Router>)
+
+        expect(
+            container.querySelectorAll('.post-preview')
+        ).toHaveLength(4);
+
+        expect(
+            container.querySelector('.post-preview h2.post-title').textContent
+        ).toEqual('Lesson 1 - Memory')
+
+        expect(
+            container.querySelectorAll('.post-preview h2.post-title')[3].textContent
+        ).toEqual('Lesson 4 - Types of software')
+        
+        expect(
+            container.querySelector('.paging-info').textContent
+        ).toEqual('Showing page 1 of 3 (total records: 12)');
+
+        // TODO: Fix when show headings
+
+        expect(
+            container.querySelectorAll('.group-heading')
+        ).toHaveLength(0);
+    })
+
+    
+    it('has paged items 3 of 3', () => {
+        pager = new Pager(learningEpisodes, 4, 3);
+
+        render(
+            <Router>
+                <LessonListingWidget pager={pager} page = {3} auth={true} />
+            </Router>)
+        
+        //TODO: fire event GetPagedData(3);
+
+        expect(
+            container.querySelectorAll('.post-preview')
+        ).toHaveLength(4);
+
+        expect(
+            container.querySelector('.post-preview h2.post-title').textContent
+        ).toEqual('Lesson 9 - Variables and constants')
+
+        expect(
+            container.querySelectorAll('.post-preview h2.post-title')[3].textContent
+        ).toEqual("Lesson 12 - Logic and Truth Tables");
         
         // TODO: Fix when show headings
 
