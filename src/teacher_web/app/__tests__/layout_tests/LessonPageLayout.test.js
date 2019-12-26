@@ -82,17 +82,6 @@ describe('LessonPageLayout', () => {
         ).not.toBeNull();
     })
 
-    it('has pagination', () => {
-        render(
-            <Router>
-                <LessonPageLayout lessons={lessons} />
-            </Router>);
-        
-        expect(
-            getMainContent().querySelectorAll('.pagination')
-        ).toHaveLength(2);
-    })
-
     it('has lesson objectives listing', () => {
         render(
             <Router>

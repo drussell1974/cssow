@@ -25,7 +25,8 @@ describe('LessonsPageLayout', () => {
     beforeEach(() => {
         (
             { render, container } = createContainer()
-        )
+        ),
+        lessons = FakeApiService.getLessonEpisodes();
     })
 
     it('renders empty content', () => {
@@ -56,6 +57,28 @@ describe('LessonsPageLayout', () => {
         expect(
             getContentHeading().textContent
         ).toEqual('GCSE Computer Science');
+    })
+
+    it('has pagination at top', () => {
+        render(
+            <Router>
+                <LessonsPageLayout lessons={lessons} />
+            </Router>);
+
+        expect(
+            getMainContent().querySelectorAll('.pagination-top .pagination li')
+        ).toHaveLength(2);
+    })
+
+    it('has pagination at bottom', () => {
+        render(
+            <Router>
+                <LessonsPageLayout lessons={lessons} />
+            </Router>);
+
+        expect(
+            getMainContent().querySelectorAll('.pagination-bottom .pagination li')
+        ).toHaveLength(2);
     })
 
     it('has two columns', () => {
@@ -95,6 +118,6 @@ describe('LessonsPageLayout', () => {
 
         expect(
             getMainContent().querySelectorAll(".post-preview")
-        ).toHaveLength(4);
+        ).toHaveLength(12);
     })
 })

@@ -131,7 +131,7 @@ describe('LessonListingWidget', () => {
 
         expect(
             container.querySelectorAll('.post-preview')
-        ).toHaveLength(4);
+        ).toHaveLength(12);
         
         // TODO: Fix when show headings
 

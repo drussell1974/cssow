@@ -5,10 +5,9 @@ import BannerWidget from '../widgets/BannerWidget';
 import BlackboardDisplayButton from '../widgets/BlackboardDisplayButton';
 import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper }from '../widgets/SidebarNavWidget';
-import PaginationWidget, { Mapper as PaginationMapper } from '../widgets/PaginationWidget';
 import { LessonObjectiveListingWidget } from '../widgets/LessonObjectiveListingWidget';
 
-export const LessonPageLayout = ({lessons = [], lesson = []}) => {
+export const LessonPageLayout = ({lessons = [], lesson = {}}) => {
     return (
         <div className="container">
             <div className="row">
@@ -22,9 +21,9 @@ export const LessonPageLayout = ({lessons = [], lesson = []}) => {
                     <SidebarNavWidget data={Mapper.TransformLessons(lessons)} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
-                    <PaginationWidget data={PaginationMapper.TransformLessons(lessons)} />
-                    <LessonObjectiveListingWidget data={lesson} />
-                    <PaginationWidget data={PaginationMapper.TransformLessons(lessons)} />
+                    
+                    <LessonObjectiveListingWidget data={lesson.learning_objectives} />
+                    
                 </div>
             </div>
         </div>

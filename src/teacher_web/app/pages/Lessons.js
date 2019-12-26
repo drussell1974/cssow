@@ -6,7 +6,7 @@ import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper } from '../widgets/SidebarNavWidget';
 import AdminButtonWidget from '../widgets/AdminButtonWidget';
 import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
-import PaginationWidget from '../widgets/PaginationWidget';
+import PaginationWidget, { Mapper as PaginationMapper } from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
 const PageMenu = () => {
@@ -37,15 +37,15 @@ export const LessonsPageLayout = ({schemeofwork = {}, schemesOfWork = [], lesson
                     <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork)}/>
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
-                    <div className="clearfix">
-                        <PaginationWidget />
+                    <div className="clearfix pagination-top">
+                        <PaginationWidget data={lessons} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
                     </div>
                     <AdminButtonWidget />
 
                     <LessonListingWidget data={lessons}/>
                     
-                    <div className="clearfix">
-                        <PaginationWidget />    
+                    <div className="clearfix pagination-bottom">
+                        <PaginationWidget data={lessons} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
                     </div>
                     <AddLearningMaterialsWidget />
                     <hr/>

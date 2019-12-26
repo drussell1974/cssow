@@ -31,9 +31,7 @@ export const LessonObjectiveListingWidgetItem = ({row, auth}) => {
 
 export const LessonObjectiveListingWidget = ({data, auth}) => {
 
-    if(data === undefined) {
-        return (<Fragment></Fragment>);
-    } else if (data.length === 0) {
+    if(data === undefined || data.length === 0) {
         return (
             <div className="alert alert-info" role="alert">
                 <span className="small">There are no learning objectives for this lesson.</span>
@@ -42,7 +40,7 @@ export const LessonObjectiveListingWidget = ({data, auth}) => {
         );
     } else {
         return (
-            data.learning_objectives.map(item => (
+            data.map(item => (
                   <LessonObjectiveListingWidgetItem key={item.id} row={item} auth={auth} />
               )
             )

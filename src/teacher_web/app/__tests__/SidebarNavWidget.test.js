@@ -115,7 +115,7 @@ describe('SidebarNavWidget', () => {
 
         expect(
             list.querySelectorAll('.nav-item')
-        ).toHaveLength(4);
+        ).toHaveLength(12);
     })
 })
 

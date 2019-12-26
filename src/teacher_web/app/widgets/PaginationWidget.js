@@ -1,31 +1,23 @@
 import React, { Fragment } from 'react';
 
-export const Mapper = {
-    TransformLessons: (list) => {
-        return list.map(
-            function(item) {
-                
-                let to_SchemeOfWork = `/schemeofwork/${item.scheme_of_work_id}/lesson/${item.id}`;
-                
-                return {
-                    id: item.id,
-                    pageNumber: "x",
-                    to: to_SchemeOfWork,
-                }
-            }
-        )
-    }
-}
-
-const PaginationWidget = ({data, page, pageSize = 10}) => {
-    if(data === undefined || data.length === 0) {
+const PaginationWidget = ({data, uri, pageSize = 10}) => {
+    if(data === undefined || data.length === 0 || uri === undefined  || uri === "") {
         return (<Fragment></Fragment>);
     } else {
+        let pager = []
+            
+        for(var i = 1; i < Math.ceil(data.length / pageSize) + 1; i++) {
+            pager.push({
+                pageNumber: i,
+                to: `${uri}?page=${i}`,
+            })
+        }
+        
         return (
             <ul className="pagination">
-                {data.map(item => (
-                    <li key={item.id}>
-                        {item.pageNumber}
+                {pager.map(item => (
+                    <li key={item.pageNumber}>
+                        <a href={item.to}>{item.pageNumber}</a>
                     </li>
                 ))}
             </ul>

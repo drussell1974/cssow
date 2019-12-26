@@ -81,7 +81,7 @@ describe('LessonObjectiveListingWidget', () => {
 
         expect(
             container.textContent
-        ).toEqual('');
+        ).toEqual("There are no learning objectives for this lesson.");
     })
 
     it('renders alert if list empty', () => {
@@ -103,15 +103,15 @@ describe('LessonObjectiveListingWidget', () => {
         ).toHaveLength(0);
     })
 
-    it('has multiple item', () => {
+    it('has multiple items', () => {
         render(
             <Router>
-                <LessonObjectiveListingWidget data={lesson} auth={true} />
+                <LessonObjectiveListingWidget data={lesson.learning_objectives} auth={true} />
             </Router>)
 
         expect(
             container.querySelectorAll('.post-preview')
-        ).toHaveLength(5);
+        ).toHaveLength(9);
         
         // TODO: Fix when show headings
 
