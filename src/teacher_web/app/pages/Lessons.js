@@ -9,10 +9,8 @@ import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-export const LessonsPageLayout = ({page = 1, schemeofwork = {}, schemesOfWork = [], lessons = []}) => {
-    var Pager = require('../services/Pager.js');
-    let pager = new Pager(lessons);
-
+export const LessonsPageLayout = ({pager, page = 1, schemeofwork = {}, schemesOfWork = []}) => {
+    
     return (
         <div className="container">
             <div className="row">
@@ -26,14 +24,14 @@ export const LessonsPageLayout = ({page = 1, schemeofwork = {}, schemesOfWork = 
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix pagination-top">
-                        <PaginationWidget uri={`/schemeofwork/${schemeofwork.id}/lessons`} pager={pager} />
+                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
                     </div>
                     <AdminButtonWidget />
 
                     <LessonListingWidget pager={pager} page={page} />
                     
                     <div className="clearfix pagination-bottom">
-                        <PaginationWidget uri={`/schemeofwork/${schemeofwork.id}/lessons`} pager={pager}/>
+                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
                     </div>
                     <AddLearningMaterialsWidget />
                     <hr/>
@@ -44,6 +42,7 @@ export const LessonsPageLayout = ({page = 1, schemeofwork = {}, schemesOfWork = 
 }
 
 class Lessons extends React.Component {
+    
     constructor(props){
         super(props);
         this.state = {
@@ -59,14 +58,15 @@ class Lessons extends React.Component {
         ApiReactService.getSchemesOfWork(this);
         ApiReactService.getSchemeOfWork(this, this.props.match.params.scheme_of_work_id);
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
+        
+        var Pager = require('../services/Pager.js');
+        this.pager = new Pager(this.state.Lessons);
     }
 
     render() {
-
         return (        
             <Fragment>
-                
-                <LessonsPageLayout page={this.state.Page} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} lessons={this.state.Lessons} />
+                <LessonsPageLayout pager={this.pager} page={this.state.Page} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
 
                 <hr/>
                 <div className="modal fade" id="keywordModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

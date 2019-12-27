@@ -8,7 +8,9 @@ import { LessonsPageLayout } from '../../pages/Lessons';
 
 describe('LessonsPageLayout', () => {
     let render, container;
-    let schemeofwork, schemesofwork, lessons;
+    let schemeofwork, schemesofwork, lessons, pager;
+    
+    var Pager = require('../../services/Pager.js');
 
     const getContentHeading = function() {
         return container.querySelector("div.container > .col-lg-12, .col-md-14, .content-heading");
@@ -27,6 +29,7 @@ describe('LessonsPageLayout', () => {
             { render, container } = createContainer()
         ),
         lessons = FakeApiService.getLessonEpisodes();
+        pager = new Pager(lessons);
     })
 
     it('renders empty content', () => {
@@ -42,7 +45,7 @@ describe('LessonsPageLayout', () => {
 
         expect(
             getMainContent().textContent
-        ).toEqual('There are no lessons for this scheme of work.');
+        ).toEqual('');
     })
 
     it('has content heading', () => {
@@ -62,7 +65,7 @@ describe('LessonsPageLayout', () => {
     it('has pagination at top', () => {
         render(
             <Router>
-                <LessonsPageLayout lessons={lessons} />
+                <LessonsPageLayout pager={pager} />
             </Router>);
 
         expect(
@@ -73,7 +76,7 @@ describe('LessonsPageLayout', () => {
     it('has pagination at bottom', () => {
         render(
             <Router>
-                <LessonsPageLayout lessons={lessons} />
+                <LessonsPageLayout pager={pager} />
             </Router>);
 
         expect(
@@ -82,7 +85,10 @@ describe('LessonsPageLayout', () => {
     })
 
     it('has two columns', () => {
-        render(<LessonsPageLayout schemesOfWork={[]} lessons={[]}/>);
+        render(
+            <Router>
+                <LessonsPageLayout schemesOfWork={[]} pager={pager} />
+            </Router>);
 
         expect(
             getLeftColumm()
@@ -113,7 +119,7 @@ describe('LessonsPageLayout', () => {
         
         render(
             <Router>
-                <LessonsPageLayout lessons={lessons} />
+                <LessonsPageLayout pager={pager} />
             </Router>);
 
         expect(
