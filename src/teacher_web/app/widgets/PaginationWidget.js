@@ -1,6 +1,16 @@
 import React, { Fragment } from 'react';
 
-const PaginationWidget = ({uri, pager}) => {
+const PaginationWidget = ({uri, pager, onBookmarkClicked}) => {
+    
+    const handleClick = (e, page) => {
+        
+        //e.stopPropagation();
+
+        if(onBookmarkClicked !== undefined){
+            onBookmarkClicked(page);
+        }
+    }
+
     if(pager === undefined || pager.allData === undefined || pager.pagerSize === 1 || uri === undefined  || uri === "") {
         return (<Fragment></Fragment>);
     } else {
@@ -8,8 +18,7 @@ const PaginationWidget = ({uri, pager}) => {
 
         for(var i = 1; i < pager.pagerSize + 1; i++) {
             bookmarks.push({            
-                pageNumber: i,
-                to: `${uri}?page=${i}`,
+                pageNumber: i
             })
         }
         
@@ -17,7 +26,7 @@ const PaginationWidget = ({uri, pager}) => {
             <ul className="pagination">
                 {bookmarks.map(item => (
                     <li key={item.pageNumber}>
-                        <a href={item.to}>{item.pageNumber}</a>
+                        <div id={`page${item.pageNumber}`} onClick={(e) => handleClick(e, item.pageNumber)}>{item.pageNumber}</div>
                     </li>
                 ))}
             </ul>

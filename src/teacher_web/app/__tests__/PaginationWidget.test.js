@@ -1,7 +1,9 @@
 import React from "react";
+import ReactTestUtils, {act} from 'react-dom/test-utils';
 
 import { createContainer } from "../helpers/domManipulators";
 import FakeApiService from "../helpers/FakeApiService";
+import { spy, setUpSpy, cleanUpSpy } from '../helpers/jest.extend.spy';
 import pager from '../services/Pager';
 
 import PaginationWidget from "../widgets/PaginationWidget";
@@ -113,14 +115,6 @@ describe("PaginationWidget", () => {
             expect(
                 container.textContent
             ).toEqual("12");
-
-            expect(
-                container.querySelector("ul.pagination li a").getAttribute("href")
-            ).toEqual("/schemeofwork/127/lessons?page=1");
-
-            expect(
-                container.querySelector("ul.pagination li:last-child a").getAttribute("href")
-            ).toEqual("/schemeofwork/127/lessons?page=2");
         })
 
         it("show 12 records over 3 pages (4 per page)", () => {
@@ -139,14 +133,6 @@ describe("PaginationWidget", () => {
             expect(
                 container.textContent
             ).toEqual("123");
-            
-            expect(
-                container.querySelector("ul.pagination li a").getAttribute("href")
-            ).toEqual("/schemeofwork/127/lessons?page=1");
-            
-            expect(
-                container.querySelector("ul.pagination li:last-child a").getAttribute("href")
-            ).toEqual("/schemeofwork/127/lessons?page=3");
         })
 
         
@@ -185,5 +171,68 @@ describe("PaginationWidget", () => {
                 container.textContent
             ).toEqual("12");
         })
+    })
+})
+
+describe("PaginationWidget Callback", () => {
+    let render, container;
+    
+    beforeEach(() => {(
+        { render, container} = createContainer(),
+        setUpSpy()
+    )})
+
+    afterEach(() => {
+        cleanUpSpy();
+    })
+
+    it('notify when first bookmark clicked', async () => {
+        // Arrange
+        const bookmarkSpy = spy();
+        pager.init(["A","B","C","D","M","L","N","O","W","X","Y","Z"], 4, 1);
+        
+        // Act
+        render(<PaginationWidget onBookmarkClicked={bookmarkSpy.fn} pager={pager} uri="lesson" />);
+
+        const bookmark = container.querySelector('ul.pagination li:first-child div');
+        
+        await act(async () => {
+            ReactTestUtils.Simulate.click(bookmark);
+        });
+
+        // Assert: callback triggered function
+        expect(
+            bookmarkSpy
+        ).toHaveBeenCalled();
+        
+        // ... and returned page value
+        expect(
+            bookmarkSpy.receivedArgument(0)
+        ).toEqual(1);
+    })
+    
+    it('notify when last bookmark clicked', async () => {
+        // Arrange
+        const bookmarkSpy = spy();
+        pager.init(["A","B","C","D","M","L","N","O","W","X","Y","Z"], 4);
+        
+        // Act
+        render(<PaginationWidget onBookmarkClicked={bookmarkSpy.fn} pager={pager} uri="/lesson" />);
+
+        const bookmark = container.querySelector('ul.pagination li:last-child div');
+        
+        await act(async () => {
+            ReactTestUtils.Simulate.click(bookmark);
+        });
+
+        // Assert: callback triggered function
+        expect(
+            bookmarkSpy
+        ).toHaveBeenCalled();
+        
+        // ... and returned page value
+        expect(
+            bookmarkSpy.receivedArgument(0)
+        ).toEqual(3);
     })
 })

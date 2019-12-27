@@ -10,7 +10,7 @@ import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-export const LessonsPageLayout = ({lessons = [], page = 1, schemeofwork = {}, schemesOfWork = []}) => {
+export const LessonsPageLayout = ({onBookmarkClicked, lessons = [], page = 1, schemeofwork = {}, schemesOfWork = []}) => {
     
     pager.init(lessons);
 
@@ -27,7 +27,7 @@ export const LessonsPageLayout = ({lessons = [], page = 1, schemeofwork = {}, sc
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix pagination-top">
-                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
+                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} onBookmarkClicked={onBookmarkClicked} />
                     </div>
                     <AdminButtonWidget />
 
@@ -54,7 +54,8 @@ class Lessons extends React.Component {
             SchemesOfWork: [],
             Lessons: [],
             hasError: false,
-        }
+        };
+        this.handleBookmarkClicked = this.handleBookmarkClicked.bind(this);
     }
 
     componentDidMount() {
@@ -63,10 +64,18 @@ class Lessons extends React.Component {
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
     }
 
+    handleBookmarkClicked(pageNumber) {
+        console.log(`changed to page:${pageNumber}`);
+        this.setState({
+            Page: pageNumber
+        })
+    }
+
     render() {
+
         return (        
             <Fragment>
-                <LessonsPageLayout page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
+                <LessonsPageLayout onBookmarkClicked={this.handleBookmarkClicked} page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
 
                 <hr/>
 
