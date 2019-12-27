@@ -10,9 +10,9 @@ import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-export const LessonsPageLayout = ({onBookmarkClicked, lessons = [], page = 1, schemeofwork = {}, schemesOfWork = []}) => {
+export const LessonsPageLayout = ({onBookmarkClicked, page = 1, lessons = [],  schemeofwork = {}, schemesOfWork = []}) => {
     
-    pager.init(lessons);
+    pager.init(lessons, 10, page);
 
     return (
         <div className="container">
@@ -34,7 +34,7 @@ export const LessonsPageLayout = ({onBookmarkClicked, lessons = [], page = 1, sc
                     <LessonListingWidget pager={pager} page={page} />
                     
                     <div className="clearfix pagination-bottom">
-                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} />
+                        <PaginationWidget pager={pager} uri={`/schemeofwork/${schemeofwork.id}/lessons`} onBookmarkClicked={onBookmarkClicked} />
                     </div>
                     <AddLearningMaterialsWidget />
                     <hr/>

@@ -25,8 +25,8 @@ const PaginationWidget = ({uri, pager, onBookmarkClicked}) => {
         return (
             <ul className="pagination">
                 {bookmarks.map(item => (
-                    <li key={item.pageNumber}>
-                        <div id={`page${item.pageNumber}`} onClick={(e) => handleClick(e, item.pageNumber)}>{item.pageNumber}</div>
+                    <li key={item.pageNumber} className={`page-item ${pager.page == item.pageNumber ? "active" : ""}`}>
+                        <div id={`page${item.pageNumber}`} className="page-link" onClick={(e) => handleClick(e, item.pageNumber)}>{item.pageNumber}</div>
                     </li>
                 ))}
             </ul>

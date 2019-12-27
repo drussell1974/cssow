@@ -109,7 +109,7 @@ describe("PaginationWidget", () => {
             
             // Assert
             expect(
-                container.querySelectorAll("ul.pagination li")
+                container.querySelectorAll("ul.pagination .page-item")
             ).toHaveLength(2);
 
             expect(
@@ -127,7 +127,7 @@ describe("PaginationWidget", () => {
 
             // Assert
             expect(
-                container.querySelectorAll("ul.pagination li")
+                container.querySelectorAll("ul.pagination .page-item")
             ).toHaveLength(3);
             
             expect(
@@ -146,7 +146,7 @@ describe("PaginationWidget", () => {
 
             // Assert
             expect(
-                container.querySelectorAll("ul.pagination li")
+                container.querySelectorAll("ul.pagination .page-item")
             ).toHaveLength(3);
             
             expect(
@@ -164,7 +164,7 @@ describe("PaginationWidget", () => {
 
             // Assert
             expect(
-                container.querySelectorAll("ul.pagination li")
+                container.querySelectorAll("ul.pagination .page-item")
             ).toHaveLength(2);
 
             expect(
@@ -186,6 +186,25 @@ describe("PaginationWidget Callback", () => {
         cleanUpSpy();
     })
 
+    it('first bookmark active', async () => {
+        // Arrange
+        const bookmarkSpy = spy();
+        pager.init(["A","B","C","D","M","L","N","O","W","X","Y","Z"], 4, 1);
+        
+        // Act
+        render(<PaginationWidget pager={pager} uri="lesson" />);
+
+        // Assert
+        expect(
+            container.querySelector('ul.pagination .page-item:first-child').getAttribute("class")
+        ).toEqual("page-item active");    
+        
+        expect(
+            container.querySelector('ul.pagination .page-item:last-child').getAttribute("class")
+        ).toEqual("page-item ");    
+
+    })
+    
     it('notify when first bookmark clicked', async () => {
         // Arrange
         const bookmarkSpy = spy();
@@ -194,7 +213,7 @@ describe("PaginationWidget Callback", () => {
         // Act
         render(<PaginationWidget onBookmarkClicked={bookmarkSpy.fn} pager={pager} uri="lesson" />);
 
-        const bookmark = container.querySelector('ul.pagination li:first-child div');
+        const bookmark = container.querySelector('ul.pagination .page-item:first-child .page-link');
         
         await act(async () => {
             ReactTestUtils.Simulate.click(bookmark);
@@ -219,7 +238,7 @@ describe("PaginationWidget Callback", () => {
         // Act
         render(<PaginationWidget onBookmarkClicked={bookmarkSpy.fn} pager={pager} uri="/lesson" />);
 
-        const bookmark = container.querySelector('ul.pagination li:last-child div');
+        const bookmark = container.querySelector('ul.pagination .page-item:last-child .page-link');
         
         await act(async () => {
             ReactTestUtils.Simulate.click(bookmark);
