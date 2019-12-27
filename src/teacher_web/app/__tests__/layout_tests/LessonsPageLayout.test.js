@@ -1,16 +1,14 @@
-import React from 'react';
-import { MemoryRouter as Router } from 'react-router-dom';
+import React from "react";
+import { MemoryRouter as Router } from "react-router-dom";
 
-import { createContainer } from '../../helpers/domManipulators';
-import FakeApiService from '../../helpers/FakeApiService';
+import { createContainer } from "../../helpers/domManipulators";
+import FakeApiService from "../../helpers/FakeApiService";
 
-import { LessonsPageLayout } from '../../pages/Lessons';
+import { LessonsPageLayout } from "../../pages/Lessons";
 
-describe('LessonsPageLayout', () => {
+describe("LessonsPageLayout", () => {
     let render, container;
-    let schemeofwork, schemesofwork, lessons, pager;
-    
-    var Pager = require('../../services/Pager.js');
+    let schemeofwork, schemesofwork, lessons;
 
     const getContentHeading = function() {
         return container.querySelector("div.container > .col-lg-12, .col-md-14, .content-heading");
@@ -29,26 +27,25 @@ describe('LessonsPageLayout', () => {
             { render, container } = createContainer()
         ),
         lessons = FakeApiService.getLessonEpisodes();
-        pager = new Pager(lessons);
     })
 
-    it('renders empty content', () => {
+    it("renders empty content", () => {
         render(<LessonsPageLayout />);
 
         expect(
             getContentHeading().textContent
-        ).toEqual('');
+        ).toEqual("");
 
         expect(
             getLeftColumm().textContent
-        ).toEqual('');
+        ).toEqual("");
 
         expect(
             getMainContent().textContent
-        ).toEqual('');
+        ).toEqual("There are no lessons for this scheme of work.");
     })
 
-    it('has content heading', () => {
+    it("has content heading", () => {
         
         schemeofwork = FakeApiService.getSchemeOfWork();
 
@@ -59,35 +56,35 @@ describe('LessonsPageLayout', () => {
 
         expect(
             getContentHeading().textContent
-        ).toEqual('GCSE Computer Science');
+        ).toEqual("GCSE Computer Science");
     })
 
-    it('has pagination at top', () => {
+    it("has pagination at top", () => {
         render(
             <Router>
-                <LessonsPageLayout pager={pager} />
+                <LessonsPageLayout lessons={lessons} />
             </Router>);
 
         expect(
-            getMainContent().querySelectorAll('.pagination-top .pagination li')
+            getMainContent().querySelectorAll(".pagination-top .pagination li")
         ).toHaveLength(2);
     })
 
-    it('has pagination at bottom', () => {
+    it("has pagination at bottom", () => {
         render(
             <Router>
-                <LessonsPageLayout pager={pager} />
+                <LessonsPageLayout lessons={lessons} />
             </Router>);
 
         expect(
-            getMainContent().querySelectorAll('.pagination-bottom .pagination li')
+            getMainContent().querySelectorAll(".pagination-bottom .pagination li")
         ).toHaveLength(2);
     })
 
-    it('has two columns', () => {
+    it("has two columns", () => {
         render(
             <Router>
-                <LessonsPageLayout schemesOfWork={[]} pager={pager} />
+                <LessonsPageLayout schemesOfWork={[]} lessons={lessons} />
             </Router>);
 
         expect(
@@ -99,7 +96,7 @@ describe('LessonsPageLayout', () => {
         ).not.toBeNull();
     })
 
-    it('has schemes of work in sidebar', () => {
+    it("has schemes of work in sidebar", () => {
         
         schemesofwork = FakeApiService.getSchemesOfWork();
         
@@ -113,13 +110,13 @@ describe('LessonsPageLayout', () => {
         ).toHaveLength(3);
     })
 
-    it('has lessons in main content', () => {
+    it("has lessons in main content", () => {
         
         lessons = FakeApiService.getLessonEpisodes();
         
         render(
             <Router>
-                <LessonsPageLayout pager={pager} />
+                <LessonsPageLayout lessons={lessons} />
             </Router>);
 
         expect(

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 
 import ApiReactService from '../services/ApiReactService';
+import pager from '../services/Pager';
 
 import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper } from '../widgets/SidebarNavWidget';
@@ -9,8 +10,10 @@ import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-export const LessonsPageLayout = ({pager, page = 1, schemeofwork = {}, schemesOfWork = []}) => {
+export const LessonsPageLayout = ({lessons = [], page = 1, schemeofwork = {}, schemesOfWork = []}) => {
     
+    pager.init(lessons);
+
     return (
         <div className="container">
             <div className="row">
@@ -58,17 +61,15 @@ class Lessons extends React.Component {
         ApiReactService.getSchemesOfWork(this);
         ApiReactService.getSchemeOfWork(this, this.props.match.params.scheme_of_work_id);
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
-        
-        var Pager = require('../services/Pager.js');
-        this.pager = new Pager(this.state.Lessons);
     }
 
     render() {
         return (        
             <Fragment>
-                <LessonsPageLayout pager={this.pager} page={this.state.Page} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
+                <LessonsPageLayout page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
 
                 <hr/>
+
                 <div className="modal fade" id="keywordModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">

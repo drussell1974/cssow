@@ -3,6 +3,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
 import FakeApiService from '../helpers/FakeApiService';
+import pager from '../services/Pager';
 
 import { LessonListingWidget, LessonListingWidgetItem } from '../widgets/LessonListingWidget';
 
@@ -90,8 +91,6 @@ describe('LessonListingWidget', () => {
     let render, container;
 
     let learningEpisodes;
-    var Pager = require('../services/Pager.js');
-    let pager;
 
     beforeEach(()=> {
         (
@@ -109,7 +108,7 @@ describe('LessonListingWidget', () => {
     })
 
     it('renders alert if list empty', () => {
-        pager = new Pager([]);
+        pager.init([]);
 
         render(<Router>
             <LessonListingWidget pager={pager} page={1} auth={true} />
@@ -129,7 +128,7 @@ describe('LessonListingWidget', () => {
     })
 
     it('has multiple items (default paging 10 per page)', () => {
-        pager = new Pager(learningEpisodes);
+        pager.init(learningEpisodes);
         
         render(<Router>
             <LessonListingWidget pager={pager} page={1} auth={true} />
@@ -151,7 +150,7 @@ describe('LessonListingWidget', () => {
     })
 
     it('has paged items 1 of 3', () => {
-        pager = new Pager(learningEpisodes, 4, 1);
+        pager.init(learningEpisodes, 4, 1);
 
         render(<Router>
             <LessonListingWidget pager={pager} page={1} auth={true} />
@@ -182,7 +181,7 @@ describe('LessonListingWidget', () => {
 
     
     it('has paged items 3 of 3', () => {
-        pager = new Pager(learningEpisodes, 4, 3);
+        pager.init(learningEpisodes, 4, 3);
 
         render(
             <Router>
