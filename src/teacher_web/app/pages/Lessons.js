@@ -51,7 +51,6 @@ class Lessons extends React.Component {
         this.state = {
             Page: 1,
             SchemeOfWork: {},
-            SchemeOfWorkId: this.props.match.params.scheme_of_work_id,
             SchemesOfWork: [],
             Lessons: [],
             hasError: false,
@@ -73,9 +72,8 @@ class Lessons extends React.Component {
     }
 
     handleSidebarNavItemClicked(scheme_of_work_id) {
-        this.setState({
-            SchemeOfWorkId: scheme_of_work_id,
-        })
+        ApiReactService.getSchemeOfWork(this, scheme_of_work_id);
+        ApiReactService.getLessons(this, scheme_of_work_id);
     }
 
     render() {
