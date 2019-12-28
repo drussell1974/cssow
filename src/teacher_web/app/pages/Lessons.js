@@ -59,25 +59,31 @@ class Lessons extends React.Component {
         this.handleSidebarNavItemClicked = this.handleSidebarNavItemClicked.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        console.log(`executing: componentDidMount()`);
         ApiReactService.getSchemesOfWork(this);
         ApiReactService.getSchemeOfWork(this, this.props.match.params.scheme_of_work_id);
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
     }
 
     handleBookmarkClicked(pageNumber) {
+        console.log(`executing: handleBookmarkClicked(pageNumber)`);
         this.setState({
             Page: pageNumber,
         })
     }
 
     handleSidebarNavItemClicked(scheme_of_work_id) {
+        console.log(`executing: handleSidebarNavItemClicked(scheme_of_work_id)`);
         ApiReactService.getSchemeOfWork(this, scheme_of_work_id);
         ApiReactService.getLessons(this, scheme_of_work_id);
-    }
+        this.setState({
+            Page: 1
+        });
+    }   
 
     render() {
-
+        console.log(`executing: render()`)
         return (        
             <Fragment>
                 <LessonsPageLayout onBookmarkClicked={this.handleBookmarkClicked} onSidebarNavItemClicked={this.handleSidebarNavItemClicked} page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
