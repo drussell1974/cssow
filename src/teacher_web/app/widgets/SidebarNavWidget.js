@@ -30,13 +30,14 @@ export const Mapper = {
     },
 }
 
-export const SidebarNavWidgetItem = ({id, displayName, subName, to, active=false}) => {
+export const SidebarNavWidgetItem = ({id, displayName, subName, to, active, onItemClicked}) => {
+    
     if(displayName === undefined) {
         return (<Fragment></Fragment>);
     } else {
         return (
             <li className={`nav-item ${active ? "active" : ""}`}>
-                <Link className='nav-link' to={to}>
+                <Link className='nav-link' to={to} onClick={e => onItemClicked(e, id)}>
                     {displayName} <div className="small">{subName}</div>
                 </Link>
             </li>
@@ -44,7 +45,15 @@ export const SidebarNavWidgetItem = ({id, displayName, subName, to, active=false
     }
 }
 
-const SidebarNavWidget = ({buttonText, data}) => {
+const SidebarNavWidget = ({buttonText, data, onItemClicked}) => {
+
+    const handleClick = (e, id) => {
+        if(onItemClicked !== undefined) {
+            console.log(`selected id:${id}`);
+            onItemClicked(id);
+        }
+    }
+
     if(data === undefined || data.length === 0) {
         return (<Fragment></Fragment>);
     } else {
@@ -58,10 +67,12 @@ const SidebarNavWidget = ({buttonText, data}) => {
                     {data.map(item => (
                         <SidebarNavWidgetItem 
                             key={item.id} 
+                            id={item.id}
                             displayName={item.displayName} 
                             subName={item.subName} 
                             to={`/schemeofwork/${item.id}/lessons`}
-                            active = {item.active} />
+                            active = {item.active}
+                            onItemClicked={handleClick} />
                     ))}
                     </ul>
                     <hr />

@@ -10,7 +10,7 @@ import AddLearningMaterialsWidget from '../widgets/AddLearningMaterialsWidget';
 import PaginationWidget from '../widgets/PaginationWidget';
 import { LessonListingWidget } from '../widgets/LessonListingWidget';
 
-export const LessonsPageLayout = ({onBookmarkClicked, page = 1, lessons = [],  schemeofwork = {}, schemesOfWork = []}) => {
+export const LessonsPageLayout = ({onBookmarkClicked, onSidebarNavItemClicked, page = 1, lessons = [],  schemeofwork = {}, schemesOfWork = []}) => {
     
     pager.init(lessons, 10, page);
 
@@ -23,7 +23,7 @@ export const LessonsPageLayout = ({onBookmarkClicked, page = 1, lessons = [],  s
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-4">
-                    <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork, schemeofwork.id)}/>
+                    <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork, schemeofwork.id)} onItemClicked={onSidebarNavItemClicked} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix pagination-top">
@@ -51,11 +51,13 @@ class Lessons extends React.Component {
         this.state = {
             Page: 1,
             SchemeOfWork: {},
+            SchemeOfWorkId: this.props.match.params.scheme_of_work_id,
             SchemesOfWork: [],
             Lessons: [],
             hasError: false,
         };
         this.handleBookmarkClicked = this.handleBookmarkClicked.bind(this);
+        this.handleSidebarNavItemClicked = this.handleSidebarNavItemClicked.bind(this);
     }
 
     componentDidMount() {
@@ -65,9 +67,14 @@ class Lessons extends React.Component {
     }
 
     handleBookmarkClicked(pageNumber) {
-        console.log(`changed to page:${pageNumber}`);
         this.setState({
-            Page: pageNumber
+            Page: pageNumber,
+        })
+    }
+
+    handleSidebarNavItemClicked(scheme_of_work_id) {
+        this.setState({
+            SchemeOfWorkId: scheme_of_work_id,
         })
     }
 
@@ -75,7 +82,7 @@ class Lessons extends React.Component {
 
         return (        
             <Fragment>
-                <LessonsPageLayout onBookmarkClicked={this.handleBookmarkClicked} page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
+                <LessonsPageLayout onBookmarkClicked={this.handleBookmarkClicked} onSidebarNavItemClicked={this.handleSidebarNavItemClicked} page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
 
                 <hr/>
 
