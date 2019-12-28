@@ -23,7 +23,7 @@ export const LessonsPageLayout = ({onBookmarkClicked, page = 1, lessons = [],  s
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-4">
-                    <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork)}/>
+                    <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork, schemeofwork.id)}/>
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     <div className="clearfix pagination-top">

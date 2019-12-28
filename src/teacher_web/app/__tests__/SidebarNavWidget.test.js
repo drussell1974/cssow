@@ -3,6 +3,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
 import FakeApiService from '../helpers/FakeApiService';
+import { spy, setUpSpy, cleanUpSpy } from '../helpers/jest.extend.spy';
 
 import SidebarNavWidget, { SidebarNavWidgetItem, Mapper } from '../widgets/SidebarNavWidget';
 
@@ -167,5 +168,56 @@ describe('SidebarNavWidgetItem', () =>{
         expect(
             container.querySelector('li.nav-item a.nav-link').getAttribute('href')
         ).toEqual('/esconte');
+    })
+})
+
+describe('SidebarNavWidget onItemClick', () => {
+    let render, container;
+    let schemesOfWork;
+    
+    beforeEach(() => {
+        (
+            {render, container} = createContainer()
+        );
+        schemesOfWork = FakeApiService.getSchemesOfWork();
+        setUpSpy();
+    })
+
+    afterEach(() => {
+        cleanUpSpy();
+    })
+
+    it('first link active', () => {
+        // Act
+        render(
+            <Router>
+                <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork, 1)} />
+            </Router>);
+        
+        // Assert
+        expect(
+            container.querySelector('#sidebarResponsive .navbar-nav .nav-item:first-child').getAttribute('class')
+        ).toEqual('nav-item active');
+        
+        expect(
+            container.querySelector('#sidebarResponsive .navbar-nav .nav-item:last-child').getAttribute('class')
+        ).toEqual('nav-item ');
+    })
+
+    it('last link active', () => {
+        // Act
+        render(
+            <Router>
+                <SidebarNavWidget data={Mapper.TransformSchemesOfWork(schemesOfWork, 3)} />
+            </Router>);
+        
+        // Assert
+        expect(
+            container.querySelector('#sidebarResponsive .navbar-nav .nav-item:first-child').getAttribute('class')
+        ).toEqual('nav-item ');
+        
+        expect(
+            container.querySelector('#sidebarResponsive .navbar-nav .nav-item:last-child').getAttribute('class')
+        ).toEqual('nav-item active');
     })
 })

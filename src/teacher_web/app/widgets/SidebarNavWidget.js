@@ -2,19 +2,20 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 export const Mapper = {
-    TransformSchemesOfWork: (list) => {
+    TransformSchemesOfWork: (list, activeItemId) => {
         return list.map(
             function(item) {
                 return {
                     id: item.id,
                     displayName: item.name,
                     subName: item.key_stage_name,
+                    active: item.id == activeItemId ? true : false,
                 }
             }
         )
     },
 
-    TransformLessons: (list) => {
+    TransformLessons: (list, activeItemId) => {
         return list.map( 
             function(item) {
                 var subName = `Lesson ${item.order_of_delivery_id}`;
@@ -22,20 +23,20 @@ export const Mapper = {
                     id: item.id,
                     displayName: item.title,
                     subName: subName,
+                    active: item.id == activeItemId ? true : false,
                 }
             }
         );
     },
 }
 
-export const SidebarNavWidgetItem = ({id, displayName, subName, to, highlight=false}) => {
+export const SidebarNavWidgetItem = ({id, displayName, subName, to, active=false}) => {
     if(displayName === undefined) {
         return (<Fragment></Fragment>);
     } else {
-        let navlinkClass = highlight === true ? 'nav-link' : 'nav-link mark';
         return (
-            <li className="nav-item">
-                <Link className={navlinkClass} to={to}>
+            <li className={`nav-item ${active ? "active" : ""}`}>
+                <Link className='nav-link' to={to}>
                     {displayName} <div className="small">{subName}</div>
                 </Link>
             </li>
@@ -60,7 +61,7 @@ const SidebarNavWidget = ({buttonText, data}) => {
                             displayName={item.displayName} 
                             subName={item.subName} 
                             to={`/schemeofwork/${item.id}/lessons`}
-                            highlight = {item.scheme_of_work_id == 127} />
+                            active = {item.active} />
                     ))}
                     </ul>
                     <hr />

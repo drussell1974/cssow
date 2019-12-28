@@ -174,7 +174,7 @@ describe("PaginationWidget", () => {
     })
 })
 
-describe("PaginationWidget Callback", () => {
+describe("PaginationWidget onBookmarkClick", () => {
     let render, container;
     
     beforeEach(() => {(

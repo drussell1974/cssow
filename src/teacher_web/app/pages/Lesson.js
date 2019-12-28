@@ -18,7 +18,7 @@ export const LessonPageLayout = ({lessons = [], lesson = {}}) => {
             <div className="row">
                 <div className="col-lg-4 col-md-4">
                     <BlackboardDisplayButton lesson={lesson} />
-                    <SidebarNavWidget data={Mapper.TransformLessons(lessons)} />
+                    <SidebarNavWidget data={Mapper.TransformLessons(lessons, lesson.id)} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     
