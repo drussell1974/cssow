@@ -9,6 +9,7 @@ export const Mapper = {
                     id: item.id,
                     displayName: item.name,
                     subName: item.key_stage_name,
+                    url: item.url,
                     active: item.id == activeItemId ? true : false,
                 }
             }
@@ -23,6 +24,7 @@ export const Mapper = {
                     id: item.id,
                     displayName: item.title,
                     subName: subName,
+                    url: item.url,
                     active: item.id == activeItemId ? true : false,
                 }
             }
@@ -30,7 +32,7 @@ export const Mapper = {
     },
 }
 
-export const SidebarNavWidgetItem = ({id, displayName, subName, to, active, onItemClicked}) => {
+export const SidebarNavWidgetItem = ({id, displayName, subName, active, to, onItemClicked}) => {
     
     if(displayName === undefined) {
         return (<Fragment></Fragment>);
@@ -70,7 +72,7 @@ const SidebarNavWidget = ({buttonText, data, onItemClicked}) => {
                             id={item.id}
                             displayName={item.displayName} 
                             subName={item.subName} 
-                            to={`/schemeofwork/${item.id}/lessons`}
+                            to={item.url}
                             active = {item.active}
                             onItemClicked={handleClick} />
                     ))}

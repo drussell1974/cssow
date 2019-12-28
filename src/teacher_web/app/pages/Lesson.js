@@ -7,7 +7,7 @@ import ContentHeadingWidget from '../widgets/ContentHeadingWidget';
 import SidebarNavWidget, { Mapper }from '../widgets/SidebarNavWidget';
 import { LessonObjectiveListingWidget } from '../widgets/LessonObjectiveListingWidget';
 
-export const LessonPageLayout = ({lessons = [], lesson = {}}) => {
+export const LessonPageLayout = ({onSidebarNavItemClicked, lessons = [], lesson = {}}) => {
     return (
         <div className="container">
             <div className="row">
@@ -18,7 +18,7 @@ export const LessonPageLayout = ({lessons = [], lesson = {}}) => {
             <div className="row">
                 <div className="col-lg-4 col-md-4">
                     <BlackboardDisplayButton lesson={lesson} />
-                    <SidebarNavWidget data={Mapper.TransformLessons(lessons, lesson.id)} />
+                    <SidebarNavWidget data={Mapper.TransformLessons(lessons, lesson.id)} onItemClicked={onSidebarNavItemClicked} />
                 </div>
                 <div className="col-lg-8 col-md-10 mx-auto">
                     
@@ -38,18 +38,25 @@ class Lesson extends React.Component {
             Lessons: [],
             hasError: false,
         }
+
+        this.handleSidebarNavItemClicked = this.handleSidebarNavItemClicked.bind(this)
     }
 
-    componentDidMount() {
+    componentWillMount() {
         ApiReactService.getLessons(this, this.props.match.params.scheme_of_work_id);
         ApiReactService.getLesson(this, this.props.match.params.scheme_of_work_id, this.props.match.params.learning_episode_id);
     }
+
+    handleSidebarNavItemClicked(learningEpisodeId) {
+        console.log(`executing: handleSidebarNavItemClicked(learningEpisodeId)`);
+        ApiReactService.getLesson(this, this.props.match.params.scheme_of_work_id, learningEpisodeId);
+    }   
 
     render() {
 
         return (        
             <Fragment>
-                <LessonPageLayout lessons={this.state.Lessons} lesson={this.state.Lesson} />
+                <LessonPageLayout lessons={this.state.Lessons} lesson={this.state.Lesson} onSidebarNavItemClicked={this.handleSidebarNavItemClicked} />
             </Fragment>
         )
     }

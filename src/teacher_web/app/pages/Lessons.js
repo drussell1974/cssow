@@ -83,10 +83,18 @@ class Lessons extends React.Component {
     }   
 
     render() {
-        console.log(`executing: render()`)
+        console.log(`executing: render()`);
+        
         return (        
             <Fragment>
-                <LessonsPageLayout onBookmarkClicked={this.handleBookmarkClicked} onSidebarNavItemClicked={this.handleSidebarNavItemClicked} page={this.state.Page} lessons={this.state.Lessons} schemeofwork={this.state.SchemeOfWork} schemesOfWork={this.state.SchemesOfWork} />
+                <LessonsPageLayout 
+                    page={this.state.Page} 
+                    lessons={this.state.Lessons} 
+                    schemeofwork={this.state.SchemeOfWork} 
+                    schemesOfWork={this.state.SchemesOfWork} 
+                    onBookmarkClicked={this.handleBookmarkClicked} 
+                    onSidebarNavItemClicked={this.handleSidebarNavItemClicked}
+                />
 
                 <hr/>
 

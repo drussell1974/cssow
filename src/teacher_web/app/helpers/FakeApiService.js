@@ -8,6 +8,7 @@ const FakeApiService = {
             created_by_name: 'Dave Russell',
             is_recent: true,
             created: '21st December 2019',
+            url: '/schemeofwork/1/lessons',
         };
     },
 
@@ -19,6 +20,7 @@ const FakeApiService = {
             created_by_name: 'Dave Russell',
             is_recent: false,
             created: '22nd December 2019',
+            url: '/schemeofwork/1/lessons',
         },
         {
             id: 2,
@@ -27,6 +29,7 @@ const FakeApiService = {
             created_by_name: 'Dave Russell',
             is_recent: true,
             created: '22nd November 2019',
+            url: '/schemeofwork/2/lessons',
         },
         {
             id: 3,
@@ -35,6 +38,7 @@ const FakeApiService = {
             created_by_name: 'Dave Russell',
             is_recent: false,
             created: '1st July 2019',
+            url: '/schemeofwork/2/lessons',
         }];
     },
     
@@ -333,6 +337,7 @@ const FakeApiService = {
                     published: 1
                 }
             ],
+            url: "/schemeofwork/76/lessons/1",
         }
     },
 
@@ -349,6 +354,7 @@ const FakeApiService = {
                 created: '2019-12-23T10:17:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 2,
+                url: "/schemeofwork/76/lessons/397",
             },
             {
                 id: 398,
@@ -361,6 +367,7 @@ const FakeApiService = {
                 created: '2019-12-23T10:17:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 6,
+                url: "/schemeofwork/76/lessons/398",
             },
             {
                 id: 399,
@@ -373,6 +380,7 @@ const FakeApiService = {
                 created: '2019-12-23T10:17:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 5,
+                url: "/schemeofwork/76/lessons/399",
             },
             {
                 id: 400,
@@ -385,6 +393,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:20:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 16,
+                url: "/schemeofwork/76/lessons/400",
             },
             {
                 id: 401,
@@ -397,6 +406,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:20:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 16,
+                url: "/schemeofwork/76/lessons/401",
             },
             {
                 id: 402,
@@ -409,6 +419,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:23:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 4,
+                url: "/schemeofwork/76/lessons/402",
             },
             {
                 id: 403,
@@ -421,6 +432,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:24:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 4,
+                url: "/schemeofwork/76/lessons/403",
             },
             {
                 id: 404,
@@ -433,6 +445,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:25:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 6,
+                url: "/schemeofwork/76/lessons/404",
             },
             {
                 id: 405,
@@ -445,6 +458,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:25:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 6,
+                url: "/schemeofwork/76/lessons/405",
             },
             {
                 id: 406,
@@ -457,6 +471,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:26:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 6,
+                url: "/schemeofwork/76/lessons/406",
             },
             {
                 id: 407,
@@ -469,6 +484,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:26:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 6,
+                url: "/schemeofwork/76/lessons/407",
             },
             {
                 id: 408,
@@ -481,6 +497,7 @@ const FakeApiService = {
                 created: '2019-12-26T04:26:00',
                 created_by_name: 'Dave Russell',
                 number_of_learning_objective: 5,
+                url: "/schemeofwork/76/lessons/408",
             },
         ]
     }

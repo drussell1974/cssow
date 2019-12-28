@@ -1,12 +1,15 @@
 import React from "react";
 import { MemoryRouter as Router } from "react-router-dom";
+import ReactTestUtils, { act} from 'react-dom/test-utils';
 
 import { createContainer } from "../../helpers/domManipulators";
 import FakeApiService from "../../helpers/FakeApiService";
+import { spy, setUpSpy, cleanUpSpy } from '../../helpers/jest.extend.spy';
 
 import { LessonsPageLayout } from "../../pages/Lessons";
 
 describe("LessonsPageLayout", () => {
+
     let render, container;
     let schemeofwork, schemesofwork, lessons;
 
@@ -22,105 +25,188 @@ describe("LessonsPageLayout", () => {
         return container.querySelector("div.container > div.col-lg-8, div.col-md-10, div.mx-auto");
     }
 
-    beforeEach(() => {
-        (
-            { render, container } = createContainer()
-        ),
-        lessons = FakeApiService.getLessonEpisodes();
+    describe("LessonsPageLayout Content", () => {
+
+        beforeEach(() => {
+            (
+                { render, container } = createContainer()
+            ),
+            lessons = FakeApiService.getLessonEpisodes();
+            schemesofwork = FakeApiService.getSchemesOfWork();
+        })
+
+        it("renders empty content", () => {
+            render(<LessonsPageLayout />);
+
+            expect(
+                getContentHeading().textContent
+            ).toEqual("");
+
+            expect(
+                getLeftColumm().textContent
+            ).toEqual("");
+
+            expect(
+                getMainContent().textContent
+            ).toEqual("There are no lessons for this scheme of work.");
+        })
+
+        it("has content heading", () => {
+            
+            schemeofwork = FakeApiService.getSchemeOfWork();
+
+            render(
+                <Router>
+                    <LessonsPageLayout schemeofwork={schemeofwork} />
+                </Router>);
+
+            expect(
+                getContentHeading().textContent
+            ).toEqual("GCSE Computer Science");
+        })
+
+        it("has pagination at top", () => {
+            render(
+                <Router>
+                    <LessonsPageLayout lessons={lessons} />
+                </Router>);
+
+            expect(
+                getMainContent().querySelectorAll(".pagination-top .pagination li")
+            ).toHaveLength(2);
+        })
+
+        it("has pagination at bottom", () => {
+            render(
+                <Router>
+                    <LessonsPageLayout lessons={lessons} />
+                </Router>);
+
+            expect(
+                getMainContent().querySelectorAll(".pagination-bottom .pagination li")
+            ).toHaveLength(2);
+        })
+
+        it("has two columns", () => {
+            render(
+                <Router>
+                    <LessonsPageLayout schemesOfWork={[]} lessons={lessons} />
+                </Router>);
+
+            expect(
+                getLeftColumm()
+            ).not.toBeNull();
+
+            expect(
+                getMainContent()
+            ).not.toBeNull();
+        })
+
+        it("has schemes of work in sidebar", () => {
+            
+            render(
+                <Router>
+                    <LessonsPageLayout schemesOfWork={schemesofwork} />
+                </Router>);
+
+            expect(
+                getLeftColumm().querySelectorAll("ul > li.nav-item")
+            ).toHaveLength(3);
+        })
+
+        it("has lessons in main content", () => {
+            
+            lessons = FakeApiService.getLessonEpisodes();
+            
+            render(
+                <Router>
+                    <LessonsPageLayout lessons={lessons} />
+                </Router>);
+
+            expect(
+                getMainContent().querySelectorAll(".post-preview")
+            ).toHaveLength(10);
+        })
     })
 
-    it("renders empty content", () => {
-        render(<LessonsPageLayout />);
+    describe.skip("LessonsPageLayout Callback", () => {
+        beforeEach(() => {
+            (
+                { render, container } = createContainer()
+            ),
+            lessons = FakeApiService.getLessonEpisodes();
+            schemesofwork = FakeApiService.getSchemesOfWork();
+            schemeofwork = FakeApiService.getSchemeOfWork();
+            
+            setUpSpy();
+        })
 
-        expect(
-            getContentHeading().textContent
-        ).toEqual("");
+        afterEach(() => {
+            cleanUpSpy();
+        })
 
-        expect(
-            getLeftColumm().textContent
-        ).toEqual("");
+        it('notify when first item clicked', async () => {
+            // Arrange
 
-        expect(
-            getMainContent().textContent
-        ).toEqual("There are no lessons for this scheme of work.");
-    })
+            const itemClickSpy = spy();
 
-    it("has content heading", () => {
+            // Act
+            render(
+                <Router>
+                    <LessonsPageLayout schemesofwork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
+                </Router>
+            )
+            
+            let item = container.querySelector('#sidebarResponsive .navbar-nav .nav-item:first-child .nav-link');
+            
+            console.log(`item:${item}`);
+
+            await act(async () => {
+                ReactTestUtils.Simulate.click(item);
+            });
+
+            // Assert: check item has been clicked...
+
+            expect(
+                itemClickSpy
+            ).toHaveBeenCalled();
+
+            // ... and returned id value
+            expect(
+            itemClickSpy.receivedArgument(0)
+            ).toEqual(397);
+        })
+
         
-        schemeofwork = FakeApiService.getSchemeOfWork();
+        it('notify when last item clicked', async () => {
+            // Arrange
 
-        render(
-            <Router>
-                <LessonsPageLayout schemeofwork={schemeofwork} />
-            </Router>);
+            const itemClickSpy = spy();
 
-        expect(
-            getContentHeading().textContent
-        ).toEqual("GCSE Computer Science");
-    })
+            // Act
+            render(
+                <Router>
+                    <LessonsPageLayout schemeofwork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
+                </Router>
+            )
+            
+            let item =  container.querySelector('#sidebarResponsive .navbar-nav .nav-item:last-child .nav-link');
+            
+            await act(async () => {
+                ReactTestUtils.Simulate.click(item);
+            });
 
-    it("has pagination at top", () => {
-        render(
-            <Router>
-                <LessonsPageLayout lessons={lessons} />
-            </Router>);
+            // Assert: check item has been clicked...
 
-        expect(
-            getMainContent().querySelectorAll(".pagination-top .pagination li")
-        ).toHaveLength(2);
-    })
+            expect(
+                itemClickSpy
+            ).toHaveBeenCalled();
 
-    it("has pagination at bottom", () => {
-        render(
-            <Router>
-                <LessonsPageLayout lessons={lessons} />
-            </Router>);
-
-        expect(
-            getMainContent().querySelectorAll(".pagination-bottom .pagination li")
-        ).toHaveLength(2);
-    })
-
-    it("has two columns", () => {
-        render(
-            <Router>
-                <LessonsPageLayout schemesOfWork={[]} lessons={lessons} />
-            </Router>);
-
-        expect(
-            getLeftColumm()
-        ).not.toBeNull();
-
-        expect(
-            getMainContent()
-        ).not.toBeNull();
-    })
-
-    it("has schemes of work in sidebar", () => {
+            // ... and returned id value
+            expect(
+            itemClickSpy.receivedArgument(0)
+            ).toEqual(408);
+        })
         
-        schemesofwork = FakeApiService.getSchemesOfWork();
-        
-        render(
-            <Router>
-                <LessonsPageLayout schemesOfWork={schemesofwork} />
-            </Router>);
-
-        expect(
-            getLeftColumm().querySelectorAll("ul > li.nav-item")
-        ).toHaveLength(3);
     })
-
-    it("has lessons in main content", () => {
-        
-        lessons = FakeApiService.getLessonEpisodes();
-        
-        render(
-            <Router>
-                <LessonsPageLayout lessons={lessons} />
-            </Router>);
-
-        expect(
-            getMainContent().querySelectorAll(".post-preview")
-        ).toHaveLength(10);
-    })
-})
+});

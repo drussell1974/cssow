@@ -39,6 +39,7 @@ class LearningEpisodeModel (BaseModel):
         self.created_by_name=created_by_name
         self.published=published
         self.orig_id = orig_id
+        self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
 
 
     def copy(self):
