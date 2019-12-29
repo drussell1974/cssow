@@ -129,7 +129,7 @@ describe("LessonsPageLayout", () => {
         })
     })
 
-    describe.skip("LessonsPageLayout Callback", () => {
+    describe("LessonsPageLayout Callback", () => {
         beforeEach(() => {
             (
                 { render, container } = createContainer()
@@ -153,14 +153,11 @@ describe("LessonsPageLayout", () => {
             // Act
             render(
                 <Router>
-                    <LessonsPageLayout schemesofwork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
-                </Router>
-            )
-            
-            let item = container.querySelector('#sidebarResponsive .navbar-nav .nav-item:first-child .nav-link');
-            
-            console.log(`item:${item}`);
+                    <LessonsPageLayout schemesOfWork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
+                </Router>);
 
+            let item = container.querySelector('#sidebarResponsive .navbar-nav .nav-item .nav-link');
+            
             await act(async () => {
                 ReactTestUtils.Simulate.click(item);
             });
@@ -174,10 +171,9 @@ describe("LessonsPageLayout", () => {
             // ... and returned id value
             expect(
             itemClickSpy.receivedArgument(0)
-            ).toEqual(397);
+            ).toEqual(1);
         })
 
-        
         it('notify when last item clicked', async () => {
             // Arrange
 
@@ -185,13 +181,12 @@ describe("LessonsPageLayout", () => {
 
             // Act
             render(
-                <Router>
-                    <LessonsPageLayout schemeofwork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
-                </Router>
-            )
-            
-            let item =  container.querySelector('#sidebarResponsive .navbar-nav .nav-item:last-child .nav-link');
-            
+            <Router>
+                <LessonsPageLayout schemesOfWork={schemesofwork} onSidebarNavItemClicked={itemClickSpy.fn} />
+            </Router>);
+
+            let item = container.querySelector('#sidebarResponsive .navbar-nav .nav-item:last-child .nav-link');
+        
             await act(async () => {
                 ReactTestUtils.Simulate.click(item);
             });
@@ -205,7 +200,7 @@ describe("LessonsPageLayout", () => {
             // ... and returned id value
             expect(
             itemClickSpy.receivedArgument(0)
-            ).toEqual(408);
+            ).toEqual(3);
         })
         
     })
