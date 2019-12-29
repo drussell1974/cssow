@@ -2,6 +2,8 @@ from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+
+
 def WebBrowserContext():
     options = webdriver.ChromeOptions();
     options.add_argument("--start-maximized");
@@ -9,7 +11,7 @@ def WebBrowserContext():
 
 
 class UITestCase(TestCase):
-    root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
+    root_uri = "http://127.0.0.1:8002"
     test_scheme_of_work_id = 11
     test_learning_episode_id = 35
     test_learning_objective_id = 410
@@ -19,7 +21,7 @@ class UITestCase(TestCase):
     def wait(self, s = 5):
         import time
         time.sleep(s)
-
+    
 
     def assertWebPageTitleAndHeadings(self, title, h1, subheading):
 
@@ -65,7 +67,7 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        login_uri = "http://dev.computersciencesow.net:8000/schemeofwork/default/user/login"
+        login_uri = self.root_uri + "/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Index from './pages/Index';
+import SchemesOfWorkPage from './pages/SchemesOfWorkPage';
 import Lessons from './pages/Lessons';
 import Lesson from './pages/Lesson';
 
@@ -46,6 +47,7 @@ ReactDOM.render(
         </div>
         <Switch>
             <Route exact path="/" component={Index} />
+            <Route exact path="/schemeofwork" component={SchemesOfWorkPage} />
             <Route exact path="/schemeofwork/:scheme_of_work_id/lessons/" component={Lessons} />
             <Route exact path="/schemeofwork/:scheme_of_work_id/lessons/:learning_episode_id" component={Lesson} />
         </Switch>

@@ -4,8 +4,18 @@ import { LatestSchemesOfWorkJumbotronWidget } from '../widgets/LatestSchemesOfWo
 import ApiReactService from '../services/ApiReactService';
 
 
-export const IndexPageLayout = ({data}) => {
-
+export const SchemesOWorkPageLayout = ({data}) => {
+    
+    //document.title += " - Scheme of work";
+    var siteH1Elem = document.querySelector(".site-heading h1");
+    if(siteH1Elem !== null) {
+        siteH1Elem.innerText = "Schemes of Work";
+    }
+    var siteSubElem = document.querySelector('.site-heading .subheading');
+    if(siteSubElem !== null) {
+        siteSubElem.innerText = "Our shared schemes of work by key stage";
+    }
+    
     return (
         <div className="container">
             <div className="row">
@@ -17,7 +27,7 @@ export const IndexPageLayout = ({data}) => {
     )
 }
 
-class Index extends React.Component {
+class SchemesOfWorkPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -34,11 +44,11 @@ class Index extends React.Component {
 
         return (        
             <Fragment>
-                <IndexPageLayout data={this.state.SchemesOfWork} />
+                <SchemesOWorkPageLayout data={this.state.SchemesOfWork} />
                 <hr/>
             </Fragment>
         )
     }
 };
 
-export default Index;
+export default SchemesOfWorkPage;
