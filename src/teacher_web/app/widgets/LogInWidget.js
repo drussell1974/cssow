@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-const SignInWidget = ({auth}) => {
+const LogInWidget = ({auth}) => {
     if(auth === undefined) { 
         return (<Fragment></Fragment>);
     }
@@ -23,4 +23,4 @@ const SignInWidget = ({auth}) => {
     }
 };
 
-export default SignInWidget;
+export default LogInWidget;

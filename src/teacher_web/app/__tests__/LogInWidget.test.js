@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import SignInWidget from '../widgets/SignInWidget';
 
-describe('SignInWidget', () => {
+import LogInWidget from '../widgets/LogInWidget';
+
+describe('LogInWidget', () => {
     
     let render, container;
 
@@ -15,7 +15,7 @@ describe('SignInWidget', () => {
     })
 
     it('renders empty component', () => {
-        render(<SignInWidget />);
+        render(<LogInWidget />);
 
         expect(
             container.textContent
@@ -23,7 +23,7 @@ describe('SignInWidget', () => {
     })
 
     it('log in options when explicitly NOT authenticated', () => {
-        render(<SignInWidget auth={false} />);
+        render(<LogInWidget auth={false} />);
 
         expect(
             container.querySelector('.login').textContent
@@ -42,7 +42,7 @@ describe('SignInWidget', () => {
         
         // TODO: Find best way to authenticate with react (api callback)
         
-        render(<SignInWidget auth={true} />);
+        render(<LogInWidget auth={true} />);
 
         expect(
             container.querySelector('.profile').textContent
