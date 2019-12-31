@@ -11,7 +11,7 @@ def WebBrowserContext():
 
 
 class UITestCase(TestCase):
-    root_uri = "http://127.0.0.1:8002"
+    root_uri = "http://admin.daverussell.local:8002"
     test_scheme_of_work_id = 11
     test_learning_episode_id = 35
     test_learning_objective_id = 410

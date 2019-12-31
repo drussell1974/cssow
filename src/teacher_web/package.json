@@ -9,8 +9,10 @@
     "react-router-dom": "^5.1.2"
   },
   "scripts": {
+    "start": "python ./web/manage.py runserver admin.daverussell.local:8002",
+    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py",
+    
     "test": "jest",
-    "test-ui": "python -m unittest discover -s ./tests/ui_test/ -p '*test_schemeofwork_default_index*'",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build-dev": "webpack && webpack-dev-server --mode development",
     "build": "webpack && webpack-dev-server --mode production"
