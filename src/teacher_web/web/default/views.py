@@ -15,7 +15,17 @@ def index(request):
             "main_heading":"Teach Computer Science",
             "sub_heading":"Computing Schemes of Work across all key stages",
             "latest_schemes_of_work": latest_schemes_of_work
+        },
+        "auth": {
+            "user":False,
+            "settings": {
+                "actions_disabled":True
+            }
+        },
+        "session": {
+            "alert_message":None
         }
+
     }
 
     return render(request, "default/index.html", context)
