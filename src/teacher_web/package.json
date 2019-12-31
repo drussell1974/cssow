@@ -1,51 +1,6 @@
 {
-  "dependencies": {
-    "@babel/runtime": "^7.6.3",
-    "clean-dir": "^1.0.3",
-    "copyfiles": "^2.1.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2"
-  },
   "scripts": {
     "start": "python ./web/manage.py runserver admin.daverussell.local:8002",
-    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py",
-    
-    "test": "jest",
-    "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "build-dev": "webpack && webpack-dev-server --mode development",
-    "build": "webpack && webpack-dev-server --mode production"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0-bridge.0",
-    "@babel/plugin-transform-runtime": "^7.7.5",
-    "@babel/preset-env": "^7.7.5",
-    "@babel/preset-react": "^7.7.4",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "copy": "^0.3.2",
-    "copy-webpack-plugin": "^5.1.1",
-    "css-loader": "^3.3.0",
-    "file-loader": "^5.0.2",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^24.9.0",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.1",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
-  },
-  "jest": {
-    "rootDir": "app/",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/node_modules/"
-    ],
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react"
-    ]
+    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py"
   }
 }
