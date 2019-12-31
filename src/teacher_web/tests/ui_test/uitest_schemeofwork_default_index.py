@@ -20,7 +20,7 @@ class test_schemeofwork_default_index(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         # test
-        self
+        
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
 
