@@ -2,26 +2,26 @@
     <title>{{page_title}}</title>
 </html>
 <body>
-<div class="row">
+<div class="container">
+  <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
       <div class="site-heading">
-        <h1>{{ main_heading }}</h1>
-        <span class="subheading">{{ sub_heading }}</span>
+        <h1>{{ content.main_heading }}</h1>
+        <span class="subheading">{{ content.sub_heading }}</span>
       </div>
     </div>
   </div>
   
 <!-- Main Content -->
-<div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-8 mx-auto">
         <section id="section-latest_schemesofwork" class="jumbotron">
               <!-- Scheme of works -->
             <span class="subheading">Latest Schemes of Work</span>
             <!-- Scheme of works -->
-            {% for row in latest_schemes_of_work %}
+            {% for row in content.latest_schemes_of_work %}
             <div class="post-preview post-preview-schemeofwork">
-              <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'learningepisode.index' row.id %}">
+              <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lessons' row.id %}">
                 <h2 class="post-title">
                     {{ row.name }}
                 </h2>{% if row.is_recent == True: } <i class="small badge badge-success float-right">New</i> {{ endif }}
@@ -32,7 +32,7 @@
               <p class="post-meta">Created by
                 <a href="#">{{ row.created_by_name }}</a>
                 {% if row.created %}
-                  on {% str(row.get_ui_created()) }
+                  on {{ row.created }}
                 {% endif %}
                 {% if auth.user %}
                    - <a href="{% url 'schemesofwork.delete_item' row.id }">Delete</a>
@@ -44,7 +44,7 @@
 
             <!-- Pager -->
             <div class="clearfix">
-              <a class="btn btn-primary float-right" href="{% url 'schemesofwork.index' }" id="btn-all-schemes-of-work">Show all &rarr;</a>
+              <a class="btn btn-primary float-right" href="{% url 'schemesofwork' %}" id="btn-all-schemes-of-work">Show all &rarr;</a>
             </div>
             <!-- Scheme of works END -->
         </section>

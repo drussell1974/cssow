@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Dave Russell",
     author_email="dave@daverussell.co.uk",
-    description="Computer Science Scheme of work",
+    description="Computer Science SOW - Models",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/drussell1974/schemeofwork_web2py_app",

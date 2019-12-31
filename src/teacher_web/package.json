@@ -1,6 +1,8 @@
 {
   "scripts": {
+    "build": "pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl",
     "start": "python ./web/manage.py runserver admin.daverussell.local:8002",
+    "test": "python ./web/manage.py test ./web",
     "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py"
   }
 }

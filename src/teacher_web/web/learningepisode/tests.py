@@ -1,9 +1,9 @@
 from django.urls import resolve
 from django.test import TestCase
-from default.views import index
+from learningepisode.views import index
 
 # Create your tests here.
-class DefaultPageTest(TestCase):
+class LessonsPageTest(TestCase):
     def test_root_url_resolves_to_index(self):
-        url = resolve('/')
+        url = resolve('/lessons/1')
         self.assertEqual(url.func, index)

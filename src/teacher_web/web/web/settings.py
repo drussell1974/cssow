@@ -31,6 +31,9 @@ ALLOWED_HOSTS = ["admin.daverussell.local"]
 
 INSTALLED_APPS = [
     'default',
+    'learningepisode',
+    'schemesofwork',
+    'cssow',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
