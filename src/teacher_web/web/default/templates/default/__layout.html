@@ -8,13 +8,15 @@
 
     <title>{{ page_title }}</title>
 
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    {% load static %}
+
+    <link rel="icon" type="image/x-icon" href="{% static 'default/images/favicon.ico' %}" />
     
     <!-- Bootstrap core CSS -->
-    <link href="custom/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'default/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="custom/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'default/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
@@ -22,8 +24,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
     {% block head_css %} {% endblock %}
     <!-- Custom styles for this template -->
-    <link href="custom/css/clean-blog.min.css" rel="stylesheet">
-    <link href="custom/css/my.css" rel="stylesheet">
+    <link href="{% static 'default/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'default/css/my.css' %}" rel="stylesheet">
     <!-- Favicons -->
     {% block head_js %} {% endblock %}
   </head>
@@ -74,7 +76,7 @@
       </div>
     </nav>
     <!-- Masthead ===================================== -->
-      <header class="masthead" style="background-image: url('custom/img/computerscience-blackboard.jpg')">
+      <header class="masthead" style="background-image: url({% static 'default/img/computerscience-blackboard.jpg' %})">
           <div class="overlay"></div>
           <div class="container">
             {% block header %}
@@ -134,16 +136,16 @@
     <!-- The javascript =============================== -->
 
     <!-- Bootstrap core JavaScript -->
-    <script src="custom/vendor/jquery/jquery.min.js"></script>
-    <script src="custom/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="custom/js/clean-blog.min.js"></script>
+    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
 
   {% block page_js %}{% endblock %}
     {% if ga %}
     <!-- Analytics ==================================== -->
-    <script src="js/analytics.min.js"></script>
+    <script src="{% static 'default/js/analytics.min.js' %}"></script>
     <script type="text/javascript">
       analytics.initialize({
         'Google Analytics':'999999'
