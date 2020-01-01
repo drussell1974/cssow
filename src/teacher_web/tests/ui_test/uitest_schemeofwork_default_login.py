@@ -6,7 +6,7 @@ class test_schemeofwork_default_login(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/default/user/login")
+        self.test_context.get(self.root_uri + "/accounts/login")
         self.test_context.implicitly_wait(4)
 
 
@@ -26,5 +26,6 @@ class test_schemeofwork_default_login(UITestCase):
         self.test_context.find_element_by_id("btn-login").click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Log In', 'Register to create schemes of work and lessons')
+        # TODO: set title
+        self.assertWebPageTitleAndHeadings('', 'Log In', 'Register to create schemes of work and lessons')
 

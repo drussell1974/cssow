@@ -67,7 +67,7 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        login_uri = self.root_uri + "/login"
+        login_uri = self.root_uri + "/accounts/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))
@@ -76,11 +76,11 @@ class UITestCase(TestCase):
         try:
             self.test_context.implicitly_wait(4)
 
-            elem = self.test_context.find_element_by_id("auth_user_email")
+            elem = self.test_context.find_element_by_id("id_username")
             elem.send_keys("test@localhost")
             #elem.send_keys(Keys.TAB)
 
-            elem = self.test_context.find_element_by_id("auth_user_password")
+            elem = self.test_context.find_element_by_id("id_password")
             elem.send_keys("co2m1c")
 
             ' submit the form '

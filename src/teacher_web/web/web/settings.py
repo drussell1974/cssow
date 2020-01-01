@@ -80,7 +80,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    }, 
+    #'development': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'NAME': 'cssow_api',
+    #    'USER': 'drussell1974',
+    #    'PASSWORD': 'password',
+    #    'HOST': '127.0.0.1',
+    #    'PORT': '3307',
+    #}
 }
 
 

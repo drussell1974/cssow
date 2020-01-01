@@ -19,7 +19,7 @@ def index(request):
         "auth": {
             "user":False,
             "settings": {
-                "actions_disabled":True
+                "actions_disabled":["register", "retrieve_password"],
             }
         },
         "session": {

@@ -42,12 +42,12 @@
                 {% endif %}
               <a class="navbar-brand" id="btn-logout" href="{% url 'default' %}">Logout</a>
             {% else %}
-                <a class="navbar-brand" id="btn-login" href="{% url 'default' %}">Login</a>
+                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}">Login</a>
               {% if 'register' not in auth.settings.actions_disabled %}
                 <a class="navbar-brand" href="{% url 'default' %}">Sign up</a>
               {% endif %}
               {% if 'retrieve_password' not in auth.settings.actions_disabled %}
-              <a class="navbar-brand" href="{% url 'default' %}">Lost password</a>
+                <a class="navbar-brand" href="{% url 'default' %}">Lost password</a>
               {% endif %}
           {% endif %}
 
