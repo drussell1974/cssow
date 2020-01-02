@@ -40,9 +40,9 @@
                         Change password
                     </a>
                 {% endif %}
-              <a class="navbar-brand" id="btn-logout" href="{% url 'logout' %}">Logout</a>
+              <a class="navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
             {% else %}
-                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}">Login</a>
+                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">Login</a>
               {% if 'register' not in auth.settings.actions_disabled %}
                 <a class="navbar-brand" href="{% url 'default' %}">Sign up</a>
               {% endif %}

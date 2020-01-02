@@ -70,7 +70,7 @@ class UITestCase(TestCase):
         login_uri = self.root_uri + "/accounts/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))
+        self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
 
 
         try:
@@ -81,7 +81,7 @@ class UITestCase(TestCase):
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("id_password")
-            elem.send_keys("co2m1c")
+            elem.send_keys("co2m1c1.")
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
