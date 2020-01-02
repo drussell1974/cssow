@@ -57,8 +57,8 @@ ROOT_URLCONF = 'web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -78,17 +78,13 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }, 
-    #'development': {
-    #    'ENGINE': 'django.db.backends.mysql',
-    #    'NAME': 'cssow_api',
-    #    'USER': 'drussell1974',
-    #    'PASSWORD': 'password',
-    #    'HOST': '127.0.0.1',
-    #    'PORT': '3307',
-    #}
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cssow_api',
+        'USER': 'drussell1974',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',
+        'PORT': '3307',
+    }
 }
 
 

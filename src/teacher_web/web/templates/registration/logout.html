@@ -1,8 +1,5 @@
-<html>
-    <title>{{page_title}}</title>
-</html>
-<body>
-<div class="container">
+{% extends 'default/__layout.html' %}
+  {% block header %}
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
       <div class="site-heading">
@@ -11,13 +8,13 @@
       </div>
     </div>
   </div>
-  
-<!-- Main Content -->
-    <div class="row">
-      <div class="col-lg-8 col-md-8 mx-auto">
-      </div>
+  {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-md-8 mx-auto">
     </div>
   </div>
-  <hr>
-  <!-- Main Content END -->
-</body>
+</div>
+<hr>
+{% endblock %}
