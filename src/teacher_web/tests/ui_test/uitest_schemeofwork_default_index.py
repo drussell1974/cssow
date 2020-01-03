@@ -42,7 +42,7 @@ class test_schemeofwork_default_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(3, result, "number of elements not as expected")
+        self.assertEqual(2, result, "number of elements not as expected")
 
 
     def test_page__show_published_and_owned_latest_schemesofwork(self):
@@ -56,7 +56,7 @@ class test_schemeofwork_default_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(5, result, "number of elements not as expected")
+        self.assertEqual(3, result, "number of elements not as expected")
 
 
 
