@@ -61,7 +61,7 @@
               <a class="nav-link" href="{% url 'default' %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'schemesofwork' %}">Schemes of Work</a>
+              <a class="nav-link" href="{% url 'schemesofwork.index' %}">Schemes of Work</a>
             </li>
             {% if auth.user %}
             <li class="nav-item">
@@ -79,8 +79,12 @@
       <header class="masthead" style="background-image: url({% static 'default/img/computerscience-blackboard.jpg' %})">
           <div class="overlay"></div>
           <div class="container">
-            {% block header %}
-            {% endblock %}
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto">
+                {% block header %}
+                {% endblock %}
+              </div>
+            </div>
           </div>
     </header>
     <!-- Main ========================================= -->
@@ -97,11 +101,16 @@
             {% endif %}
           </div>
       </div>
+      <!-- Breadcrumb START -->
+      {% block breadcrumb %}
+      {% endblock %}
+      <!-- Breadcrumb END -->
+      <!-- Main Content START --> 
       {% block content %}
       {% endblock %}
       <!-- Main Content END -->
     </div>
-    <!-- Main Content END -->
+    <!-- Page Content END -->
     {% block footer %} <!-- this is default footer -->
     <!-- Footer -->
     <footer>

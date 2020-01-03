@@ -29,7 +29,7 @@ class LearningEpisodeModel (BaseModel):
         self.key_stage_name = key_stage_name
         self.year_id = int(year_id)
         self.year_name = year_name
-        self.key_words = key_words.replace(', ', ',')
+        self.key_words = key_words.replace(', ', ',').split(',')
         self.other_key_words = []
         self.summary = summary
         self.pathway_objective_ids = []
@@ -138,10 +138,10 @@ class LearningEpisodeModel (BaseModel):
 """
 DAL
 """
-def log_info(msg):
+def log_info(msg, is_enabled = False):
     from .core.log import Log
     logger = Log()
-    logger.is_enabled = True
+    logger.is_enabled = is_enabled
     logger.write(None, msg)
     
 
@@ -178,7 +178,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     return data
 
 
-def get_all(db, scheme_of_work_id, auth_user):
+def get_all(db, scheme_of_work_id, auth_user, enable_logging=False):
     
     log_info(f"scheme_of_work_id:{scheme_of_work_id}")
     
@@ -213,7 +213,9 @@ def get_all(db, scheme_of_work_id, auth_user):
 
     rows = []
     
-    execSql(db, select_sql, rows)
+    log_info(f"select_sql:{select_sql}", is_enabled=enable_logging)
+
+    execSql(db, select_sql, rows, enable_logging)
 
     data = []
 

@@ -1,25 +1,19 @@
-{% extends 'default/__layout.html' %}
+{% extends 'default/__layout.onecolumn.html' %}
   {% block header %}
-  <div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto">
       <div class="site-heading">
         <h1>{{ content.main_heading }}</h1>
         <span class="subheading">{{ content.sub_heading }}</span>
       </div>
-    </div>
-  </div>
   {% endblock %}
 
   {% block content %}
-    <div class="row">
-      <div class="col-lg-8 col-md-8 mx-auto">
-        <section id="section-latest_schemesofwork" class="jumbotron">
+    <section id="section-latest_schemesofwork" class="jumbotron">
               <!-- Scheme of works -->
             <span class="subheading">Latest Schemes of Work</span>
             <!-- Scheme of works -->
             {% for row in content.latest_schemes_of_work %}
             <div class="post-preview post-preview-schemeofwork">
-              <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lessons' row.id %}">
+              <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'learningepisode.index' row.id %}">
                 <h2 class="post-title">
                     {{ row.name }}
                 </h2>
@@ -42,12 +36,8 @@
 
             <!-- Pager -->
             <div class="clearfix">
-              <a class="btn btn-primary float-right" href="{% url 'schemesofwork' %}" id="btn-all-schemes-of-work">Show all &rarr;</a>
+              <a class="btn btn-primary float-right" href="{% url 'schemesofwork.index' %}" id="btn-all-schemes-of-work">Show all &rarr;</a>
             </div>
             <!-- Scheme of works END -->
-        </section>
-      </div>
-    </div>
-  </div>
-  <hr>
+    </section>
   {% endblock %}

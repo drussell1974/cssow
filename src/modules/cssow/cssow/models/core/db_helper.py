@@ -3,38 +3,41 @@
 helper routines for retrieving and saving values in the database
 """
 import mysql.connector
-from django.db import connection
 
 last_sql = ()
+def _log_it(db, sql, enable_logging):
+    l = log.Log();
+    l.is_enabled = enable_logging
+    l.write(db, sql)
 
 def _execSql(db, sql):
-    with connection.cursor() as cursor:
-        cursor.execute(sql)
-        result = cursor.fetchall()
-    return connection, result
+
+    with db.cursor() as cur:
+        cur.execute(sql)
+        result = cur.fetchall()
+    return result
 
 
-def _closeSqlConn(cnx, cursor):
+def _closeSqlConn(db, cursor):
         #cursor.close()
-        cnx.close()
+        db.close()
 
 def execCRUDSql(db, sql, result=None):
     ''' run the sql statement without results '''
-    if db == None:
-        cnx, cursor = _execSql(db, sql)
-        for tup in cursor:
+    if db != None:
+        cur = _execSql(db, sql)
+        for tup in cur:
             result.append(tup)
-        cnx.commit()    
-        _closeSqlConn(cnx, cursor)
+        db.commit()    
+        _closeSqlConn(db, None)
 
-def execSql(db, sql, result):
+def execSql(db, sql, result, enable_logging=False):
     ''' run the sql statement '''
-    if db == None:
-        cnx, cursor = _execSql(db, sql)
-        print(cursor)
-        for tup in cursor:
+    if db != None:
+        cur = _execSql(db, sql)
+        for tup in cur:
             result.append(tup)
-    _closeSqlConn(cnx, cursor)
+        _closeSqlConn(db, None)
 
 
 def to_db_null(val):
@@ -57,4 +60,4 @@ def sql_safe(string):
     return str(string)\
         .strip(' ')\
         .replace("'", "\"")\
-        .replace(";", "\;")\
+        .replace(";", "\;")

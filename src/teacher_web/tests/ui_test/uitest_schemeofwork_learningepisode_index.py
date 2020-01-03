@@ -6,7 +6,9 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/index/{}".format(self.test_scheme_of_work_id))
+        self.test_path = "/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id)
+
+        self.test_context.get(self.root_uri + self.test_path)
         self.test_context.implicitly_wait(4)
 
 
@@ -22,7 +24,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -36,13 +38,13 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def test_page__submenu__navigate_to_learningepisode_new(self):
         # setup
-        self.do_log_in("/schemeofwork/learningepisode/index/{}".format(self.test_scheme_of_work_id))
+        self.do_log_in(self.test_path)
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lesson', 'A-Level Computer Science - Lesson 1')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create')
 
 
 
