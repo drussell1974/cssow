@@ -28,7 +28,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
+        # arrange
         self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
 
 
@@ -45,6 +45,27 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create')
+
+
+    def test_page__should_have_sidenav(self):
+        # arrange
+        elem = self.test_context.find_element_by_id('sidebarNav')
+
+        # act
+
+        # assert
+        self.assertIsNotNone(elem)
+
+
+    def test_page__should_have_sidenav_with_three_items(self):
+        # arrange
+        elems = self.test_context.find_element_by_class_name('nav-item')
+        
+        # act
+
+        # assert
+        self.skipTest("Need to count elements")
+        self.assertCountEqual(len(elems), 0)
 
 
 
