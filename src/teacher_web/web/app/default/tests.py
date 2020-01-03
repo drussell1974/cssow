@@ -1,6 +1,6 @@
 from django.urls import resolve
 from django.test import TestCase
-from default.views import index
+from app.default.views import index
 
 # Create your tests here.
 class DefaultPageTest(TestCase):

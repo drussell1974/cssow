@@ -1,6 +1,6 @@
 from django.urls import resolve
 from django.test import TestCase
-from schemesofwork.views import index
+from app.schemesofwork.views import index
 
 # Create your tests here.
 class SchemesOfWorkPageTest(TestCase):

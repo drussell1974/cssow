@@ -17,15 +17,15 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
-from default import views
+from app.default import views
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     # my apps
-    path('schemesofwork/', include('schemesofwork.urls')),
-    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('learningepisode.urls')),
+    path('schemesofwork/', include('app.schemesofwork.urls')),
+    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.learningepisode.urls')),
     # TODO: move to reference app
     path('/reference/<int:reference_id>/edit', views.index, name="reference.edit"),
-    path('', include('default.urls')),    
+    path('', include('app.default.urls')),    
 ]

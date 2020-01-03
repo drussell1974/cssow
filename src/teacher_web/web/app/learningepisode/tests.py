@@ -1,6 +1,6 @@
 from django.urls import resolve
 from django.test import TestCase
-from learningepisode.views import index, new
+from app.learningepisode.views import index, new
 
 # Create your tests here.
 class LearningEpisodePageTest(TestCase):
