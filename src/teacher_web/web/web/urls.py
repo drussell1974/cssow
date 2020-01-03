@@ -26,6 +26,6 @@ urlpatterns = [
     path('schemesofwork/', include('app.schemesofwork.urls')),
     path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.learningepisode.urls')),
     # TODO: move to reference app
-    path('/reference/<int:reference_id>/edit', views.index, name="reference.edit"),
+    path('reference/<int:reference_id>/edit', views.index, name="reference.edit"),
     path('', include('app.default.urls')),    
 ]
