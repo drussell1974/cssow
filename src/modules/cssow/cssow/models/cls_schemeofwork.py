@@ -162,7 +162,7 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
     rows = []
     execSql(db, select_sql, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
 
@@ -268,18 +268,18 @@ def save(db, model, published=1):
     else:
         _update(db, model, published)
 
-    return model;
+    return model
 
 
 def delete(db, auth_user_id, id_):
     model = SchemeOfWorkModel(id_)
-    _delete(db, model);
+    _delete(db, model)
 
 
 def publish(db, auth_user_id, id_):
     model = SchemeOfWorkModel(id_)
     model.publish = True
-    _publish(db, model);
+    _publish(db, model)
 
 
 def _update(db, model, published):

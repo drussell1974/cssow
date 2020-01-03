@@ -3,22 +3,19 @@
 helper routines for retrieving and saving values in the database
 """
 import mysql.connector
+from django.db import connection
 
 last_sql = ()
 
 def _execSql(db, sql):
-    cnx = mysql.connector.connect(
-            user='drussell1974', password='password',
-            host='127.0.0.1',
-            database='cssow_api')
-
-    cursor = cnx.cursor()
-    cursor.execute(sql)
-    return cnx, cursor
+    with connection.cursor() as cursor:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    return connection, result
 
 
 def _closeSqlConn(cnx, cursor):
-        cursor.close()
+        #cursor.close()
         cnx.close()
 
 def execCRUDSql(db, sql, result=None):
@@ -34,6 +31,7 @@ def execSql(db, sql, result):
     ''' run the sql statement '''
     if db == None:
         cnx, cursor = _execSql(db, sql)
+        print(cursor)
         for tup in cursor:
             result.append(tup)
     _closeSqlConn(cnx, cursor)

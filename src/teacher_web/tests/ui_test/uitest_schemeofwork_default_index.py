@@ -49,7 +49,7 @@ class test_schemeofwork_default_index(UITestCase):
         # setup
         self.do_log_in(redirect_to_uri_on_login="{}/schemesofwork".format(self.root_uri))
 
-        section = self.test_context.find_elements_by_class_name('post-preview-schemeofwork')
+        section = self.test_context.find_elements_by_class_name('post-preview')
 
         # test
         result = len(section)

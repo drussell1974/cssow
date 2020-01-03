@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "python -m pip install setuptools wheel && python setup.py sdist bdist_wheel"
+  }
+}
