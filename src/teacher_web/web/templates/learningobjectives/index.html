@@ -77,4 +77,55 @@
 
 
 {% block maincontent %}
+<h2 class="group-heading">{{_("Learning objectives")}}</h2>
+            
+{% if content.data.learning_objectives|length == 0 %}
+<div class="alert alert-info" role="alert">
+    <span class="small">{{_('There are no learning objectives for this lesson.')}}</span>
+</div>
+{% else %}
+  {% for row in content.data.learning_objectives %}
+    <div class="post-preview">
+      <a name="{{ row.id }}"></a>
+      <a href="#{{row.id}}" class="disabled">
+        <h4 class="post-title">
+          {% if row.solo_taxonomy_level == "B" %}
+            <i class="far fa-star"></i>
+          {% elif row.solo_taxonomy_level == "C" %}
+            <i class="fas fa-star"></i>
+          {% elif row.solo_taxonomy_level == "D" %}
+            <i class="fas fa-trophy"></i>
+          {% endif %}
+          {{ row.description}}
+        </h4>
+        {% if request.user.is_authenticated %}
+          <div class="custom-control custom-checkbox">  
+            <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{row.id}}" {% if row.is_key_objective %} checked {% endif %} value="{{ row.id }}">
+            <label class="custom-control-label small" for="chk-is_key_objective-{{ row.id }}" id="lbl-is_key_objective-{{ row.id }}">{{_("This is a key learning objective")}}</label>
+          </div>
+        {% endif %}
+        <h5 class="post-subtitle">
+            {{ row.topic_name}}
+        </h5>
+      </a>
+      {% for key_word in row.key_words %}
+        <i class="badge badge-info">{{ key_word }}</i>
+      {% endfor %}
+      {% if request.user.is_authenticated and row.key_words|length > 0 %}
+        <br>
+        <a href="#{{row.id}}" class="btn-keyword-modal small" data-keywords='{{ row.key_words }}'>
+          {{_("Edit definitions")}}
+        </a>
+      {% endif %}
+      <p class="post-meta">{{_("Created by")}}
+        <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
+        {% if request.user.is_authenticated %}
+          - <a href="{% url 'learningobjective.delete_item' content.data.scheme_of_work_id row.learning_episode_id row.id %} ">{{_("Remove")}}</a>
+           - <a href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.learning_episode_id row.id %}">{{_("Edit")}}</a>
+        {% endif %}
+      </p>
+          </div>
+          <hr>
+  {% endfor %}
+  {% endif %}
 {% endblock %}

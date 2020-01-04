@@ -59,23 +59,19 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def test_page__should_have_sidenav_with_three_items(self):
         # arrange
-        elems = self.test_context.find_element_by_class_name('nav-item')
+        elems = self.test_context.find_elements_by_class_name('nav-item')
         
         # act
 
         # assert
-        self.skipTest("Need to count elements")
-        self.assertCountEqual(len(elems), 0)
+        self.assertEqual(6, len(elems))
 
 
     def test_page__show_published_only(self):
-        # setup
+        # arrange
         section = self.test_context.find_elements_by_class_name('post-preview')
-
-        # test
-        result = len(section)
-
         # assert
+        result = len(section)
         self.assertEqual(26, result, "number of elements not as expected")
 
 

@@ -30,11 +30,20 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
     def test_page__should_have__sidebar_and_selected_learning_episode(self):
         # test
         self.test_context.implicitly_wait(20)
-        elem = self.test_context.find_element_by_id('nav-link-learning-episode-{}'.format(self.test_learning_episode_id))
-
+        elem = self.test_context.find_element_by_id("nav-link-learning-episode-{}".format(self.test_learning_episode_id))
+        
         # assert
         self.assertEqual("Types of CPU architecture", elem.text)
         self.assertEqual("nav-link", elem.get_attribute("class"))
+
+
+    def test_page__should_have__group_heading(self):
+        # test
+        self.test_context.implicitly_wait(20)
+        elem = self.test_context.find_element_by_class_name('group-heading')
+
+        # assert
+        self.assertEqual("Learning objectives", elem.text)
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
