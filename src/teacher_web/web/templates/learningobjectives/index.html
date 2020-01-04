@@ -2,22 +2,77 @@
 
 
 {% block header %}
-<div class="row">
-  <div class="col-lg-8 col-md-10 mx-auto">
     <div class="site-heading">
       <h1>{{ content.main_heading }}</h1>
       <span class="subheading">{{ content.sub_heading }}</span>
     </div>
-  </div>
-</div>
 {% endblock %}
 
 
 {% block breadcrumb %}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+  <div class="container">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="lnk-bc-learning_episodes" href="{% url 'learningepisode.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+
+{% block contentheading %}
+<div class="alert alert-secondary">
+  <h5 class="secondary-heading">
+    {{ content.sub_heading }}
+      {% if request.user.is_authenticated %}
+      - <a class="small" id="btn-edit" href="{% url 'learningepisode.edit' content.data.learning_episode_id content.data.scheme_of_work_id %}?next={{ request.url }}">{{_("Edit")}}</a> 
+      - <a class="small" id="btn-copy" href="{% url 'learningepisode.copy' content.data.learning_episode_id content.data.scheme_of_work_id %}">{{_("Copy")}}</a>
+      {% endif %}
+  </h5>
+  {% if content.data.strap_line is not None %}
+  <p class="lead">
+      {{ content.data.strap_line }}
+  </p>
+  {% endif %}
+</div>
 {% endblock %}
 
 
 {% block sidecontent %}
+<!-- Blackboard display button START -->
+<section class="alert alert-secondary">
+  <a href="{% url 'learningepisode.whiteboard_view' content.data.scheme_of_work_id content.data.learning_episode_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+    {{_("Blackboard display")}}
+  </a>
+  <a href="{$ url 'learningepisode.lessonplan' content.data.scheme_of_work_id content.data.learning_episode_id %}" target="_blank" class="btn btn-light" id="lnk-lesson_plan">
+    {{_("Lesson plan")}}
+  </a>
+</section>
+<!-- Blackboard display button END -->
+<!-- SIDE MENU START -->
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("Show lessons")}}
+      <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+    <ul class="navbar-nav flex-column fillspace">
+      {% for opt in content.data.learning_episode_options %}
+      <li class="nav-item {% if opt.id == content.data.learning_episode_id %}mark{% endif %}">
+          <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-learning-episode-{{opt.id}}">
+            {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
+          </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div><!-- class="collapse navbar-collapse" id="sidebarResponsive" -->
+</nav><!-- class="navbar navbar-expand-lg navbar-light" id="sidebarNav" -->
+
+<!-- SIDE MENU END -->
 {% endblock %}
 
 

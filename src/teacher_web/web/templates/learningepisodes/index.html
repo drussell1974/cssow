@@ -33,8 +33,10 @@
   <div class="collapse navbar-collapse" id="sidebarResponsive">
       <ul class="navbar-nav flex-column fillspace">
       {% for opt in content.data.schemeofwork_options %}
-          <li class="nav-item"> `
-              <a class="nav-link {% if opt.id == scheme_of_work_id %} mark {% endif %}" href="{% url 'learningepisode.index' opt.id %}">{{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div></a>
+          <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
+              <a class="nav-link" href="{% url 'learningepisode.index' opt.id %}">
+                {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
+              </a>
           </li>
       {% endfor %}
       </ul>
@@ -97,7 +99,11 @@
     {% endif %}, {{_("Learning objectives")}} {{ row.number_of_learning_objective}}
     {% if request.user.is_authenticated %}
       {% if row.published == False %} 
-        <a href="{% url 'learningepisode.publish_item' row.id request.url %}" class="small badge badge-danger">{{_("not published")}}</a> {{ endif }} - <a href="{% url 'learningepisode.delete_item' row.id row.scheme_of_work_id %}">{{_("Delete")}}</a> - <a href="{% url 'learningepisode.edit' row.id  row.scheme_of_work_id request.url %}">{{_("Edit")}}</a> - <a href="{% url 'learningepisode.edit' row.id row.scheme_of_work_id 1 %}">{{_("Copy")}}</a>
+        <a href="{% url 'learningepisode.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
+      {{ endif }}
+      - <a href="{% url 'learningepisode.delete_item' row.id row.scheme_of_work_id %}">{{_("Delete")}}</a> 
+      - <a href="{% url 'learningepisode.edit' row.id  row.scheme_of_work_id %}?return={{request.url}}">{{_("Edit")}}</a> 
+      - <a href="{% url 'learningepisode.copy' row.id row.scheme_of_work_id %}">{{_("Copy")}}</a>
       {% endif %}
     {% endif %}
     </p>

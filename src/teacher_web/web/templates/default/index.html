@@ -11,7 +11,7 @@
               <!-- Scheme of works -->
             <span class="subheading">Latest Schemes of Work</span>
             <!-- Scheme of works -->
-            {% for row in content.latest_schemes_of_work %}
+            {% for row in content.data.latest_schemes_of_work %}
             <div class="post-preview post-preview-schemeofwork">
               <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'learningepisode.index' row.id %}">
                 <h2 class="post-title">

@@ -68,4 +68,28 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertCountEqual(len(elems), 0)
 
 
+    def test_page__show_published_only(self):
+        # setup
+        section = self.test_context.find_elements_by_class_name('post-preview')
+
+        # test
+        result = len(section)
+
+        # assert
+        self.assertEqual(26, result, "number of elements not as expected")
+
+
+    def test_page__show_published_and_owned(self):
+        # setup
+        self.do_log_in(redirect_to_uri_on_login=self.test_path)
+
+        section = self.test_context.find_elements_by_class_name('post-preview')
+
+        # test
+        result = len(section)
+
+        # assert
+        # ***** less 5 should be visible to test@localhost for testing purposes
+        self.assertEqual(26, result, "number of elements not as expected")
+        
 

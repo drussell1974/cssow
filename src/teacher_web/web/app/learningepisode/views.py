@@ -25,10 +25,60 @@ def index(request, scheme_of_work_id):
     return render(request, "learningepisodes/index.html", view_model.content)
 
 def new(request, scheme_of_work_id):
+    ''' Create a new Learning Episode '''
+    
     data = {
         "scheme_of_work_id":scheme_of_work_id
     }
     
     view_model = ViewModel("", "A-Level Computer Science", "Create", data=data)
     
-    return render(request, "learningepisodes/new.html", view_model.content)
+    return render(request, "learningepisodes/edit.html", view_model.content)
+
+
+def edit(request, scheme_of_work_id, learning_episode_id):
+    ''' Edit the Learning Episode '''
+    
+    view_model = ViewModel("", "A-Level Computer Science", "Edit")
+    
+    return render(request, "learningepisodes/edit.html", view_model.content)
+
+    
+def copy(request, scheme_of_work_id, learning_episode_id):
+    ''' Copy the Learning Episode '''
+    
+    view_model = ViewModel("", "A-Level Computer Science", "Copy")
+    
+    return render(request, "learningepisodes/edit.html", view_model.content)
+
+
+def publish(request, scheme_of_work_id, learning_episode_id):
+    ''' Publish the Learning Episode '''
+    
+    view_model = ViewModel("", "A-Level Computer Science", "Publish")
+    # TODO: redirect
+    return render(request, "learningepisodes/edit.html", view_model.content)
+
+
+def delete(request, scheme_of_work_id, learning_episode_id):
+    ''' Delete the Learning Episode '''
+    
+    view_model = ViewModel("", "A-Level Computer Science", "Delete")
+    # TODO: redirect
+    return render(request, "learningepisodes/edit.html", view_model.content)
+
+    
+def lessonplan(request, scheme_of_work_id, learning_episode_id):
+    ''' Display the lesson plan '''
+
+    view_model = ViewModel("", "", "lesson plan")
+    
+    return render(request, "learningepisodes/lessonplan.html", view_model.content)
+
+    
+def whiteboard(request, scheme_of_work_id, learning_episode_id):
+    ''' Display the lesson plan on the whiteboard '''
+    
+    view_model = ViewModel("", "", "whiteboard")
+    
+    return render(request, "learningepisodes/whiteboard_view.html", view_model.content)

@@ -164,7 +164,8 @@ def get_options(db, scheme_of_work_id, auth_user):
 
     str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(str_select)
+    rows = []
+    execSql(db, str_select, rows)
 
     data = []
 
