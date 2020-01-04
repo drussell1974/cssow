@@ -1,34 +1,31 @@
-{% extends 'default/__layout.html' %}
+{% extends 'default/__layout.onecolumn.html' %}
 {% block header %}
-<div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="site-heading">
-        <h1>Log In</h1>
-        <span class="subheading">Register to create schemes of work and lessons</span>
-        </div>
-    </div>
+<div class="site-heading">
+    <h1>Log In</h1>
+    <span class="subheading">Register to create schemes of work and lessons</span>
 </div>
 {% endblock %}
 
-{% block content %}
-<div class="row">
-    <div class="col-lg-8 col-md-8 mx-auto">
+{% block maincontent %}
+    <form method="post" action="{% url 'login' %}">
+        <div className="form-group row">
+            {% csrf_token %}
+            <div className="col-sm-9 col-sm-offset-3">
         
-        {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
+                {% if form.errors %}
+                <p>Your username and password didn't match. Please try again.</p>
+                {% endif %}
 
-        {% if next %}
-            {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
-            {% else %}
-            <p>Please login to see this page.</p>
-            {% endif %}
-        {% endif %}
-
-        <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+                    {% else %}
+                    <p>Please login to see this page.</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
         
         <div className="form-group row" id="auth_user_email__row">
             {{ form.username.label_tag }}
@@ -50,13 +47,12 @@
             </div>
         </div>
         <input type="hidden" name="next" value="{{ next }}">
-        </form>
+        <div className="form-group row">
+            <div className="col-sm-9 col-sm-offset-3">
+                <a href="{% url 'password_reset' %}">Lost password?</a>
+            </div>
+        </div>
+    </form>
 
-        {# Assumes you setup the password_reset view in your URLconf #}
-        <a href="{% url 'password_reset' %}">Lost password?</a>
-
-    </div>
-  </div>
-</div>
-<hr>
+    {# Assumes you setup the password_reset view in your URLconf #}
 {% endblock %}
