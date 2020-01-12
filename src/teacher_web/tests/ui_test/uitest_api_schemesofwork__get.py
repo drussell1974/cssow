@@ -27,11 +27,6 @@ class test_schemeofwork__get(UITestCase):
         cls.test_context.close()
 
 
-    def test__schemesofwork__should_resolve_url(self):
-        found = reverse("schemesofwork")
-        self.assertEqual(found,"/api/schemeofwork")
-
-
     @tag("schemeofwork should return a payload")
     def test__should_return_a_payload(self):
         # assert
