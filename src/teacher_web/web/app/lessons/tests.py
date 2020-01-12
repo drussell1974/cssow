@@ -1,6 +1,6 @@
 from django.urls import resolve
 from django.test import TestCase
-from app.lesson.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save
+from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save
 
 # Create your tests here.
 class lessonPageTest(TestCase):

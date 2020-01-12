@@ -29,7 +29,7 @@ urlpatterns = [
     # api default
     path('api/', include('api.default.urls')),
     # app lesson
-    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lesson.urls')),
+    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lessons.urls')),
     # app schemeofwork
     path('schemesofwork/', include('app.schemesofwork.urls')),
     # TODO: move to reference app
