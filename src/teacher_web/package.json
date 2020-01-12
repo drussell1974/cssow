@@ -2,7 +2,7 @@
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk",
     "migrate": "python ./web/manage.py migrate",
-    "build": "pip install django && pip install mysql-connector-python && pip install mysqlclient && pip install ../modules/cssow/dist/cssow_drussell1974-1.6.9-py3-none-any.whl && pip install djangorestframework && pip install selenium",
+    "build": "pip install django && pip install mysql-connector-python && pip install mysqlclient && pip install ../modules/cssow/dist/cssow_drussell1974-2.0.0-py3-none-any.whl && pip install djangorestframework && pip install selenium",
     "start": "python ./web/manage.py runserver admin.daverussell.local:8002",
     "test": "python ./web/manage.py test ./web && python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_schemeofwork_lesson_edit_create_new.py",
     "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_api_*.py"

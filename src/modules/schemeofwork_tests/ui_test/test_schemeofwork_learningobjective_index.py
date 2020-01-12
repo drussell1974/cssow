@@ -28,7 +28,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
     def test_page__should_have__sidebar_and_selected_lesson(self):
         # test
         self.test_context.implicitly_wait(20)
-        elem = self.test_context.find_element_by_id('nav-link-learning-episode-{}'.format(self.test_lesson_id))
+        elem = self.test_context.find_element_by_id('nav-link-lesson-{}'.format(self.test_lesson_id))
 
         # assert
         self.assertEqual("", elem.text)

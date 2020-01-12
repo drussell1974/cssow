@@ -134,7 +134,7 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
     rows = []
     execSql(db, str_select, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
@@ -174,7 +174,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
 
 def get_number_of_resources(db, lesson_id, auth_user):
     """
-    get the number of resources for the learning episode
+    get the number of resources for the lesson
     :param db: database context
     :param learning_epsiode_id:
     :param auth_user:

@@ -313,7 +313,7 @@ def get_model(db, id_, auth_user):
 
 def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
     """
-    Append all keywords from learning objectives for this learning episodes
+    Append all keywords from learning objectives for this lessons
     :param db:
     :param learning_epsiode_id:
     :param auth_user:
@@ -579,7 +579,7 @@ def _publish(db, model):
 
 def get_related_topic_ids(db, lesson_id, parent_topic_id):
     """
-    gets the related topic ids for the learning episode and whether they are selected or should be disabled
+    gets the related topic ids for the lesson and whether they are selected or should be disabled
     :param db: the database context
     :param lesson_id:
     :param parent_topic_id:

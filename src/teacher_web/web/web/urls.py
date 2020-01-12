@@ -23,13 +23,13 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     # api lessons
-    path('api/schemesofwork/<int:scheme_of_work_id>/learning-episodes/', include('api.lessons.urls')),
+    path('api/schemesofwork/<int:scheme_of_work_id>/lessons/', include('api.lessons.urls')),
     # api schemesofwork
     path('api/schemesofwork/', include('api.schemesofwork.urls')),
     # api default
     path('api/', include('api.default.urls')),
     # app lesson
-    path('schemesofwork/<int:scheme_of_work_id>/learning-episodes/', include('app.lesson.urls')),
+    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lesson.urls')),
     # app schemeofwork
     path('schemesofwork/', include('app.schemesofwork.urls')),
     # TODO: move to reference app

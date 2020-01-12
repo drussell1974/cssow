@@ -29,7 +29,7 @@ def index(request, scheme_of_work_id):
 
 
 def new(request, scheme_of_work_id):
-    ''' Create a new Learning Episode '''
+    ''' Create a new lesson '''
     
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     
@@ -57,7 +57,7 @@ def new(request, scheme_of_work_id):
 
 
 def edit(request, scheme_of_work_id, lesson_id):
-    ''' Edit the Learning Episode '''
+    ''' Edit the lesson '''
     lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, scheme_of_work.key_stage_id)
@@ -78,7 +78,7 @@ def edit(request, scheme_of_work_id, lesson_id):
 
     
 def copy(request, scheme_of_work_id, lesson_id):
-    ''' Copy the Learning Episode '''
+    ''' Copy the lesson '''
     
     view_model = ViewModel("", "A-Level Computer Science", "Copy")
     
@@ -86,7 +86,7 @@ def copy(request, scheme_of_work_id, lesson_id):
 
 
 def publish(request, scheme_of_work_id, lesson_id):
-    ''' Publish the Learning Episode '''
+    ''' Publish the lesson '''
     
     view_model = ViewModel("", "A-Level Computer Science", "Publish")
     # TODO: redirect
@@ -94,7 +94,7 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 
 def delete(request, scheme_of_work_id, lesson_id):
-    ''' Delete the Learning Episode '''
+    ''' Delete the lesson '''
     
     view_model = ViewModel("", "A-Level Computer Science", "Delete")
     # TODO: redirect

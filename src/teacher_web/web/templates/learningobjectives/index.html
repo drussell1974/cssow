@@ -56,7 +56,7 @@
     <ul class="navbar-nav flex-column fillspace">
       {% for opt in content.data.lesson_options %}
       <li class="nav-item {% if opt.id == content.data.lesson_id %}mark{% endif %}">
-          <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-learning-episode-{{opt.id}}">
+          <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
             {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
           </a>
       </li>

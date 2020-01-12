@@ -63,9 +63,9 @@ from db_helper import to_db_null, to_empty
 
 def get_all(db, lesson_id, auth_user):
     """
-    Get all the lesson plan for this learning episode
+    Get all the lesson plan for this lesson
     :param db: database context
-    :param lesson_id: the learning episode
+    :param lesson_id: the lesson
     :param auth_user: TODO: Use to only show the user who created the lesson plan the information
     :return: the lesson plan_model
     """
