@@ -5,7 +5,7 @@ from cls_lessonplan import LessonPlanModel
 class test_cls_lesson_plan__clean_up(TestCase):
 
     def setUp(self):
-        self.test = LessonPlanModel(id_=0, learning_episode_id = 0, title="", description="", task_icon = "")
+        self.test = LessonPlanModel(id_=0, lesson_id = 0, title="", description="", task_icon = "")
 
     def test_title__trim_whitespace(self):
 

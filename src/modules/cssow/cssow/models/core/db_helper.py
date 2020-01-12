@@ -22,22 +22,42 @@ def _closeSqlConn(db, cursor):
         #cursor.close()
         db.close()
 
-def execCRUDSql(db, sql, result=None):
+def execCRUDSql(db, sql, result=[], log_info=None):
     ''' run the sql statement without results '''
     if db != None:
+
+        if log_info != None:
+            log_info(db, "executing:{}".format(sql), True)
+
         cur = _execSql(db, sql)
         for tup in cur:
             result.append(tup)
+        
+        cur_li = _execSql(db, "SELECT LAST_INSERT_ID();")
+        for tup in cur_li:
+            result.append(tup)
+
         db.commit()    
         _closeSqlConn(db, None)
 
-def execSql(db, sql, result, enable_logging=False):
+        if log_info != None:
+            log_info(db, "result:{}".format(result), True)
+
+
+def execSql(db, sql, result, log_info=None):
     ''' run the sql statement '''
     if db != None:
+
+        if log_info != None:
+            log_info(db, "executing:{}".format(sql), True)
+        
         cur = _execSql(db, sql)
         for tup in cur:
             result.append(tup)
         _closeSqlConn(db, None)
+
+        if log_info != None:
+            log_info(db, "results:{}".format(result), True)
 
 
 def to_db_null(val):

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
-from db_helper import sql_safe
+from django.db import models
+from .core.db_helper import sql_safe, execSql
 
-class TopicModel(BaseModel):
+class TopicModel(models.Model):
     def __init__(self, id_, name, created = "", created_by = ""):
         self.id = id_
         self.name = name
@@ -33,11 +33,12 @@ def get_options(db, lvl, topic_id = 0):
 
     try:
 
-        rows = db.executesql(str_select)
+        rows = []
+        execSql(db, str_select, rows)
 
         for row in rows:
             model = TopicModel(row[0], row[1], row[2], row[3])
-            data.append(model)
+            data.append(model.__dict__)
 
     except Exception as e:
         raise Exception("Error getting topics", e)

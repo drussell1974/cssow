@@ -3,7 +3,7 @@ from _unittest import TestCase
 from basemodel import BaseModel
 
 
-class test_LearningEpisodeModel__validate___on_before_validate(TestCase):
+class test_LessonModel__validate___on_before_validate(TestCase):
 
     test = None
 

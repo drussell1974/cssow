@@ -158,7 +158,7 @@ class test_learningobjective__clean_up__exam_board_name(LearningObjective_TestCa
         self.assertEqual('"x"', self.test.exam_board_name)
 
 
-class test_learningobjective__clean_up__learning_episode_name(LearningObjective_TestCase):
+class test_learningobjective__clean_up__lesson_name(LearningObjective_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()
@@ -166,35 +166,35 @@ class test_learningobjective__clean_up__learning_episode_name(LearningObjective_
     def test__trim_whitespace(self):
         test = self._construct_valid_object()
 
-        test.learning_episode_name = " x "
+        test.lesson_name = " x "
 
         # test
         test._clean_up()
 
         # assert
-        self.assertEqual(test.learning_episode_name, "x")
+        self.assertEqual(test.lesson_name, "x")
 
 
     def test__escape_sqlterminator(self):
 
-        self.test.learning_episode_name = "x;"
+        self.test.lesson_name = "x;"
 
         # test
         self.test._clean_up()
 
         # assert
-        self.assertEqual("x\;", self.test.learning_episode_name)
+        self.assertEqual("x\;", self.test.lesson_name)
 
 
     def test__escape_quote(self):
 
-        self.test.learning_episode_name = "'x'"
+        self.test.lesson_name = "'x'"
 
         # test
         self.test._clean_up()
 
         # assert
-        self.assertEqual('"x"', self.test.learning_episode_name)
+        self.assertEqual('"x"', self.test.lesson_name)
 
 
 class test_learningobjective__clean_up__key_stage_name(LearningObjective_TestCase):

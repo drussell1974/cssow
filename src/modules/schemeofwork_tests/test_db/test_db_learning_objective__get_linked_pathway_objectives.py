@@ -19,7 +19,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
     def test_return_nothing_when_empty_keywords(self):
         # test
         test_keywords = ""
-        result = db_learningobjective.get_linked_pathway_objectives(self.fake_db, learning_episode_id = 0)
+        result = db_learningobjective.get_linked_pathway_objectives(self.fake_db, lesson_id = 0)
 
         # assert
         self.assertEqual(0, len(result))
@@ -28,7 +28,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
     def test_return_results(self):
         # test
         test_keywords = "algorithms,abstract"
-        result = db_learningobjective.get_linked_pathway_objectives(self.fake_db, learning_episode_id = 35)
+        result = db_learningobjective.get_linked_pathway_objectives(self.fake_db, lesson_id = 35)
 
         # assert
         self.assertEqual(1, len(result))

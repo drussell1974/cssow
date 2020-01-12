@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from core.basemodel import BaseModel
-from core.db_helper import sql_safe
+from .core.basemodel import BaseModel
+from .core.db_helper import sql_safe, execSql
 
 class KeywordModel(BaseModel):
     def __init__(self, id_, term, definition):
@@ -43,12 +43,13 @@ class KeywordModel(BaseModel):
 DAL
 """
 
-from db_helper import to_empty, sql_safe
+from .core.db_helper import to_empty, sql_safe
 
 def get_options(db):
     select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     data = []
 

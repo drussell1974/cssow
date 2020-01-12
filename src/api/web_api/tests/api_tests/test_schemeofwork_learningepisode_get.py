@@ -3,8 +3,8 @@ from ui_testcase import UITestCase, WebBrowserContext
 from django.urls import reverse
 #from lessons.views import get
 
-@tag("learningepisode")
-class test_schemeofwork_learningepsiode_get_all(UITestCase):
+@tag("lesson")
+class test_schemeofwork_lesson_get_all(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -34,13 +34,13 @@ class test_schemeofwork_learningepsiode_get_all(UITestCase):
 #        found = reverse("lessons")
 #        self.assertEqual(found, "/api/schemeofwork/11/lessons")
 
-    @tag("learningepisode should return a payload")
+    @tag("lesson should return a payload")
     def test__should_return_a_payload(self):
         # assert
         self.assertIsNotNone(self.payload)
 
 
-    @tag("learningepisoode should have multiple records")
+    @tag("lesson should have multiple records")
     def test__should_have_multiple_records(self):
         # assert
         self.assertEqual(26, len(self.payload["lessons"]))

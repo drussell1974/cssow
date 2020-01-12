@@ -3,11 +3,11 @@ sys.path.append('../../schemeofwork/modules/')
 
 from unittest import TestCase
 
-from learningepisode_testcase import LearningEpisode_TestCase
-from cls_learningepisode import LearningEpisodeModel
+from lesson_testcase import lesson_TestCase
+from cls_lesson import LessonModel
 
 
-class Test_LearningEpisode_Constructor(TestCase):
+class Test_lesson_Constructor(TestCase):
 
     test = None
 
@@ -21,7 +21,7 @@ class Test_LearningEpisode_Constructor(TestCase):
     def test_validate_for_default_instance_returns_false(self):
 
         # setup
-        test = LearningEpisodeModel(0, "Data Representation: Images")
+        test = LessonModel(0, "Data Representation: Images")
 
         # test
         test.validate()
@@ -33,7 +33,7 @@ class Test_LearningEpisode_Constructor(TestCase):
     def test_constructor_default(self):
 
         # test
-        test = LearningEpisodeModel(0, "Data Representation: Images")
+        test = LessonModel(0, "Data Representation: Images")
 
         # assert
         self.assertEqual(0, test.id)
@@ -61,7 +61,7 @@ class Test_LearningEpisode_Constructor(TestCase):
 
         # setup
 
-        test = LearningEpisodeModel(1,
+        test = LessonModel(1,
                                  title="Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
@@ -90,7 +90,7 @@ class Test_LearningEpisode_Constructor(TestCase):
 
     def test_is_copy(self):
         # setup
-        test = LearningEpisodeModel(1, "Data Representation: Images")
+        test = LessonModel(1, "Data Representation: Images")
 
         # test
         test.copy()
@@ -103,7 +103,7 @@ class Test_LearningEpisode_Constructor(TestCase):
 
     def test_is_not_copy(self):
         # setup
-        test = LearningEpisodeModel(1, "Data Representation: Images")
+        test = LessonModel(1, "Data Representation: Images")
 
         # test
         result = test.is_copy()

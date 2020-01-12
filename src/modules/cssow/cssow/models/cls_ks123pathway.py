@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from core.basemodel import BaseModel
-from core.db_helper import sql_safe
+from .core.basemodel import BaseModel
+from .core.db_helper import sql_safe, execSql
 
 class KS123PathwayModel(BaseModel):
     def __init__(self, id_, objective):
@@ -28,9 +28,10 @@ def get_options(db, year_id, topic_id):
     str_select = "SELECT id, objective FROM sow_ks123_pathway WHERE year_id = {year_id} and topic_id = {topic_id};"\
         .format(year_id=year_id, topic_id=topic_id)
 
-    rows = db.executesql(str_select)
+    rows = []
+    execSql(db, str_select, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = KS123PathwayModel(row[0], row[1])
@@ -39,18 +40,19 @@ def get_options(db, year_id, topic_id):
     return data
 
 
-def get_linked_pathway_ks123(db, learning_episode_id):
+def get_linked_pathway_ks123(db, lesson_id):
 
     select_sql = "SELECT"\
                  " pw.id as id,"\
                  " pw.objective as objective "\
-                 "FROM sow_learning_episode__has__ks123_pathway as le_pw" \
+                 "FROM sow_lesson__has__ks123_pathway as le_pw" \
                  " INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id"\
-                 " WHERE le_pw.learning_episode_id = {learning_episode_id};"
+                 " WHERE le_pw.lesson_id = {lesson_id};"
 
-    select_sql = select_sql.format(learning_episode_id=int(learning_episode_id))
+    select_sql = select_sql.format(lesson_id=int(lesson_id))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     data = [];
 

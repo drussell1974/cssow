@@ -3,15 +3,16 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name="learningepisode.index"),
-    path('new', views.new, name="learningepisode.new"),
-    path('<int:learning_episode_id>', views.index, name="learningepisode.view"),
-    path('<int:learning_episode_id>/edit', views.edit, name="learningepisode.edit"),
-    path('<int:learning_episode_id>/copy', views.copy, name="learningepisode.copy"), 
-    path('<int:learning_episode_id>/publish', views.publish, name="learningepisode.publish_item"), 
-    path('<int:learning_episode_id>/delete', views.delete, name="learningepisode.delete_item"), 
-    path('<int:learning_episode_id>/lessonplan', views.lessonplan, name="learningepisode.lessonplan"),
-    path('<int:learning_episode_id>/whiteboard', views.whiteboard, name="learningepisode.whiteboard_view"),
+    path('', views.index, name="lesson.index"),
+    path('new', views.new, name="lesson.new"),
+    path('<int:lesson_id>', views.index, name="lesson.view"),
+    path('<int:lesson_id>/edit', views.edit, name="lesson.edit"),
+    path('<int:lesson_id>/copy', views.copy, name="lesson.copy"), 
+    path('<int:lesson_id>/publish', views.publish, name="lesson.publish_item"), 
+    path('<int:lesson_id>/delete', views.delete, name="lesson.delete_item"), 
+    path('<int:lesson_id>/lessonplan', views.lessonplan, name="lesson.lessonplan"),
+    path('<int:lesson_id>/whiteboard', views.whiteboard, name="lesson.whiteboard_view"),
+    path('<int:lesson_id>/save', views.save, name="lesson.save"),
     # Check learningobjective app
-    path('<int:learning_episode_id>/learningobjectives/', include('app.learningobjectives.urls')),
+    path('<int:lesson_id>/learningobjectives/', include('app.learningobjectives.urls')),
 ]

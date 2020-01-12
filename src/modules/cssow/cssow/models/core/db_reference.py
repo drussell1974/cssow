@@ -33,7 +33,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     return data
 
 
-def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, auth_user):
+def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
 
     str_select = "SELECT " \
                  " ref.id as id," \
@@ -49,14 +49,14 @@ def get_learning_episode_options(db, scheme_of_work_id, learning_episode_id, aut
                  " le_ref.page_url," \
                  " le_ref.task_icon " \
                  "FROM sow_reference as ref " \
-                 "INNER JOIN sow_learning_episode as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {learning_episode_id} " \
-                 "LEFT JOIN sow_learning_episode__has__references as le_ref ON le_ref.learning_episode_id = le.id AND le_ref.reference_id = ref.id " \
+                 "INNER JOIN sow_lesson as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {lesson_id} " \
+                 "LEFT JOIN sow_lesson__has__references as le_ref ON le_ref.lesson_id = le.id AND le_ref.reference_id = ref.id " \
                  "LEFT JOIN sow_reference_type as ref_type ON ref.reference_type_id = ref_type.id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " OR (ref.published = 1 OR ref.created_by = {auth_user}) " \
                  "ORDER BY reference_type_id, title, authors;"
 
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, learning_episode_id=learning_episode_id)
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     rows = db.executesql(str_select)
 
@@ -128,7 +128,7 @@ Private CRUD functions
 """
 
 def _update(db, model):
-    """ updates the sow_learning_episode and sow_learning_episode__has__topics """
+    """ updates the sow_lesson and sow_lesson__has__topics """
 
     # 1. Update the lesson
 
@@ -181,32 +181,32 @@ def _insert(db, model):
 
 
 def insert_page_note(db, model):
-    """ deletes and reinserts sow_learning_episode__has__references """
+    """ deletes and reinserts sow_lesson__has__references """
     # insert
-    str_insert = "INSERT INTO sow_learning_episode__has__references (reference_id, learning_episode_id, page_notes, page_url, task_icon) VALUES ({reference_id}, {learning_episode_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
-    str_insert = str_insert.format(reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_db_null(model.task_icon))
+    str_insert = "INSERT INTO sow_lesson__has__references (reference_id, lesson_id, page_notes, page_url, task_icon) VALUES ({reference_id}, {lesson_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
+    str_insert = str_insert.format(reference_id=model.reference_id, lesson_id=model.lesson_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_db_null(model.task_icon))
 
     db.executesql(str_insert)
 
 
 def update_page_note(db, model):
-    """ deletes and reinserts sow_learning_episode__has__references """
+    """ deletes and reinserts sow_lesson__has__references """
     # insert
-    str_update = "UPDATE sow_learning_episode__has__references SET" \
+    str_update = "UPDATE sow_lesson__has__references SET" \
                  " reference_id = {reference_id}," \
-                 " learning_episode_id = {learning_episode_id}," \
+                 " lesson_id = {lesson_id}," \
                  " page_notes = '{page_notes}'," \
                  " page_url = '{page_uri}'," \
                  " task_icon = '{task_icon}' " \
                  "WHERE id = {id};"
-    str_update = str_update.format(id=model.id, reference_id=model.reference_id, learning_episode_id=model.learning_episode_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_empty(model.task_icon))
+    str_update = str_update.format(id=model.id, reference_id=model.reference_id, lesson_id=model.lesson_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_empty(model.task_icon))
 
     db.executesql(str_update)
 
 
 def delete_page_note(db, id_):
         # delete existing
-        str_delete = "DELETE FROM sow_learning_episode__has__references WHERE id = {id};".format(id=id_)
+        str_delete = "DELETE FROM sow_lesson__has__references WHERE id = {id};".format(id=id_)
 
         db.executesql(str_delete)
 

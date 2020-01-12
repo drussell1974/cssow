@@ -6,7 +6,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/lessons/{}/learningobjectives".format(self.test_scheme_of_work_id, self.test_learning_episode_id)
+        self.test_path = "/schemesofwork/{}/lessons/{}/learningobjectives".format(self.test_scheme_of_work_id, self.test_lesson_id)
         self.test_context.get(self.root_uri + self.test_path)
 
         self.test_context.implicitly_wait(4)
@@ -27,10 +27,10 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture; CISC and RISC')
 
 
-    def test_page__should_have__sidebar_and_selected_learning_episode(self):
+    def test_page__should_have__sidebar_and_selected_lesson(self):
         # test
         self.test_context.implicitly_wait(20)
-        elem = self.test_context.find_element_by_id("nav-link-learning-episode-{}".format(self.test_learning_episode_id))
+        elem = self.test_context.find_element_by_id("nav-link-learning-episode-{}".format(self.test_lesson_id))
         
         # assert
         self.assertEqual("Types of CPU architecture", elem.text)
@@ -54,10 +54,10 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__breadcrumb__navigate_to_learningepisodes_index(self):
+    def test_page__breadcrumb__navigate_to_lessons_index(self):
         # setup
 
-        self.test_context.find_element_by_id('lnk-bc-learning_episodes').click()
+        self.test_context.find_element_by_id('lnk-bc-lessons').click()
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')

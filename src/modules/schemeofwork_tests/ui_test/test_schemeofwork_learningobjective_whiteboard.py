@@ -6,7 +6,7 @@ class test_schemeofwork_learningepsiode_whiteboard(UITestCase):
 
     def setUp(self):
         # set up
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/whiteboard_view/{}/{}".format(self.test_scheme_of_work_id, self.test_learning_episode_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/whiteboard_view/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.test_context.implicitly_wait(4)
         self.wait(20)
 

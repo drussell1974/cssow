@@ -1,14 +1,14 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
+class test_schemeofwork_lesson_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
         self.test_context.implicitly_wait(10)
-        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_learning_episode_id))
+        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.wait() # do not delete
         ' click the add reference button '
 

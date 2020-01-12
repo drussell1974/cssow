@@ -36,7 +36,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__submenu__navigate_to_learningepisode_new(self):
+    def test_page__submenu__navigate_to_lesson_new(self):
         # setup
         self.do_log_in(self.test_path)
 

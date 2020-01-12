@@ -29,8 +29,8 @@ class LearningObjective_TestCase(TestCase):
                                       content_description = "Understanding Havard Architecture",
                                       exam_board_id = 5,
                                       exam_board_name = "AQA",
-                                      learning_episode_id = 6,
-                                      learning_episode_name = "Lesson 30",
+                                      lesson_id = 6,
+                                      lesson_name = "Lesson 30",
                                       key_stage_id = 7,
                                       key_stage_name = "KS7",
                                       parent_id = 99,
@@ -57,8 +57,8 @@ class LearningObjective_TestCase(TestCase):
         self.assertEqual(test.content_description, "Understanding Havard Architecture", "--- setup --- content_name failed")
         self.assertEqual(test.exam_board_id, 5, "--- setup --- exam_board_id failed")
         self.assertEqual(test.exam_board_name, "AQA", "--- setup --- exam_board_name failed")
-        self.assertEqual(test.learning_episode_id, 6, "--- setup --- learning_episode_id failed")
-        self.assertEqual(test.learning_episode_name, "Lesson 30", "--- setup --- learning_episode_name  failed")
+        self.assertEqual(test.lesson_id, 6, "--- setup --- lesson_id failed")
+        self.assertEqual(test.lesson_name, "Lesson 30", "--- setup --- lesson_name  failed")
         self.assertEqual(test.key_stage_id, 7, "--- setup --- key_stage_id failed")
         self.assertEqual(test.key_stage_name, "KS7", "--- setup --- key_stage_name failed")
         self.assertEqual(test.parent_id, 99, "--- setup --- parent_id failed")

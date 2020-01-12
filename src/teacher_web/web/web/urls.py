@@ -22,10 +22,18 @@ from app.default import views
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    # my apps
+    # api lessons
+    path('api/schemesofwork/<int:scheme_of_work_id>/learning-episodes/', include('api.lessons.urls')),
+    # api schemesofwork
+    path('api/schemesofwork/', include('api.schemesofwork.urls')),
+    # api default
+    path('api/', include('api.default.urls')),
+    # app lesson
+    path('schemesofwork/<int:scheme_of_work_id>/learning-episodes/', include('app.lesson.urls')),
+    # app schemeofwork
     path('schemesofwork/', include('app.schemesofwork.urls')),
-    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.learningepisode.urls')),
     # TODO: move to reference app
     path('reference/<int:reference_id>/edit', views.index, name="reference.edit"),
+    # app default
     path('', include('app.default.urls')),    
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
 
-from cssow.models import cls_schemeofwork
+from cssow.models import cls_keyword, cls_schemeofwork, cls_topic
 from shared.view_model import ViewModel
 
 # Create your views here.
@@ -18,3 +18,4 @@ def index(request):
     view_model = ViewModel("", "Teach Computer Science", "Computing Schemes of Work across all key stages", data=data)
 
     return render(request, "default/index.html", view_model.content)
+

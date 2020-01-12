@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "C:\\dev\\schemeofwork_web2py_app\\src\\api"
 		}
 	],
 	"settings": {}

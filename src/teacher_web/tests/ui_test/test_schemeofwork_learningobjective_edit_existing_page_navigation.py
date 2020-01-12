@@ -7,7 +7,7 @@ class test_schemeofwork_learningobjective_edit_create_existing_navigation(UITest
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?id={}&learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_objective_id,  self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?id={}&lesson_id={}&scheme_of_work_id={}".format(self.test_learning_objective_id,  self.test_lesson_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -44,9 +44,9 @@ class test_schemeofwork_learningobjective_edit_create_existing_navigation(UITest
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__breadcrumb__navigate_to_learningepisode_index(self):
+    def test_page__breadcrumb__navigate_to_lesson_index(self):
         #test
-        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
+        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
         self.assertEqual("Lessons", elem.text)
 
         # test

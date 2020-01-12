@@ -39,9 +39,9 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     """ navigation """
 
-    def test_page__breadcrumb_navigate_to_learning_episode_index(self):
+    def test_page__breadcrumb_navigate_to_lesson_index(self):
         # test
-        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
+        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -65,9 +65,9 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__breadcrumb__navigate_to_learningepisode_index(self):
+    def test_page__breadcrumb__navigate_to_lesson_index(self):
         # setup
-        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
+        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
         self.assertEqual("Lessons", elem.text)
 
         # test

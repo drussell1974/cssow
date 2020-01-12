@@ -7,7 +7,7 @@ from unittest import TestCase
 class test_cls_reference__clean_up(TestCase):
 
     def setUp(self):
-        self.test = ReferenceNoteModel(1, reference_id=1, learning_episode_id = 6, page_note = "")
+        self.test = ReferenceNoteModel(1, reference_id=1, lesson_id = 6, page_note = "")
 
 
     def test_page_note__trim_whitespace(self):

@@ -26,7 +26,7 @@
         {% endif %}
       {% for row in content.data.schemes_of_work %}
       <div class="post-preview {% if row.is_recent == True %}recent{% endif %}">
-        <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'learningepisode.index' row.id %}">
+        <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}">
           <h2 class="post-title">
               {{ row.name }}
           </h2>

@@ -1,10 +1,10 @@
 import sys
 sys.path.append('../../schemeofwork/modules')
 
-from learningepisode_testcase import LearningEpisode_TestCase
+from lesson_testcase import lesson_TestCase
 
 
-class test_LearningEpisodeModel_validate__title(LearningEpisode_TestCase):
+class test_LessonModel_validate__title(lesson_TestCase):
 
     test = None
 
@@ -117,7 +117,7 @@ class test_LearningEpisodeModel_validate__title(LearningEpisode_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__validate__order_of_delivery_id(LearningEpisode_TestCase):
+class test_LessonModel__validate__order_of_delivery_id(lesson_TestCase):
 
     test = None
 
@@ -197,7 +197,7 @@ class test_LearningEpisodeModel__validate__order_of_delivery_id(LearningEpisode_
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__validate__topic_id(LearningEpisode_TestCase):
+class test_LessonModel__validate__topic_id(lesson_TestCase):
 
     test = None
 
@@ -277,7 +277,7 @@ class test_LearningEpisodeModel__validate__topic_id(LearningEpisode_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__validate__scheme_of_work_id(LearningEpisode_TestCase):
+class test_LessonModel__validate__scheme_of_work_id(lesson_TestCase):
 
     test = None
 
@@ -357,7 +357,7 @@ class test_LearningEpisodeModel__validate__scheme_of_work_id(LearningEpisode_Tes
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__validate__key_stage_id(LearningEpisode_TestCase):
+class test_LessonModel__validate__key_stage_id(lesson_TestCase):
 
     test = None
 
@@ -437,7 +437,7 @@ class test_LearningEpisodeModel__validate__key_stage_id(LearningEpisode_TestCase
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel_validate__key_words(LearningEpisode_TestCase):
+class test_LessonModel_validate__key_words(lesson_TestCase):
 
     test = None
 
@@ -520,7 +520,7 @@ class test_LearningEpisodeModel_validate__key_words(LearningEpisode_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel_validate__summary(LearningEpisode_TestCase):
+class test_LessonModel_validate__summary(lesson_TestCase):
 
     test = None
 
@@ -604,7 +604,7 @@ class test_LearningEpisodeModel_validate__summary(LearningEpisode_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-class test_LearningEpisodeModel__validate__year_id(LearningEpisode_TestCase):
+class test_LessonModel__validate__year_id(lesson_TestCase):
 
     test = None
 

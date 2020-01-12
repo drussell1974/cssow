@@ -1,9 +1,9 @@
 import sys
 sys.path.append('../../schemeofwork/modules')
 
-from learningepisode_testcase import LearningEpisode_TestCase
+from lesson_testcase import lesson_TestCase
 
-class test_LearningEpisodeModel__clean_up___scheme_of_work_name(LearningEpisode_TestCase):
+class test_LessonModel__clean_up___scheme_of_work_name(lesson_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()
@@ -43,7 +43,7 @@ class test_LearningEpisodeModel__clean_up___scheme_of_work_name(LearningEpisode_
         self.assertEqual('"x"', self.test.scheme_of_work_name)
 
 
-class test_LearningEpisodeModel_clean_up__key_stage_name(LearningEpisode_TestCase):
+class test_LessonModel_clean_up__key_stage_name(lesson_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()
@@ -83,7 +83,7 @@ class test_LearningEpisodeModel_clean_up__key_stage_name(LearningEpisode_TestCas
 
 
 
-class test_LearningEpisodeModel_clean_up__pathway_objective_ids(LearningEpisode_TestCase):
+class test_LessonModel_clean_up__pathway_objective_ids(lesson_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()
@@ -146,7 +146,7 @@ class test_LearningEpisodeModel_clean_up__pathway_objective_ids(LearningEpisode_
         self.assertEqual(["x", '"y"', "z", "y"], self.test.pathway_objective_ids)
 
 
-class test_LearningEpisodeModel_clean_up__keywords(LearningEpisode_TestCase):
+class test_LessonModel_clean_up__keywords(lesson_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()

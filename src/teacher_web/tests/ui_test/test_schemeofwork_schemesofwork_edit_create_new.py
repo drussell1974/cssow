@@ -34,7 +34,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 
-    def test_page__breadcrumb_navigate_to_learning_episode_index_not_visible_for_new_schemeofwork(self):
+    def test_page__breadcrumb_navigate_to_lesson_index_not_visible_for_new_schemeofwork(self):
         # test and assert
         with self.assertRaises(Exception):
             self.test_context.find_element_by_id('lnk-bc-learning_episoodes')

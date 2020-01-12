@@ -3,12 +3,12 @@ from basemodel import BaseModel
 from db_helper import sql_safe
 
 class ReferenceNoteModel (BaseModel):
-    def __init__(self, id_, reference_id, learning_episode_id, page_note, page_uri="", task_icon = ""):
+    def __init__(self, id_, reference_id, lesson_id, page_note, page_uri="", task_icon = ""):
         self.id = int(id_)
         self.page_note = page_note
         self.page_uri = page_uri
         self.task_icon = task_icon
-        self.learning_episode_id = learning_episode_id
+        self.lesson_id = lesson_id
         self.reference_id = reference_id
 
 

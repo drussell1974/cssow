@@ -6,7 +6,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/index/{}".format(self.test_scheme_of_work_id))
+        self.test_context.get("http://dev.computersciencesow.net:8000/schemeofwork/lesson/index/{}".format(self.test_scheme_of_work_id))
         self.test_context.implicitly_wait(4)
 
 
@@ -34,9 +34,9 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__submenu__navigate_to_learningepisode_new(self):
+    def test_page__submenu__navigate_to_lesson_new(self):
         # setup
-        self.do_log_in("/schemeofwork/learningepisode/index/{}".format(self.test_scheme_of_work_id))
+        self.do_log_in("/schemeofwork/lesson/index/{}".format(self.test_scheme_of_work_id))
 
         # test
         self.test_context.find_element_by_id('btn-new').click()

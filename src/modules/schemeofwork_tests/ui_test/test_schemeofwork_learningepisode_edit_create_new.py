@@ -1,13 +1,13 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepisode_edit_create_new(UITestCase):
+class test_schemeofwork_lesson_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?scheme_of_work_id=11")
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/lesson/edit?scheme_of_work_id=11")
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()

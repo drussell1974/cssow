@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from models.cls_learningepisode import get_model, get_all
-from .serializers import LessonSerializer, LessonListSerializer
+from models.cls_lesson import get_model, get_all
+from .serializers import lessonsSerializer, lessonsListSerializer
 
 
-class LessonViewSet(APIView):
+class LessonsViewSet(APIView):
     ''' API endpoint for a lesson '''
 
     def get(self, request, scheme_of_work_id, lesson_id):
@@ -16,8 +16,8 @@ class LessonViewSet(APIView):
         return JsonResponse({"lesson": lesson})
     
     
-class LessonListViewSet(APIView):
-    ''' API endpoint for list of lessons '''
+class LessonsListViewSet(APIView):
+    ''' API endpoint for list of lesson '''
     
     def get (self, request, scheme_of_work_id):
         lessons = get_all(None, scheme_of_work_id, None)

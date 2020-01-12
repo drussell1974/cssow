@@ -15,79 +15,279 @@
 {% endblock %}
 
 
-{% block maincontent %}
-<!-- Pager Header  -->
-<div class="clearfix">
-  <ul class="pagination">
-      =XML(pager_html)
-  </ul>
-</div>
-{% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'learningepisode.new' content.data.scheme_of_work_id %}">{{_('New')}}</a>
-{% endif %}
-  <!-- Pager Header END -->
-<!-- Scheme of works -->
-
-{% if content.data.lessons|length == 0 %}
-  <div class="alert alert-info" role="alert">
-      <span class="small">{{_('There are no lessons for this scheme of work.')}}</span>
-  {% if request.user.is_authenticated %}
-      <br><a href="{% url 'learningepisode.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
-  {% endif %}
+{% block contentheading %}
+  <div class="alert alert-secondary">
+    {% if content.data.lesson.is_copy %}
+    <i class="btn btn-danger float-right" id="copy-of-{{content.data.lesson.orig_id}}">{{_("Copy")}}</i>
+    {% endif %}
+    <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
+    {% if content.strap_line is not None %}
+      <p class="lead">{{ content.strap_line }}</p>
+    {% endif %}
   </div>
-{% endif %}
-
-{% for row in content.data.lessons %}
-  {% if row.topic_name is not None %}
-    {% if topic_name|upper != row.topic_name|upper %}
-        <h1 class="group-heading">{{ row.year_name}} {{ row.topic_name}}</h1>
-    {% endif %}
-  {% endif %}
-<div class="post-preview">
-  <a name="{{ row.id}}"></a>
-  <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}">
-    <h2 class="post-title">
-      {{ "Lesson {}"|stringformat:row.order_of_delivery_id }} - {{ row.title }}
-    </h2>
-    {% if row.summary != "" %}
-      <h3 class="post-subtitle">{{ row.summary }}</h3>
-    {% endif %}
-  </a>
-    {% for key_word in row.key_words %}
-      <i class="badge badge-info">{{ key_word }}</i>&nbsp;
-    {% endfor %}
-    {% if request.user.is_authenticated %}
-        <br><a href="#{{row.id}}" class="btn-keyword-modal small" data-keywords='{{ row.key_words}} {{row.key_words_from_learning_objectives }}'>
-          {{_("Edit definitions")}}
-          </a>
-    {% endif %}
-  <p class="post-meta">{{_("Created by")}}
-    <a href="#">{{ row.created_by_name }}</a>
-    {% if row.created %}
-      on {{ row.created }}
-    {% endif %}, {{_("Learning objectives")}} {{ row.number_of_learning_objective}}
-    {% if request.user.is_authenticated %}
-      {% if row.published == False %} 
-        <a href="{% url 'learningepisode.publish_item' row.id request.url %}" class="small badge badge-danger">{{_("not published")}}</a> {{ endif }} - <a href="{% url 'learningepisode.delete_item' row.id row.scheme_of_work_id %}">{{_("Delete")}}</a> - <a href="{% url 'learningepisode.edit' row.id  row.scheme_of_work_id request.url %}">{{_("Edit")}}</a> - <a href="{% url 'learningepisode.edit' row.id row.scheme_of_work_id 1 %}">{{_("Copy")}}</a>
-      {% endif %}
-    {% endif %}
-    </p>
-</div>
-<hr>
-{% endfor %}
-<!-- Pager Footer -->
-<div class="clearfix">
-      <ul class="pagination">
-          =XML(pager_html)
-      </ul>
-
-</div>
-  <!-- Pager Footer END -->
-  <section class="alert alert-info" >
-      <div id="div-references">
-      </div><!-- id="div-pathway_objective" -->
-       <a href="{% url 'reference.edit' content.data.scheme_of_work_id %}?next={{ request.path }}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{_('Add learning materials')}}</a>
- </section><!-- class="alert alert-info" -->
-<!-- Scheme of works END -->
-<hr />
 {% endblock %}
+
+
+{% block maincontent %}
+<form name="edit-lesson" id="form" method="post" action="{% url 'lesson.save' content.data.scheme_of_work_id content.data.lesson_id %}">
+    {% csrf_token %}
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Year group")}}</label>
+        <select class="form-control" name="year_id" id="ctl-year_id" required>
+            <option value="" {% if has_objectives == True %} disabled {% endif %}>- {{_("Select an option")}} -</option>
+            {% for opt in content.data.year_options %}
+            <option value="{{opt.id}}" {% if opt.id == content.data.lesson.year_id %} selected {% endif %}>{{opt.name}}</option>
+            {% endfor %}
+        </select>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Order of delivery")}}</label>
+        <!-- in the future select from planner -->
+        <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{_('Enter an order of delivery')}}" id="ctl-order_of_delivery_id" required
+               min="1" max="9999" value='{{content.data.lesson.order_of_delivery_id}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+        <hr>
+    </div>
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Title")}}</label>
+        <input type="text" name="title" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" required
+               maxlength="45" value='{{content.data.lesson.title}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+        <hr>
+    </div>
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Summary")}}</label>
+        <input type="text" name="summary" class="form-control" placeholder="{{_('Enter a summary')}} {{_('(optional)')}}" id="ctl-summary"
+               maxlength="80" value='{{content.data.lesson.summary}}'>
+        <p class="help-block text-danger"></p>
+      </div>
+        <hr>
+    </div>
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Topic")}}</label>
+        <select class="form-control" name="topic_id" id="ctl-topic_id" required>
+            <option value="" {% if has_objectives == True %} disabled {% endif %}>- {{_("Select an option")}} -</option>
+            {% for opt in content.data.topic_options %}
+            <option value="{{opt.id}}" {% if opt.id == content.data.lesson.topic_id %} selected {% elif has_objectives == True %} disabled {% endif %}>{{opt.name}}</option>
+            {% endfor %}
+        </select>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+     <div class="control-group">
+      <div class="form-group controls">
+        <div id="div-related_topic_id">
+        </div>
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+      <!-- KS123 Pathway START -->
+      <div class="control-group">
+        <div class="form-group controls">
+          <label>{{_("Linked to pathway")}}</label>
+            <div id="div-pathway_ks123_id">
+            </div>
+            <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
+            <p class="help-block text-danger"></p>
+        </div>
+      </div>
+      <!-- KS123 Pathway END -->
+    <div class="control-group">
+      <div class="form-group  controls">
+        <label>{{_("Keywords")}}</label>
+        <input type="text" name="key_words" class="form-control" placeholder="{{_('Type a keyword then press tab or enter')}}" id="ctl-key_words"
+               maxlength="250" value='{{content.data.lesson.key_words}}'>
+        <p class="help-block text-danger" id="token-error"></p>
+      </div>
+        <div id="keywords"></div>
+        <hr>
+    </div>
+      <!-- Pathway Objectives START -->
+      <div class="control-group">
+        <div class="form-group controls">
+          <label>{{_("Prior learning")}}</label>
+            <div id="div-pathway_objective_id">
+            </div>
+            <p class="help-block text-danger"></p>
+        </div>
+      </div>
+    <br>
+    <div id="success"></div>
+    <div class="form-group">
+      <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
+      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
+      <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
+      <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
+      <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
+      <input type="hidden" name="next" value="{{ request.next }}" > 
+      <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
+      <input type="hidden" name="get_related_topics_uri" value="{% url 'api.default.related-topics' content.data.lesson.parent_topic_id %}" id="hdn-related-topics_uri"><!-- get_related_topics -->
+      
+      <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
+      <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ksxxxx' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
+      
+      <input type="hidden" name="get_pathway_objectives_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.key_stage_id %}" id="hdn-view_pathway_objectives_uri"><!-- _view_pathway_objectives -->
+      
+      
+      <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
+      <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
+      <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{_("Cancel")}}</button>
+    </div>
+  </form><!-- form#form -->
+{% endblock %}
+
+
+{% block page_js %}
+    {% load static %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!-- Bootstrap tokenfield javascript -->
+    <script src="{% static 'custom/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
+    <script>
+    function showPathwayObjectives(key_stage_id, arr_key_words) {
+        $.ajax({url: document.getElementById('hdn-view_pathway_objectives_uri').value,
+            success: function(result){
+                $("#div-pathway_objective_id").html(result);
+            },
+            error: function(){
+                $("#div-pathway_objective_id").html('Could not get pathway objectives at this time');
+            }
+        });
+    }
+
+    function showPathwayKS123() {
+        year_id = $('#ctl-year_id option:selected').val();
+        topic_id = $('#ctl-topic_id option:selected').val();
+
+        $.ajax({url: document.getElementById('hdn-view_pathway_ks123_uri').value,
+            success: function(result){
+                $("#div-pathway_ks123_id").html(result);
+            },
+            error: function(){
+                $("#div-pathway_ks123_id").html('Could not get pathway objectives at this time');
+            }
+        });
+    }
+
+    function showRelatedTopic(lesson_id ,main_topic_id) {
+        $.getJSON(document.getElementById('hdn-related-topics_uri').value,
+            function(result) {
+                divElem =  document.getElementById('div-related_topic_id');
+                // clear
+                while(divElem.hasChildNodes()) {
+                    divElem.removeChild(divElem.lastChild);
+                }
+                // repopulate
+                for (i = 0; i < result.length;i++) {
+                    // create outer div
+                    var formcheck = document.createElement('div');
+                    formcheck.classList.add('form-check');
+
+                    // create checkbox
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'ctl-related_topic_id' + result[i].id;
+                    checkbox.classList.add('form-check-input');
+                    checkbox.name = 'related_topic_ids';
+                    checkbox.value = result[i].id;
+                    // check as necessary
+                    if (result[i].checked == true) {
+                        checked = document.createAttribute('checked');
+                        checkbox.setAttributeNode(checked);
+                    }
+
+                    // add checkbox to div
+                    formcheck.appendChild(checkbox);
+
+                    // create label
+                    var span = document.createElement('label');
+                    span.classList.add('form-check-label');
+                    span.setAttribute('for', 'ctl-related_topic_id' + result[i].id);
+                    var text = document.createTextNode(result[i].name);
+                    // add inner text to span
+                    span.appendChild(text);
+                    // add span to div
+                    formcheck.appendChild(span);
+
+                    // add div to
+                    divElem.appendChild(formcheck);
+
+                    // disable with javascript
+                    if (result[i].disabled == true) {
+                        // create locked
+                        var locked = document.createElement('i');
+                        locked.classList.add('badge');
+                        locked.classList.add('badge-pill');
+                        locked.classList.add('badge-info');
+                        locked.classList.add('fa');
+                        locked.classList.add('fa-key');
+                        locked.classList.add('icon');
+                        locked.title = 'There is a learning objective associated to this topic';
+                        var text = document.createTextNode(" ");
+                        // add inner text to span
+                        locked.appendChild(text);
+                        formcheck.appendChild(locked);
+
+                        checkbox.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        };
+                    }
+                }
+            }
+        )
+    }
+    
+    $('#ctl-topic_id').on('change', function(e) {
+        showRelatedTopic(document.getElementById('hdn-lesson_id').value, e.target.value);
+    });
+      $.getJSON(document.getElementById('hdn-keywords_uri').value,
+        function(result) {
+            $('#ctl-key_words').tokenfield({
+              autocomplete: {
+                limit: 15,
+                source: result,
+                delay: 100
+              },
+              showAutocompleteOnFocus: true
+            })
+        });
+
+    window.onload = function(e) {
+      
+      topic_elem = document.getElementById('ctl-topic_id');
+      showRelatedTopic(document.getElementById('hdn-lesson_id').value, topic_elem.value);
+
+      key_words = document.getElementById('ctl-key_words').value.split(',');
+      var init_key_words = [];
+      for(i = 0; i < key_words.length; i++) {
+        init_key_words.push(key_words[i].trim());
+      }
+      showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, init_key_words);
+      showPathwayKS123();
+
+      $('#ctl-key_words').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
+        var arr_key_words = [];
+        $('.token-label').each(function(index) {
+          arr_key_words.push($(this).text());
+        })
+        showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, arr_key_words);
+      });
+
+      $('#ctl-topic_id, #ctl-year_id').on('change', function(e) {
+        showPathwayKS123();
+      });
+    };
+
+    </script>
+{% endblock %}
+

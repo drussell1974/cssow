@@ -1,12 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase):
+class test_schemeofwork_lesson_edit_existing_page_navigation(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningepisode/edit?id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/lesson/edit?id={}&scheme_of_work_id={}".format(self.test_lesson_id, self.test_scheme_of_work_id))
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -42,9 +42,9 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__breadcrumb__navigate_to_learningepisode_index(self):
+    def test_page__breadcrumb__navigate_to_lesson_index(self):
         #test
-        elem = self.test_context.find_element_by_id('lnk-bc-learning_episodes')
+        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
         self.assertEqual("Lessons", elem.text)
 
         # test
@@ -54,7 +54,7 @@ class test_schemeofwork_learningepisode_edit_existing_page_navigation(UITestCase
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
 
 
-    def test_page__breadcrumb__navigate_to_learningobjective_index(self):
+    def test_page__breadcrumb__navigate_to_lesson_index(self):
 
         #test
         elem = self.test_context.find_element_by_id('lnk-bc-learning_objectives')

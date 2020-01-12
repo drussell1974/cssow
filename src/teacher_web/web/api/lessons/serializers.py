@@ -1,14 +1,14 @@
-from models.cls_learningepisode import LearningEpisodeModel, LearningEpisodeListModel
+from cssow.models.cls_lesson import LessonModel, LessonListModel
 from rest_framework import serializers, status
 from django.db import models
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LearningEpisodeModel
+        model = LessonModel
         fields = ["id", "title"]
 
 
 class LessonListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LearningEpisodeListModel
+        model = LessonListModel
         fields = ["lessons"]

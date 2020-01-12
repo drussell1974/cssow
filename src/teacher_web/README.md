@@ -21,6 +21,7 @@ Use 'yarn build' from package.json to install the prerequisites, or directly fro
 pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl 
 pip install mysqlclient
 pip install mysql-connector-python
+pip install djangorestframework
 pip install selenium'''
 
 # Teacher Admin

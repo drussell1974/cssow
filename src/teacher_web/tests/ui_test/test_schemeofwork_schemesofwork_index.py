@@ -24,7 +24,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__navigate_to_learning_episode_index(self):
+    def test_page__navigate_to_lesson_index(self):
 
         # setup
 

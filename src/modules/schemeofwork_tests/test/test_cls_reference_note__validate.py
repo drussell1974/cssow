@@ -9,7 +9,7 @@ class test_cls_reference_validate__page_note(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceNoteModel(1, reference_id = 1, learning_episode_id = 6, page_note = "")
+        self.test = ReferenceNoteModel(1, reference_id = 1, lesson_id = 6, page_note = "")
 
 
     def tearDown(self):
@@ -104,7 +104,7 @@ class test_cls_reference_validate__page_uri(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceNoteModel(1, reference_id = 1, learning_episode_id = 6, page_note = "Test note")
+        self.test = ReferenceNoteModel(1, reference_id = 1, lesson_id = 6, page_note = "Test note")
 
 
     def tearDown(self):
@@ -272,7 +272,7 @@ class test_cls_reference_validate__task_icon(TestCase):
     test = None
 
     def setUp(self):
-        self.test = ReferenceNoteModel(1, reference_id = 1, learning_episode_id = 6, page_note = "Test note", task_icon = "fa-icon")
+        self.test = ReferenceNoteModel(1, reference_id = 1, lesson_id = 6, page_note = "Test note", task_icon = "fa-icon")
 
 
     def tearDown(self):

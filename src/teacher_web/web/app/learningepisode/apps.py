@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class LearningepisodeConfig(AppConfig):
-    name = 'learningepisode'
+class lessonConfig(AppConfig):
+    name = 'lesson'

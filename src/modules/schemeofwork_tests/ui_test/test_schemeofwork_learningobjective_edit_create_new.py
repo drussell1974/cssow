@@ -7,7 +7,7 @@ class test_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?learning_episode_id={}&scheme_of_work_id={}".format(self.test_learning_episode_id, self.test_scheme_of_work_id))
+        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?lesson_id={}&scheme_of_work_id={}".format(self.test_lesson_id, self.test_scheme_of_work_id))
 
 
     def tearDown(self):

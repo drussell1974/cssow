@@ -52,8 +52,8 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertEqual("", test.content_description)
         self.assertEqual(None, test.exam_board_id)
         self.assertEqual("", test.exam_board_name)
-        self.assertEqual(0, test.learning_episode_id)
-        self.assertEqual("", test.learning_episode_name)
+        self.assertEqual(0, test.lesson_id)
+        self.assertEqual("", test.lesson_name)
         self.assertEqual(0, test.key_stage_id)
         self.assertEqual("", test.key_stage_name)
         self.assertEqual(None, test.parent_id)
@@ -80,8 +80,8 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
                                       content_description = "Understanding Havard Architecture",
                                       exam_board_id = 5,
                                       exam_board_name = "AQA",
-                                      learning_episode_id = 6,
-                                      learning_episode_name = "Lesson 30",
+                                      lesson_id = 6,
+                                      lesson_name = "Lesson 30",
                                       key_stage_id = 7,
                                       key_stage_name = "KS7",
                                       parent_id = 99,
@@ -106,8 +106,8 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertEqual(test.content_description, "Understanding Havard Architecture", "--- setup --- content_name failed")
         self.assertEqual(test.exam_board_id, 5, "--- setup --- exam_board_id failed")
         self.assertEqual(test.exam_board_name, "AQA", "--- setup --- exam_board_name failed")
-        self.assertEqual(test.learning_episode_id, 6, "--- setup --- learning_episode_id failed")
-        self.assertEqual(test.learning_episode_name, "Lesson 30", "--- setup --- learning_episode_name  failed")
+        self.assertEqual(test.lesson_id, 6, "--- setup --- lesson_id failed")
+        self.assertEqual(test.lesson_name, "Lesson 30", "--- setup --- lesson_name  failed")
         self.assertEqual(test.key_stage_id, 7, "--- setup --- key_stage_id failed")
         self.assertEqual(test.key_stage_name, "KS7", "--- setup --- key_stage_name failed")
         self.assertEqual(test.parent_id, 99, "--- setup --- parent_id failed")
@@ -135,8 +135,8 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
                                       content_description = "Understanding Havard Architecture",
                                       exam_board_id = "5",
                                       exam_board_name = "AQA",
-                                      learning_episode_id = "6",
-                                      learning_episode_name = "Lesson 30",
+                                      lesson_id = "6",
+                                      lesson_name = "Lesson 30",
                                       key_stage_id = "7",
                                       key_stage_name = "KS7",
                                       parent_id = "99",
@@ -160,8 +160,8 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertIsInstance(test.content_description,  str, "should be str")
         self.assertIsInstance(test.exam_board_id,  int, "should be int")
         self.assertIsInstance(test.exam_board_name,  str, "should be str")
-        self.assertIsInstance(test.learning_episode_id,  int, "should be int")
-        self.assertIsInstance(test.learning_episode_name,  str, "should be str")
+        self.assertIsInstance(test.lesson_id,  int, "should be int")
+        self.assertIsInstance(test.lesson_name,  str, "should be str")
         self.assertIsInstance(test.key_stage_id, int, "key_stage_id should be int")
         self.assertIsInstance(test.key_stage_name, str, "should be str")
         self.assertIsInstance(test.parent_id,  int, "topic_id should be int")

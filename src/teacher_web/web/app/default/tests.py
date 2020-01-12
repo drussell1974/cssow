@@ -6,4 +6,5 @@ from app.default.views import index
 class DefaultPageTest(TestCase):
     def test_root_url_resolves_to_index(self):
         url = resolve('/')
+        self.assertEqual("default", url.url_name)
         self.assertEqual(url.func, index)

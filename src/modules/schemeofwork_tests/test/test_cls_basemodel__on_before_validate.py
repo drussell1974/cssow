@@ -6,7 +6,7 @@ from basemodel import BaseModel
 from datetime import datetime
 
 
-class test_LearningEpisodeModel__validate___on_before_validate(TestCase):
+class test_LessonModel__validate___on_before_validate(TestCase):
 
     test = None
 

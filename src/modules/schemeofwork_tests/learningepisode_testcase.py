@@ -1,13 +1,13 @@
 from unittest import TestCase
 import sys
-from cls_learningepisode import LearningEpisodeModel
+from cls_lesson import LessonModel
 
-class LearningEpisode_TestCase(TestCase):
+class lesson_TestCase(TestCase):
     """ Shared functions """
     def _construct_valid_object(self):#
         """ Create a valid Object """
         # set up
-        test = LearningEpisodeModel(1,
+        test = LessonModel(1,
                                  title = "Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,

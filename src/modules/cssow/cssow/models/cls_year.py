@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
-from db_helper import sql_safe
+from django.db import models
+from .core.db_helper import sql_safe, execSql
 
 
-class YearModel(BaseModel):
+class YearModel(models.Model):
     def __init__(this, id_, name):
         this.id = id_
         this.name = name
@@ -25,7 +25,8 @@ DAL
 def get_options(db, key_stage_id):
 
     str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
-    rows = db.executesql(str_select)
+    rows = []
+    execSql(db, str_select, rows)
 
     data = [];
 

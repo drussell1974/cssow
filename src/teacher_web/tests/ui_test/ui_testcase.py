@@ -13,7 +13,7 @@ def WebBrowserContext():
 class UITestCase(TestCase):
     root_uri = "http://admin.daverussell.local:8002"
     test_scheme_of_work_id = 11
-    test_learning_episode_id = 133
+    test_lesson_id = 133
     test_learning_objective_id = 410
     test_reference = 10
 
@@ -23,7 +23,7 @@ class UITestCase(TestCase):
         time.sleep(s)
     
 
-    def assertWebPageTitleAndHeadings(self, title, h1, subheading):
+    def assertWebPageTitleAndHeadings(self, title, h1, subheading, username=None):
 
         # test - subheading
         self.assertEqual(title, self.test_context.title, "title not as expected")
@@ -31,7 +31,10 @@ class UITestCase(TestCase):
         self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text)
         # assert - title
         self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
-
+        # assert - username
+        if username != None:
+            profile = self.test_context.find_element_by_id("btn-profile")
+            self.assertEqual(username, profile.text)
 
     def try_log_in(self, redirect_to_uri_on_login):
         """

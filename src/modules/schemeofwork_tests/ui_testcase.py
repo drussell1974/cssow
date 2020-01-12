@@ -11,7 +11,7 @@ def WebBrowserContext():
 class UITestCase(TestCase):
     root_uri = "http://dev.computersciencesow.net:8000/schemeofwork/"
     test_scheme_of_work_id = 11
-    test_learning_episode_id = 35
+    test_lesson_id = 35
     test_learning_objective_id = 410
     test_reference = 10
 

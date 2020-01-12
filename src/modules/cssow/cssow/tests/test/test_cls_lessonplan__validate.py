@@ -22,7 +22,7 @@ class test_cls_lessonplan_validate__title(TestCase):
                             "ligula ornare in. Phasellus mi justo, mollis at cursus vel, tristique varius lectus. " \
                             "Quisque vel cursus ex, et viverra tortor. Sed vestibulum, augue metus."
 
-        self.test = LessonPlanModel(id_=0, learning_episode_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
+        self.test = LessonPlanModel(id_=0, lesson_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
 
 
     def tearDown(self):
@@ -127,7 +127,7 @@ class test_cls_reference_validate__description(TestCase):
                             "ligula ornare in. Phasellus mi justo, mollis at cursus vel, tristique varius lectus. " \
                             "Quisque vel cursus ex, et viverra tortor. Sed vestibulum, augue metus."
 
-        self.test = LessonPlanModel(id_=0, learning_episode_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
+        self.test = LessonPlanModel(id_=0, lesson_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
 
 
     def tearDown(self):
@@ -257,7 +257,7 @@ class test_cls_reference_validate__task_icon(TestCase):
                             "ligula ornare in. Phasellus mi justo, mollis at cursus vel, tristique varius lectus. " \
                             "Quisque vel cursus ex, et viverra tortor. Sed vestibulum, augue metus."
 
-        self.test = LessonPlanModel(id_=0, learning_episode_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
+        self.test = LessonPlanModel(id_=0, lesson_id = 0, title="Lorem ipsum dolor si", description=valid_test_description, order_of_delivery_id = 1, duration = 10, task_icon = "")
 
 
     def tearDown(self):

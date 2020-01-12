@@ -6,7 +6,7 @@ class test_schemeofwork_learningobjective_index_with_login(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_learning_episode_id))
+        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.test_context.implicitly_wait(4)
 
 
@@ -19,7 +19,7 @@ class test_schemeofwork_learningobjective_index_with_login(UITestCase):
         cls.test_context.close()
 
 
-    def test_page__submenu__navigate_to_learningepisode_new(self):
+    def test_page__submenu__navigate_to_lesson_new(self):
         # setup
 
         # test
