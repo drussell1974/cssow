@@ -27,7 +27,7 @@ def get_options(db, key_stage_id):
 
     str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
-    data = [];
+    data = []
 
     try:
         rows = db.executesql(str_select)

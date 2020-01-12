@@ -27,7 +27,7 @@ def get_options(db):
 
     rows = db.executesql("SELECT id, name FROM sow_key_stage;")
 
-    data = [];
+    data = []
 
     for row in rows:
         model = KeyStageModel(row[0], row[1])

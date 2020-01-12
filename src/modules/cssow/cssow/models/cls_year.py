@@ -28,7 +28,7 @@ def get_options(db, key_stage_id):
     rows = []
     execSql(db, str_select, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = YearModel(row[0], row[1])

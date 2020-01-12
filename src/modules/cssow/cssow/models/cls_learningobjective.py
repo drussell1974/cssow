@@ -204,7 +204,7 @@ def get_all(db, lesson_id, auth_user):
     rows = []
     execSql(db, select_sql, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -281,7 +281,7 @@ def get_key_objectives(db, lesson_id, auth_user):
 
     rows = db.executesql(select_sql)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -565,7 +565,7 @@ def get_linked_pathway_objectives(db, lesson_id):
 
     rows = db.executesql(select_sql)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -612,7 +612,7 @@ def get_other_objectives(db, lesson_id, scheme_of_work_id, key_word):
 
     rows = db.executesql(select_sql)
 
-    data = [];
+    data = []
 
     for row in rows:
         if len(key_word) > 0 and key_word.lower() in row[2].lower():

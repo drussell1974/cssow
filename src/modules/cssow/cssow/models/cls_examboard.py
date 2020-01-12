@@ -26,7 +26,7 @@ def get_options(db):
 
     rows = db.executesql("SELECT id, name FROM sow_exam_board;")
 
-    data = [];
+    data = []
 
     for row in rows:
         model = ExamBoardModel(row[0], row[1])

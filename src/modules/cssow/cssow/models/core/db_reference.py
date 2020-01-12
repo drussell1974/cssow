@@ -23,7 +23,7 @@ def get_options(db, scheme_of_work_id, auth_user):
 
     rows = db.executesql(str_select)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = ReferenceModel(id_=row[0], reference_type_id = row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
@@ -60,7 +60,7 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
 
     rows = db.executesql(str_select)
 
-    data = [];
+    data = []
 
     for row in rows:
         model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)

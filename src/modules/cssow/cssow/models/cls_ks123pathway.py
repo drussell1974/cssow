@@ -54,7 +54,7 @@ def get_linked_pathway_ks123(db, lesson_id):
     rows = []
     execSql(db, select_sql, rows)
 
-    data = [];
+    data = []
 
     for row in rows:
         data.append([int(row[0]), row[1]])
