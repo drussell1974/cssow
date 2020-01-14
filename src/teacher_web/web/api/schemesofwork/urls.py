@@ -2,9 +2,6 @@ from django.urls import path
 
 from .views import SchemeOfWorkViewSet, SchemeOfWorkListViewSet
 
-
-app_name = "schemesofwork"
-
 # app_name will help us do a reverse look-up latter.
 
 urlpatterns = [

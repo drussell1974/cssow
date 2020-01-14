@@ -12,12 +12,18 @@ class ApiSchemeOfWorkPageTest(TestCase):
         self.assertEqual(type(url.func), type(SchemeOfWorkListViewSet.as_view()))
 
 
-    """def test__api_schemmes_of_work_get__reverses_to_url(self):
-        url = reverse('api.schemesofwork.getall')
-        self.assertEqual("/api/schemesofwork/", url)"""
+    def test_url_resolves_to_SchemeOfWorkListViewSet_get__reverse(self):
+        url = reverse("api.schemesofwork.getall")
+        self.assertEqual("/api/schemesofwork/", url)
 
 
     def test_url_resolves_to_SchemeOfWorkViewSet_get(self):
         url = resolve('/api/schemesofwork/127')
+        self.assertEqual("api.schemesofwork.get", url.url_name)
         self.assertEqual(type(url.func), type(SchemeOfWorkViewSet.as_view()))
+
+    
+    def test_url_resolves_to_SchemeOfWorkViewSet_get__reverse(self):
+        url = reverse("api.schemesofwork.get", args=[127])
+        self.assertEqual("/api/schemesofwork/127", url)
 

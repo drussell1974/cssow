@@ -124,7 +124,7 @@
     <div id="success"></div>
     <div class="form-group">
       <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
-      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
+      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}"
       <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
       <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
       <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
@@ -132,8 +132,8 @@
       <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
       <input type="hidden" name="get_related_topics_uri" value="{% url 'api.default.related-topics' content.data.lesson.parent_topic_id %}" id="hdn-related-topics_uri"><!-- get_related_topics -->
       
-      <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
-      <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ksxxxx' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
+      <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
+      <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ks123' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
       
       <input type="hidden" name="get_pathway_objectives_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.key_stage_id %}" id="hdn-view_pathway_objectives_uri"><!-- _view_pathway_objectives -->
       

@@ -6,37 +6,58 @@ from api.lessons.views import LessonViewSet, LessonListViewSet, LessonPathwayObj
 class ApiLessonsPageTest(TestCase):
 
     def test_url_resolves_to_LessonsListViewSet_get(self):
-        url = resolve('/api/schemesofwork/127/lessons/')
+        url = resolve("/api/schemesofwork/127/lessons/")
         self.assertEqual("api.lessons.get", url.url_name)
         self.assertEqual(type(url.func), type(LessonListViewSet.as_view()))
 
     
-    """def test_url_resolves_to_LessonsListViewSet_get__reverse(self):
-        url = reverse('api.lesson.get')
-        self.assertEqual("/api/schemesofwork/127/lessons/", url)"""
+    def test_url_resolves_to_LessonsListViewSet_get__reverse(self):
+        url = reverse("api.lessons.get", args=[127])
+        self.assertEqual("/api/schemesofwork/127/lessons/", url)
 
 
     def test_url_resolves_to_LessonViewSet_get(self):
-        url = resolve('/api/schemesofwork/127/lessons/76')
+        url = resolve("/api/schemesofwork/127/lessons/76")
         self.assertEqual("api.lesson.get", url.url_name)
         self.assertEqual(type(url.func), type(LessonViewSet.as_view()))
 
     
+    def test_url_resolves_to_LessonViewSet_get__reverse(self):
+        url = reverse("api.lesson.get", args=[127, 76])
+        self.assertEqual("/api/schemesofwork/127/lessons/76", url)
+
+    
     def test_url_resolves_to_LessonPathwayObjectivesViewSet_get(self):
         """ key_words parameter is optional, but provided """
-        url = resolve('/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/a,b,c')
+        url = resolve("/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/a,b,c")
         self.assertEqual("api.lesson.pathway-objectives", url.url_name)
         self.assertEqual(type(url.func), type(LessonPathwayObjectivesViewSet.as_view()))
+
+
+    def test_url_resolves_to_LessonPathwayObjectivesViewSet_get__reverse(self):
+        url = reverse("api.lesson.pathway-objectives", args=[127, 76, 4, "a,b,c"])
+        self.assertEqual("/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/a,b,c", url)
 
 
     def test_url_with_no_keywords_resolves_to_LessonPathwayObjectivesViewSet_get(self):
         """ key_words parameter is optional """
-        url = resolve('/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/')
+        url = resolve("/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/")
         self.assertEqual("api.lesson.pathway-objectives", url.url_name)
         self.assertEqual(type(url.func), type(LessonPathwayObjectivesViewSet.as_view()))
 
+    
+    def test_url_with_no_keywords_resolves_to_LessonPathwayObjectivesViewSet_get__reverse(self):
+        url = reverse('api.lesson.pathway-objectives', args=[127, 76, 4])
+        self.assertEqual("/api/schemesofwork/127/lessons/76/pathway-objectives/key-stage/4/keywords/", url)
+
 
     def test_url_resolves_to_LessonPathwayKs123ViewSet_get(self):
-        url = resolve('/api/schemesofwork/127/lessons/0/pathway-ks123/year/0/topic/0')
-        self.assertEqual("api.lesson.pathway", url.url_name)
+        url = resolve("/api/schemesofwork/127/lessons/76/pathway-ks123/year/10/topic/4")
+        self.assertEqual("api.lesson.pathway-ks123", url.url_name)
         self.assertEqual(type(url.func), type(LessonPathwayKs123ViewSet.as_view()))
+
+    
+    def test_url_resolves_to_LessonPathwayKs123ViewSet_get__reverse(self):
+        url = reverse('api.lesson.pathway-ks123', args=[127, 76, 10, 4])
+        self.assertEqual("/api/schemesofwork/127/lessons/76/pathway-ks123/year/10/topic/4", url)
+
