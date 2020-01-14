@@ -10,8 +10,8 @@ class ApiLessonsPageTest(TestCase):
         self.assertEqual("api.lessons.get", url.url_name)
         self.assertEqual(type(url.func), type(LessonListViewSet.as_view()))
 
-    """
-    def test__api_lessons_get__reverses_to_url(self):
+    
+    """def test_url_resolves_to_LessonsListViewSet_get__reverse(self):
         url = reverse('api.lesson.get')
         self.assertEqual("/api/schemesofwork/127/lessons/", url)"""
 
