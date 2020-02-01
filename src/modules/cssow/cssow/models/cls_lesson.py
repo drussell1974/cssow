@@ -14,7 +14,7 @@ class LessonModel (BaseModel):
     title = models.CharField(max_length=100, blank=True, default='')
     #summmary = models.CharField(max_length=100, blank=True, default='')
     
-    def __init__(self, id_, title, orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", key_words = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, title, orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
@@ -29,8 +29,7 @@ class LessonModel (BaseModel):
         self.key_stage_name = key_stage_name
         self.year_id = int(year_id)
         self.year_name = year_name
-        self.key_words = key_words.replace(', ', ',').split(',')
-        self.other_key_words = []
+        self.key_words = []
         self.summary = summary
         self.pathway_objective_ids = []
         self.pathway_ks123_ids = []
@@ -91,9 +90,6 @@ class LessonModel (BaseModel):
             self.validation_errors["year_id"] = "{} is not a valid selection".format(self.key_stage_id)
             self.is_valid = False
 
-        # Validate key_words
-        self._validate_optional_list("key_words", self.key_words, sep=",", max_items=30)
-
         # Validate summary
         self._validate_optional_string("summary", self.summary, 80)
 
@@ -120,9 +116,6 @@ class LessonModel (BaseModel):
         if self.parent_topic_name is not None:
             self.parent_topic_name = sql_safe(self.parent_topic_name)
 
-        if self.key_words is not None:
-            self.key_words = sql_safe(self.key_words).replace(', ', ',')
-
         if self.summary is not None:
             self.summary = sql_safe(self.summary)
 
@@ -145,8 +138,8 @@ def log_info(db, msg, is_enabled = False):
     logger.write(db, msg)
     
     
-def handle_log_info(db, msg, is_enabled):
-    log_info(db, msg, is_enabled=is_enabled)
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=True)
 
 from .core.db_helper import to_db_null, execSql, execCRUDSql
 #import cls_keyword as db_keyword
@@ -197,7 +190,6 @@ def get_all(db, scheme_of_work_id, auth_user):
                  " sow.key_stage_id as key_stage_id," \
                  " yr.id as year_id," \
                  " yr.name as year_name,"\
-                 " le.key_words as key_words,"\
                  " le.summary as summary,"\
                  " le.created as created,"\
                  " le.created_by as created_by_id,"\
@@ -233,16 +225,15 @@ def get_all(db, scheme_of_work_id, auth_user):
             key_stage_id=row[9],
             year_id=row[10],
             year_name=row[11],
-            key_words = row[12],
-            summary = row[13],
-            created=row[14],
-            created_by_id=row[15],
-            created_by_name=row[16],
-            published = row[17]
+            summary=row[12],
+            created=row[13],
+            created_by_id=row[14],
+            created_by_name=row[15],
+            published = row[16]
         )
         
         ' get the key words from the learning objectives '
-        model.key_words_from_learning_objectives = _get_learning_objective_keywords(db, learning_epsiode_id = model.id, auth_user = auth_user)
+        model.key_words = get_key_words(db, lesson_id = model.id)
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
         model.number_of_resource = get_number_of_resources(db, model.id, auth_user)
@@ -269,7 +260,6 @@ def get_model(db, id_, auth_user):
                  " pnt_top.name as parent_topic_name,"\
                  " sow.key_stage_id as key_stage_id,"\
                  " yr.id as year_id,"\
-                 " le.key_words as key_words,"\
                  " le.summary as summary,"\
                  " le.created as created,"\
                  " le.created_by as created_by_id,"\
@@ -299,46 +289,16 @@ def get_model(db, id_, auth_user):
             parent_topic_name=row[8],
             key_stage_id=row[9],
             year_id=row[10],
-            key_words = row[11],
-            summary = row[12],
-            created=row[13],
-            created_by_id=row[14],
-            created_by_name=row[15])
+            summary = row[11],
+            created=row[12],
+            created_by_id=row[13],
+            created_by_name=row[14])
 
+        model.key_words = get_key_words(db, lesson_id = model.id)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
         model.resources = get_lesson_options(db, model.scheme_of_work_id, model.id, auth_user)
 
     return model.__dict__
-
-
-def _get_learning_objective_keywords(db, learning_epsiode_id, auth_user):
-    """
-    Append all keywords from learning objectives for this lessons
-    :param db:
-    :param learning_epsiode_id:
-    :param auth_user:
-    :return: the results as a single list all comma seperated
-    """
-
-    select_sql = "SELECT "\
-                 " lob.key_words as key_words"\
-                 " FROM sow_learning_objective AS lob"\
-                 " INNER JOIN sow_lesson AS le"\
-                 " INNER JOIN sow_learning_objective__has__lesson AS lo_le ON lo_le.learning_objective_id = lob.id AND lo_le.lesson_id = le.id"\
-                 " WHERE le.id = {lesson_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-
-    select_sql = select_sql.format(lesson_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
-    
-    rows = []
-    execSql(db, select_sql, rows)
-
-    all = ""
-
-    for row in rows:
-        if row[0] is not None:
-            all = all + row[0] + ","
-
-    return all.lstrip(",").rstrip(",")
 
 
 def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
@@ -363,10 +323,12 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     return len(rows)
 
 
-def save(db, model, published=1):
+def save(db, model, auth_user, published=1):
 
     if model.is_new() == True:
         model.id = _insert(db, model, published)
+    if published == 2:
+        delete(db, auth_user, model.id)
     else:
         _update(db, model, published)
 
@@ -376,13 +338,13 @@ def save(db, model, published=1):
 def delete(db, auth_user_id, id_):
 
     model = LessonModel(id_=id_, title="")
-    _delete(db, model);
+    _delete(db, model)
 
 
 def publish(db, auth_user_id, id_):
     model = LessonModel(id_=id_, title="")
     model.publish = True
-    _publish(db, model);
+    _publish(db, model)
 
 
 """
@@ -394,14 +356,13 @@ def _update(db, model, published):
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, key_words = '{key_words}', summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
+    str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
     str_update = str_update.format(
         title = model.title,
         order_of_delivery_id=model.order_of_delivery_id,
         year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,
         topic_id=model.topic_id,
-        key_words=to_db_null(model.key_words),
         summary=to_db_null(model.summary),
         published=published,
         lesson_id=model.id)
@@ -420,6 +381,10 @@ def _update(db, model, published):
 
     _upsert_pathway_ks123_ids(db, model)
 
+    # 5. insert key words
+
+    _upsert_key_words(db, model)
+
     return True
 
 
@@ -428,14 +393,13 @@ def _insert(db, model, published):
 
     # 1. Insert the lesson
 
-    str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, key_words, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{key_words}', '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
+    str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         title = model.title,
         order_of_delivery_id=model.order_of_delivery_id,
         year_id=model.year_id,
         scheme_of_work_id=model.scheme_of_work_id,
         topic_id=model.topic_id,
-        key_words=to_db_null(model.key_words),
         summary=to_db_null(model.summary),
         created=model.created,
         created_by=model.created_by_id,
@@ -459,7 +423,11 @@ def _insert(db, model, published):
 
     _upsert_pathway_ks123_ids(db, model)
 
-    # 5. insert objectives
+    # 5. insert key words
+
+    _upsert_key_words(db, model)
+
+    # 6. insert objectives
     if model.is_copy():
         _copy_objective_ids(db, model)
 
@@ -558,6 +526,39 @@ def _upsert_pathway_ks123_ids(db, model):
             execCRUDSql(db, str_insert, log_info=handle_log_info)
 
 
+def _upsert_key_words(db, model):
+    """ deletes and reinserts sow_lesson__has__keywords """
+
+    # delete existing
+    str_delete = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+
+    execCRUDSql(db, str_delete, log_info=handle_log_info)
+
+    # build dictionary of keyword ids 
+
+    list_insert = {}
+
+    print("_upsert_key_words... model.key_words:", model.key_words)
+
+    if model.key_words is not None:
+        
+        for key_word in model.key_words:
+            if key_word.isdigit():
+                list_insert[key_word] = "({lesson_id}, {key_word_id}),".format(lesson_id=model.id, key_word_id=key_word)
+            
+        # reinsert
+
+        str_insert = "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES"
+
+        for key_word in list_insert:
+            str_insert = str_insert + list_insert[key_word]
+
+        ' Ensure insert values have been appended before inserting'
+        if str_insert.endswith("VALUES") == False:
+            str_insert = str_insert.rstrip(",") + ";"
+            execCRUDSql(db, str_insert, log_info=handle_log_info)
+
+
 def _delete(db, model):
     str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
     str_delete = str_delete.format(lesson_id=model.id)
@@ -604,7 +605,7 @@ def get_related_topic_ids(db, lesson_id, parent_topic_id):
     str_select = str_select.format(lesson_id=lesson_id, parent_topic_id=parent_topic_id)
 
     rows = []
-    execSql(db, str_select, rows)
+    execSql(db, str_select, rows, handle_log_info)
 
     serializable_list = []
 
@@ -638,4 +639,28 @@ def get_pathway_objective_ids(db, lesson_id):
         data.append(int(row[0]))
 
     return data
+
+
+def get_key_words(db, lesson_id):
+    """
+    Get the keywords for the lesson
+    :param db: database context
+    :param lesson_id:
+    :return: serialized keywords
+    """
+
+    str_select = " SELECT kw.id as id, kw.name as name" \
+                 " FROM sow_key_word as kw"\
+                 " INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id" \
+                 " WHERE lesson_id = {lesson_id};".format(lesson_id=lesson_id)
+    
+    to_dict = {}
+
+    rows = []
+    execSql(db, str_select, rows, handle_log_info)
+
+    for id, name in rows:
+        to_dict[id] = name
+
+    return to_dict
 

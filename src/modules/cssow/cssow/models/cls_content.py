@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
+from .core.basemodel import BaseModel
 
 class ContentModel(BaseModel):
     def __init__(self, id_, description):
@@ -21,7 +21,19 @@ class ContentModel(BaseModel):
 DAL
 """
 
-from db_helper import last_sql, sql_safe
+from .core.db_helper import last_sql, sql_safe, execSql
+
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=True)
+
 
 def get_options(db, key_stage_id):
 
@@ -30,8 +42,8 @@ def get_options(db, key_stage_id):
     data = []
 
     try:
-        rows = db.executesql(str_select)
-
+        rows = []
+        execSql(db, str_select, rows, handle_log_info)
 
         for row in rows:
             model = ContentModel(row[0], row[1])

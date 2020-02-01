@@ -1,12 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepsiode_index(UITestCase):
+class uitest_schemeofwork_learningobjective_index(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/lessons/{}/learningobjectives".format(self.test_scheme_of_work_id, self.test_lesson_id)
+        self.test_path = "/schemesofwork/{}/lessons/{}/learning-objectives".format(self.test_scheme_of_work_id, self.test_lesson_id)
         self.test_context.get(self.root_uri + self.test_path)
 
         self.test_context.implicitly_wait(4)
@@ -24,7 +24,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture; CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
 
 
     def test_page__should_have__sidebar_and_selected_lesson(self):
@@ -70,7 +70,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.implicitly_wait(4)
 
         # assert (TEST parent page is still open)
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture; CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
 
 
     def test_page__show_published_only(self):
@@ -82,7 +82,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(0, result, "number of elements not as expected")
+        self.assertEqual(7, result, "number of elements not as expected")
 
 
     def test_page__show_published_and_owned(self):
@@ -96,4 +96,4 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(0, result, "number of elements not as expected")
+        self.assertEqual(7, result, "number of elements not as expected")

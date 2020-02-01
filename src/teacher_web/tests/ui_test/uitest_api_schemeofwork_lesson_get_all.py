@@ -4,7 +4,7 @@ from django.urls import reverse
 #from lessons.views import get
 
 
-class test_schemeofwork_learningepsiode_get_all(UITestCase):
+class uitest_schemeofwork_lesson_get_all(UITestCase):
 
     test_context = WebBrowserContext()
     
@@ -43,7 +43,7 @@ class test_schemeofwork_learningepsiode_get_all(UITestCase):
 
     def test__should_have_multiple_records(self):
         # assert
-        self.assertEqual(27, len(self.payload["lessons"]))
+        self.assertEqual(26, len(self.payload["lessons"]))
 
     
     def test__first__should_have_title(self):

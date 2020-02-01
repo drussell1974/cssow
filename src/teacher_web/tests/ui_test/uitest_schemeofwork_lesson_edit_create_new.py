@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_lesson_edit_create_new(UITestCase):
+class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -12,8 +12,9 @@ class test_schemeofwork_lesson_edit_create_new(UITestCase):
 
 
     def tearDown(self):
-        #self.do_delete_scheme_of_work()
-        pass
+        # tear down
+        elem = self.test_context.find_element_by_id("btn-delete")
+        elem.click()
 
 
     @classmethod
@@ -101,14 +102,6 @@ class test_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.clear()
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
-        ' ctl-key_words '
-        #elem = self.test_context.find_element_by_id("ctl-key_words-tokenfield")
-        #elem.clear()
-        #elem.send_keys("Algorithm")
-        #elem.send_keys(Keys.TAB)
-        #elem.send_keys("Ipsum")
-        #elem.send_keys(Keys.TAB)
-
         ' ctl-topic_id - select KS4 '
         elem = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem.find_elements_by_tag_name('option')
@@ -119,18 +112,50 @@ class test_schemeofwork_lesson_edit_create_new(UITestCase):
 
         ' div-pathway_objective_id  - select VALID '
         # expand accordion
-        self.test_context.implicitly_wait(4) # wait for accordion to load from ajax call
-        elem = self.test_context.find_element_by_id('ks3-heading-text')
-        elem.click()
+        #self.test_context.implicitly_wait(4) # wait for accordion to load from ajax call
+        #elem = self.test_context.find_element_by_id('ks3-heading-text')
+        #elem.click()
 
-        elem = self.test_context.find_element_by_id('ctl-pathway_objective_id477')
-        elem.click()
-        elem.send_keys(Keys.TAB)
+        #elem = self.test_context.find_element_by_id('ctl-pathway_objective_id')
+        #elem.click()
+        #elem.send_keys(Keys.TAB)
         
+        ' ctl-key_words '
+        elem = self.test_context.find_element_by_id("ctl-key_words")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options: 
+            if opt.text == "Arithmetic Logic Unit (ALU)":
+                opt.click()
+        elem.send_keys(Keys.TAB)
+
+        #elem.clear()
+        #elem.send_keys("Algorithm")
+        #elem.send_keys(Keys.TAB)
+        #elem.send_keys("Ipsum")
+        #elem.send_keys(Keys.TAB)
+
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
-        ' should still be on the same page '
+        ' should return to edit be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Consectetur adipiscing elit')
+
+        elem = self.test_context.find_element_by_id("ctl-year_id")
+        self.assertEqual("12", elem.get_attribute("value"))
+
+        elem = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
+        self.assertEqual("1", elem.get_attribute("value"))
+
+        elem = self.test_context.find_element_by_id("ctl-title")
+        self.assertEqual("Consectetur adipiscing elit", elem.get_attribute("value"))
+
+        elem = self.test_context.find_element_by_id("ctl-summary")
+        self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.", elem.get_attribute("value"))
+
+        elem = self.test_context.find_element_by_id("ctl-topic_id")
+        self.assertEqual("1", elem.get_attribute("value"))
+        
+        elem = self.test_context.find_element_by_id("ctl-key_words")
+        self.assertEqual("", elem.get_attribute("value"))

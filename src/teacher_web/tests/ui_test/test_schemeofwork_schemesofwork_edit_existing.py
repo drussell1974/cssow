@@ -8,7 +8,7 @@ class test_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/edit?id={}&_next=%2Fschemeofwork%2Fschemesofwork%2Findex".format(self.test_scheme_of_work_id))
+        self.try_log_in(self.root_uri + "/schemeofwork/schemesofwork/edit?id={}&_next=%2Fschemeofwork%2Fschemesofwork%2Findex".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):

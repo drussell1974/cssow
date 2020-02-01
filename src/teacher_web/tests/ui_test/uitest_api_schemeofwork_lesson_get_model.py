@@ -2,7 +2,7 @@ from django.test import tag
 from ui_testcase import UITestCase, WebBrowserContext
 from django.urls import reverse
 
-class test_schemeofwork_learningepsiode_get(UITestCase):
+class uitest_schemeofwork_lesson_get_model(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -44,7 +44,7 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
         
     def test__should_have_summary(self):
         # assert
-        self.assertEqual('Von Neumann architecture and Harvard architecture; CISC and RISC', self.payload["lesson"]["summary"])
+        self.assertEqual('Von Neumann architecture and Harvard architecture\; CISC and RISC', self.payload["lesson"]["summary"])
 
 
     def test__should_have_lesson_objectives(self):

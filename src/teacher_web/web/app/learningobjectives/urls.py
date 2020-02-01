@@ -4,6 +4,9 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='learningobjective.index'),
-    path('<int:learning_objective_id>/delete', views.index, name='learningobjective.delete_item'),
-    path('<int:learning_objective_id>/edit', views.index, name='learningobjective.edit'),
+    path('new', views.new, name='learningobjective.new'),
+    path('delete_unpublished', views.delete_unpublished, name='learningobjective.delete_unpublished'),
+    path('<int:learning_objective_id>/edit', views.edit, name='learningobjective.edit'),
+    path('<int:learning_objective_id>/save', views.save, name='learningobjective.save'),
+    path('<int:learning_objective_id>/delete', views.delete_item, name='learningobjective.delete_item'),
 ]

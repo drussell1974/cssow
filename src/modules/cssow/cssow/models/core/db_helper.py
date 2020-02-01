@@ -27,7 +27,7 @@ def execCRUDSql(db, sql, result=[], log_info=None):
     if db != None:
 
         if log_info != None:
-            log_info(db, "executing:{}".format(sql), True)
+            log_info(db, "executing:{}".format(sql))
 
         cur = _execSql(db, sql)
         for tup in cur:
@@ -41,7 +41,7 @@ def execCRUDSql(db, sql, result=[], log_info=None):
         _closeSqlConn(db, None)
 
         if log_info != None:
-            log_info(db, "result:{}".format(result), True)
+            log_info(db, "result:{}".format(result))
 
 
 def execSql(db, sql, result, log_info=None):
@@ -49,7 +49,7 @@ def execSql(db, sql, result, log_info=None):
     if db != None:
 
         if log_info != None:
-            log_info(db, "executing:{}".format(sql), True)
+            log_info(db, "executing:{}".format(sql))
         
         cur = _execSql(db, sql)
         for tup in cur:
@@ -57,7 +57,7 @@ def execSql(db, sql, result, log_info=None):
         _closeSqlConn(db, None)
 
         if log_info != None:
-            log_info(db, "results:{}".format(result), True)
+            log_info(db, "results:{}".format(result))
 
 
 def to_db_null(val):

@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save
+from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save, initialise_keywords
 
 # Create your tests here.
 class lessonPageTest(TestCase):
@@ -14,6 +14,17 @@ class lessonPageTest(TestCase):
     def test__lesson_index__url_resolves_to_index__reverse(self):
         url = reverse("lesson.index", args=[127])
         self.assertEqual("/schemesofwork/127/lessons/", url)
+
+
+    def test__lesson_view__url_resolves_to_index(self):
+        url = resolve("/schemesofwork/127/lessons/220")
+        self.assertEqual("lesson.view", url.url_name)
+        self.assertEqual(url.func, index)
+
+
+    def test__lesson_view__url_resolves_to_index__reverse(self):
+        url = reverse("lesson.view", args=[11,220])
+        self.assertEqual("/schemesofwork/11/lessons/220", url)
 
 
     def test__lesson_new__url_resolves_to_new(self):
@@ -101,3 +112,14 @@ class lessonPageTest(TestCase):
     def test__lesson_save_item__url_resolves_to_save_item__reverse(self):
         url = reverse("lesson.save", args=[11, 78])
         self.assertEqual("/schemesofwork/11/lessons/78/save", url)
+
+
+    def test__lesson_whiteboard__url_resolves_to_whitebaord(self):
+        url = resolve("/schemesofwork/11/lessons/initialise_keywords")
+        self.assertEqual("lesson.initialise_keywords", url.url_name)
+        self.assertEqual(url.func, initialise_keywords)
+        
+    
+    def test__lesson_whiteboard__url_resolves_to_whitebaord__reverse(self):
+        url = reverse("lesson.initialise_keywords", args=[11])
+        self.assertEqual("/schemesofwork/11/lessons/initialise_keywords", url)

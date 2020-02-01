@@ -104,8 +104,16 @@
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Keywords")}}</label>
-        <input type="text" name="key_words" class="form-control" placeholder="{{_('Type a keyword then press tab or enter')}}" id="ctl-key_words"
-               maxlength="250" value='{{content.data.lesson.key_words}}'>
+        <select multiple type="text" name="key_words" class="form-control" id="ctl-key_words"
+               maxlength="250">
+          {% for id, name in content.data.key_words %}
+           {% if id in content.data.lesson.key_words %}
+            <option value="{{id}}" selected >{{name}}</option>
+            {% else %}    
+            <option value="{{id}}" >{{name}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
         <p class="help-block text-danger" id="token-error"></p>
       </div>
         <div id="keywords"></div>
@@ -116,6 +124,7 @@
         <div class="form-group controls">
           <label>{{_("Prior learning")}}</label>
             <div id="div-pathway_objective_id">
+              <select id="ctl-pathway_objective_id" multiple></select>
             </div>
             <p class="help-block text-danger"></p>
         </div>
@@ -124,7 +133,7 @@
     <div id="success"></div>
     <div class="form-group">
       <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
-      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}"
+      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
       <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
       <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
       <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
@@ -133,10 +142,11 @@
       <input type="hidden" name="get_related_topics_uri" value="{% url 'api.default.related-topics' content.data.lesson.parent_topic_id %}" id="hdn-related-topics_uri"><!-- get_related_topics -->
       <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
       <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ks123' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
-      <input type="hidden" name="get_pathway_objectives_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.key_stage_id %}" id="hdn-view_pathway_objectives_uri"><!-- _view_pathway_objectives -->
+      
+      <button type="submit" name="published" value="2" class="btn btn-secondary" id="btn-delete">{{_("Delete")}}</button>
       <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
       <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
-      <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{_("Cancel")}}</button>
+      <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
     </div>
   </form><!-- form#form -->
 {% endblock %}
@@ -147,12 +157,13 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Bootstrap tokenfield javascript -->
-    <script src="{% static 'custom/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
     <script>
     function showPathwayObjectives(key_stage_id, arr_key_words) {
-        $.ajax({url: document.getElementById('hdn-view_pathway_objectives_uri').value,
+        var url = document.getElementById('hdn-view_pathway_objectives_uri').value.toString() + arr_key_words ;
+        
+        $.ajax({url: url,
             success: function(result){
-                $("#div-pathway_objective_id").html(result);
+                $("#div-pathway_objective_id").html(result["pathway-objectives"]);
             },
             error: function(){
                 $("#div-pathway_objective_id").html('Could not get pathway objectives at this time');
@@ -246,35 +257,28 @@
     $('#ctl-topic_id').on('change', function(e) {
         showRelatedTopic(document.getElementById('hdn-lesson_id').value, e.target.value);
     });
-      $.getJSON(document.getElementById('hdn-keywords_uri').value,
-        function(result) {
-            $('#ctl-key_words').tokenfield({
-              autocomplete: {
-                limit: 15,
-                source: result,
-                delay: 100
-              },
-              showAutocompleteOnFocus: true
-            })
-        });
-
+    
     window.onload = function(e) {
       
       topic_elem = document.getElementById('ctl-topic_id');
       showRelatedTopic(document.getElementById('hdn-lesson_id').value, topic_elem.value);
-      key_words = document.getElementById('ctl-key_words').value.split(',');
+      key_words = document.getElementById('ctl-key_words').querySelectorAll('option:checked');
       var init_key_words = [];
       for(i = 0; i < key_words.length; i++) {
-        init_key_words.push(key_words[i].trim());
+        init_key_words.push(key_words[i].value);
       }
+      console.log(init_key_words.join(','));
+      
       showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, init_key_words);
       showPathwayKS123();
 
-      $('#ctl-key_words').on('tokenfield:createdtoken tokenfield:removedtoken', function(e) {
+      $('#ctl-key_words').on('change', function(e) {
         var arr_key_words = [];
-        $('.token-label').each(function(index) {
-          arr_key_words.push($(this).text());
-        })
+        let opts = this.querySelectorAll('option:checked');    
+        for(var i = 0; i < opts.length; i++) {
+          arr_key_words.push(opts[i].value);
+        }
+        
         showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, arr_key_words);
       });
 

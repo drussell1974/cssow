@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_schemesofwork_index(UITestCase):
+class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -50,7 +50,7 @@ class test_schemeofwork_schemesofwork_index(UITestCase):
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/index")
+        self.try_log_in(self.root_uri + "/schemeofwork/schemesofwork/index")
 
         # test
         self.test_context.find_element_by_id('btn-new').click()

@@ -46,17 +46,12 @@ DAL
 from .core.db_helper import to_empty, sql_safe
 
 def get_options(db):
-    select_sql = "SELECT name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+    select_sql = "SELECT id, name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
 
     rows = []
     execSql(db, select_sql, rows)
 
-    data = []
-
-    for row in rows:
-        data.append(row[0])
-
-    return data
+    return rows
 
 
 def get_all(db, search_term = ""):

@@ -15,6 +15,6 @@ class ViewModel:
                 }
             },
             "session": {
-                "alert_message":alert_message
+                "alert_message": alert_message
             }
         }

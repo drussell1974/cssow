@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="lesson.index"),
+    path('initialise_keywords', views.initialise_keywords, name="lesson.initialise_keywords"),
     path('new', views.new, name="lesson.new"),
     path('<int:lesson_id>', views.index, name="lesson.view"),
     path('<int:lesson_id>/edit', views.edit, name="lesson.edit"),
@@ -14,5 +15,5 @@ urlpatterns = [
     path('<int:lesson_id>/whiteboard', views.whiteboard, name="lesson.whiteboard_view"),
     path('<int:lesson_id>/save', views.save, name="lesson.save"),
     # Check learningobjective app
-    path('<int:lesson_id>/learningobjectives/', include('app.learningobjectives.urls')),
+    path('<int:lesson_id>/learning-objectives/', include('app.learningobjectives.urls')),
 ]

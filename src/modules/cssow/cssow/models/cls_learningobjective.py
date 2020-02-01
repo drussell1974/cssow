@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, from_db_bool, execSql
+from .core.db_helper import sql_safe, from_db_bool, execSql, execCRUDSql
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", topic_id = 0, topic_name = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", exam_board_id = None, exam_board_name = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.description = description
         self.notes = notes
@@ -12,20 +12,16 @@ class LearningObjectiveModel (BaseModel):
         self.solo_taxonomy_id = int(solo_taxonomy_id)
         self.solo_taxonomy_name = solo_taxonomy_name
         self.solo_taxonomy_level = solo_taxonomy_level
-        self.topic_id = int(topic_id)
-        self.topic_name = topic_name
         self.parent_topic_id =  try_int(parent_topic_id)
         self.parent_topic_name = parent_topic_name
         self.content_id = try_int(content_id)
         self.content_description = content_description
-        self.exam_board_id = try_int(exam_board_id)
-        self.exam_board_name = exam_board_name
         self.lesson_id = int(lesson_id)
         self.lesson_name = lesson_name
-        self.key_stage_id = int(key_stage_id)
+        self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.parent_id = try_int(parent_id)
-        self.key_words = key_words.replace(', ', ',').split(',')
+        self.key_words = key_words
         self.group_name = group_name
         self.is_key_objective = from_db_bool(is_key_objective)
         self.created=created
@@ -52,15 +48,6 @@ class LearningObjectiveModel (BaseModel):
         # validate notes
         self._validate_optional_string("notes", self.notes, 2500)
 
-        # validate exam_board_id
-        self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
-
-        # validate topic_id
-        self._validate_required_integer("topic_id", self.topic_id, 1, 9999)
-
-        # validate parent_topic_id
-        self._validate_optional_integer("parent_topic_id", self.parent_topic_id, 1, 9999)
-
         # validate content_id
         self._validate_optional_integer("content_id", self.content_id, 1, 9999)
 
@@ -69,9 +56,6 @@ class LearningObjectiveModel (BaseModel):
 
         # validate lesson_id
         self._validate_required_integer("lesson_id", self.lesson_id, 1, 9999)
-
-        # validate lesson_id
-        self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
 
         # validate parent_id
         self._validate_optional_integer("parent_id", self.parent_id, 1, 9999)
@@ -93,10 +77,6 @@ class LearningObjectiveModel (BaseModel):
         if self.notes is not None:
             self.notes = sql_safe(self.notes)
 
-        # trim topic_name
-        if self.topic_name is not None:
-            self.topic_name = sql_safe(self.topic_name)
-
         # trim parent_topic_name
         if self.parent_topic_name is not None:
             self.parent_topic_name = sql_safe(self.parent_topic_name)
@@ -104,10 +84,6 @@ class LearningObjectiveModel (BaseModel):
         # trim content_description
         if self.content_description is not None:
             self.content_description = sql_safe(self.content_description)
-
-        # trim exam_board_name
-        if self.exam_board_name is not None:
-            self.exam_board_name = sql_safe(self.exam_board_name)
 
         # trim lesson_name
         if self.lesson_name is not None:
@@ -155,6 +131,18 @@ def sort_by_solo_taxonomy_level(unsorted_list):
 """
 DAL
 """
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=True)
+
+
 # -*- coding: utf-8 -*-
 from datetime import datetime
 #from .cls_learningobjective import LearningObjectiveModel
@@ -168,14 +156,8 @@ def get_all(db, lesson_id, auth_user):
                  " solo.id as solo_id, "\
                  " solo.name as solo_taxonomy_name, "\
                  " solo.lvl as solo_taxonomy_level, "\
-                 " top.id as topic_id, "\
-                 " top.name as topic_name, "\
-                 " pnt_top.id as parent_topic_id, "\
-                 " pnt_top.name as parent_topic_name, "\
                  " cnt.id as content_id, "\
                  " cnt.description as content_description, "\
-                 " exam.id as exam_board_id, "\
-                 " exam.name as exam_board_name, "\
                  " sow.key_stage_id as key_stage_id, "\
                  " ks.name as key_stage_name, "\
                  " le.id as lesson_id, "\
@@ -192,11 +174,8 @@ def get_all(db, lesson_id, auth_user):
                  " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id "\
                  " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
                  " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
-                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id "\
-                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
                  " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
                  " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
-                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
                  " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
                  " WHERE le.id = {lesson_id} AND (le.published = 1 or le.created_by = {auth_user});"
     select_sql = select_sql.format(lesson_id=int(lesson_id), auth_user=to_db_null(auth_user))
@@ -213,25 +192,19 @@ def get_all(db, lesson_id, auth_user):
             solo_taxonomy_id = row[2],
             solo_taxonomy_name = row[3],
             solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = [7],
-            parent_topic_name = [8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            key_stage_id = row[13],
-            key_stage_name = row[14],
-            lesson_id = row[15],
-            lesson_name = row[16],
-            key_words=row[17],
-            notes=row[18],
-            group_name=row[19],
-            is_key_objective= row[20],
-            created = row[21],
-            created_by_id = row[22],
-            created_by_name = row[23])
+            content_id = row[5],
+            content_description = row[6],
+            key_stage_id = row[7],
+            key_stage_name = row[8],
+            lesson_id = row[9],
+            lesson_name = row[10],
+            key_words=row[11],
+            notes=row[12],
+            group_name=row[13],
+            is_key_objective= row[14],
+            created = row[15],
+            created_by_id = row[16],
+            created_by_name = row[17])
         data.append(model.__dict__)
 
     return data
@@ -245,14 +218,8 @@ def get_key_objectives(db, lesson_id, auth_user):
                  " solo.id as solo_id, "\
                  " solo.name as solo_taxonomy_name, "\
                  " solo.lvl as solo_taxonomy_level, "\
-                 " top.id as topic_id, "\
-                 " top.name as topic_name, "\
-                 " pnt_top.id as parent_topic_id, "\
-                 " pnt_top.name as parent_topic_name, "\
                  " cnt.id as content_id, "\
                  " cnt.description as content_description, "\
-                 " exam.id as exam_board_id, "\
-                 " exam.name as exam_board_name, "\
                  " sow.key_stage_id as key_stage_id, "\
                  " ks.name as key_stage_name, "\
                  " le.id as lesson_id, "\
@@ -269,11 +236,8 @@ def get_key_objectives(db, lesson_id, auth_user):
                  " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id "\
                  " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
                  " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
-                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id "\
-                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
                  " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
                  " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
-                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
                  " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
                  " WHERE le.id = {lesson_id} AND le_lo.is_key_objective = 1 AND (le.published = 1 or le.created_by = {auth_user});"
 
@@ -290,25 +254,19 @@ def get_key_objectives(db, lesson_id, auth_user):
             solo_taxonomy_id = row[2],
             solo_taxonomy_name = row[3],
             solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = [7],
-            parent_topic_name = [8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            key_stage_id = row[13],
-            key_stage_name = row[14],
-            lesson_id = row[15],
-            lesson_name = row[16],
-            key_words=row[17],
-            notes=row[18],
-            group_name=row[19],
-            is_key_objective= row[20],
-            created = row[21],
-            created_by_id = row[22],
-            created_by_name = row[23])
+            content_id = row[5],
+            content_description = row[6],
+            key_stage_id = row[7],
+            key_stage_name = row[8],
+            lesson_id = row[9],
+            lesson_name = row[10],
+            key_words=row[11],
+            notes=row[12],
+            group_name=row[13],
+            is_key_objective= row[14],
+            created = row[15],
+            created_by_id = row[16],
+            created_by_name = row[17])
         data.append(model)
 
     return data
@@ -323,35 +281,26 @@ def get_new_model(db, id_, auth_user):
                   " solo.id AS solo_id,"\
                   " solo.name AS solo_taxonomy_name,"\
                   " solo.lvl AS solo_taxonomy_level,"\
-                  " top.id AS topic_id,"\
-                  " top.name AS topic_name,"\
-                  " pnt_top.id AS parent_topic_id,"\
-                  " pnt_top.name AS parent_topic_name,"\
                   " cnt.id AS content_id,"\
                   " cnt.description AS content_description,"\
-                  " exam.id AS exam_board_id,"\
-                  " exam.name AS exam_board_name,"\
                   " 0 AS lesson_id,"\
                   " ks.id AS key_stage_id,"\
                   " ks.name AS key_stage_name,"\
                   " lob.key_words as key_words,"\
                   " lob.notes as notes,"\
                   " lob.group_name as group_name,"\
-                  " le_lo.is_key_objective as is_key_objective,"\
                   " lob.created AS created,"\
                   " CONCAT_WS(' ', user.first_name, user.last_name) AS created_by"\
                   " FROM sow_learning_objective AS lob"\
-                  " LEFT JOIN sow_topic AS top ON top.id = lob.topic_id"\
-                  " LEFT JOIN sow_topic AS pnt_top ON pnt_top.id = top.parent_id"\
                   " LEFT JOIN sow_solo_taxonomy AS solo ON solo.id = lob.solo_taxonomy_id"\
                   " LEFT JOIN sow_content AS cnt ON cnt.id = lob.content_id"\
                   " LEFT JOIN sow_key_stage AS ks ON ks.id = cnt.key_stage_id"\
-                  " LEFT JOIN sow_exam_board AS exam ON exam.id = lob.exam_board_id"\
                   " LEFT JOIN auth_user AS user ON user.id = lob.created_by"\
-                  " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user};"
+                  " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user})  ;"
     select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows, log_info=handle_log_info)
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -360,29 +309,23 @@ def get_new_model(db, id_, auth_user):
             solo_taxonomy_id = row[2],
             solo_taxonomy_name = row[3],
             solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = [7],
-            parent_topic_name = [8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            lesson_id = row[13],
-            key_stage_id = row[14],
-            key_stage_name = row[15],
-            key_words=row[16],
-            notes=row[17],
-            group_name=row[18],
-            created = row[19],
-            created_by_id = row[20],
-            created_by_name = row[21])
+            content_id = row[5],
+            content_description = row[6],
+            lesson_id = row[7],
+            key_stage_id = row[8],
+            key_stage_name = row[9],
+            key_words=row[10],
+            notes=row[11],
+            group_name=row[12],
+            created = row[13],
+            created_by_id = row[14],
+            created_by_name = row[15])
 
     return model
 
 
 def get_model(db, id_, auth_user):
-    model = LearningObjectiveModel(id_);
+    model = LearningObjectiveModel(id_)
 
     select_sql = "SELECT"\
                  " lob.id as id,"\
@@ -390,14 +333,8 @@ def get_model(db, id_, auth_user):
                  " solo.id as solo_id,"\
                  " solo.name as solo_taxonomy_name,"\
                  " solo.lvl as solo_taxonomy_level,"\
-                 " top.id as topic_id,"\
-                 " top.name as topic_name,"\
-                 " pnt_top.id as parent_topic_id,"\
-                 " pnt_top.name as parent_topic_name,"\
                  " cnt.id as content_id,"\
                  " cnt.description as content_description,"\
-                 " exam.id as exam_board_id,"\
-                 " exam.name as exam_board_name,"\
                  " le.id as lesson_id,"\
                  " sow.key_stage_id as key_stage_id,"\
                  " ks.name as key_stage_name,"\
@@ -412,17 +349,15 @@ def get_model(db, id_, auth_user):
                  " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id"\
                  " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id"\
                  " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id"\
-                 " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
-                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                  " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
                  " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                 " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
                  " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
                  " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});"
 
     select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    execSql(db, select_sql, rows)
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -431,23 +366,17 @@ def get_model(db, id_, auth_user):
             solo_taxonomy_id = row[2],
             solo_taxonomy_name = row[3],
             solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = [7],
-            parent_topic_name = [8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            lesson_id = row[13],
-            key_stage_id = row[14],
-            key_stage_name = row[15],
-            key_words=row[16],
-            notes=row[17],
-            group_name=row[18],
-            created = row[19],
-            created_by_id = row[20],
-            created_by_name = row[21])
+            content_id = row[5],
+            content_description = row[6],
+            lesson_id = row[7],
+            key_stage_id = row[8],
+            key_stage_name = row[9],
+            key_words=row[10],
+            notes=row[11],
+            group_name=row[12],
+            created = row[13],
+            created_by_id = row[14],
+            created_by_name = row[15])
 
     return model
 
@@ -460,14 +389,8 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
                  " solo.id as solo_id,"\
                  " solo.name as solo_taxonomy_name,"\
                  " solo.lvl as solo_taxonomy_level,"\
-                 " top.id as topic_id,"\
-                 " top.name as topic_name,"\
-                 " pnt_top.id as parent_topic_id,"\
-                 " pnt_top.name as parent_topic_name,"\
                  " cnt.id as content_id,"\
                  " cnt.description as content_description,"\
-                 " exam.id as exam_board_id,"\
-                 " exam.name as exam_board_name,"\
                  " ks.id as key_stage_id,"\
                  " ks.name as key_stage_name,"\
                  " lob.key_words as key_words,"\
@@ -480,7 +403,6 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
                 " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
                 " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
                 " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
                 " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
                 " WHERE ks.id < {key_stage_id}" \
@@ -494,7 +416,7 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
     data = []
 
     for row in rows:
-        if len(row[15]) > 0:
+        if len(row[15]) > 0 and key_words is not None:
             for keyword in key_words.split(","):
                 if len(keyword) > 0 and keyword in row[15]:
                     model = LearningObjectiveModel(
@@ -503,24 +425,18 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
                         solo_taxonomy_id = row[2],
                         solo_taxonomy_name = row[3],
                         solo_taxonomy_level = row[4],
-                        topic_id = row[5],
-                        topic_name = row[6],
-                        parent_topic_id = row[7],
-                        parent_topic_name = row[8],
-                        content_id = row[9],
-                        content_description = row[10],
-                        exam_board_id = row[11],
-                        exam_board_name = row[12],
-                        key_stage_id = row[13],
-                        key_stage_name = row[14],
-                        key_words = row[15],
-                        group_name = row[16],
-                        created = row[17],
-                        created_by_id = row[18],
-                        created_by_name = row[19]
+                        content_id = row[5],
+                        content_description = row[6],
+                        key_stage_id = row[7],
+                        key_stage_name = rows[8],
+                        key_words = row[9],
+                        group_name = row[10],
+                        created = row[11],
+                        created_by_id = row[12],
+                        created_by_name = row[13]
                         )
 
-                    data.append(model)
+                    data.append(model.__dict__)
                     break # only add objective once
 
     return data
@@ -534,14 +450,8 @@ def get_linked_pathway_objectives(db, lesson_id):
                  " solo.id as solo_id,"\
                  " solo.name as solo_taxonomy_name,"\
                  " solo.lvl as solo_taxonomy_level,"\
-                 " top.id as topic_id,"\
-                 " top.name as topic_name,"\
-                 " pnt_top.id as parent_topic_id,"\
-                 " pnt_top.name as parent_topic_name,"\
                  " cnt.id as content_id,"\
                  " cnt.description as content_description,"\
-                 " exam.id as exam_board_id,"\
-                 " exam.name as exam_board_name,"\
                  " ks.id as key_stage_id,"\
                  " ks.name as key_stage_name,"\
                  " lob.key_words as key_words,"\
@@ -551,11 +461,8 @@ def get_linked_pathway_objectives(db, lesson_id):
                  " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
                 " FROM sow_learning_objective as lob"\
                 " INNER JOIN sow_lesson__has__pathway as pw ON pw.learning_objective_id = lob.id"\
-                " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
-                " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                 " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
                 " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                " LEFT JOIN sow_exam_board as exam ON exam.id = lob.exam_board_id"\
                 " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
                 " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
                 " WHERE pw.lesson_id = {lesson_id}" \
@@ -574,21 +481,15 @@ def get_linked_pathway_objectives(db, lesson_id):
             solo_taxonomy_id = row[2],
             solo_taxonomy_name = row[3],
             solo_taxonomy_level = row[4],
-            topic_id = row[5],
-            topic_name = row[6],
-            parent_topic_id = row[7],
-            parent_topic_name = row[8],
-            content_id = row[9],
-            content_description = row[10],
-            exam_board_id = row[11],
-            exam_board_name = row[12],
-            key_stage_id = row[13],
-            key_stage_name = row[14],
-            key_words = row[15],
-            group_name = row[16],
-            created = row[17],
-            created_by_id = row[18],
-            created_by_name = row[19]
+            content_id = row[5],
+            content_description = row[6],
+            key_stage_id = row[7],
+            key_stage_name = row[8],
+            key_words = row[9],
+            group_name = row[10],
+            created = row[11],
+            created_by_id = row[12],
+            created_by_name = row[13]
             )
 
         data.append(model)
@@ -646,10 +547,17 @@ def add_existing_objective(db, learning_objective_id, lesson_id, auth_user_id):
 
 
 def delete(db, auth_user_id, id_):
-
+    """ Delete learning objective """
+    
     model = LearningObjectiveModel(id_)
     _delete(db, model);
 
+
+def delete_unpublished(db, lesson_id, auth_user_id):
+    """ Delete all unpublished learning objectives """
+
+    _delete_unpublished(db, lesson_id, auth_user_id)
+    
 
 def update_is_key_objective(db, learning_objective_id, lesson_id, is_key_objective):
 
@@ -669,7 +577,7 @@ def _delete(db, model):
     str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id};"
     str_delete = str_delete.format(learning_objective_id=model.id)
 
-    rval = db.executesql(str_delete)
+    rval = execCRUDSql(db, str_delete, log_info=handle_log_info)
 
     return rval
 
@@ -678,8 +586,8 @@ def _update(db, model, published):
 
     # build update statement
 
-    str_update = "UPDATE sow_learning_objective SET description = '{description}', group_name = '{group_name}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, topic_id = {topic_id}, content_id = {content_id}, exam_board_id = {exam_board_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
-    str_update = str_update.format(description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, topic_id=model.topic_id, content_id=to_db_null(model.content_id), exam_board_id=to_db_null(model.exam_board_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
+    str_update = "UPDATE sow_learning_objective SET description = '{description}', group_name = '{group_name}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, content_id = {content_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
+    str_update = str_update.format(description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, content_id=to_db_null(model.content_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
 
     db.executesql(str_update)
 
@@ -700,26 +608,23 @@ def _update(db, model, published):
 
 def _insert(db, model, published):
 
-    str_insert = "INSERT INTO sow_learning_objective (description, group_name, notes, key_words, solo_taxonomy_id, topic_id, content_id, exam_board_id, parent_id, created, created_by, published)"
-    str_insert = str_insert + " VALUES ('{description}', '{group_name}', '{notes}', '{key_words}', {solo_taxonomy_id}, {topic_id}, {content_id}, {exam_board_id}, {parent_id}, '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_learning_objective (description, group_name, notes, key_words, solo_taxonomy_id, content_id, parent_id, created, created_by, published)"
+    str_insert = str_insert + " VALUES ('{description}', '{group_name}', '{notes}', '{key_words}', {solo_taxonomy_id}, {content_id}, {parent_id}, '{created}', {created_by}, {published});"
     str_insert = str_insert.format(
         description=model.description,
         group_name=model.group_name,
         solo_taxonomy_id=model.solo_taxonomy_id,
-        topic_id=model.topic_id,
         content_id=to_db_null(model.content_id),
-        exam_board_id=to_db_null(model.exam_board_id),
         parent_id=to_db_null(model.parent_id),
         key_words=to_db_null(model.key_words),
         notes=to_db_null(model.notes),
         created=model.created,
         created_by=model.created_by_id,
         published=published)
+    str_insert = str_insert + "SELECT LAST_INSERT_ID();"
 
-    db.executesql(str_insert)
-
-    # get last inserted row id
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    rows = []
+    execCRUDSql(db, str_insert, result=rows, log_info=handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -727,7 +632,22 @@ def _insert(db, model, published):
     # insert into linking table between objective and lesson
     str_insert = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
     str_insert = str_insert.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-    db.executesql(str_insert)
+    execCRUDSql(db, str_insert, log_info=handle_log_info)
 
     return True
 
+def _delete_unpublished(db, lesson_id, auth_user_id):
+    """ Delete all unpublished learning objectives """
+    str_select = "SELECT lol.learning_objective_id "\
+        "FROM sow_learning_objective__has__lesson AS lol "\
+        "INNER JOIN sow_lesson AS l ON l.id = lol.lesson_id "\
+        "INNER JOIN sow_learning_objective AS lo ON lo.id = lol.learning_objective_id "\
+        "WHERE lo.published = 0 AND l.id={lesson_id} AND l.created_by = {auth_user_id};".format(lesson_id=lesson_id, auth_user_id=auth_user_id)
+    rows = []
+    execSql(db, str_select, rows, handle_log_info)
+
+    for row in rows:
+        _id = row[0]
+        str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = {lesson_id} AND learning_objective_id={_id};".format(lesson_id=lesson_id,_id=_id)
+        execCRUDSql(db, str_delete, log_info=handle_log_info)
+    pass

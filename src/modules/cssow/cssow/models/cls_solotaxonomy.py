@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from basemodel import BaseModel
-from db_helper import sql_safe
+from .core.basemodel import BaseModel
+from .core.db_helper import sql_safe, execSql
 
 class SoloTaxonomyModel(BaseModel):
     def __init__(self, id_, name, lvl):
@@ -27,9 +27,22 @@ class SoloTaxonomyModel(BaseModel):
 DAL
 """
 
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=True)
+
+
 def get_options(db):
 
-    rows = db.executesql("SELECT id, name, lvl FROM sow_solo_taxonomy;")
+    rows = []
+    execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, handle_log_info)
 
     data = []
 

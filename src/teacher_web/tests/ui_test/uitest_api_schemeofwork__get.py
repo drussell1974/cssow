@@ -3,7 +3,7 @@ from django.test import tag
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class test_schemeofwork__get(UITestCase):
+class uitest_schemeofwork__get(UITestCase):
 
     test_context = WebBrowserContext()
 

@@ -6,7 +6,7 @@ class test_schemeofwork_learningobjective_index_with_login(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.test_context.implicitly_wait(4)
 
 
@@ -26,5 +26,5 @@ class test_schemeofwork_learningobjective_index_with_login(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'New')
 

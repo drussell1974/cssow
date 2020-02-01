@@ -24,6 +24,17 @@ class TopicModel(models.Model):
 DAL
 """
 
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=True)
+
+
 def get_options(db, lvl, topic_id = 0):
 
     str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
@@ -34,7 +45,7 @@ def get_options(db, lvl, topic_id = 0):
     try:
 
         rows = []
-        execSql(db, str_select, rows)
+        execSql(db, str_select, rows, handle_log_info)
 
         for row in rows:
             model = TopicModel(row[0], row[1], row[2], row[3])

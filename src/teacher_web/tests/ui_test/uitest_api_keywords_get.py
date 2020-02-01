@@ -3,7 +3,7 @@ from django.test import tag
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_api_keywords__get(UITestCase):
+class uitest_api_keywords_get(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -36,5 +36,5 @@ class uitest_api_keywords__get(UITestCase):
 
 
     def test__should_be_alphabetical_order(self):
-        self.assertEqual('3D printer', self.payload["keywords"][0])
-        self.assertEqual('XOR expression', self.payload["keywords"][self.last_item_index])
+        self.assertEqual([335,'3D printer'], self.payload["keywords"][0])
+        self.assertEqual([241,'XOR expression'], self.payload["keywords"][self.last_item_index])

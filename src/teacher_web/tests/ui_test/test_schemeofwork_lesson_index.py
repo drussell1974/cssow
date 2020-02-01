@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningepsiode_index(UITestCase):
+class uitest_schemeofwork_lesson_index(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -44,7 +44,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'New')
 
 
     def test_page__should_have_sidenav(self):
@@ -84,8 +84,8 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
         # test
         result = len(section)
 
-        # assert
+        # assert    
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(26, result, "number of elements not as expected")
+        self.assertEqual(27, result, "number of elements not as expected")
         
 

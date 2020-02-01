@@ -1,19 +1,20 @@
+from django.db import connection as db
 from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-
-
 def WebBrowserContext():
-    options = webdriver.ChromeOptions();
-    options.add_argument("--start-maximized");
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
     return webdriver.Chrome(chrome_options=options)
 
+TEST_USER_NAME = "test@localhost"
+TEST_USER_PSWD = "co2m1c1."
 
 class UITestCase(TestCase):
     root_uri = "http://admin.daverussell.local:8002"
     test_scheme_of_work_id = 11
-    test_lesson_id = 133
+    test_lesson_id = 220
     test_learning_objective_id = 410
     test_reference = 10
 
@@ -49,11 +50,11 @@ class UITestCase(TestCase):
             self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys("test@localhost")
+            elem.send_keys(TEST_USER_NAME)
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("co2m1c")
+            elem.send_keys(TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -80,11 +81,11 @@ class UITestCase(TestCase):
             self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("id_username")
-            elem.send_keys("test@localhost")
+            elem.send_keys(TEST_USER_NAME)
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("id_password")
-            elem.send_keys("co2m1c1.")
+            elem.send_keys(TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -93,5 +94,3 @@ class UITestCase(TestCase):
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             print('try_login handled - already logged in (probably) - {}'.format(e.args))
             pass
-
-
