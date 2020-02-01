@@ -58,10 +58,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'default' %}">Home</a>
+              <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'schemesofwork.index' %}">Schemes of Work</a>
+              <a class="nav-link" href="{% url 'schemesofwork.index' %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
             </li>
             {% if auth.user %}
             <li class="nav-item">
@@ -69,7 +69,7 @@
             </li>
             {% endif %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'default' %}">About</a>
+              <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-about">About</a>
             </li>
           </ul>
         </div>
