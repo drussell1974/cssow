@@ -6,6 +6,6 @@
     "start": "python ./web/manage.py runserver admin.daverussell.local:8002",
     "test": "python ./web/manage.py test ./web && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_*.py",
     "test-routes": "python ./web/manage.py test ./web",
-    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_successful_log_in.py"
+    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index.py"
   }
 } 
