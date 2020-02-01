@@ -139,7 +139,7 @@ def log_info(db, msg, is_enabled = False):
     
     
 def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=True)
+    log_info(db, msg, is_enabled=False)
 
 from .core.db_helper import to_db_null, execSql, execCRUDSql
 #import cls_keyword as db_keyword

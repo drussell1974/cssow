@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 from ui_testcase import UITestCase, WebBrowserContext
 
 class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
@@ -109,31 +110,19 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
             if opt.text == "Algorithms":
                  opt.click()
         elem.send_keys(Keys.TAB)
-
-        ' div-pathway_objective_id  - select VALID '
-        # expand accordion
-        #self.test_context.implicitly_wait(4) # wait for accordion to load from ajax call
-        #elem = self.test_context.find_element_by_id('ks3-heading-text')
-        #elem.click()
-
-        #elem = self.test_context.find_element_by_id('ctl-pathway_objective_id')
-        #elem.click()
-        #elem.send_keys(Keys.TAB)
         
         ' ctl-key_words '
+        # TODO: Use support.select https://selenium.dev/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.select.html
+        # TODO: select Algorithm
+        # TODO: select Arithmetic Logic Unit (ALU)
+
         elem = self.test_context.find_element_by_id("ctl-key_words")
         all_options = elem.find_elements_by_tag_name('option')
         for opt in all_options: 
             if opt.text == "Arithmetic Logic Unit (ALU)":
                 opt.click()
         elem.send_keys(Keys.TAB)
-
-        #elem.clear()
-        #elem.send_keys("Algorithm")
-        #elem.send_keys(Keys.TAB)
-        #elem.send_keys("Ipsum")
-        #elem.send_keys(Keys.TAB)
-
+        
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
