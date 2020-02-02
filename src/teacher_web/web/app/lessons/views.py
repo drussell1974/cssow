@@ -90,8 +90,27 @@ def edit(request, scheme_of_work_id, lesson_id):
     
 def copy(request, scheme_of_work_id, lesson_id):
     ''' Copy the lesson '''
+    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+    lesson["id"] = 0 # reset id
+
+    scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    year_options = cls_year.get_options(db, lesson["key_stage_id"])
+    topic_options = cls_topic.get_options(db, lvl=1)
+    key_words = cls_keyword.get_options(db)
     
-    view_model = ViewModel("", "A-Level Computer Science", "Copy")
+    data = {
+        "scheme_of_work_id": scheme_of_work_id,
+        "lesson_id": 0,
+        "key_stage_id": scheme_of_work.key_stage_id,
+        "topic_options": topic_options,
+        "selected_topic_id": lesson["topic_id"], 
+        "year_options": year_options,
+        "selected_year_id": lesson["year_id"],
+        "lesson": lesson,
+        "key_words": key_words,
+    }
+    
+    view_model = ViewModel("Dave Russell - Computer Science", "A-Level Computer Science", "Copy: {}".format(lesson["title"]), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 

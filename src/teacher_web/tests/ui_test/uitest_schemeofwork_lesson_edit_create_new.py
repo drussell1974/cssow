@@ -1,6 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from ui_testcase import UITestCase, WebBrowserContext
+import unittest
 
 class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
@@ -22,6 +23,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
     def tearDownClass(cls):
         # tear down
         cls.test_context.close()
+
 
     def test_page__should_has_correct_element(self):
 

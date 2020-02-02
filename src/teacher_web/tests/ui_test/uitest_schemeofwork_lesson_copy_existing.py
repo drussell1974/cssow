@@ -2,21 +2,20 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from ui_testcase import UITestCase, WebBrowserContext
 
-import unittest
-
-class uitest_schemeofwork_lesson_edit_existing(UITestCase):
-
+class uitest_schemeofwork_lesson_copy_existing(UITestCase):
+   
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.test_path = '/schemesofwork/{}/lessons/{}/edit'.format(self.test_scheme_of_work_id, self.test_lesson_id)
+        self.test_path = '/schemesofwork/{}/lessons/{}/copy'.format(self.test_scheme_of_work_id, self.test_lesson_id)
         self.do_log_in(self.root_uri + self.test_path)
 
 
     def tearDown(self):
-        #self.do_delete_scheme_of_work()
-        pass
+        # tear down
+        elem = self.test_context.find_element_by_id("btn-delete")
+        elem.click()
 
 
     @classmethod
@@ -28,7 +27,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture', 'test@localhost')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Copy: Types of CPU architecture', 'test@localhost')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")
@@ -76,6 +75,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         ' ctl-title - select EMPTY '
         elem = self.test_context.find_element_by_id("ctl-title")
+        elem.clear()
         elem.send_keys("")
 
         ' submit the form '
@@ -84,18 +84,29 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Copy: Types of CPU architecture')
         
 
     def test_page__should_redirect_to_index_if_valid(self):
 
-        ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
-        elem.send_keys(Keys.RETURN)
+        # arrange 
+        elem = self.test_context.find_element_by_tag_name("form")
 
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' ctl-title - select EMPTY '
+        elem = self.test_context.find_element_by_id("ctl-title")
+        elem.clear()
+        elem.send_keys("COPY test_page__should_redirect_to_index_if_valid")
+
+
+        ' submit the form '
+        elem = self.test_context.find_element_by_id("draftButton")
+        elem.send_keys(Keys.RETURN)
+        
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: COPY test_page__should_redirect_to_index_if_v')
 
         # TODO: detect dialog
         # TODO: close dialog

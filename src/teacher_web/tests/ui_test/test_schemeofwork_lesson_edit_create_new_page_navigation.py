@@ -6,7 +6,7 @@ class test_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/lesson/edit?scheme_of_work_id={}".format(self.test_scheme_of_work_id))
+        self.try_log_in(self.root_uri + "/schemeofwork/{}/lesson/{}/edit".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):
