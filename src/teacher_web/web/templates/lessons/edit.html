@@ -5,8 +5,18 @@
   <div class="container">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+          <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
             {{_("Schemes of Work")}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+            {{_("Lessons")}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+            {{_("Objectives")}}
           </a>
         </li>
       </ul>

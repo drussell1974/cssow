@@ -62,7 +62,6 @@ class UITestCase(TestCase):
 
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
             pass
 
 

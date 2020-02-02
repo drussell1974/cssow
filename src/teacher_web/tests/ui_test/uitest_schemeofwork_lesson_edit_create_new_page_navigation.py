@@ -1,12 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
+class uitest_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.try_log_in(self.root_uri + "/schemeofwork/{}/lesson/{}/edit".format(self.test_scheme_of_work_id))
+        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
 
     def tearDown(self):
@@ -25,7 +25,7 @@ class test_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lesson', 'A-Level Computer Science - Lesson 1')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
 
 
     """ Breadcrumb """
@@ -33,7 +33,7 @@ class test_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
+        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
         self.assertEqual("Schemes of Work", elem.text)
 
         # test
@@ -45,14 +45,14 @@ class test_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
 
     def test_page__breadcrumb__navigate_to_lesson_index(self):
         #test
-        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
+        elem = self.test_context.find_element_by_id('btn-bc-lessons')
         self.assertEqual("Lessons", elem.text)
 
         # test
         elem.click()
 
         # asserts
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science') # needs to show scheme of work
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):

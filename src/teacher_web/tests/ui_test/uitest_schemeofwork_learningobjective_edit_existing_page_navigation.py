@@ -1,12 +1,13 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITestCase):
+class uitest_schemeofwork_learningobjective_edit_existing_navigation(UITestCase):
 
     test_context = WebBrowserContext()
 
+
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/edit?lesson_id={}&scheme_of_work_id={}".format(self.test_lesson_id, self.test_scheme_of_work_id))
+        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
 
 
     def tearDown(self):
@@ -25,7 +26,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Learning objective', 'A-Level Computer Science - Lesson 1 - Programming and development')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
 
 
     """ Breadcrumb """
@@ -33,7 +34,7 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
-        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
+        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
         self.assertEqual("Schemes of Work", elem.text)
 
         # test
@@ -45,23 +46,23 @@ class test_schemeofwork_learningobjective_edit_create_new_page_navigation(UITest
 
     def test_page__breadcrumb__navigate_to_lesson_index(self):
         #test
-        elem = self.test_context.find_element_by_id('lnk-bc-lessons')
+        elem = self.test_context.find_element_by_id('btn-bc-lessons')
         self.assertEqual("Lessons", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
 
 
     def test_page__breadcrumb__navigate_to_learningobjective_index(self):
         #test
-        elem = self.test_context.find_element_by_id('lnk-bc-learning_objectives')
+        elem = self.test_context.find_element_by_id('btn-bc-learning_objectives')
         self.assertEqual("Objectives", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')

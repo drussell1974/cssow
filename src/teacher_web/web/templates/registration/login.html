@@ -11,17 +11,17 @@
         <div className="form-group row">
             {% csrf_token %}
             <div className="col-sm-9 col-sm-offset-3">
-        
+                
                 {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
+                    <p id="login_error">Your username and password didn't match. Please try again.</p>
                 {% endif %}
 
                 {% if next %}
                     {% if user.is_authenticated %}
-                    <p>Your account doesn't have access to this page. To proceed,
+                        <p id="login_message">Your account doesn't have access to this page. To proceed,
                     please login with an account that has access.</p>
                     {% else %}
-                    <p>Please login to see this page.</p>
+                        <p id="login_message">Please login to see this page.</p>
                     {% endif %}
                 {% endif %}
             </div>
