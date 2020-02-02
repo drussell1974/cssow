@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cssow-drussell1974", # Replace with your own username
-    version="2.8.7",
+    version="2.8.10",
     author="Dave Russell",
     author_email="dave@daverussell.co.uk",
     description="Computer Science SOW - Models",

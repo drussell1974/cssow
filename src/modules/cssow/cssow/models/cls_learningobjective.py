@@ -2,6 +2,8 @@
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, from_db_bool, execSql, execCRUDSql
 
+enable_logging = False
+
 class LearningObjectiveModel (BaseModel):
 
     def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1):
@@ -140,7 +142,7 @@ def log_info(db, msg, is_enabled = False):
     
     
 def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
+    log_info(db, msg, is_enabled=enable_logging)
 
 
 # -*- coding: utf-8 -*-
@@ -357,7 +359,7 @@ def get_model(db, id_, auth_user):
     select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    execSql(db, select_sql, rows, handle_log_info)
 
     for row in rows:
         model = LearningObjectiveModel(
@@ -589,19 +591,20 @@ def _update(db, model, published):
     str_update = "UPDATE sow_learning_objective SET description = '{description}', group_name = '{group_name}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, content_id = {content_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
     str_update = str_update.format(description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, content_id=to_db_null(model.content_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
 
-    db.executesql(str_update)
+    execCRUDSql(db, str_update, log_info=handle_log_info)
 
     # insert if entry in sow_learning_objective__has__lesson doesn't already map sow learning_objective and sow_lesson
 
     str_check_duplicate = "SELECT id FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id} AND lesson_id = {lesson_id};"
     str_check_duplicate = str_check_duplicate.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
 
-    rows = db.executesql(str_check_duplicate)
+    rows = []
+    execSql(db, str_check_duplicate, rows, handle_log_info)
 
     if(len(rows) == 0):
         str_insert2 = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
         str_insert2 = str_insert2.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-        db.executesql(str_insert2)
+        execCRUDSql(db, str_insert2, log_info=handle_log_info)
 
     return True
 
@@ -635,6 +638,7 @@ def _insert(db, model, published):
     execCRUDSql(db, str_insert, log_info=handle_log_info)
 
     return True
+
 
 def _delete_unpublished(db, lesson_id, auth_user_id):
     """ Delete all unpublished learning objectives """

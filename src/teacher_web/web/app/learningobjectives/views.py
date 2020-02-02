@@ -75,8 +75,9 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Edit an existing learning objective '''
     
+    cls_learningobjective.enable_logging = True
     model = cls_learningobjective.get_model(db, learning_objective_id, request.user.id)
-
+    
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
 
     if scheme_of_work_id is not None:
@@ -105,7 +106,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", model.description, "New", data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.description), data=data, alert_message=request.session.get("alert_message", None))
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -117,7 +118,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     # create instance of model from request.vars
 
     model = cls_learningobjective.LearningObjectiveModel(
-        id_=learning_objective_id,
+        id_=request.POST.get("id", 0),
         description=request.POST.get("description", ""),
         solo_taxonomy_id=request.POST.get("solo_taxonomy_id", 0),
         content_id=request.POST.get("content_id", 0),
@@ -140,6 +141,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     if model.is_valid == True:
         
         ' save learning objectives'
+        cls_learningobjective.enable_logging = True
         model = cls_learningobjective.save(db, model, int(request.POST["published"]))
 
         ' save keywords '

@@ -54,7 +54,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         self.assertEqual(7, len(elem))
         elem = Select(self.test_context.find_element_by_id("ctl-topic_id"))
         selected_option = elem.first_selected_option
-        self.assertEqual("Hardware and architecture", selected_option.text)
+        self.assertEqual("Algorithms", selected_option.text)
 
         ' keyword dropdown '
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-key_words']/option")

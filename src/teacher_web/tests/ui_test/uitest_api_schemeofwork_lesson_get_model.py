@@ -49,7 +49,7 @@ class uitest_schemeofwork_lesson_get_model(UITestCase):
 
     def test__should_have_lesson_objectives(self):
         # assert
-        self.assertEqual(7, len(self.payload["lesson"]["learning_objectives"]))
+        self.assertEqual(8, len(self.payload["lesson"]["learning_objectives"]))
 
 
     def test__should_have_resources(self):
