@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from core.basemodel import BaseModel
-from core.db_helper import sql_safe
+from .core.basemodel import BaseModel
+from .core.db_helper import sql_safe, execSql
 
 class KeyStageModel(BaseModel):
     def __init__(self, id_, name):
@@ -21,11 +21,23 @@ class KeyStageModel(BaseModel):
 """
 DAL
 """
-from db_helper import last_sql
+
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=False)
+
 
 def get_options(db):
 
-    rows = db.executesql("SELECT id, name FROM sow_key_stage;")
+    rows = []
+    execSql(db, "SELECT id, name FROM sow_key_stage;", rows, handle_log_info)
 
     data = []
 

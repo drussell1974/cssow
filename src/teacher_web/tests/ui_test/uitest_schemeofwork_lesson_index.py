@@ -59,12 +59,12 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def test_page__should_have_sidenav_with_three_items(self):
         # arrange
-        elems = self.test_context.find_elements_by_class_name('nav-item')
-        
+        elems = self.test_context.find_elements_by_xpath('//*[@id="sidebarResponsive"]/ul/li') 
+
         # act
 
         # assert
-        self.assertEqual(6, len(elems))
+        self.assertEqual(3, len(elems))
 
 
     def test_page__show_published_only(self):
@@ -72,20 +72,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         section = self.test_context.find_elements_by_class_name('post-preview')
         # assert
         result = len(section)
-        self.assertEqual(28, result, "number of elements not as expected")
+        self.assertEqual(27, result, "number of elements not as expected")
 
-
-    def test_page__show_published_and_owned(self):
-        # setup
-        self.do_log_in(redirect_to_uri_on_login=self.test_path)
-
-        section = self.test_context.find_elements_by_class_name('post-preview')
-
-        # test
-        result = len(section)
-
-        # assert    
-        # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(28, result, "number of elements not as expected")
-        
 

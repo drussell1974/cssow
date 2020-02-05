@@ -76,6 +76,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         ' ctl-title - select EMPTY '
         elem = self.test_context.find_element_by_id("ctl-title")
+        elem.clear()
         elem.send_keys("")
 
         ' submit the form '
@@ -95,7 +96,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
 
         # TODO: detect dialog
         # TODO: close dialog

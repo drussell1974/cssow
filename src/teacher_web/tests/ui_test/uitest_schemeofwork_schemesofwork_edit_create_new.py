@@ -1,14 +1,16 @@
 from datetime import datetime
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
+import unittest
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
+class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/schemesofwork/edit")
+        self.do_log_in(self.root_uri + "/schemesofwork/new")
 
 
     def tearDown(self):
@@ -23,26 +25,25 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-        """ Heading blank """
-        # test
+        
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'New')
+        
         save = self.test_context.find_element_by_id('saveButton')
-        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Scheme of Work', 'Create a new scheme of work')
         self.assertEqual("DRAFT", save.text)
+
+        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
         self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
 
 
     def test_page__breadcrumb_navigate_to_lesson_index_not_visible_for_new_schemeofwork(self):
         # test and assert
         with self.assertRaises(Exception):
-            self.test_context.find_element_by_id('lnk-bc-learning_episoodes')
+            self.test_context.find_element_by_id('btn-bc-lessons')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # test
-        elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
+        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
         self.assertEqual("Schemes of Work", elem.text)
 
         # test
@@ -57,7 +58,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
-        elem = self.test_context.find_element_by_id("ctl-name")
+        elem = self.test_context.find_element_by_name("edit-schemeofwork")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -65,6 +66,8 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         # test
 
         ' Fill in field as blank '
+        elem = self.test_context.find_element_by_id("ctl-name")
+
         elem.clear()
         elem.send_keys("")
 
@@ -73,7 +76,7 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Scheme of Work', 'Create a new scheme of work')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'New')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -115,8 +118,14 @@ class test_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Lessons', 'should_redirect_to_index_if_valid')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
+        #delete
+        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait()
 
+        elem.click()
 
 

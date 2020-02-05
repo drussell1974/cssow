@@ -15,8 +15,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
     def tearDown(self):
         # tear down
-        elem = self.test_context.find_element_by_id("btn-delete")
-        elem.click()
+        pass
 
 
     @classmethod
@@ -126,27 +125,18 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.send_keys(Keys.TAB)
         
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("draftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Consectetur adipiscing elit')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
 
-        elem = self.test_context.find_element_by_id("ctl-year_id")
-        self.assertEqual("12", elem.get_attribute("value"))
+        # delete
 
-        elem = self.test_context.find_element_by_id("ctl-order_of_delivery_id")
-        self.assertEqual("1", elem.get_attribute("value"))
+        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait()
 
-        elem = self.test_context.find_element_by_id("ctl-title")
-        self.assertEqual("Consectetur adipiscing elit", elem.get_attribute("value"))
-
-        elem = self.test_context.find_element_by_id("ctl-summary")
-        self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.", elem.get_attribute("value"))
-
-        elem = self.test_context.find_element_by_id("ctl-topic_id")
-        self.assertEqual("1", elem.get_attribute("value"))
-        
-        elem = self.test_context.find_element_by_id("ctl-key_words")
-        self.assertEqual("", elem.get_attribute("value"))
+        elem.click()

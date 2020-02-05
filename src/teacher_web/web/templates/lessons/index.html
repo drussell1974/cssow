@@ -114,4 +114,9 @@
  </section><!-- class="alert alert-info" -->
 <!-- Scheme of works END -->
 <hr />
+
+{% if request.user.is_authenticated %}
+<a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson.delete_unpublished' content.data.scheme_of_work_id %}">{{_('Clean')}}</a>
+{% endif %}
+
 {% endblock %}

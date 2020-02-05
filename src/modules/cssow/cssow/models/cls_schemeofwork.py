@@ -3,6 +3,8 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, execSql, execCRUDSql
 
+enable_logging = False
+
 class SchemeOfWorkListModel(models.Model):
     schemesofwork = []
     def __init__(self, data):
@@ -64,6 +66,18 @@ class SchemeOfWorkModel(BaseModel):
 """
 DAL
 """
+
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=enable_logging)
+
 
 #from cls_schemeofwork import SchemeOfWorkModel
 from .core.db_helper import to_db_null
@@ -258,10 +272,6 @@ def get_key_stage_id_only(db, scheme_of_work_id):
     return key_stage_id
 
 
-"""
-Private CRUD functions
-"""
-
 def save(db, model, published=1):
     if model.is_new() == True:
         _insert(db, model, published)
@@ -276,10 +286,21 @@ def delete(db, auth_user_id, id_):
     _delete(db, model)
 
 
+def delete_unpublished(db, auth_user_id):
+    """ Delete all unpublished schemes of work """
+
+    _delete_unpublished(db, auth_user_id)
+
+
 def publish(db, auth_user_id, id_):
     model = SchemeOfWorkModel(id_)
     model.publish = True
     _publish(db, model)
+
+
+"""
+Private CRUD functions
+"""
 
 
 def _update(db, model, published):
@@ -292,13 +313,13 @@ def _update(db, model, published):
         scheme_of_work_id = to_db_null(model.id),
         published=published)
 
-    execCRUDSql(db, str_update)
+    execCRUDSql(db, str_update, log_info=handle_log_info)
 
     return True
 
 
 def _insert(db, model, published):
-    str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('{name}', '{description}', {exam_board_id}, {key_stage_id}, '{created}', {created_by}, {published});"
+    str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('{name}', '{description}', {exam_board_id}, {key_stage_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         name=to_db_null(model.name),
         description=to_db_null(model.description),
@@ -308,11 +329,9 @@ def _insert(db, model, published):
         created_by=to_db_null(model.created_by_id),
         published=published)
 
-    execCRUDSql(db, str_insert)
-
     # get last inserted row id
     rows = []
-    execCRUDSql(db, "SELECT LAST_INSERT_ID();", rows)
+    execCRUDSql(db, str_insert, rows, handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -325,7 +344,7 @@ def _delete(db, model):
     str_delete = str_delete.format(scheme_of_work_id=model.id)
 
     rval = []
-    execCRUDSql(db, str_delete, rval)
+    execCRUDSql(db, str_delete, rval, handle_log_info)
 
     return rval
 
@@ -335,6 +354,15 @@ def _publish(db, model):
     str_delete = str_delete.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
 
     rval = []
-    execCRUDSql(db, str_delete, rval)
+    execCRUDSql(db, str_delete, rval, handle_log_info)
 
     return rval
+
+
+def _delete_unpublished(db, auth_user_id):
+    """ Delete all unpublished learning objectives """
+    str_select = "DELETE FROM sow_scheme_of_work WHERE published = 0;"
+        
+    rows = []
+    execSql(db, str_select, rows, handle_log_info)
+

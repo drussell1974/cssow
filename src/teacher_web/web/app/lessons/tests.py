@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save, initialise_keywords
+from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save, initialise_keywords, delete_unpublished
 
 # Create your tests here.
 class lessonPageTest(TestCase):
@@ -123,3 +123,14 @@ class lessonPageTest(TestCase):
     def test__lesson_whiteboard__url_resolves_to_whitebaord__reverse(self):
         url = reverse("lesson.initialise_keywords", args=[11])
         self.assertEqual("/schemesofwork/11/lessons/initialise_keywords", url)
+
+    
+    def test__lesson_delete_unpublished__url_resolves_to_delete_unpublished(self):
+        url = resolve("/schemesofwork/11/lessons/delete_unpublished")
+        self.assertEqual("lesson.delete_unpublished", url.url_name)
+        self.assertEqual(url.func, delete_unpublished)
+        
+    
+    def test__lesson_delete_unpublished__url_resolves_to_delete_unpublished__reverse(self):
+        url = reverse("lesson.delete_unpublished", args=[11])
+        self.assertEqual("/schemesofwork/11/lessons/delete_unpublished", url)

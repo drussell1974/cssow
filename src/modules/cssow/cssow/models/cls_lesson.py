@@ -341,6 +341,12 @@ def delete(db, auth_user_id, id_):
     _delete(db, model)
 
 
+def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+    """ Delete all unpublished lessons """
+
+    _delete_unpublished(db, scheme_of_work_id, auth_user_id)
+
+
 def publish(db, auth_user_id, id_):
     model = LessonModel(id_=id_, title="")
     model.publish = True
@@ -664,3 +670,10 @@ def get_key_words(db, lesson_id):
 
     return to_dict
 
+
+def _delete_unpublished(db, scheme_of_work_id, auth_user_id):
+    """ Delete all unpublished learning objectives """
+    str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published = 0;".format(scheme_of_work_id)
+        
+    rows = []
+    execSql(db, str_delete, rows, handle_log_info)

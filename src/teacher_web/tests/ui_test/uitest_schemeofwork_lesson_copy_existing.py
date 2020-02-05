@@ -14,8 +14,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
     def tearDown(self):
         # tear down
-        elem = self.test_context.find_element_by_id("btn-delete")
-        elem.click()
+        pass
 
 
     @classmethod
@@ -79,7 +78,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("draftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -106,8 +105,14 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: COPY test_page__should_redirect_to_index_if_v')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
+    
+        # delete
 
-        # TODO: detect dialog
-        # TODO: close dialog
+        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait()
+
+        elem.click()
         

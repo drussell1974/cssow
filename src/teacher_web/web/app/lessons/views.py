@@ -2,6 +2,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+
 from shared.view_model import ViewModel
 from cssow.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_keyword, cls_topic, cls_year
 from cssow.models.core import validation_helper
@@ -213,3 +214,13 @@ def initialise_keywords(request, scheme_of_work_id):
     view_model = ViewModel("", scheme_of_work_name, "Lessons", data=data)
     
     return render(request, "lessons/index.html", view_model.content)
+
+
+def delete_unpublished(request, scheme_of_work_id):
+    """ delete item and redirect back to referer """
+
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    cls_lesson.delete_unpublished(db, scheme_of_work_id, request.user.id)
+
+    return HttpResponseRedirect(redirect_to_url)
