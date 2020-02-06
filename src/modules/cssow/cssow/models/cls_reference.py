@@ -2,6 +2,8 @@
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, execSql
 
+enable_logging = False
+
 class ReferenceModel (BaseModel):
 
     def __init__(self, id_, reference_type_id, title, publisher, year_published, scheme_of_work_id, reference_type_name = "", authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
@@ -75,6 +77,50 @@ DAL
 """
 from datetime import datetime
 from .core.db_helper import to_db_null, to_empty
+
+
+def log_info(db, msg, is_enabled = False):
+    from .core.log import Log
+    logger = Log()
+    logger.is_enabled = is_enabled
+    logger.write(db, msg)
+    
+    
+def handle_log_info(db, msg):
+    log_info(db, msg, is_enabled=enable_logging)
+
+
+def get(db, scheme_of_work_id, lesson_id, auth_user):
+
+    str_select = "SELECT" \
+                 " ref.id as id," \
+                 " ref.reference_type_id as reference_type_id," \
+                 " type.name as reference_type_name," \
+                 " ref.title as title," \
+                 " ref.publisher as publisher," \
+                 " ref.year_published as year_published," \
+                 " ref.authors as authors," \
+                 " ref.url as uri " \
+                 "FROM sow_reference as ref " \
+                 "INNER JOIN sow_lesson__has__references as le_ref ON le_ref.reference_id = ref.id " \
+                 "INNER JOIN sow_reference_type as type ON type.id = ref.reference_type_id " \
+                 "WHERE ref.scheme_of_work_id = {scheme_of_work_id} AND le_ref.lesson_id = {lesson_id} " \
+                 " AND (ref.published = 1 OR ref.created_by = {auth_user});"
+
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
+
+    rows = []
+    execSql(db, str_select, rows, handle_log_info)
+
+    data = []
+
+    for row in rows:
+        model = ReferenceModel(id_=row[0], reference_type_id = row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
+
+        data.append(model)
+
+    return data
+
 
 def get_options(db, scheme_of_work_id, auth_user):
 
@@ -172,6 +218,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
 
     return model
 
+
 def get_number_of_resources(db, lesson_id, auth_user):
     """
     get the number of resources for the lesson
@@ -191,6 +238,7 @@ def get_number_of_resources(db, lesson_id, auth_user):
     execSql(db, select_sql, rows)
 
     return len(rows)
+
 
 def save(db, model):
     """

@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:lesson_id>/save', views.save, name="lesson.save"),
     # Check learningobjective app
     path('<int:lesson_id>/learning-objectives/', include('app.learningobjectives.urls')),
+    path('<int:lesson_id>/resources/', include('app.resources.urls')),
 ]
