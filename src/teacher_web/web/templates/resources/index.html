@@ -86,7 +86,7 @@
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}
-          - <a href="{% url 'resource.delete_item' content.data.scheme_of_work_id row.lesson_id row.id %} ">{{_("Remove")}}</a>
+          - <a href="{% url 'resource.delete_item' content.data.scheme_of_work_id content.data.lesson_id row.id %} ">{{_("Remove")}}</a>
            - <a href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">{{_("Edit")}}</a>
         {% endif %}
       </p>

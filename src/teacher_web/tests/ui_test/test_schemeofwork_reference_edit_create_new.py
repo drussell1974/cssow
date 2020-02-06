@@ -8,14 +8,8 @@ class test_schemeofwork_lesson_edit_create_new(UITestCase):
     def setUp(self):
         # setup
         self.test_context.implicitly_wait(10)
-        self.do_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/index/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
-        self.wait() # do not delete
-        ' click the add reference button '
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
-        self.test_context.implicitly_wait(10)
-        elem = self.test_context.find_element_by_id("add-reference")
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        elem.click()
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
