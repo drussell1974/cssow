@@ -6,12 +6,10 @@ enable_logging = False
 
 class ResourceModel (BaseModel):
 
-    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, year_published, authors = "", page_note="", page_uri="", task_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", task_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.publisher = publisher
-        self.year_published = try_int(year_published)
-        self.authors = authors
         self.page_note = page_note
         self.page_uri = page_uri
         self.task_icon = task_icon
@@ -36,37 +34,23 @@ class ResourceModel (BaseModel):
         # validate title
         self._validate_required_string("title", self.title, 1, 300)
 
-        # validate authors
-        self._validate_optional_string("authors", self.authors, 200)
-
         # validate publisher
-        self._validate_required_string("publisher", self.publisher, 1, 70)
-
-        # validate year_published
-        self._validate_required_integer("year_published", self.year_published, 1700, 2100)
+        self._validate_required_string("publisher", self.publisher, 1, 250)
 
         # validate page_note
-        self._validate_required_string("page_note", self.page_note, 1, 250)
+        self._validate_required_string("page_note", self.page_note, 1, 2500)
 
         # validate page_uri
         self._validate_optional_uri("page_uri", self.page_uri)
 
         # validate task_icon
-        self._validate_optional_string("task_icon", self.task_icon, 500)
+        self._validate_optional_string("task_icon", self.task_icon, 50)
 
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
 
         self.id = int(self.id)
-
-        # trim title
-        if self.title is not None:
-            self.title = sql_safe(self.title)
-
-        # trim authors
-        if self.authors is not None:
-            self.authors = sql_safe(self.authors)
 
         # trim publisher
         if self.publisher is not None:
@@ -109,8 +93,6 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
                 " res.id as id," \
                 " res.title as title," \
                 " res.publisher as publisher," \
-                " res.year_published as year_published," \
-                " res.authors as authors," \
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
                 " res.task_icon as task_icon, "\
@@ -135,15 +117,13 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
             id_=row[0], 
             title=row[1], 
             publisher=row[2], 
-            year_published=row[3], 
-            authors=row[4], 
-            page_note=row[5], 
-            page_uri=row[6], 
-            task_icon=row[7], 
-            lesson_id=row[8],
-            created = row[9],
-            created_by_id = row[10],
-            created_by_name = row[11], 
+            page_note=row[3], 
+            page_uri=row[4], 
+            task_icon=row[5], 
+            lesson_id=row[6],
+            created = row[7],
+            created_by_id = row[8],
+            created_by_name = row[9], 
             scheme_of_work_id=scheme_of_work_id)
 
         data.append(model)
@@ -158,8 +138,6 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                 " res.id as id," \
                 " res.title as title," \
                 " res.publisher as publisher," \
-                " res.year_published as year_published," \
-                " res.authors as authors," \
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
                 " res.task_icon as task_icon, "\
@@ -181,18 +159,16 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
     
     for row in rows:
         model = ResourceModel(
-            id_=row[0],
+            id_=row[0], 
             title=row[1], 
             publisher=row[2], 
-            year_published=row[3], 
-            authors=row[4], 
-            page_note=row[5], 
-            page_uri=row[6], 
-            task_icon=row[7],
-            lesson_id=row[8],
-            created = row[9],
-            created_by_id = row[10],
-            created_by_name = row[11], 
+            page_note=row[3], 
+            page_uri=row[4], 
+            task_icon=row[5], 
+            lesson_id=row[6],
+            created = row[7],
+            created_by_id = row[8],
+            created_by_name = row[9], 
             scheme_of_work_id=scheme_of_work_id)
 
         data = model

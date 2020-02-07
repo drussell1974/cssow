@@ -40,47 +40,23 @@
     <div class="control-group">
         <div class="form-group  controls">
             <label>{{_("Url")}}</label>
-            <input type="text" name="uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
+            <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
                     maxlength="2083" value='{{content.data.resource.page_uri}}'>
             <p class="help-block text-danger"></p>
         </div>
     </div>
     <!-- URI END -->
 
-    <!-- Authors START -->
-    <div class="control-group">
-        <div class="form-group controls">
-        <label>{{_("Authors")}}</label>
-        <input type="text" class="form-control" placeholder="{{_('Enter author names (optional)')}}" id="ctl-authors" name="authors"
-                maxlength="15" value='{{content.data.resource.authors}}'>
-        <p class="help-block text-danger"></p>
-        </div>
-    </div>
-    <!-- Authors END -->
-
     <!-- Publisher START -->
     <div class="control-group">
         <div class="form-group controls">
         <label>{{_("Publisher")}}</label>
         <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
-                maxlength="15" value='{{content.data.resource.publisher}}'>
+                maxlength="250" value='{{content.data.resource.publisher}}'>
         <p class="help-block text-danger"></p>
         </div>
     </div>
     <!-- Publisher END -->
-
-    <!-- Year Published START -->
-    <div class="control-group">
-        <div class="form-group  controls">
-          <label>{{_("Year")}}</label>
-          <!-- in the future select from planner -->
-          <input type="number" name="year_published" class="form-control" placeholder="{{_('Enter year published')}}" id="ctl-order_of_delivery_id" required
-                 min="1700" max="2100" value='{{content.data.resource.year_published}}'>
-          <p class="help-block text-danger"></p>
-        </div>
-          <hr>
-      </div>
-    <!-- Year Published END -->
 
     <!-- Notes START -->
     <div class="control-group">
