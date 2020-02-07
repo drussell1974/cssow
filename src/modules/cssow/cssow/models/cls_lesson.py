@@ -3,7 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe
 from .cls_learningobjective import get_all as get_all_objectives
-from .cls_reference import get_lesson_options, get_number_of_resources
+from .cls_resource import get as get_resources, get_number_of_resources
 
 class LessonListModel(models.Model):
     lessons = []
@@ -296,7 +296,7 @@ def get_model(db, id_, auth_user):
 
         model.key_words = get_key_words(db, lesson_id = model.id)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
-        model.resources = get_lesson_options(db, model.scheme_of_work_id, model.id, auth_user)
+        model.resources = get_resources(db, model.scheme_of_work_id, model.id, auth_user)
 
     return model.__dict__
 

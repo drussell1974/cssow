@@ -6,13 +6,14 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from cssow.models import cls_reference, cls_lesson, cls_schemeofwork
+from cssow.models import cls_resource, cls_lesson, cls_schemeofwork
 from cssow.models.core import validation_helper
 
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
-    resources = cls_reference.get(db, scheme_of_work_id, lesson_id, request.user.id)
+    cls_resource.enable_logging = True
+    resources = cls_resource.get(db, scheme_of_work_id, lesson_id, request.user.id)
 
     lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
     
@@ -60,11 +61,11 @@ def new(request, scheme_of_work_id, lesson_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
-def edit(request, scheme_of_work_id, lesson_id):
+def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing learning objective '''
     
     cls_resource.enable_logging = True
-    model = cls_resource.get_model(db, scheme_of_work_id, lesson_id, request.user.id)
+    model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
     
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
 
@@ -76,19 +77,15 @@ def edit(request, scheme_of_work_id, lesson_id):
         # required for creating a new object
         model.lesson_id = int(lesson_id)
     
-    key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
-
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
-        "learning_objective_id": 0,
-        "learningobjective": model,
-        "solo_taxonomy_options": solo_taxonomy_options,
-        "content_options": content_options,
+        "resource_id": model.id,
+        "resource": model,
     }
     
-    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.description), data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
     
     return render(request, "resources/edit.html", view_model.content)
 

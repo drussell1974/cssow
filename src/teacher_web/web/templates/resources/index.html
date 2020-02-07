@@ -75,12 +75,15 @@
   {% for row in content.data.resources %}
     <div class="post-preview">
       <a name="{{ row.id }}"></a>
-      <a href="#{{row.id}}" class="disabled">
+      <a href="{{row.page_uri}}" class="disabled">
         <h4 class="post-title">
           {{ row.title}}
         </h4>
         <h5 class="post-subtitle">
-            {{ row.reference_type_name}}
+            {{ row.publisher}}
+            {% if row.authors != '' %}
+              ({{ row.authors }})
+            {% endif %}
         </h5>
       </a>
       <p class="post-meta">{{_("Created by")}}
