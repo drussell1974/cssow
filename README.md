@@ -35,3 +35,10 @@ A react web appliciation with video tutorials
 
 cd C/dev/schemeofwork_web2py_app/src/student_web
 
+yarn build-dev
+
+- Test
+
+cd c/dev/schemeofwork_web2py_app/src/student_web
+
+yarn test
