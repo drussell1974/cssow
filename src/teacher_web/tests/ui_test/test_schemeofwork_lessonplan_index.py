@@ -6,7 +6,7 @@ class test_schemeofwork_learningepsiode_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/lessonplan/index?scheme_of_work_id={}&lesson_id={}".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/lesson-plan".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.test_context.implicitly_wait(4)
 
 

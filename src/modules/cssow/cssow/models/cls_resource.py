@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import sql_safe, execSql, execCRUDSql
 
 enable_logging = False
 
@@ -35,7 +35,7 @@ class ResourceModel (BaseModel):
         self._validate_required_string("title", self.title, 1, 300)
 
         # validate publisher
-        self._validate_required_string("publisher", self.publisher, 1, 250)
+        self._validate_required_string("publisher", self.publisher, 1, 500)
 
         # validate page_note
         self._validate_required_string("page_note", self.page_note, 1, 2500)
@@ -189,7 +189,7 @@ def get_options(db, scheme_of_work_id, auth_user):
                  " ref.year_published as year_published," \
                  " ref.authors as authors," \
                  " ref.url as uri " \
-                 "FROM sow_reference as ref " \
+                 "FROM sow_resource as ref " \
                  "INNER JOIN sow_reference_type as type ON type.id = ref.reference_type_id " \
                  "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
                  " AND (ref.published = 1 OR ref.created_by = {auth_user});"
@@ -221,7 +221,7 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
                  " le_ref.page_notes," \
                  " le_ref.page_url," \
                  " le_ref.task_icon " \
-                 "FROM sow_reference as ref " \
+                 "FROM sow_resource as ref " \
                  "INNER JOIN sow_lesson as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {lesson_id} " \
                  "LEFT JOIN sow_lesson__has__references as le_ref ON le_ref.lesson_id = le.id AND le_ref.reference_id = ref.id " \
                  "LEFT JOIN sow_reference_type as ref_type ON ref.reference_type_id = ref_type.id " \
@@ -268,7 +268,7 @@ def get_number_of_resources(db, lesson_id, auth_user):
     return len(rows)
 
 
-def save(db, model):
+def save(db, model, auth_user):
     """
     Upsert the reference
     :param db: database context
@@ -276,42 +276,47 @@ def save(db, model):
     :return: the updated ReferenceModel
     """
     if model.is_new() == True:
-        model.id = _insert(db, model)
+        model.id = _insert(db, model, auth_user)
     else:
-        _update(db, model)
+        _update(db, model, auth_user)
 
     return model
 
 
-def delete(db, id_):
+def delete(db, id_, auth_user):
     """
     :param db: the database context
     :param id_: the id of the record to delete
     :return: nothing
     """
-    _delete(db, id_);
+    _delete(db, id_, auth_user);
+
+
+def delete_unpublished(db, lesson_id, auth_user):
+    """ Delete all unpublished lessons """
+
+    _delete_unpublished(db, lesson_id, auth_user)
+
 
 """
 Private CRUD functions 
 """
 
-def _update(db, model):
+def _update(db, model, auth_user_id):
     """ updates the sow_lesson and sow_lesson__has__topics """
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_reference SET reference_type_id = {reference_type_id}, title = '{title}', authors = '{authors}', publisher = '{publisher}', year_published = {year_published}, url = '{uri}', scheme_of_work_id = {scheme_of_work_id} WHERE id = {id};"
+    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', url = '{page_uri}', lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
-        reference_type_id=model.reference_type_id,
         title=model.title,
-        authors=to_db_null(model.authors),
         publisher=model.publisher,
-        year_published = model.year_published,
-        uri=to_db_null(model.uri),
-        scheme_of_work_id = model.scheme_of_work_id)
+        page_uri=to_db_null(model.page_uri),
+        lesson_id = model.lesson_id,
+        published=model.published)
 
-    db.executesql(str_update)
+    execCRUDSql(db, str_update, log_info=handle_log_info)
 
     # 2. upsert related topics
     #if scheme_of_work_id > 0:
@@ -320,26 +325,23 @@ def _update(db, model):
     return True
 
 
-def _insert(db, model):
-    """ inserts the sow_reference and sow_scheme_of_work__has__reference """
+def _insert(db, model, auth_user_id):
+    """ inserts the sow_resource and sow_scheme_of_work__has__reference """
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_reference (reference_type_id, title, authors, publisher, year_published, url, scheme_of_work_id, created, created_by) VALUES ({reference_type_id}, '{title}', '{authors}', '{publisher}', {year_published}, '{uri}', {scheme_of_work_id}, '{created}', {created_by});"
+    str_insert = "INSERT INTO sow_resource (title, publisher, url, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', '{page_uri}', {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
-        reference_type_id = model.reference_type_id,
         title=model.title,
-        authors=to_db_null(model.authors),
         publisher=model.publisher,
-        year_published = model.year_published,
-        uri=to_db_null(model.uri),
-        scheme_of_work_id = model.scheme_of_work_id,
+        page_uri=to_db_null(model.page_uri),
+        lesson_id = model.lesson_id,
         created=model.created,
-        created_by=model.created_by_id)
+        created_by=model.created_by_id,
+        published=model.published)
 
-    db.executesql(str_insert)
-
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    rows = []
+    execCRUDSql(db, str_insert, rows, handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -347,10 +349,18 @@ def _insert(db, model):
     return model.id
 
 
-def _delete(db, id_):
-    str_delete = "DELETE FROM sow_reference WHERE id = {id_};"
+def _delete(db, id_, auth_user_id):
+    str_delete = "DELETE FROM sow_resource WHERE id = {id_};"
     str_delete = str_delete.format(id_=int(id_))
 
     rval = db.executesql(str_delete)
 
     return rval
+
+
+def _delete_unpublished(db, lesson_id, auth_user_id):
+    """ Delete all unpublished resources """
+    str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
+        
+    rows = []
+    execSql(db, str_delete, rows, handle_log_info)

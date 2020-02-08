@@ -33,27 +33,24 @@ def index(request, scheme_of_work_id, lesson_id):
 
 
 def new(request, scheme_of_work_id, lesson_id):
-    ''' Create a new learning objective '''
-    print('Creating a new learning objective...')
+    ''' Create a new resource '''
+    print('Creating a new resource...')
 
-    # check if an existing_learning_objective_id has been passed
-     
-    model = cls_resource.get_new_model(db, 0, request.user.id)
+    model = cls_resource.ResourceModel(
+        id_=0,
+        title="",
+        publisher="",
+        scheme_of_work_id=scheme_of_work_id,
+        lesson_id=lesson_id)
 
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-        
-    if scheme_of_work_id is not None:
-        # required for creating a new object
-        model.scheme_of_work_id = int(scheme_of_work_id)
-        
-    if lesson_id is not None:
-        # required for creating a new object
-        model.lesson_id = int(lesson_id)
-    
+            
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
+        "resource_id": model.id,
         "resource": model,
+        "task_options": ['fa-book', 'fa-film', 'fa-balance-scale', 'fa-user']
     }
     
     view_model = ViewModel("", lesson["title"], "New", data=data)
@@ -62,27 +59,19 @@ def new(request, scheme_of_work_id, lesson_id):
 
 
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
-    ''' Edit an existing learning objective '''
+    ''' Edit an existing resource '''
     
     cls_resource.enable_logging = True
     model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
     
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-
-    if scheme_of_work_id is not None:
-        # required for creating a new object
-        model.scheme_of_work_id = int(scheme_of_work_id)
         
-    if lesson_id is not None:
-        # required for creating a new object
-        model.lesson_id = int(lesson_id)
-    
-    
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "resource_id": model.id,
         "resource": model,
+        "task_options": ['fa-book', 'fa-film', 'fa-balance-scale', 'fa-user']
     }
     
     view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
@@ -90,16 +79,24 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
-def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
+def save(request, scheme_of_work_id, lesson_id, resource_id):
     """ save_item non-view action """
     print('saving resource... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id)
     
     # create instance of model from request.vars
-
-    model = cls_resource.Resource(
-        id_=request.POST.get("id", 0),
+    cls_resource.enable_logging = True
+    model = cls_resource.ResourceModel(
+        id_=resource_id,
+        lesson_id=lesson_id,
+        scheme_of_work_id=scheme_of_work_id,
+        title=request.POST.get("title", ""),
+        page_uri=request.POST.get("page_uri", ""),
+        publisher=request.POST.get("publisher", ""),
+        page_note=request.POST.get("page_note", ""),
+        task_icon=request.POST.get("task_icon", ""),
         created=datetime.now(),
-        created_by_id=request.user.id
+        created_by_id=request.user.id,
+        published=request.POST.get("published", 0)
     )
 
     # validate the model and save if valid otherwise redirect to default invalid
@@ -111,7 +108,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     
     if model.is_valid == True:
         
-        ' save learning objectives'
+        ' save resource'
         #cls_resource.enable_logging = True
         model = cls_resource.save(db, model, int(request.POST["published"]))
 
@@ -124,7 +121,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         """ redirect back to page and show message """
         
         request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
-        redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,learning_objective_id))
+        redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
     return HttpResponseRedirect(redirect_to_url)
 

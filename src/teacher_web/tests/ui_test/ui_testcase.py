@@ -16,7 +16,7 @@ class UITestCase(TestCase):
     test_scheme_of_work_id = 11
     test_lesson_id = 220
     test_learning_objective_id = 410
-    test_reference = 10
+    test_reference = 119
 
 
     def wait(self, s = 5):
