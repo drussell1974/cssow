@@ -20,11 +20,11 @@
       <!-- Keywords -->
         <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
         <div id="accordion-keywords">
-        {% for key_word in content.data.key_words %}
+        {% for key_word in content.data.key_words.values  %}
             <div class="keyword-expand">
                 <div class="expand-header" id="heading-keyword{{key_word.id}}">
                     <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                        <u>{{key_word.term}}</u>
+                        <u>{{key_word}}</u>
                     </a>
                 </div>
                 {% if key_word.definition is not None %}
@@ -56,7 +56,6 @@
                     <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{row.id}}" aria-expanded="false" aria-controls="collapse-learning_objective{{row.id}}">
                         <u class="chalk">{{row.description}}</u>
                     </a>
-                    <i class="h4 far fa-smile float-right"></i> <i class="h4 far fa-meh float-right "></i> <i class="h4 far fa-frown float-right "></i>
                 </div>
                 <div id="collapse-learning_objective{{row.id}}" class="collapse" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
                     <div class="expand-body chalk notes">
