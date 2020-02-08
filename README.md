@@ -1,7 +1,5 @@
-===============================
 Computer Science Scheme of Work
 ===============================
--------------------------------
 Teacher Admin and Api
 -------------------------------
 
@@ -20,7 +18,7 @@ cd c/dev/schemeofwork_web2py_app/src/teacher_web/web
 
 yarn test
 
----------
+
 Tutorials
 ---------
 
