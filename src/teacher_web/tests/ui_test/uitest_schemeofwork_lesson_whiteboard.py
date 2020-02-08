@@ -6,9 +6,8 @@ class test_schemeofwork_lessonobjective_whiteboard(UITestCase):
 
     def setUp(self):
         # set up
-        self.try_log_in("http://dev.computersciencesow.net:8000/schemeofwork/learningobjective/whiteboard_view/{}/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/whiteboard".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.test_context.implicitly_wait(4)
-        self.wait(20)
 
     def tearDown(self):
         pass
@@ -23,40 +22,37 @@ class test_schemeofwork_lessonobjective_whiteboard(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Data Representation: Sound', 'Data Representation: Sound', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Algorithms')
 
 
     def test_page__should_have__key_words(self):
         # test
         elem = self.test_context.find_element_by_id('heading-key_words')
+        elems = self.test_context.find_elements_by_class_name("keyword")
 
         # assert
         self.assertEqual("Keywords", elem.text)
-
-
-    def test_page__should_have__prior_learning_objectives(self):
-        # test
-        elem = self.test_context.find_element_by_id('heading-prior_learning_objectives')
-
-        # assert
-        self.assertEqual("Prior learning", elem.text)
+        self.assertEqual(2, len(elems))
 
 
     def test_page__should_have__learning_objectives(self):
         # test
         elem = self.test_context.find_element_by_id('heading-learning_objectives')
+        elems = self.test_context.find_elements_by_class_name("learning_objective-item")
 
         # assert
         self.assertEqual("Learning objectives", elem.text)
+        self.assertEqual(8, len(elems))
 
 
     def test_page__should_have__learning_materials(self):
         # test
         elem = self.test_context.find_element_by_id('heading-learning_materials')
+        elems = self.test_context.find_elements_by_class_name("learning-material-item")
 
         # assert
         self.assertEqual("Learning materials", elem.text)
-
+        self.assertEqual(3, len(elems))
 
 
 

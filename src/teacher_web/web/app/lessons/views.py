@@ -142,8 +142,14 @@ def lessonplan(request, scheme_of_work_id, lesson_id):
     
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
-    
-    view_model = ViewModel("", "", "whiteboard")
+    model =  cls_lesson.get_model(db, lesson_id, request.user.id)
+    data = {
+        "key_words":model["key_words"],
+        "learning_objectives":model["learning_objectives"],
+        "resources": model["resources"],
+    }
+
+    view_model = ViewModel("", model["title"], model["topic_name"], data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
