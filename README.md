@@ -2,6 +2,9 @@ Computer Science Scheme of Work
 ===============================
 Teacher Admin and Api
 -------------------------------
+- About
+
+A django web application for administering computer science schemes of work and lessons
 
 - Prerequisites
 
@@ -21,4 +24,14 @@ yarn test
 
 Tutorials
 ---------
+- About
+
+A react web appliciation with video tutorials 
+
+- Prerequisites
+
+
+- Start web
+
+cd C/dev/schemeofwork_web2py_app/src/student_web
 
