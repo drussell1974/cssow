@@ -54,5 +54,5 @@ class uitest_schemeofwork_lesson_get_model(UITestCase):
 
     def test__should_have_resources(self):
         # assert
-        self.assertEqual(14, len(self.payload["lesson"]["resources"]))
+        self.assertEqual(3, len(self.payload["lesson"]["resources"]))
         

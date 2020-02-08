@@ -42,6 +42,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
+        self.wait()
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'New')

@@ -126,7 +126,7 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
             created_by_name = row[9], 
             scheme_of_work_id=scheme_of_work_id)
 
-        data.append(model)
+        data.append(model.__dict__)
 
     return data
 
