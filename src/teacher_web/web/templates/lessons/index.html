@@ -73,7 +73,7 @@
       <h3 class="post-subtitle">{{ row.summary }}</h3>
     {% endif %}
   </a>
-    {% for key_word in row.key_words %}
+    {% for key_word in row.key_words.values %}
       <i class="badge badge-info">{{ key_word }}</i>&nbsp;
     {% endfor %}
     {% if request.user.is_authenticated %}
