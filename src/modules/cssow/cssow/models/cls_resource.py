@@ -4,15 +4,23 @@ from .core.db_helper import sql_safe, execSql, execCRUDSql
 
 enable_logging = False
 
+class ResourceTypeModel:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+
 class ResourceModel (BaseModel):
 
-    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", task_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", type_id = None, type_name = "", type_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
         self.page_uri = page_uri
-        self.task_icon = task_icon
+        self.type_id = type_id
+        self.type_name = type_name
+        self.type_icon = type_icon
         self.lesson_id = lesson_id
         self.scheme_of_work_id = scheme_of_work_id
         self.last_accessed = last_accessed
@@ -43,9 +51,6 @@ class ResourceModel (BaseModel):
         # validate page_uri
         self._validate_optional_uri("page_uri", self.page_uri)
 
-        # validate task_icon
-        self._validate_optional_string("task_icon", self.task_icon, 50)
-
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
@@ -64,9 +69,6 @@ class ResourceModel (BaseModel):
         if self.page_note is not None:
             self.page_note = sql_safe(self.page_note)
 
-        # trim notes
-        if self.task_icon is not None:
-            self.task_icon = sql_safe(self.task_icon)
 
 """
 DAL
@@ -93,14 +95,17 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
                 " res.id as id," \
                 " res.title as title," \
                 " res.publisher as publisher," \
+                " res.type_id as type_id,"\
+                " res_typ.name as resource_type_name,"\
+                " res_typ.task_icon as task_icon,"\
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
-                " res.task_icon as task_icon, "\
                 " res.lesson_id as lesson_id, "\
                 " res.created as created, "\
                 " res.created_by as created_by_id, "\
                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
                 "FROM sow_resource AS res " \
+                " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                 " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
                 "WHERE res.lesson_id = {lesson_id} " \
                 " AND (res.published = 1 OR res.created_by = {auth_user});"
@@ -117,13 +122,15 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
             id_=row[0], 
             title=row[1], 
             publisher=row[2], 
-            page_note=row[3], 
-            page_uri=row[4], 
-            task_icon=row[5], 
-            lesson_id=row[6],
-            created = row[7],
-            created_by_id = row[8],
-            created_by_name = row[9], 
+            type_id=row[3],
+            type_name=row[4],
+            type_icon=row[5],
+            page_note=row[6], 
+            page_uri=row[7], 
+            lesson_id=row[8],
+            created = row[9],
+            created_by_id = row[10],
+            created_by_name = row[11], 
             scheme_of_work_id=scheme_of_work_id)
 
         data.append(model.__dict__)
@@ -138,14 +145,17 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                 " res.id as id," \
                 " res.title as title," \
                 " res.publisher as publisher," \
+                " res.type_id as type_id,"\
+                " res_typ.name as resource_type_name,"\
+                " res_typ.task_icon as task_icon,"\
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
-                " res.task_icon as task_icon, "\
                 " res.lesson_id as lesson_id, "\
                 " res.created as created, "\
                 " res.created_by as created_by_id, "\
                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
                 "FROM sow_resource AS res " \
+                " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                 " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
                 "WHERE res.id = {id} " \
                 " AND (res.published = 1 OR res.created_by = {auth_user});"
@@ -162,13 +172,15 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
             id_=row[0], 
             title=row[1], 
             publisher=row[2], 
-            page_note=row[3], 
-            page_uri=row[4], 
-            task_icon=row[5], 
-            lesson_id=row[6],
-            created = row[7],
-            created_by_id = row[8],
-            created_by_name = row[9], 
+            type_id=row[3],
+            type_name=row[4],
+            type_icon=row[5],
+            page_note=row[6], 
+            page_uri=row[7], 
+            lesson_id=row[8],
+            created = row[9],
+            created_by_id = row[10],
+            created_by_name = row[11], 
             scheme_of_work_id=scheme_of_work_id)
 
         data = model
@@ -177,36 +189,27 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
     return data
 
 
-'''
-def get_options(db, scheme_of_work_id, auth_user):
+
+def get_resource_type_options(db, auth_user):
 
     str_select = "SELECT" \
-                 " ref.id as id," \
-                 " ref.reference_type_id as reference_type_id," \
-                 " type.name as reference_type_name," \
-                 " ref.title as title," \
-                 " ref.publisher as publisher," \
-                 " ref.year_published as year_published," \
-                 " ref.authors as authors," \
-                 " ref.url as uri " \
-                 "FROM sow_resource as ref " \
-                 "INNER JOIN sow_reference_type as type ON type.id = ref.reference_type_id " \
-                 "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
-                 " AND (ref.published = 1 OR ref.created_by = {auth_user});"
+                 " type.id as id," \
+                 " type.name as name " \
+                 "FROM sow_resource_type as type "\
+                 "WHERE type.published = 1 OR type.created_by = {auth_user};"
 
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id))
-
-    rows = db.executesql(str_select)
+    str_select = str_select.format(auth_user=to_db_null(auth_user))
 
     data = []
 
-    for row in rows:
-        model = ReferenceModel(id_=row[0], reference_type_id = row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
+    rows = []
+    execSql(db, str_select, rows, handle_log_info)
 
-        data.append(model)
+    for row in rows:
+        data.append(ResourceTypeModel(id=row[0], name=row[1]))
 
     return data
-'''
+
 
 def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
 
@@ -220,7 +223,6 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
                  " le_ref.id as page_id," \
                  " le_ref.page_notes," \
                  " le_ref.page_url," \
-                 " le_ref.task_icon " \
                  "FROM sow_resource as ref " \
                  "INNER JOIN sow_lesson as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {lesson_id} " \
                  "LEFT JOIN sow_lesson__has__references as le_ref ON le_ref.lesson_id = le.id AND le_ref.reference_id = ref.id " \
@@ -241,7 +243,6 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
         model.page_id = row[8]
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
-        model.task_icon = row[11] if row[11] is not None else ''
         data.append(model.__dict__)
 
     return data
@@ -307,11 +308,12 @@ def _update(db, model, auth_user_id):
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', url = '{page_uri}', lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
+    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, url = '{page_uri}', lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
         title=model.title,
         publisher=model.publisher,
+        type_id=to_db_null(model.type_id, as_null=""),
         page_uri=to_db_null(model.page_uri),
         lesson_id = model.lesson_id,
         published=model.published)
@@ -330,10 +332,11 @@ def _insert(db, model, auth_user_id):
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_resource (title, publisher, url, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', '{page_uri}', {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
+    str_insert = "INSERT INTO sow_resource (title, publisher, type_id, url, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_uri}', {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         title=model.title,
         publisher=model.publisher,
+        type_id=to_db_null(model.type_id, as_null=""),
         page_uri=to_db_null(model.page_uri),
         lesson_id = model.lesson_id,
         created=model.created,

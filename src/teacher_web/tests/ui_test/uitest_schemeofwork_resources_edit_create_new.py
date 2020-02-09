@@ -1,5 +1,6 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
+from selenium.webdriver.support.select import Select
 
 class test_schemeofwork_resources_edit_create_new(UITestCase):
 
@@ -71,6 +72,10 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         ' ctl-publisher '
         elem = self.test_context.find_element_by_id("ctl-publisher")
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
+
+        ' ctl-type_id '
+        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
+        elem.select_by_visible_text("Book")
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")

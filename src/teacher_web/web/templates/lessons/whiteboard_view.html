@@ -71,16 +71,14 @@
         <h2 class="chalk"  id="heading-learning_materials">{{_("Learning materials")}}</h2>
         {% for item in content.data.resources %}
             <div class="learning-material-expand"></div>
-            <div class="learning-material-item expand-header" id="heading-learning_material{{item.id}}">
-                <i class="chalk">{{item.title}} ({{item.publisher}})</i> -
-                    <span><a href="{{item.page_uri}}" class="chalk">
-                        {{item.page_note}}</a>
-                    <i class="fa {{item.task_icon}}"></i>
-            </span>
+                <div class="learning-material-item expand-header" id="heading-learning_material{{item.id}}">
+                    <i class="chalk">{{item.title}} ({{item.publisher}})</i> -
+                        <span><a href="{{item.page_uri}}" class="chalk">
+                            {{item.page_note}}</a>
+                        <i class="fa {{item.type_icon}}"></i>
+                        </span>
+                </div>
             </div>
-
-            </div>
-        
         {% endfor %}
     <!-- Learning materials END -->
   </div>
