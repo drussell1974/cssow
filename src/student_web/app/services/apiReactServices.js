@@ -42,8 +42,8 @@ const getLessons = (reactComponent) => {
     )
 }
 
-const getLesson = (reactComponent, learning_episode_id) => {
-    fetch(uri + `/api/schemesofwork/127/lessons/${learning_episode_id}?format=json`)
+const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
+    fetch(uri + `/api/schemesofwork/127/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
         .then(res => { 
             return res.json();
         })

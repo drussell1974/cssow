@@ -245,7 +245,7 @@ def get_all(db, scheme_of_work_id, auth_user):
     return data
 
 
-def get_model(db, id_, auth_user):
+def get_model(db, id_, auth_user, resource_type_id = 0):
     model = LessonModel(id_, "")
 
     select_sql = "SELECT "\
@@ -296,7 +296,7 @@ def get_model(db, id_, auth_user):
 
         model.key_words = get_key_words(db, lesson_id = model.id)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
-        model.resources = get_resources(db, model.scheme_of_work_id, model.id, auth_user)
+        model.resources = get_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
 
     return model.__dict__
 

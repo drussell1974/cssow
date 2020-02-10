@@ -88,7 +88,7 @@ def handle_log_info(db, msg):
     log_info(db, msg, is_enabled=enable_logging)
 
 
-def get(db, scheme_of_work_id, lesson_id, auth_user):
+def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
     """ Get resources for lesson """
 
     str_select = "SELECT" \
@@ -107,10 +107,10 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
                 "FROM sow_resource AS res " \
                 " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                 " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                "WHERE res.lesson_id = {lesson_id} " \
+                "WHERE res.lesson_id = {lesson_id} AND (res.type_id = {resource_type_id} or {resource_type_id} = 0)" \
                 " AND (res.published = 1 OR res.created_by = {auth_user});"
                 
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
+    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id), resource_type_id=int(resource_type_id))
 
     rows = []
     execSql(db, str_select, rows, handle_log_info)
