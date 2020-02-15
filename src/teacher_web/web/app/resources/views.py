@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -8,6 +8,9 @@ from django.urls import reverse
 from shared.view_model import ViewModel
 from cssow.models import cls_resource, cls_lesson, cls_schemeofwork
 from cssow.models.core import validation_helper
+
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 
 def index(request, scheme_of_work_id, lesson_id):
@@ -94,7 +97,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         page_uri=request.POST.get("page_uri", ""),
         publisher=request.POST.get("publisher", ""),
         page_note=request.POST.get("page_note", ""),
-        type_id=request.POST.get("type_id", None),
+        type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
         created_by_id=request.user.id,
         published=request.POST.get("published", 0)

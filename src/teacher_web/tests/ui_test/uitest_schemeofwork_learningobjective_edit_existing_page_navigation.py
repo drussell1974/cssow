@@ -7,7 +7,7 @@ class uitest_schemeofwork_learningobjective_edit_existing_navigation(UITestCase)
 
     def setUp(self):
         # setup
-        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
 
 
     def tearDown(self):
