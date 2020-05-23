@@ -3,17 +3,11 @@
 
 {% block maincontent %}
   
-      <!-- Pager Header -->
-      <div class="clearfix">
-        <ul class="pagination">
-          =XML(pager_html)
-          </ul>
-      </div>
-      
+      <!-- Pager Header -->      
       {% if request.user.is_authenticated %}
           <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('New')}}</a>
       {% endif %}
-        <!-- Pager Header END -->
+      <!-- Pager Header END -->
 
       <!-- Scheme of works -->
         {% if content.data.schemes_of_work|length == 0 %}
@@ -53,13 +47,6 @@
       </div>
       <hr>
         {% endfor %}
-      <!-- Pager Footer -->
-      <div class="clearfix">
-            <ul class="pagination">
-                =XML(pager_html)
-            </ul>
-      </div>
-        <!-- Pager Footer END -->
       <!-- Scheme of works END -->
 
       {% if request.user.is_authenticated %}
