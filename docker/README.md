@@ -41,6 +41,8 @@ Creates the django web server from a Dockerfile
 
 > docker build -f './Dockerfile-teacher_web'
 
+> docker run -d -it --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app django-teacher_web
+
 ## About the 'Dockerfile-teacher_web' file
 
 From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
