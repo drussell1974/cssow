@@ -8,7 +8,9 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > sh ~/dev/schemeofwork_web2py_app/docker/cssow-app/restore-cssow_api.sh
 
-## restore-cssow_api.sh file
+'''TODO: This should be executed from a Dockerfile'''
+
+## About the 'restore-cssow_api.sh' file 
 
 1. Runs the /db/setup/db-setup.sql file to create a non-root user and cssow_api database
 2. Runs the /db/backups/db-backup__<TIMESTAMP>.sql to restore data to cssow_api database
@@ -30,3 +32,21 @@ Check cssow_api database has been created and is accessible using bash
 > MariaDB [(cssow_api)] SHOW TABLES;
 
 > MariaDB [(cssow_api)] SELECT * FROM sow_scheme_of_work;
+
+# DJANGO
+
+Creates the django web server from a Dockerfile
+
+> cd docker/cssow-app
+
+> docker build -f './Dockerfile-teacher_web'
+
+## About the 'Dockerfile-teacher_web' file
+
+From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
+
+Runs the server on port 8002
+
+## Troubleshooting
+
+Ensure no error when running the Dockerfile
