@@ -4,31 +4,35 @@
 
 Install virtual environment
 
-'''pip install virtualenv'''
+> pip install virtualenv
 
 Create a virtual environment
 
-'''
-mkdir .venv
-virtualenv -p [executable]
-'''
+> mkdir .venv
+
+> virtualenv -p [executable]
 
 # Prerequisites
 
 Use 'yarn build' from package.json to install the prerequisites, or directly from the command line...
 
-'''pip install django
-pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl 
-pip install mysqlclient
-pip install mysql-connector-python
-pip install djangorestframework
-pip install selenium'''
+> pip install django
+
+> pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl 
+
+> pip install mysqlclient
+
+> pip install mysql-connector-python
+
+> pip install djangorestframework
+
+> pip install selenium'''
 
 # Teacher Admin
 
 Use 'yarn start' from package.json to start up the web server, or directly from the command line...
 
-'''python ./web/manage.py runserver <IP_ADDRESS>:8002'''
+> python ./web/manage.py runserver <IP_ADDRESS|HOST_NAME>:8002
 
 # Testing
 
@@ -36,13 +40,13 @@ Use 'yarn start' from package.json to start up the web server, or directly from 
 
 use 'yarn test' from package.json to run the unit tests that include testing routes, or directly from the command line...
 
-'''python ./web/manage.py test'''
+> python ./web/manage.py test
 
 ## Selenium 
 
 Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line...
 
-python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py
+> python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py
 
 # Settings
 
@@ -69,6 +73,7 @@ STATIC_URL = os.path.join(BASE_DIR, 'templates/')
 
 Use the following guidance as the project structure...
 
+'''
 [projectname]/                  <- project root
 ├── [projectname]/              <- Django root
 │   ├── __init__.py
@@ -104,3 +109,4 @@ Use the following guidance as the project structure...
     ├── core
     │   └── login.html
     └── README
+'''
