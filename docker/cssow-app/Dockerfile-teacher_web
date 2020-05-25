@@ -1,0 +1,14 @@
+FROM python:3
+
+WORKDIR /usr/src/app
+
+RUN pip install django
+#RUN pip install cssow_drussell1974-0.0.1-py3-none-any.whl
+RUN pip install mysqlclient
+RUN pip install djangorestframework
+RUN pip install selenium
+
+COPY . .
+
+#ENTRYPOINT DJANGO_APP=/opt/src/teacher_web/web/manage.py runserver http://localhost:8002
+ENTRYPOINT DJANGO_APP=python
