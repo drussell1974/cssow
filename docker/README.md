@@ -56,12 +56,19 @@ Ensure no error when running the Dockerfile
 - run in interactive mode
 
 > docker run -it -p 8002:8002 -v /home/dave/dev/schemeofwork_web2py_app/src:/usr/src/app django-teacher_web bash
+
 > root@xxxx:/usr/src/app# ls
+
 assets    tests     web
+
 > root@xxxx:/usr/src/app# cd web/
+
 > root@xxxx:/usr/src/app# ls
+
 --- expected output ---
 api    app   manage.py   shared    static  templates   web
+
 > root@xxxx:/usr/src/app# python manage.py runserver
+
 --- expected output ---
 ???????
