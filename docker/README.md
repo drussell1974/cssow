@@ -41,7 +41,7 @@ Creates the django web server from a Dockerfile
 
 > docker build -f './Dockerfile-teacher_web'
 
-> docker run -d -p 8002:8002 -v /home/dave/dev/schemeofwork_web2py_app/src:/usr/src/app django-teacher_web
+> docker run -d -it --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app django-teacher_web
 
 ## About the 'Dockerfile-teacher_web' file
 
@@ -55,7 +55,7 @@ Ensure no error when running the Dockerfile
 
 - run in interactive mode
 
-> docker run -it -p 8002:8002 -v /home/dave/dev/schemeofwork_web2py_app/src:/usr/src/app django-teacher_web bash
+> docker run -d -it --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app django-teacher_web bash
 
 > root@xxxx:/usr/src/app# ls
 
