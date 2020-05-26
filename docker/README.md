@@ -62,16 +62,35 @@ Ensure no error when running the Dockerfile
 django-teacher_web 
 bash
 
-> root@xxxx:/usr/src/app# ls
+- build modules
 
-> assets    tests     web
+> root@xxxx:/usr/src/app# cd ../modules/cssow
 
-> root@xxxx:/usr/src/app# cd web/
+> root@xxxx:/usr/src/app/modules/cssow# python setup.py bdist_wheel
 
-> root@xxxx:/usr/src/app# ls
+> adding 'cssow/__init__.py'
+
+> adding 'cssow/models/....'
+
+> root@xxxx:/usr/src/app/modules/cssow# pip install dist/*.whl
+
+> Successfully installed cssow-drussell-2.17.1
+
+or
+
+> Requirement already satisified: cssow-name==version from file://..//..//*.whl
+
+Run the web server
+
+> root@xxxx:/usr/src/app# cd ../.. && ls
+
+> api coverage  modules teacher_web
+
+> root@xxxx:/usr/src/app# cd teacher_web/web
+
+> root@xxxx:/usr/src/app/teacher_web/web# ls
 
 > api    app   manage.py   shared    static  templates   web
 
-> root@xxxx:/usr/src/app# python manage.py runserver
+> root@xxxx:/usr/src/app/teacher_web/web# python manage.py runserver
 
-> 
