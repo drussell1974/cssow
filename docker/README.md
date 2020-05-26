@@ -54,11 +54,19 @@ Runs the server on port 8002
 
 ## Troubleshooting
 
+Clear images
+
+
+
 Ensure no error when running the Dockerfile
+
+Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and 'docker rm <id>'
 
 - run in interactive mode
 
-> docker run -d -it 
+> docker build -f './Dockerfile-teacher_web'
+
+> docker run -it 
 --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app 
 django-teacher_web 
 bash
