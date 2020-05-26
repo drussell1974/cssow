@@ -59,7 +59,7 @@ Ensure no error when running the Dockerfile
 
 > root@xxxx:/usr/src/app# ls
 
-assets    tests     web
+> assets    tests     web
 
 > root@xxxx:/usr/src/app# cd web/
 
