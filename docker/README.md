@@ -62,7 +62,7 @@ Ensure no error when running the Dockerfile
 
 Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and 'docker rm <id>'
 
-- run in interactive mode
+- run in interactive mode and run bash file to create cssow models module and start webserver manually
 
 > docker build -f './Dockerfile-teacher_web'
 
@@ -72,29 +72,10 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 django-teacher_web 
 bash
 
-1. Build modules
+> root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
 
-> root@xxxx:/usr/src/app# cd modules/cssow
+> ...
 
-> root@xxxx:/usr/src/app/modules/cssow# python setup.py sdist bdist_wheel
+> Starting development server at http://0.0.0.0:8002
 
-> adding 'cssow/__init__.py'
-
-> adding 'cssow/models/....'
-
-> root@xxxx:/usr/src/app/modules/cssow# pip install dist/*.whl
-
-> Successfully installed cssow-drussell-2.17.1
-
-- or
-
-> Requirement already satisified: cssow-name==version from file://..//..//*.whl
-
-2. Run the web server
-
-> root@xxxx:/usr/src/app/modules/cssow# cd ../../teacher_web/web
-
-> root@xxxx:/usr/src/app/teacher_web/web# 
-
-> root@xxxx:/usr/src/app/teacher_web/web# python manage.py runserver
-
+> Quit the server with CONTROL-C
