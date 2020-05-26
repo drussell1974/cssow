@@ -42,6 +42,7 @@ Creates the django web server from a Dockerfile
 > docker build -f './Dockerfile-teacher_web'
 
 > docker run -d 
+--link mariadb-cssow_api
 --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app 
 django-teacher_web
 
