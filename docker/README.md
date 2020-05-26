@@ -67,6 +67,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 > docker build -f './Dockerfile-teacher_web'
 
 > docker run -it 
+--link mariadb-cssow_api
 --mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app 
 django-teacher_web 
 bash
