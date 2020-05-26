@@ -65,10 +65,8 @@ assets    tests     web
 
 > root@xxxx:/usr/src/app# ls
 
---- expected output ---
-api    app   manage.py   shared    static  templates   web
+> api    app   manage.py   shared    static  templates   web
 
 > root@xxxx:/usr/src/app# python manage.py runserver
 
---- expected output ---
-???????
+> 
