@@ -39,19 +39,19 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build teacher-web -t django-teacher_web
+> docker build teacher-web -t teacher-web
 
 > docker run -d 
 --link mariadb-cssow_api
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-django-teacher_web
+teacher-web
 
 ## About the teacher-web/Dockerfile file
 
-From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
+From the python:3 image, runs pip to dependencies for running django web server
 
-Runs the server on port 8002
+Runs the server on port 8002 exposed as 8002
 
 ## Troubleshooting
 
@@ -67,7 +67,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 --link mariadb-cssow_api
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-django-teacher_web
+teacher-web
 bash
 
 > root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
@@ -112,16 +112,29 @@ Creates the React web app from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build student-web -t react-student_web
+> docker build student-web -t student-web
 
 > docker run -d 
---link django-teacher_web
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-react-student_web
+student-web
 
 ## About the /student-web/Dockerfile file
 
-From the node:14.3 image, runs package.json to install dependencies and selenium
+From the node:14.3 image, runs package.json to install dependencies using yarn.
 
 Runs the server on port 8001
+
+## Troubleshooting
+
+- Run in interactive mode and run yarn build
+
+> docker run -it
+-p 8001:8001
+--mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
+student-web
+bash
+
+> root@xxxx:/usr/src/app/# cd student_web
+> root@xxxx:/usr/src/app/student_web/# yarn install
+> root@xxxx:/usr/src/app/student_web/# yarn build-dev
