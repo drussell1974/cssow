@@ -105,3 +105,17 @@ http://localhost:8002
 2. Launch admin from host
 
 http://localhost:8002/admin/
+
+#React
+
+Creates the React web app from a Dockerfile
+
+> cd docker/cssow-app
+
+> docker build -f './Dockerfile-student_web'
+
+> docker run -d 
+--link mariadb-cssow_api
+-p 8001:8001
+--mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
+react-student_web
