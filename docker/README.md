@@ -78,6 +78,10 @@ bash
 
 > Quit the server with CONTROL-C
 
+2. Launch website from host
+
+http://localhost:8002
+
 - Check internal network
 
 > root@xxxx:/usr/src/app# cat /etc/hosts
