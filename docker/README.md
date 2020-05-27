@@ -4,13 +4,11 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > docker volume v_cssow_data
 
-> docker run -d --name mariadb-cssow_api -v v_cssow_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Admin1. mariadb
+> docker build cssow-db -t cssow-db
 
-> sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
+> docker run -d --name cssow-db -v v_cssow_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Admin1. mariadb
 
-'''TODO: This should be executed from a Dockerfile'''
-
-## About the 'restore--cssow-db.sh' file 
+## About the 'build--cssow-db.sh' file 
 
 1. Runs the /db/setup/db-setup.sql file to create a non-root user and cssow_api database
 2. Runs the /db/backups/db-backup__<TIMESTAMP>.sql to restore data to cssow_api database
