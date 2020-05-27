@@ -64,7 +64,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 
 > docker run -it
 --link mariadb-cssow_api
--p 8000:80
+-p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 django-teacher_web
 bash
