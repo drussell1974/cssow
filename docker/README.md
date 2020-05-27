@@ -106,7 +106,7 @@ http://localhost:8002
 
 http://localhost:8002/admin/
 
-#React
+# React
 
 Creates the React web app from a Dockerfile
 
@@ -119,3 +119,9 @@ Creates the React web app from a Dockerfile
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 react-student_web
+
+## About the 'Dockerfile-student_web' file
+
+From the python:3 image, runs package.json to install dependencies and selenium
+
+Runs the server on port 8001
