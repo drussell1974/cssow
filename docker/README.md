@@ -87,3 +87,17 @@ bash
 > 172.17.x.x   mariadb-cssow_api  99xx99xx99xx
 
 > 172.17.x.x   99xx99xx99xx
+
+- Django admin
+
+1. Create a superuser
+
+> root@xxxx:/usr/src/app# python teacher_web/web/manage.py createsuperuser
+
+> Superuser created successfully
+
+> root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
+
+2. Launch admin from host
+
+http://localhost:8002/admin/
