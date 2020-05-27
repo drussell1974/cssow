@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'cssow_api',
         'USER': 'drussell1974',
         'PASSWORD': 'password1.',
-        'HOST': 'mariadb-cssow_api',
+        'HOST': 'cssow-db',
         'PORT': '3306',
     }
 }
