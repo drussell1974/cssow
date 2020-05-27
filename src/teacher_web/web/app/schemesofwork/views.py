@@ -2,7 +2,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.contrib.auth.decorators import permission_required
 from cssow.models import cls_schemeofwork, cls_examboard, cls_keystage
 from cssow.models.core import validation_helper
 from datetime import datetime
@@ -23,6 +23,7 @@ def index(request):
     return render(request, "schemesofwork/index.html", view_model.content)
 
 
+@permission_required('cssow.add_schemeofworkmodel', login_url='/accounts/login/')
 def new(request):
     """ Create new scheme of work """
 
@@ -43,6 +44,7 @@ def new(request):
     return render(request, "schemesofwork/edit.html", view_model.content)
 
 
+@permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id):
     """ edit action """
 
@@ -63,6 +65,7 @@ def edit(request, scheme_of_work_id):
     return render(request, "schemesofwork/edit.html", view_model.content)
     
 
+@permission_required('cssow.publish_schemeofworkmodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id):
     """ Save Scheme of Work """
 
@@ -103,6 +106,7 @@ def save(request, scheme_of_work_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
+@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 

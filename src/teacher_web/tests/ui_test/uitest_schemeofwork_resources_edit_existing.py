@@ -1,5 +1,6 @@
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
+from selenium.webdriver.support.select import Select
 
 class uitest_schemeofwork_resource_edit_existing(UITestCase):
 
@@ -56,6 +57,10 @@ class uitest_schemeofwork_resource_edit_existing(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
+        ' ctl-type_id '
+        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
+        elem.select_by_visible_text("Book")
+        
         # test
 
         ' submit the form '

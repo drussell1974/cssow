@@ -35,6 +35,13 @@
 
 
 {% block sidecontent %}
+<!-- Blackboard display button START -->
+<section class="alert alert-secondary">
+  <a href="{% url 'lesson.whiteboard_view' content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+    {{_("Blackboard display")}}
+  </a>
+</section>
+<!-- Blackboard display button END -->
 <!-- SIDE MENU START -->
 <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
   <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
@@ -77,7 +84,7 @@
       <a name="{{ row.id }}"></a>
       <a href="{{row.page_uri}}" class="disabled">
         <h4 class="post-title">
-          {{ row.title}}
+          <i class="fa {{row.type_icon}}"></i> {{ row.title}}
         </h4>
         <h5 class="post-subtitle">
             {{ row.publisher}}

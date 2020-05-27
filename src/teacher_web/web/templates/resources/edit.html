@@ -57,20 +57,20 @@
         </div>
     </div>
     <!-- Publisher END -->
-    <!-- Icon START -->
+    <!-- Type START -->
     <div class="control-group">
         <div class="form-group  controls">
-          <label>{{_("Type")}}</label>
-          <select class="form-control" name="topic_id" id="ctl-task_icon">
-              <option value="">- {{_("Select an option")}} -</option>
-              {% for opt in content.data.task_options %}
-                <option value="{{opt}}" {% if opt.id == content.data.resource.task_icon %} selected {% endif %}>{{opt}}</option>
-              {% endfor %}
-          </select>
-          <p class="help-block text-danger"></p>
+            <label>{{_("Type")}}</label>
+            <select class="form-control" name="type_id" id="ctl-type_id" required>
+                <option value="">- {{_("Select an option")}} -</option>
+                {% for opt in content.data.get_resource_type_options %}
+                <option value="{{opt.id}}" {% if opt.id == content.data.resource.type_id %} selected {% endif %}>{{opt.name}}</option>
+                {% endfor %}
+            </select>
+            <p class="help-block text-danger"></p>
         </div>
-      </div>
-      <!-- Icon END -->
+    </div>
+`   <!-- Type END -->
     <!-- Notes START -->
     <div class="control-group">
         <div class="form-group controls">

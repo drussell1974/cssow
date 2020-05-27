@@ -60,8 +60,8 @@ def execSql(db, sql, result, log_info=None):
             log_info(db, "results:{}".format(result))
 
 
-def to_db_null(val):
-    return "NULL" if val is None else sql_safe(val)
+def to_db_null(val, as_null = None):
+    return "NULL" if val is None or val is as_null else sql_safe(val)
 
 
 def to_empty(val):

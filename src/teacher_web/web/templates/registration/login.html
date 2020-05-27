@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block maincontent %}
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" action="{% url 'login' %}" id="frm-login-form">
         <div className="form-group row">
             {% csrf_token %}
             <div className="col-sm-9 col-sm-offset-3">
