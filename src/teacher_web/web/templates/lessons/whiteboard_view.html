@@ -1,0 +1,87 @@
+{% extends 'default/__layout.whiteboard.html' %}
+
+{% block maincontent %}
+
+<div class="row">
+  <div class="col-lg-14 col-md-10 mx-auto">
+    <p class="h4 chalk float-right d-print-none">{{display_date}}</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-8 col-md-8 mx-auto print-span">
+    <section class="heading" align="center">
+        <h1>{{lesson_title}}</h1>
+        <p class="subheading chalk">{{lesson_summary}}</p>
+    </section>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-4 col-md-4 mx-auto print-span">
+      <!-- Keywords -->
+        <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
+        <div id="accordion-keywords">
+        {% for key_word in content.data.key_words.values  %}
+            <div class="keyword-expand">
+                <div class="expand-header" id="heading-keyword{{key_word.id}}">
+                    <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
+                        <u>{{key_word}}</u>
+                    </a>
+                </div>
+                {% if key_word.definition is not None %}
+                <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
+                    <div class="expand-body chalk">
+                        {{key_word.definition}}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+      <!-- Keywords END-->
+  </div>
+  <div class="col-lg-8 col-md-8 mx-auto print-span">
+      <!-- Learning Objectives -->
+      <h2 class="chalk" id="heading-learning_objectives">{{_("Learning objectives")}}</h2>
+        <div id="accordion-learning_objectives">
+          {% for row in content.data.learning_objectives %}
+            <div class="learning_objective-expand">
+                <div class="learning_objective-item expand-header" id="heading-learning_objective{{order}}">
+                    {% if row.solo_taxonomy_level == "B" %}
+                        <i class="far fa-star"></i>
+                    {% elif row.solo_taxonomy_level == "C" %}
+                        <i class="fas fa-star"></i>
+                    {% elif row.solo_taxonomy_level == "D" %}
+                        <i class="fas fa-trophy"></i>
+                    {% endif %}
+                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{row.id}}" aria-expanded="false" aria-controls="collapse-learning_objective{{row.id}}">
+                        <u class="chalk">{{row.description}}</u>
+                    </a>
+                </div>
+                <div id="collapse-learning_objective{{row.id}}" class="collapse" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
+                    <div class="expand-body chalk notes">
+                        {{row.notes}}
+                    </div>
+                </div>
+           {% endfor %}
+
+        </div>
+        <!-- Learning Objectives END-->
+
+      <!-- Learning Materials -->
+        <h2 class="chalk"  id="heading-learning_materials">{{_("Learning materials")}}</h2>
+        {% for item in content.data.resources %}
+            <div class="learning-material-expand"></div>
+                <div class="learning-material-item expand-header" id="heading-learning_material{{item.id}}">
+                    <i class="chalk">{{item.title}} ({{item.publisher}})</i> -
+                        <span><a href="{{item.page_uri}}" class="chalk">
+                            {{item.page_note}}</a>
+                        <i class="fa {{item.type_icon}}"></i>
+                        </span>
+                </div>
+            </div>
+        {% endfor %}
+    <!-- Learning materials END -->
+  </div>
+</div>
+</div>
+{% endblock %}

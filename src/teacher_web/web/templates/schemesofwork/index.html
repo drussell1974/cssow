@@ -1,0 +1,56 @@
+{% extends 'default/__layout.onecolumn.html' %}
+
+
+{% block maincontent %}
+  
+      <!-- Pager Header -->      
+      {% if request.user.is_authenticated %}
+          <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('New')}}</a>
+      {% endif %}
+      <!-- Pager Header END -->
+
+      <!-- Scheme of works -->
+        {% if content.data.schemes_of_work|length == 0 %}
+          <div class="alert alert-info" role="alert">
+            <span class="small">{{_("There are no schemes of work for ")}} {{ key_stage_name }}</span>
+            {% if request.user.is_authenticated %}
+                <br><a href="{% url 'schemesofwork.new' %}">{{_('Click here to get started')}}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% for row in content.data.schemes_of_work %}
+      <div class="post-preview {% if row.is_recent == True %}recent{% endif %}">
+        <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}">
+          <h2 class="post-title">
+              {{ row.name }}
+          </h2>
+            {% if row.is_recent == True %} 
+              <i class="small badge badge-success float-right">{{_("New")}}</i> 
+            {% endif %}
+          <h3 class="post-subtitle">
+            {{ row.key_stage_name }}
+          </h3>
+        </a>
+        <p class="post-meta">{{_("Created by")}}
+          <a href="#">{{ row.created_by_name }}</a>
+          {% if row.created == True %}
+            on {{ row.get_ui_created }}
+          {% endif %}
+          
+          {% if request.user.is_authenticated %}
+            {% if row.published == False %}
+             <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+             {% endif %}
+             - <a href="{% url 'schemesofwork.delete_item' row.id %}">{{_("Delete")}}</a> 
+             - <a href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}"">{{_("Edit")}}</a>
+          {% endif %}</p>
+      </div>
+      <hr>
+        {% endfor %}
+      <!-- Scheme of works END -->
+
+      {% if request.user.is_authenticated %}
+        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' %}">{{_('Clean')}}</a>
+      {% endif %}
+
+{% endblock %}

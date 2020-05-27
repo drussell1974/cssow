@@ -1,0 +1,15 @@
+{% extends 'default/__layout.html' %}
+{% block content %}
+  <div class="col-lg-4 col-md-4">
+    <!-- sidecontent START-->
+    {% block sidecontent %}
+    {% endblock %} 
+    <!-- sidecontent END -->
+  </div>
+  <div class="col-lg-8 col-md-8 mx-auto">
+    <!-- maincontent START -->
+    {% block maincontent %}
+    {% endblock %}
+    <!-- maincontent END -->
+  </div>
+{% endblock %}

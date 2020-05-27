@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ page_title }}</title>
+
+    {% load static %}
+
+    <link rel="icon" type="image/x-icon" href="{% static 'default/img/favicon.ico' %}" />
+    
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'default/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'default/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/regular.css" integrity="sha384-IG162Tfx2WTn//TRUi9ahZHsz47lNKzYOp0b6Vv8qltVlPkub2yj9TVwzNck6GEF" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
+    {% block head_css %} {% endblock %}
+    <!-- Custom styles for this template -->
+    <link href="{% static 'default/css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'default/css/my.css' %}" rel="stylesheet">
+    <!-- Favicons -->
+    {% block head_js %} {% endblock %}
+  </head>
+  <body>
+    <!-- Navbar ======================================= -->
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+          {% if request.user.is_authenticated %}
+              <a class="navbar-brand" href="{% url 'default' %}" id="btn-profile">{{request.user}}</a>
+                {% if 'change_password' not in auth.settings.actions_disabled %}
+                    <a class="navbar-brand" href="{% url 'default' %}">
+                        Change password
+                    </a>
+                {% endif %}
+              <a class="navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+            {% else %}
+                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+              {% if 'register' not in auth.settings.actions_disabled %}
+                <a class="navbar-brand" href="{% url 'default' %}">Sign up</a>
+              {% endif %}
+              {% if 'retrieve_password' not in auth.settings.actions_disabled %}
+                <a class="navbar-brand" href="{% url 'default' %}">Lost password</a>
+              {% endif %}
+          {% endif %}
+
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'schemesofwork.index' %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
+            </li>
+            {% if auth.user %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'default' %}">Key terms</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-about">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Masthead ===================================== -->
+      <header class="masthead" style="background-image: url({% static 'default/img/computerscience-blackboard.jpg' %})">
+          <div class="overlay"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 mx-auto">
+                {% block header %}
+                    <div class="site-heading">
+                      <h1>{{ content.main_heading }}</h1>
+                      <span class="subheading">{{ content.sub_heading }}</span>
+                    </div>
+                {% endblock %}
+              </div>
+            </div>
+          </div>
+    </header>
+    <!-- Main ========================================= -->
+    <!-- Begin page content -->
+    <div class="container-fluid main-container">
+      <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {% if content.session.alert_message is not None %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{ content.session.alert_message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"/>
+              <span aria-hidden="true">&times;</span>
+            </div>
+            {% endif %}
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-14 content-heading">
+            <!-- Content Heading START -->
+            {% block contentheading %}
+            {% endblock %}
+            <!-- Content Heading END -->
+        </div>
+      </div>
+      <!-- Breadcrumb START -->
+      {% block breadcrumb %}
+      {% endblock %}
+      <!-- Breadcrumb END -->
+      <!-- Main Content START --> 
+      <div class="row">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <!-- Main Content END -->
+    </div>
+
+    <!-- Page Content END -->
+    {% block footer %} <!-- this is default footer -->
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <ul class="list-inline text-center">
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <p class="copyright text-muted">Copyright &#169; Dave Russell 2019</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+    <!-- The javascript =============================== -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
+
+  {% block page_js %}{% endblock %}
+    {% if ga %}
+    <!-- Analytics ==================================== -->
+    <script src="{% static 'default/js/analytics.min.js' %}"></script>
+    <script type="text/javascript">
+      analytics.initialize({
+        'Google Analytics':'999999'
+      });
+    </script>
+  {% endif %}
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ page_title }}</title>
+
+    {% load static %}
+
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'default/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'default/css/my.css' %}" rel="stylesheet">
+    <link media="print" href="{% static 'custom/css/class_notes.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/regular.css" integrity="sha384-IG162Tfx2WTn//TRUi9ahZHsz47lNKzYOp0b6Vv8qltVlPkub2yj9TVwzNck6GEF" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
+    <style>
+      body {
+        background-color: 'Peach';
+      }
+       h1, h2, h3, h4, p, .keyword {
+        font-family: sans-serif;
+       }
+       h1, h2 {
+         font-weight:700;
+       }
+       h1, h2, h3, h4 {
+         padding-top:30px;
+       }
+       .expand-body {
+         padding:5px 5px 15px;
+       }
+       .expand-header {
+         padding-top:10px;
+       }
+
+      @media print {
+        .notes > b {
+          visibility: hidden;
+        }
+        .notes > b:before {
+            content: '...';
+            visibility:visible;
+        }
+        .notes > b:after {
+            content: '...';
+            visibility:visible;
+        }
+      }
+    </style>
+    <script>
+      function set_font_size(font_size){
+        $('.chalk').attr('style', 'font-size:' + font_size);
+      }
+
+      function set_background(r, g, b, a){
+        $('body').attr('style', 'background-color:rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')');
+      }
+    </script>
+    
+  </head>
+  <body>
+
+    <div class="container-fluid main-container">
+      <div class="row">
+        <div class="accessibility">
+          <p>
+            <a class="btn btn-light chalk" data-toggle="collapse" href="#collapseAccessibility" role="button" aria-expanded="false" aria-controls="collapseAccessibility">
+              {{_("Accessibility")}}
+            </a>
+          </p>
+          <div class="collapse" id="collapseAccessibility">
+            <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("larger")' style='font-size:12px;background-color:rgba(245, 245, 245, 1);'>A</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("x-large")' style='font-size:14px;background-color:rgba(245, 245, 245, 1);'>A</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("xx-large")' style='font-size:16px;background-color:rgba(245, 245, 245, 1);'>A</span>&nbsp;
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 250, 1)' style='background-color:rgba(245, 245, 245, 1);'>snow</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(245, 245, 245, 1)' style='background-color:rgba(245, 245, 245, 1);'>smoke</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 250, 1)' style='background-color:rgba(255, 250, 240, 1);'>floral</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 250, 205, 0.5)' style='background-color:rgba(255, 250, 205, 1);'>lemon</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 222, 173, 0.5)' style='background-color:rgba(255, 222, 173, 1);'>navajo</span>
+              </li>
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_background(255, 218, 185, 1)' style='background-color:rgba(255, 218, 185, 1);'>peach</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+
+    {% block header %}
+        <div class="site-heading">
+            <h1>{{ content.main_heading }}</h1>
+            <span class="subheading">{{ content.sub_heading }}</span>
+        </div>
+    {% endblock %}
+    
+    {% block maincontent %}
+
+    {% endblock %}
+    </div>
+    <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
+  </body>
+</html>

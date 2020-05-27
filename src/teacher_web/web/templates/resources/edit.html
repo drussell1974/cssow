@@ -1,0 +1,106 @@
+{% extends 'default/__layout.onecolumn.html' %}
+
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+      <div class="container">
+          <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="btn-bc-resources" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Objectives")}}</a>
+                </li>
+            </ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block maincontent %}
+<form name="edit-schemeofwork" id="form" method="post" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
+    {% csrf_token %}
+    <!-- Title START -->
+    <div class="control-group">
+        <div class="form-group controls">
+        <label>{{_("Title")}}</label>
+        <input type="text" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" name="title" required
+                maxlength="300" value='{{content.data.resource.title}}'>
+        <p class="help-block text-danger"></p>
+        </div>
+    </div>
+    <!-- Title END -->
+
+    <!-- URI START -->
+    <div class="control-group">
+        <div class="form-group  controls">
+            <label>{{_("Url")}}</label>
+            <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
+                    maxlength="2083" value='{{content.data.resource.page_uri}}'>
+            <p class="help-block text-danger"></p>
+        </div>
+    </div>
+    <!-- URI END -->
+
+    <!-- Publisher START -->
+    <div class="control-group">
+        <div class="form-group controls">
+        <label>{{_("Publisher")}}</label>
+        <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
+                maxlength="250" value='{{content.data.resource.publisher}}'>
+        <p class="help-block text-danger"></p>
+        </div>
+    </div>
+    <!-- Publisher END -->
+    <!-- Type START -->
+    <div class="control-group">
+        <div class="form-group  controls">
+            <label>{{_("Type")}}</label>
+            <select class="form-control" name="type_id" id="ctl-type_id" required>
+                <option value="">- {{_("Select an option")}} -</option>
+                {% for opt in content.data.get_resource_type_options %}
+                <option value="{{opt.id}}" {% if opt.id == content.data.resource.type_id %} selected {% endif %}>{{opt.name}}</option>
+                {% endfor %}
+            </select>
+            <p class="help-block text-danger"></p>
+        </div>
+    </div>
+`   <!-- Type END -->
+    <!-- Notes START -->
+    <div class="control-group">
+        <div class="form-group controls">
+            <label>{{_("Notes")}}</label>
+            <textarea rows="5" class="form-control" name="page_note" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500">
+                {{content.data.resource.page_note}}
+            </textarea>
+            <p class="help-block text-danger"></p>
+        </div>
+    </div>
+    <!-- Notes END -->
+    <br>
+    <div id="success"></div>
+    <div class="form-group">
+        <input type="hidden" name="id" value="{{content.data.resource.id}}">
+        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+        <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
+        <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>
+        <button type="submit" name="published" value="0" class="btn btn-secondary" id="saveDraftButton">{{_("Draft")}}</button>
+        <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{_("Cancel")}}</button>
+    </div>
+</form>
+<hr>
+{% endblock %}
+
+
+{% block page_js %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!-- Bootstrap tokenfield javascript -->
+    
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'default/__layout.onecolumn.html' %}
+
+  {% block maincontent %}
+    <section id="section-latest_schemesofwork" class="jumbotron">
+              <!-- Scheme of works -->
+            <span class="subheading">Latest Schemes of Work</span>
+            <!-- Scheme of works -->
+            {% for row in content.data.latest_schemes_of_work %}
+            <div class="post-preview post-preview-schemeofwork">
+              <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}">
+                <h2 class="post-title">
+                    {{ row.name }}
+                </h2>
+                <h3 class="post-subtitle"></h3>
+                  {{ row.key_stage_name}}
+                </h3>
+              </a>
+              <p class="post-meta">Created by
+                <a href="#">{{ row.created_by_name }}</a>
+                {% if row.created %}
+                  on {{ row.created }}
+                {% endif %}
+                {% if auth.user %}
+                   - <a href="{% url 'schemesofwork.delete_item' row.id }">Delete</a>
+                    - <a href="{% url 'schemesofwork.edit' row.id }">Edit</a>
+                {% endif %}</p>
+            </div>
+            <hr>
+              {% endfor %}
+
+            <!-- Pager -->
+            <div class="clearfix">
+              <a class="btn btn-primary float-right" href="{% url 'schemesofwork.index' %}" id="btn-all-schemes-of-work">Show all &rarr;</a>
+            </div>
+            <!-- Scheme of works END -->
+    </section>
+  {% endblock %}
