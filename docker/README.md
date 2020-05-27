@@ -42,7 +42,7 @@ Creates the django web server from a Dockerfile
 > docker run -d 
 -p 8002:8002
 --name teacher-web
---link mariadb-cssow_api
+--link cssow-db
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher-web
 
@@ -65,7 +65,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 > docker run -it
 -p 8002:8002
 --name teacher-web
---link mariadb-cssow_api
+--link cssow-db
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher-web
 bash
