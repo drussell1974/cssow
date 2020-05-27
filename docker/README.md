@@ -39,7 +39,7 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build teacher-web -t teacher-web
+> docker build teacher-web
 
 > docker run -d 
 --link mariadb-cssow_api
@@ -49,9 +49,9 @@ teacher-web
 
 ## About the teacher-web/Dockerfile file
 
-From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
+From the python:3 image, runs pip to dependencies for running django web server
 
-Runs the server on port 8002
+Runs the server on port 8002 exposed as 8002
 
 ## Troubleshooting
 
