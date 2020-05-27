@@ -1,0 +1,849 @@
+InnoDB: using atomic writes.
+2019-12-20  5:37:25 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2019-12-20  5:37:25 0 [Note] InnoDB: Uses event mutexes
+2019-12-20  5:37:25 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2019-12-20  5:37:25 0 [Note] InnoDB: Number of pools: 1
+2019-12-20  5:37:25 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2019-12-20  5:37:25 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2019-12-20  5:37:25 0 [Note] InnoDB: Completed initialization of buffer pool
+2019-12-20  5:37:25 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2019-12-20  5:37:25 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2019-12-20  5:37:25 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2019-12-20  5:37:25 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2019-12-20  5:37:25 0 [Note] InnoDB: Waiting for purge to start
+2019-12-20  5:37:25 0 [Note] InnoDB: 10.4.11 started; log sequence number 60972; transaction id 21
+2019-12-20  5:37:25 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2019-12-20  5:37:25 0 [Note] Plugin 'FEEDBACK' is disabled.
+2019-12-20  5:37:25 0 [Note] Server socket created on IP: '::'.
+2019-12-20  5:37:25 0 [Note] InnoDB: Buffer pool(s) load completed at 191220  5:37:25
+2019-12-20  5:37:26 0 [Note] Reading of all Master_info entries succeeded
+2019-12-20  5:37:26 0 [Note] Added new Master_info '' to hash table
+2019-12-20  5:37:26 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2019-12-20  5:38:21 8 [Warning] Access denied for user 'root'@'localhost' (using password: NO)
+2019-12-20  5:40:38 10 [Warning] Aborted connection 10 to db: 'unconnected' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2019-12-20  5:40:38 11 [Warning] Aborted connection 11 to db: 'unconnected' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2019-12-20  5:43:24 16 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:43:25 17 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:43:26 18 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:43:27 19 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:43:28 20 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:19 23 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:20 24 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:21 25 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:22 26 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:23 27 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:47 28 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:48 29 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:49 30 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:50 31 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:47:51 32 [Warning] Access denied for user 'drussell1974'@'localhost' (using password: YES)
+2019-12-20  5:48:13 33 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow'
+2019-12-20  5:48:14 34 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow'
+2019-12-20  5:48:15 35 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow'
+2019-12-20  5:48:16 36 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow'
+2019-12-20  5:48:17 37 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow'
+2019-12-20  5:48:44 38 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:48:45 39 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:48:46 40 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:48:47 41 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:48:48 42 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:50:28 43 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:50:29 44 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:50:30 45 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:50:31 46 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  5:50:32 47 [Warning] Access denied for user 'drussell1974'@'localhost' to database 'cssow_api'
+2019-12-20  8:02:23 48 [Warning] Aborted connection 48 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2019-12-20 13:51:22 21 [Warning] Aborted connection 21 to db: 'mysql' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-20 16:15:19 49 [Warning] Aborted connection 49 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-20 19:09:54 22 [Warning] Aborted connection 22 to db: 'unconnected' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-20 19:09:54 12 [Warning] Aborted connection 12 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-20 19:09:54 13 [Warning] Aborted connection 13 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-20 19:46:29 52 [Warning] Aborted connection 52 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2019-12-20 19:53:26 53 [Warning] Aborted connection 53 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2019-12-21 17:39:53 54 [Warning] Aborted connection 54 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-22 14:30:00 55 [Warning] Aborted connection 55 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-23 21:48:21 56 [Warning] Aborted connection 56 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24  2:49:03 51 [Warning] Aborted connection 51 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24  2:49:03 50 [Warning] Aborted connection 50 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24 15:26:02 61 [Warning] Aborted connection 61 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24 15:26:02 62 [Warning] Aborted connection 62 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24 15:26:02 60 [Warning] Aborted connection 60 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-24 15:26:02 59 [Warning] Aborted connection 59 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-25  0:38:02 58 [Warning] Aborted connection 58 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-25  0:38:02 57 [Warning] Aborted connection 57 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-25 15:00:25 65 [Warning] Aborted connection 65 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-26  0:45:00 63 [Warning] Aborted connection 63 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-26  0:45:00 64 [Warning] Aborted connection 64 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-27  2:46:00 67 [Warning] Aborted connection 67 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-27  2:46:00 66 [Warning] Aborted connection 66 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-28  2:15:35 68 [Warning] Aborted connection 68 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-28  2:15:35 69 [Warning] Aborted connection 69 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-28 22:32:02 71 [Warning] Aborted connection 71 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-28 22:32:02 70 [Warning] Aborted connection 70 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-29 23:12:54 74 [Warning] Aborted connection 74 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-30  3:27:16 73 [Warning] Aborted connection 73 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-30  3:27:16 72 [Warning] Aborted connection 72 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-30  7:01:28 77 [Warning] Aborted connection 77 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2019-12-30 15:12:27 78 [Warning] Aborted connection 78 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2019-12-31 20:31:24 75 [Warning] Aborted connection 75 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2019-12-31 20:31:24 76 [Warning] Aborted connection 76 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-01  8:16:21 82 [Warning] Aborted connection 82 to db: 'unconnected' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-01-01  8:16:21 83 [Warning] Aborted connection 83 to db: 'unconnected' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-01-01  8:16:21 79 [Warning] Aborted connection 79 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-01-01  8:16:21 80 [Warning] Aborted connection 80 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-01-01  8:16:55 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-01-01  8:16:55 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-01-01  8:16:55 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-01-01  8:16:56 0 [Note] InnoDB: Starting shutdown...
+2020-01-01  8:16:56 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-01  8:16:56 0 [Note] InnoDB: Buffer pool(s) dump completed at 200101  8:16:56
+2020-01-01  8:16:58 0 [Note] InnoDB: Shutdown completed; log sequence number 1062020; transaction id 444
+2020-01-01  8:16:58 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-01-01  8:16:58 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-01-01  8:17:42 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-01-01  8:17:42 0 [Note] InnoDB: Uses event mutexes
+2020-01-01  8:17:42 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-01-01  8:17:42 0 [Note] InnoDB: Number of pools: 1
+2020-01-01  8:17:42 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-01-01  8:17:42 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-01-01  8:17:42 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-01-01  8:17:42 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-01-01  8:17:42 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-01-01  8:17:42 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-01-01  8:17:42 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-01-01  8:17:42 0 [Note] InnoDB: Waiting for purge to start
+2020-01-01  8:17:43 0 [Note] InnoDB: 10.4.11 started; log sequence number 1062020; transaction id 446
+2020-01-01  8:17:43 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-01  8:17:43 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-01-01  8:17:43 0 [Note] Server socket created on IP: '::'.
+2020-01-01  8:17:43 0 [Note] Reading of all Master_info entries succeeded
+2020-01-01  8:17:43 0 [Note] Added new Master_info '' to hash table
+2020-01-01  8:17:43 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-01-01  8:17:43 0 [Note] InnoDB: Buffer pool(s) load completed at 200101  8:17:43
+2020-01-01  8:47:14 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-01-01  8:47:14 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-01-01  8:47:14 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-01-01  8:47:15 0 [Note] InnoDB: Starting shutdown...
+2020-01-01  8:47:15 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-01  8:47:15 0 [Note] InnoDB: Buffer pool(s) dump completed at 200101  8:47:15
+2020-01-01  8:47:16 0 [Note] InnoDB: Shutdown completed; log sequence number 1062029; transaction id 447
+2020-01-01  8:47:16 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-01-01  8:47:16 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-01-01  8:47:42 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-01-01  8:47:42 0 [Note] InnoDB: Uses event mutexes
+2020-01-01  8:47:42 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-01-01  8:47:42 0 [Note] InnoDB: Number of pools: 1
+2020-01-01  8:47:42 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-01-01  8:47:42 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-01-01  8:47:43 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-01-01  8:47:43 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-01-01  8:47:43 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-01-01  8:47:43 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-01-01  8:47:43 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-01-01  8:47:43 0 [Note] InnoDB: Waiting for purge to start
+2020-01-01  8:47:43 0 [Note] InnoDB: Waiting for purge to start
+2020-01-01  8:47:43 0 [Note] InnoDB: 10.4.11 started; log sequence number 1062029; transaction id 446
+2020-01-01  8:47:43 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-01  8:47:43 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-01-01  8:47:43 0 [Note] Server socket created on IP: '::'.
+2020-01-01  8:47:44 0 [Note] Reading of all Master_info entries succeeded
+2020-01-01  8:47:44 0 [Note] Added new Master_info '' to hash table
+2020-01-01  8:47:44 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-01-01  8:47:44 0 [Note] InnoDB: Buffer pool(s) load completed at 200101  8:47:44
+2020-01-02  6:38:30 71 [Warning] Aborted connection 71 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02  6:40:55 73 [Warning] Aborted connection 73 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02  6:42:21 79 [Warning] Aborted connection 79 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02  6:50:21 100 [Warning] Aborted connection 100 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02  6:50:45 102 [Warning] Aborted connection 102 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02  6:51:23 104 [Warning] Aborted connection 104 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-02 23:00:00 367 [Warning] Aborted connection 367 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-03  4:21:41 10 [Warning] Aborted connection 10 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-03  4:21:41 11 [Warning] Aborted connection 11 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-03  5:03:10 388 [Warning] Aborted connection 388 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03  5:39:24 547 [Warning] Aborted connection 547 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03 10:51:01 1410 [Warning] Aborted connection 1410 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03 13:44:53 17709 [Warning] Aborted connection 17709 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03 13:45:31 17711 [Warning] Aborted connection 17711 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03 13:48:52 17998 [Warning] Aborted connection 17998 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-03 13:50:09 18000 [Warning] Aborted connection 18000 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-04  4:00:59 370 [Warning] Aborted connection 370 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-04  4:00:59 369 [Warning] Aborted connection 369 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-04  4:00:59 56470 [Warning] Aborted connection 56470 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-04 15:24:01 90138 [Warning] Aborted connection 90138 to db: 'unconnected' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-04 15:24:01 90139 [Warning] Aborted connection 90139 to db: 'test_cssow_api' user: 'drussell1974' host: 'localhost' (Got an error writing communication packets)
+2020-01-05  2:55:01 90405 [Warning] Aborted connection 90405 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-05  2:55:01 58705 [Warning] Aborted connection 58705 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-05  2:55:01 58706 [Warning] Aborted connection 58706 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-05 16:53:15 91333 [Warning] Aborted connection 91333 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-06  5:01:16 90430 [Warning] Aborted connection 90430 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-06  5:01:16 90431 [Warning] Aborted connection 90431 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-06 15:33:33 93370 [Warning] Aborted connection 93370 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-06 15:33:33 93369 [Warning] Aborted connection 93369 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-06 15:54:00 93527 [Warning] Aborted connection 93527 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-07  3:13:34 93534 [Warning] Aborted connection 93534 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-07  3:13:34 93535 [Warning] Aborted connection 93535 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-07  3:41:34 93566 [Warning] Aborted connection 93566 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-07 16:03:13 94149 [Warning] Aborted connection 94149 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-08  0:57:00 94151 [Warning] Aborted connection 94151 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-08 15:32:50 134227 [Warning] Aborted connection 134227 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-09  1:50:15 135761 [Warning] Aborted connection 135761 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-09  2:50:12 93590 [Warning] Aborted connection 93590 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-09  2:50:12 93588 [Warning] Aborted connection 93588 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-10 16:04:00 135762 [Warning] Aborted connection 135762 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-10 16:04:00 138784 [Warning] Aborted connection 138784 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-10 16:04:00 135763 [Warning] Aborted connection 135763 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-11  4:03:49 138868 [Warning] Aborted connection 138868 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-11 15:45:00 138786 [Warning] Aborted connection 138786 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-11 15:45:00 138785 [Warning] Aborted connection 138785 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-12 15:51:27 138952 [Warning] Aborted connection 138952 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-12 22:02:06 138878 [Warning] Aborted connection 138878 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-12 22:02:06 138879 [Warning] Aborted connection 138879 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-14  7:00:42 150187 [Warning] Aborted connection 150187 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-14  7:00:42 150186 [Warning] Aborted connection 150186 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-14 15:54:44 150978 [Warning] Aborted connection 150978 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-15 23:40:16 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-01-15 23:40:16 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-01-15 23:40:16 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-01-15 23:40:16 0 [Note] InnoDB: Starting shutdown...
+2020-01-15 23:40:16 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-15 23:40:16 0 [Note] InnoDB: Instance 0, restricted to 8019 pages due to innodb_buf_pool_dump_pct=25
+2020-01-15 23:40:16 0 [Note] InnoDB: Buffer pool(s) dump completed at 200115 23:40:16
+2020-01-15 23:40:17 0 [Note] InnoDB: Shutdown completed; log sequence number 283886283; transaction id 420369
+2020-01-15 23:40:17 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-01-15 23:40:17 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-01-15 23:40:58 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-01-15 23:40:58 0 [Note] InnoDB: Uses event mutexes
+2020-01-15 23:40:58 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-01-15 23:40:58 0 [Note] InnoDB: Number of pools: 1
+2020-01-15 23:40:58 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-01-15 23:40:58 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-01-15 23:40:58 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-01-15 23:40:58 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-01-15 23:40:58 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-01-15 23:40:58 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-01-15 23:40:58 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-01-15 23:40:58 0 [Note] InnoDB: Waiting for purge to start
+2020-01-15 23:40:58 0 [Note] InnoDB: Waiting for purge to start
+2020-01-15 23:40:58 0 [Note] InnoDB: 10.4.11 started; log sequence number 283886283; transaction id 420371
+2020-01-15 23:40:59 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-01-15 23:40:59 0 [Note] InnoDB: Buffer pool(s) load completed at 200115 23:40:59
+2020-01-15 23:40:59 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-01-15 23:40:59 0 [Note] Server socket created on IP: '::'.
+2020-01-15 23:40:59 0 [Note] Reading of all Master_info entries succeeded
+2020-01-15 23:40:59 0 [Note] Added new Master_info '' to hash table
+2020-01-15 23:40:59 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-01-17 18:02:39 3722 [Warning] Aborted connection 3722 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-17 18:02:39 3954 [Warning] Aborted connection 3954 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-18  3:37:04 4473 [Warning] Aborted connection 4473 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-19 19:06:03 25615 [Warning] Aborted connection 25615 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-19 20:22:45 23538 [Warning] Aborted connection 23538 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-19 20:22:45 23539 [Warning] Aborted connection 23539 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-19 20:22:45 25226 [Warning] Aborted connection 25226 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-19 20:22:45 25227 [Warning] Aborted connection 25227 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-20 17:06:00 40615 [Warning] Aborted connection 40615 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-20 17:06:00 40614 [Warning] Aborted connection 40614 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-20 17:06:00 40613 [Warning] Aborted connection 40613 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-20 17:06:00 40612 [Warning] Aborted connection 40612 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-21 14:14:02 43083 [Warning] Aborted connection 43083 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-21 17:02:03 40619 [Warning] Aborted connection 40619 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-21 17:02:03 40617 [Warning] Aborted connection 40617 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-21 17:02:03 40618 [Warning] Aborted connection 40618 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-21 17:02:03 40616 [Warning] Aborted connection 40616 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22  7:36:33 43160 [Warning] Aborted connection 43160 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22  7:36:33 43087 [Warning] Aborted connection 43087 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22  7:36:33 43086 [Warning] Aborted connection 43086 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22  7:36:33 43084 [Warning] Aborted connection 43084 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22  7:36:33 43085 [Warning] Aborted connection 43085 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22 15:54:24 43195 [Warning] Aborted connection 43195 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22 15:59:11 43171 [Warning] Aborted connection 43171 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22 15:59:11 43172 [Warning] Aborted connection 43172 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22 16:22:24 43170 [Warning] Aborted connection 43170 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-22 16:22:24 43173 [Warning] Aborted connection 43173 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-23  2:33:27 45471 [Warning] Aborted connection 45471 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-23 16:53:56 46920 [Warning] Aborted connection 46920 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24  1:19:06 47248 [Warning] Aborted connection 47248 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24  7:33:34 59682 [Warning] Aborted connection 59682 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-24 15:47:22 59720 [Warning] Aborted connection 59720 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24 15:47:22 43270 [Warning] Aborted connection 43270 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24 15:47:22 43271 [Warning] Aborted connection 43271 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24 15:47:22 43268 [Warning] Aborted connection 43268 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-24 15:47:22 43269 [Warning] Aborted connection 43269 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25  1:48:18 59811 [Warning] Aborted connection 59811 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25 15:28:02 60114 [Warning] Aborted connection 60114 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25 15:40:08 59740 [Warning] Aborted connection 59740 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25 15:40:08 59741 [Warning] Aborted connection 59741 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25 15:40:08 59742 [Warning] Aborted connection 59742 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-25 15:40:08 59743 [Warning] Aborted connection 59743 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-26 19:41:02 67601 [Warning] Aborted connection 67601 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27  0:01:35 60170 [Warning] Aborted connection 60170 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27  0:01:35 60168 [Warning] Aborted connection 60168 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27  0:01:35 60169 [Warning] Aborted connection 60169 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27  0:01:35 60171 [Warning] Aborted connection 60171 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27  7:39:45 69037 [Warning] Aborted connection 69037 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-27  7:56:20 69152 [Warning] Aborted connection 69152 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-27 16:02:45 69174 [Warning] Aborted connection 69174 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27 23:28:49 68597 [Warning] Aborted connection 68597 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27 23:28:49 68598 [Warning] Aborted connection 68598 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27 23:29:19 68595 [Warning] Aborted connection 68595 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-27 23:29:19 68596 [Warning] Aborted connection 68596 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-28 16:05:47 69283 [Warning] Aborted connection 69283 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29  2:17:35 69449 [Warning] Aborted connection 69449 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29  2:35:36 69243 [Warning] Aborted connection 69243 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29  2:35:36 69242 [Warning] Aborted connection 69242 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29  2:39:36 69241 [Warning] Aborted connection 69241 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29  2:39:36 69244 [Warning] Aborted connection 69244 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29 15:23:28 69965 [Warning] Aborted connection 69965 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29 22:23:08 69611 [Warning] Aborted connection 69611 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29 22:23:08 69612 [Warning] Aborted connection 69612 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29 22:23:08 69610 [Warning] Aborted connection 69610 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-29 22:23:08 69609 [Warning] Aborted connection 69609 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-30 16:19:48 70957 [Warning] Aborted connection 70957 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31  1:22:42 75394 [Warning] Aborted connection 75394 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31  7:51:26 77959 [Warning] Aborted connection 77959 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-31  7:51:26 78054 [Warning] Aborted connection 78054 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-31  7:58:06 78276 [Warning] Aborted connection 78276 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-01-31 16:01:30 78461 [Warning] Aborted connection 78461 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31 17:04:18 70021 [Warning] Aborted connection 70021 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31 17:04:18 70022 [Warning] Aborted connection 70022 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31 17:04:19 70020 [Warning] Aborted connection 70020 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-01-31 17:04:19 70023 [Warning] Aborted connection 70023 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01  1:55:14 78593 [Warning] Aborted connection 78593 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01  1:55:14 78592 [Warning] Aborted connection 78592 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01  2:02:17 78591 [Warning] Aborted connection 78591 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01  2:02:53 78594 [Warning] Aborted connection 78594 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01  5:49:22 81916 [Warning] Aborted connection 81916 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-01 13:49:33 94067 [Warning] Aborted connection 94067 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-01 14:32:38 79034 [Warning] Aborted connection 79034 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-01 14:32:38 79036 [Warning] Aborted connection 79036 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-01 14:32:39 79035 [Warning] Aborted connection 79035 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-01 14:32:39 79033 [Warning] Aborted connection 79033 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-01 22:45:05 112553 [Warning] Aborted connection 112553 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-02 13:22:36 139267 [Warning] Aborted connection 139267 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03  1:53:12 112495 [Warning] Aborted connection 112495 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03  1:53:12 112494 [Warning] Aborted connection 112494 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03  1:57:22 166338 [Warning] Aborted connection 166338 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03 15:53:04 166414 [Warning] Aborted connection 166414 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03 16:03:14 166339 [Warning] Aborted connection 166339 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-03 16:03:14 166340 [Warning] Aborted connection 166340 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-04  7:38:45 167008 [Warning] Aborted connection 167008 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-04 15:50:44 168883 [Warning] Aborted connection 168883 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-04 18:25:22 177207 [Warning] Aborted connection 177207 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-05  2:29:30 192187 [Warning] Aborted connection 192187 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-05 14:15:49 166484 [Warning] Aborted connection 166484 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-05 14:15:49 166485 [Warning] Aborted connection 166485 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-06 15:25:31 222703 [Warning] Aborted connection 222703 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-06 16:00:35 221797 [Warning] Aborted connection 221797 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-06 16:00:35 221798 [Warning] Aborted connection 221798 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-07  2:02:15 228180 [Warning] Aborted connection 228180 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-07  2:02:15 228179 [Warning] Aborted connection 228179 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-07 15:58:40 233563 [Warning] Aborted connection 233563 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-08  1:00:06 228182 [Warning] Aborted connection 228182 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-08  1:00:06 228181 [Warning] Aborted connection 228181 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-08 11:42:15 269820 [Warning] Aborted connection 269820 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-08 12:49:03 279604 [Warning] Aborted connection 279604 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-08 12:51:05 279606 [Warning] Aborted connection 279606 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-08 14:49:46 279610 [Warning] Aborted connection 279610 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-08 18:05:50 282407 [Warning] Aborted connection 282407 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-08 18:10:51 283072 [Warning] Aborted connection 283072 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-09  2:03:20 233648 [Warning] Aborted connection 233648 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-09  2:03:20 233647 [Warning] Aborted connection 233647 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-09  2:10:57 284734 [Warning] Aborted connection 284734 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-09  4:52:44 286730 [Warning] Aborted connection 286730 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-09 17:15:57 292949 [Warning] Aborted connection 292949 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10  2:14:25 313255 [Warning] Aborted connection 313255 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10  2:23:18 285067 [Warning] Aborted connection 285067 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10  2:23:18 285068 [Warning] Aborted connection 285068 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10 16:08:54 348995 [Warning] Aborted connection 348995 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10 17:15:56 315524 [Warning] Aborted connection 315524 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-10 17:15:56 315525 [Warning] Aborted connection 315525 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-11  6:40:20 349262 [Warning] Aborted connection 349262 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-11  6:43:39 349282 [Warning] Aborted connection 349282 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-11 15:05:41 349873 [Warning] Aborted connection 349873 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-11 20:22:23 348996 [Warning] Aborted connection 348996 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-11 20:22:23 348997 [Warning] Aborted connection 348997 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-12 11:50:25 359238 [Warning] Aborted connection 359238 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-12 16:53:20 352246 [Warning] Aborted connection 352246 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-12 16:53:20 352245 [Warning] Aborted connection 352245 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-13  4:03:11 363828 [Warning] Aborted connection 363828 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-13  4:03:11 363827 [Warning] Aborted connection 363827 to db: 'cssow_api' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2020-02-13  4:04:47 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-02-13  4:04:47 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-02-13  4:04:47 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-02-13  4:04:47 0 [Note] InnoDB: Starting shutdown...
+2020-02-13  4:04:47 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-02-13  4:04:47 0 [Note] InnoDB: Instance 0, restricted to 8019 pages due to innodb_buf_pool_dump_pct=25
+2020-02-13  4:04:47 0 [Note] InnoDB: Buffer pool(s) dump completed at 200213  4:04:47
+2020-02-13  4:04:48 0 [Note] InnoDB: Shutdown completed; log sequence number 405749738; transaction id 629585
+2020-02-13  4:04:48 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-02-13  4:04:48 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-02-13  4:05:23 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-02-13  4:05:23 0 [Note] InnoDB: Uses event mutexes
+2020-02-13  4:05:23 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-02-13  4:05:23 0 [Note] InnoDB: Number of pools: 1
+2020-02-13  4:05:23 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-02-13  4:05:23 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-02-13  4:05:23 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-02-13  4:05:23 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-02-13  4:05:23 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-02-13  4:05:23 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-02-13  4:05:23 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-02-13  4:05:23 0 [Note] InnoDB: Waiting for purge to start
+2020-02-13  4:05:23 0 [Note] InnoDB: 10.4.11 started; log sequence number 405749738; transaction id 629587
+2020-02-13  4:05:23 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-02-13  4:05:23 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-02-13  4:05:24 0 [Note] Server socket created on IP: '::'.
+2020-02-13  4:05:24 0 [Note] Reading of all Master_info entries succeeded
+2020-02-13  4:05:24 0 [Note] Added new Master_info '' to hash table
+2020-02-13  4:05:24 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-02-13  4:05:24 0 [Note] InnoDB: Buffer pool(s) load completed at 200213  4:05:24
+2020-02-15  6:06:44 9 [Warning] Aborted connection 9 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got an error reading communication packets)
+2020-02-15 14:55:23 6585 [Warning] Aborted connection 6585 to db: 'cssow_api' user: 'drussell1974' host: 'localhost' (Got timeout reading communication packets)
+2020-02-15 14:55:23 57 [Warning] Aborted connection 57 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-15 14:55:23 58 [Warning] Aborted connection 58 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-16  5:50:00 19366 [Warning] Aborted connection 19366 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-16  5:50:00 19365 [Warning] Aborted connection 19365 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-16 18:54:32 19368 [Warning] Aborted connection 19368 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-16 18:54:32 19367 [Warning] Aborted connection 19367 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-17  6:06:00 19370 [Warning] Aborted connection 19370 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-17  6:06:00 19369 [Warning] Aborted connection 19369 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-17 18:08:00 19372 [Warning] Aborted connection 19372 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-17 18:08:00 19371 [Warning] Aborted connection 19371 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-18  3:00:00 19374 [Warning] Aborted connection 19374 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-18  3:00:00 19373 [Warning] Aborted connection 19373 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-19  0:20:00 19376 [Warning] Aborted connection 19376 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-19  0:20:00 19375 [Warning] Aborted connection 19375 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-20  3:15:00 19378 [Warning] Aborted connection 19378 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-20  3:15:00 19377 [Warning] Aborted connection 19377 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-21  1:07:47 19380 [Warning] Aborted connection 19380 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-21  1:07:47 19379 [Warning] Aborted connection 19379 to db: 'cssow_api' user: 'root' host: 'localhost' (Got timeout reading communication packets)
+2020-02-21  8:12:12 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-02-21  8:12:12 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-02-21  8:12:12 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-02-21  8:12:12 0 [Note] InnoDB: Starting shutdown...
+2020-02-21  8:12:12 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-02-21  8:12:12 0 [Note] InnoDB: Buffer pool(s) dump completed at 200221  8:12:12
+2020-02-21  8:12:14 0 [Note] InnoDB: Shutdown completed; log sequence number 407732763; transaction id 633500
+2020-02-21  8:12:14 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-02-21  8:12:14 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-02-21  8:12:45 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-02-21  8:12:45 0 [Note] InnoDB: Uses event mutexes
+2020-02-21  8:12:45 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-02-21  8:12:45 0 [Note] InnoDB: Number of pools: 1
+2020-02-21  8:12:45 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-02-21  8:12:45 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-02-21  8:12:45 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-02-21  8:12:45 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-02-21  8:12:45 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-02-21  8:12:45 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-02-21  8:12:45 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-02-21  8:12:45 0 [Note] InnoDB: Waiting for purge to start
+2020-02-21  8:12:45 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732763; transaction id 633502
+2020-02-21  8:12:45 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-02-21  8:12:45 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-02-21  8:12:45 0 [Note] Server socket created on IP: '::'.
+2020-02-21  8:12:45 0 [Note] Reading of all Master_info entries succeeded
+2020-02-21  8:12:45 0 [Note] Added new Master_info '' to hash table
+2020-02-21  8:12:45 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-02-21  8:12:46 0 [Note] InnoDB: Buffer pool(s) load completed at 200221  8:12:46
+2020-03-10 20:27:43 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-03-10 20:27:43 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-03-10 20:27:43 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-03-10 20:27:43 0 [Note] InnoDB: Starting shutdown...
+2020-03-10 20:27:43 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-10 20:27:43 0 [Note] InnoDB: Buffer pool(s) dump completed at 200310 20:27:43
+2020-03-10 20:27:44 0 [Note] InnoDB: Shutdown completed; log sequence number 407732772; transaction id 633503
+2020-03-10 20:27:44 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-03-10 20:27:44 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-03-10 20:28:15 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-03-10 20:28:15 0 [Note] InnoDB: Uses event mutexes
+2020-03-10 20:28:15 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-03-10 20:28:15 0 [Note] InnoDB: Number of pools: 1
+2020-03-10 20:28:15 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-03-10 20:28:15 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-03-10 20:28:15 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-03-10 20:28:16 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-03-10 20:28:16 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-03-10 20:28:16 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-03-10 20:28:16 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-03-10 20:28:16 0 [Note] InnoDB: Waiting for purge to start
+2020-03-10 20:28:16 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732772; transaction id 633502
+2020-03-10 20:28:16 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-10 20:28:16 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-03-10 20:28:16 0 [Note] Server socket created on IP: '::'.
+2020-03-10 20:28:16 0 [Note] Reading of all Master_info entries succeeded
+2020-03-10 20:28:16 0 [Note] Added new Master_info '' to hash table
+2020-03-10 20:28:16 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-03-10 20:28:16 0 [Note] InnoDB: Buffer pool(s) load completed at 200310 20:28:16
+2020-03-20 11:17:44 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-03-20 11:17:44 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-03-20 11:17:44 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-03-20 11:17:44 0 [Note] InnoDB: Starting shutdown...
+2020-03-20 11:17:44 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-20 11:17:44 0 [Note] InnoDB: Buffer pool(s) dump completed at 200320 11:17:44
+2020-03-20 11:17:46 0 [Note] InnoDB: Shutdown completed; log sequence number 407732781; transaction id 633503
+2020-03-20 11:17:46 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-03-20 11:17:46 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-03-20 11:18:32 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-03-20 11:18:32 0 [Note] InnoDB: Uses event mutexes
+2020-03-20 11:18:32 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-03-20 11:18:32 0 [Note] InnoDB: Number of pools: 1
+2020-03-20 11:18:32 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-03-20 11:18:32 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-03-20 11:18:32 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-03-20 11:18:32 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-03-20 11:18:32 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-03-20 11:18:32 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-03-20 11:18:32 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-03-20 11:18:32 0 [Note] InnoDB: Waiting for purge to start
+2020-03-20 11:18:32 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732781; transaction id 633502
+2020-03-20 11:18:32 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-03-20 11:18:32 0 [Note] Server socket created on IP: '::'.
+2020-03-20 11:18:33 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-20 11:18:33 0 [Note] Reading of all Master_info entries succeeded
+2020-03-20 11:18:33 0 [Note] Added new Master_info '' to hash table
+2020-03-20 11:18:33 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-03-20 11:18:33 0 [Note] InnoDB: Buffer pool(s) load completed at 200320 11:18:33
+2020-03-20 11:21:17 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-03-20 11:21:17 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-03-20 11:21:17 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-03-20 11:21:17 0 [Note] InnoDB: Starting shutdown...
+2020-03-20 11:21:17 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-20 11:21:17 0 [Note] InnoDB: Buffer pool(s) dump completed at 200320 11:21:17
+2020-03-20 11:21:18 0 [Note] InnoDB: Shutdown completed; log sequence number 407732790; transaction id 633503
+2020-03-20 11:21:18 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-03-20 11:21:18 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-03-20 11:21:48 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-03-20 11:21:48 0 [Note] InnoDB: Uses event mutexes
+2020-03-20 11:21:48 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-03-20 11:21:48 0 [Note] InnoDB: Number of pools: 1
+2020-03-20 11:21:48 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-03-20 11:21:48 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-03-20 11:21:48 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-03-20 11:21:48 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-03-20 11:21:48 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-03-20 11:21:48 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-03-20 11:21:48 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-03-20 11:21:48 0 [Note] InnoDB: Waiting for purge to start
+2020-03-20 11:21:48 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732790; transaction id 633502
+2020-03-20 11:21:49 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-03-20 11:21:49 0 [Note] Server socket created on IP: '::'.
+2020-03-20 11:21:49 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-20 11:21:49 0 [Note] Reading of all Master_info entries succeeded
+2020-03-20 11:21:49 0 [Note] Added new Master_info '' to hash table
+2020-03-20 11:21:49 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-03-20 11:21:49 0 [Note] InnoDB: Buffer pool(s) load completed at 200320 11:21:49
+2020-03-23 16:31:57 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-03-23 16:31:57 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-03-23 16:31:57 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-03-23 16:31:57 0 [Note] InnoDB: Starting shutdown...
+2020-03-23 16:31:57 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-23 16:31:57 0 [Note] InnoDB: Buffer pool(s) dump completed at 200323 16:31:57
+2020-03-23 16:31:58 0 [Note] InnoDB: Shutdown completed; log sequence number 407732799; transaction id 633503
+2020-03-23 16:31:58 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-03-23 16:31:58 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-03-23 16:32:27 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-03-23 16:32:27 0 [Note] InnoDB: Uses event mutexes
+2020-03-23 16:32:27 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-03-23 16:32:27 0 [Note] InnoDB: Number of pools: 1
+2020-03-23 16:32:27 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-03-23 16:32:28 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-03-23 16:32:28 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-03-23 16:32:28 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-03-23 16:32:28 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-03-23 16:32:28 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-03-23 16:32:28 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-03-23 16:32:28 0 [Note] InnoDB: Waiting for purge to start
+2020-03-23 16:32:28 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732799; transaction id 633502
+2020-03-23 16:32:28 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-23 16:32:28 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-03-23 16:32:28 0 [Note] Server socket created on IP: '::'.
+2020-03-23 16:32:28 0 [Note] Reading of all Master_info entries succeeded
+2020-03-23 16:32:28 0 [Note] Added new Master_info '' to hash table
+2020-03-23 16:32:28 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-03-23 16:32:28 0 [Note] InnoDB: Buffer pool(s) load completed at 200323 16:32:28
+2020-03-28 19:14:59 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-03-28 19:15:00 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-03-28 19:15:00 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-03-28 19:15:00 0 [Note] InnoDB: Starting shutdown...
+2020-03-28 19:15:00 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-28 19:15:00 0 [Note] InnoDB: Buffer pool(s) dump completed at 200328 19:15:00
+2020-03-28 19:15:00 0 [Note] InnoDB: Shutdown completed; log sequence number 407732808; transaction id 633503
+2020-03-28 19:15:00 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-03-28 19:15:01 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-03-28 19:15:31 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-03-28 19:15:31 0 [Note] InnoDB: Uses event mutexes
+2020-03-28 19:15:31 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-03-28 19:15:31 0 [Note] InnoDB: Number of pools: 1
+2020-03-28 19:15:31 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-03-28 19:15:31 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-03-28 19:15:32 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-03-28 19:15:32 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-03-28 19:15:32 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-03-28 19:15:32 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-03-28 19:15:32 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-03-28 19:15:32 0 [Note] InnoDB: Waiting for purge to start
+2020-03-28 19:15:32 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732808; transaction id 633502
+2020-03-28 19:15:32 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-03-28 19:15:32 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-03-28 19:15:32 0 [Note] Server socket created on IP: '::'.
+2020-03-28 19:15:32 0 [Note] InnoDB: Buffer pool(s) load completed at 200328 19:15:32
+2020-03-28 19:15:32 0 [Note] Reading of all Master_info entries succeeded
+2020-03-28 19:15:32 0 [Note] Added new Master_info '' to hash table
+2020-03-28 19:15:32 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+InnoDB: using atomic writes.
+2020-04-02  6:13:50 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-02  6:13:50 0 [Note] InnoDB: Uses event mutexes
+2020-04-02  6:13:50 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-02  6:13:50 0 [Note] InnoDB: Number of pools: 1
+2020-04-02  6:13:50 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-02  6:13:50 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-02  6:13:50 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-02  6:13:51 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=407732808
+2020-04-02  6:13:51 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-02  6:13:51 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-02  6:13:51 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-02  6:13:51 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-02  6:13:51 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-02  6:13:51 0 [Note] InnoDB: Waiting for purge to start
+2020-04-02  6:13:51 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732817; transaction id 633502
+2020-04-02  6:13:51 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-02  6:13:51 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-02  6:13:51 0 [Note] Server socket created on IP: '::'.
+2020-04-02  6:13:51 0 [Note] Reading of all Master_info entries succeeded
+2020-04-02  6:13:51 0 [Note] InnoDB: Buffer pool(s) load completed at 200402  6:13:51
+2020-04-02  6:13:51 0 [Note] Added new Master_info '' to hash table
+2020-04-02  6:13:51 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+InnoDB: using atomic writes.
+2020-04-02  6:29:53 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-02  6:29:53 0 [Note] InnoDB: Uses event mutexes
+2020-04-02  6:29:53 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-02  6:29:53 0 [Note] InnoDB: Number of pools: 1
+2020-04-02  6:29:53 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-02  6:29:53 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-02  6:29:53 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-02  6:29:53 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=407732826
+2020-04-02  6:29:54 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-02  6:29:54 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-02  6:29:54 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-02  6:29:54 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-02  6:29:54 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-02  6:29:54 0 [Note] InnoDB: Waiting for purge to start
+2020-04-02  6:29:54 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732835; transaction id 633502
+2020-04-02  6:29:54 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-02  6:29:54 0 [Note] Server socket created on IP: '::'.
+2020-04-02  6:29:54 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-02  6:29:54 0 [Note] Reading of all Master_info entries succeeded
+2020-04-02  6:29:54 0 [Note] Added new Master_info '' to hash table
+2020-04-02  6:29:54 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-04-02  6:29:54 0 [Note] InnoDB: Buffer pool(s) load completed at 200402  6:29:54
+InnoDB: using atomic writes.
+2020-04-02  6:35:39 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-02  6:35:39 0 [Note] InnoDB: Uses event mutexes
+2020-04-02  6:35:39 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-02  6:35:39 0 [Note] InnoDB: Number of pools: 1
+2020-04-02  6:35:39 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-02  6:35:39 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-02  6:35:39 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-02  6:35:39 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=407732844
+2020-04-02  6:35:39 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-02  6:35:39 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-02  6:35:39 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-02  6:35:39 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-02  6:35:39 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-02  6:35:39 0 [Note] InnoDB: Waiting for purge to start
+2020-04-02  6:35:40 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732853; transaction id 633502
+2020-04-02  6:35:40 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-02  6:35:40 0 [Note] Server socket created on IP: '::'.
+2020-04-02  6:35:40 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-02  6:35:40 0 [Note] Reading of all Master_info entries succeeded
+2020-04-02  6:35:40 0 [Note] Added new Master_info '' to hash table
+2020-04-02  6:35:40 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-04-02  6:35:40 0 [Note] InnoDB: Buffer pool(s) load completed at 200402  6:35:40
+InnoDB: using atomic writes.
+2020-04-11  4:16:40 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-11  4:16:40 0 [Note] InnoDB: Uses event mutexes
+2020-04-11  4:16:40 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-11  4:16:40 0 [Note] InnoDB: Number of pools: 1
+2020-04-11  4:16:40 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-11  4:16:40 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-11  4:16:40 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-11  4:16:41 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=407732862
+2020-04-11  4:16:41 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-11  4:16:41 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-11  4:16:41 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-11  4:16:41 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-11  4:16:41 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-11  4:16:41 0 [Note] InnoDB: Waiting for purge to start
+2020-04-11  4:16:41 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732871; transaction id 633502
+2020-04-11  4:16:41 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-11  4:16:41 0 [Note] Server socket created on IP: '::'.
+2020-04-11  4:16:41 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-11  4:16:41 0 [Note] Reading of all Master_info entries succeeded
+2020-04-11  4:16:41 0 [Note] Added new Master_info '' to hash table
+2020-04-11  4:16:41 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-04-11  4:16:41 0 [Note] InnoDB: Buffer pool(s) load completed at 200411  4:16:41
+2020-04-11  4:36:42 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-04-11  4:36:42 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-04-11  4:36:42 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-04-11  4:36:43 0 [Note] InnoDB: Starting shutdown...
+2020-04-11  4:36:43 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-11  4:36:43 0 [Note] InnoDB: Buffer pool(s) dump completed at 200411  4:36:43
+2020-04-11  4:36:44 0 [Note] InnoDB: Shutdown completed; log sequence number 407732889; transaction id 633503
+2020-04-11  4:36:44 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-11  4:36:44 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-04-11  4:37:08 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-11  4:37:08 0 [Note] InnoDB: Uses event mutexes
+2020-04-11  4:37:08 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-11  4:37:08 0 [Note] InnoDB: Number of pools: 1
+2020-04-11  4:37:08 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-11  4:37:08 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-11  4:37:08 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-11  4:37:08 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-11  4:37:08 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-11  4:37:08 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-11  4:37:08 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-11  4:37:08 0 [Note] InnoDB: Waiting for purge to start
+2020-04-11  4:37:08 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732889; transaction id 633502
+2020-04-11  4:37:08 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-11  4:37:08 0 [Note] Server socket created on IP: '::'.
+2020-04-11  4:37:08 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-11  4:37:08 0 [Note] Reading of all Master_info entries succeeded
+2020-04-11  4:37:08 0 [Note] Added new Master_info '' to hash table
+2020-04-11  4:37:08 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-04-11  4:37:08 0 [Note] InnoDB: Buffer pool(s) load completed at 200411  4:37:08
+2020-04-18  0:32:46 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-04-18  0:32:46 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-04-18  0:32:46 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-04-18  0:32:46 0 [Note] InnoDB: Starting shutdown...
+2020-04-18  0:32:46 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-18  0:32:46 0 [Note] InnoDB: Buffer pool(s) dump completed at 200418  0:32:46
+2020-04-18  0:32:47 0 [Note] InnoDB: Shutdown completed; log sequence number 407732898; transaction id 633503
+2020-04-18  0:32:47 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-18  0:32:48 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-04-18  0:33:14 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-18  0:33:14 0 [Note] InnoDB: Uses event mutexes
+2020-04-18  0:33:14 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-18  0:33:14 0 [Note] InnoDB: Number of pools: 1
+2020-04-18  0:33:14 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-18  0:33:14 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-18  0:33:14 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-18  0:33:14 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-18  0:33:14 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-18  0:33:14 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-18  0:33:14 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-18  0:33:14 0 [Note] InnoDB: Waiting for purge to start
+2020-04-18  0:33:15 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732898; transaction id 633502
+2020-04-18  0:33:15 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-18  0:33:15 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-18  0:33:15 0 [Note] Server socket created on IP: '::'.
+2020-04-18  0:33:15 0 [Note] InnoDB: Buffer pool(s) load completed at 200418  0:33:15
+2020-04-18  0:33:15 0 [Note] Reading of all Master_info entries succeeded
+2020-04-18  0:33:15 0 [Note] Added new Master_info '' to hash table
+2020-04-18  0:33:15 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+InnoDB: using atomic writes.
+2020-04-30  9:47:06 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-04-30  9:47:06 0 [Note] InnoDB: Uses event mutexes
+2020-04-30  9:47:06 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-04-30  9:47:06 0 [Note] InnoDB: Number of pools: 1
+2020-04-30  9:47:06 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-04-30  9:47:06 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-04-30  9:47:06 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-04-30  9:47:06 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=407732898
+2020-04-30  9:47:06 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-04-30  9:47:06 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-04-30  9:47:06 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-04-30  9:47:06 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-04-30  9:47:06 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-04-30  9:47:06 0 [Note] InnoDB: Waiting for purge to start
+2020-04-30  9:47:06 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732907; transaction id 633502
+2020-04-30  9:47:07 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-04-30  9:47:07 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-04-30  9:47:07 0 [Note] Server socket created on IP: '::'.
+2020-04-30  9:47:07 0 [Note] InnoDB: Buffer pool(s) load completed at 200430  9:47:07
+2020-04-30  9:47:07 0 [Note] Reading of all Master_info entries succeeded
+2020-04-30  9:47:07 0 [Note] Added new Master_info '' to hash table
+2020-04-30  9:47:07 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-05-14  9:25:25 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-05-14  9:25:25 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-05-14  9:25:25 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-05-14  9:25:25 0 [Note] InnoDB: Starting shutdown...
+2020-05-14  9:25:25 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-05-14  9:25:25 0 [Note] InnoDB: Buffer pool(s) dump completed at 200514  9:25:25
+2020-05-14  9:25:26 0 [Note] InnoDB: Shutdown completed; log sequence number 407732925; transaction id 633503
+2020-05-14  9:25:26 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-05-14  9:25:26 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+
+InnoDB: using atomic writes.
+2020-05-14  9:26:05 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2020-05-14  9:26:05 0 [Note] InnoDB: Uses event mutexes
+2020-05-14  9:26:05 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2020-05-14  9:26:05 0 [Note] InnoDB: Number of pools: 1
+2020-05-14  9:26:05 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2020-05-14  9:26:05 0 [Note] InnoDB: Initializing buffer pool, total size = 512M, instances = 1, chunk size = 128M
+2020-05-14  9:26:05 0 [Note] InnoDB: Completed initialization of buffer pool
+2020-05-14  9:26:05 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2020-05-14  9:26:05 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2020-05-14  9:26:05 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2020-05-14  9:26:05 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2020-05-14  9:26:05 0 [Note] InnoDB: Waiting for purge to start
+2020-05-14  9:26:05 0 [Note] InnoDB: 10.4.11 started; log sequence number 407732925; transaction id 633502
+2020-05-14  9:26:05 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-05-14  9:26:05 0 [Note] Server socket created on IP: '::'.
+2020-05-14  9:26:05 0 [Note] InnoDB: Loading buffer pool(s) from C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-05-14  9:26:06 0 [Note] Reading of all Master_info entries succeeded
+2020-05-14  9:26:06 0 [Note] Added new Master_info '' to hash table
+2020-05-14  9:26:06 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: ready for connections.
+Version: '10.4.11-MariaDB'  socket: ''  port: 3307  mariadb.org binary distribution
+2020-05-14  9:26:06 0 [Note] InnoDB: Buffer pool(s) load completed at 200514  9:26:06
+2020-05-19  1:28:00 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2020-05-19  1:28:00 0 [Note] Event Scheduler: Purging the queue. 0 events
+2020-05-19  1:28:00 0 [Note] InnoDB: FTS optimize thread exiting.
+2020-05-19  1:28:00 0 [Note] InnoDB: Starting shutdown...
+2020-05-19  1:28:00 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Program Files\MariaDB 10.4\data\ib_buffer_pool
+2020-05-19  1:28:00 0 [Note] InnoDB: Buffer pool(s) dump completed at 200519  1:28:00
+2020-05-19  1:28:01 0 [Note] InnoDB: Shutdown completed; log sequence number 407732934; transaction id 633503
+2020-05-19  1:28:01 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2020-05-19  1:28:01 0 [Note] C:\Program Files\MariaDB 10.4\bin\mysqld.exe: Shutdown complete
+

@@ -1,5 +1,7 @@
+const uri = 'http://api.daverussell.local:8002';
+
 const getSchemeOfWork = (reactComponent) => {
-    fetch("http://127.0.0.1:8000/api/schemeofwork/127?format=json")
+    fetch(uri + "/api/schemesofwork/127?format=json")
         .then(res => { 
             return res.json();
         })
@@ -20,7 +22,7 @@ const getSchemeOfWork = (reactComponent) => {
 }
 
 const getLessons = (reactComponent) => {
-    fetch("http://127.0.0.1:8000/api/schemeofwork/127/lessons?format=json")
+    fetch(uri + "/api/schemesofwork/127/lessons/?format=json")
         .then(res => { 
             return res.json();
         })
@@ -40,8 +42,8 @@ const getLessons = (reactComponent) => {
     )
 }
 
-const getLesson = (reactComponent, learning_episode_id) => {
-    fetch(`http://127.0.0.1:8000/api/schemeofwork/127/lessons/${learning_episode_id}?format=json`)
+const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
+    fetch(uri + `/api/schemesofwork/127/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
         .then(res => { 
             return res.json();
         })

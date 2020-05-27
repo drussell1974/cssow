@@ -6,7 +6,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new_page_navigation(UITe
 
     def setUp(self):
         # setup
-        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
 
     def tearDown(self):

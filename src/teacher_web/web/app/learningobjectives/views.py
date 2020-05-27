@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -31,6 +31,7 @@ def index(request, scheme_of_work_id, lesson_id):
     return render(request, "learningobjectives/index.html", view_model.content)
 
 
+@permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
     print('Creating a new learning objective...')
@@ -72,6 +73,7 @@ def new(request, scheme_of_work_id, lesson_id):
     return render(request, "learningobjectives/edit.html", view_model.content)
 
 
+@permission_required('cssow.change_learningobjectivemodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Edit an existing learning objective '''
     
@@ -111,6 +113,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     return render(request, "learningobjectives/edit.html", view_model.content)
 
 
+@permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
     print('saving learning objective... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id, ", learning_objective_id:", learning_objective_id)
@@ -158,6 +161,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
+@permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 def delete_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ delete item and redirect back to referer """
 
@@ -167,7 +171,8 @@ def delete_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
 
     return HttpResponseRedirect(redirect_to_url)
 
-    
+
+@permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 

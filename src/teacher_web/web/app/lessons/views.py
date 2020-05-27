@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -29,7 +30,7 @@ def index(request, scheme_of_work_id):
     
     return render(request, "lessons/index.html", view_model.content)
 
-
+@permission_required('cssow.add_lessonmodel', login_url='/accounts/login/')
 def new(request, scheme_of_work_id):
     ''' Create a new lesson '''
     
@@ -62,6 +63,7 @@ def new(request, scheme_of_work_id):
     return render(request, "lessons/edit.html", view_model.content)
 
 
+@permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, lesson_id):
     ''' Edit the lesson '''
     lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
@@ -89,6 +91,7 @@ def edit(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/edit.html", view_model.content)
 
     
+@permission_required('cssow.add_lessonmodel', login_url='/accounts/login/')
 def copy(request, scheme_of_work_id, lesson_id):
     ''' Copy the lesson '''
     lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
@@ -116,6 +119,7 @@ def copy(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/edit.html", view_model.content)
 
 
+@permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
     
@@ -124,6 +128,7 @@ def publish(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/edit.html", view_model.content)
 
 
+@permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 def delete(request, scheme_of_work_id, lesson_id):
     ''' Delete the lesson '''
     
@@ -154,6 +159,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
+@permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id):
     """ save_item non-view action """
 
@@ -222,6 +228,7 @@ def initialise_keywords(request, scheme_of_work_id):
     return render(request, "lessons/index.html", view_model.content)
 
 
+@permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 

@@ -1,13 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_lessonobjective_whiteboard(UITestCase):
+class test_schemeofwork_lesson_whiteboard(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
         self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/whiteboard".format(self.test_scheme_of_work_id, self.test_lesson_id))
-        self.test_context.implicitly_wait(4)
 
     def tearDown(self):
         pass

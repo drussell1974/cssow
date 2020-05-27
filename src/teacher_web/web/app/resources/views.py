@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -8,6 +8,9 @@ from django.urls import reverse
 from shared.view_model import ViewModel
 from cssow.models import cls_resource, cls_lesson, cls_schemeofwork
 from cssow.models.core import validation_helper
+
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 
 def index(request, scheme_of_work_id, lesson_id):
@@ -44,13 +47,14 @@ def new(request, scheme_of_work_id, lesson_id):
         lesson_id=lesson_id)
 
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-            
+    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "resource_id": model.id,
         "resource": model,
-        "task_options": ['fa-book', 'fa-film', 'fa-balance-scale', 'fa-user']
+        "get_resource_type_options": get_resource_type_options,
     }
     
     view_model = ViewModel("", lesson["title"], "New", data=data)
@@ -64,14 +68,15 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     cls_resource.enable_logging = True
     model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
     
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-        
+    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)    
+    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "resource_id": model.id,
         "resource": model,
-        "task_options": ['fa-book', 'fa-film', 'fa-balance-scale', 'fa-user']
+        "get_resource_type_options": get_resource_type_options,
     }
     
     view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
@@ -82,7 +87,6 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 def save(request, scheme_of_work_id, lesson_id, resource_id):
     """ save_item non-view action """
     print('saving resource... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id)
-    
     # create instance of model from request.vars
     cls_resource.enable_logging = True
     model = cls_resource.ResourceModel(
@@ -93,7 +97,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         page_uri=request.POST.get("page_uri", ""),
         publisher=request.POST.get("publisher", ""),
         page_note=request.POST.get("page_note", ""),
-        task_icon=request.POST.get("task_icon", ""),
+        type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
         created_by_id=request.user.id,
         published=request.POST.get("published", 0)

@@ -14,7 +14,10 @@ class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
 
     def get(self, request, scheme_of_work_id, lesson_id):
-        lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+        
+        resource_type_id = request.GET.get("resource_type_id", 0)
+
+        lesson = cls_lesson.get_model(db, lesson_id, request.user.id, resource_type_id)
         return JsonResponse({"lesson": lesson})
     
     
