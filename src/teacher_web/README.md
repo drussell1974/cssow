@@ -18,7 +18,9 @@ Use 'yarn build' from package.json to install the prerequisites, or directly fro
 
 > pip install django
 
-> pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl 
+> pip install django-debug-toolbar
+
+> pip install django-cors-headers
 
 > pip install mysqlclient
 
@@ -27,6 +29,10 @@ Use 'yarn build' from package.json to install the prerequisites, or directly fro
 > pip install djangorestframework
 
 > pip install selenium'''
+
+- Install CSSOW models - see documentation for building whl file from setup.py
+
+> pip install ../modules/cssow/dist/cssow_drussell1974-0.0.1-py3-none-any.whl 
 
 # Teacher Admin
 
