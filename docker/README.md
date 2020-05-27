@@ -115,7 +115,7 @@ Creates the React web app from a Dockerfile
 > docker build -f './Dockerfile-student_web'
 
 > docker run -d 
---link mariadb-cssow_api
+--link django-teacher_web
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 react-student_web
