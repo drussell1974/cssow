@@ -115,13 +115,26 @@ Creates the React web app from a Dockerfile
 > docker build student-web -t student-web
 
 > docker run -d 
---link teacher-web
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-react-student_web
+student-web
 
 ## About the /student-web/Dockerfile file
 
-From the node:14.3 image, runs package.json to install dependencies and selenium
+From the node:14.3 image, runs package.json to install dependencies using yarn.
 
 Runs the server on port 8001
+
+## Troubleshooting
+
+- Run in interactive mode and run yarn build
+
+> docker run -it
+-p 8001:8001
+--mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
+student-web
+bash
+
+> root@xxxx:/usr/src/app/# cd student_web
+> root@xxxx:/usr/src/app/student_web/# yarn install
+> root@xxxx:/usr/src/app/student_web/# yarn build-dev
