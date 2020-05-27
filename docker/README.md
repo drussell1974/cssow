@@ -42,10 +42,11 @@ Creates the django web server from a Dockerfile
 > docker build teacher-web -t django-teacher_web
 
 > docker run -d 
+--name teacher-web
 --link mariadb-cssow_api
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-django-teacher_web
+teacher_web
 
 ## About the 'Dockerfile-teacher_web' file
 
@@ -64,6 +65,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 - Run in interactive mode and run bash file to create cssow models module and start webserver manually
 
 > docker run -it
+--name student-web
 --link mariadb-cssow_api
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
