@@ -39,7 +39,7 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build teacher-web
+> docker build teacher-web -t teacher-web
 
 > docker run -d 
 --link mariadb-cssow_api
