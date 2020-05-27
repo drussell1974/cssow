@@ -42,8 +42,9 @@ Creates the django web server from a Dockerfile
 > docker build teacher-web -t teacher-web
 
 > docker run -d 
---link mariadb-cssow_api
 -p 8002:8002
+--name teacher-web
+--link mariadb-cssow_api
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher-web
 
@@ -64,8 +65,9 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 - Run in interactive mode and run bash file to create cssow models module and start webserver manually
 
 > docker run -it
---link mariadb-cssow_api
 -p 8002:8002
+--name teacher-web
+--link mariadb-cssow_api
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher-web
 bash
@@ -116,6 +118,7 @@ Creates the React web app from a Dockerfile
 
 > docker run -d 
 -p 8001:8001
+--link teacher-web
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 student-web
 
@@ -131,10 +134,15 @@ Runs the server on port 8001
 
 > docker run -it
 -p 8001:8001
+--link teacher-web
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 student-web
 bash
 
 > root@xxxx:/usr/src/app/# cd student_web
 > root@xxxx:/usr/src/app/student_web/# yarn install
+> root@xxxx:/usr/src/app/student_web/# yarn build-dev
+
+or production mode
+
 > root@xxxx:/usr/src/app/student_web/# yarn build-dev
