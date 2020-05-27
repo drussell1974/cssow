@@ -6,11 +6,11 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > docker run -d --name mariadb-cssow_api -v v_cssow_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Admin1. mariadb
 
-> sh ~/dev/cssow/docker/cssow-app/restore-cssow_api.sh
+> sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
 
 '''TODO: This should be executed from a Dockerfile'''
 
-## About the 'restore-cssow_api.sh' file 
+## About the 'restore--cssow-db.sh' file 
 
 1. Runs the /db/setup/db-setup.sql file to create a non-root user and cssow_api database
 2. Runs the /db/backups/db-backup__<TIMESTAMP>.sql to restore data to cssow_api database
@@ -39,7 +39,7 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build -f './Dockerfile-teacher_web'
+> docker build teacher-web -t django-teacher_web
 
 > docker run -d 
 --link mariadb-cssow_api
@@ -112,7 +112,7 @@ Creates the React web app from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build -f './Dockerfile-student_web'
+> docker build student-web -t react-student_web
 
 > docker run -d 
 --link django-teacher_web
@@ -120,8 +120,8 @@ Creates the React web app from a Dockerfile
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 react-student_web
 
-## About the 'Dockerfile-student_web' file
+## About the /student-web/Dockerfile file
 
-From the python:3 image, runs package.json to install dependencies and selenium
+From the node:14.3 image, runs package.json to install dependencies and selenium
 
 Runs the server on port 8001
