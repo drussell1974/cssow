@@ -6,7 +6,7 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > docker run -d --name mariadb-cssow_api -v v_cssow_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Admin1. mariadb
 
-> sh ~/dev/schemeofwork_web2py_app/docker/cssow-app/restore-cssow_api.sh
+> sh ~/dev/cssow/docker/cssow-app/restore-cssow_api.sh
 
 '''TODO: This should be executed from a Dockerfile'''
 
@@ -23,7 +23,7 @@ Check volume has been created (should show frm and idb files)
 
 Check cssow_api database has been created and is accessible using bash
 
-> docker exec -it some-mariadb bash
+> docker exec -it mariadb-cssow_api bash
 
 > mysql -pAdmin1.
 
@@ -43,7 +43,7 @@ Creates the django web server from a Dockerfile
 
 > docker run -d 
 --link mariadb-cssow_api
---mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app 
+--mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 django-teacher_web
 
 ## About the 'Dockerfile-teacher_web' file
@@ -56,20 +56,16 @@ Runs the server on port 8002
 
 Clear images
 
-
-
 Ensure no error when running the Dockerfile
 
 Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and 'docker rm <id>'
 
-- run in interactive mode and run bash file to create cssow models module and start webserver manually
+- Run in interactive mode and run bash file to create cssow models module and start webserver manually
 
-> docker build -f './Dockerfile-teacher_web'
-
-> docker run -it 
+> docker run -it
 --link mariadb-cssow_api
---mount type=bind,source=/home/dave/dev/schemeofwork_web2py_app/src,target=/usr/src/app 
-django-teacher_web 
+--mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
+django-teacher_web
 bash
 
 > root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
@@ -79,3 +75,17 @@ bash
 > Starting development server at http://0.0.0.0:8002
 
 > Quit the server with CONTROL-C
+
+- Check internal network
+
+> root@xxxx:/usr/src/app# cat /etc/hosts
+
+> ...
+
+> 172.17.x.x   mariadb-cssow_api  99xx99xx99xx
+
+> 172.17.x.x   99xx99xx99xx
+
+- Check external access to the web server
+
+> root@xxxx:/usr/src/app#
