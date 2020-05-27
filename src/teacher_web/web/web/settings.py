@@ -95,9 +95,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cssow_api',
         'USER': 'drussell1974',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'PASSWORD': 'password1.',
+        'HOST': 'mariadb-cssow_api',
+        'PORT': '3306',
     }
 }
 

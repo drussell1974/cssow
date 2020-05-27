@@ -1,14 +1,18 @@
 FROM python:3
 
-WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get install -y yarn
 
 RUN pip install django
-#RUN pip install cssow_drussell1974-0.0.1-py3-none-any.whl
+RUN pip install django-debug-toolbar
+RUN pip install django-cors-headers
 RUN pip install mysqlclient
+RUN pip install mysql-connector-python
 RUN pip install djangorestframework
 RUN pip install selenium
 
-COPY . .
+WORKDIR /usr/src/app
 
-#ENTRYPOINT DJANGO_APP=/opt/src/teacher_web/web/manage.py runserver http://localhost:8002
-ENTRYPOINT DJANGO_APP=python
+EXPOSE 8002
+
+CMD ["sh","build-teacher_web.sh"]
