@@ -11,7 +11,7 @@
   "scripts": {
     "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "build-dev": "webpack && webpack-dev-server --mode development",
+    "build-dev": "webpack && webpack-dev-server --mode development --host 0.0.0.0",
     "build": "webpack && webpack-dev-server --mode production"
   },
   "devDependencies": {

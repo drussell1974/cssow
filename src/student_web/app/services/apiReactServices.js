@@ -1,4 +1,4 @@
-const uri = 'http://api.daverussell.local:8002';
+const uri = 'http://localhost:8002';
 
 const getSchemeOfWork = (reactComponent) => {
     fetch(uri + "/api/schemesofwork/127?format=json")

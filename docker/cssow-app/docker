@@ -1,0 +1,37 @@
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+f8974348e8b0        teacher-web         "sh build-teacher_we…"   7 minutes ago       Up 7 minutes        0.0.0.0:8002->8002/tcp   angry_boyd
+94945f44e9ae        mariadb             "docker-entrypoint.s…"   40 hours ago        Up 4 hours          3306/tcp                 mariadb-cssow_api
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+f8974348e8b0        teacher-web         "sh build-teacher_we…"   7 minutes ago       Up 7 minutes        0.0.0.0:8002->8002/tcp   angry_boyd
+94945f44e9ae        mariadb             "docker-entrypoint.s…"   40 hours ago        Up 4 hours          3306/tcp                 mariadb-cssow_api
+[3J[H[2JCONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                          PORTS                    NAMES
+295356103d4c        student-web         "docker-entrypoint.s…"   About a minute ago   Exited (0) About a minute ago                            thirsty_meninsky
+f8974348e8b0        teacher-web         "sh build-teacher_we…"   7 minutes ago        Up 7 minutes                    0.0.0.0:8002->8002/tcp   angry_boyd
+94945f44e9ae        mariadb             "docker-entrypoint.s…"   40 hours ago         Up 4 hours                      3306/tcp                 mariadb-cssow_api
+cssow-db
+docker
+docker-compose.yml
+student-web
+teacher-web
+cssow-app
+README.md
+cssow_api.code-workspace
+cssow-prototype
+db
+docker
+external libraries
+__init__.py
+LICENSE
+README.md
+releases
+src
+cssow_api.code-workspace
+cssow-prototype
+db
+docker
+external libraries
+__init__.py
+LICENSE
+README.md
+releases
+src
