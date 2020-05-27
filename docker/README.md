@@ -21,7 +21,7 @@ Check volume has been created (should show frm and idb files)
 
 Check cssow_api database has been created and is accessible using bash
 
-> docker exec -it mariadb-cssow_api bash
+> docker exec -it cssow-db bash
 
 > mysql -pAdmin1.
 
@@ -88,7 +88,7 @@ http://localhost:8002
 
 > ...
 
-> 172.17.x.x   mariadb-cssow_api  99xx99xx99xx
+> 172.17.x.x   cssow-db  99xx99xx99xx
 
 > 172.17.x.x   99xx99xx99xx
 
