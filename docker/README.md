@@ -18,23 +18,29 @@ Build Script (also calls docker-clean.sh)
 1. Edit or create the .env file
 
 ``` 
-TEACHER_WEB__WEB_SERVER_IP=<ip  address 1>
-TEACHER_WEB__WEB_SERVER_PORT=<#port>
-TEACHER_WEB__WEB_SERVER_HOST_NAME=<host name>
+TEACHER_WEB__WEB_SERVER_IP=<ipaddress>
+TEACHER_WEB__WEB_SERVER_PORT_EXT=<port#>
+TEACHER_WEB__WEB_SERVER_PORT_INT=<port#>
+TEACHER_WEB__WEB_SERVER_HOST_NAME=<hostname>
+TEACHER_WEB__WEB_SERVER_WWW=<url>
 
-STUDENT_WEB__WEB_SERVER_IP=<ip address 2>
-STUDENT_WEB__WEB_SERVER_PORT=<#port>
-STUDENT_WEB__WEB_SERVER_HOST_NAME=<host name>
+STUDENT_WEB__WEB_SERVER_IP=<ipaddress>
+STUDENT_WEB__WEB_SERVER_PORT_EXT=<port>
+STUDENT_WEB__WEB_SERVER_PORT_INT=<port>
+STUDENT_WEB__WEB_SERVER_HOST_NAME=<hostname>
+STUDENT_WEB__WEB_SERVER_WWW=<url>
 
-CSSOW_DB__IP=<ip address 3>
-CSSOW_DB__PORT=<#port>
-CSSOW_DB__HOST_NAME=<host name>
-CSSOW_DB__ROOT_PASSWORD=<password 1>
-CSSOW_DB__DATABASE=<database name>
-CSSOW_DB__USER=<user name>
-CSSOW_DB__PASSWORD=<password 2>
+CSSOW_DB__IP=<ipaddress>
+CSSOW_DB__PORT_EXT=<port#>
+CSSOW_DB__PORT_INT=<port#>
+CSSOW_DB__HOST_NAME=<hostname>
+CSSOW_DB__ROOT_PASSWORD=<password>
+CSSOW_DB__WEB_SERVER_HOST_WWW=<url>
+CSSOW_DB__DATABASE=<dbname>
+CSSOW_DB__USER=<username>
+CSSOW_DB__PASSWORD=<password>
 
-CSSOWMODEL_APP__VERSION=<#version> 
+CSSOWMODEL_APP__VERSION=2.17.3
 ```
 
 2. Run the script to copy app folders into ./docker/<image>/build directory
@@ -51,6 +57,12 @@ CSSOWMODEL_APP__VERSION=<#version>
 
 > docker exec -it <container_name> bash
 
+Check environment variables are available on the server
+
+> printenv
+
+See more about environment variables: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
+
 - Run Docker Compose manually
 
 1. View containers
@@ -66,6 +78,20 @@ CSSOWMODEL_APP__VERSION=<#version>
 > docker-compose build
 
 4. Run
+
+> docker-compose up
+
+File changes
+
+1. Ensure source code is included in the /docker/<image>/build directory
+  
+> docker-build.sh
+
+2. Rebuild to copy the file changes
+
+> docker-compse build 
+
+3. Run the container
 
 > docker-compose up
 
