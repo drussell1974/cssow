@@ -14,9 +14,9 @@ services:
         teacher-web:
                 build: ./docker/teacher-web
                 environment:
-                        STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
-                        STUDENT_WEB__WEB_SERVER_PORT: "${STUDENT_WEB__WEB_SERVER_PORT}"
-                        STUDENT_WEB__WEB_SERVER_HOST_NAME: "${STUDENT_WEB__WEB_SERVER_HOST_NAME}"
+                        TEACHER_WEB__WEB_SERVER_IP: "${TEACHER_WEB__WEB_SERVER_IP}"
+                        TEACHER_WEB__WEB_SERVER_PORT: "${TEACHER_WEB__WEB_SERVER_PORT}"
+                        TEACHER_WEB__WEB_SERVER_HOST_NAME: "${TEACHER_WEB__WEB_SERVER_HOST_NAME}"
                         CSSOWMODEL_APP__VERSION: "${CSSOWMODEL_APP__VERSION}"
                 links:
                         - "${CSSOW_DB__HOST_NAME}:${CSSOW_DB__HOST_NAME}"
