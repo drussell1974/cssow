@@ -25,7 +25,10 @@ SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["api.daverussell.local", "admin.daverussell.local", "localhost"]
+ALLOWED_HOSTS = ["localhost","127.0.0.1",
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
+        ]
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -62,8 +65,8 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8001',
-]
+        os.environ['STUDENT_WEB__WEB_SERVER_WWW'],
+    ]
 
 ROOT_URLCONF = 'web.urls'
 APPEND_SLASH = True
@@ -93,11 +96,11 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cssow_api',
-        'USER': 'drussell1974',
-        'PASSWORD': 'password1.',
-        'HOST': 'cssow-db',
-        'PORT': '3306',
+        'NAME': os.environ['CSSOW_DB__DATABASE'],
+        'USER': os.environ['CSSOW_DB__USER'],
+        'PASSWORD': os.environ['CSSOW_DB__PASSWORD'],
+        'HOST': os.environ['CSSOW_DB__HOST_INT'],
+        'PORT': os.environ['CSSOW_DB__PORT_INT'],
     }
 }
 
@@ -136,9 +139,9 @@ USE_TZ = True
 
 # EMAIL HOST
 
-EMAIL_HOST = '127.0.0.1'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'webmaster@localhost.local'
+EMAIL_HOST = os.environ['EMAIL_SERVER__HOST_EXT']
+EMAIL_PORT = os.environ['EMAIL_SERVER__PORT_EXT']
+EMAIL_HOST_USER = os.environ['EMAIL_SERVER__HOST_USER']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -2,6 +2,8 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+require('dotenv').config()
+
 module.exports = {
    mode: "development",
    entry: './app/App.js',
@@ -11,7 +13,7 @@ module.exports = {
    },
    devServer: {
       inline: true,
-      port: 8001,
+      port: process.env.STUDENT_WEB__WEB_SERVER_PORT_EXT,
       contentBase:path.join(__dirname,'./build'),
    },
    module: {
