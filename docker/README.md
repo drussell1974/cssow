@@ -4,32 +4,44 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > docker volume v_cssow_data
 
-> docker run -d --name mariadb-cssow_api -v v_cssow_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Admin1. mariadb
-
+> docker run -d --name mariadb-cssow_api 
+-v v_cssow_data:/var/lib/mysql 
+-v /home/dave/dev/cssow/db/backups/current:/docker-entrypoint-initdb.d
+-e MYSQL_ROOT_PASSWORD=Admin1. mariadb
+-e MYSQL_DATABASE: cssow_api
+-e MYSQL_USER: drussell1974
+-e MYSQL_PASSWORD: password1.
 > sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
-
-'''TODO: This should be executed from a Dockerfile'''
-
-## About the 'restore--cssow-db.sh' file 
-
-1. Runs the /db/setup/db-setup.sql file to create a non-root user and cssow_api database
-2. Runs the /db/backups/db-backup__<TIMESTAMP>.sql to restore data to cssow_api database
 
 ## Troubleshooting
 
-Check volume has been created (should show frm and idb files)
+- Check a volume has been created
 
-> sudo ls /var/lib/docker/volumnes/v_cssow_data/_data/cssow_api 
+> docker volume ls
 
-Check cssow_api database has been created and is accessible using bash
+- Connect to the server and the database locally
 
 > docker exec -it mariadb-cssow_api bash
 
 > mysql -pAdmin1.
 
+> MariaDB [(none)] show databases;
+
+> | cssow_api   |       
+
+> ....      
+
 > MariaDB [(none)] use cssow_api;
 
 > MariaDB [(cssow_api)] SHOW TABLES;
+
+> | Tables_in_cssow_api   |       
+
+> + ----------------------+
+
+> | sow_scheme_of_work    |
+
+> ......
 
 > MariaDB [(cssow_api)] SELECT * FROM sow_scheme_of_work;
 
@@ -66,7 +78,7 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 
 > docker run -it
 --name student-web
---link mariadb-cssow_api
+--link cssow-db
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 django-teacher_web
