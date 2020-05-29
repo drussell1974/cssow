@@ -1,0 +1,31 @@
+version: "3.2"
+services:
+        cssow-db:
+                build: ./docker/cssow-db
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: Admin1.
+                        MYSQL_DATABASE: cssow_api
+                        MYSQL_USER: drussell1974
+                        MYSQL_PASSWORD: password1.
+                volumes:
+                        - db_data:/var/lib/mysql
+                        - ./db/backups/current:/docker-entrypoint-initdb.d
+        teacher-web:
+                build: ./docker/teacher-web
+                links:
+                        - "cssow-db:cssow-db"
+                ports:
+                        - "8002:8002"
+                depends_on:
+                        - cssow-db
+        student-web:
+                build: ./docker/student-web
+                links:
+                        - "teacher-web:teacher-web"
+                ports:
+                        - "8001:8001"
+                depends_on:
+                        - teacher-web
+volumes:
+        db_data:
