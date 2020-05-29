@@ -4,27 +4,36 @@ services:
                 build: ./docker/cssow-db
                 restart: always
                 environment:
-                        MYSQL_ROOT_PASSWORD: Admin1.
-                        MYSQL_DATABASE: cssow_api
-                        MYSQL_USER: drussell1974
-                        MYSQL_PASSWORD: password1.
+                        MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
+                        MYSQL_DATABASE: "${CSSOW_DB__DATABASE}"
+                        MYSQL_USER: "${CSSOW_DB__USER}"
+                        MYSQL_PASSWORD: "${CSSOW_DB__PASSWORD}"
                 volumes:
                         - db_data:/var/lib/mysql
                         - ./db/backups/current:/docker-entrypoint-initdb.d
         teacher-web:
                 build: ./docker/teacher-web
+                environment:
+                        STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
+                        STUDENT_WEB__WEB_SERVER_PORT: "${STUDENT_WEB__WEB_SERVER_PORT}"
+                        STUDENT_WEB__WEB_SERVER_HOST_NAME: "${STUDENT_WEB__WEB_SERVER_HOST_NAME}"
+                        CSSOWMODEL_APP__VERSION: "${CSSOWMODEL_APP__VERSION}"
                 links:
-                        - "cssow-db:cssow-db"
+                        - "${CSSOW_DB__HOST_NAME}:${CSSOW_DB__HOST_NAME}"
                 ports:
-                        - "8002:8002"
+                        - "${TEACHER_WEB__WEB_SERVER_PORT}:${TEACHER_WEB__WEB_SERVER_PORT}"
                 depends_on:
                         - cssow-db
         student-web:
                 build: ./docker/student-web
+                environment:
+                        STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
+                        STUDENT_WEB__WEB_SERVER_PORT: "${STUDENT_WEB__WEB_SERVER_PORT}"
+                        STUDENT_WEB__WEB_SERVER_HOST_NAME: "${STUDENT_WEB__WEB_SERVER_HOST_NAME}"
                 links:
-                        - "teacher-web:teacher-web"
+                        - "${TEACHER_WEB__WEB_SERVER_HOST_NAME}:${TEACHER_WEB__WEB_SERVER_HOST_NAME}"
                 ports:
-                        - "8001:8001"
+                        - "${STUDENT_WEB__WEB_SERVER_PORT}:${STUDENT_WEB__WEB_SERVER_PORT}"
                 depends_on:
                         - teacher-web
 volumes:
