@@ -18,23 +18,40 @@ Build Script (also calls docker-clean.sh)
 1. Edit or create the .env file
 
 ``` 
-TEACHER_WEB__WEB_SERVER_IP=<ip  address 1>
-TEACHER_WEB__WEB_SERVER_PORT=<#port>
-TEACHER_WEB__WEB_SERVER_HOST_NAME=<host name>
+TEACHER_WEB__WEB_SERVER_IP=0.0.0.0
+TEACHER_WEB__WEB_SERVER_PORT_EXT=8002
+TEACHER_WEB__WEB_SERVER_PORT_INT=8002
 
-STUDENT_WEB__WEB_SERVER_IP=<ip address 2>
-STUDENT_WEB__WEB_SERVER_PORT=<#port>
-STUDENT_WEB__WEB_SERVER_HOST_NAME=<host name>
+TEACHER_WEB__WEB_SERVER_HOST_EXT=admin.daverussell.co.uk
+TEACHER_WEB__WEB_SERVER_HOST_INT=teacher-web
+TEACHER_WEB__WEB_SERVER_WWW=http://localhost:8002
 
-CSSOW_DB__IP=<ip address 3>
-CSSOW_DB__PORT=<#port>
-CSSOW_DB__HOST_NAME=<host name>
-CSSOW_DB__ROOT_PASSWORD=<password 1>
-CSSOW_DB__DATABASE=<database name>
-CSSOW_DB__USER=<user name>
-CSSOW_DB__PASSWORD=<password 2>
+TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT=localhost
+TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT=localhost
 
-CSSOWMODEL_APP__VERSION=<#version> 
+STUDENT_WEB__WEB_SERVER_IP=0.0.0.0
+STUDENT_WEB__WEB_SERVER_PORT_EXT=8001
+STUDENT_WEB__WEB_SERVER_PORT_INT=8001
+STUDENT_WEB__WEB_SERVER_HOST_EXT=web.daverussell.co.uk
+STUDENT_WEB__WEB_SERVER_HOST_INT=student-web
+STUDENT_WEB__WEB_SERVER_WWW=http://localhost:8001
+
+CSSOW_DB__IP=0.0.0.0
+CSSOW_DB__PORT_EXT=3306
+CSSOW_DB__PORT_INT=3306
+CSSOW_DB__HOST_EXT=sqladmin.daverussell.co.uk
+CSSOW_DB__HOST_INT=cssow-db
+CSSOW_DB__ROOT_PASSWORD=<rootpassword>
+CSSOW_DB__WEB_SERVER_HOST_WWW=http://localhost:3306
+CSSOW_DB__DATABASE=cssow_api
+CSSOW_DB__USER=<dbusername>
+CSSOW_DB__PASSWORD=<dbpassword>
+
+EMAIL_SERVER__HOST_EXT=127.0.0.1
+EMAIL_SERVER__PORT_EXT=587
+EMAIL_SERVER__HOST_USER=<username>
+
+CSSOWMODEL_APP__VERSION=2.17.3
 ```
 
 2. Run the script to copy app folders into ./docker/<image>/build directory
@@ -44,6 +61,18 @@ CSSOWMODEL_APP__VERSION=<#version>
 ## 1.3 Troubleshooting building using docker compose
 
 - Check variables are correct in .env
+
+- Connect to server
+
+> docker ps
+
+> docker exec -it <container_name> bash
+
+Check environment variables are available on the server
+
+> printenv
+
+See more about environment variables: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
 
 - Run Docker Compose manually
 
@@ -63,6 +92,20 @@ CSSOWMODEL_APP__VERSION=<#version>
 
 > docker-compose up
 
+File changes
+
+1. Ensure source code is included in the /docker/<image>/build directory
+  
+> docker-build.sh
+
+2. Rebuild to copy the file changes
+
+> docker-compse build 
+
+3. Run the container
+
+> docker-compose up
+
 # 2. Building from command line
 
 ## 2.1 Creating the CSSOW-DB database server
@@ -76,12 +119,11 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 > docker run -d --name mariadb-cssow_api 
 -v v_cssow_data:/var/lib/mysql 
 -v /home/dave/dev/cssow/db/backups/current:/docker-entrypoint-initdb.d
--e MYSQL_ROOT_PASSWORD=Admin1. mariadb
+-e MYSQL_ROOT_PASSWORD=Admin1.
 -e MYSQL_DATABASE: cssow_api
 -e MYSQL_USER: drussell1974
 -e MYSQL_PASSWORD: password1.
-
-> sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
+mariadb
 
 ## 2.1.2 Troubleshooting building the CSSOW-db database server
 
@@ -91,7 +133,7 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 - Connect to the server and the database locally
 
-> docker exec -it mariadb-cssow_api bash
+> docker exec -it cssow-db bash
 
 > mysql -pAdmin1.
 
@@ -123,14 +165,15 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build teacher-web -t django-teacher_web
+> docker build teacher-web -t teacher-web
 
 > docker run -d 
 --name teacher-web
---link mariadb-cssow_api
+--env-file ./.env
+--link cssow-db
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-teacher_web
+teacher-web
 
 ### 2.2.2 About the 'Dockerfile-teacher_web' file
 
@@ -149,14 +192,15 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 - Run in interactive mode and run bash file to create cssow models module and start webserver manually
 
 > docker run -it
---name student-web
+--name teacher-web
+--env-file ./.env
 --link cssow-db
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-django-teacher_web
+teacher-web
 bash
 
-> root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
+> root@xxxx:/usr/src/app/teacher_web/web# sh build--teacher-web.sh
 
 > ...
 
@@ -200,13 +244,14 @@ Creates the React web app from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build student-web -t react-student_web
+> docker build student-web -t react-student-web
 
 > docker run -d 
---link django-teacher_web
+--env-file ./.env
+--link teacher-web
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-react-student_web
+student-web
 
 ### 2.3.2 About the /student-web/Dockerfile file
 
