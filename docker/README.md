@@ -12,8 +12,8 @@ Build Script (also calls docker-clean.sh)
 
 - docker-build.sh
 - docker-clean.sh
-## 1.1 
-# 2. Building from command line
+
+## 1.2 Creating and running the build
 
 1. Edit or create the .env file
 
@@ -41,7 +41,7 @@ CSSOWMODEL_APP__VERSION=<#version>
   
 > sh build.sh
 
-### 2.1.1 Troubleshooting building using docker compose
+## 1.3 Troubleshooting building using docker compose
 
 - Check variables are correct in .env
 
@@ -63,7 +63,11 @@ CSSOWMODEL_APP__VERSION=<#version>
 
 > docker-compose up
 
+# 2. Building from command line
+
 ## 2.1 Creating the CSSOW-DB database server
+
+## 2.1.1 Run the command line
 
 Docker gets mariadb image for storing cssow_api database with volume mapping to v_cssow_data
 
@@ -76,9 +80,10 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 -e MYSQL_DATABASE: cssow_api
 -e MYSQL_USER: drussell1974
 -e MYSQL_PASSWORD: password1.
+
 > sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
 
-### 2.1.1 Troubleshooting building the CSSOW-db database server
+## 2.1.2 Troubleshooting building the CSSOW-db database server
 
 - Check a volume has been created
 
@@ -110,7 +115,9 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > MariaDB [(cssow_api)] SELECT * FROM sow_scheme_of_work;
 
-## 2.1 Creating the TEACHER-WEB django web server
+## 2.2 Creating the TEACHER-WEB django web server
+
+### 2.2.1 Run the command line
 
 Creates the django web server from a Dockerfile
 
@@ -125,13 +132,13 @@ Creates the django web server from a Dockerfile
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher_web
 
-### 2.1.1 About the 'Dockerfile-teacher_web' file
+### 2.2.2 About the 'Dockerfile-teacher_web' file
 
 From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
 
 Runs the server on port 8002
 
-### 2.1.2 Troubleshooting building the TEACHER-WEB webserver
+### 2.2.3 Troubleshooting building the TEACHER-WEB webserver
 
 Clear images
 
@@ -189,6 +196,8 @@ http://localhost:8002/admin/
 
 Creates the React web app from a Dockerfile
 
+### 2.3.1 Run the command line
+
 > cd docker/cssow-app
 
 > docker build student-web -t react-student_web
@@ -199,7 +208,7 @@ Creates the React web app from a Dockerfile
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 react-student_web
 
-### About the /student-web/Dockerfile file
+### 2.3.2 About the /student-web/Dockerfile file
 
 From the node:14.3 image, runs package.json to install dependencies and selenium
 
