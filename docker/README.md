@@ -1,4 +1,69 @@
-# DATABASE
+# 1. Building using docker compose and environment variables
+
+## 1.1 Components
+
+Docker YAML
+- docker-compose.yml
+
+Environment variables file
+- .env
+
+Build Script (also calls docker-clean.sh)
+
+- docker-build.sh
+- docker-clean.sh
+## 1.1 
+# 2. Building from command line
+
+1. Edit or create the .env file
+
+``` 
+TEACHER_WEB__WEB_SERVER_IP=<ip  address 1>
+TEACHER_WEB__WEB_SERVER_PORT=<#port>
+TEACHER_WEB__WEB_SERVER_HOST_NAME=<host name>
+
+STUDENT_WEB__WEB_SERVER_IP=<ip address 2>
+STUDENT_WEB__WEB_SERVER_PORT=<#port>
+STUDENT_WEB__WEB_SERVER_HOST_NAME=<host name>
+
+CSSOW_DB__IP=<ip address 3>
+CSSOW_DB__PORT=<#port>
+CSSOW_DB__HOST_NAME=<host name>
+CSSOW_DB__ROOT_PASSWORD=<password 1>
+CSSOW_DB__DATABASE=<database name>
+CSSOW_DB__USER=<user name>
+CSSOW_DB__PASSWORD=<password 2>
+
+CSSOWMODEL_APP__VERSION=<#version> 
+```
+
+2. Run the script to copy app folders into ./docker/<image>/build directory
+  
+> sh build.sh
+
+### 2.1.1 Troubleshooting building using docker compose
+
+- Check variables are correct in .env
+
+- Run Docker Compose manually
+
+1. View containers
+
+> docker-compose ps
+
+2. Stop existing containers
+
+> docker-compose stop
+
+3. Build
+
+> docker-compose build
+
+4. Run
+
+> docker-compose up
+
+## 2.1 Creating the CSSOW-DB database server
 
 Docker gets mariadb image for storing cssow_api database with volume mapping to v_cssow_data
 
@@ -13,7 +78,7 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 -e MYSQL_PASSWORD: password1.
 > sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
 
-## Troubleshooting
+### 2.1.1 Troubleshooting building the CSSOW-db database server
 
 - Check a volume has been created
 
@@ -45,7 +110,7 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 > MariaDB [(cssow_api)] SELECT * FROM sow_scheme_of_work;
 
-# DJANGO
+## 2.1 Creating the TEACHER-WEB django web server
 
 Creates the django web server from a Dockerfile
 
@@ -60,13 +125,13 @@ Creates the django web server from a Dockerfile
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 teacher_web
 
-## About the 'Dockerfile-teacher_web' file
+### 2.1.1 About the 'Dockerfile-teacher_web' file
 
 From the python:3 image, runs pip to install django the cssow modules mysqlclient, djangorestframework and selenium
 
 Runs the server on port 8002
 
-## Troubleshooting
+### 2.1.2 Troubleshooting building the TEACHER-WEB webserver
 
 Clear images
 
@@ -120,7 +185,7 @@ http://localhost:8002
 
 http://localhost:8002/admin/
 
-# React
+## 2.3 Creating the STUDENT-WEB web server
 
 Creates the React web app from a Dockerfile
 
@@ -134,7 +199,7 @@ Creates the React web app from a Dockerfile
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
 react-student_web
 
-## About the /student-web/Dockerfile file
+### About the /student-web/Dockerfile file
 
 From the node:14.3 image, runs package.json to install dependencies and selenium
 
