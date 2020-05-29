@@ -76,12 +76,11 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 > docker run -d --name mariadb-cssow_api 
 -v v_cssow_data:/var/lib/mysql 
 -v /home/dave/dev/cssow/db/backups/current:/docker-entrypoint-initdb.d
--e MYSQL_ROOT_PASSWORD=Admin1. mariadb
+-e MYSQL_ROOT_PASSWORD=Admin1.
 -e MYSQL_DATABASE: cssow_api
 -e MYSQL_USER: drussell1974
 -e MYSQL_PASSWORD: password1.
-
-> sh ~/dev/cssow/docker/cssow-app/cssow-db/restore--cssow-db.sh
+mariadb
 
 ## 2.1.2 Troubleshooting building the CSSOW-db database server
 
@@ -91,7 +90,7 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 
 - Connect to the server and the database locally
 
-> docker exec -it mariadb-cssow_api bash
+> docker exec -it cssow-db bash
 
 > mysql -pAdmin1.
 
@@ -123,14 +122,15 @@ Creates the django web server from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build teacher-web -t django-teacher_web
+> docker build teacher-web -t teacher-web
 
 > docker run -d 
 --name teacher-web
---link mariadb-cssow_api
+--env-file ./.env
+--link cssow-db
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-teacher_web
+teacher-web
 
 ### 2.2.2 About the 'Dockerfile-teacher_web' file
 
@@ -149,14 +149,15 @@ Try using 'docker ps -a' to view all containers, then use 'docker stop <id>' and
 - Run in interactive mode and run bash file to create cssow models module and start webserver manually
 
 > docker run -it
---name student-web
+--name teacher-web
+--env-file ./.env
 --link cssow-db
 -p 8002:8002
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-django-teacher_web
+teacher-web
 bash
 
-> root@xxxx:/usr/src/app/teacher_web/web# sh build-teacher_web.sh
+> root@xxxx:/usr/src/app/teacher_web/web# sh build--teacher-web.sh
 
 > ...
 
@@ -200,13 +201,14 @@ Creates the React web app from a Dockerfile
 
 > cd docker/cssow-app
 
-> docker build student-web -t react-student_web
+> docker build student-web -t react-student-web
 
 > docker run -d 
---link django-teacher_web
+--env-file ./.env
+--link teacher-web
 -p 8001:8001
 --mount type=bind,source=/home/dave/dev/cssow/src,target=/usr/src/app 
-react-student_web
+student-web
 
 ### 2.3.2 About the /student-web/Dockerfile file
 
