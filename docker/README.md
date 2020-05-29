@@ -45,6 +45,12 @@ CSSOWMODEL_APP__VERSION=<#version>
 
 - Check variables are correct in .env
 
+- Connect to server
+
+> docker ps
+
+> docker exec -it <container_name> bash
+
 - Run Docker Compose manually
 
 1. View containers
