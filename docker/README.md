@@ -120,11 +120,11 @@ Docker gets mariadb image for storing cssow_api database with volume mapping to 
 > docker run -d --name mariadb-cssow_api 
 -v v_cssow_data:/var/lib/mysql 
 -v /home/dave/dev/cssow/db/backups/current:/docker-entrypoint-initdb.d
--e MYSQL_ROOT_PASSWORD=Admin1.
+-e MYSQL_ROOT_PASSWORD=<password>
 -e MYSQL_DATABASE: cssow_api
--e MYSQL_USER: drussell1974
--e MYSQL_PASSWORD: password1.
-mariadb
+-e MYSQL_USER: <username>
+-e MYSQL_PASSWORD: <passowrd>
+  mariadb
 
 ## 2.1.2 Troubleshooting building the CSSOW-db database server
 
