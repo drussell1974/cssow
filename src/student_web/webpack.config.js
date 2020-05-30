@@ -1,6 +1,17 @@
+const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+require('dotenv').config()
+
+
+/* Get Environment Variables from dotenv config (required above)*/
+
+const {
+   STUDENT_WEB__WEB_SERVER_PORT_INT: port_int, /* replace port in devserver */
+   STUDENT_WEB__CSSOW_API_URI: api_uri, /* uri for accessing cssow json api*/
+   STUDENT_WEB__DEFAULT_SCHEMEOFWORK: default_schemeofwork, /* default scheme of work */
+} = process.env
 
 module.exports = {
    mode: "development",
@@ -11,7 +22,7 @@ module.exports = {
    },
    devServer: {
       inline: true,
-      port: 8001,
+      port: port_int,
       contentBase:path.join(__dirname,'./build'),
    },
    module: {
@@ -60,5 +71,10 @@ module.exports = {
       new CopyPlugin([
          { from: 'assets', to: 'assets' },
        ]),
+       /* Create custom variables accessible throughout solution */
+       new webpack.DefinePlugin({
+          "API_URL":JSON.stringify(api_uri),
+          "DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
+       })
    ]
 }
