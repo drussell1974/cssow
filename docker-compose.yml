@@ -1,0 +1,58 @@
+version: "3.2"
+services:
+        cssow-db:
+                build: ./docker/cssow-db
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
+                        MYSQL_DATABASE: "${CSSOW_DB__DATABASE}"
+                        MYSQL_USER: "${CSSOW_DB__USER}"
+                        MYSQL_PASSWORD: "${CSSOW_DB__PASSWORD}"
+                volumes:
+                        - db_data:/var/lib/mysql
+                        - ./db/backups/current:/docker-entrypoint-initdb.d
+        teacher-web:
+                build: ./docker/teacher-web
+                environment:
+                        TEACHER_WEB__WEB_SERVER_IP: "${TEACHER_WEB__WEB_SERVER_IP}"
+                        TEACHER_WEB__WEB_SERVER_PORT_EXT: "${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
+                        TEACHER_WEB__WEB_SERVER_PORT_INT: "${TEACHER_WEB__WEB_SERVER_PORT_INT}"
+                        TEACHER_WEB__WEB_SERVER_HOST_EXT: "${TEACHER_WEB__WEB_SERVER_HOST_EXT}"
+                        TEACHER_WEB__WEB_SERVER_HOST_INT: "${TEACHER_WEB__WEB_SERVER_HOST_INT}"
+                        TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT: "${TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT}"
+                        TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT: "${TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT}"
+                        STUDENT_WEB__WEB_SERVER_WWW: "${STUDENT_WEB__WEB_SERVER_WWW}"
+                        EMAIL_SERVER__HOST_EXT: "${EMAIL_SERVER__HOST_EXT}"
+                        EMAIL_SERVER__PORT_EXT: "${EMAIL_SERVER__PORT_EXT}"
+                        EMAIL_SERVER__HOST_USER: "${EMAIL_SERVER__HOST_USER}"
+                        CSSOWMODEL_APP__VERSION: "${CSSOWMODEL_APP__VERSION}"
+                        CSSOW_DB__HOST_INT: "${CSSOW_DB__HOST_INT}"
+                        CSSOW_DB__PORT_INT: "${CSSOW_DB__PORT_INT}"
+                        CSSOW_DB__DATABASE: "${CSSOW_DB__DATABASE}"
+                        CSSOW_DB__USER: "${CSSOW_DB__USER}"                        
+                        CSSOW_DB__PASSWORD: "${CSSOW_DB__PASSWORD}"
+                links:
+                        - "${CSSOW_DB__HOST_INT}:${CSSOW_DB__HOST_EXT}"
+                ports:
+                        - "${TEACHER_WEB__WEB_SERVER_PORT_INT}:${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
+                depends_on:
+                        - cssow-db
+        student-web:
+                build: ./docker/student-web
+                environment:
+                        STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
+                        STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
+                        STUDENT_WEB__WEB_SERVER_PORT_INT: "${STUDENT_WEB__WEB_SERVER_PORT_INT}"
+                        STUDENT_WEB__WEB_SERVER_HOST_EXT: "${STUDENT_WEB__WEB_SERVER_HOST_EXT}"
+                        STUDENT_WEB__WEB_SERVER_HOST_INT: "${STUDENT_WEB__WEB_SERVER_HOST_INT}"
+                        STUDENT_WEB__WEB_SERVER_WWW: "${STUDENT_WEB__WEB_SERVER_WWW}"
+                        STUDENT_WEB__CSSOW_API_URI: "${STUDENT_WEB__CSSOW_API_URI}"
+                        STUDENT_WEB__DEFAULT_SCHEMEOFWORK: "${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}"
+                links:
+                        - "${TEACHER_WEB__WEB_SERVER_HOST_INT}:${TEACHER_WEB__WEB_SERVER_HOST_EXT}"
+                ports:
+                        - "${STUDENT_WEB__WEB_SERVER_PORT_INT}:${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
+                depends_on:
+                        - teacher-web
+volumes:
+        db_data:
