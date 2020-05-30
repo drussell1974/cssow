@@ -1,6 +1,6 @@
 FROM python:3
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y apt-transport-https
 RUN apt-get install -y yarn
 
 RUN pip install django
