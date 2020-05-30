@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+        mariadb-cssow_api:
+                image: mariadb
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD:Admin1.
+                ports:
+                        - 3306:3306
+                volumes:
+                        v_cssow_data:/var/lib/mysql
