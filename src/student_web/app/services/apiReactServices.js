@@ -1,5 +1,5 @@
 const getSchemeOfWork = (reactComponent) => {
-    fetch(`${process.env.STUDENT_WEB__WEB_SERVER_WWW}/api/schemesofwork/127?format=json`)
+    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -20,7 +20,7 @@ const getSchemeOfWork = (reactComponent) => {
 }
 
 const getLessons = (reactComponent) => {
-    fetch(`${process.env.STUDENT_WEB__WEB_SERVER_WWW}/api/schemesofwork/127/lessons/?format=json`)
+    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -41,7 +41,7 @@ const getLessons = (reactComponent) => {
 }
 
 const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
-    fetch(`${process.env.STUDENT_WEB__WEB_SERVER_WWW}/api/schemesofwork/127/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
+    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
         .then(res => { 
             return res.json();
         })
