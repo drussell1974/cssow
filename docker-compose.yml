@@ -41,7 +41,7 @@ services:
                         - cssow-db
         student-web:
                 build: ./docker/student-web
-                image: drussell1974/cssow_student-web:1.0
+                image: drussell1974/cssow_student-web:1.1
                 environment: 
                         STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
                         STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
