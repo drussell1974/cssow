@@ -20,14 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
-
+#SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
+SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
+        
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True,        
+DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],        
 
-ALLOWED_HOSTS = ["localhost","127.0.0.1",
-        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
+ALLOWED_HOSTS = [
         os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
         ]
 
 INTERNAL_IPS = [
