@@ -2,7 +2,7 @@ version: "3.2"
 services:
         cssow-db:
                 build: ./docker/cssow-db
-                image: drussell1974/cssow_cssow-db:1.0-mariadb10.5
+                image: drussell1974/cssow_cssow-db:1.0.1-mariadb10.5
                 restart: always
                 environment:
                         MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
