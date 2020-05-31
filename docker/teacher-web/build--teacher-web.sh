@@ -2,7 +2,6 @@
 
 # install cssow models
 cd build
-cd modules
 cd cssow
 python setup.py sdist bdist_wheel
 cd dist
