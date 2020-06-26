@@ -1,0 +1,8 @@
+{
+  "name": "docker-cssow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/drussell1974/cssow",
+  "author": "drussell1974 <dave@jazzthecat.co.uk>",
+  "license": "MIT"
+}
