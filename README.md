@@ -21,6 +21,17 @@ cd c/dev/schemeofwork_web2py_app/src/teacher_web/web
 
 yarn test
 
+Configuration
+-------------
+
+Environmental variables are used for Application settings, see .env.development as an exmaple.
+
+Deployment
+----------
+
+The project include Docker compose files for deployment
+
+http://hub.docker.com and search for drussell1974 
 
 Tutorials
 ---------

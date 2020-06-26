@@ -1,0 +1,11 @@
+{
+  "name": "docker-cssow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/drussell1974/cssow",
+  "author": "drussell1974 <dave@jazzthecat.co.uk>",
+  "license": "MIT",
+  "scripts": {
+	  "build": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > build/docker-compose.yml && cp .env build/.env && tar -czvf build.tar.gz ./build && git add build.tar.gz && git commit -m 'build: create docker-compose.yml and .env examples'"
+  }
+}
