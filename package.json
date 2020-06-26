@@ -6,7 +6,6 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "build": "tar -czvf cssow-stack.build.tar.gz docker-compose.yml docker-build--all.sh docker-build--cssow-db.sh docker-build--student-web.sh docker-build--teacher-web.sh docker-clean.sh db/backups --exclude=tests.py --exclude=node_modules --exclude=tests --exclude=schemeofwork_tests --exclude=__tests__ src/modules src/teacher_web src/student_web && git add cssow-stack.build.tar.gz && git commit -m 'build: create cssow-stack.build.tar.gz'",
-	  "cleam": "docker-clean.sh"
+	  "build": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > build/docker-compose.yml && cp .env build/.env && tar -czvf build.tar.gz ./build && git add build.tar.gz && git commit -m 'build: create docker-compose.yml and .env examples'"
   }
 }
