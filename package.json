@@ -6,6 +6,6 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "build": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > build/docker-compose.yml && cp .env build/.env && tar -czvf build.tar.gz ./build && git add build.tar.gz && git commit -m 'build: create docker-compose.yml and .env examples'"
+	  "build": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > compose/docker-compose.yml && cp .env compose/.env && tar -czvf compose.tar.gz ./compose && git add compose.tar.gz && git commit -m 'build: create docker-compose.yml and .env templates'"
   }
 }
