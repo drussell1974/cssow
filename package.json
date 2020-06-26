@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/drussell1974/cssow",
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+	  "build": "tar -czvf cssow-stack.build.tar.gz docker-compose.yml docker-build--all.sh docker-build--cssow-db.sh docker-build--student-web.sh docker-build--teacher-web.sh docker-clean.sh db/backups --exclude=tests.py --exclude=node_modules --exclude=tests --exclude=schemeofwork_tests --exclude=__tests__ src/modules src/teacher_web src/student_web && git add cssow-stack.build.tar.gz && git commit -m 'build: create cssow-stack.build.tar.gz'",
+	  "cleam": "docker-clean.sh"
+  }
 }
