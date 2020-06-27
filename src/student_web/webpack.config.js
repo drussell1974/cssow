@@ -4,7 +4,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('dotenv').config()
 
-
 /* Get Environment Variables from dotenv config (required above)*/
 
 const {
@@ -70,6 +69,7 @@ module.exports = {
       }),
       new CopyPlugin([
          { from: 'assets', to: 'assets' },
+         { from: 'node_modules/github-markdown-css/github-markdown.css', to: 'assets/css' },
        ]),
        /* Create custom variables accessible throughout solution */
        new webpack.DefinePlugin({

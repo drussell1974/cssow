@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import Lesson from './pages/Lesson';
 import '../assets/css/main.css';    
+import '../assets/css/custom.css';    
+import '../node_modules/github-markdown-css/github-markdown.css';
 
 ReactDOM.render(
     <Router>
