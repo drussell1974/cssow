@@ -1,6 +1,7 @@
 import React from 'react';
 import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
+import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
@@ -53,7 +54,9 @@ class Index extends React.Component {
                     <div className="inner">
                         <LessonObjectivesWidget data={this.state.Lesson} />
 
-                        <LessonBoxMenuWidget data={this.state.Lesson } typeButtonText="View" />
+                        <LessonBoxMenuWidget data={this.state.Lesson} typeButtonText="View" />
+                        
+                        <LessonActivityWidget data={this.state.Lesson} />
                     </div>
                 </div>
                 

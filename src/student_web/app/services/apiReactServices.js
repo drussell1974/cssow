@@ -1,5 +1,6 @@
+
 const getSchemeOfWork = (reactComponent) => {
-    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}?format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
         .then(res => { 
             return res.json();
         })

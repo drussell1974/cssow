@@ -1,9 +1,9 @@
 import React, { Fragment }from 'react';
 
 export const LessonActivityWidget = ({data}) => {
-    if(data === undefined) {
-        return <React.Fragment></React.Fragment>;
-    } else {
+    //if(data === undefined) {
+    //    return <React.Fragment></React.Fragment>;
+    //} else {
         return (
             <Fragment>
                 <div class="markdown-body">
@@ -36,5 +36,5 @@ export const LessonActivityWidget = ({data}) => {
                </div>                
             </Fragment>
         );
-    }
+    //}
 }
