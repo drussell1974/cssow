@@ -4,6 +4,7 @@
     "clean-dir": "^1.0.3",
     "copyfiles": "^2.1.1",
     "dotenv": "^8.2.0",
+    "github-markdown-css": "^4.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-router": "^5.1.2",
