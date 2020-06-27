@@ -1,6 +1,6 @@
 import React, { Fragment }from 'react';
 
-export const LessonMarkup = ({data}) => {
+export const LessonActivityWidget = ({data}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {

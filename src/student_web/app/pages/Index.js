@@ -2,7 +2,7 @@ import React from 'react';
 import { SOWBoxMenuWidget } from '../widgets/SOWBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { LessonMarkup } from '../widgets/LessonMarkup';
+import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import { getSchemeOfWork, getLessons, getSocialMediaLinks } from '../services/apiReactServices';
 
 class Index extends React.Component {
@@ -52,7 +52,7 @@ class Index extends React.Component {
                     <div id="main">
                         <div className="inner">
                             <SOWBoxMenuWidget data={this.state.Lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />
-                            <LessonMarkup data={this.state.Lesson.Markup} />
+                            <LessonActivityWidget data={this.state.Lesson.Markup} />
                         </div>
                     </div>
                 <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
