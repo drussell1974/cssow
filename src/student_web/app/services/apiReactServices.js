@@ -1,6 +1,6 @@
 
 const getSchemeOfWork = (reactComponent) => {
-    fetch(`${process.env.SSTUDENT_WEB__CSSOW_API_URI}/schemesofwork/${process.env.STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -12,6 +12,7 @@ const getSchemeOfWork = (reactComponent) => {
             });
         },  
         (error) => {
+ 
             reactComponent.setState({
                 SchemeOfWork: {},
                 hasError: true,
@@ -21,7 +22,7 @@ const getSchemeOfWork = (reactComponent) => {
 }
 
 const getLessons = (reactComponent) => {
-    fetch(`${process.env.STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${process.env.STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -42,7 +43,7 @@ const getLessons = (reactComponent) => {
 }
 
 const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
-    fetch(`${process.env.STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${process.env.STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
         .then(res => { 
             return res.json();
         })

@@ -73,8 +73,8 @@ module.exports = {
        ]),
        /* Create custom variables accessible throughout solution */
        new webpack.DefinePlugin({
-          "API_URL":JSON.stringify(api_uri),
-          "DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
+          "STUDENT_WEB__CSSOW_API_URI":JSON.stringify(api_uri),
+          "STUDENT_WEB__DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
        })
    ]
 }
