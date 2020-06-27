@@ -1,7 +1,7 @@
 import React from 'react';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 
 class Activity extends React.Component {
@@ -12,6 +12,7 @@ class Activity extends React.Component {
             SchemeOfWork: {},
             Lesson: {},
             hasError: false,
+            markdown: {},
         }
     
         this.socialmediadata = [];
@@ -26,6 +27,8 @@ class Activity extends React.Component {
         getSchemeOfWork(this);
 
         getLesson(this, this.learning_episode_id, 7);   
+
+        getMarkdown(this, this.learning_episode_id, 7);
     }
     
     static getDerivedStateFromError(error) {
@@ -50,7 +53,7 @@ class Activity extends React.Component {
 
                 <div id="main">
                     <div className="inner">
-                        <LessonActivityWidget data={this.state.Lesson} />    
+                        <LessonActivityWidget data={this.state.Lesson} markdown={this.state.markdown} />    
                     </div>
                 </div>
                 
