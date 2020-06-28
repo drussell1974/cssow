@@ -1,5 +1,22 @@
 # Python
 
+## python 
+> apt-get update
+
+> apt-get install -y apt-transport-https 
+
+> add-apt-repository ppa:deadsnakes/ppa
+
+> sudo apt-get update
+
+> sudo apt-get install python3.5
+
+> apt-get install python3.6
+
+> apt-get install python3.6-dev
+
+> apt-get install default-libmysqlclient-dev
+
 ## virtualenv
 
 Install virtual environment

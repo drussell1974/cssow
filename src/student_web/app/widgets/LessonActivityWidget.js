@@ -7,11 +7,11 @@ export const LessonActivityWidget = ({data, markdown}) => {
         return (
             <Fragment>
                 <h2>Rendered from data</h2>
-                <div class="markdown-body">
+                <div className="markdown-body">
                     <p>{markdown}</p>
                 </div>
                 <h2>Raw HTML</h2> 
-                <div class="markdown-body">
+                <div className="markdown-body">
                     <h1>A list of first steps to carry out:</h1>
                     <ul>
                             <li>Lorum ipsum dolor</li>
