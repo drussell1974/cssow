@@ -6,8 +6,8 @@ var renderGithubMarkdown = require('./renderGithubMarkdown');
 // options shared to all routing modules
 function setOptions(options) {
   exports.options = options;
-  home.options = options;
-  renderMarkdown.options = options;
+  //home.options = options;
+  //renderMarkdown.options = options;
   renderGithubMarkdown.options = options;
 }
 
