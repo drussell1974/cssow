@@ -3,7 +3,7 @@
  * GET /markdown:filename.
  */
 var path = require('path');
-var GithubMarkdown = require('markdown-to-html').GithubMarkdown;
+var GithubMarkdown = require('./scripts/github-markdown.js');
 
 var mdOpts = {
   flavor: 'markdown',

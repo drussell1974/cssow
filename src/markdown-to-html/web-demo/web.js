@@ -1,10 +1,13 @@
 ﻿'use strict';
+//exports.Markdown = require('lib/markdown.js');
+//exports.GithubMarkdown = require('github-markdown.js');
+
 var express = require('express');
 var markdown = require('./renderGithubMarkdown'); // loads ./routes/index.js
 var http = require('http');
 var path = require('path');
 
-var port = process.env.MARKSERVICE_DOWN_MIDDLEWARE__PORT_INT || 3031
+var port = process.env.MARKDOWN_SERVICE_MIDDLEWARE__PORT_INT || 3031
 
 // Middleware:
 var web = express();
