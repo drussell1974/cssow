@@ -6,11 +6,11 @@
 var path = require('path');
 var GithubMarkdown = require('markdown-to-html').GithubMarkdown;
 
-//var mdOpts = {
-//  flavor:     'markdown',
-//  context:    'cwjohan/node-redis-queue',
-//  username:   'guest'
-//};
+var mdOpts = {
+    flavor:     'markdown',
+  context:    'cwjohan/node-redis-queue',
+  username:   'guest'
+};
 var viewsDir = path.join(path.dirname(__dirname), 'views');
 ``
 // Class RenderGithubMarkdown.

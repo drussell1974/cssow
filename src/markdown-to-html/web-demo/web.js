@@ -14,7 +14,7 @@ var path = require('path');
 // TODO: SET MARKSERVICE_DOWN_MIDDLEWARE__PORT_INT
 
 //var port = process.env.PORT || 3030;
-var port = process.env.MARKSERVICE_DOWN_MIDDLEWARE__PORT_INT || 3030
+var port = process.env.MARKSERVICE_DOWN_MIDDLEWARE__PORT_INT || 3031
 
 // Options:
 //routes.setOptions({
@@ -30,9 +30,9 @@ web.set('views', path.join(__dirname, 'views'));
 web.use(require('stylus').middleware(path.join(__dirname, 'public')));
 web.use(express.static(path.join(__dirname, 'public')));
 
-web.get('/', routes.home.routeMe);
-web.get('/markdown/:filename', routes.markdown.routeMe);
-web.get('/github-markdown/:filename', routes.github_markdown.routeMe);
+//web.get('/', routes.home.routeMe);
+//web.get('/markdown/:filename', routes.markdown.routeMe);
+web.get('/:filename', routes.github_markdown.routeMe);
 
 process.on('SIGTERM', shutDown); // Doesn't work in win32 os.
 process.on('SIGINT', shutDown);

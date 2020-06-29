@@ -1,6 +1,6 @@
 ﻿'use strict';
-var home = require('./home');
-var renderMarkdown = require('./renderMarkdown');
+//var home = require('./home');
+//var renderMarkdown = require('./renderMarkdown');
 var renderGithubMarkdown = require('./renderGithubMarkdown');
 
 // options shared to all routing modules
@@ -13,8 +13,8 @@ function setOptions(options) {
 
 // exports:
 exports.setOptions = setOptions;
-exports.home = home;
-exports.markdown = renderMarkdown;
+//exports.home = home;
+//exports.markdown = renderMarkdown;
 exports.github_markdown = renderGithubMarkdown;
 
 
