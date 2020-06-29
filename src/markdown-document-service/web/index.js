@@ -4,7 +4,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 
-var port = process.env.MARKDOWN_SERVICE_MIDDLEWARE__PORT_INT || 8081
+var port = process.env.MARKDOWN_SERVICE_MIDDLEWARE__PORT_INT || 8082
 
 // Markdown
 
@@ -23,7 +23,7 @@ function RenderMarkdown() {
     var debug = req.param('debug', false);
     md.debug = debug;
     md.bufmax = 2048;
-    var fileName = path.join('views', req.params.filename);
+    var fileName = path.join(__dirname, 'views', req.params.filename);
     md.render(fileName, mdOpts, function(err) {
       if (err) { res.write('>>>' + err); res.end(); return; }
       else md.pipe(res);
@@ -36,7 +36,6 @@ markd.render = markd.render.bind(markd);
 
 // Middleware:
 var web = express();
-web.set('views', path.join(__dirname, 'views'));
 web.get('/:filename', markd.render);
 
 process.on('SIGTERM', shutDown); // Doesn't work in win32 os.
