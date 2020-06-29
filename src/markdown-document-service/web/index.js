@@ -42,7 +42,7 @@ process.on('SIGTERM', shutDown); // Doesn't work in win32 os.
 process.on('SIGINT', shutDown);
 
 http.createServer(web).listen(port, function(){
-  console.log('Express server listening on port ' + port);
+  console.log('Markdown Document Service: listening on port ' + port);
   console.log('options=', markd.options);
 });
 
