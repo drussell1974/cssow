@@ -18,14 +18,14 @@ And that is not all.
 * Item Two
 * Item Three
 
-#Code Example
+# Code Example
 
-##Code enclosed in 'backquotes':
+## Code enclosed in 'backquotes':
 
 Always use `var` to define a variable. For example, `var baz = 'initial value';` would define
 variable `baz`.
 
-##This is some nonsense javascript code:
+## This is some nonsense javascript code:
 
         var fs = require('fs');
         var count = 0, text;
@@ -48,7 +48,7 @@ variable `baz`.
           }
         }
 
-#Fenced Javascript Code
+# Fenced Javascript Code
 
 ```js    
 var fs = require('fs');
@@ -73,7 +73,7 @@ function foo(inc) {
 }
 ```
 
-##Fenced Ruby Code
+## Fenced Ruby Code
 
 ```ruby
 require "bunny"
@@ -96,7 +96,7 @@ q.subscribe(:ack => true, :block => true,) do |delivery_info, properties, body|
 end
 ```
 
-##Fenced Coffeescript Code
+## Fenced Coffeescript Code
 
 ```coffee
 fs = require 'fs'
@@ -118,7 +118,7 @@ foo = (inc) ->
     throw new Error 'Help! ' + err
 ```
 
-##Fenced Python Code
+## Fenced Python Code
 
 ```py
 def fib(n):
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     print 'fib(', n, ') is ', f
 ```
 
-#In Conclusion
+# In Conclusion
 
 You _can_ do it __too__!
 Try to enclose `code` in *backquotes*.

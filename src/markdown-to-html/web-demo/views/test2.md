@@ -1,7 +1,7 @@
 This github/linguist#1 and #1 'is' surprising.
 And so &#39;is&#39; this.
 
-##Code like `foo` enclosed in 'backquotes':
+## Code like `foo` enclosed in 'backquotes':
 
 ```py
 def fib(n):    # write Fibonacci series up to n
