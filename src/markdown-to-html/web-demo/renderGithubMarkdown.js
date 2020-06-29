@@ -6,9 +6,7 @@ var path = require('path');
 var GithubMarkdown = require('markdown-to-html').GithubMarkdown;
 
 var mdOpts = {
-  //flavor:     'markdown',
-  //context:    'cwjohan/node-redis-queue',
-  //username:   'guest'
+  flavor: 'markdown',
 };
 
 function RenderGithubMarkdown() {
