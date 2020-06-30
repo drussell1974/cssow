@@ -4,7 +4,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 
-var port = process.env.MARKDOWN_SERVICE_MIDDLEWARE__PORT_INT || 8003
+var port = process.env.MARKDOWN_SERVICE__PORT_INT || 3003
 
 // Markdown
 
