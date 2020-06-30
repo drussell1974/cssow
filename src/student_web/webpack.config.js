@@ -17,12 +17,14 @@ module.exports = {
    entry: './app/App.js',
    output: {
       path: path.join(__dirname, '/build/'),
+      publicPath: '/',
       filename: 'bundle.js'
    },
    devServer: {
       inline: true,
       port: port_int,
       contentBase:path.join(__dirname,'./build'),
+      historyApiFallback: true,
    },
    module: {
       rules: [
