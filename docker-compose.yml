@@ -52,6 +52,7 @@ services:
                         STUDENT_WEB__WEB_SERVER_HOST_INT: "${STUDENT_WEB__WEB_SERVER_HOST_INT}"
                         STUDENT_WEB__WEB_SERVER_WWW: "${STUDENT_WEB__WEB_SERVER_WWW}"
                         STUDENT_WEB__CSSOW_API_URI: "${STUDENT_WEB__CSSOW_API_URI}"
+                        STUDENT_WEB__MARKDOWN_SERVICE_URI: "${STUDENT_WEB__MARKDOWN_SERVICE_URI}"
                         STUDENT_WEB__DEFAULT_SCHEMEOFWORK: "${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}"
                 links:
                         - "${TEACHER_WEB__WEB_SERVER_HOST_INT}:${TEACHER_WEB__WEB_SERVER_HOST_EXT}"

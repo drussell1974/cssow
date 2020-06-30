@@ -34,7 +34,7 @@ class Index extends React.Component {
         getLesson(this, this.learning_episode_id, 7);   
 
         // TODO: Get activity name (/openldap/lesson3/activity1/configuring-a-client-with-autofs-ldap-and-nfs)
-        getMarkdown(this, "http://localhost:8003", this.course_name, this.lesson_name, this.activity_name, this.file_name);
+        getMarkdown(this, this.course_name, this.lesson_name, this.activity_name, this.file_name);
     }
     
     static getDerivedStateFromError(error) {

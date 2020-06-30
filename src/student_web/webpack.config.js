@@ -10,6 +10,7 @@ const {
    STUDENT_WEB__WEB_SERVER_PORT_INT: port_int, /* replace port in devserver */
    STUDENT_WEB__CSSOW_API_URI: api_uri, /* uri for accessing cssow json api*/
    STUDENT_WEB__DEFAULT_SCHEMEOFWORK: default_schemeofwork, /* default scheme of work */
+   STUDENT_WEB__MARKDOWN_SERVICE_URI: markdown_api_uri, /* uri for markdown documents */
 } = process.env
 
 module.exports = {
@@ -76,6 +77,7 @@ module.exports = {
        /* Create custom variables accessible throughout solution */
        new webpack.DefinePlugin({
           "STUDENT_WEB__CSSOW_API_URI":JSON.stringify(api_uri),
+          "STUDENT_WEB__MARKDOWN_SERVICE_URI":JSON.stringify(markdown_api_uri),
           "STUDENT_WEB__DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
        })
    ]
