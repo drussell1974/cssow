@@ -5,3 +5,5 @@ WORKDIR /usr/src/app
 COPY . . 
 
 CMD ["sh", "build--student-web.sh"]
+
+EXPOSE 8001
