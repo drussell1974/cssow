@@ -63,8 +63,8 @@ const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
     )
 }
 
-const getMarkdown = (reactComponent, document_url) => {
-    fetch(`${document_url}?rfmt=json`)
+const getMarkdown = (reactComponent, docsrv_uri, course_name, lesson_name, activity_name, file_name) => {
+    fetch(`${docsrv_uri}/${course_name}/${lesson_name}/${activity_name}/${file_name}?rfmt=json`)
       .then(res => res.json())
       .then(
         (result) => {
