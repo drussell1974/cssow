@@ -12,7 +12,7 @@ class Activity extends React.Component {
             SchemeOfWork: {},
             Lesson: {},
             hasError: false,
-            markdown: {},
+            markdown_html: {},
         }
     
         this.socialmediadata = [];
@@ -53,7 +53,7 @@ class Activity extends React.Component {
 
                 <div id="main">
                     <div className="inner">
-                        <LessonActivityWidget data={this.state.Lesson} markdown={this.state.markdown} />    
+                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />    
                     </div>
                 </div>
                 

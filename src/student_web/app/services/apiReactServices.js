@@ -63,14 +63,27 @@ const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
     )
 }
 
-const getMarkdown = (reactComponent) => {
-    reactComponent.setState({
-            markdown: {
-                "text": "Hello world github/linguist#1 **cool**, and #1!",
-                "mode": "gfm",
-                "context": "github/gollum"
-            }
-        })
+const getMarkdown = (reactComponent, document_url) => {
+    fetch(`${document_url}?rfmt=json`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+            reactComponent.setState({
+            isLoaded: true,
+            markdown_html: result
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+            reactComponent.setState({
+            isLoaded: true,
+            markdown_html: error,
+            error
+          });
+        }
+      )
 } 
 
 const getSocialMediaLinks = () => {

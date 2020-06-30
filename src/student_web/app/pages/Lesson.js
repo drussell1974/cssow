@@ -4,7 +4,7 @@ import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getSchemeOfWork, getLesson, getSocialMediaLinks, getMarkdown } from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -28,6 +28,8 @@ class Index extends React.Component {
         getSchemeOfWork(this);
 
         getLesson(this, this.learning_episode_id, 7);   
+
+        getMarkdown(this, "http://localhost:3001/test.md");
     }
     
     static getDerivedStateFromError(error) {
@@ -56,7 +58,7 @@ class Index extends React.Component {
 
                         <LessonBoxMenuWidget data={this.state.Lesson} typeButtonText="View" />
                         
-                        <LessonActivityWidget data={this.state.Lesson} />
+                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />
                     </div>
                 </div>
                 
