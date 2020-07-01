@@ -1,5 +1,6 @@
+
 const getSchemeOfWork = (reactComponent) => {
-    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}?format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -11,6 +12,7 @@ const getSchemeOfWork = (reactComponent) => {
             });
         },  
         (error) => {
+ 
             reactComponent.setState({
                 SchemeOfWork: {},
                 hasError: true,
@@ -20,7 +22,7 @@ const getSchemeOfWork = (reactComponent) => {
 }
 
 const getLessons = (reactComponent) => {
-    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -41,7 +43,7 @@ const getLessons = (reactComponent) => {
 }
 
 const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
-    fetch(`${API_URL}/schemesofwork/${DEFAULT_SCHEMEOFWORK}/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
+    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${learning_episode_id}?resource_type_id=${resource_type_id}&format=json`)
         .then(res => { 
             return res.json();
         })
@@ -60,6 +62,29 @@ const getLesson = (reactComponent, learning_episode_id, resource_type_id) => {
         }
     )
 }
+
+const getMarkdown = (reactComponent, course_name, lesson_name, activity_name, file_name) => {
+    fetch(`${STUDENT_WEB__MARKDOWN_SERVICE_URI}/${course_name}/${lesson_name}/${activity_name}/${file_name}?rfmt=json&debug=true`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+            reactComponent.setState({
+            isLoaded: true,
+            markdown_html: result
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+            reactComponent.setState({
+            isLoaded: true,
+            markdown_html: error,
+            error
+          });
+        }
+      )
+} 
 
 const getSocialMediaLinks = () => {
     return [
@@ -86,4 +111,6 @@ const getSocialMediaLinks = () => {
     ];
 }
 
-export { getSchemeOfWork, getLessons, getLesson, getSocialMediaLinks };
+
+
+export { getSchemeOfWork, getLessons, getLesson, getSocialMediaLinks, getMarkdown };

@@ -9,3 +9,5 @@ WORKDIR /usr/src/app
 COPY . .
 
 CMD ["sh","build--teacher-web.sh"]
+
+EXPOSE 8002

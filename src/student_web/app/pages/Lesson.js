@@ -1,9 +1,10 @@
 import React from 'react';
 import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
+import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getSchemeOfWork, getLesson, getSocialMediaLinks, getMarkdown } from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -18,6 +19,10 @@ class Index extends React.Component {
         this.socialmediadata = [];
 
         this.learning_episode_id = props.match.params.learning_episode_id;
+        this.course_name = "openldap";
+        this.lesson_name = "lesson3";
+        this.activity_name = "activity1"
+        this.file_name = "configuring-a-client-with-autofs-ldap-and-nfs.md";
     }
 
     componentDidMount() {
@@ -27,6 +32,9 @@ class Index extends React.Component {
         getSchemeOfWork(this);
 
         getLesson(this, this.learning_episode_id, 7);   
+
+        // TODO: Get activity name (/openldap/lesson3/activity1/configuring-a-client-with-autofs-ldap-and-nfs)
+        getMarkdown(this, this.course_name, this.lesson_name, this.activity_name, this.file_name);
     }
     
     static getDerivedStateFromError(error) {
@@ -53,7 +61,9 @@ class Index extends React.Component {
                     <div className="inner">
                         <LessonObjectivesWidget data={this.state.Lesson} />
 
-                        <LessonBoxMenuWidget data={this.state.Lesson } typeButtonText="View" />
+                        <LessonBoxMenuWidget data={this.state.Lesson} typeButtonText="View" />
+                        
+                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />
                     </div>
                 </div>
                 

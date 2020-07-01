@@ -1,23 +1,23 @@
 import React from 'react';
-import { SOWBoxMenuWidget } from '../widgets/SOWBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLessons, getSocialMediaLinks } from '../services/apiReactServices';
+import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 
-class Index extends React.Component {
+class Activity extends React.Component {
     
     constructor(props){
         super(props);
         this.state = {
             SchemeOfWork: {},
-            Lessons: [],
-            Lesson: {
-                Markup: "",
-            },
+            Lesson: {},
             hasError: false,
+            markdown_html: {},
         }
     
         this.socialmediadata = [];
+
+        this.learning_episode_id = props.match.params.learning_episode_id;
     }
 
     componentDidMount() {
@@ -26,7 +26,9 @@ class Index extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLessons(this);
+        getLesson(this, this.learning_episode_id, 7);   
+
+        getMarkdown(this, this.learning_episode_id, 7);
     }
     
     static getDerivedStateFromError(error) {
@@ -46,13 +48,15 @@ class Index extends React.Component {
     render() {
         return (
             <React.Fragment>
-                 
-                <BannerWidget heading={this.state.SchemeOfWork.name} description={this.state.SchemeOfWork.description} />
-                    <div id="main">
-                        <div className="inner">
-                            <SOWBoxMenuWidget data={this.state.Lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />
-                        </div>
+                
+                <BannerWidget heading={this.state.Lesson.title} description={this.state.Lesson.summary} />
+
+                <div id="main">
+                    <div className="inner">
+                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />    
                     </div>
+                </div>
+                
                 <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
 
             </React.Fragment>
@@ -60,4 +64,4 @@ class Index extends React.Component {
     }
 };
 
-export default Index;
+export default Activity;

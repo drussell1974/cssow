@@ -1,0 +1,9 @@
+django
+django-debug-toolbar
+django-cors-headers
+mysqlclient
+mysql-connector-python
+djangorestframework
+selenium
+../modules/cssow/dist/cssow_drussell1974-2.17.1-py3-none-any.whl
+python-dotenv
