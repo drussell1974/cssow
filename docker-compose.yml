@@ -2,7 +2,7 @@ version: "3.2"
 services:
         cssow-db:
                 build: ./docker/cssow-db
-                image: drussell1974/schemesofwork:cssow-db--1.1.0-mariadb10.5
+                image: drussell1974/schemesofwork:cssow-db--1.1.5-mariadb10.5-rc
                 restart: always
                 environment:
                         MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
@@ -11,10 +11,11 @@ services:
                         MYSQL_PASSWORD: "${CSSOW_DB__PASSWORD}"
                 volumes:
                         - "db_data:${CSSOW_DB__DBSERVER_PATH}"
+                        - "db_sqldump:/usr/src/app/sqldump/"
                         - "${CSSOW_DB__BUILD_SCRIPT_PATH_SOURCE}:${CSSOW_DB__BUILD_SCRIPT_PATH_DEST}"
         teacher-web:
                 build: ./docker/teacher-web
-                image: drussell1974/schemesofwork:teacher-web--1.1.0-python3
+                image: drussell1974/schemesofwork:teacher-web--1.1.5-python3-rc
                 environment:
                         TEACHER_WEB__WEB_SERVER_IP: "${TEACHER_WEB__WEB_SERVER_IP}"
                         TEACHER_WEB__WEB_SERVER_PORT_EXT: "${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
@@ -43,7 +44,7 @@ services:
                         - cssow-db
         markdown-service:
                 build: ./docker/markdown-service
-                image: drussell1974/schemesofwork:markdown-service--1.1.0-node14.3
+                image: drussell1974/schemesofwork:markdown-service--1.1.5-node14.3
                 environment: 
                         MARKDOWN_SERVICE__PORT_INT: "${MARKDOWN_SERVICE__PORT_INT}"
                 links:
@@ -54,7 +55,7 @@ services:
                         - teacher-web
         student-web:
                 build: ./docker/student-web
-                image: drussell1974/schemesofwork:student-web--1.1.0-node14.3
+                image: drussell1974/schemesofwork:student-web--1.1.5-node14.3
                 environment: 
                         STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
                         STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
@@ -75,3 +76,4 @@ services:
                         - markdown-service
 volumes:
         db_data:
+        db_sqldump:
