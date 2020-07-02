@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,15 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
-SECRET_KEY = os.getenv('TEACHER_WEB__WEB_SERVER_SECRET_KEY'),
+SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True,        
-DEBUG = os.getenv('TEACHER_WEB__WEB_SERVER_DEBUG'),
+DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
 ALLOWED_HOSTS = [
-        os.getenv('TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'),
-        os.getenv('TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'),
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
         ]
 
 INTERNAL_IPS = [
@@ -68,7 +66,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
-        os.getenv('STUDENT_WEB__WEB_SERVER_WWW'),
+        os.environ['STUDENT_WEB__WEB_SERVER_WWW'],
     ]
 
 ROOT_URLCONF = 'web.urls'
@@ -99,11 +97,11 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('CSSOW_DB__DATABASE'),
-        'USER': os.getenv('CSSOW_DB__USER'),
-        'PASSWORD': os.getenv('CSSOW_DB__PASSWORD'),
-        'HOST': os.getenv('CSSOW_DB__HOST_INT'),
-        'PORT': os.getenv('CSSOW_DB__PORT_INT'),
+        'NAME': os.environ['CSSOW_DB__DATABASE'],
+        'USER': os.environ['CSSOW_DB__USER'],
+        'PASSWORD': os.environ['CSSOW_DB__PASSWORD'],
+        'HOST': os.environ['CSSOW_DB__HOST_INT'],
+        'PORT': os.environ['CSSOW_DB__PORT_INT'],
     }
 }
 
@@ -141,9 +139,11 @@ USE_TZ = True
 
 # EMAIL HOST
 
-EMAIL_HOST = os.getenv('EMAIL_SERVER__HOST_EXT')
-EMAIL_PORT = os.getenv('EMAIL_SERVER__PORT_EXT')
-EMAIL_HOST_USER = os.getenv('EMAIL_SERVER__HOST_USER')
+EMAIL_HOST = os.environ['EMAIL_SERVER__HOST_EXT']
+EMAIL_PORT = os.environ['EMAIL_SERVER__PORT_EXT']
+EMAIL_HOST_USER = os.environ['EMAIL_SERVER__HOST_USER']
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

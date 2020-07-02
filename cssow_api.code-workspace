@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": "../markdown-to-html"
 		},
 		{
-			"path": "../markdown-to-html"
+			"path": "."
 		}
 	],
 	"settings": {}
