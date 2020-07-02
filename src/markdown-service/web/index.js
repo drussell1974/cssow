@@ -26,7 +26,7 @@ function RenderMarkdown() {
     var debug = req.param('debug', false);
     md.debug = debug;
     md.bufmax = 2048;
-    md.returnType = req.param('format', 'html');
+    md.format = req.param('format', 'html');
 
     var fileName = path.join(__dirname, 'views', req.params.course_name, req.params.lesson_name, req.params.activity_name, req.params.file_name);
     md.render(fileName, mdOpts, function(err) {
