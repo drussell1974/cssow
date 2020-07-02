@@ -2,7 +2,7 @@ version: "3.2"
 services:
         cssow-db:
                 build: ./docker/cssow-db
-                image: drussell1974/schemesofwork:cssow-db--1.1.5-mariadb10.5-rc
+                image: drussell1974/schemesofwork:cssow-db--1.1.6-mariadb10.5-rc
                 restart: always
                 environment:
                         MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
@@ -15,7 +15,7 @@ services:
                         - "${CSSOW_DB__BUILD_SCRIPT_PATH_SOURCE}:${CSSOW_DB__BUILD_SCRIPT_PATH_DEST}"
         teacher-web:
                 build: ./docker/teacher-web
-                image: drussell1974/schemesofwork:teacher-web--1.1.5-python3-rc
+                image: drussell1974/schemesofwork:teacher-web--1.1.6-python3-rc
                 environment:
                         TEACHER_WEB__WEB_SERVER_IP: "${TEACHER_WEB__WEB_SERVER_IP}"
                         TEACHER_WEB__WEB_SERVER_PORT_EXT: "${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
@@ -26,6 +26,7 @@ services:
                         TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT: "${TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT}"
                         TEACHER_WEB__WEB_SERVER_SECRET_KEY: "${TEACHER_WEB__WEB_SERVER_SECRET_KEY}"
                         TEACHER_WEB__WEB_SERVER_DEBUG: "${TEACHER_WEB__WEB_SERVER_DEBUG}"
+                        TEACHER_WEB__EMAILBACKEND_PATH: ${TEACHER_WEB__EMAILBACKEND_PATH}
                         STUDENT_WEB__WEB_SERVER_WWW: "${STUDENT_WEB__WEB_SERVER_WWW}"
                         EMAIL_SERVER__HOST_EXT: "${EMAIL_SERVER__HOST_EXT}"
                         EMAIL_SERVER__PORT_EXT: "${EMAIL_SERVER__PORT_EXT}"
@@ -40,11 +41,13 @@ services:
                         - "${CSSOW_DB__HOST_INT}:${CSSOW_DB__HOST_EXT}"
                 ports:
                         - "${TEACHER_WEB__WEB_SERVER_PORT_INT}:${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
+                volumes:
+                        - "${TEACHER_WEB__EMAILBACKEND_PATH}:/usr/src/app/emailbackend"
                 depends_on:
                         - cssow-db
         markdown-service:
                 build: ./docker/markdown-service
-                image: drussell1974/schemesofwork:markdown-service--1.1.5-node14.3
+                image: drussell1974/schemesofwork:markdown-service--1.1.6-node14.3
                 environment: 
                         MARKDOWN_SERVICE__PORT_INT: "${MARKDOWN_SERVICE__PORT_INT}"
                 links:
@@ -55,7 +58,7 @@ services:
                         - teacher-web
         student-web:
                 build: ./docker/student-web
-                image: drussell1974/schemesofwork:student-web--1.1.5-node14.3
+                image: drussell1974/schemesofwork:student-web--1.1.6-node14.3
                 environment: 
                         STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
                         STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"

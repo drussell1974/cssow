@@ -144,7 +144,7 @@ EMAIL_PORT = os.environ['EMAIL_SERVER__PORT_EXT']
 EMAIL_HOST_USER = os.environ['EMAIL_SERVER__HOST_USER']
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/usr/src/app' 
+EMAIL_FILE_PATH = os.environ['TEACHER_WEB__EMAILBACKEND_PATH'] 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
