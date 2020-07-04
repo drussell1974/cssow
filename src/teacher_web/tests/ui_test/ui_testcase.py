@@ -4,9 +4,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 def WebBrowserContext():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
-    return webdriver.Chrome(chrome_options=options)
+    #options = webdriver.ChromeOptions()
+    #options.add_argument("--start-maximized")
+    return webdriver.Firefox()
 
 TEST_USER_NAME = "test@localhost"
 TEST_USER_PSWD = "co2m1c1."
@@ -81,14 +81,13 @@ class UITestCase(TestCase):
 
             elem = self.test_context.find_element_by_id("id_username")
             elem.send_keys(TEST_USER_NAME)
-            #elem.send_keys(Keys.TAB)
-
+            
             elem = self.test_context.find_element_by_id("id_password")
             elem.send_keys(TEST_USER_PSWD)
-
             ' submit the form '
             elem.send_keys(Keys.RETURN)
-
+            self.wait(s=1)
+            
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             print('try_login handled - already logged in (probably) - {}'.format(e.args))
