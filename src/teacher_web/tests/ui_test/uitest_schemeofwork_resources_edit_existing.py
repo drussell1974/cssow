@@ -67,6 +67,7 @@ class uitest_schemeofwork_resource_edit_existing(UITestCase):
         elem = self.test_context.find_element_by_id("saveButton")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)
-
+        self.wait(s=1)
+        
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')

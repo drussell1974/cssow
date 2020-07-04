@@ -102,6 +102,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("draftButton")
         elem.send_keys(Keys.RETURN)
+        self.wait(s=1)
         
         # assert
         ' should return to edit be on the same page '
