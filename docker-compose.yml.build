@@ -1,19 +1,20 @@
 version: "3.2"
 services:
         cssow-db:
-                image: drussell1974/schemesofwork:cssow-db--1.1.6-mariadb10.5-rc
+                image: drussell1974/schemesofwork:cssow-db--1.2.0-mariadb10.5
                 restart: always
                 environment:
                         MYSQL_ROOT_PASSWORD: "${CSSOW_DB__ROOT_PASSWORD}"
                         MYSQL_DATABASE: "${CSSOW_DB__DATABASE}"
                         MYSQL_USER: "${CSSOW_DB__USER}"
                         MYSQL_PASSWORD: "${CSSOW_DB__PASSWORD}"
+                ports:
+                        - "${CSSOW_DB__PORT_INT}:${CSSOW_DB__PORT_EXT}"
                 volumes:
                         - "db_data:${CSSOW_DB__DBSERVER_PATH}"
-                        - "db_sqldump:/usr/src/app/sqldump/"
-                        - "${CSSOW_DB__BUILD_SCRIPT_PATH_SOURCE}:${CSSOW_DB__BUILD_SCRIPT_PATH_DEST}"
+                        - "${CSSOW_DB__BUILD_SCRIPT_PATH_SOURCE}/current:${CSSOW_DB__BUILD_SCRIPT_PATH_DEST}"
         teacher-web:
-                image: drussell1974/schemesofwork:teacher-web--1.1.6-python3-rc
+                image: drussell1974/schemesofwork:teacher-web--1.2.0-python3
                 environment:
                         TEACHER_WEB__WEB_SERVER_IP: "${TEACHER_WEB__WEB_SERVER_IP}"
                         TEACHER_WEB__WEB_SERVER_PORT_EXT: "${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
@@ -44,7 +45,7 @@ services:
                 depends_on:
                         - cssow-db
         markdown-service:
-                image: drussell1974/schemesofwork:markdown-service--1.1.6-node14.3
+                image: drussell1974/schemesofwork:markdown-service--1.2.0-node14.3
                 environment: 
                         MARKDOWN_SERVICE__PORT_INT: "${MARKDOWN_SERVICE__PORT_INT}"
                 links:
@@ -54,7 +55,7 @@ services:
                 depends_on:
                         - teacher-web
         student-web:
-                image: drussell1974/schemesofwork:student-web--1.1.6-node14.3
+                image: drussell1974/schemesofwork:student-web--1.2.0-node14.3
                 environment: 
                         STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
                         STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
@@ -75,4 +76,3 @@ services:
                         - markdown-service
 volumes:
         db_data:
-        db_sqldump:
