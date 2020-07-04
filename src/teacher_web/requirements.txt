@@ -5,3 +5,7 @@ mysqlclient
 mysql-connector-python
 djangorestframework
 selenium
+
+# development
+
+python-dotenv
