@@ -4,8 +4,10 @@
     "migrate": "python ./web/manage.py migrate",
     "build": "pip install -r requirements.txt && pip install ../modules/cssow/dist/cssow_drussell1974-2.17.1-py3-none-any.whl",
     "start": "python ./web/manage.py runserver",
-    "test": "python ./web/manage.py test ./web --settings=web.settings.development && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py",
+    "test": "python ./web/manage.py test ./web --settings=web.settings.development",
     "test-routes": "python ./web/manage.py test ./web",
-    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_index.py"
+    "test-ui":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py && python -m unittest discover --start-directory ./tests/ui_test/",
+    "test-api":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py",
+    "test-ui_p": "python -m unittest discover --start-directory ./tests/ui_test/ "
   }
 }
