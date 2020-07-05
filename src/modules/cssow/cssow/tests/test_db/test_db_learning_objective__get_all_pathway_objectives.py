@@ -1,4 +1,4 @@
-from _unittest import TestCase, FakeDb
+from tests.model_test._unittest import TestCase, FakeDb
 from unittest import skip
 import cls_learningobjective as db_learningobjective
 

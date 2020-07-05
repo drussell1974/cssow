@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
 
-from cssow.models import cls_keyword, cls_schemeofwork, cls_topic
+from shared.models import cls_keyword, cls_schemeofwork, cls_topic
 from shared.view_model import ViewModel
 
 # Create your views here.

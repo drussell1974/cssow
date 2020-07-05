@@ -1,6 +1,6 @@
-from _unittest import TestCase
+from tests.model_test._unittest import TestCase
 from datetime import datetime
-from cssow.models.cls_learningobjective import LearningObjectiveModel
+from web.shared.models.cls_learningobjective import LearningObjectiveModel
 
 
 class Test_LearningObjectiveModel_Constructor(TestCase):

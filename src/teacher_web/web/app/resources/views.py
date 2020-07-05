@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from cssow.models import cls_resource, cls_lesson, cls_schemeofwork
-from cssow.models.core import validation_helper
+from shared.models import cls_resource, cls_lesson, cls_schemeofwork
+from shared.models.core import validation_helper
 
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType

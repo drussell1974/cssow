@@ -1,6 +1,6 @@
 from unittest import TestCase
 import sys
-from cssow.models.cls_lesson import LessonModel
+from web.shared.models.cls_lesson import LessonModel
 
 class Lesson_TestCase(TestCase):
     """ Shared functions """

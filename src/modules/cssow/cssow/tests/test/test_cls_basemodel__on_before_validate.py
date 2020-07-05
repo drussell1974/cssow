@@ -1,6 +1,6 @@
 from datetime import datetime
-from _unittest import TestCase
-from cssow.models.core.basemodel import BaseModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.core.basemodel import BaseModel
 
 
 class test_LessonModel__validate___on_before_validate(TestCase):

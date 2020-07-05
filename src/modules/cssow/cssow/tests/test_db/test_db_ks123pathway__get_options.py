@@ -1,4 +1,4 @@
-from _unittest import TestCase, FakeDb
+from tests.model_test._unittest import TestCase, FakeDb
 import cls_ks123pathway as db_ks123pathway
 import db_helper
 

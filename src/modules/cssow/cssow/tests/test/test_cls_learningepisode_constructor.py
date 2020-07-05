@@ -1,6 +1,6 @@
-from _unittest import TestCase
+from tests.model_test._unittest import TestCase
 from learningepisode_testcase import Lesson_TestCase
-from cssow.models.cls_lesson import LessonModel
+from web.shared.models.cls_lesson import LessonModel
 
 
 class Test_Lesson_Constructor(TestCase):

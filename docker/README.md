@@ -52,7 +52,7 @@ EMAIL_SERVER__HOST_EXT=127.0.0.1
 EMAIL_SERVER__PORT_EXT=587
 EMAIL_SERVER__HOST_USER=<user>
 
-CSSOWMODEL_APP__VERSION=2.17.3
+CSSOWMODEL_APP__VERSION=2.17.4
 ```
 
 2. Run the script to copy app folders into ./docker/<image>/build directory

@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cssow.models.cls_reference import ReferenceModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_reference import ReferenceModel
 
 
 class test_cls_reference_validate__title(TestCase):

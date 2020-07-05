@@ -3,8 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from cssow.models import cls_schemeofwork, cls_examboard, cls_keystage
-from cssow.models.core import validation_helper
+from shared.models import cls_schemeofwork, cls_examboard, cls_keystage
+from shared.models.core import validation_helper
 from datetime import datetime
 from shared.view_model import ViewModel
 

@@ -2,9 +2,9 @@
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk",
     "migrate": "python ./web/manage.py migrate",
-    "build": "pip install -r requirements.txt && pip install ../modules/cssow/dist/cssow_drussell1974-2.17.1-py3-none-any.whl",
+    "build": "pip install -r requirements.txt",
     "start": "python ./web/manage.py runserver",
-    "test": "python ./web/manage.py test ../modules/cssow/cssow/tests/test --settings=web.settings.development",
+    "test": "python ./web/manage.py test --settings=web.settings.development",
     "test-routes": "python ./web/manage.py test ./web",
     "test-ui":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py && python -m unittest discover --start-directory ./tests/ui_test/",
     "test-api":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py",

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
-from cssow.models.cls_schemeofwork import get_model, get_all
+from shared.models.cls_schemeofwork import get_model, get_all
 
 
 class SchemeOfWorkViewSet(APIView):

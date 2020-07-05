@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cssow.models.cls_reference_note import ReferenceNoteModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_reference_note import ReferenceNoteModel
 
 
 class test_cls_reference_note_constructor(TestCase):

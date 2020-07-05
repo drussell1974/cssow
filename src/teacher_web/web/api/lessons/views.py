@@ -5,7 +5,7 @@ from django.db import connection as db
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from cssow.models import cls_ks123pathway, cls_lesson, cls_learningobjective
+from shared.models import cls_ks123pathway, cls_lesson, cls_learningobjective
 
 from .serializers import LessonSerializer, LessonListSerializer
 

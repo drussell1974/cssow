@@ -1,4 +1,4 @@
-from cssow.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkListModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkListModel
 from rest_framework import serializers, status
 from django.db import models
 

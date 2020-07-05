@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cssow.models.cls_lessonplan import LessonPlanModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_lessonplan import LessonPlanModel
 
 
 class test_cls_lessonplan_validate__title(TestCase):

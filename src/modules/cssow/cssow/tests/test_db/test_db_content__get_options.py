@@ -1,4 +1,4 @@
-from _unittest import TestCase, FakeDb
+from tests.model_test._unittest import TestCase, FakeDb
 import cls_content as db_content
 import db_helper
 

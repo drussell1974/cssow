@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cssow.models.cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
 
 
 class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):

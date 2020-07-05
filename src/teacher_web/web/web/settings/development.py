@@ -39,7 +39,7 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     'app.default',
-    'cssow',
+    'shared.models',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

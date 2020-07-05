@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cssow.models.cls_keyword import KeywordModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_keyword import KeywordModel
 
 
 class test_cls_reference_note_constructor(TestCase):

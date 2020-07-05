@@ -1,4 +1,4 @@
-from _unittest import TestCase
+from tests.model_test._unittest import TestCase
 from learningepisode_testcase import Lesson_TestCase
 
 class test_LessonModel__clean_up___scheme_of_work_name(Lesson_TestCase):
