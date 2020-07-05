@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_reference_note import ReferenceNoteModel
+from cssow.models.cls_reference_note import ReferenceNoteModel
 
 
 class test_cls_reference_validate__page_note(TestCase):

@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_solotaxonomy import SoloTaxonomyModel
+from cssow.models.cls_solotaxonomy import SoloTaxonomyModel
 
 
 class test_cls_solotaxonomy__clean_up(TestCase):

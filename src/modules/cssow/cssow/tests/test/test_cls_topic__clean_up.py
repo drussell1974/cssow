@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_topic import TopicModel
+from cssow.models.cls_topic import TopicModel
 
 
 class test_cls_topic__clean_up(TestCase):

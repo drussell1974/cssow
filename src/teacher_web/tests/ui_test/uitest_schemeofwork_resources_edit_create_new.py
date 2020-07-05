@@ -49,6 +49,45 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','New')
 
 
+    def test_page__markdownfile_type_stay_on_same_page_if_invalid(self):
+        # setup
+        self.test_context.implicitly_wait(10)
+        elem = self.test_context.find_element_by_tag_name("form")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        # test
+
+        ' Create valid information '
+
+        ' ctl-title '
+        elem = self.test_context.find_element_by_id("ctl-title")
+        elem.send_keys("test_page__should_redirect_to_index_if_valid")
+
+        ' ctl-uri '
+        elem = self.test_context.find_element_by_id("ctl-uri")
+        elem.send_keys("https://www.pgonline.co.uk/resources/computer-science/a-level-ocr/ocr-a-level-textbook/")
+
+        ' ctl-publisher '
+        elem = self.test_context.find_element_by_id("ctl-publisher")
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
+
+        ' ctl-type_id '
+        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
+        elem.select_by_visible_text("Markdown file")
+
+        ' submit the form '
+        elem = self.test_context.find_element_by_id("saveDraftButton")
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        elem.send_keys(Keys.RETURN)
+        self.wait(s=1)
+
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','New')
+        self.fail("Requires upload as required when Markdown is selected. Verify form is not submiting")
+
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
         self.test_context.implicitly_wait(10)

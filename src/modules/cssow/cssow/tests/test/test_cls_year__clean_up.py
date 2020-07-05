@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_year import YearModel
+from cssow.models.cls_year import YearModel
 
 
 class test_cls_year__clean_up(TestCase):

@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_examboard import ExamBoardModel
+from cssow.models.cls_examboard import ExamBoardModel
 
 
 class test_cls_examboard__clean_up(TestCase):

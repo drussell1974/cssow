@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_lessonplan import LessonPlanModel
+from cssow.models.cls_lessonplan import LessonPlanModel
 
 
 class test_cls_lesson_plan__clean_up(TestCase):

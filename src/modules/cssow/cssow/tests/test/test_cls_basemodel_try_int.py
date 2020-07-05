@@ -1,6 +1,6 @@
 from datetime import datetime
 from _unittest import TestCase
-from basemodel import try_int
+from cssow.models.core.basemodel import try_int
 
 
 class test_cls_basemodel_try_int(TestCase):

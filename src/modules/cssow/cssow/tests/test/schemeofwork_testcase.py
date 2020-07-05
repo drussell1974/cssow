@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cls_schemeofwork import SchemeOfWorkModel
+from cssow.models.cls_schemeofwork import SchemeOfWorkModel
 
 class SchemeOfWork_TestCase(TestCase):
     """ Shared functions """

@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_reference import ReferenceModel
+from cssow.models.cls_reference import ReferenceModel
 
 from unittest import TestCase
 

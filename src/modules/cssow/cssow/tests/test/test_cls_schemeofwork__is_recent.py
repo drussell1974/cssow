@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_schemeofwork import SchemeOfWorkModel
+from cssow.models.cls_schemeofwork import SchemeOfWorkModel
 
 from datetime import datetime
 

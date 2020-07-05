@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from datetime import datetime
-from cls_learningobjective import LearningObjectiveModel
+from cssow.models.cls_learningobjective import LearningObjectiveModel
 
 
 class LearningObjective_TestCase(TestCase):
@@ -21,14 +21,14 @@ class LearningObjective_TestCase(TestCase):
                                       solo_taxonomy_id = 1,
                                       solo_taxonomy_name = "Unistructural",
                                       solo_taxonomy_level = "B",
-                                      topic_id = 2,
-                                      topic_name = "Algorithms",
+                                      #topic_id = 2,
+                                      #topic_name = "Algorithms",
                                       parent_topic_id = 3,
                                       parent_topic_name = "Programming",
                                       content_id = 4,
                                       content_description = "Understanding Havard Architecture",
-                                      exam_board_id = 5,
-                                      exam_board_name = "AQA",
+                                      #exam_board_id = 5,
+                                      #exam_board_name = "AQA",
                                       lesson_id = 6,
                                       lesson_name = "Lesson 30",
                                       key_stage_id = 7,
@@ -49,14 +49,14 @@ class LearningObjective_TestCase(TestCase):
         self.assertEqual(test.solo_taxonomy_id, 1, "--- setup --- solo_taxonomy_id failed")
         self.assertEqual(test.solo_taxonomy_name, "Unistructural", "--- setup --- solo_taxonomy_name failed")
         self.assertEqual(test.solo_taxonomy_level, "B", "--- setup --- solo_taxonomy_level failed")
-        self.assertEqual(test.topic_id, 2, "--- setup --- topic_id failed")
-        self.assertEqual(test.topic_name, "Algorithms", "--- setup --- topic_name failed")
+        #self.assertEqual(test.topic_id, 2, "--- setup --- topic_id failed")
+        #self.assertEqual(test.topic_name, "Algorithms", "--- setup --- topic_name failed")
         self.assertEqual(test.parent_topic_id, 3, "--- setup --- parent_topic_id failed")
         self.assertEqual(test.parent_topic_name,"Programming", "--- setup --- parent_topic_name failed")
         self.assertEqual(test.content_id, 4, "--- setup --- content_id failed")
         self.assertEqual(test.content_description, "Understanding Havard Architecture", "--- setup --- content_name failed")
-        self.assertEqual(test.exam_board_id, 5, "--- setup --- exam_board_id failed")
-        self.assertEqual(test.exam_board_name, "AQA", "--- setup --- exam_board_name failed")
+        #self.assertEqual(test.exam_board_id, 5, "--- setup --- exam_board_id failed")
+        #self.assertEqual(test.exam_board_name, "AQA", "--- setup --- exam_board_name failed")
         self.assertEqual(test.lesson_id, 6, "--- setup --- lesson_id failed")
         self.assertEqual(test.lesson_name, "Lesson 30", "--- setup --- lesson_name  failed")
         self.assertEqual(test.key_stage_id, 7, "--- setup --- key_stage_id failed")

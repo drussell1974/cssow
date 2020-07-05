@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_keystage import KeyStageModel
+from cssow.models.cls_keystage import KeyStageModel
 
 
 class test_cls_keystage__clean_up(TestCase):

@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from Lesson_testcase import Lesson_TestCase
+from learningepisode_testcase import Lesson_TestCase
 
 
 class test_LessonModel_validate__title(Lesson_TestCase):
@@ -432,89 +432,6 @@ class test_LessonModel__validate__key_stage_id(Lesson_TestCase):
 
         # assert
         self.assertTrue("key_stage_id" in test.validation_errors, "key_stage_id should have validation error %s" % test.validation_errors)
-        self.assertFalse(test.is_valid, "is_valid should be False")
-
-
-class test_LessonModel_validate__key_words(Lesson_TestCase):
-
-    test = None
-
-    def setUp(self):
-        pass
-
-
-    def tearDown(self):
-        pass
-
-
-    def test_min__valid_extreme(self):
-        # set up
-        test = self._construct_valid_object()
-
-        test.key_words = ""
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertEqual(test.key_words, "")
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
-
-
-    def test_min__valid_extreme_trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.key_words = "  "
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertEqual(test.key_words, "")
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("key_words" in test.validation_errors, "key_words should have no validation errors - %s" % test.validation_errors)
-
-
-    def test_min__valid_extreme_when_None(self):
-
-        test = self._construct_valid_object()
-
-        test.key_words = None
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertTrue(test.is_valid, "is_valid should be False")
-        self.assertFalse("key_words" in test.validation_errors, "key_words should have validation error %s" % test.validation_errors)
-
-
-    def test_max__valid_extreme(self):
-
-        test = self._construct_valid_object()
-
-        test.key_words = "Lorem, ipsum, dolor, sit,amet, consectetur, adipiscing, ut elit, Mauris, elementum torro, suscipit, faucibus, Quisque, malesuada, lorem, Lorem 2, ipsum 2, dolor 2, sit 2,amet 2, consectetur 2, adipiscing 2, ut elit 2, Mauris 2, elementum torro 2, suscipit 2, faucibus 2, Quisque 2, malesuada 2, lorem 2" # l5 keywords
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
-
-
-    def test_max__invalid_extreme(self):
-
-        test = self._construct_valid_object()
-
-        test.key_words = "Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, Nulla, ut nunc, quis, est ornare, tincidunt, Vivamus, aliquet elementum, ipsum vel., Lorem2, ipsum2, dolor2, sit2, amet2, consectetur2, adipiscing2, elit2, Nulla2, ut nunc 2, quis2, est ornare 2, tincidunt 2, Vivamus 2, aliquet elementum 2" # 15 keywords + 1
-
-        # test
-        test.validate()
-
-        # assert
-        self.assertTrue("key_words" in test.validation_errors, "key_words should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 

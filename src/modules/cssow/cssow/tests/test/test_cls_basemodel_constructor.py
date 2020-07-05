@@ -1,6 +1,6 @@
 from datetime import datetime
 from _unittest import TestCase
-from basemodel import BaseModel
+from cssow.models.core.basemodel import BaseModel
 
 class Test_basemodel_Constructor(TestCase):
 

@@ -1,5 +1,5 @@
 from _unittest import TestCase
-from cls_content import ContentModel
+from cssow.models.cls_content import ContentModel
 
 class test_cls_content__clean_up(TestCase):
 

@@ -1,6 +1,6 @@
 from unittest import TestCase
 import sys
-from lesson import LessonModel
+from cssow.models.cls_lesson import LessonModel
 
 class Lesson_TestCase(TestCase):
     """ Shared functions """
@@ -15,7 +15,7 @@ class Lesson_TestCase(TestCase):
                                  parent_topic_id=5,
                                  key_stage_id=6,
                                  year_id=9,
-                                 key_words = "Lorem ipsum,sit amet,convallis",
+                                 #key_words = "Lorem ipsum,sit amet,convallis",
                                  summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.",
                                  published=1)
 
@@ -32,7 +32,7 @@ class Lesson_TestCase(TestCase):
         self.assertEqual(5, test.parent_topic_id)
         self.assertEqual(6, test.key_stage_id)
         self.assertEqual([], test.pathway_objective_ids)
-        self.assertEqual("Lorem ipsum,sit amet,convallis", test.key_words)
+        #self.assertEqual("Lorem ipsum,sit amet,convallis", test.key_words)
         self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.", test.summary)
         self.assertTrue(test.is_valid)
 
