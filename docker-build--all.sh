@@ -12,6 +12,6 @@ sh docker-build--markdown-service.sh
 sh docker-build--student-web.sh
 
 
-echo "docker-build.sh: running docker compose build and up"
+#echo "docker-build.sh: running docker compose build and up"
 
-docker-compose up --build
+#docker-compose up --build
