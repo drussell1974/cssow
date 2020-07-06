@@ -56,7 +56,7 @@ class ResourceModel (BaseModel):
         self._validate_optional_uri("page_uri", self.page_uri)
 
         # validate page_uri
-        #self._validate_optional_string("md_document_name", self.md_document_name, 500)
+        self._validate_optional_string("md_document_name", self.md_document_name, 500)
 
 
     def _clean_up(self):

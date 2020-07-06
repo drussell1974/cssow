@@ -1,4 +1,5 @@
 from datetime import datetime
+from django import forms
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
@@ -67,7 +68,16 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     
     cls_resource.enable_logging = True
     model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
-    
+
+    if model == None:
+        model = cls_resource.ResourceModel(
+            id_=0,
+            title="",
+            publisher="",
+            scheme_of_work_id=scheme_of_work_id,
+            lesson_id=lesson_id)
+
+
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)    
     get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
 
@@ -94,9 +104,10 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         lesson_id=lesson_id,
         scheme_of_work_id=scheme_of_work_id,
         title=request.POST.get("title", ""),
-        page_uri=request.POST.get("page_uri", ""),
         publisher=request.POST.get("publisher", ""),
         page_note=request.POST.get("page_note", ""),
+        page_uri=request.POST.get("page_uri", ""),
+        md_document_name=request.POST.get("md_document_name", ""),
         type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
         created_by_id=request.user.id,
@@ -107,11 +118,17 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     redirect_to_url = ""
 
     model.validate()
-    
+
+    ' upload file '
+    #if model.type_id == cls_resource.MARKDOWN_TYPE_ID:
+    #    from .forms import UploadFileForm
+    #    form = UploadFileForm(request.POST, request.FILES)
+    #    model.is_valid = form.is_valid()
+
     print("saving resource - model.is_valid:", model.is_valid, ", model.validation_errors:", model.validation_errors)
     
     if model.is_valid == True:
-        
+
         ' save resource'
         #cls_resource.enable_logging = True
         model = cls_resource.save(db, model, int(request.POST["published"]))
@@ -123,19 +140,20 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
             redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id, model.id))
     else:
         """ redirect back to page and show message """
-        
+
         request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
+        
         redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
-def delete_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
+def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.delete(db, request.user.id, learning_objective_id)
+    cls_resource.delete(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 

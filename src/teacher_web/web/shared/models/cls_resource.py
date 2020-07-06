@@ -4,6 +4,15 @@ from .core.db_helper import sql_safe, execSql, execCRUDSql
 
 enable_logging = False
 
+# TODO: Get this from settings
+
+MARKDOWN_TYPE_ID = 10
+
+def check_type_id(model):
+    """ checks if the type_id is a markdown document"""
+    return model.type_id == MARKDOWN_TYPE_ID
+
+
 class ResourceTypeModel:
     def __init__(self, id, name):
         self.id = id
@@ -11,15 +20,15 @@ class ResourceTypeModel:
 
 
 class ResourceModel (BaseModel):
-
-    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", md_document_name="", type_id = None, type_name = "", type_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+        
+    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
         self.page_uri = page_uri
         self.md_document_name = md_document_name
-        self.type_id = type_id
+        self.type_id = try_int(type_id)
         self.type_name = type_name
         self.type_icon = type_icon
         self.lesson_id = lesson_id
@@ -29,6 +38,7 @@ class ResourceModel (BaseModel):
         self.created_by_id = try_int(created_by_id)
         self.created_by_name = created_by_name
         self.published = published
+        self.is_expired = is_expired
 
 
     def validate(self):
@@ -55,8 +65,8 @@ class ResourceModel (BaseModel):
         # validate page_uri
         self._validate_optional_uri("page_uri", self.page_uri)
 
-        # validate page_uri
-        #self._validate_optional_string("md_document_name", self.md_document_name, 500)
+        # validate md_document_name
+        self._validate_required_string_if("md_document_name", self.md_document_name, 1, 200, check_type_id)
 
 
     def _clean_up(self):
@@ -90,7 +100,7 @@ class ResourceModel (BaseModel):
 DAL
 """
 from datetime import datetime
-from .core.db_helper import to_db_null, to_empty
+from .core.db_helper import to_db_null, to_empty, to_db_bool
 
 
 def log_info(db, msg, is_enabled = False):
@@ -114,12 +124,14 @@ def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
                 " res.type_id as type_id,"\
                 " res_typ.name as resource_type_name,"\
                 " res_typ.task_icon as task_icon,"\
+                " res.md_document_name as md_document_name,"\
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
                 " res.lesson_id as lesson_id, "\
                 " res.created as created, "\
                 " res.created_by as created_by_id, "\
-                " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                " res.published as published "\
                 "FROM sow_resource AS res " \
                 " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                 " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
@@ -141,12 +153,14 @@ def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
             type_id=row[3],
             type_name=row[4],
             type_icon=row[5],
-            page_note=row[6], 
-            page_uri=row[7], 
-            lesson_id=row[8],
-            created = row[9],
-            created_by_id = row[10],
-            created_by_name = row[11], 
+            md_document_name=row[6], 
+            page_note=row[7], 
+            page_uri=row[8], 
+            lesson_id=row[9],
+            created = row[10],
+            created_by_id = row[11],
+            created_by_name = row[12],
+            published = row[13], 
             scheme_of_work_id=scheme_of_work_id)
 
         data.append(model.__dict__)
@@ -164,12 +178,14 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                 " res.type_id as type_id,"\
                 " res_typ.name as resource_type_name,"\
                 " res_typ.task_icon as task_icon,"\
+                " res.md_document_name as md_document_name, "\
                 " res.page_notes as page_notes, "\
                 " res.url as page_uri, " \
                 " res.lesson_id as lesson_id, "\
                 " res.created as created, "\
                 " res.created_by as created_by_id, "\
-                " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                " res.published as published " \
                 "FROM sow_resource AS res " \
                 " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                 " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
@@ -191,12 +207,14 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
             type_id=row[3],
             type_name=row[4],
             type_icon=row[5],
-            page_note=row[6], 
-            page_uri=row[7], 
-            lesson_id=row[8],
-            created = row[9],
-            created_by_id = row[10],
-            created_by_name = row[11], 
+            md_document_name=to_empty(row[6]),
+            page_note=row[7], 
+            page_uri=row[8], 
+            lesson_id=row[9],
+            created = row[10],
+            created_by_id = row[11],
+            created_by_name = row[12], 
+            published = row[13], 
             scheme_of_work_id=scheme_of_work_id)
 
         data = model
@@ -324,13 +342,15 @@ def _update(db, model, auth_user_id):
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, url = '{page_uri}', lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
+    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
         title=model.title,
         publisher=model.publisher,
         type_id=to_db_null(model.type_id, as_null=""),
         page_uri=to_db_null(model.page_uri),
+        md_document_name=to_db_null(model.md_document_name),
+        is_expired=to_db_bool(model.is_expired),
         lesson_id = model.lesson_id,
         published=model.published)
 
@@ -348,16 +368,19 @@ def _insert(db, model, auth_user_id):
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_resource (title, publisher, type_id, url, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_uri}', {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
+    str_insert = "INSERT INTO sow_resource (title, publisher, type_id, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         title=model.title,
         publisher=model.publisher,
         type_id=to_db_null(model.type_id, as_null=""),
         page_uri=to_db_null(model.page_uri),
+        md_document_name=to_db_null(model.md_document_name, as_null=""),
+        is_expired=to_db_bool(model.is_expired),
         lesson_id = model.lesson_id,
         created=model.created,
         created_by=model.created_by_id,
-        published=model.published)
+        published=model.published,
+        expired=model.is_expired)
 
     rows = []
     execCRUDSql(db, str_insert, rows, handle_log_info)
@@ -372,7 +395,8 @@ def _delete(db, id_, auth_user_id):
     str_delete = "DELETE FROM sow_resource WHERE id = {id_};"
     str_delete = str_delete.format(id_=int(id_))
 
-    rval = db.executesql(str_delete)
+    rval = []
+    execCRUDSql(db, str_delete, rval, handle_log_info)
 
     return rval
 

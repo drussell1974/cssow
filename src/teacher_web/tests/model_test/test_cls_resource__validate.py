@@ -501,7 +501,7 @@ class test_cls_resource_validate__type_id(TestCase):
     def test_min__valid_extreme(self):
         # set up
 
-        self.test.type_id = 15
+        self.test.type_id = 1
 
         # test
         self.test.validate()
@@ -557,3 +557,148 @@ class test_cls_resource_validate__type_id(TestCase):
         # assert
         self.assertFalse(self.test.is_valid, "is_valid should be False")
         self.assertTrue("type_id" in self.test.validation_errors, "type_id should have validation error %s" % self.test.validation_errors)
+
+
+class test_cls_resource_validate__md_document_name(TestCase):
+
+    test = None
+
+    def setUp(self):
+        self.test = ResourceModel(1, scheme_of_work_id = 0, lesson_id = 1002, type_id = 3, type_name = "Video", title = "title here!", publisher="YouTube", page_note="Watch this!")
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme_when_type_is_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = "A"
+        self.test.type_id = 10
+        
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme_when_type_is_NOT_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = "A"
+        self.test.type_id = 1
+        
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme_trim_whitespace(self):
+        # set up
+
+        self.test.md_document_name = " x "
+        self.test.type_id = 10
+        
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should have no validation errors - %s" % self.test.validation_errors)
+        self.assertEqual(self.test.md_document_name, "x")
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme_when_type_is_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = ""
+        self.test.type_id = 10
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("md_document_name" in self.test.validation_errors, "md_document_name should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_type_is_NOT_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = ""
+        self.test.type_id = 1
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "should be is_valid")
+
+
+    def test_min__invalid_extreme_when_None_and_type_is_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = None
+        self.test.type_id = 10
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("md_document_name" in self.test.validation_errors, "md_document_name should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+    def test_min__invalid_extreme_when_None_and_type_is_NOT_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = None
+        self.test.type_id = 1
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should NOT have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__valid_extreme_when_type_is_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in viverra urna. " \
+                          "Vivamus leo massa, feugiat venenatis urna ut, venenatis rutrum massa. Mauris vel justo nisl. " \
+                          "Quisque quis risus id lig." # length 200 characters
+        self.test.type_id = 10
+        
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("md_document_name" in self.test.validation_errors, "md_document_name should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme_when_type_is_markdown_document(self):
+        # set up
+
+        self.test.md_document_name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in viverra urna. " \
+                          "Vivamus leo massa, feugiat venenatis urna ut, venenatis rutrum massa. Mauris vel justo nisl. " \
+                          "Quisque quis risus id ligula tempor pellentesque at at neque. Ut sed viverra mauris. " \
+                          "Fusce commodo, nisi in pellentesque yamet." # length 201 characters
+        self.test.type_id = 10
+        
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("md_document_name" in self.test.validation_errors, "md_document_name should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+

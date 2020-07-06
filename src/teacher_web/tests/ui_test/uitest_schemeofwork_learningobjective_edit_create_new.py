@@ -103,7 +103,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(s=1)
+        self.wait(s=2)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
 

@@ -1,9 +1,5 @@
 {% extends 'default/__layout.onecolumn.html' %}
 
-
-{% block head %}
-{% endblock %}
-
 {% block breadcrumb %}
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
       <div class="container">
@@ -70,7 +66,20 @@
             <p class="help-block text-danger"></p>
         </div>
     </div>
-`   <!-- Type END -->
+    <!-- Type END -->
+
+    <!-- Title START -->
+    <div class="control-group" id="md_document--control-group" style="display:none">
+        <div class="form-group controls">
+        <label>{{_("Upload markdown document")}}</label>
+        <input type="text" class="form-control" placeholder="{{_('Upload markdown document')}}" id="ctl-md_document_name" name="md_document_name" 
+                maxlength="200" value='{{content.data.resource.md_document_name}}'>
+        <p class="help-block text-danger"></p>
+        </div>
+    </div>
+    <!-- Title END -->
+
+
     <!-- Notes START -->
     <div class="control-group">
         <div class="form-group controls">
@@ -103,4 +112,21 @@
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Bootstrap tokenfield javascript -->
     
+    <script>
+        const md_document_control_group = document.querySelector("#md_document--control-group");
+        const md_document_name_control = document.querySelector("#ctl-md_document_name");
+        const type_field = document.querySelector("#ctl-type_id");
+        
+        type_field.addEventListener('change', (e) => {
+        
+            if (e.target.value == 10) {
+                md_document_control_group.style.display = "block";        
+                md_document_name_control.required = true;       
+            } else {
+                md_document_control_group.style.display = "none";
+                md_document_name_control.required = false;
+            }
+        })
+
+    </script>
 {% endblock %}

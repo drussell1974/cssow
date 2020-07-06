@@ -12,7 +12,7 @@ TEST_USER_NAME = "test@localhost"
 TEST_USER_PSWD = "co2m1c1."
 
 class UITestCase(TestCase):
-    root_uri = "http://localhost:3002"
+    root_uri = "http://127.0.0.1:8000"
     test_scheme_of_work_id = 11
     test_lesson_id = 220
     test_learning_objective_id = 410

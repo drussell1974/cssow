@@ -109,8 +109,17 @@ class BaseModel(models.Model):
                     self.validation_errors[name_of_property] = "{} is not a valid url".format(value_to_validate)
                     self.is_valid = False
 
+
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+
+    def _validate_required_string_if(self, name_of_property, value_to_validate, min_value, max_value, func):
+        if func(self) == True:
+            if value_to_validate is None or len(value_to_validate) < min_value:
+                self.validation_errors[name_of_property] = "required"
+                self.is_valid = False
+        self._validate_optional_string(name_of_property, value_to_validate, max_value)
 
 
 """
