@@ -116,6 +116,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         scheme_of_work_id=scheme_of_work_id,
         title=request.POST.get("title", ""),
         publisher=request.POST.get("publisher", ""),
+        md_document_name=request.POST.get("md_document_name", ""),
         page_note=request.POST.get("page_note", ""),
         page_uri=request.POST.get("page_uri", ""),
         type_id=request.POST.get("type_id", None),  
@@ -124,9 +125,8 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         published=request.POST.get("published", 0)
     )
 
-    
     ' upload file if Markdown document '
-    if model.type_id == cls_resource.MARKDOWN_TYPE_ID:
+    if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
         handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
     
     # validate the model and save if valid otherwise redirect to default invalid

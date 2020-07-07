@@ -8,9 +8,20 @@ export TEST_RESOURCE_ID=119
 export TEST_USER_NAME="test@localhost"
 export TEST_USER_PSWD="co2m1c1."
 
+echo Testing... default
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+
+echo running... uitest_schemeofwork_schemesofwork_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
+
+echo running... uitest_schemeofwork_failed_log_in.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
+
+echo running... lessonuitest_schemeofwork_lesson_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
+
+echo running... uitest_schemeofwork_learningobjective_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+
+echo running... uitest_schemeofwork_resources_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py

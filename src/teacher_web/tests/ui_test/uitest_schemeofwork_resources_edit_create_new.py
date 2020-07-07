@@ -78,9 +78,9 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         elem.select_by_visible_text("Markdown")
 
         ' ctl-md_document_name '
-        elem = self.test_context.find_element_by_id("ctl-md_document_name")
-        elem.clear()
-
+        elem = self.test_context.find_element_by_id("ctl-md_file")
+        elem.clear() # Ensure filed is clear
+        
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -121,8 +121,10 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         elem.select_by_visible_text("Markdown")
 
         ' ctl-md_document_name '
-        elem = self.test_context.find_element_by_id("ctl-md_document_name")
-        elem.send_keys("README.md")
+        elem = self.test_context.find_element_by_id("ctl-md_file")
+        import os
+        test_file = "{}/README.md".format(os.getcwd())
+        elem.send_keys(test_file)
 
         ' submit the form '
         #self.test_context.implicitly_wait(10)

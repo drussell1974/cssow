@@ -44,6 +44,7 @@ services:
                         - "${TEACHER_WEB__WEB_SERVER_PORT_INT}:${TEACHER_WEB__WEB_SERVER_PORT_EXT}"
                 volumes:
                         - "${TEACHER_WEB__EMAILBACKEND_PATH}:/usr/src/app/emailbackend"
+                        - markdown_documents:/usr/src/app/media/markdown
                 depends_on:
                         - cssow-db
         markdown-service:
@@ -55,6 +56,8 @@ services:
                         - "${TEACHER_WEB__WEB_SERVER_HOST_INT}:${TEACHER_WEB__WEB_SERVER_HOST_EXT}"
                 ports:
                         - "${MARKDOWN_SERVICE__PORT_INT}:${MARKDOWN_SERVICE__PORT_EXT}"
+                volumes:
+                        - markdown_documents:/usr/src/app/web/views
                 depends_on:
                         - teacher-web
         student-web:
@@ -80,3 +83,4 @@ services:
                         - markdown-service
 volumes:
         db_data:
+        markdown_documents:

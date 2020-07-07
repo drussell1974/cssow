@@ -74,14 +74,17 @@
         <!-- Upload Control -->
         <div class="form-group controls" id="md_document-upload--control">
             <label>{{_("Upload markdown document")}}</label>
-            <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" id="ctl-md_file" name="md_file" 
-                    maxlength="200" accept="text/markdown,text/plain">
+            <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" name="md_file"  
+                    maxlength="200" accept="text/markdown" id="ctl-md_file" >
             <p class="help-block text-danger"></p>
         </div>
-        <!-- Preview to go here-->
+        
+        <!-- Preview -->
         <div class="form-group controls" id="md_document-preview--control">
             <label class="small">{{_("Preview markdown:")}} {{content.data.resource.md_document_name}}</label>
             <div class="markdown-body collapsable collapsed" ></div>
+
+            <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
         </div>
     </div>
     <!-- Upload File END -->
@@ -120,17 +123,24 @@
     
     <script>
         const md_document_control_group = document.querySelector("#md_document--control-group");
+        const md_file_control = document.querySelector("#ctl-md_file");
         const md_document_name_control = document.querySelector("#ctl-md_document_name");
         const type_field = document.querySelector("#ctl-type_id");    
         
         function showHideMarkdownUpload(value) {
             // get comparison value from settings
-            if (value == 10) {
-                md_document_control_group.style.display = "block";        
-                md_document_name_control.required = true;       
-            } else {
+            if (value != 10) {
                 md_document_control_group.style.display = "none";
+                md_file_control.required = false;
                 md_document_name_control.required = false;
+            } else if (md_document_name_control != null && md_document_name_control.value == "") {
+                md_document_control_group.style.display = "block";
+                md_file_control.required = true;
+                md_document_name_control.required = false;
+            } else {
+                md_document_control_group.style.display = "block";
+                md_file_control.required = false;
+                md_document_name_control.required = true;
             }
         }
 

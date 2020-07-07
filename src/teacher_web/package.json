@@ -8,7 +8,7 @@
     "test": "python ./web/manage.py test --settings=web.settings.test-ui.settings",
     "test-ui-start": "sh scripts/yarn.test-ui-start.sh",
     "test-ui":"sh scripts/yarn.test-ui--batch.sh",
-    "test-ui--p": "python -m unittest discover --start-directory ./tests/ui_test/ ",
+    "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
     "test-api":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
   }
 }
