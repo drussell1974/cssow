@@ -4,11 +4,10 @@
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
     "build": "pip install -r requirements.txt",
-    "start": "python ./web/manage.py runserver --settings=web.settings.test-ui.settings 0.0.0.0:8000",
-    "start-dev": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:8000",
-    "test": "python ./web/manage.py test --settings=web.settings.development.settings",
-    "test-ui--all":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*.py",
-    "test-ui--batch":"sh test-ui--batch.sh",
+    "start": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:5002",
+    "test": "python ./web/manage.py test --settings=web.settings.test-ui.settings",
+    "test-ui-start": "sh scripts/yarn.test-ui-start.sh",
+    "test-ui":"sh scripts/yarn.test-ui--batch.sh",
     "test-ui--p": "python -m unittest discover --start-directory ./tests/ui_test/ ",
     "test-api":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
   }

@@ -13,6 +13,8 @@ from shared.models.core import validation_helper
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
+from shared.filehandler import handle_uploaded_markdown
+
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
@@ -95,6 +97,15 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
 
 def save(request, scheme_of_work_id, lesson_id, resource_id):
+    
+    def upload_error_handler(e, msg):
+        print(msg, e)
+    
+    def upload_success_handler(f, msg):
+        print(msg, f)
+        # set markdown document name with file name after saving
+        model.md_document_name = f
+        
     """ save_item non-view action """
     print('saving resource... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id)
     # create instance of model from request.vars
@@ -107,33 +118,30 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         publisher=request.POST.get("publisher", ""),
         page_note=request.POST.get("page_note", ""),
         page_uri=request.POST.get("page_uri", ""),
-        md_document_name=request.POST.get("md_document_name", ""),
         type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
         created_by_id=request.user.id,
         published=request.POST.get("published", 0)
     )
 
+    
+    ' upload file if Markdown document '
+    if model.type_id == cls_resource.MARKDOWN_TYPE_ID:
+        handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
+    
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
     model.validate()
 
-    ' upload file '
-    #if model.type_id == cls_resource.MARKDOWN_TYPE_ID:
-    #    from .forms import UploadFileForm
-    #    form = UploadFileForm(request.POST, request.FILES)
-    #    model.is_valid = form.is_valid()
-
     print("saving resource - model.is_valid:", model.is_valid, ", model.validation_errors:", model.validation_errors)
     
     if model.is_valid == True:
-
         ' save resource'
         #cls_resource.enable_logging = True
         model = cls_resource.save(db, model, int(request.POST["published"]))
 
-        ' save keywords '
+        ' redirect as necessary '
         if request.POST["next"] != None and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
         else:

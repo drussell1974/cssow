@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block maincontent %}
-<form name="edit-schemeofwork" id="form" method="post" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
+<form name="edit-resource" id="form" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
     <!-- Title START -->
     <div class="control-group">
@@ -53,6 +53,7 @@
         </div>
     </div>
     <!-- Publisher END -->
+
     <!-- Type START -->
     <div class="control-group">
         <div class="form-group  controls">
@@ -68,17 +69,22 @@
     </div>
     <!-- Type END -->
 
-    <!-- Title START -->
+    <!-- Upload File START -->
     <div class="control-group" id="md_document--control-group" style="display:none">
-        <div class="form-group controls">
-        <label>{{_("Upload markdown document")}}</label>
-        <input type="text" class="form-control" placeholder="{{_('Upload markdown document')}}" id="ctl-md_document_name" name="md_document_name" 
-                maxlength="200" value='{{content.data.resource.md_document_name}}'>
-        <p class="help-block text-danger"></p>
+        <!-- Upload Control -->
+        <div class="form-group controls" id="md_document-upload--control">
+            <label>{{_("Upload markdown document")}}</label>
+            <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" id="ctl-md_file" name="md_file" 
+                    maxlength="200" accept="text/markdown,text/plain">
+            <p class="help-block text-danger"></p>
+        </div>
+        <!-- Preview to go here-->
+        <div class="form-group controls" id="md_document-preview--control">
+            <label class="small">{{_("Preview markdown:")}} {{content.data.resource.md_document_name}}</label>
+            <div class="markdown-body collapsable collapsed" ></div>
         </div>
     </div>
-    <!-- Title END -->
-
+    <!-- Upload File END -->
 
     <!-- Notes START -->
     <div class="control-group">
@@ -115,17 +121,25 @@
     <script>
         const md_document_control_group = document.querySelector("#md_document--control-group");
         const md_document_name_control = document.querySelector("#ctl-md_document_name");
-        const type_field = document.querySelector("#ctl-type_id");
+        const type_field = document.querySelector("#ctl-type_id");    
         
-        type_field.addEventListener('change', (e) => {
-        
-            if (e.target.value == 10) {
+        function showHideMarkdownUpload(value) {
+            // get comparison value from settings
+            if (value == 10) {
                 md_document_control_group.style.display = "block";        
                 md_document_name_control.required = true;       
             } else {
                 md_document_control_group.style.display = "none";
                 md_document_name_control.required = false;
             }
+        }
+
+        type_field.addEventListener('change', (e) => {
+            showHideMarkdownUpload(e.target.value);
+        })
+
+        window.addEventListener('load', () => {
+            showHideMarkdownUpload(type_field.value);
         })
 
     </script>

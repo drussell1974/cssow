@@ -2,21 +2,22 @@ from django.db import connection as db
 from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import os
 
 def WebBrowserContext():
     #options = webdriver.ChromeOptions()
     #options.add_argument("--start-maximized")
     return webdriver.Firefox()
 
-TEST_USER_NAME = "test@localhost"
-TEST_USER_PSWD = "co2m1c1."
+TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 
 class UITestCase(TestCase):
-    root_uri = "http://127.0.0.1:8000"
-    test_scheme_of_work_id = 11
-    test_lesson_id = 220
-    test_learning_objective_id = 410
-    test_reference = 119
+    root_uri = os.environ["TEST_URI"]
+    test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
+    test_lesson_id = os.environ["TEST_LESSON_ID"] 
+    test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
+    test_reference = os.environ["TEST_RESOURCE_ID"]
 
 
     def wait(self, s = 5):
