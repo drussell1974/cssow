@@ -19,10 +19,10 @@ class Index extends React.Component {
         this.socialmediadata = [];
 
         this.learning_episode_id = props.match.params.learning_episode_id;
-        this.scheme_of_work_id = "openldap";
-        this.lesson_id = "lesson3";
-        this.resource_id = "activity1"
-        this.md_document_name = "configuring-a-client-with-autofs-ldap-and-nfs.md";
+        this.scheme_of_work_id = props.match.params.scheme_of_work_id;
+        this.lesson_id = props.match.params.lesson_id;
+        this.resource_id = props.match.params.resource_id;
+        this.md_document_name = props.match.params.md_document_name;
     }
 
     componentDidMount() {
