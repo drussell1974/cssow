@@ -28,7 +28,8 @@ function RenderMarkdown() {
     md.bufmax = 2048;
     md.format = req.param('format', 'html');
 
-    var fileName = path.join(__dirname, 'views', req.params.course_name, req.params.lesson_name, req.params.activity_name, req.params.file_name);
+    var fileName = path.join(__dirname, 'views', req.params.scheme_of_work_id, req.params.lesson_id, req.params.resource_id, req.params.md_document_name);
+    console.log(fileName);
     md.render(fileName, mdOpts, function(err) {
       if (err) { res.write('>>>' + err); res.end(); return; }
       else md.pipe(res);
@@ -47,7 +48,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/:course_name/:lesson_name/:activity_name/:file_name', markd.render);
+app.get('/:scheme_of_work_id/:lesson_id/:resource_id/:md_document_name', markd.render);
 
 process.on('SIGTERM', shutDown); // Doesn't work in win32 os.
 process.on('SIGINT', shutDown);
