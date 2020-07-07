@@ -19,10 +19,10 @@ class Index extends React.Component {
         this.socialmediadata = [];
 
         this.learning_episode_id = props.match.params.learning_episode_id;
-        this.course_name = "openldap";
-        this.lesson_name = "lesson3";
-        this.activity_name = "activity1"
-        this.file_name = "configuring-a-client-with-autofs-ldap-and-nfs.md";
+        this.scheme_of_work_id = "openldap";
+        this.lesson_id = "lesson3";
+        this.resource_id = "activity1"
+        this.md_document_name = "configuring-a-client-with-autofs-ldap-and-nfs.md";
     }
 
     componentDidMount() {
@@ -34,7 +34,7 @@ class Index extends React.Component {
         getLesson(this, this.learning_episode_id, 7);   
 
         // TODO: Get activity name (/openldap/lesson3/activity1/configuring-a-client-with-autofs-ldap-and-nfs)
-        getMarkdown(this, this.course_name, this.lesson_name, this.activity_name, this.file_name);
+        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {

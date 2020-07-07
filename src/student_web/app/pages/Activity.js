@@ -18,6 +18,11 @@ class Activity extends React.Component {
         this.socialmediadata = [];
 
         this.learning_episode_id = props.match.params.learning_episode_id;
+
+        this.scheme_of_work_id = props.match.params.scheme_of_work_id; 
+        this.lesson_id = props.match.params.lesson_id;
+        this.resource_id = props.match.params.resource_id;
+        this.md_document_name = props.match.params.md_document_id;
     }
 
     componentDidMount() {
@@ -28,7 +33,7 @@ class Activity extends React.Component {
 
         getLesson(this, this.learning_episode_id, 7);   
 
-        getMarkdown(this, this.learning_episode_id, 7);
+        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {
