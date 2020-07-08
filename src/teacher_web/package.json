@@ -1,14 +1,19 @@
 {
-  "pre-commit":"test",
+  "pre-commit": "test",
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
+    "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
     "build": "tar -czf ../../docker/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
-    "start": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:5002",
+    "start:dev": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:5002",
+    "start": "python ./web/manage.py runserver --settings=web.settings.production.settings 127.0.0.1:5002",
     "test": "python ./web/manage.py test --settings=web.settings.test-ui.settings",
     "test-ui-start": "sh scripts/yarn.test-ui-start.sh",
-    "test-ui":"sh scripts/yarn.test-ui--batch.sh",
+    "test-ui": "sh scripts/yarn.test-ui--batch.sh",
     "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
-    "test-api":"python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
+    "test-api": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
+  },
+  "dependencies": {
+    "env-cmd": "^10.1.0"
   }
 }
