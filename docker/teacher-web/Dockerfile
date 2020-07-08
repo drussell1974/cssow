@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y apt-transport-https && apt-get install 
 
 WORKDIR /usr/src/app
 
-COPY build .
+#COPY build .
 
-COPY build--teacher-web.sh .
+ADD teacher-web.build.tar.gz .
+COPY docker-entrypoint.sh .
 
-ENTRYPOINT ["sh","build--teacher-web.sh"]
+
+ENTRYPOINT ["sh","docker-entrypoint.sh"]
 
 EXPOSE 8002
