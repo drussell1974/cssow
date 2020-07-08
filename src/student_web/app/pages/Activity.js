@@ -22,7 +22,7 @@ class Activity extends React.Component {
         this.scheme_of_work_id = props.match.params.scheme_of_work_id; 
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
-        this.md_document_name = props.match.params.md_document_id;
+        this.md_document_name = props.match.params.md_document_name;
     }
 
     componentDidMount() {

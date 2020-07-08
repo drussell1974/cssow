@@ -1,9 +1,14 @@
 {
+  "name": "student-web",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "clean-dir": "^1.0.3",
     "copyfiles": "^2.1.1",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
+    "express": "^4.17.1",
     "github-markdown-css": "^4.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -13,7 +18,11 @@
   "scripts": {
     "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "start-dev": "webpack && webpack-dev-server --mode development",
+    "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
+    "build:stage": "env-cmd -f ../../.env.development yarn start:stage",
+    "build": "tar -czf ../../docker/student-web/student-web.build.tar.gz build index.js",
+    "start:dev": "webpack && webpack-dev-server --mode development",
+    "start:stage": "node index.js",
     "start": "webpack && webpack-dev-server --mode production"
   },
   "devDependencies": {
