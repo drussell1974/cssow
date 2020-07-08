@@ -3,7 +3,7 @@
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
-    "build": "tar -czvf ../../docker/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
+    "build": "tar -czf ../../docker/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
     "start": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:5002",
     "test": "python ./web/manage.py test --settings=web.settings.test-ui.settings",
     "test-ui-start": "sh scripts/yarn.test-ui-start.sh",
