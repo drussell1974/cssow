@@ -3,12 +3,11 @@
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
-    "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
+    "build:test-ui": "pip install -r requirements.txt && env-cmd -f web/web/settings/test-ui/.env yarn start:test-ui",
     "build": "tar -czf ../../docker/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
-    "start:dev": "python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:5002",
+    "start:test-ui": "python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:4002",
     "start": "python ./web/manage.py runserver --settings=web.settings.production.settings 127.0.0.1:5002",
-    "test": "python ./web/manage.py test --settings=web.settings.test-ui.settings",
-    "test-ui-start": "sh scripts/yarn.test-ui-start.sh",
+    "test": "python ./web/manage.py test --settings=web.settings.development.settings",
     "test-ui": "sh scripts/yarn.test-ui--batch.sh",
     "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
     "test-api": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
