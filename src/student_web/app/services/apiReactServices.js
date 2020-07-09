@@ -42,7 +42,7 @@ const getLessons = (reactComponent) => {
     )
 }
 
-const getLesson = (reactComponent, lesson_id, resource_type_id) => {
+const getLesson = (reactComponent, lesson_id) => {
     fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${lesson_id}?format=json`)
         .then(res => { 
             return res.json();
