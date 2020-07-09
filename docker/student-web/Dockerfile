@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 ADD student-web.build.tar.gz . 
 COPY docker-entrypoint.sh .
+COPY package.json .
 
-RUN npm install -g serve
-RUN npm install -g env-cmd
+RUN npm install
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 

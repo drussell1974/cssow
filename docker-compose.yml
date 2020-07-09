@@ -62,7 +62,7 @@ services:
                         - teacher-web
         student-web:
                 build: ./docker/student-web
-                image: drussell1974/schemesofwork:student-web2.1.9
+                image: drussell1974/schemesofwork:student-web2.1.10
                 environment: 
                         STUDENT_WEB__WEB_SERVER_IP: "${STUDENT_WEB__WEB_SERVER_IP}"
                         STUDENT_WEB__WEB_SERVER_PORT_EXT: "${STUDENT_WEB__WEB_SERVER_PORT_EXT}"
