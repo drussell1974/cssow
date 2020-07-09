@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
+import { LessonActivityWidget, LessonActivityWidgetItem } from '../widgets/LessonActivityWidget';
 
 
 let lesson = 
@@ -79,9 +80,9 @@ let lesson =
               "publisher": "PM Heathcote and RSU Heathcote, PG Online, 2016",
               "page_note": "The TCP/IP Protocol Stack - pages 122 - 123",
               "page_uri": "",
-              "md_document_name": "",
-              "type_id": 6,
-              "type_name": "Book",
+              "md_document_name": "The-TCP_IP-Protocol-Stack.md",
+              "type_id": 10,
+              "type_name": "Markdown",
               "type_icon": "fa-book",
               "lesson_id": 220,
               "scheme_of_work_id": 11,
@@ -111,10 +112,44 @@ describe('LessonActivityWidget', () => {
     })
 
     it('renders list of markdown resources', () => {
-        render(<LessonActivityWidget lesson={lesson} />);
+        render(<Router><LessonActivityWidget lesson={lesson} /></Router>);
 
         expect(
             container.querySelectorAll('ul.activities a.activity-link--markdown')
         ).toHaveLength(3);
+    })
+
+    describe('LessonActivityWidgetItem', () => {
+        let render, container;
+        
+        beforeEach(() => {
+            ({render, container} = createContainer());
+        })
+    
+        it('renders empty model', () => {
+            render(<LessonActivityWidgetItem />);
+           
+            expect(
+                container.textContent
+            ).toMatch("");
+        })
+
+        it('renders link text', () => {
+            
+            render(<Router><LessonActivityWidgetItem lesson={lesson} resource={lesson.resources[0]} /></Router>);
+
+            expect(
+                container.querySelector('li a.activity-link--markdown').textContent
+            ).toMatch("A level: OCR Specification Order")
+        })
+
+        it('renders link href', () => {
+            
+            render(<Router><LessonActivityWidgetItem lesson={lesson} resource={lesson.resources[2]} /></Router>);
+
+            expect(
+                container.querySelector('li a.activity-link--markdown').getAttribute('href')
+            ).toMatch("/Lesson/220/Activity/119/The-TCP_IP-Protocol-Stack.md")
+        })
     })
 })
