@@ -12,8 +12,8 @@ ReactDOM.render(
     <Router>
         <Switch>
             <Route exact path="/" component={Index} ></Route>
+            <Route path="/Lesson/:lesson_id/Activity/:resource_id/:md_document_name/" component={Activity} />
             <Route path="/Lesson/:lesson_id" component={Lesson} />
-            <Route path="/Lesson/:lesson_id/Activity/:resource_id/:md_document_name" component={Activity} />
         </Switch>
     </Router>
 , document.getElementById('app'));

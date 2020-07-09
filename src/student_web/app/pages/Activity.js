@@ -2,7 +2,7 @@ import React from 'react';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
-import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
+import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class Activity extends React.Component {
     
@@ -17,8 +17,6 @@ class Activity extends React.Component {
     
         this.socialmediadata = [];
 
-        this.learning_episode_id = props.match.params.learning_episode_id;
-
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
         this.md_document_name = props.match.params.md_document_name;
@@ -30,9 +28,9 @@ class Activity extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLesson(this, this.learning_episode_id);   
+        getLesson(this, this.lesson_id);   
 
-        getMarkdown(this, this.SchemeOfWork.id, this.lesson_id, this.resource_id, this.md_document_name);
+        getMarkdown(this, STUDENT_WEB__DEFAULT_SCHEMEOFWORK, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {
@@ -57,7 +55,7 @@ class Activity extends React.Component {
 
                 <div id="main">
                     <div className="inner">
-                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />    
+                        <MarkdownWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />    
                     </div>
                 </div>
                 
