@@ -125,9 +125,9 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         published=request.POST.get("published", 0)
     )
 
-    ' upload file if Markdown document '
+    ' set property if Markdown document is being uploaded '
     if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
-        handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
+        model.md_document_name = request.FILES['md_file']
     
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
@@ -140,6 +140,10 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         ' save resource'
         #cls_resource.enable_logging = True
         model = cls_resource.save(db, model, int(request.POST["published"]))
+
+        ' upload file if Markdown document '
+        if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+            handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
 
         ' redirect as necessary '
         if request.POST["next"] != None and request.POST["next"] != "":
