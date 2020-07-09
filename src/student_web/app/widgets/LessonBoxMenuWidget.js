@@ -26,7 +26,7 @@ export const LessonBoxMenuMarkdownPageLinkItem = ({data, lesson, typeButtonText}
         return <React.Fragment></React.Fragment>;
     } else {
         //const uri = `${data.lesson_id}/${data.id}/${data.md_document_name}`;
-        const uri = `/Lesson/${lesson.id}/Activity/${data.scheme_of_work_id}/${data.id}/${data.md_document_name}`;
+        const uri = `/Lesson/${lesson.id}/Activity/${data.id}/${data.md_document_name}`;
         
         return (
 

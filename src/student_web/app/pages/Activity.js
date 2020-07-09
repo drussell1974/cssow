@@ -19,7 +19,6 @@ class Activity extends React.Component {
 
         this.learning_episode_id = props.match.params.learning_episode_id;
 
-        this.scheme_of_work_id = props.match.params.scheme_of_work_id; 
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
         this.md_document_name = props.match.params.md_document_name;
@@ -31,9 +30,9 @@ class Activity extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLesson(this, this.learning_episode_id, 7);   
+        getLesson(this, this.learning_episode_id);   
 
-        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
+        getMarkdown(this, this.SchemeOfWork.id, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {
