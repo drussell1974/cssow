@@ -43,8 +43,8 @@ let lessons = [{
         resources: [
         {
             id: 4,
-            reference_type_id: 6,
-            reference_type_name: "Book",
+            type_id: 6,
+            type_name: "Book",
             title: "OCR AS and A Level Computer Science",
             publisher: "PG Online",
             year_published: 2016,
@@ -64,8 +64,8 @@ let lessons = [{
         },
         {
             id: 7,
-            reference_type_id: 7,
-            reference_type_name: "Video",
+            type_id: 7,
+            type_name: "Video",
             title: "A level: OCR Specification Order",
             publisher: "YouTube",
             year_published: 2019,
@@ -85,8 +85,8 @@ let lessons = [{
         },
         {
             id: 30,
-            reference_type_id: 7,
-            reference_type_name: "Video",
+            type_id: 7,
+            type_name: "Video",
             title: "Coding Tech",
             publisher: "YouTube",
             year_published: 2019,
@@ -126,8 +126,8 @@ let lessons = [{
         [
             {
                 id: 27,
-                reference_type_id: 7,
-                reference_type_name: "Video",
+                type_id: 7,
+                type_name: "Video",
                 title: "Computer Science channel",
                 publisher: "YouTube",
                 year_published: 2019,
@@ -183,8 +183,8 @@ let lessons = [{
         resources: [
             {            
                 id: 31,
-                reference_type_id: 7,
-                reference_type_name: "Video",
+                type_id: 7,
+                type_name: "Video",
                 title: "John Phillip Jones",
                 publisher: "YouTube",
                 year_published: 2019,
@@ -224,8 +224,8 @@ let lessons = [{
         resources: [
             {
                 id: 21,
-                reference_type_id: 8,
-                reference_type_name: "Website",
+                type_id: 8,
+                type_name: "Website",
                 title: "Computing at School",
                 publisher: "National Centre for Computing",
                 year_published: 2019,
@@ -273,8 +273,8 @@ let lessons = [{
         resources:[
             {
                 id: 23,
-                reference_type_id: 8,
-                reference_type_name: "Website",
+                type_id: 8,
+                type_name: "Website",
                 title: "Higher Computer Science",
                 publisher: "BBC Bitesize",
                 year_published: 2019,
@@ -294,8 +294,8 @@ let lessons = [{
             },
             {
                 id: 20,
-                reference_type_id: 8,
-                reference_type_name: "Website",
+                type_id: 8,
+                type_name: "Website",
                 title: "Other websites",
                 publisher: "Academic resources",
                 year_published: 2019,
@@ -315,8 +315,8 @@ let lessons = [{
             },
             {
                 id: 26,
-                reference_type_id: 8,
-                reference_type_name: "Website",
+                type_id: 8,
+                type_name: "Website",
                 title: "Programiz",
                 publisher: "Parewa Labs Pvt Ltd",
                 year_published: 2019,

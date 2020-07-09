@@ -4,7 +4,7 @@ import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getSchemeOfWork, getLesson, getSocialMediaLinks, getMarkdown } from '../services/apiReactServices';
+import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 
 class Index extends React.Component {
     
@@ -18,7 +18,6 @@ class Index extends React.Component {
     
         this.socialmediadata = [];
 
-        this.learning_episode_id = props.match.params.learning_episode_id;
         this.scheme_of_work_id = props.match.params.scheme_of_work_id;
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
@@ -31,10 +30,7 @@ class Index extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLesson(this, this.learning_episode_id, 7);   
-
-        // TODO: Get activity name (/openldap/lesson3/activity1/configuring-a-client-with-autofs-ldap-and-nfs)
-        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
+        getLesson(this, this.lesson_id, 7);   
     }
     
     static getDerivedStateFromError(error) {
@@ -63,7 +59,6 @@ class Index extends React.Component {
 
                         <LessonBoxMenuWidget data={this.state.Lesson} typeButtonText="View" />
                         
-                        <LessonActivityWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />
                     </div>
                 </div>
                 

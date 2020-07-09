@@ -42,7 +42,7 @@ let lesson =
         ],
     };
 
-describe('LessonObjectivesWidget', () => {
+describe('LessonObjectivesWidgetItem', () => {
     let render, container;
     
     beforeEach(() => {

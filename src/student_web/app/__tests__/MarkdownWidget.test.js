@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
-
+import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 let lesson = 
     {
@@ -95,7 +94,7 @@ let lesson =
           ]
     };
 
-describe('LessonActivityWidget', () => {
+describe('MarkdownWidget', () => {
     let render, container;
     
     beforeEach(() => {
@@ -103,18 +102,34 @@ describe('LessonActivityWidget', () => {
     })
 
     it('renders empty model', () => {
-        render(<LessonActivityWidget />);
+        render(<MarkdownWidget />);
        
         expect(
             container.textContent
         ).toMatch("");
     })
 
-    it('renders list of markdown resources', () => {
-        render(<LessonActivityWidget lesson={lesson} />);
+    it('renders empty markdown_html an empty string', () => {
+        render(<MarkdownWidget data={lesson} markdown_html={""} />);
 
         expect(
-            container.querySelectorAll('ul.activities a.activity-link--markdown')
-        ).toHaveLength(3);
+            container.textContent
+        ).toMatch("");
+    })
+
+    it('renders heading2', () => {
+        render(<MarkdownWidget data={lesson} markdown_html={"<h1>Markdown content</h1><p>Lorem ipsum dolor sit amet.</p>"} />);
+
+        expect(
+            container.querySelector('h2').textContent 
+        ).toMatch("Activity");
+    })
+
+    it('renders markdown-body with markdown_html', () => {
+        render(<MarkdownWidget data={lesson} markdown_html={"<h1>Markdown content</h1><p>Lorem ipsum dolor sit amet.</p>"} />);
+    
+        expect(
+            container.querySelector('section.markdown div.markdown-body').textContent 
+        ).toMatch("Markdown contentLorem ipsum dolor sit amet.");
     })
 })
