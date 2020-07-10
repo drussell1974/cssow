@@ -10,7 +10,7 @@
     "test": "python ./web/manage.py test --settings=web.settings.development.settings",
     "test-ui": "sh scripts/yarn.test-ui--batch.sh",
     "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
-    "test-api": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py"
+    "test-api": "sh scripts/yarn.test-api.sh"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

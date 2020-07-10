@@ -1,30 +1,23 @@
 import json
 from django.test import tag
-from ui_testcase import UITestCase, WebBrowserContext
+from api_testcase import APITestCase
 
-class uitest_schemeofwork__get(UITestCase):
+class apitest_schemeofwork__get(APITestCase):
 
-    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/api/schemesofwork")
-        self.test_context.implicitly_wait(4)
-
-        #arrange
-        elem = self.test_context.find_element_by_tag_name('pre')
-        content = elem.text
-        
-        self.payload = json.loads(content)
+        self.get("/api/schemesofwork")
 
 
     def tearDown(self):
         pass
 
+
     @classmethod
     def tearDownClass(cls):
         # tear down
-        cls.test_context.close()
+        pass
 
 
     @tag("schemeofwork should return a payload")
@@ -33,9 +26,9 @@ class uitest_schemeofwork__get(UITestCase):
         self.assertIsNotNone(self.payload)
         self.assertIsNotNone(self.payload["schemesofwork"])
 
-
     def test__first_should_have_name(self):
         self.assertEqual('KS3 Computing', self.payload["schemesofwork"][0]["name"])
+
 
 
     def test__first_should_have_desription(self):

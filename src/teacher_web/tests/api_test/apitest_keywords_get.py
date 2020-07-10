@@ -1,32 +1,26 @@
 import json
 from django.test import tag
-from ui_testcase import UITestCase, WebBrowserContext
+from api_testcase import APITestCase
 
 
-class uitest_api_keywords_get(UITestCase):
+class apitest_keywords_get(APITestCase):
 
-    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/api/keywords")
-        self.test_context.implicitly_wait(4)
-
-        #arrange
-        elem = self.test_context.find_element_by_tag_name('pre')
-        content = elem.text
+        self.get("/api/keywords")
         
-        self.payload = json.loads(content)
         self.last_item_index = len(self.payload["keywords"]) - 1
 
 
     def tearDown(self):
         pass
 
+
     @classmethod
     def tearDownClass(cls):
         # tear down
-        cls.test_context.close()
+        pass
 
 
     def test__should_return_a_payload(self):

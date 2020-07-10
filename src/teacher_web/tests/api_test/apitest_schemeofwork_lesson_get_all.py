@@ -1,24 +1,16 @@
 from django.test import tag
-from ui_testcase import UITestCase, WebBrowserContext
+from api_testcase import APITestCase
 from django.urls import reverse
 #from lessons.views import get
 
 
-class uitest_schemeofwork_lesson_get_all(UITestCase):
+class apitest_schemeofwork_lesson_get_all(APITestCase):
 
-    test_context = WebBrowserContext()
     
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/api/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
-        self.test_context.implicitly_wait(4)
-
-        #arrange
-        elem = self.test_context.find_element_by_tag_name('pre')
-        content = elem.text
-        import json
-        self.payload = json.loads(content)
-
+        self.get("/api/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
+        
         self.last_item_index = len(self.payload["lessons"]) - 1
 
 
@@ -29,7 +21,7 @@ class uitest_schemeofwork_lesson_get_all(UITestCase):
     @classmethod
     def tearDownClass(cls):
         # tear down
-        cls.test_context.close()
+        pass
 
 
 #    def test__should_resolve_url(self):
