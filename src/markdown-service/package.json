@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build-dev": "cp ../../../markdown-to-html/lib/github-markdown.js ./web/lib/github-markdown.js && cp ../../../markdown-to-html/lib/markdown.js ./web/lib/markdown.js && cp ../../../markdown-to-html/lib/gfm-linkify.js ./web/lib/gfm-linkify.js",
-    "build": "tar -czf ../../docker/markdown-service/markdown-service.build.tar.gz web package.json",
+    "build": "tar -czf ../../release/markdown-service/markdown-service.build.tar.gz web package.json",
     "start": "node ./web/index.js"
   }
 }
