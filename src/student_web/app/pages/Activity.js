@@ -48,22 +48,43 @@ class Activity extends React.Component {
       }
       
     render() {
+        console.log(this.state.Lesson.resources.filter(x => x.id == 220));
+
         return (
             <React.Fragment>
-                
-                <BannerWidget heading={this.state.Lesson.title} description={this.state.Lesson.summary} />
-
-                <div id="main">
-                    <div className="inner">
-                        <MarkdownWidget data={this.state.Lesson} markdown_html={this.state.markdown_html} />    
-                    </div>
-                </div>
-                
-                <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
-
+                <ActivityPageContainer 
+                    resource={this.state.Lesson}
+                    schemeofwork={this.state.SchemeOfWork}
+                    markdown_html={this.state.markdown_html}
+                    socialmediadata={this.socialmediadata}
+                />
             </React.Fragment>
         )
     }
 };
+
+export const ActivityPageContainer = ({resource, schemeofwork, markdown_html, socialmediadata}) => {
+    if (resource === undefined || schemeofwork === undefined) {
+        return ( 
+            <React.Fragment></React.Fragment>
+        )
+    } else {
+        return (
+            <React.Fragment>
+
+                <BannerWidget heading={resource.title} description={resource.page_note} />
+
+                <div id="main">
+                    <div className="inner">
+                        <MarkdownWidget markdown_html={markdown_html} />    
+                    </div>
+                </div>
+
+                <FooterWidget heading={schemeofwork.name} summary={schemeofwork.description} socialmedia={socialmediadata} />
+            
+            </React.Fragment>
+        )
+    }
+}
 
 export default Activity;

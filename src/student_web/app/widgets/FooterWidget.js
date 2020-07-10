@@ -3,7 +3,7 @@ import React from 'react';
 const FooterWidget = ({heading, summary, socialmedia}) => {
     if(heading !== undefined && summary !== undefined) {
 
-        let socialmediadata = socialmedia === undefined ? [] : socialmedia;
+        let socialmediadata = socialmedia === undefined || socialmedia.length === undefined  ? [] : socialmedia;
         
         return (
             <footer id="footer">
