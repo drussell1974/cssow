@@ -20,7 +20,7 @@
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
     "build:stage": "env-cmd -f ../../.env.development yarn start:stage",
-    "build": "tar -czf ../../release/student-web/student-web.build.tar.gz build index.js",
+    "build": "tar -czf ../../build/student-web/student-web.build.tar.gz build index.js",
     "start:dev": "webpack && webpack-dev-server --mode development",
     "start:stage": "node index.js",
     "start": "webpack && webpack-dev-server --mode production"
