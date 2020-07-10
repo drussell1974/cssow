@@ -7,4 +7,3 @@ export TEST_LEARNING_OBJECTIVE_ID=410
 export TEST_RESOURCE_ID=119
 
 python -m unittest discover --start-directory ./tests/api_test/ -p apitest_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py
