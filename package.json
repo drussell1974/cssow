@@ -6,9 +6,8 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "build:compose": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > build/docker-compose.yml && cp .env build/.env && tar -czvf releases/release-$(date +%F).tar.gz ./build && git add releases/release-$(date +%F).tar.gz && git commit -m 'build: release' && yarn build",
-    "build":"sudo cp -r ~/db/backups/db-backup.cssow_api.latest.sql build/cssow-db/db/current && yarn --cwd src/student_web build && yarn --cwd src/markdown-service build && yarn --cwd src/teacher_web build",
-    "build:test": "yarn --cwd src/teacher_web/ build:test-ui & yarn test",
-    "test": "yarn --cwd src/teacher_web/ test && yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test-api && yarn --cwd src/teacher_web/ test-ui"
+	  "build": "sh scripts/build.sh",
+    "test": "yarn --cwd src/teacher_web/ build:test-ui & sh scripts/test.sh",
+    "release":"sh scripts/release.sh"
     }
 }
