@@ -6,8 +6,7 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "build": "sh scripts/build.sh",
-    "test": "yarn --cwd src/teacher_web/ build:test-ui & sh scripts/test.sh",
-    "release":"sh scripts/release.sh"
+	  "test": "yarn --cwd src/teacher_web/ build:test-ui & sh scripts/test.sh",
+    "build": "sh scripts/build.sh"
     }
 }
