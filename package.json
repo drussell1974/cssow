@@ -6,7 +6,7 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "build:compose": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > compose/docker-compose.yml && cp .env compose/.env && tar -czvf compose.tar.gz ./compose && git add compose.tar.gz && git commit -m 'build: create docker-compose.yml and .env templates' && yarn build",
+	  "build:compose": "echo \"creating docker-compose.yml and .env examples...\"  && sed /build/d docker-compose.yml > docker/docker-compose.yml && cp .env docker/.env && tar -czvf compose.tar.gz ./docker && git add compose.tar.gz && git commit -m 'build: create docker-compose.yml and .env templates' && yarn build",
     "build":"sudo cp -r db/backups docker/cssow-db/build && yarn --cwd src/student_web build && yarn --cwd src/markdown-service build && yarn --cwd src/teacher_web build",
     "build:test": "yarn --cwd src/teacher_web/ build:test-ui & yarn test",
     "test": "yarn --cwd src/teacher_web/ test && yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test-api && yarn --cwd src/teacher_web/ test-ui"
