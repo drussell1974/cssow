@@ -8,6 +8,8 @@ export TEST_RESOURCE_ID=119
 export TEST_USER_NAME="test@localhost"
 export TEST_USER_PSWD="co2m1c1."
 
+echo -e "\e[1;33m Ensure task build:test-ui is running and http://${TEST_HOST}:${TEST_PORT}...is available \e[0m"
+
 echo Testing... default
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 
