@@ -1,8 +1,8 @@
 ## Run project tasks 
 
-sudo cp -r ~/db/backups/db-backup.cssow_api.latest.sql build/cssow-db/db/current
+sudo cp db/setup/db-cssow_api-init.1.sql build/db/backups/current
 
-BUILDNO=$(date +%F-%H%M)
+BUILDNO=$(date +%F)-${1:-development}
 
 echo Creating release-$BUILDNO...
 
@@ -12,15 +12,34 @@ yarn --cwd src/teacher_web build
 
 # Create docker-compose with new build number
 sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-compose.yml
-sudo docker-compose -f build/docker-compose.yml build
-sudo docker-compose -f build/docker-compose.yml push
 
-## create tar releases
+    
+if [ $1 ] ;then
+    ## create tar releases
+    echo -e "\nbuild.sh: \e[1;33m pushing images... ($BUILDNO) \e[0m"
+    
+    # build and push
 
-# Remove build
-sed "/build:/d" -i build/docker-compose.yml
+    sudo docker-compose -f build/docker-compose.yml build
+    sudo docker-compose -f build/docker-compose.yml push
 
-cp .env build/.env
-tar -czvf releases/release-$BUILDNO.tar.gz ./build 
-git add releases/release-$BUILDNO.tar.gz
-git commit -m "build: release-$BUILDNO"
+    # Remove build from docker-compose.yml
+
+    sed "/build:/d" -i build/docker-compose.yml
+
+    echo -e "\nbuild.sh: \e[1;33m creating release tar file ...($BUILDNO) \e[0m"
+
+    cp .env build/.env
+    tar -czvf releases/release-$BUILDNO.tar.gz ./build 
+
+    echo -e "\nbuild.sh: \e[1;33m committing release tar file ...($BUILDNO) \e[0m"
+
+    git add releases/release-$BUILDNO.tar.gz
+    git commit -m "build: release-$BUILDNO"
+
+    git tag $BUILDNO
+    git push origin $BUILDNO
+else
+    echo -e "\nbuild.sh: \e[1;32m local build only $BUILDNO. Run 'cd build && sudo docker-compose up --build' \e[0m"
+    echo -e "\nbuild.sh: \e[1;32m To create live build run build with suffix e.g. 'yarn build v1' \e[0m"
+fi

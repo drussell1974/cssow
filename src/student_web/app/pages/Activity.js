@@ -48,7 +48,6 @@ class Activity extends React.Component {
       }
       
     render() {
-        console.log(this.state.Lesson.resources.filter(x => x.id == 220));
 
         return (
             <React.Fragment>

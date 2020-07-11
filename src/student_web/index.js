@@ -18,5 +18,9 @@ app.get('/', function(req, res) {
 });
 
 app.listen(STUDENT_WEB__WEB_SERVER_PORT_INT, function() {
-    console.log(`index.js: listening on port ${STUDENT_WEB__WEB_SERVER_PORT_INT}...`)
+    console.log(`index.js: STUDENT_WEB__WEB_SERVER_PORT_INT=${STUDENT_WEB__WEB_SERVER_PORT_INT}`);
+    console.log(`index.js: STUDENT_WEB__CSSOW_API_URI=${STUDENT_WEB__CSSOW_API_URI}`);
+    console.log(`index.js: STUDENT_WEB__DEFAULT_SCHEMEOFWORK=${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}`);
+    console.log(`index.js: STUDENT_WEB__MARKDOWN_SERVICE_URI=${STUDENT_WEB__MARKDOWN_SERVICE_URI}`);
+    console.log(`index.js: listening on port ${STUDENT_WEB__WEB_SERVER_PORT_INT}...`);
 });
