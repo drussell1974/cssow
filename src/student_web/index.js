@@ -1,16 +1,14 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-require('dotenv').config()
+//require('dotenv').config()
 
 /* Get Environment Variables from dotenv config (required above)*/
 
-const {
-    STUDENT_WEB__WEB_SERVER_PORT_INT, /* replace port in devserver */
-    STUDENT_WEB__CSSOW_API_URI, /* uri for accessing cssow json api*/
-    STUDENT_WEB__DEFAULT_SCHEMEOFWORK, /* default scheme of work */
-    STUDENT_WEB__MARKDOWN_SERVICE_URI, /* uri for markdown documents */
- } = process.env
+const STUDENT_WEB__WEB_SERVER_PORT_INT = process.env.STUDENT_WEB__WEB_SERVER_PORT_INT; /* replace port in devserver */
+const STUDENT_WEB__CSSOW_API_URI = process.env.STUDENT_WEB__CSSOW_API_URI; /* uri for accessing cssow json api*/
+const STUDENT_WEB__DEFAULT_SCHEMEOFWORK = process.env.STUDENT_WEB__CSSOW_API_URI; /* default scheme of work */
+const STUDENT_WEB__MARKDOWN_SERVICE_URI = process.env.STUDENT_WEB__MARKDOWN_SERVICE_URI; /* uri for markdown documents */
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.get('/', function(req, res) {
@@ -18,9 +16,5 @@ app.get('/', function(req, res) {
 });
 
 app.listen(STUDENT_WEB__WEB_SERVER_PORT_INT, function() {
-    console.log(`index.js: STUDENT_WEB__WEB_SERVER_PORT_INT=${STUDENT_WEB__WEB_SERVER_PORT_INT}`);
-    console.log(`index.js: STUDENT_WEB__CSSOW_API_URI=${STUDENT_WEB__CSSOW_API_URI}`);
-    console.log(`index.js: STUDENT_WEB__DEFAULT_SCHEMEOFWORK=${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}`);
-    console.log(`index.js: STUDENT_WEB__MARKDOWN_SERVICE_URI=${STUDENT_WEB__MARKDOWN_SERVICE_URI}`);
     console.log(`index.js: listening on port ${STUDENT_WEB__WEB_SERVER_PORT_INT}...`);
 });

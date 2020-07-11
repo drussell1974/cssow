@@ -1,5 +1,5 @@
 export TEST_HOST="127.0.0.1"
-export TEST_PORT=4002
+export TEST_PORT=3002
 export TEST_URI="http://${TEST_HOST}:${TEST_PORT}"
 export TEST_SCHEME_OF_WORK_ID=11
 export TEST_LESSON_ID=220

@@ -25,6 +25,7 @@ SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 DEBUG = True,
 
 ALLOWED_HOSTS = [
+        "localhost",
         "172.27.0.1",
         "127.0.0.1"
         ]
@@ -64,6 +65,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3001",
     "http://127.0.0.1"
     ]
 
