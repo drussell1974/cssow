@@ -19,14 +19,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
+#SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
+SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True,
+#DEBUG = True,        
+DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
 ALLOWED_HOSTS = [
-        "172.27.0.1",
-        "127.0.0.1"
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
+        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
         ]
 
 INTERNAL_IPS = [
@@ -56,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # LEAVE 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -64,7 +66,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1"
+        os.environ['STUDENT_WEB__WEB_SERVER_WWW'],
     ]
 
 ROOT_URLCONF = 'web.urls'
@@ -95,11 +97,11 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "cssow_api",
-        'USER': "root",
-        'PASSWORD': "password1.",
-        'HOST': "127.0.0.1",
-        'PORT': 3306,
+        'NAME': os.environ['CSSOW_DB__DATABASE'],
+        'USER': os.environ['CSSOW_DB__USER'],
+        'PASSWORD': os.environ['CSSOW_DB__PASSWORD'],
+        'HOST': os.environ['CSSOW_DB__HOST_INT'],
+        'PORT': os.environ['CSSOW_DB__PORT_INT'],
     }
 }
 

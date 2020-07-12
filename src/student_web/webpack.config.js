@@ -21,6 +21,9 @@ module.exports = {
       publicPath: '/',
       filename: 'bundle.js'
    },
+   node: {
+      fs: 'empty'
+   },
    devServer: {
       inline: true,
       port: port_int,
@@ -76,8 +79,8 @@ module.exports = {
        ]),
        /* Create custom variables accessible throughout solution */
        new webpack.DefinePlugin({
-          "STUDENT_WEB__CSSOW_API_URI":JSON.stringify(api_uri),
-          "STUDENT_WEB__MARKDOWN_SERVICE_URI":JSON.stringify(markdown_api_uri),
+          "STUDENT_WEB__CSSOW_API_URI": JSON.stringify(api_uri),
+          "STUDENT_WEB__MARKDOWN_SERVICE_URI": JSON.stringify(markdown_api_uri),
           "STUDENT_WEB__DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
        })
    ]
