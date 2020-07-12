@@ -20,10 +20,10 @@
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
     "build:stage": "env-cmd -f ../../.env yarn start:stage",
-    "build": "webpack && tar -czf ../../build/student-web/student-web.build.tar.gz build index.js",
+    "build": "env-cmd -f ../../.env yarn start",
     "start:dev": "webpack --mode development && webpack-dev-server --mode development",
     "start:stage": "webpack --mode production && node index.js",
-    "start": "webpack && webpack-dev-server --mode production"
+    "start": "webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build index.js webpack.config.js"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",
