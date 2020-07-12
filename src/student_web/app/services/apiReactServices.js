@@ -1,6 +1,6 @@
 
 const getSchemeOfWork = (reactComponent) => {
-    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -22,7 +22,7 @@ const getSchemeOfWork = (reactComponent) => {
 }
 
 const getLessons = (reactComponent) => {
-    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -43,7 +43,7 @@ const getLessons = (reactComponent) => {
 }
 
 const getLesson = (reactComponent, lesson_id) => {
-    fetch(`${STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${lesson_id}?format=json`)
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${lesson_id}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -64,7 +64,7 @@ const getLesson = (reactComponent, lesson_id) => {
 }
 
 const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, md_document_name) => {
-    fetch(`${STUDENT_WEB__MARKDOWN_SERVICE_URI}/${scheme_of_work_id}/${lesson_id}/${resource_id}/${md_document_name}?format=json`)
+    fetch(`${REACT_APP_STUDENT_WEB__MARKDOWN_SERVICE_URI}/${scheme_of_work_id}/${lesson_id}/${resource_id}/${md_document_name}?format=json`)
       .then(res => res.json())
       .then(
         (result) => {

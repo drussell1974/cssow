@@ -30,7 +30,7 @@ class Activity extends React.Component {
 
         getLesson(this, this.lesson_id);   
 
-        getMarkdown(this, STUDENT_WEB__DEFAULT_SCHEMEOFWORK, this.lesson_id, this.resource_id, this.md_document_name);
+        getMarkdown(this, REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {
