@@ -29,7 +29,7 @@ if [ $1 ] ;then
 
     echo -e "\nbuild.sh: \e[1;33m creating release tar file ...($BUILDNO) \e[0m"
 
-    cp .env build/.env
+    cp dotenv/.env build/.env
     tar -czvf releases/release-$BUILDNO.tar.gz ./build 
 
     echo -e "\nbuild.sh: \e[1;33m committing release tar file ...($BUILDNO) \e[0m"
@@ -42,4 +42,5 @@ if [ $1 ] ;then
 else
     echo -e "\nbuild.sh: \e[1;32m local build only $BUILDNO. Run 'cd build && sudo docker-compose up --build' \e[0m"
     echo -e "\nbuild.sh: \e[1;32m To create live build run build with suffix e.g. 'yarn build v1' \e[0m"
+    cp dotenv/.env.development build/.env
 fi

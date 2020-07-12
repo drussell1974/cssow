@@ -27,6 +27,7 @@ SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
 ALLOWED_HOSTS = [
+        "jtc10",
         "127.0.0.1",
         "localhost",
         os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],

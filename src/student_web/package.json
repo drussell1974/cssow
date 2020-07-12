@@ -18,12 +18,11 @@
   "scripts": {
     "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "build:dev": "env-cmd -f ../../.env.development yarn start:dev",
-    "build:stage": "env-cmd -f ../../.env yarn start:stage",
-    "build": "env-cmd -f ../../.env yarn start",
+    "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
+    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start:stage",
+    "build": "env-cmd -f ../../dotenv/.env webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
     "start:dev": "webpack --mode development && webpack-dev-server --mode development",
-    "start:stage": "webpack --mode production && node index.js",
-    "start": "webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build index.js webpack.config.js"
+    "start:stage": "webpack --mode production && serve build -l 8001"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",
