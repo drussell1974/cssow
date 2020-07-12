@@ -16,14 +16,17 @@ sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-comp
     
 if [ $1 ] ;then
     ## create tar releases
-    echo -e "\nbuild.sh: \e[1;33m pushing images... ($BUILDNO) \e[0m"
+    echo -e "\nbuild.sh: \e[1;33m building images... ($BUILDNO) \e[0m"
     
     # build and push
 
     sudo docker-compose -f build/docker-compose.yml build
+
+    echo -e "\nbuild.sh: \e[1;33m pushing images... ($BUILDNO) \e[0m"
+
     sudo docker-compose -f build/docker-compose.yml push
 
-    # Remove build from docker-compose.yml
+    # Remove build from docker-compose.yml (build before this line)
 
     sed "/build:/d" -i build/docker-compose.yml
 

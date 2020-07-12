@@ -4,9 +4,9 @@
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
-    "build:dev": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
+    "build:dev": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "build:test-ui": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "test": "python ./web/manage.py test --settings=web.settings.development.settings",
+    "test": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py test --settings=web.settings.test-ui.settings",
     "test-ui": "sh scripts/yarn.test-ui--batch.sh",
     "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
     "test-api": "sh scripts/yarn.test-api.sh"
