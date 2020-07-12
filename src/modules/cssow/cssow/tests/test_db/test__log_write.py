@@ -1,4 +1,4 @@
-from _unittest import TestCase, FakeDb
+from tests.model_test._unittest import TestCase, FakeDb
 from log import Log
 
 class test__log_write(TestCase):

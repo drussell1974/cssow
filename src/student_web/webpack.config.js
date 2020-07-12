@@ -4,13 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('dotenv').config()
 
-
 /* Get Environment Variables from dotenv config (required above)*/
 
 const {
    STUDENT_WEB__WEB_SERVER_PORT_INT: port_int, /* replace port in devserver */
    STUDENT_WEB__CSSOW_API_URI: api_uri, /* uri for accessing cssow json api*/
    STUDENT_WEB__DEFAULT_SCHEMEOFWORK: default_schemeofwork, /* default scheme of work */
+   STUDENT_WEB__MARKDOWN_SERVICE_URI: markdown_api_uri, /* uri for markdown documents */
 } = process.env
 
 module.exports = {
@@ -18,12 +18,17 @@ module.exports = {
    entry: './app/App.js',
    output: {
       path: path.join(__dirname, '/build/'),
+      publicPath: '/',
       filename: 'bundle.js'
+   },
+   node: {
+      fs: 'empty'
    },
    devServer: {
       inline: true,
       port: port_int,
       contentBase:path.join(__dirname,'./build'),
+      historyApiFallback: true,
    },
    module: {
       rules: [
@@ -70,11 +75,13 @@ module.exports = {
       }),
       new CopyPlugin([
          { from: 'assets', to: 'assets' },
+         { from: 'node_modules/github-markdown-css/github-markdown.css', to: 'assets/css' },
        ]),
        /* Create custom variables accessible throughout solution */
        new webpack.DefinePlugin({
-          "API_URL":JSON.stringify(api_uri),
-          "DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
+          "REACT_APP_STUDENT_WEB__CSSOW_API_URI": JSON.stringify(api_uri),
+          "REACT_APP_STUDENT_WEB__MARKDOWN_SERVICE_URI": JSON.stringify(markdown_api_uri),
+          "REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK": JSON.stringify(default_schemeofwork), 
        })
    ]
 }

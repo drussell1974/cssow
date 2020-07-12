@@ -11,6 +11,9 @@ class Index extends React.Component {
         this.state = {
             SchemeOfWork: {},
             Lessons: [],
+            Lesson: {
+                Markup: "",
+            },
             hasError: false,
         }
     

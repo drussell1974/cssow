@@ -1,7 +1,7 @@
-from _unittest import TestCase
-from lesson_testcase import Lesson_TestCase
+from tests.model_test._unittest import TestCase
+from learningepisode_testcase import Lesson_TestCase
 
-class test_LessonModel__clean_up___scheme_of_work_name(lesson_TestCase):
+class test_LessonModel__clean_up___scheme_of_work_name(Lesson_TestCase):
 
     def setUp(self):
         self.test = self._construct_valid_object()
@@ -142,54 +142,3 @@ class test_LessonModel_clean_up__pathway_objective_ids(Lesson_TestCase):
 
         # assert
         self.assertEqual(["x", '"y"', "z", "y"], self.test.pathway_objective_ids)
-
-
-class test_LessonModel_clean_up__keywords(Lesson_TestCase):
-
-    def setUp(self):
-        self.test = self._construct_valid_object()
-
-    def test__trim_whitespace(self):
-        test = self._construct_valid_object()
-
-        test.key_words = " x "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual("x", test.key_words)
-
-
-    def test__multiple_items(self):
-        test = self._construct_valid_object()
-
-        test.key_words = "w x, y, z "
-
-        # test
-        test._clean_up()
-
-        # assert
-        self.assertEqual("w x,y,z", test.key_words)
-
-
-    def test__escape_sqlterminator(self):
-
-        self.test.key_words = "x;"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual("x\;", self.test.key_words)
-
-
-    def test__escape_quote(self):
-
-        self.test.key_words = "'x'"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual('"x"', self.test.key_words)

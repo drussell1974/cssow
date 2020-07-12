@@ -1,11 +1,17 @@
 {
+  "pre-commit": "test",
   "scripts": {
-    "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk",
+    "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
-    "build": "pip install django && pip install mysql-connector-python && pip install mysqlclient && pip install ../modules/cssow/dist/cssow_drussell1974-2.17.1-py3-none-any.whl && pip install djangorestframework && pip install selenium",
-    "start": "python ./web/manage.py runserver 127.0.0.1:8002",
-    "test": "python ./web/manage.py test ./web && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py && python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_api_*.py",
-    "test-routes": "python ./web/manage.py test ./web",
-    "test-ui": "python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_index.py"
+    "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
+    "build:dev": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "build:test-ui": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "test": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py test --settings=web.settings.test-ui.settings",
+    "test-ui": "sh scripts/yarn.test-ui--batch.sh",
+    "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
+    "test-api": "sh scripts/yarn.test-api.sh"
+  },
+  "dependencies": {
+    "env-cmd": "^10.1.0"
   }
 }

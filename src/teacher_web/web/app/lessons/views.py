@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from cssow.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_keyword, cls_topic, cls_year
-from cssow.models.core import validation_helper
+from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_keyword, cls_topic, cls_year
+from shared.models.core import validation_helper
 from datetime import datetime
 
 # Create your views here.        

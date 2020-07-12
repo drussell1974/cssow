@@ -1,6 +1,9 @@
 {
 	"folders": [
 		{
+			"path": "../markdown-to-html"
+		},
+		{
 			"path": "."
 		}
 	],

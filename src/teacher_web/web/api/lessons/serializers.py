@@ -1,4 +1,4 @@
-from cssow.models.cls_lesson import LessonModel, LessonListModel
+from shared.models.cls_lesson import LessonModel, LessonListModel
 from rest_framework import serializers, status
 from django.db import models
 

@@ -1,8 +1,0 @@
-SET FOREIGN_KEY_CHECKS = 0;
-ALTER TABLE sow_topic 
-MODIFY COLUMN parent_id INT(11) NULL;
-SET FOREIGN_KEY_CHECKS = 1;
-
-UPDATE sow_topic SET lvl = 1 WHERE id IN (1,2,3,4,5,6);
-UPDATE sow_topic SET lvl = 1 WHERE id > 6;
-

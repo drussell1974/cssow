@@ -13,6 +13,7 @@ class uitest_schemeofwork_resource_index(UITestCase):
 
 
     def tearDown(self):
+        
         pass
 
     @classmethod

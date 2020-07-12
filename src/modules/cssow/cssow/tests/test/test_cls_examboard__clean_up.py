@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cls_examboard import ExamBoardModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_examboard import ExamBoardModel
 
 
 class test_cls_examboard__clean_up(TestCase):

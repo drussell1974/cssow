@@ -62,7 +62,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'New')
-
+        
 
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
@@ -103,7 +103,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-
+        self.wait(s=2)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
 

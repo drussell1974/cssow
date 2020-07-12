@@ -12,12 +12,13 @@ class ResourceTypeModel:
 
 class ResourceModel (BaseModel):
 
-    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", type_id = None, type_name = "", type_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", md_document_name="", type_id = None, type_name = "", type_icon = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = int(id_)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
         self.page_uri = page_uri
+        self.md_document_name = md_document_name
         self.type_id = type_id
         self.type_name = type_name
         self.type_icon = type_icon
@@ -42,6 +43,9 @@ class ResourceModel (BaseModel):
         # validate title
         self._validate_required_string("title", self.title, 1, 300)
 
+        # validate type_id
+        self._validate_required_integer("type_id", self.type_id, 1, 15)
+
         # validate publisher
         self._validate_required_string("publisher", self.publisher, 1, 500)
 
@@ -51,11 +55,18 @@ class ResourceModel (BaseModel):
         # validate page_uri
         self._validate_optional_uri("page_uri", self.page_uri)
 
+        # validate page_uri
+        self._validate_optional_string("md_document_name", self.md_document_name, 500)
+
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
 
         self.id = int(self.id)
+
+        # trim title
+        if self.title is not None:
+            self.title = sql_safe(self.title)
 
         # trim publisher
         if self.publisher is not None:
@@ -68,6 +79,11 @@ class ResourceModel (BaseModel):
         # trim notes
         if self.page_note is not None:
             self.page_note = sql_safe(self.page_note)
+
+        # trim md_document_name
+        if self.md_document_name is not None:
+            self.md_document_name = sql_safe(self.md_document_name)
+
 
 
 """

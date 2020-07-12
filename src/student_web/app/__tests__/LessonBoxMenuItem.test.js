@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 
-import { LessonBoxMenuWidget, LessonBoxMenuItem } from '../widgets/LessonBoxMenuWidget';
+import { LessonBoxMenuWidget, LessonBoxMenuExternalLinkItem, LessonBoxMenuMarkdownPageLinkItem } from '../widgets/LessonBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
 
 let lesson = {
-    id: 1,
+    id: 123,
     title: "Curabitur id purus feugiat, porttitor.",
     summary: "In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus",
     image_url: "images/pic01.jpg",
@@ -42,8 +43,8 @@ let lesson = {
     resources: [
     {
         id: 4,
-        reference_type_id: 6,
-        reference_type_name: "Book",
+        type_id: 6,
+        type_name: "Book",
         title: "OCR AS and A Level Computer Science",
         publisher: "PG Online",
         year_published: 2016,
@@ -63,8 +64,8 @@ let lesson = {
     },
     {
         id: 7,
-        reference_type_id: 7,
-        reference_type_name: "Video",
+        type_id: 7,
+        type_name: "Video",
         title: "A level: OCR Specification Order",
         publisher: "YouTube",
         year_published: 2019,
@@ -84,8 +85,8 @@ let lesson = {
     },
     {
         id: 30,
-        reference_type_id: 7,
-        reference_type_name: "Video",
+        type_id: 7,
+        type_name: "Video",
         title: "Coding Tech",
         publisher: "YouTube",
         year_published: 2019,
@@ -103,10 +104,32 @@ let lesson = {
         task_icon: "",
         image_url: "images/pic30.jpg",
     },
+    {
+        id: 31,
+        type_id: 10,
+        type_name: "Markdown",
+        title: "Coding Tech",
+        publisher: "Dave Russell",
+        md_document_name:"FromRESTToGraphQL.md",
+        year_published: 2019,
+        authors: "",
+        uri: "",
+        scheme_of_work_id: 11,
+        last_accessed: "",
+        created: "",
+        created_by_id: 0,
+        created_by_name: "",
+        published: 1,
+        page_id: null,
+        page_note: "From REST To GraphQL",
+        page_uri: "",
+        task_icon: "",
+        image_url: "images/pic30.jpg",
+    },
     ]
 }
 
-describe ('LessonBoxMenuItem', () => {
+describe ('LessonBoxMenuExternalLinkItem', () => {
     let render, container;
     
     beforeEach(() => {
@@ -114,13 +137,13 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('renders empty model', () => {
-        render(<LessonBoxMenuItem />);
+        render(<LessonBoxMenuExternalLinkItem />);
 
         expect(container.textContent).toMatch('');
     })
 
     it('has a link from image', () => {
-        render(<LessonBoxMenuItem data={lesson.resources[1]} />);
+        render(<LessonBoxMenuExternalLinkItem data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.box a').getAttribute('href')
@@ -128,7 +151,7 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('has a image', () => {
-        render(<LessonBoxMenuItem  data={lesson.resources[1]} />);
+        render(<LessonBoxMenuExternalLinkItem  data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.box a img').getAttribute('src')
@@ -136,7 +159,7 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('has a title', () => {
-        render(<LessonBoxMenuItem  data={lesson.resources[1]} />);
+        render(<LessonBoxMenuExternalLinkItem  data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.inner h3').textContent
@@ -144,7 +167,7 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('has a master heading', () => {
-        render(<LessonBoxMenuItem  data={lesson.resources[1]} />);
+        render(<LessonBoxMenuExternalLinkItem  data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.inner p').textContent
@@ -152,7 +175,7 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('has a view button', () => {
-        render(<LessonBoxMenuItem data={lesson.resources[1]} typeButtonText='View'/>);
+        render(<LessonBoxMenuExternalLinkItem data={lesson.resources[1]} typeButtonText='View'/>);
 
         expect(
             container.querySelector('div.inner a.button').textContent
@@ -164,10 +187,77 @@ describe ('LessonBoxMenuItem', () => {
     })
 
     it('has type label heading from reference type name', () => {
-        render(<LessonBoxMenuItem data={lesson.resources[1]} />);
+        render(<LessonBoxMenuExternalLinkItem data={lesson.resources[1]} />);
 
         expect(
             container.querySelector('div.inner label.label').textContent
         ).toMatch('Video');
+    })
+})
+
+
+describe('LessonBoxMenuMarkdownPageLinkItem', () => {
+    let render, container;
+
+    beforeEach(() => {
+        ({render, container} = createContainer());
+    })
+
+    it('renders empty model', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem /></Router>);
+
+        expect(container.textContent).toMatch('');
+    })
+
+    it('has a link from image', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem data={lesson.resources[3]} lesson={lesson} /></Router>);
+
+        expect(
+            container.querySelector('div.box a').getAttribute('href')
+            ).toMatch('/Lesson/123/Activity/31/FromRESTToGraphQL.md');
+    })
+
+    it('has a image', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem  data={lesson.resources[3]} lesson={lesson} /></Router>);
+
+        expect(
+            container.querySelector('div.box a img').getAttribute('src')
+        ).toMatch('images/pic30.jpg');
+    })
+
+    it('has a title', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem  data={lesson.resources[3]} lesson={lesson} /></Router>);
+
+        expect(
+            container.querySelector('div.inner h3').textContent
+        ).toMatch('From REST To GraphQL');
+    })
+
+    it('has a master heading', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem  data={lesson.resources[3]} lesson={lesson} /></Router>);
+
+        expect(
+            container.querySelector('div.inner p').textContent
+        ).toMatch('Coding Tech');
+    })
+
+    it('has a view button', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem data={lesson.resources[3]} lesson={lesson} typeButtonText='View'/></Router>);
+
+        expect(
+            container.querySelector('div.inner a.button').textContent
+        ).toMatch('View');
+
+        expect(
+            container.querySelector('div.inner a.button').getAttribute('href')
+        ).toMatch('/Lesson/123/Activity/31/FromRESTToGraphQL.md');
+    })
+
+    it('has type label heading from reference type name', () => {
+        render(<Router><LessonBoxMenuMarkdownPageLinkItem data={lesson.resources[3]} lesson={lesson} /></Router>);
+
+        expect(
+            container.querySelector('div.inner label.label').textContent
+        ).toMatch('Markdown');
     })
 })

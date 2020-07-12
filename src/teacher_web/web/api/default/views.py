@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
-from cssow.models import cls_keyword, cls_topic
+from shared.models import cls_keyword, cls_topic
 
 
 class KeywordsListViewSet(APIView):

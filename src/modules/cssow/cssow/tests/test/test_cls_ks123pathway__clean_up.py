@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cls_ks123pathway import KS123PathwayModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_ks123pathway import KS123PathwayModel
 
 
 class test_cls_ks123pathway__clean_up(TestCase):

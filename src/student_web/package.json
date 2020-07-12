@@ -1,9 +1,15 @@
 {
+  "name": "student-web",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "clean-dir": "^1.0.3",
     "copyfiles": "^2.1.1",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
+    "express": "^4.17.1",
+    "github-markdown-css": "^4.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-router": "^5.1.2",
@@ -12,8 +18,11 @@
   "scripts": {
     "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
-    "build-dev": "webpack && webpack-dev-server --mode development",
-    "build": "webpack && webpack-dev-server --mode production"
+    "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
+    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start:stage",
+    "build": "env-cmd -f ../../dotenv/.env webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
+    "start:dev": "webpack --mode development && webpack-dev-server --mode development",
+    "start:stage": "webpack --mode production && serve build -l 8001"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",
@@ -29,6 +38,7 @@
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
+    "marked": "^1.1.0",
     "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",

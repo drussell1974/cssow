@@ -1,9 +1,5 @@
 {% extends 'default/__layout.onecolumn.html' %}
 
-
-{% block head %}
-{% endblock %}
-
 {% block breadcrumb %}
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
       <div class="container">
@@ -23,7 +19,7 @@
 {% endblock %}
 
 {% block maincontent %}
-<form name="edit-schemeofwork" id="form" method="post" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
+<form name="edit-resource" id="form" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
     <!-- Title START -->
     <div class="control-group">
@@ -57,6 +53,7 @@
         </div>
     </div>
     <!-- Publisher END -->
+
     <!-- Type START -->
     <div class="control-group">
         <div class="form-group  controls">
@@ -70,7 +67,28 @@
             <p class="help-block text-danger"></p>
         </div>
     </div>
-`   <!-- Type END -->
+    <!-- Type END -->
+
+    <!-- Upload File START -->
+    <div class="control-group" id="md_document--control-group" style="display:none">
+        <!-- Upload Control -->
+        <div class="form-group controls" id="md_document-upload--control">
+            <label>{{_("Upload markdown document")}}</label>
+            <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" name="md_file"  
+                    maxlength="200" accept="text/markdown" id="ctl-md_file" >
+            <p class="help-block text-danger"></p>
+        </div>
+        
+        <!-- Preview -->
+        <div class="form-group controls" id="md_document-preview--control">
+            <label class="small">{{_("Preview markdown:")}} {{content.data.resource.md_document_name}}</label>
+            <div class="markdown-body collapsable collapsed" ></div>
+
+            <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
+        </div>
+    </div>
+    <!-- Upload File END -->
+
     <!-- Notes START -->
     <div class="control-group">
         <div class="form-group controls">
@@ -103,4 +121,36 @@
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Bootstrap tokenfield javascript -->
     
+    <script>
+        const md_document_control_group = document.querySelector("#md_document--control-group");
+        const md_file_control = document.querySelector("#ctl-md_file");
+        const md_document_name_control = document.querySelector("#ctl-md_document_name");
+        const type_field = document.querySelector("#ctl-type_id");    
+        
+        function showHideMarkdownUpload(value) {
+            // get comparison value from settings
+            if (value != 10) {
+                md_document_control_group.style.display = "none";
+                md_file_control.required = false;
+                md_document_name_control.required = false;
+            } else if (md_document_name_control != null && md_document_name_control.value == "") {
+                md_document_control_group.style.display = "block";
+                md_file_control.required = true;
+                md_document_name_control.required = false;
+            } else {
+                md_document_control_group.style.display = "block";
+                md_file_control.required = false;
+                md_document_name_control.required = true;
+            }
+        }
+
+        type_field.addEventListener('change', (e) => {
+            showHideMarkdownUpload(e.target.value);
+        })
+
+        window.addEventListener('load', () => {
+            showHideMarkdownUpload(type_field.value);
+        })
+
+    </script>
 {% endblock %}

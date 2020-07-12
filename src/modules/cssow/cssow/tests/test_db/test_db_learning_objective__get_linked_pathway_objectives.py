@@ -1,4 +1,4 @@
-from _unittest import TestCase, FakeDb
+from tests.model_test._unittest import TestCase, FakeDb
 import cls_learningobjective as db_learningobjective
 
 class test_db_learning_objective__get_pathway_objectives(TestCase):

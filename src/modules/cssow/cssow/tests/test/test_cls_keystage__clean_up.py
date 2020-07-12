@@ -1,5 +1,5 @@
-from _unittest import TestCase
-from cls_keystage import KeyStageModel
+from tests.model_test._unittest import TestCase
+from web.shared.models.cls_keystage import KeyStageModel
 
 
 class test_cls_keystage__clean_up(TestCase):

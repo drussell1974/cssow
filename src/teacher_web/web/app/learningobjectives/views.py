@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from cssow.models import cls_lesson, cls_learningobjective, cls_schemeofwork, cls_solotaxonomy, cls_content, cls_examboard
-from cssow.models.core import validation_helper
+from shared.models import cls_lesson, cls_learningobjective, cls_schemeofwork, cls_solotaxonomy, cls_content, cls_examboard
+from shared.models.core import validation_helper
 
 
 def index(request, scheme_of_work_id, lesson_id):

@@ -1,6 +1,6 @@
-from _unittest import TestCase
-from Lesson_testcase import Lesson_TestCase
-from Lesson import LessonModel
+from tests.model_test._unittest import TestCase
+from learningepisode_testcase import Lesson_TestCase
+from web.shared.models.cls_lesson import LessonModel
 
 
 class Test_Lesson_Constructor(TestCase):
@@ -45,7 +45,7 @@ class Test_Lesson_Constructor(TestCase):
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
         self.assertEqual(0, test.year_id, "year_id should be 0")
         self.assertEqual("", test.year_name, "year_name should be ''")
-        self.assertEqual("", test.key_words, "key_words should be ''")
+        #self.assertEqual("", test.key_words, "key_words should be ''")
         self.assertEqual("", test.summary, "summary should be ''")
         self.assertEqual(0, test.orig_id)
 
@@ -62,7 +62,7 @@ class Test_Lesson_Constructor(TestCase):
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
                                  topic_id=4,
-                                 key_words='unit,test',
+                                 #key_words='unit,test',
                                  summary='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.',
                                  parent_topic_id=5,
                                  key_stage_id=6,
@@ -77,7 +77,7 @@ class Test_Lesson_Constructor(TestCase):
         self.assertEqual(2, test.order_of_delivery_id)
         self.assertEqual(3, test.scheme_of_work_id)
         self.assertEqual(4, test.topic_id)
-        self.assertEqual('unit,test', test.key_words)
+        #self.assertEqual('unit,test', test.key_words)
         self.assertEqual('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.', test.summary)
         self.assertEqual(5, test.parent_topic_id)
         self.assertEqual(6, test.key_stage_id)
