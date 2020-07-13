@@ -6,8 +6,18 @@
   "author": "drussell1974 <dave@jazzthecat.co.uk>",
   "license": "MIT",
   "scripts": {
-	  "test": "sh scripts/test.sh",
     "build": "sh scripts/build.sh",
-    "build:dev": "sh scripts/build:dev.sh"
+    "build:dev": "sh scripts/build:dev.sh",
+    "test:unit": "yarn --cwd src/student_web/ test:all && yarn --cwd src/teacher_web/ test:unit",
+    "test:all": "yarn --cwd src/student_web/ test:all && yarn --cwd src/teacher_web/ test:all"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test:unit",
+      "pre-push": "yarn test:all"
     }
+  },
+  "dependencies": {
+    "husky": "^4.2.5"
+  }
 }

@@ -6,4 +6,6 @@ mysql-connector-python
 djangorestframework
 requests
 python-dotenv
-
+# development
+selenium
+coverage
