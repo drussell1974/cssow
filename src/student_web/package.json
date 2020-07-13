@@ -19,13 +19,13 @@
     "react-router-dom": "^5.1.2"
   },
   "scripts": {
-    "test:all": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
-    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start:stage",
+    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start",
     "build": "env-cmd -f ../../dotenv/.env webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
+    "test": "jest",
     "start:dev": "webpack --mode development && webpack-dev-server --mode development",
-    "start:stage": "webpack --mode production && serve build -l 8001"
+    "start": "webpack --mode production && serve build -l 8001"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",

@@ -18,6 +18,5 @@ class APITestCase(TestCase):
 
     def get(self, uri):
         full_uri = self.root_uri + uri
-        print("uri under test:", full_uri)
         self.test_context = requests.get(full_uri)
         self.payload = json.loads( self.test_context.content)

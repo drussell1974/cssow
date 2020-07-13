@@ -14,3 +14,7 @@ class DefaultPageTest(TestCase):
     def test_root_url_resolves_to_index__reverse(self):
         url = reverse("default")
         self.assertEqual("/", url)
+
+
+
+        

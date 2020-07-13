@@ -1,13 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
-import unittest
 
-class uitest_schemeofwork_default_login(UITestCase):
+class uitest_schemeofwork_default_change_password(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/accounts/login")
+        self.do_log_in(self.root_uri)
         self.test_context.implicitly_wait(4)
 
 
@@ -20,13 +19,13 @@ class uitest_schemeofwork_default_login(UITestCase):
         # tear down
         cls.test_context.close()
 
-    
+
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         # setup
 
-        self.test_context.find_element_by_id("btn-login").click()
+        self.test_context.find_element_by_id("btn-password_change").click()
 
         # assert
         # TODO: set title
-        self.assertWebPageTitleAndHeadings('', 'Log In', 'Register to create schemes of work and lessons')
-        
+        self.assertWebPageTitleAndHeadings('', 'Reset password', 'Enter a new password')
+

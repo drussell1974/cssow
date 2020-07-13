@@ -11,14 +11,16 @@
     "migrate": "python ./web/manage.py migrate",
     "install:":"pip install -r requirements.txt && yarn build",
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
-    "install:test-ui":"pip install -r requirements.dev.txt && yarn build:test-ui",
+    "install:test":"pip install -r requirements.dev.txt && yarn build:test",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
     "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "test:unit": "env-cmd -f ../../dotenv/.env.test-ui coverage run --source='./web' ./web/manage.py test web api --settings=web.settings.test-ui.settings",
     "test:all": "yarn test:unit && yarn test-api && yarn test-ui",
-    "test-ui": "sh tests/yarn.test-ui--batch.sh",
-    "test-api": "env-cmd -f ../../dotenv/.env.test-ui  python -m unittest discover --start-directory ./tests/api_test/ -p apitest_*.py"
+    "test:unit": "env-cmd -f ../../dotenv/.env.test-ui coverage run --source='./web' ./web/manage.py test web api --settings=web.settings.test-ui.settings",
+    "test-ui": "sh scripts/yarn.test-ui--batch.sh",
+    "test-api": "env-cmd -f ../../dotenv/.env.test-ui  python -m unittest discover --start-directory ./tests/api_test/ -p apitest_*.py",
+    "test": "env-cmd -f ../../dotenv/.env.test-ui  python -m unittest discover --start-directory ./tests/ui_test/"
+
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

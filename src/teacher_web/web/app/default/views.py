@@ -18,4 +18,3 @@ def index(request):
     view_model = ViewModel("", "Teach Computer Science", "Computing Schemes of Work across all key stages", data=data)
 
     return render(request, "default/index.html", view_model.content)
-
