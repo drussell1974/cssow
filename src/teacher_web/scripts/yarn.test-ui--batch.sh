@@ -15,50 +15,6 @@ echo "yarn.test-ui--batch.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting pr
 
 x=0
 
-## start test
-echo yarn.test-ui--batch.sh: Testing... default
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_schemesofwork_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_failed_log_in.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... lessonuitest_schemeofwork_lesson_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_learningobjective_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_resources_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
-
 # increment 
 x=$(($x+$?))
 
