@@ -4,9 +4,9 @@ from .core.db_helper import sql_safe, execSql
 
 
 class YearModel(models.Model):
-    def __init__(this, id_, name):
-        this.id = id_
-        this.name = name
+    def __init__(self, id_, name):
+        self.id = id_
+        self.name = name
 
 
     def _clean_up(self):
