@@ -1,13 +1,3 @@
-export TEST_HOST="127.0.0.1"
-export TEST_PORT=3002
-export TEST_URI="http://${TEST_HOST}:${TEST_PORT}"
-export TEST_SCHEME_OF_WORK_ID=11
-export TEST_LESSON_ID=220
-export TEST_LEARNING_OBJECTIVE_ID=410
-export TEST_RESOURCE_ID=119
-export TEST_USER_NAME="test@localhost"
-export TEST_USER_PSWD="password1."
-
 echo "yarn.test-ui--batch.sh:\e[1;33m Use virtualenv 'source .python3-env/bin/activate' and run pip install -r requirements \e[0m"
 echo "yarn.test-ui--batch.sh:\e[1;33m Run docker-compose up --build cssow-db \e[0m"
 echo "yarn.test-ui--batch.sh:\e[1;33m Run task build:test-ui and ensure web server is running and http://${TEST_HOST}:${TEST_PORT} is available \e[0m"

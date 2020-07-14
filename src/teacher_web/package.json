@@ -15,12 +15,14 @@
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
     "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "test:all": "yarn test:unit && yarn test-api && yarn test-ui",
-    "test:unit": "env-cmd -f ../../dotenv/.env.test-ui coverage run --source='./web' ./web/manage.py test web api --settings=web.settings.test-ui.settings",
-    "test-ui": "sh scripts/yarn.test-ui--batch.sh",
-    "test-api": "env-cmd -f ../../dotenv/.env.test-ui  python -m unittest discover --start-directory ./tests/api_test/ -p apitest_*.py",
-    "test": "env-cmd -f ../../dotenv/.env.test-ui  python -m unittest discover --start-directory ./tests/ui_test/"
-
+    "test:all": "coverage erase && yarn test:unit && yarn test-ui",
+    "test:unit":"yarn test-routes && yarn test-models && yarn test-api && yarn test-helpers && yarn test-dbmodels", 
+    "test-routes":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test web api --settings=web.settings.test-ui.settings",
+    "test-models":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test ./tests/model_test --settings=web.settings.test-ui.settings",
+    "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
+    "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -m unittest discover -s tests.test_helpers -p test_*.py",
+    "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -m unittest discover -s ./tests/api_test -p apitest_*.py",
+    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"
