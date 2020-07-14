@@ -1,8 +1,6 @@
 from unittest import TestCase
-import sys
-sys.path.append('../../schemeofwork/modules/')
 
-from validation_helper import html_validation_message
+from web.shared.models.core.validation_helper import html_validation_message
 
 class test_validation_helper__html_validation_message(TestCase):
     def setUp(self):

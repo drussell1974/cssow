@@ -3,7 +3,7 @@ from django.test import TestCase
 from api.lessons.views import LessonViewSet, LessonListViewSet, LessonPathwayObjectivesViewSet, LessonPathwayKs123ViewSet
 
 # Create your tests here.
-class ApiLessonsPageTest(TestCase):
+class test_api_route_lessons(TestCase):
 
     def test_url_resolves_to_LessonsListViewSet_get(self):
         url = resolve("/api/schemesofwork/127/lessons/")

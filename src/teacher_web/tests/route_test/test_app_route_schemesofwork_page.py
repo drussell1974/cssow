@@ -3,7 +3,7 @@ from django.test import TestCase
 from app.schemesofwork.views import edit, index, new, save, delete_unpublished
 
 # Create your tests here.
-class SchemesOfWorkPageTest(TestCase):
+class test_app_route_schemesofwork_page(TestCase):
 
     def test__schemesofwork__url_resolves_to_index(self):
         url = resolve("/schemesofwork/")

@@ -1,9 +1,5 @@
 from unittest import TestCase
 
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
 from db_helper import from_db_bool
 
 class test__db_helper__to_db_bool(TestCase):

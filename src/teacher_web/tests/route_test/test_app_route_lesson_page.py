@@ -3,7 +3,7 @@ from django.test import TestCase
 from app.lessons.views import index, new, edit, copy, publish, delete, lessonplan, whiteboard, save, initialise_keywords, delete_unpublished
 
 # Create your tests here.
-class lessonPageTest(TestCase):
+class test_app_route_lesson_page(TestCase):
 
     def test__lesson_index__url_resolves_to_index(self):
         url = resolve("/schemesofwork/127/lessons/")

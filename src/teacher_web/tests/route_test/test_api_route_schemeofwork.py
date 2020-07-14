@@ -4,7 +4,7 @@ from api.schemesofwork.views import SchemeOfWorkViewSet, SchemeOfWorkListViewSet
 import web.urls
 
 # Create your tests here.
-class ApiSchemeOfWorkPageTest(TestCase):
+class test_api_route_schemeofwork(TestCase):
 
     def test_url_resolves_to_SchemeOfWorkListViewSet_get(self):
         url = resolve('/api/schemesofwork/')

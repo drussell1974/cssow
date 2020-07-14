@@ -3,7 +3,7 @@ from django.test import TestCase
 from app.resources.views import index, new, edit, delete_item, save, delete_unpublished
 
 # Create your tests here.
-class ResourcesPageTest(TestCase):
+class test_app_route_resources_page(TestCase):
     def test__resources_index__url_resolves_to_index(self):
         url = resolve('/schemesofwork/127/lessons/32/resources/')
         self.assertEqual("resource.index", url.url_name)

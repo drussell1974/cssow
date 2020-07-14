@@ -3,7 +3,7 @@ from django.test import TestCase
 from app.learningobjectives.views import index, new, edit, delete_item, delete_unpublished, save
 
 # Create your tests here.
-class LearningObjectivesPageTest(TestCase):
+class test_app_route_learningobjectives_page(TestCase):
     def test__learningobjective_index__url_resolves_to_index(self):
         url = resolve('/schemesofwork/127/lessons/32/learning-objectives/')
         self.assertEqual("learningobjective.index", url.url_name)

@@ -1,8 +1,5 @@
 from unittest import TestCase
 
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
 from helper_string import dictionary_to_string
 
 class test__helper_string__dictionary_to_string_with_filter(TestCase):
