@@ -1,4 +1,4 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from tests.model_test.learningepisode_testcase import Lesson_TestCase
 from shared.models.cls_lesson import LessonModel
 

@@ -1,4 +1,4 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from shared.models.cls_learningobjective import LearningObjectiveModel, sort_by_solo_taxonomy_level
 
 

@@ -1,4 +1,4 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from tests.model_test.schemeofwork_testcase import SchemeOfWork_TestCase
 
 

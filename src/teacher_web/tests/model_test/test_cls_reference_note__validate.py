@@ -1,4 +1,4 @@
-from ._unittest import TestCase
+from unittest import TestCase
 from shared.models.cls_reference_note import ReferenceNoteModel
 
 
