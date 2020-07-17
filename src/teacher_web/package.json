@@ -13,16 +13,17 @@
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip install -r requirements.dev.txt && yarn build:test",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
-    "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "test:all": "coverage erase && yarn test:unit && yarn test-ui",
-    "test:unit":"yarn test-routes && yarn test-models && yarn test-api && yarn test-helpers && yarn test-dbmodels", 
-    "test-routes":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test web api --settings=web.settings.test-ui.settings",
-    "test-models":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test ./tests/model_test --settings=web.settings.test-ui.settings",
-    "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
-    "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -m unittest discover -s tests.test_helpers -p test_*.py",
-    "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -m unittest discover -s ./tests/api_test -p apitest_*.py",
-    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh"
+    "test:all": "yarn test:unit && yarn test-ui",
+    "test:unit":"coverage erase && yarn test-routes && yarn test-models && yarn test-api && yarn test-helpers && yarn test-dbmodels && coverage report && coverage html", 
+    "test-routes":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/route_test --settings=web.settings.test-ui.settings",
+    "test-models":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/model_test --settings=web.settings.test-ui.settings",
+    "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
+    "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
+    "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
+    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
+    "unittest":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

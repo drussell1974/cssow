@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
 
 enable_logging = False
 
@@ -78,7 +79,7 @@ DAL
 from datetime import datetime
 from .core.db_helper import to_db_null, to_empty
 
-
+"""
 def log_info(db, msg, is_enabled = False):
     from .core.log import Log
     logger = Log()
@@ -88,9 +89,12 @@ def log_info(db, msg, is_enabled = False):
     
 def handle_log_info(db, msg):
     log_info(db, msg, is_enabled=enable_logging)
+"""
 
 
-def get(db, scheme_of_work_id, lesson_id, auth_user):
+def get_all(db, scheme_of_work_id, lesson_id, auth_user):
+    execHelper = ExecHelper()
+    
 
     str_select = "SELECT" \
                  " ref.id as id," \
@@ -110,7 +114,7 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = []
 
@@ -123,6 +127,8 @@ def get(db, scheme_of_work_id, lesson_id, auth_user):
 
 
 def get_options(db, scheme_of_work_id, auth_user):
+    execHelper = ExecHelper()
+    
 
     str_select = "SELECT" \
                  " ref.id as id," \
@@ -140,7 +146,8 @@ def get_options(db, scheme_of_work_id, auth_user):
 
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id))
 
-    rows = db.executesql(str_select)
+    rows = []
+    rows = execHelper.execSql(db,str_select, rows)
 
     data = []
 
@@ -153,6 +160,8 @@ def get_options(db, scheme_of_work_id, auth_user):
 
 
 def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
+    execHelper = ExecHelper()
+    
 
     str_select = "SELECT " \
                  " ref.id as id," \
@@ -178,7 +187,7 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
 
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = []
 
@@ -188,12 +197,15 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
         model.task_icon = row[11] if row[11] is not None else ''
+        # TODO: call tojson() in basemodel ... data.append(model.tojson())
         data.append(model.__dict__)
 
     return data
 
 
 def get_model(db, id_, scheme_of_work_id, auth_user):
+    execHelper = ExecHelper()
+
     now = datetime.now()
     model = ReferenceModel(id_=0, reference_type_id = 6, reference_type_name = "Website", title="", publisher="", year_published=now.year, authors="", uri="", scheme_of_work_id = scheme_of_work_id)
 
@@ -211,7 +223,8 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
                  " WHERE ref.id = {id_} AND (ref.published = 1 OR ref.created_by = {auth_user});"
     str_select = str_select.format(id_=int(id_), auth_user=to_db_null(auth_user))
 
-    rows = db.executesql(str_select)
+    rows = []
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     for row in rows:
         model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name=row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id=scheme_of_work_id)
@@ -220,6 +233,8 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
 
 
 def get_number_of_resources(db, lesson_id, auth_user):
+    execHelper = ExecHelper()
+    
     """
     get the number of resources for the lesson
     :param db: database context
@@ -235,7 +250,7 @@ def get_number_of_resources(db, lesson_id, auth_user):
     select_sql = select_sql.format(lesson_id=lesson_id, auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     return len(rows)
 
@@ -270,6 +285,7 @@ Private CRUD functions
 
 def _update(db, model):
     """ updates the sow_lesson and sow_lesson__has__topics """
+    execHelper = ExecHelper()
 
     # 1. Update the lesson
 
@@ -284,7 +300,7 @@ def _update(db, model):
         uri=to_db_null(model.uri),
         scheme_of_work_id = model.scheme_of_work_id)
 
-    db.executesql(str_update)
+    execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
     # 2. upsert related topics
     #if scheme_of_work_id > 0:
@@ -295,6 +311,7 @@ def _update(db, model):
 
 def _insert(db, model):
     """ inserts the sow_reference and sow_scheme_of_work__has__reference """
+    execHelper = ExecHelper()
 
     ## 1. Insert the reference
 
@@ -310,9 +327,10 @@ def _insert(db, model):
         created=model.created,
         created_by=model.created_by_id)
 
-    db.executesql(str_insert)
+    execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
 
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    rows = []
+    rows = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows)
 
     for row in rows:
         model.id = int(row[0])
@@ -320,42 +338,12 @@ def _insert(db, model):
     return model.id
 
 
-
-def insert_page_note(db, model):
-    """ deletes and reinserts sow_lesson__has__references """
-    # insert
-    str_insert = "INSERT INTO sow_lesson__has__references (reference_id, lesson_id, page_notes, page_url, task_icon) VALUES ({reference_id}, {lesson_id}, '{page_notes}', '{page_uri}', '{task_icon}');"
-    str_insert = str_insert.format(reference_id=model.reference_id, lesson_id=model.lesson_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_db_null(model.task_icon))
-
-    db.executesql(str_insert)
-
-
-def update_page_note(db, model):
-    """ deletes and reinserts sow_lesson__has__references """
-    # insert
-    str_update = "UPDATE sow_lesson__has__references SET" \
-                 " reference_id = {reference_id}," \
-                 " lesson_id = {lesson_id}," \
-                 " page_notes = '{page_notes}'," \
-                 " page_url = '{page_uri}'," \
-                 " task_icon = '{task_icon}' " \
-                 "WHERE id = {id};"
-    str_update = str_update.format(id=model.id, reference_id=model.reference_id, lesson_id=model.lesson_id, page_notes=model.page_note, page_uri=model.page_uri, task_icon=to_empty(model.task_icon))
-
-    db.executesql(str_update)
-
-
-def delete_page_note(db, id_):
-        # delete existing
-        str_delete = "DELETE FROM sow_lesson__has__references WHERE id = {id};".format(id=int(id_))
-
-        db.executesql(str_delete)
-
-
 def _delete(db, id_):
+    execHelper = ExecHelper()
+
     str_delete = "DELETE FROM sow_reference WHERE id = {id_};"
     str_delete = str_delete.format(id_=int(id_))
 
-    rval = db.executesql(str_delete)
+    rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
 
     return rval

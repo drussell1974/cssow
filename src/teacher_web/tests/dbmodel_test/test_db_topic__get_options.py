@@ -1,6 +1,7 @@
-from tests.model_test._unittest import TestCase, FakeDb
-import cls_topic as db_topic
-
+from ._unittest import TestCase, FakeDb
+import shared.models.cls_topic as db_topic
+from unittest.mock import Mock, MagicMock, patch
+from shared.models.core.db_helper import ExecHelper
 
 class test_db_topic__get_options__level_1(TestCase):
 
@@ -8,72 +9,68 @@ class test_db_topic__get_options__level_1(TestCase):
         ' pass function to this fake class to mock the web2py database functions '
         self.fake_db = FakeDb()
         self.fake_db.connect()
+        db_topic.handle_log_info = MagicMock()
+
 
     def tearDown(self):
         self.fake_db.close()
 
-
-    def test__lvl_1__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 1)
-        # assert
-        self.assertEqual(6, len(rows))
-        self.assertEqual("Algorithms", rows[0].name, "First item not as expected")
-        self.assertEqual("Information technology", rows[len(rows)-1].name, "Last item not as expected")
-
-
-    def test__lvl_2_topic_1__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 1)
-        # assert
-        self.assertEqual(7, len(rows))
-        self.assertEqual("Problem solving", rows[0].name, "First item not as expected")
-        self.assertEqual("Boolean algebra", rows[len(rows)-1].name, "Last item not as expected")
+    
+    def test__should_call_execSql_with_exception(self):
+        # arrange
+        expected_result = Exception('Bang')
+        
+        with patch.object(ExecHelper, "execSql", side_effect=expected_result):
+            # act and assert
+            with self.assertRaises(Exception):
+                db_topic.get_options(self.fake_db, lvl = 1)
 
 
-    def test__lvl_2_topic_2__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 2)
-        # assert
-        self.assertEqual(16, len(rows))
-        self.assertEqual("Operators", rows[0].name, "First item not as expected")
-        self.assertEqual("Run-time environment", rows[len(rows)-1].name, "Last item not as expected")
+    def test__should_call_execSql_return_no_items(self):
+        # arrange
+
+        expected_result = []
+        
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+            # act
+
+            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 1)
+            
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 1;', [], db_topic.handle_log_info)
+            self.assertEqual(0, len(rows))
 
 
-    def test__lvl_2_topic_3__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 3)
-        # assert
-        self.assertEqual(8, len(rows))
-        self.assertEqual("Binary", rows[0].name, "First item not as expected")
-        self.assertEqual("Data compression", rows[len(rows)-1].name, "Last item not as expected")
+    def test__should_call_execSql_return_single_items(self):
+        # arrange
+
+        expected_result = [(1,"Operators","X","X")]
+
+        with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
+            
+            # act
+            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 2)
+            
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 2;', [], db_topic.handle_log_info)
+            self.assertEqual(1, len(rows))
+            self.assertEqual("Operators", rows[0]["name"], "First item not as expected")
+        
 
 
-    def test__lvl_2_topic_4__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 4)
-        # assert
-        self.assertEqual(8, len(rows))
-        self.assertEqual("CPU", rows[0].name, "First item not as expected")
-        self.assertEqual("Optical storage", rows[len(rows)-1].name, "Last item not as expected")
+    def test__should_call_execSql_return_multiple_items(self):
+        # arrange
+        
+        expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
 
-
-    def test__lvl_2_topic_5__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 5)
-        # assert
-        self.assertEqual(15, len(rows))
-        self.assertEqual("Networks", rows[0].name, "First item not as expected")
-        self.assertEqual("Hacking", rows[len(rows)-1].name, "Last item not as expected")
-
-
-    def test__lvl_2_topic_6__should_return_6_items(self):
-        # test
-        rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 6)
-        # assert
-        self.assertEqual(12, len(rows))
-        self.assertEqual("Internet services", rows[0].name, "First item not as expected")
-        self.assertEqual("Environment", rows[len(rows)-1].name, "Last item not as expected")
-
-
-
+        with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
+            
+            # act
+            
+            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 3)
+            
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 3;', [], db_topic.handle_log_info)
+            self.assertEqual(3, len(rows))
+            self.assertEqual("Binary", rows[0]["name"], "First item not as expected")
+            self.assertEqual("Data compression", rows[len(rows)-1]["name"], "Last item not as expected")

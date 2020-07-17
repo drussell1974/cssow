@@ -1,6 +1,5 @@
 from unittest import TestCase
-
-from helper_string import dictionary_to_string
+from shared.models.core.helper_string import dictionary_to_string
 
 class test__helper_string__dictionary_to_string_without_filter(TestCase):
 

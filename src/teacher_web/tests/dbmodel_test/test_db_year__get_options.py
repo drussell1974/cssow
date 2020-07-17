@@ -1,58 +1,76 @@
-from tests.dbmodel_test._unittest import TestCase, FakeDb
-import cls_year as db_year
+from unittest import TestCase
+import shared.models.cls_year as db_year
+from unittest.mock import Mock, MagicMock, patch
+from shared.models.core.db_helper import ExecHelper
 
-class test_db_year__get_options__level_1(TestCase):
+class test_db_year__get_options(TestCase):
 
     def setUp(self):
-        ' pass function to this fake class to mock the web2py database functions '
-        self.fake_db = FakeDb()
-        self.fake_db.connect()
+        ' fake database context '
+        self.fake_db = Mock()
+        self.fake_db.cursor = MagicMock()
+
 
     def tearDown(self):
         self.fake_db.close()
 
 
-    def test__key_stage_1__should_return_3_items(self):
-        # test
-        rows = db_year.get_options(self.fake_db, key_stage_id = 1)
-        # assert
-        self.assertEqual(3, len(rows))
-        self.assertEqual("Yr1", rows[0].name, "First item not as expected")
-        self.assertEqual("Yr3", rows[len(rows)-1].name, "Last item not as expected")
+    def test__should_call_execSql_with_exception(self):
+
+        # arrange
+        expected_result = Exception('Bang')
+        
+        with patch.object(ExecHelper, "execSql", side_effect=expected_result):
+            # act and assert
+            with self.assertRaises(Exception):
+                db_year.get_options(self.fake_db, key_stage_id = 4)
+            
+
+    def test__should_call_execSql_no_items(self):
+        # arrange
+        expected_result = []
+
+        with patch.object(ExecHelper, "execSql", return_value=expected_result):
+                
+            # act
+            
+            rows = db_year.get_options(self.fake_db, key_stage_id = 1)
+            
+            # assert
+
+            ExecHelper.execSql.assert_called_with(self.fake_db, "SELECT id, name FROM sow_year WHERE key_stage_id = 1;", [])
+            self.assertEqual(0, len(rows))
 
 
-    def test__key_stage_2__should_return_3_items(self):
-        # test
-        rows = db_year.get_options(self.fake_db, key_stage_id = 2)
-        # assert
-        self.assertEqual(3, len(rows))
-        self.assertEqual("Yr4", rows[0].name, "First item not as expected")
-        self.assertEqual("Yr6", rows[len(rows)-1].name, "Last item not as expected")
+    def test__should_call_execSql_single_items(self):
+        # arrange
+        expected_result = [(1,"Yr4")]
+        
+        with patch.object(ExecHelper, "execSql", return_value=expected_result):
+            
+            # act
 
+            rows = db_year.get_options(self.fake_db, key_stage_id = 2)
+            
+            # assert
 
-    def test__key_stage_3__should_return_3_items(self):
-        # test
-        rows = db_year.get_options(self.fake_db, key_stage_id = 3)
-        # assert
-        self.assertEqual(3, len(rows))
-        self.assertEqual("Yr7", rows[0].name, "First item not as expected")
-        self.assertEqual("Yr9", rows[len(rows)-1].name, "Last item not as expected")
+            ExecHelper.execSql.assert_called_with(self.fake_db, "SELECT id, name FROM sow_year WHERE key_stage_id = 2;", [])
+            self.assertEqual(1, len(rows))
+            self.assertEqual("Yr4", rows[0].name, "First item not as expected")
+            
 
+    def test__should_call_execSql_multiple_items(self):
+        # arrange
+        expected_result = [(1,"Yr7"), (2, "Yr8"), (3, "Yr9")]
+        
+        with patch.object(ExecHelper, "execSql", return_value=expected_result):
+            # act
+            rows = db_year.get_options(self.fake_db, key_stage_id = 3)
+            
+            # assert
 
-    def test__key_stage_4__should_return_2_items(self):
-        # test
-        rows = db_year.get_options(self.fake_db, key_stage_id = 4)
-        # assert
-        self.assertEqual(2, len(rows))
-        self.assertEqual("Yr10", rows[0].name, "First item not as expected")
-        self.assertEqual("Yr11", rows[len(rows)-1].name, "Last item not as expected")
-
-
-    def test__key_stage_5__should_return_2_items(self):
-        # test
-        rows = db_year.get_options(self.fake_db, key_stage_id = 5)
-        # assert
-        self.assertEqual(2, len(rows))
-        self.assertEqual("Yr12", rows[0].name, "First item not as expected")
-        self.assertEqual("Yr13", rows[len(rows)-1].name, "Last item not as expected")
+            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name FROM sow_year WHERE key_stage_id = 3;', [])
+            self.assertEqual(3, len(rows))
+            self.assertEqual("Yr7", rows[0].name, "First item not as expected")
+            self.assertEqual("Yr9", rows[len(rows)-1].name, "Last item not as expected")
 

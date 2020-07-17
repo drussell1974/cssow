@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+
 
 class KS123PathwayModel(BaseModel):
     def __init__(self, id_, objective):
@@ -25,11 +27,13 @@ DAL
 
 def get_options(db, year_id, topic_id):
 
+    execHelper = ExecHelper()
+
     str_select = "SELECT id, objective FROM sow_ks123_pathway WHERE year_id = {year_id} and topic_id = {topic_id};"\
         .format(year_id=year_id, topic_id=topic_id)
 
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = []
 
@@ -41,6 +45,8 @@ def get_options(db, year_id, topic_id):
 
 
 def get_linked_pathway_ks123(db, lesson_id):
+    execHelper = ExecHelper()
+    
 
     select_sql = "SELECT"\
                  " pw.id as id,"\
@@ -52,7 +58,7 @@ def get_linked_pathway_ks123(db, lesson_id):
     select_sql = select_sql.format(lesson_id=int(lesson_id))
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     data = []
 

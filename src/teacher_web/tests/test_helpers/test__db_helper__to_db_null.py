@@ -1,6 +1,5 @@
 from unittest import TestCase
-
-from db_helper import to_db_null
+from shared.models.core.db_helper import to_db_null
 
 class test__db_helper__to_db_null(TestCase):
 

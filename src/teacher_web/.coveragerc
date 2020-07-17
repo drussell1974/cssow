@@ -1,0 +1,11 @@
+[coverage:run]
+source = ./web
+omit =
+   */node_modules/*
+   web/manage.py
+   web/web/*
+
+[coverage:report]
+fail_under = 80
+show_missing = True
+skip_covered = False

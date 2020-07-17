@@ -21,21 +21,13 @@ class ContentModel(BaseModel):
 DAL
 """
 
-from .core.db_helper import last_sql, sql_safe, execSql
-
-
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
 
 
 def get_options(db, key_stage_id):
+
+    execHelper = ExecHelper()
 
     str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
@@ -43,7 +35,7 @@ def get_options(db, key_stage_id):
 
     try:
         rows = []
-        execSql(db, str_select, rows, handle_log_info)
+        rows = execHelper.execSql(db, str_select, rows, handle_log_info)
 
         for row in rows:
             model = ContentModel(row[0], row[1])

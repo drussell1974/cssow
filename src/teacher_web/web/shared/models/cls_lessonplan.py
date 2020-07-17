@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
 
 class LessonPlanModel (BaseModel):
 
@@ -69,6 +70,7 @@ def get_all(db, lesson_id, auth_user):
     :param auth_user: TODO: Use to only show the user who created the lesson plan the information
     :return: the lesson plan_model
     """
+    execHelper = ExecHelper()
 
     str_select = "SELECT" \
                  " pln.id as id," \
@@ -84,7 +86,8 @@ def get_all(db, lesson_id, auth_user):
 
     str_select = str_select.format(lesson_id=int(lesson_id))
 
-    rows = db.executesql(str_select)
+    rows = []
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     lesson_duration = 0
     data = []
@@ -99,7 +102,9 @@ def get_all(db, lesson_id, auth_user):
 
 
 def get_model(db, id_, lesson_id, auth_user):
-    model = LessonPlanModel(id_=id_, lesson_id=lesson_id, title="", description="")
+    execHelper = ExecHelper()
+
+    model = LessonPlanModel(id_=0, lesson_id=lesson_id, title="", description="")
 
     str_select = "SELECT" \
                  " pln.id as id," \
@@ -114,7 +119,8 @@ def get_model(db, id_, lesson_id, auth_user):
 
     str_select = str_select.format(id_=int(id_), lesson_id=int(lesson_id))
 
-    rows = db.executesql(str_select)
+    rows = []
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     for row in rows:
         model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
@@ -123,6 +129,8 @@ def get_model(db, id_, lesson_id, auth_user):
 
 
 def get_last_item(db, lesson_id):
+    execHelper = ExecHelper()
+
     model = LessonPlanModel(id_=0, lesson_id=lesson_id, title="", description="")
 
     str_select = "SELECT" \
@@ -139,8 +147,8 @@ def get_last_item(db, lesson_id):
                  " LIMIT 1;"
 
     str_select = str_select.format(lesson_id=int(lesson_id))
-
-    rows = db.executesql(str_select)
+    rows = []
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     for row in rows:
         model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
@@ -177,6 +185,7 @@ Private CRUD functions
 
 def _update(db, model):
     """ updates the sow_lesson_plan """
+    execHelper = ExecHelper()
 
     # Update the lesson plan step
 
@@ -190,17 +199,18 @@ def _update(db, model):
         duration=model.duration,
         task_icon=model.task_icon)
 
-    db.executesql(str_update)
+    rval = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
-    return True
+    return rval
 
 
 def _insert(db, model):
     """ inserts the sow_reference and sow_scheme_of_work__has__reference """
+    execHelper = ExecHelper()
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES ({lesson_id}, {order_of_delivery_id}, '{title}', '{description}', {duration_minutes}, '{task_icon}')"
+    str_insert = "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES ({lesson_id}, {order_of_delivery_id}, '{title}', '{description}', {duration_minutes}, '{task_icon}');"
     str_insert = str_insert.format(
         id=model.id,
         lesson_id=model.lesson_id,
@@ -210,9 +220,10 @@ def _insert(db, model):
         duration_minutes=model.duration,
         task_icon=model.task_icon)
 
-    db.executesql(str_insert)
+    execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
 
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    rows = []
+    rows = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows, log_info=handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -221,8 +232,8 @@ def _insert(db, model):
 
 
 def update_order_of_delivery(db, id_, lesson_id, order_of_delivery_id):
-
     """ updates the order of delivery for sow_lesson_plan """
+    execHelper = ExecHelper()
 
     # Update the lesson plan step
 
@@ -233,13 +244,15 @@ def update_order_of_delivery(db, id_, lesson_id, order_of_delivery_id):
         lesson_id=lesson_id
     )
 
-    db.executesql(str_update)
+    return execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
 
 def _delete(db, id_):
+    execHelper = ExecHelper()
+
     str_delete = "DELETE FROM sow_lesson_plan WHERE id = {id_};"
     str_delete = str_delete.format(id_=int(id_))
 
-    rval = db.executesql(str_delete)
+    rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
 
     return rval

@@ -115,3 +115,14 @@ def delete_unpublished(request):
     cls_schemeofwork.delete_unpublished(db, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
+
+
+@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+def delete(request, scheme_of_work_id):
+    """ delete item and redirect back to referer """
+
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    cls_schemeofwork.delete(db, request.user.id, 0)
+
+    return HttpResponseRedirect(redirect_to_url)

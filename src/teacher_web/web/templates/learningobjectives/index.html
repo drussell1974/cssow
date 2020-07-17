@@ -22,8 +22,8 @@
   <h5 class="secondary-heading">
     {{ content.sub_heading }}
       {% if request.user.is_authenticated %}
-      - <a class="small" id="btn-edit" href="{% url 'lesson.edit' content.data.lesson_id content.data.scheme_of_work_id %}?next={{ request.url }}">{{_("Edit")}}</a> 
-      - <a class="small" id="btn-copy" href="{% url 'lesson.copy' content.data.lesson_id content.data.scheme_of_work_id %}">{{_("Copy")}}</a>
+      - <a class="small" id="btn-edit" href="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}?next={{ request.url }}">{{_("Edit")}}</a> 
+      - <a class="small" id="btn-copy" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Copy")}}</a>
       {% endif %}
   </h5>
   {% if content.data.strap_line is not None %}

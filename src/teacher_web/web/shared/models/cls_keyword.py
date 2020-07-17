@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
 
 class KeywordModel(BaseModel):
     def __init__(self, id_, term, definition):
@@ -43,13 +44,16 @@ class KeywordModel(BaseModel):
 DAL
 """
 
-from .core.db_helper import to_empty, sql_safe
+from .core.db_helper import ExecHelper, to_empty, sql_safe
 
 def get_options(db):
+
+    execHelper = ExecHelper()
+
     select_sql = "SELECT id, name FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     return rows
 
@@ -60,14 +64,17 @@ def get_all(db, search_term = ""):
     :param db: database context
     :return: list of terms and defintion
     """
+    execHelper = ExecHelper()
+
     select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
 
     if len(search_term) > 0:
         select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=sql_safe(search_term))
 
     select_sql = select_sql + " ORDER BY name;"
-
-    rows = db.executesql(select_sql)
+    
+    rows = []
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     data = []
 
@@ -84,6 +91,8 @@ def get_by_terms(db, key_words_list, allow_all):
     :param key_words_list: not seperated keywords
     :return: list of terms and defintion
     """
+    execHelper = ExecHelper()
+
     if len(key_words_list) == 0 and allow_all == False:
         return []
 
@@ -98,7 +107,8 @@ def get_by_terms(db, key_words_list, allow_all):
 
     select_sql = select_sql + " ORDER BY name;"
 
-    rows = db.executesql(select_sql)
+    rows = []
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     data = []
 
@@ -115,11 +125,13 @@ def get_by_id(db, id):
     :param id: keyword id
     :return: term and defintion
     """
+    execHelper = ExecHelper()
 
     select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = {id} AND published = 1;"
     select_sql = select_sql.format(id=int(id))
 
-    rows = db.executesql(select_sql)
+    rows = []
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     data = KeywordModel(0, "", "")
 
@@ -135,11 +147,13 @@ def save(db, model):
     :param db: database context
     :param model: the KeywordModel
     """
+    
     if model.is_new():
-        pass
+        _insert(db, model)
     else:
         _update(db, model)
 
+    return model
 
 def save_keywords_only(db, key_words):
     """
@@ -151,7 +165,6 @@ def save_keywords_only(db, key_words):
     existing_keywords = get_options(db)
 
     new_id = 0
-
     ' insert the keywords not already in the database '
     for key_word in key_words:
         ' trim white space '
@@ -160,7 +173,7 @@ def save_keywords_only(db, key_words):
         if key_word in existing_keywords or len(key_word) == 0:
             pass
         else:
-            new_id = _insert(db, key_word, "")
+            new_id = _insert(db, KeywordModel(0, term=key_word, definition=""))
 
     return new_id
 
@@ -171,12 +184,14 @@ def delete(db, id):
     :param id: identify of the key term
     :return:
     """
+    execHelper = ExecHelper()
+    
 
     str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
-    db.executesql(str_delete)
+    return execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
 
 
-def _insert(db, key_word, definition):
+def _insert(db, model):
     """
     Inserts key word and definition
     :param db: database context
@@ -184,13 +199,27 @@ def _insert(db, key_word, definition):
     :param definition: key definition
     :return:
     """
-    db.executesql("INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(key_word), definition=sql_safe(definition)))
 
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
+    execHelper = ExecHelper()
+
+    rows = []
+    
+    rows = execHelper.execCRUDSql(db, 
+        "INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(model.term), definition=sql_safe(model.definition))
+        , result=rows
+        , log_info=handle_log_info
+    )
+
+    rows = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows)
+   
     new_id = 0
+   
     for row in rows:
         new_id = int(row[0])
-    return new_id
+    
+    model.id = new_id
+    
+    return model
 
 
 def _update(db, model):
@@ -201,6 +230,8 @@ def _update(db, model):
     :param definition: key definition
     :return:
     """
+    execHelper = ExecHelper()
+    
     str_update = "UPDATE sow_key_word SET definition = '{definition}' WHERE id = {id};".format(definition=model.definition, id=model.id)
 
-    db.executesql(str_update)
+    return execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)

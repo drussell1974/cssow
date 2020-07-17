@@ -1,7 +1,5 @@
 from unittest import TestCase
-
-
-from pager import Pager
+from shared.models.core.pager import Pager
 
 class test_pager__render_html(TestCase):
 

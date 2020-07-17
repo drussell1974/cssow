@@ -1,6 +1,5 @@
 from unittest import TestCase
-
-from web.shared.models.core.validation_helper import html_validation_message
+from shared.models.core.validation_helper import html_validation_message
 
 class test_validation_helper__html_validation_message(TestCase):
     def setUp(self):

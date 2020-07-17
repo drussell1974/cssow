@@ -1,70 +1,80 @@
-from tests.dbmodel_test._unittest import TestCase, FakeDb
-import cls_content as db_content
-import db_helper
+from ._unittest import TestCase, FakeDb
+import shared.models.cls_content as db_content
+from unittest.mock import Mock, MagicMock, patch
+from unittest import skip
+from shared.models.core.db_helper import ExecHelper
+
 
 class test_db_content__get_options(TestCase):
 
     def setUp(self):
-        ' pass function to this fake class to mock the web2py database functions '
-        self.fake_db = FakeDb()
-        self.fake_db.connect()
+        ' fake database context '
+        self.fake_db = Mock()
+        self.fake_db.cursor = MagicMock()
+        db_content.handle_log_info = MagicMock()
 
     def tearDown(self):
         self.fake_db.close()
 
 
-    def test__get_options__key_stage_id_0__should_return__nothing(self):
+    def test__should_call_execSql_with_exception(self):
+        # arrange
+        expected_exception = KeyError("Bang!")
 
-        rows = db_content.get_options(self.fake_db, key_stage_id=0)
-        self.assertEqual(0, len(rows))
+        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+            # act and assert
+            with self.assertRaises(Exception):
+                db_content.get_options(self.fake_db, key_stage_id=0)
+            
 
+    def test__should_call_execSql_return_no_items(self):
+        # arrange
+        expected_result = []
 
-    def test__get_options__key_stage_id_1__should_return__6_records(self):
-        rows = db_content.get_options(self.fake_db, key_stage_id=1)
-        self.assertEqual(6, len(rows))
-        #self.assertEqual(('SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 1;', 'SUCCESS'), db_helper.last_sql)
-        self.assertEqual(29, rows[0].id, "First result should be '{}'".format(rows[0].id))
-        self.assertEqual(30, rows[1].id, "Second result should be '{}'".format(rows[1].id))
-        self.assertEqual(33, rows[len(rows)-2].id, "Second to last result should be '{}'".format(rows[len(rows)-2].id))
-        self.assertEqual(34, rows[len(rows)-1].id, "Last result should be '{}'".format(rows[len(rows)-1].id))
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+            # act
+            
+            rows = db_content.get_options(self.fake_db, key_stage_id=1)
 
-
-    def test__get_options__key_stage_id_2__should_return__8_records(self):
-        rows = db_content.get_options(self.fake_db, key_stage_id=2)
-        self.assertEqual(8, len(rows))
-        #self.assertEqual(('SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 2;', 'SUCCESS'), db_helper.last_sql)
-        self.assertEqual(17, rows[0].id, "First result should be '{}'".format(rows[0].id))
-        self.assertEqual(35, rows[1].id, "Second result should be '{}'".format(rows[1].id))
-        self.assertEqual(40, rows[len(rows)-2].id, "Second to last result should be '{}'".format(rows[len(rows)-2].id))
-        self.assertEqual(41, rows[len(rows)-1].id, "Last result should be '{}'".format(rows[len(rows)-1].id))
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 1;', [], db_content.handle_log_info)
+            self.assertEqual(0, len(rows))
 
 
-    def test__get_options__key_stage_id_3__should_return__9_records(self):
-        rows = db_content.get_options(self.fake_db, key_stage_id=3)
-        self.assertEqual(9, len(rows))
-        #self.assertEqual(('SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 3;', 'SUCCESS'), db_helper.last_sql)
-        self.assertEqual(42, rows[0].id, "First result should be '{}'".format(rows[0].id))
-        self.assertEqual(43, rows[1].id, "Second result should be '{}'".format(rows[1].id))
-        self.assertEqual(49, rows[len(rows)-2].id, "Second to last result should be '{}'".format(rows[len(rows)-2].id))
-        self.assertEqual(50, rows[len(rows)-1].id, "Last result should be '{}'".format(rows[len(rows)-1].id))
+    def test__should_call_execSql_return_single_item(self):
+        # arrange
+        expected_result = [(17, "Mauris augue est, malesuada eget libero nec.")]
 
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+            # act
+            
+            rows = db_content.get_options(self.fake_db, key_stage_id=2)
+            
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 2;', [], db_content.handle_log_info)
+            self.assertEqual(1, len(rows))
+            self.assertEqual(17, rows[0].id)
+            self.assertEqual("Mauris augue est, malesuada eget libero nec.", rows[0].description)
+            
 
-    def test__get_options__key_stage_id_4_should_return__15_records(self):
+    def test__should_call_execSql_return_multiple_items(self):
+        # arrange
+        expected_result = [
+            (29,"Sed turpis augue, tristique sed elit ac."),
+            (645,"Ut porta arcu a commodo viverra. Sed."),
+            (107,"Nulla sit amet aliquet enim, quis laoreet."),
+        ]
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+            # act
+            
+            rows = db_content.get_options(self.fake_db, key_stage_id=3)
+            
+            # assert
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 3;', [], db_content.handle_log_info)
+            self.assertEqual(3, len(rows))
 
-        rows = db_content.get_options(self.fake_db, key_stage_id=4)
-        self.assertEqual(15, len(rows))
-        #self.assertEqual(('SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 4;', 'SUCCESS'), db_helper.last_sql)
-        self.assertEqual(1, rows[0].id, "First result should be '{}'".format(rows[0].id))
-        self.assertEqual(2, rows[1].id, "Second result should be '{}'".format(rows[1].id))
-        self.assertEqual(14, rows[len(rows)-2].id, "Second to last result should be '{}'".format(rows[len(rows)-2].id))
-        self.assertEqual(15, rows[len(rows)-1].id, "Last result should be '{}'".format(rows[len(rows)-1].id))
+            self.assertEqual(29, rows[0].id)
+            self.assertEqual("Sed turpis augue, tristique sed elit ac.", rows[0].description)
 
-
-    def test__get_options__key_stage_id_5_should_return__9_records(self):
-        rows = db_content.get_options(self.fake_db, key_stage_id=5)
-        self.assertEqual(9, len(rows))
-        #self.assertEqual(('SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 5;', 'SUCCESS'), db_helper.last_sql)
-        self.assertEqual(19, rows[0].id, "First result should be '{}'".format(rows[0].id))
-        self.assertEqual(20, rows[1].id, "Second result should be '{}'".format(rows[1].id))
-        self.assertEqual(26, rows[len(rows)-2].id, "Second to last result should be '{}'".format(rows[len(rows)-2].id))
-        self.assertEqual(27, rows[len(rows)-1].id, "Last result should be '{}'".format(rows[len(rows)-1].id))
+            self.assertEqual(107, rows[2].id)
+            self.assertEqual("Nulla sit amet aliquet enim, quis laoreet.", rows[2].description)

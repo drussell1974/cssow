@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, execSql, execCRUDSql
-
-enable_logging = False
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
 
 # TODO: Get this from settings
-
 MARKDOWN_TYPE_ID = 10
 
 def check_type_id(model):
-    """ checks if the type_id is a markdown document"""
+    """ checks if the type_id is a markdown document """
     return model.type_id == MARKDOWN_TYPE_ID
 
 
@@ -103,19 +101,9 @@ from datetime import datetime
 from .core.db_helper import to_db_null, to_empty, to_db_bool
 
 
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=enable_logging)
-
-
-def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
+def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
     """ Get resources for lesson """
+    execHelper = ExecHelper()
 
     str_select = "SELECT" \
                 " res.id as id," \
@@ -141,7 +129,7 @@ def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id), resource_type_id=int(resource_type_id))
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = []
     
@@ -163,6 +151,7 @@ def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
             published = row[13], 
             scheme_of_work_id=scheme_of_work_id)
 
+        # TODO: call tojson() in basemodel ... data.append(model.tojson())
         data.append(model.__dict__)
 
     return data
@@ -170,6 +159,7 @@ def get(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
 
 def get_model(db, id_, scheme_of_work_id, auth_user):
     """ Get Resource """
+    execHelper = ExecHelper()
 
     str_select = "SELECT" \
                 " res.id as id," \
@@ -195,7 +185,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
     str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = None
     
@@ -225,6 +215,7 @@ def get_model(db, id_, scheme_of_work_id, auth_user):
 
 
 def get_resource_type_options(db, auth_user):
+    execHelper = ExecHelper()
 
     str_select = "SELECT" \
                  " type.id as id," \
@@ -237,15 +228,16 @@ def get_resource_type_options(db, auth_user):
     data = []
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     for row in rows:
         data.append(ResourceTypeModel(id=row[0], name=row[1]))
 
     return data
 
-
-def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
+'''
+def get_options(db, scheme_of_work_id, lesson_id, auth_user):
+    execHelper = ExecHelper()
 
     str_select = "SELECT " \
                  " ref.id as id," \
@@ -268,18 +260,20 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
     str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
 
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows)
 
     data = []
 
     for row in rows:
-        model = ReferenceModel(id_=row[0], reference_type_id=row[1], reference_type_name = row[2], title=row[3], publisher=row[4], year_published=row[5], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
+        model = ResourceModel(id_=row[0], title=row[1], publisher=row[2], type_id=row[1], type_name = row[2], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
         model.page_id = row[8]
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
+        # TODO: call tojson() in basemodel ... data.append(model.tojson())
         data.append(model.__dict__)
 
     return data
+'''
 
 
 def get_number_of_resources(db, lesson_id, auth_user):
@@ -290,6 +284,8 @@ def get_number_of_resources(db, lesson_id, auth_user):
     :param auth_user:
     :return:
     """
+    execHelper = ExecHelper()
+    
     select_sql = "SELECT " \
                  " lesson_id " \
                  "FROM sow_resource "\
@@ -298,18 +294,18 @@ def get_number_of_resources(db, lesson_id, auth_user):
     select_sql = select_sql.format(lesson_id=lesson_id)
 
     rows = []
-    execSql(db, select_sql, rows)
+    execHelper.execSql(db, select_sql, rows)
 
     return len(rows)
 
 
 def save(db, model, auth_user):
-    """
+    '''
     Upsert the reference
     :param db: database context
     :param model: the ReferenceModel
     :return: the updated ReferenceModel
-    """
+    '''
     if model.is_new() == True:
         model.id = _insert(db, model, auth_user)
     else:
@@ -324,13 +320,13 @@ def delete(db, id_, auth_user):
     :param id_: the id of the record to delete
     :return: nothing
     """
-    _delete(db, id_, auth_user);
+    return _delete(db, id_, auth_user);
 
 
-def delete_unpublished(db, lesson_id, auth_user):
+def delete_unpublished(db, lesson_id, auth_user_id):
     """ Delete all unpublished lessons """
 
-    _delete_unpublished(db, lesson_id, auth_user)
+    return _delete_unpublished(db, lesson_id, auth_user_id)
 
 
 """
@@ -339,6 +335,7 @@ Private CRUD functions
 
 def _update(db, model, auth_user_id):
     """ updates the sow_lesson and sow_lesson__has__topics """
+    execHelper = ExecHelper()
 
     # 1. Update the lesson
 
@@ -354,7 +351,7 @@ def _update(db, model, auth_user_id):
         lesson_id = model.lesson_id,
         published=model.published)
 
-    execCRUDSql(db, str_update, log_info=handle_log_info)
+    execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
     # 2. upsert related topics
     #if scheme_of_work_id > 0:
@@ -365,6 +362,7 @@ def _update(db, model, auth_user_id):
 
 def _insert(db, model, auth_user_id):
     """ inserts the sow_resource and sow_scheme_of_work__has__reference """
+    execHelper = ExecHelper()
 
     ## 1. Insert the reference
 
@@ -383,7 +381,7 @@ def _insert(db, model, auth_user_id):
         expired=model.is_expired)
 
     rows = []
-    execCRUDSql(db, str_insert, rows, handle_log_info)
+    execHelper.execCRUDSql(db, str_insert, rows, handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -392,18 +390,23 @@ def _insert(db, model, auth_user_id):
 
 
 def _delete(db, id_, auth_user_id):
+    execHelper = ExecHelper()
+
     str_delete = "DELETE FROM sow_resource WHERE id = {id_};"
     str_delete = str_delete.format(id_=int(id_))
 
     rval = []
-    execCRUDSql(db, str_delete, rval, handle_log_info)
+    rval = execHelper.execCRUDSql(db, str_delete, rval, handle_log_info)
 
     return rval
 
 
 def _delete_unpublished(db, lesson_id, auth_user_id):
     """ Delete all unpublished resources """
+    execHelper = ExecHelper()
+    
     str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
         
     rows = []
-    execSql(db, str_delete, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+    return rows

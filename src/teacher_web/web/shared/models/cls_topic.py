@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+
 
 class TopicModel(models.Model):
     def __init__(self, id_, name, created = "", created_by = ""):
@@ -23,7 +25,7 @@ class TopicModel(models.Model):
 """
 DAL
 """
-
+"""
 def log_info(db, msg, is_enabled = False):
     from .core.log import Log
     logger = Log()
@@ -33,9 +35,10 @@ def log_info(db, msg, is_enabled = False):
     
 def handle_log_info(db, msg):
     log_info(db, msg, is_enabled=False)
-
+"""
 
 def get_options(db, lvl, topic_id = 0):
+    execHelper = ExecHelper()
 
     str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
     str_select = str_select.format(lvl=int(lvl), topic_id=int(topic_id))
@@ -45,14 +48,15 @@ def get_options(db, lvl, topic_id = 0):
     try:
 
         rows = []
-        execSql(db, str_select, rows, handle_log_info)
+        rows = execHelper.execSql(db, str_select, rows, handle_log_info)
 
         for row in rows:
             model = TopicModel(row[0], row[1], row[2], row[3])
+            # TODO: call tojson() in basemodel ... data.append(model.tojson())
             data.append(model.__dict__)
 
     except Exception as e:
         raise Exception("Error getting topics", e)
 
-
+        
     return data

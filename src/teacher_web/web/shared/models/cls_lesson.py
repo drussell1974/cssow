@@ -2,12 +2,14 @@
 from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe
+from .core.log import handle_log_info
 from .cls_learningobjective import get_all as get_all_objectives
-from .cls_resource import get as get_resources, get_number_of_resources
+from .cls_resource import get_all as get_all_resources, get_number_of_resources
 
 class LessonListModel(models.Model):
     lessons = []
     def __init__(self, data):
+        # TODO: call tojson() in basemodel ... get_all(None, 11, None).__dict__
         self.lessons = get_all(None, 11, None).__dict__
 
 class LessonModel (BaseModel):
@@ -131,6 +133,7 @@ class LessonModel (BaseModel):
 """
 DAL
 """
+"""
 def log_info(db, msg, is_enabled = False):
     from .core.log import Log
     logger = Log()
@@ -140,12 +143,15 @@ def log_info(db, msg, is_enabled = False):
     
 def handle_log_info(db, msg):
     log_info(db, msg, is_enabled=False)
+"""
 
-from .core.db_helper import to_db_null, execSql, execCRUDSql
+from .core.db_helper import ExecHelper, to_db_null
 #import cls_keyword as db_keyword
 
 def get_options(db, scheme_of_work_id, auth_user):
 
+    execHelper = ExecHelper()
+    
     str_select = "SELECT le.id as id," \
                  " le.title as title," \
                  " le.order_of_delivery_id as order_of_delivery_id," \
@@ -161,7 +167,7 @@ def get_options(db, scheme_of_work_id, auth_user):
     str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows)
 
     data = []
 
@@ -176,6 +182,8 @@ def get_options(db, scheme_of_work_id, auth_user):
 
 
 def get_all(db, scheme_of_work_id, auth_user):
+
+    execHelper = ExecHelper()
         
     select_sql = "SELECT "\
                  " le.id as id," \
@@ -207,7 +215,7 @@ def get_all(db, scheme_of_work_id, auth_user):
 
     rows = []
 
-    execSql(db, select_sql, rows, log_info=handle_log_info)
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     data = []
 
@@ -240,12 +248,15 @@ def get_all(db, scheme_of_work_id, auth_user):
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
 
+        # TODO:  call tojson() in basemodel ... data.append(model.tojson())
         data.append(model.__dict__)
 
     return data
 
 
 def get_model(db, id_, auth_user, resource_type_id = 0):
+    execHelper = ExecHelper()
+
     model = LessonModel(id_, "")
 
     select_sql = "SELECT "\
@@ -274,7 +285,7 @@ def get_model(db, id_, auth_user, resource_type_id = 0):
     select_sql = select_sql.format(lesson_id=int(id_), auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     for row in rows:
         model = LessonModel(
@@ -296,8 +307,9 @@ def get_model(db, id_, auth_user, resource_type_id = 0):
 
         model.key_words = get_key_words(db, lesson_id = model.id)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
-        model.resources = get_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
+        model.resources = get_all_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
 
+    # TODO: call tojson() in basemodel ... call tojson() in basemodel ... return model.tojson()
     return model.__dict__
 
 
@@ -309,6 +321,8 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     :param auth_user:
     :return:
     """
+    execHelper = ExecHelper()
+    
 
     select_sql = "SELECT "\
                  " id"\
@@ -318,48 +332,51 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     select_sql = select_sql.format(lesson_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    execHelper.execSql(db, select_sql, rows)
 
     return len(rows)
 
 
 def save(db, model, auth_user, published=1):
+    """ Save Lesson """
 
     if model.is_new() == True:
-        model.id = _insert(db, model, published)
-    if published == 2:
+        _insert(db, model, published, auth_user_id=auth_user)
+    elif published == 2:
         delete(db, auth_user, model.id)
     else:
-        _update(db, model, published)
+        _update(db, model, published, auth_user_id=auth_user)
 
     return model
 
 
 def delete(db, auth_user_id, id_):
+    """ Delete Lesson """
 
     model = LessonModel(id_=id_, title="")
-    _delete(db, model)
+    return _delete(db, model)
 
 
 def delete_unpublished(db, scheme_of_work_id, auth_user_id):
     """ Delete all unpublished lessons """
 
-    _delete_unpublished(db, scheme_of_work_id, auth_user_id)
+    return _delete_unpublished(db, scheme_of_work_id, auth_user_id)
 
 
 def publish(db, auth_user_id, id_):
     model = LessonModel(id_=id_, title="")
     model.publish = True
-    _publish(db, model)
+    return _publish(db, model)
 
 
 """
 Private CRUD functions 
 """
 
-def _update(db, model, published):
+def _update(db, model, published, auth_user_id):
     """ updates the sow_lesson and sow_lesson__has__topics """
-
+    execHelper = ExecHelper()
+    
     # 1. Update the lesson
 
     str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
@@ -372,30 +389,33 @@ def _update(db, model, published):
         summary=to_db_null(model.summary),
         published=published,
         lesson_id=model.id)
-
-    execCRUDSql(db, str_update, log_info=handle_log_info)
+    
+    rows = []
+    rows = execHelper.execCRUDSql(db, str_update, rows, log_info=handle_log_info)
 
     # 2. upsert related topics
-
-    _upsert_related_topic_ids(db, model)
+    
+    _upsert_related_topic_ids(db, model, rows, auth_user_id=auth_user_id)
 
     # 3. insert pathway objectives
 
-    _upsert_pathway_objective_ids(db, model)
+    _upsert_pathway_objective_ids(db, model, rows, auth_user_id=auth_user_id)
 
     # 4. insert pathway ks123
 
-    _upsert_pathway_ks123_ids(db, model)
+    _upsert_pathway_ks123_ids(db, model, rows, auth_user_id=auth_user_id)
 
     # 5. insert key words
 
-    _upsert_key_words(db, model)
+    _upsert_key_words(db, model, rows, auth_user_id=auth_user_id)
 
     return True
 
 
-def _insert(db, model, published):
+def _insert(db, model, published, auth_user_id):
     """ inserts the sow_lesson and sow_lesson__has__topics """
+
+    execHelper = ExecHelper()
 
     # 1. Insert the lesson
 
@@ -412,41 +432,44 @@ def _insert(db, model, published):
         published=published)
     
     rows = []
-    execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
+    result = execHelper.execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
+    
+    model.id = result[1]
 
-    for row in rows:
-        model.id = int(row[0])
+    #for row in rows:
+    #    model.id = int(row[0])
 
     # 2. insert related topics
 
-    _upsert_related_topic_ids(db, model)
+    _upsert_related_topic_ids(db, model, rows, auth_user_id)
 
     # 3. insert pathway objectives
 
-    _upsert_pathway_objective_ids(db, model)
+    _upsert_pathway_objective_ids(db, model, rows, auth_user_id)
 
     # 4. insert pathway ks123
 
-    _upsert_pathway_ks123_ids(db, model)
+    _upsert_pathway_ks123_ids(db, model, rows, auth_user_id)
 
     # 5. insert key words
 
-    _upsert_key_words(db, model)
+    _upsert_key_words(db, model, rows, auth_user_id)
 
     # 6. insert objectives
     if model.is_copy():
-        _copy_objective_ids(db, model)
+        _copy_objective_ids(db, model, rows, auth_user_id)
 
     return model.id
 
 
-def _upsert_related_topic_ids(db, model):
+def _upsert_related_topic_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+    execHelper = ExecHelper()
 
     # delete existing
     str_delete = "DELETE FROM sow_lesson__has__topics WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
 
-    execCRUDSql(db, str_delete, log_info=handle_log_info)
+    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
     
     if len(model.related_topic_ids) > 0:
         # reinsert
@@ -460,16 +483,19 @@ def _upsert_related_topic_ids(db, model):
         if str_insert.endswith("VALUES") == False:
             str_insert = str_insert.rstrip(",") + ";"
 
-            execCRUDSql(db, str_insert, log_info=handle_log_info)
+            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+    
+    return results
 
 
-def _upsert_pathway_objective_ids(db, model):
+def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+    execHelper = ExecHelper()
 
     # delete existing
     str_delete = "DELETE FROM sow_lesson__has__pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
 
-    execCRUDSql(db, str_delete, log_info=handle_log_info)
+    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
 
     if model.pathway_objective_ids is not None:
         # reinsert
@@ -483,17 +509,21 @@ def _upsert_pathway_objective_ids(db, model):
         if str_insert.endswith("VALUES") == False:
             str_insert = str_insert.rstrip(",") + ";"
 
-            execCRUDSql(db, str_insert, log_info=handle_log_info)
+            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+    
+    return results
 
 
-def _copy_objective_ids(db, model):
+def _copy_objective_ids(db, model, results, auth_user_id):
     """ inserts sow_learning_objective__has__lesson """
+    execHelper = ExecHelper()
+    
 
     # delete existing
-    str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {id}".format(id=model.orig_id)
+    str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {id};".format(id=model.orig_id)
 
     objective_ids = []
-    execSql(db, str_select, objective_ids, log_info=handle_log_info)
+    objective_ids = execHelper.execSql(db, str_select, objective_ids, log_info=handle_log_info)
 
     if len(objective_ids) > 0:
         # reinsert
@@ -506,17 +536,20 @@ def _copy_objective_ids(db, model):
         if str_insert.endswith("VALUES") == False:
             str_insert = str_insert.rstrip(",") + ";"
 
-            execCRUDSql(db, str_insert, log_info=handle_log_info)
+            execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+    
+    return results
 
 
-def _upsert_pathway_ks123_ids(db, model):
+def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+    execHelper = ExecHelper()
 
     # delete existing
     str_delete = "DELETE FROM sow_lesson__has__ks123_pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
 
-    execCRUDSql(db, str_delete, log_info=handle_log_info)
-
+    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
+    
     if model.pathway_ks123_ids is not None:
         # reinsert
         str_insert = "INSERT INTO sow_lesson__has__ks123_pathway (lesson_id, ks123_pathway_id) VALUES"
@@ -529,22 +562,23 @@ def _upsert_pathway_ks123_ids(db, model):
         if str_insert.endswith("VALUES") == False:
             str_insert = str_insert.rstrip(",") + ";"
             
-            execCRUDSql(db, str_insert, log_info=handle_log_info)
+            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+
+    return results
 
 
-def _upsert_key_words(db, model):
+def _upsert_key_words(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__keywords """
+    execHelper = ExecHelper()
 
     # delete existing
     str_delete = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
 
-    execCRUDSql(db, str_delete, log_info=handle_log_info)
+    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
 
     # build dictionary of keyword ids 
 
     list_insert = {}
-
-    print("_upsert_key_words... model.key_words:", model.key_words)
 
     if model.key_words is not None:
         
@@ -562,24 +596,31 @@ def _upsert_key_words(db, model):
         ' Ensure insert values have been appended before inserting'
         if str_insert.endswith("VALUES") == False:
             str_insert = str_insert.rstrip(",") + ";"
-            execCRUDSql(db, str_insert, log_info=handle_log_info)
-
+            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+    
+    return results
 
 def _delete(db, model):
+
+    execHelper = ExecHelper()
+
     str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
     str_delete = str_delete.format(lesson_id=model.id)
 
     rval = []
-    execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
+    rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
 
     return rval
 
 
 def _publish(db, model):
+    execHelper = ExecHelper()
+
     str_publish = "UPDATE sow_lesson SET published = {published} WHERE id = {lesson_id};"
     str_publish = str_publish.format(published=1 if model.published else 0, lesson_id=model.id)
-
-    rval = db.executesql(str_publish)
+    
+    rval = []
+    rval = execHelper.execSql(db, str_publish, rval)
 
     return rval
 
@@ -592,6 +633,7 @@ def get_related_topic_ids(db, lesson_id, parent_topic_id):
     :param parent_topic_id:
     :return: all topics and linked
     """
+    execHelper = ExecHelper()
 
     str_select = " SELECT" \
                  " top.id as id," \
@@ -611,7 +653,7 @@ def get_related_topic_ids(db, lesson_id, parent_topic_id):
     str_select = str_select.format(lesson_id=lesson_id, parent_topic_id=parent_topic_id)
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_select, rows, handle_log_info)
 
     serializable_list = []
 
@@ -628,6 +670,8 @@ def get_pathway_objective_ids(db, lesson_id):
     :param lesson_id:
     :return: serialized learning objective ids
     """
+    execHelper = ExecHelper()
+    
 
     str_select = " SELECT" \
                  " learning_objective_id"\
@@ -637,12 +681,12 @@ def get_pathway_objective_ids(db, lesson_id):
     str_select = str_select.format(lesson_id=lesson_id)
 
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows)
 
     data = []
 
     for row in rows:
-        data.append(int(row[0]))
+        data.append(int(row))
 
     return data
 
@@ -654,6 +698,8 @@ def get_key_words(db, lesson_id):
     :param lesson_id:
     :return: serialized keywords
     """
+    execHelper = ExecHelper()
+    
 
     str_select = " SELECT kw.id as id, kw.name as name" \
                  " FROM sow_key_word as kw"\
@@ -663,7 +709,7 @@ def get_key_words(db, lesson_id):
     to_dict = {}
 
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
+    execHelper.execSql(db, str_select, rows, handle_log_info)
 
     for id, name in rows:
         to_dict[id] = name
@@ -673,7 +719,10 @@ def get_key_words(db, lesson_id):
 
 def _delete_unpublished(db, scheme_of_work_id, auth_user_id):
     """ Delete all unpublished learning objectives """
+    execHelper = ExecHelper()
+    
     str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published = 0;".format(scheme_of_work_id)
         
     rows = []
-    execSql(db, str_delete, rows, handle_log_info)
+    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+    return rows

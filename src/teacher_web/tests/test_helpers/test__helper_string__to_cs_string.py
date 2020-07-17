@@ -1,6 +1,5 @@
 from unittest import TestCase
-
-from helper_string import to_cs_string
+from shared.models.core.helper_string import to_cs_string
 
 class test__helper_string__to_cs_string(TestCase):
 

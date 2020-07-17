@@ -38,7 +38,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
     # check if an existing_learning_objective_id has been passed
      
-    model = cls_learningobjective.get_new_model(db, 0, request.user.id)
+    model = cls_learningobjective.get_model(db, 0, request.user.id)
 
     lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
         
@@ -164,7 +164,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 def delete_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ delete item and redirect back to referer """
-
+    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     cls_learningobjective.delete(db, request.user.id, learning_objective_id)

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, execSql, execCRUDSql
+from .core.db_helper import ExecHelper, sql_safe
+from shared.models.core.log import handle_log_info
 
-enable_logging = False
 
 class SchemeOfWorkListModel(models.Model):
     schemesofwork = []
     def __init__(self, data):
+        # TODO: call tojson() in basemodel ... self.schemesofwork = get_all(None, 11, None).tojson()
         self.schemesofwork = get_all(None, 11, None).__dict__
 
 class SchemeOfWorkModel(BaseModel):
@@ -66,27 +67,15 @@ class SchemeOfWorkModel(BaseModel):
 """
 DAL
 """
-
-
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=enable_logging)
-
-
-#from cls_schemeofwork import SchemeOfWorkModel
 from .core.db_helper import to_db_null
 
 def get_options(db, auth_user = 0):
+    execHelper = ExecHelper()
+    
     str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
     str_select = str_select.format(auth_user=to_db_null(auth_user))
     rows = []
-    execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows)
 
     data = []
 
@@ -98,6 +87,9 @@ def get_options(db, auth_user = 0):
 
 
 def get_all(db, key_stage_id=0, auth_user = 0):
+
+    execHelper = ExecHelper()
+
     select_sql = "SELECT "\
                   "  sow.id as id, "\
                   "  sow.name as name, "\
@@ -119,7 +111,7 @@ def get_all(db, key_stage_id=0, auth_user = 0):
     select_sql = select_sql.format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     data = []
 
@@ -139,6 +131,7 @@ def get_all(db, key_stage_id=0, auth_user = 0):
 
         model.set_is_recent()
 
+        # TODO: data.append(model.tojson())
         data.append(model.__dict__)
 
     return data
@@ -151,6 +144,8 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
     :param top: number of records to return
     :return: list of schemes of work models
     """
+    execHelper = ExecHelper()
+    
     select_sql = "SELECT DISTINCT "\
                  " sow.id as id," \
                  " sow.name as name," \
@@ -174,7 +169,7 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
     select_sql = select_sql.format(auth_user=to_db_null(auth_user), top=top)
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     data = []
 
@@ -197,6 +192,8 @@ def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
 
 
 def get_model(db, id_, auth_user):
+    execHelper = ExecHelper()
+    
     model = SchemeOfWorkModel(0)
 
     select_sql = "SELECT "\
@@ -220,7 +217,7 @@ def get_model(db, id_, auth_user):
     select_sql = select_sql.format(scheme_of_work_id=id_, auth_user=to_db_null(auth_user))
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     for row in rows:
         model = SchemeOfWorkModel(id_=row[0],
@@ -239,6 +236,8 @@ def get_model(db, id_, auth_user):
 
 
 def get_schemeofwork_name_only(db, scheme_of_work_id):
+    execHelper = ExecHelper()
+    
     select_sql = "SELECT "\
                   "  sow.name as name "\
                   " FROM sow_scheme_of_work as sow "\
@@ -247,7 +246,7 @@ def get_schemeofwork_name_only(db, scheme_of_work_id):
     select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
 
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     scheme_of_work_name = ""
     for row in rows:
@@ -257,13 +256,15 @@ def get_schemeofwork_name_only(db, scheme_of_work_id):
 
 
 def get_key_stage_id_only(db, scheme_of_work_id):
+    execHelper = ExecHelper()
+    
     select_sql = ("SELECT "\
                   "  sow.key_stage_id as key_stage_id "\
                   " FROM sow_scheme_of_work as sow "\
                   " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
                   " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
     rows = []
-    execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows)
 
     key_stage_id = 0
     for row in rows:
@@ -282,20 +283,22 @@ def save(db, model, published=1):
 
 
 def delete(db, auth_user_id, id_):
+    """ delete scheme of work """
+
     model = SchemeOfWorkModel(id_)
-    _delete(db, model)
+    return _delete(db, model)
 
 
 def delete_unpublished(db, auth_user_id):
     """ Delete all unpublished schemes of work """
 
-    _delete_unpublished(db, auth_user_id)
+    return _delete_unpublished(db, auth_user_id)
 
 
 def publish(db, auth_user_id, id_):
     model = SchemeOfWorkModel(id_)
     model.publish = True
-    _publish(db, model)
+    return _publish(db, model)
 
 
 """
@@ -304,6 +307,8 @@ Private CRUD functions
 
 
 def _update(db, model, published):
+    execHelper = ExecHelper()
+
     str_update = "UPDATE sow_scheme_of_work SET name = '{name}', description = '{description}', exam_board_id = {exam_board_id}, key_stage_id = {key_stage_id}, published = {published} WHERE id =  {scheme_of_work_id};"
     str_update = str_update.format(
         name=to_db_null(model.name),
@@ -313,12 +318,14 @@ def _update(db, model, published):
         scheme_of_work_id = to_db_null(model.id),
         published=published)
 
-    execCRUDSql(db, str_update, log_info=handle_log_info)
+    execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
     return True
 
 
 def _insert(db, model, published):
+    execHelper = ExecHelper()
+    
     str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('{name}', '{description}', {exam_board_id}, {key_stage_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         name=to_db_null(model.name),
@@ -331,7 +338,7 @@ def _insert(db, model, published):
 
     # get last inserted row id
     rows = []
-    execCRUDSql(db, str_insert, rows, handle_log_info)
+    execHelper.execCRUDSql(db, str_insert, rows, handle_log_info)
 
     for row in rows:
         model.id = int(row[0])
@@ -340,29 +347,34 @@ def _insert(db, model, published):
 
 
 def _delete(db, model):
+    execHelper = ExecHelper()
+    rval = []
     str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id};"
     str_delete = str_delete.format(scheme_of_work_id=model.id)
-
-    rval = []
-    execCRUDSql(db, str_delete, rval, handle_log_info)
-
+    
+    rval = execHelper.execCRUDSql(db, str_delete, rval, handle_log_info)
+    
     return rval
 
 
 def _publish(db, model):
-    str_delete = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
-    str_delete = str_delete.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
+    execHelper = ExecHelper()
+    
+    str_update = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
+    str_update = str_update.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
 
     rval = []
-    execCRUDSql(db, str_delete, rval, handle_log_info)
+    execHelper.execCRUDSql(db, str_update, rval, handle_log_info)
 
     return rval
 
 
 def _delete_unpublished(db, auth_user_id):
+    execHelper = ExecHelper()
+    
     """ Delete all unpublished learning objectives """
-    str_select = "DELETE FROM sow_scheme_of_work WHERE published = 0;"
+    str_delete = "DELETE FROM sow_scheme_of_work WHERE published = 0;"
         
     rows = []
-    execSql(db, str_select, rows, handle_log_info)
-
+    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+    return rows
