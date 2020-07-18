@@ -338,7 +338,7 @@ def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
     select_sql = select_sql.format(lesson_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
 
     rows = []
-    execHelper.execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     return len(rows)
 
