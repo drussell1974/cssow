@@ -242,12 +242,17 @@ def get_all(db, scheme_of_work_id, auth_user):
         
         ' get the key words from the learning objectives '
         model.key_words = get_key_words(db, lesson_id = model.id)
+        ' get the number of learning objectives ' 
         model.number_of_learning_objective = _get_number_of_learning_objectives(db, model.id, auth_user)
+        ' get learning objectives for this lesson '
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
+        ' get number of resources for this lesson '
         model.number_of_resource = get_number_of_resources(db, model.id, auth_user)
         ' get related topics '
         model.related_topic_ids = get_related_topic_ids(db, model.id, model.topic_id)
-
+        ' get ks123 pathways '
+        model.pathway_ks123_ids = get_ks123_pathway_objective_ids(db, model.id)
+        
         # TODO:  call tojson() in basemodel ... data.append(model.tojson())
         data.append(model.__dict__)
 
@@ -308,7 +313,8 @@ def get_model(db, id_, auth_user, resource_type_id = 0):
         model.key_words = get_key_words(db, lesson_id = model.id)
         model.learning_objectives = get_all_objectives(db, model.id, auth_user)
         model.resources = get_all_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
-
+        model.pathway_ks123_ids = get_ks123_pathway_objective_ids(db, model.id)
+        
     # TODO: call tojson() in basemodel ... call tojson() in basemodel ... return model.tojson()
     return model.__dict__
 
@@ -550,7 +556,7 @@ def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
 
     results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
     
-    if model.pathway_ks123_ids is not None:
+    if len(model.pathway_ks123_ids) > 0:
         # reinsert
         str_insert = "INSERT INTO sow_lesson__has__ks123_pathway (lesson_id, ks123_pathway_id) VALUES"
 
@@ -665,7 +671,7 @@ def get_related_topic_ids(db, lesson_id, parent_topic_id):
 
 def get_pathway_objective_ids(db, lesson_id):
     """
-    Get the learning objectives ids for the learning episcde
+    Get the learning objectives ids for the lesson
     :param db: database context
     :param lesson_id:
     :return: serialized learning objective ids
@@ -681,12 +687,40 @@ def get_pathway_objective_ids(db, lesson_id):
     str_select = str_select.format(lesson_id=lesson_id)
 
     rows = []
-    rows = execHelper.execSql(db, str_select, rows)
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
     data = []
 
     for row in rows:
         data.append(int(row))
+
+    return data
+
+
+def get_ks123_pathway_objective_ids(db, lesson_id):
+    """
+    Get the ks123 pathways for the lesson
+    :param db: database context
+    :param lesson_id:
+    :return: serialized ks123 pathway ids
+    """
+    execHelper = ExecHelper()
+    
+
+    str_select = " SELECT" \
+                 " ks123_pathway_id"\
+                 " FROM sow_lesson__has__ks123_pathway" \
+                 " WHERE lesson_id = {lesson_id};"
+
+    str_select = str_select.format(lesson_id=lesson_id)
+
+    rows = []
+    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+    data = []
+
+    for row in rows:
+        data.append(try_int(row[0]))
 
     return data
 
@@ -713,7 +747,7 @@ def get_key_words(db, lesson_id):
 
     for id, name in rows:
         to_dict[id] = name
-
+    
     return to_dict
 
 

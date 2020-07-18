@@ -54,14 +54,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 1, auth_user=1)
+            rows = get_options(self.fake_db, 12, auth_user=1)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT top.id as id, top.name as name, letop.topic_id as checked, (SELECT count(topic_id) FROM sow_learning_objective AS lob LEFT JOIN sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id WHERE lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled FROM sow_topic AS top LEFT JOIN sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = 87 WHERE top.parent_id = 92;"
-                , []
-                , handle_log_info)
+                "SELECT le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name, yr.id as year_id, yr.name as year_name FROM sow_lesson as le INNER JOIN sow_topic as top ON top.id = le.topic_id INNER JOIN sow_year as yr ON yr.id = le.year_id  WHERE le.scheme_of_work_id = 12 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+                , [])
 
             self.assertEqual(1, len(rows))
 
@@ -90,9 +89,8 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-            " SELECT top.id as id, top.name as name, letop.topic_id as checked, (SELECT count(topic_id) FROM sow_learning_objective AS lob LEFT JOIN sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id WHERE lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled FROM sow_topic AS top LEFT JOIN sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = 836 WHERE top.parent_id = 97;"
-                , []
-                , handle_log_info)
+                "SELECT le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name, yr.id as year_id, yr.name as year_name FROM sow_lesson as le INNER JOIN sow_topic as top ON top.id = le.topic_id INNER JOIN sow_year as yr ON yr.id = le.year_id  WHERE le.scheme_of_work_id = 21 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+                , [])
             
             self.assertEqual(834, rows[0].id)
             self.assertEqual("Vivamus sodales enim cursus ex.", rows[0].title)

@@ -2,6 +2,7 @@
 from datetime import datetime
 from .db_helper import ExecHelper, sql_safe
 import logging # django logging
+from django.conf import settings
 
 class Log:
 
@@ -35,7 +36,7 @@ class Log:
 def log_info(db, msg, is_enabled = False):
     logger = Log()
     logger.is_enabled = is_enabled
-    logger.write_to_django_log(db, msg)
+    logger.write(db, msg)
     
     
 def handle_log_info(db, msg):

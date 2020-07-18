@@ -83,15 +83,14 @@
     <a href="#">{{ row.created_by_name }}</a>
     {% if row.created %}
       on {{ row.created }}
-    {% endif %}, {{_("Learning objectives")}} {{ row.number_of_learning_objective}}
+    {% endif %}
     {% if request.user.is_authenticated %}
         {% if row.published == False %} 
           <a href="{% url 'lesson.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
-        {{ endif }}
-        - <a href="{% url 'lesson.delete_item' row.scheme_of_work_id row.id %}">{{_("delete")}}</a> 
+        {% endif %}
+        - <a href="{% url 'lesson.delete' row.scheme_of_work_id row.id %}">{{_("delete")}}</a> 
         - <a href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">{{_("edit")}}</a> 
         - <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
-      {% endif %}
     {% endif %} 
     </p>
 </div>
@@ -105,11 +104,7 @@
 
 </div>
   <!-- Pager Footer END -->
-  <section class="alert alert-info" >
-      <div id="div-references">
-      </div><!-- id="div-pathway_objective" -->
-       <a href="{% url 'reference.edit' content.data.scheme_of_work_id %}?next={{ request.path }}" style="margin-top:30px" class="btn btn-info" id="add-reference">{{_('Add learning materials')}}</a>
- </section><!-- class="alert alert-info" -->
+
 <!-- Scheme of works END -->
 <hr />
 

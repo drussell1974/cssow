@@ -66,14 +66,15 @@ def new(request, scheme_of_work_id):
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, lesson_id):
     ''' Edit the lesson '''
+
     lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson["key_stage_id"])
     topic_options = cls_topic.get_options(db, lvl=1)
     key_words = cls_keyword.get_options(db)
+    ks123_pathways = cls_ks123pathway.get_options(db, lesson["year_id"], lesson["topic_id"])
     
-    print("edit... lesson.key_words:", lesson["key_words"])
-
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson["id"],
@@ -84,9 +85,11 @@ def edit(request, scheme_of_work_id, lesson_id):
         "selected_year_id": lesson["year_id"],
         "lesson": lesson,
         "key_words": key_words,
+        "ks123_pathways": ks123_pathways,
+        "show_ks123_pathway_selection": lesson["key_stage_id"] in (1,2,3)
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", "A-Level Computer Science", "Edit: {}".format(lesson["title"]), data=data)
+    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Edit: {}".format(lesson["title"]), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -114,7 +117,7 @@ def copy(request, scheme_of_work_id, lesson_id):
         "key_words": key_words,
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", "A-Level Computer Science", "Copy: {}".format(lesson["title"]), data=data)
+    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Copy: {}".format(lesson["title"]), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -130,12 +133,13 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 def delete(request, scheme_of_work_id, lesson_id):
-    ''' Delete the lesson '''
+    """ delete item and redirect back to referer """
     
-    view_model = ViewModel("", "A-Level Computer Science", "Delete")
-    # TODO: redirect
-    return render(request, "lessons/edit.html", view_model.content)
+    redirect_to_url = request.META.get('HTTP_REFERER')
 
+    cls_lesson.delete(db, request.user.id, lesson_id)
+
+    return HttpResponseRedirect(redirect_to_url)
     
 def lessonplan(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan '''
@@ -182,14 +186,14 @@ def save(request, scheme_of_work_id, lesson_id):
     )
 
     model.key_words = request.POST.getlist("key_words")
-    print("saving... model.key_words:", model.key_words)
+
+    model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
     # reset id if a copy
     if int(request.POST["orig_id"]) > 0:
         model.id = int(request.POST["orig_id"])
 
     model.validate()
-    print("saving... model.is_valid:", model.is_valid) 
 
     if model.is_valid == True:
         ' save the lesson '

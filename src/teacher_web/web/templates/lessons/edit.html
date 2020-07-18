@@ -100,17 +100,29 @@
         <p class="help-block text-danger"></p>
       </div>
     </div>
-      <!-- KS123 Pathway START -->
+    {% if content.data.show_ks123_pathway_selection %}
+      <!-- KS123 Pathway START - SHOW FOR LESS THAN YEAR 10 -->
       <div class="control-group">
         <div class="form-group controls">
-          <label>{{_("Linked to pathway")}}</label>
-            <div id="div-pathway_ks123_id">
+          <label>{{_("Linked to pathway")}} {{content.data.lesson.pathway_ks123_ids}}</label>
+          <select multiple type="text" name="pathway_ks123_ids" class="form-control" id="ctl-pathway_ks123"
+               maxlength="250">
+          {% for pathway in content.data.ks123_pathways %}
+            {% if pathway.id in content.data.lesson.pathway_ks123_ids %}
+              <option value="{{pathway.id}}" selected >{{pathway.objective}}</option>
+            {% else %}    
+              <option value="{{pathway.id}}" >{{pathway.objective}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>  
+          <div id="div-pathway_ks123_id">
             </div>
             <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
             <p class="help-block text-danger"></p>
         </div>
       </div>
       <!-- KS123 Pathway END -->
+      {% endif %}
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Keywords")}}</label>
@@ -152,7 +164,7 @@
       <input type="hidden" name="get_related_topics_uri" value="{% url 'api.default.related-topics' content.data.lesson.parent_topic_id %}" id="hdn-related-topics_uri"><!-- get_related_topics -->
       <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
       <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ks123' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
-      
+      <input type="hidden" name="pathway_objective_ids" value="foo bar" >
       <button type="submit" name="published" value="2" class="btn btn-secondary" id="btn-delete">{{_("Delete")}}</button>
       <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
       <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
@@ -269,7 +281,8 @@
     });
     
     window.onload = function(e) {
-      
+      return;
+
       topic_elem = document.getElementById('ctl-topic_id');
       showRelatedTopic(document.getElementById('hdn-lesson_id').value, topic_elem.value);
       key_words = document.getElementById('ctl-key_words').querySelectorAll('option:checked');

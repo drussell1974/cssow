@@ -1,7 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
 import shared.models.cls_lessonplan as test_context 
 
 # create test context
@@ -90,7 +89,7 @@ class test_db__save(TestCase):
 
             ExecHelper.execCRUDSql.assert_called_with(
                 self.fake_db, 
-                "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES (34, 0, 'Data Representation', 'Covering Sound, Image, Binary', 0, '');", 
-                log_info=handle_log_info)
+                "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES (34, 0, 'Data Representation', 'Covering Sound, Image, Binary', 0, '');" 
+                , log_info=handle_log_info)
 
             self.assertEqual(expected_result, actual_result.id)

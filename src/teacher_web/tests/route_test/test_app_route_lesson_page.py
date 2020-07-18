@@ -73,11 +73,11 @@ class test_app_route_lesson_page(TestCase):
 
     def test__lesson_delete__url_resolves_to_index(self):
         url = resolve("/schemesofwork/127/lessons/13/delete")
-        self.assertEqual("lesson.delete_item", url.url_name)
+        self.assertEqual("lesson.delete", url.url_name)
         self.assertEqual(url.func, delete)
 
     def test__lesson_delete__url_resolves_to_index__reverse(self):
-        url = reverse("lesson.delete_item", args=[127, 13])
+        url = reverse("lesson.delete", args=[127, 13])
         self.assertEqual("/schemesofwork/127/lessons/13/delete", url)
 
 
