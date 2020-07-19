@@ -13,7 +13,8 @@ class test_view_default_index(TestCase):
 
     def tearDown(self):
         # end test
-        
+        pass
+    
     @skip("not tested")
     def test_index_should_return_default(self):
         self.assertEqual(1,1)

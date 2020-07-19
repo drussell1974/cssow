@@ -126,16 +126,8 @@
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Keywords")}}</label>
-        <select multiple type="text" name="key_words" class="form-control" id="ctl-key_words"
-               maxlength="250">
-          {% for id, name in content.data.key_words %}
-           {% if id in content.data.lesson.key_words %}
-            <option value="{{id}}" selected >{{name}}</option>
-            {% else %}    
-            <option value="{{id}}" >{{name}}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
+        <input type="hidden" class="form-control" id="tags" />
+        <input type="text" class="form-control" id="ctl-key_words" value="" />
         <p class="help-block text-danger" id="token-error"></p>
       </div>
         <div id="keywords"></div>
@@ -173,143 +165,37 @@
   </form><!-- form#form -->
 {% endblock %}
 
+{% block head_css %} 
+  {% load static %}
+  <link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
+  <link href="{% static 'default/vendor/sliptree/css/tokenfield-typeahead.min.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block page_js %}
     {% load static %}
     <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <!-- Bootstrap tokenfield javascript -->
+    <script type="text/javascript" src="{% static 'default/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
     <script>
-    function showPathwayObjectives(key_stage_id, arr_key_words) {
-        var url = document.getElementById('hdn-view_pathway_objectives_uri').value.toString() + arr_key_words ;
-        
-        $.ajax({url: url,
-            success: function(result){
-                $("#div-pathway_objective_id").html(result["pathway-objectives"]);
-            },
-            error: function(){
-                $("#div-pathway_objective_id").html('Could not get pathway objectives at this time');
-            }
-        });
-    }
-
-    function showPathwayKS123() {
-        year_id = $('#ctl-year_id option:selected').val();
-        topic_id = $('#ctl-topic_id option:selected').val();
-
-        $.ajax({url: document.getElementById('hdn-view_pathway_ks123_uri').value,
-            success: function(result){
-                $("#div-pathway_ks123_id").html(result);
-            },
-            error: function(){
-                $("#div-pathway_ks123_id").html('Could not get pathway objectives at this time');
-            }
-        });
-    }
-
-    function showRelatedTopic(lesson_id ,main_topic_id) {
-        $.getJSON(document.getElementById('hdn-related-topics_uri').value,
-            function(result) {
-                divElem =  document.getElementById('div-related_topic_id');
-                // clear
-                while(divElem.hasChildNodes()) {
-                    divElem.removeChild(divElem.lastChild);
-                }
-                // repopulate
-                for (i = 0; i < result.length;i++) {
-                    // create outer div
-                    var formcheck = document.createElement('div');
-                    formcheck.classList.add('form-check');
-
-                    // create checkbox
-                    var checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = 'ctl-related_topic_id' + result[i].id;
-                    checkbox.classList.add('form-check-input');
-                    checkbox.name = 'related_topic_ids';
-                    checkbox.value = result[i].id;
-                    // check as necessary
-                    if (result[i].checked == true) {
-                        checked = document.createAttribute('checked');
-                        checkbox.setAttributeNode(checked);
-                    }
-
-                    // add checkbox to div
-                    formcheck.appendChild(checkbox);
-
-                    // create label
-                    var span = document.createElement('label');
-                    span.classList.add('form-check-label');
-                    span.setAttribute('for', 'ctl-related_topic_id' + result[i].id);
-                    var text = document.createTextNode(result[i].name);
-                    // add inner text to span
-                    span.appendChild(text);
-                    // add span to div
-                    formcheck.appendChild(span);
-
-                    // add div to
-                    divElem.appendChild(formcheck);
-
-                    // disable with javascript
-                    if (result[i].disabled == true) {
-                        // create locked
-                        var locked = document.createElement('i');
-                        locked.classList.add('badge');
-                        locked.classList.add('badge-pill');
-                        locked.classList.add('badge-info');
-                        locked.classList.add('fa');
-                        locked.classList.add('fa-key');
-                        locked.classList.add('icon');
-                        locked.title = 'There is a learning objective associated to this topic';
-                        var text = document.createTextNode(" ");
-                        // add inner text to span
-                        locked.appendChild(text);
-                        formcheck.appendChild(locked);
-
-                        checkbox.onclick = function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        };
-                    }
-                }
-            }
-        )
-    }
-    
-    $('#ctl-topic_id').on('change', function(e) {
-        showRelatedTopic(document.getElementById('hdn-lesson_id').value, e.target.value);
-    });
-    
-    window.onload = function(e) {
-      return;
-
-      topic_elem = document.getElementById('ctl-topic_id');
-      showRelatedTopic(document.getElementById('hdn-lesson_id').value, topic_elem.value);
-      key_words = document.getElementById('ctl-key_words').querySelectorAll('option:checked');
-      var init_key_words = [];
-      for(i = 0; i < key_words.length; i++) {
-        init_key_words.push(key_words[i].value);
+      var itemize = function(item){
+        return {"value":item[1]};
       }
-      console.log(init_key_words.join(','));
-      
-      showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, init_key_words);
-      showPathwayKS123();
-
-      $('#ctl-key_words').on('change', function(e) {
-        var arr_key_words = [];
-        let opts = this.querySelectorAll('option:checked');    
-        for(var i = 0; i < opts.length; i++) {
-          arr_key_words.push(opts[i].value);
+      $.ajax({url:document.getElementById('hdn-keywords_uri').value,
+        success: function(result){
+          // get list of values (ignore keys)
+          var itemizedlist = result.keywords.map(x => x[1]);          
+          $('#ctl-key_words').tokenfield({
+            autocomplete: {
+              source: itemizedlist,
+              delay: 100
+            },
+            showAutocompleteOnFocus: true
+          })
+        },
+        error: function(){
+            $("#token-error").html('Could not get keywords at this time');
         }
-        
-        showPathwayObjectives(document.getElementById('hdn-key_stage_id').value, arr_key_words);
       });
-
-      $('#ctl-topic_id, #ctl-year_id').on('change', function(e) {
-        showPathwayKS123();
-      });
-    };
-
     </script>
 {% endblock %}
 
