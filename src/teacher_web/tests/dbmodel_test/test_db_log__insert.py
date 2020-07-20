@@ -5,6 +5,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.core.log as test_context
 
+
 class test_db_keyword__get_options(TestCase):
 
     def setUp(self):
@@ -27,24 +28,23 @@ class test_db_keyword__get_options(TestCase):
             with self.assertRaises(Exception):
                 # act 
 
-                log = test_context.Log()
-                log.is_enabled = True
+                log = test_context.Log(self.fake_db, test_context.LOG_TYPE.NONE)
+
                 # assert
 
-                log.write(self.fake_db, "something happened")
+                log.write("something happened")
 
 
     def test_should_call_insert_with_new_id__when_logging_is_enabled_True(self):
          # arrange
         expected_result = None
     
-        log = test_context.Log()
-        log.is_enabled = True
+        log = test_context.Log(self.fake_db, test_context.LOG_TYPE.Verbose)
         
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
         
-            log.write(self.fake_db, "something happened")
+            log.write("something happened", test_context.LOG_TYPE.Verbose)
             
             # assert
             
@@ -55,14 +55,14 @@ class test_db_keyword__get_options(TestCase):
     def test_should_call_insert_with_new_id__when_logging_is_enabled__false(self):
          # arrange
         expected_result = None
-    
-        log = test_context.Log()
-        log.is_enabled = False
-        
+
+        log = test_context.Log(self.fake_db, test_context.LOG_TYPE.NONE)
+
+
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
         
-            log.write(self.fake_db, "something happened")
+            log.write("something happened", test_context.LOG_TYPE.Verbose)
             
             # assert
             
@@ -73,8 +73,9 @@ class test_db_keyword__get_options(TestCase):
          # arrange
         expected_result = None
     
-        log = test_context.Log()
-        
+        log = test_context.Log(self.fake_db)
+
+
         #########################
         # DO NOT set is_enabled #
         #########################
@@ -83,7 +84,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
         
-            log.write(self.fake_db, "something happened")
+            log.write("something happened", test_context.LOG_TYPE.Verbose)
             
             # assert
             

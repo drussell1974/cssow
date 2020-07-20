@@ -4,27 +4,42 @@ from .db_helper import ExecHelper, sql_safe
 import logging # django logging
 from django.conf import settings
 
+class LOG_TYPE:
+    Verbose = 8
+    Information = 4
+    Warning = 2
+    Error = 1
+    NONE = 7
+
+
 class Log:
 
-    def __init__(self):
-        self.is_enabled = False
 
-    def write(self, db, details):
+    def __init__(self, db, log_level_setting = LOG_TYPE.NONE):
+        self.db = db
+        self.logging_level = log_level_setting
+
+
+    def write(self, details, log_type):
         """ write to a log """
-        self.write_to_sql(db, details)
-        self.write_to_django_log(db, details)
+
+        if (self.logging_level % log_type) == 0:
+            self._write_to_sql(details)
+            self._write_to_django_log(details)
 
 
-    def write_to_sql(self, db, details):
+    def _write_to_sql(self, details):
         """ inserts the detail into the sow_logging table """
+
+
         execHelper = ExecHelper()
         
-        if self.is_enabled == True:
-            str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (sql_safe(details), datetime.utcnow())
+        str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (sql_safe(details), datetime.utcnow())
 
-            execHelper.execCRUDSql(db, str_insert)
+        execHelper.execCRUDSql(self.db, str_insert)
 
-    def write_to_django_log(self, db, details):
+
+    def _write_to_django_log(self, details):
         """ 
         Write to the django event log.
         View log when running django debug toolbar
@@ -32,12 +47,17 @@ class Log:
         logger = logging.getLogger(__name__)
         logger.info(details)
         
+    
+def handle_log_info(db, msg, log_type = LOG_TYPE.Information):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, log_type)
+    
 
-def log_info(db, msg, is_enabled = False):
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
+def handle_log_warning(db, msg, log_type = LOG_TYPE.Warning):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, log_type)
+
     
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
+def handle_log_error(db, msg, log_type = LOG_TYPE.Error):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, log_type)

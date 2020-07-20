@@ -26,6 +26,15 @@ SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 #DEBUG = True,        
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
+# LOGGING_LEVEL: set the logging level as appropriate
+
+# Verbose = 8
+# Information = 4
+# Warning = 2
+# Error = 1
+LOGGING_LEVEL = 1
+
+
 ALLOWED_HOSTS = [
         "jtc10",
         "127.0.0.1",
