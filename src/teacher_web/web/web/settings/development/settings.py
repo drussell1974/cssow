@@ -31,7 +31,7 @@ DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 # Information = 4
 # Warning = 2
 # Error = 1
-LOGGING_LEVEL = 2
+LOGGING_LEVEL = 4
 
 
 ALLOWED_HOSTS = [

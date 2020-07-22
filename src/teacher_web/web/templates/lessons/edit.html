@@ -127,7 +127,7 @@
       <div class="form-group  controls">
         <label>{{_("Keywords")}}</label>
         <input type="hidden" class="form-control" id="tags" />
-        <input type="text" class="form-control" id="ctl-key_words" value="" />
+        <input type="text" name="key_words_str" class="form-control" id="keywords-tokenfield"  value='{{content.data.lesson.key_words_str}}' />
         <p class="help-block text-danger" id="token-error"></p>
       </div>
         <div id="keywords"></div>
@@ -146,20 +146,19 @@
     <br>
     <div id="success"></div>
     <div class="form-group">
+
+      <button type="submit" name="published" value="2" class="btn btn-secondary" id="btn-delete">{{_("Delete")}}</button>
+      <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
+      <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
+      <!-- Hidden Fields -->
       <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
       <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
       <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
       <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
       <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
+      <input type="hidden" name="key_words" id="hdn-key_words" />
       <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
       <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
-      <input type="hidden" name="get_related_topics_uri" value="{% url 'api.default.related-topics' content.data.lesson.parent_topic_id %}" id="hdn-related-topics_uri"><!-- get_related_topics -->
-      <input type="hidden" name="get_pathway_uri" value="{% url 'api.lesson.pathway-objectives' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_topic_id content.data.selected_year_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
-      <input type="hidden" name="get_pathway_ks123_uri" value="{% url 'api.lesson.pathway-ks123' content.data.scheme_of_work_id content.data.lesson_id content.data.selected_year_id content.data.selected_topic_id %}" id="hdn-view_pathway_ks123_uri"><!-- _view_pathway_ks123 -->
-      <input type="hidden" name="pathway_objective_ids" value="foo bar" >
-      <button type="submit" name="published" value="2" class="btn btn-secondary" id="btn-delete">{{_("Delete")}}</button>
-      <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
-      <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
       <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
     </div>
   </form><!-- form#form -->
@@ -176,26 +175,15 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="{% static 'default/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
-    <script>
-      var itemize = function(item){
-        return {"value":item[1]};
-      }
-      $.ajax({url:document.getElementById('hdn-keywords_uri').value,
-        success: function(result){
-          // get list of values (ignore keys)
-          var itemizedlist = result.keywords.map(x => x[1]);          
-          $('#ctl-key_words').tokenfield({
-            autocomplete: {
-              source: itemizedlist,
-              delay: 100
-            },
-            showAutocompleteOnFocus: true
-          })
-        },
-        error: function(){
-            $("#token-error").html('Could not get keywords at this time');
-        }
-      });
+    <script type="text/javascript" src="{% static 'default/js/keyword-tokens.js' %}"></script>"
+  <script>
+      init_keyword_tokens(
+        document.getElementById('hdn-keywords_uri').value // get_keywords_url
+        , "#keywords-tokenfield" // token_input_css_selector
+        , ".tokenfield .token .token-label" //all_tokens_css_selector
+        , "#hdn-key_words" //form_field_selector
+        , "#token-error" //error_css_selector
+      )
     </script>
 {% endblock %}
 

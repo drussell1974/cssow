@@ -8,7 +8,8 @@ from shared.models.core.log import handle_log_info
 class SchemeOfWorkListModel(models.Model):
     schemesofwork = []
     def __init__(self, data):
-        # TODO: call tojson() in basemodel ... self.schemesofwork = get_all(None, 11, None).tojson()
+        
+        # TODO: remove __dict__ . The object should be serialised to json further up the stack
         self.schemesofwork = get_all(None, 11, None).__dict__
 
 class SchemeOfWorkModel(BaseModel):
@@ -131,7 +132,7 @@ def get_all(db, key_stage_id=0, auth_user = 0):
 
         model.set_is_recent()
 
-        # TODO: data.append(model.tojson())
+        # TODO: remove __dict__ . The object should be serialised to json further up the stack
         data.append(model.__dict__)
 
     return data

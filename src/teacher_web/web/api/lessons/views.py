@@ -5,9 +5,12 @@ from django.db import connection as db
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+# TODO: use view models
 from shared.models import cls_ks123pathway, cls_lesson, cls_learningobjective
 
-from .serializers import LessonSerializer, LessonListSerializer
+# view models
+from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 
 
 class LessonViewSet(APIView):
@@ -17,16 +20,16 @@ class LessonViewSet(APIView):
         
         resource_type_id = request.GET.get("resource_type_id", 0)
 
-        lesson = cls_lesson.get_model(db, lesson_id, request.user.id, resource_type_id)
-        return JsonResponse({"lesson": lesson})
+        get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id, resource_type_id)
+        return JsonResponse({ "lesson": get_lesson_view.json })
     
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
     
     def get (self, request, scheme_of_work_id):
-        lessons = cls_lesson.get_all(db, scheme_of_work_id, request.user.id)
-        return JsonResponse({"lessons": lessons})
+        lessons = LessonGetAllViewModel(db, scheme_of_work_id, request.user.id)
+        return JsonResponse({"lessons": lessons.list})
 
 
 class LessonPathwayObjectivesViewSet(APIView):
@@ -35,7 +38,7 @@ class LessonPathwayObjectivesViewSet(APIView):
     def get(self, request, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
         ''' get the pathway objectives '''
         pathwayobjectives = cls_learningobjective.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
-        should_be_checked = cls_lesson.get_pathway_objective_ids(db, lesson_id)
+        should_be_checked = cls_lesson.LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
 
         return JsonResponse({
             "pathway-objectives": pathwayobjectives, 

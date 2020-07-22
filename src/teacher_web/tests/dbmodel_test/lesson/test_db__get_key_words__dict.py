@@ -1,14 +1,13 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_lesson import LessonDataAccess as DataAccess, handle_log_info 
+import shared.models.cls_lesson as cls_lesson 
 
-#handle_log_info = cls_lesson.handle_log_info
-get_ks123_pathway_objective_ids = DataAccess.get_ks123_pathway_objective_ids
+handle_log_info = cls_lesson.handle_log_info
+get_key_words = cls_lesson.LessonDataAccess.get_key_words
 
-
-class test_db__get_ks123_pathway_ids(TestCase):
+class test_db__get_key_words__dict(TestCase):
     
     def setUp(self):
         ' fake database context '
@@ -28,7 +27,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_ks123_pathway_objective_ids(self.fake_db, 21)
+                get_key_words(self.fake_db, 21)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -38,12 +37,12 @@ class test_db__get_ks123_pathway_ids(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = get_ks123_pathway_objective_ids(self.fake_db, 67)
+            rows = get_key_words(self.fake_db, 67)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 67;"
+                " SELECT kw.id as id, kw.name as name FROM sow_key_word as kw INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id WHERE lesson_id = 67;"
                 , []
                 , log_info=handle_log_info)
             self.assertEqual(0, len(rows))
@@ -51,41 +50,38 @@ class test_db__get_ks123_pathway_ids(TestCase):
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-        expected_result = [("87",)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execSql', return_value=[("87","Fetch Decode Execute")]):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 87)
+            actual_results = get_key_words(self.fake_db, 87)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 87;"
-            , []
-            , log_info=handle_log_info)
+                " SELECT kw.id as id, kw.name as name FROM sow_key_word as kw INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id WHERE lesson_id = 87;"
+                , []
+                , log_info=handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 
-            self.assertEqual(87, actual_results[0])
+            self.assertEqual("Fetch Decode Execute", actual_results["87"])
 
 
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
-        expected_result = [("1034",),("1045",),("12",)]
 
-
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execSql', return_value=[("1034","DDR"),("1045","DIMM"),("12","DRAM") ]):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 21)
+            actual_results = get_key_words(self.fake_db, 21)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 21;"
+                " SELECT kw.id as id, kw.name as name FROM sow_key_word as kw INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id WHERE lesson_id = 21;"
                 , []
                 , log_info=handle_log_info)
             
-            self.assertEqual(1034, actual_results[0])
-            self.assertEqual(12, actual_results[2])
+            self.assertEqual("DDR", actual_results["1034"])
+            self.assertEqual("DRAM", actual_results["12"])

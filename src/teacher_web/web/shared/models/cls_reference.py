@@ -197,7 +197,8 @@ def get_lesson_options(db, scheme_of_work_id, lesson_id, auth_user):
         model.page_note = row[9] if row[9] is not None else ''
         model.page_uri = row[10] if row[10] is not None else ''
         model.task_icon = row[11] if row[11] is not None else ''
-        # TODO: call tojson() in basemodel ... data.append(model.tojson())
+        
+        # TODO: remove __dict__ . The object should be serialised to json further up the stack
         data.append(model.__dict__)
 
     return data

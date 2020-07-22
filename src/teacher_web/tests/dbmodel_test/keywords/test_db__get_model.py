@@ -4,11 +4,11 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_keyword as test_context 
 
-get_by_id = test_context.get_by_id
+get_model = test_context.KeywordDataAccess.get_model
 handle_log_info = test_context.handle_log_info
 Model = test_context.KeywordModel
 
-class test_db__get_by_id(TestCase):
+class test_db__get_model(TestCase):
 
 
     def setUp(self):
@@ -28,7 +28,7 @@ class test_db__get_by_id(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_by_id(self.fake_db, 4)
+                get_model(self.fake_db, 4)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -38,7 +38,7 @@ class test_db__get_by_id(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_results = get_by_id(self.fake_db, 22)
+            actual_results = get_model(self.fake_db, 22, auth_user=99)
             
             # assert
 
@@ -59,7 +59,7 @@ class test_db__get_by_id(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_by_id(self.fake_db, 702)
+            actual_results = get_model(self.fake_db, 702, auth_user=99)
             
             # assert
 

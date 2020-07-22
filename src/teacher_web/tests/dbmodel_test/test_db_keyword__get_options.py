@@ -1,5 +1,5 @@
 from ._unittest import TestCase, FakeDb
-import shared.models.cls_keyword as db_keyword
+from shared.models.cls_keyword import KeywordDataAccess
 from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
@@ -11,7 +11,7 @@ class test_db_keyword__get_options(TestCase):
         ' fake database context '
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
-        db_keyword.handle_log_info = MagicMock()
+        KeywordDataAccess.handle_log_info = MagicMock()
 
     def tearDown(self):
         self.fake_db.close()
@@ -25,7 +25,7 @@ class test_db_keyword__get_options(TestCase):
             
             # act and assert
             with self.assertRaises(Exception):
-                db_keyword.get_options(self.fake_db)
+                KeywordDataAccess.get_options(self.fake_db)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -35,38 +35,42 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = db_keyword.get_options(self.fake_db)
+            rows = KeywordDataAccess.get_options(self.fake_db)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
             self.assertEqual(0, len(rows))
 
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-        expected_result = [(123, "Binary")]
+        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.")]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = db_keyword.get_options(self.fake_db)
+            rows = KeywordDataAccess.get_options(self.fake_db)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
             self.assertEqual(1, len(rows))
-            self.assertEqual("Binary", rows[0][1])
+            self.assertEqual("Binary", rows[0].term)
 
 
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
-        expected_result = [(1, "Binary"),(2,"Decimal"),(3, "Hexadecimal")]
+        expected_result = [
+            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.")
+            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.")
+            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.")]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = db_keyword.get_options(self.fake_db)
+            rows = KeywordDataAccess.get_options(self.fake_db)
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
             self.assertEqual(3, len(rows))
-            self.assertEqual((1, "Binary"), rows[0])
-            self.assertEqual((3, "Hexadecimal"), rows[2])
+
+            self.assertEqual("Binary", rows[0].term)
+            self.assertEqual("Hexadecimal", rows[2].term)

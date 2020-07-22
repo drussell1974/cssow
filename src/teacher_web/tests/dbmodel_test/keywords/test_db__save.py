@@ -7,7 +7,7 @@ import shared.models.cls_keyword as test_context
 # create test context
 
 Model = test_context.KeywordModel
-save = test_context.save
+save = test_context.KeywordDataAccess.save
 handle_log_info = test_context.handle_log_info
 
 

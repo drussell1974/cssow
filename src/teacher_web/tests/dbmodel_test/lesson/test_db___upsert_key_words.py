@@ -1,6 +1,10 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_keyword import KeywordModel
+
+# test context 
+
 import shared.models.cls_lesson as cls_lesson
 
 LessonModel = cls_lesson.LessonModel
@@ -59,10 +63,15 @@ class test_db___upsert_key_words(TestCase):
     def test_should_call_execCRUDSql__reinsert__key_words(self):
          # arrange
         model = LessonModel(10, "")
-        model.key_words = ["12","13"]
-        expected_result = []
+        
+        model.key_words = [
+            KeywordModel(id_=12, term="CPU", definition=""), 
+            KeywordModel(id_=13, term="FDE", definition="")
+        ]
+        
+        expected_rows = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_rows):
             # act
 
             actual_result = _upsert_key_words(self.fake_db, model, [], auth_user_id=99)
@@ -75,17 +84,17 @@ class test_db___upsert_key_words(TestCase):
              , []
              , log_info=handle_log_info)
 
-        self.assertEqual(actual_result, expected_result)
+        self.assertEqual([], actual_result)
 
     
     
-    def test_should_call_execCRUDSql__reinsert__key_words__ignore_empty(self):
+    def test_should_call_execCRUDSql__reinsert__key_words__insert_new(self):
          # arrange
         model = LessonModel(79, "")
-        model.key_words = ["12","", "14"]
+        model.key_words = [KeywordModel(id_ = 0, term="CPU", definition="")]
         expected_result = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=[]):
             # act
 
             actual_result = _upsert_key_words(self.fake_db, model, [], auth_user_id=99)
@@ -94,7 +103,7 @@ class test_db___upsert_key_words(TestCase):
             ExecHelper.execCRUDSql.assert_called()
 
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES(79, 12),(79, 14);"
+             "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES(79, 0);"
              , []
              , log_info=handle_log_info)
 

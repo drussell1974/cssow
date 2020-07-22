@@ -6,14 +6,21 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
+
+# TODO: use view models
 from shared.models import cls_lesson, cls_learningobjective, cls_schemeofwork, cls_solotaxonomy, cls_content, cls_examboard
 from shared.models.core import validation_helper
+
+# view models
+from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel
 
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
-    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    lesson = get_lesson_view.model
+
     learning_objectives = cls_learningobjective.get_all(db, lesson_id, request.user.id)
     
     lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  
@@ -26,7 +33,7 @@ def index(request, scheme_of_work_id, lesson_id):
         "lesson_options": lesson_options,
     }
 
-    view_model = ViewModel("", lesson["title"], lesson["summary"], data=data)
+    view_model = ViewModel("", lesson.title, lesson.summary, data=data)
     
     return render(request, "learningobjectives/index.html", view_model.content)
 
@@ -40,8 +47,9 @@ def new(request, scheme_of_work_id, lesson_id):
      
     model = cls_learningobjective.get_model(db, 0, request.user.id)
 
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-        
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    lesson = get_lesson_view.model
+
     if scheme_of_work_id is not None:
         # required for creating a new object
         model.scheme_of_work_id = int(scheme_of_work_id)
@@ -52,7 +60,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
     key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
 
-    model.lesson_id = lesson["id"]
+    model.lesson_id = lesson.id
     model.key_stage_id = key_stage_id
 
     solo_taxonomy_options = cls_solotaxonomy.get_options(db)
@@ -68,7 +76,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "New", data=data)
+    view_model = ViewModel("", lesson.title, "New", data=data)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -80,7 +88,8 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     cls_learningobjective.enable_logging = True
     model = cls_learningobjective.get_model(db, learning_objective_id, request.user.id)
     
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
         # required for creating a new object
@@ -92,7 +101,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     
     key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
 
-    model.lesson_id = lesson["id"]
+    model.lesson_id = lesson.id
     model.key_stage_id = key_stage_id
 
     solo_taxonomy_options = cls_solotaxonomy.get_options(db)
@@ -108,7 +117,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.description), data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description), data=data, alert_message=request.session.get("alert_message", None))
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 

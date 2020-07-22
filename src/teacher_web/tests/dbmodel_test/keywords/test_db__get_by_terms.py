@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_keyword as test_context 
 
-get_by_terms = test_context.get_by_terms
+get_by_terms = test_context.KeywordDataAccess.get_by_terms
 handle_log_info = test_context.handle_log_info
 Model = test_context.KeywordModel
 
@@ -38,7 +38,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_results = get_by_terms(self.fake_db, "", True)
+            actual_results = get_by_terms(self.fake_db, "", True, 99)
             
             # assert
 
@@ -57,7 +57,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", False)
+            actual_results = get_by_terms(self.fake_db, "", False, 99)
             
             # assert
             
@@ -73,7 +73,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", True)
+            actual_results = get_by_terms(self.fake_db, "", True, 99)
             
             # assert
             
@@ -92,7 +92,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", True)
+            actual_results = get_by_terms(self.fake_db, "", True, 99)
             
             # assert
             
@@ -119,7 +119,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "ullamcorper, dolor, odio", True)
+            actual_results = get_by_terms(self.fake_db, "ullamcorper, dolor, odio", True, 99)
             
             # assert
             

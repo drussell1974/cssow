@@ -30,5 +30,6 @@ class apitest_keywords_get(APITestCase):
 
 
     def test__should_be_alphabetical_order(self):
-        self.assertEqual([335, '3D printer'], self.payload["keywords"][0])
-        self.assertEqual([241, 'XOR expression'], self.payload["keywords"][self.last_item_index])
+        self.assertEqual(366, len(self.payload["keywords"]))
+        self.assertEqual('3D printer', self.payload["keywords"][0]["term"])
+        self.assertEqual('XOR expression', self.payload["keywords"][self.last_item_index]["term"])

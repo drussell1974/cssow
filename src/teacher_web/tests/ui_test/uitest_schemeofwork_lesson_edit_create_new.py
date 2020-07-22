@@ -113,17 +113,17 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.send_keys(Keys.TAB)
         
         ' ctl-key_words '
-        # TODO: Use support.select https://selenium.dev/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.select.html
-        # TODO: select Algorithm
-        # TODO: select Arithmetic Logic Unit (ALU)
 
-        elem = self.test_context.find_element_by_id("ctl-key_words")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options: 
-            if opt.text == "Arithmetic Logic Unit (ALU)":
-                opt.click()
+        elem = self.test_context.find_element_by_id("keywords-tokenfield")
+        elem.send_keys("Comparison operator")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("AND")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("OR")
+        elem.send_keys(Keys.TAB)
         elem.send_keys(Keys.TAB)
         
+
         ' submit the form '
         elem = self.test_context.find_element_by_id("draftButton")
         elem.send_keys(Keys.RETURN)

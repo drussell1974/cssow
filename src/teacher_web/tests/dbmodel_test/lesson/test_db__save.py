@@ -5,7 +5,7 @@ from shared.models.core.log import handle_log_info
 import shared.models.cls_lesson as test_context
 
 Model = test_context.LessonModel
-save = test_context.save
+save = test_context.LessonDataAccess.save
 handle_log_info = test_context.handle_log_info
 
 class test_db__save(TestCase):
@@ -32,7 +32,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                save(self.fake_db, model)
+                save(self.fake_db, model, 99)
 
 
     def test_should_call_execCRUDSql__update_with_exception(self):

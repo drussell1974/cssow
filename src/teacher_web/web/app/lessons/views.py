@@ -1,12 +1,21 @@
 from django.contrib.auth.decorators import permission_required
+from django.core import serializers
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from shared.view_model import ViewModel
-from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_keyword, cls_topic, cls_year
 from shared.models.core import validation_helper
+from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.view_model import ViewModel
+
+# TODO: use view models
+from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_topic, cls_year
+
+# view models
+from shared.viewmodels.keyword_viewmodels import KeywordGetOptionsListViewModel
+from shared.viewmodels.lesson_viewmodels import LessonSaveViewModel, LessonGetModelViewModel, LessonGetAllViewModel
+
 from datetime import datetime
 
 # Create your views here.        
@@ -15,14 +24,14 @@ def index(request, scheme_of_work_id):
 
     scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
 
-    lessons = cls_lesson.get_all(db, scheme_of_work_id, auth_user=request.user.id)
+    lessons_all = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
     schemeofwork_options = cls_schemeofwork.get_options(db, auth_user=request.user.id)
     
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
         "schemeofwork_options": schemeofwork_options,
-        "lessons": lessons,
+        "lessons": lessons_all.list,
         "topic_name": "",
     }
 
@@ -30,25 +39,25 @@ def index(request, scheme_of_work_id):
     
     return render(request, "lessons/index.html", view_model.content)
 
+
 @permission_required('cssow.add_lessonmodel', login_url='/accounts/login/')
 def new(request, scheme_of_work_id):
     ''' Create a new lesson '''
     
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     
-    lesson = cls_lesson.get_model(db, 0, request.user.id)
-    lesson["key_stage_id"] = scheme_of_work.key_stage_id
-    lesson["scheme_of_work_id"] = scheme_of_work.id
+    get_lesson_view = LessonGetModelViewModel(db, 0, request.user.id)
+    lesson = get_lesson_view.model
+
+    lesson.key_stage_id = scheme_of_work.key_stage_id
+    lesson.scheme_of_work_id = scheme_of_work.id
     year_options = cls_year.get_options(db, scheme_of_work.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = cls_keyword.get_options(db)
-
-    print("edit... key_words:", key_words)
-    print("edit... lesson['key_words']:", lesson["key_words"])
+    key_words = KeywordGetOptionsListViewModel(db).data
 
     data = {
         "scheme_of_work_id": int(scheme_of_work_id),
-        "lesson_id": int(lesson["id"]),
+        "lesson_id": int(lesson.id),
         "key_stage_id": scheme_of_work.key_stage_id,
         "topic_options": topic_options,
         "selected_topic_id": 0, 
@@ -67,29 +76,31 @@ def new(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, lesson_id):
     ''' Edit the lesson '''
 
-    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    lesson = get_lesson_view.model
 
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
-    year_options = cls_year.get_options(db, lesson["key_stage_id"])
+    year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = cls_keyword.get_options(db)
-    ks123_pathways = cls_ks123pathway.get_options(db, lesson["year_id"], lesson["topic_id"])
+    key_words = KeywordGetOptionsListViewModel(db).data
+    ks123_pathways = cls_ks123pathway.get_options(db, lesson.year_id, lesson.topic_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
-        "lesson_id": lesson["id"],
+        "lesson_id": lesson.id,
         "key_stage_id": scheme_of_work.key_stage_id,
         "topic_options": topic_options,
-        "selected_topic_id": lesson["topic_id"], 
+        "selected_topic_id": lesson.topic_id, 
         "year_options": year_options,
-        "selected_year_id": lesson["year_id"],
+        "selected_year_id": lesson.year_id,
         "lesson": lesson,
         "key_words": key_words,
+        "key_words_str": lesson.key_words,
         "ks123_pathways": ks123_pathways,
-        "show_ks123_pathway_selection": lesson["key_stage_id"] in (1,2,3)
+        "show_ks123_pathway_selection": lesson.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Edit: {}".format(lesson["title"]), data=data)
+    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Edit: {}".format(lesson.title), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -97,27 +108,29 @@ def edit(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.add_lessonmodel', login_url='/accounts/login/')
 def copy(request, scheme_of_work_id, lesson_id):
     ''' Copy the lesson '''
-    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
-    lesson["id"] = 0 # reset id
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    lesson = get_lesson_view.model
+    
+    lesson.id = 0 # reset id
 
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
-    year_options = cls_year.get_options(db, lesson["key_stage_id"])
+    year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = cls_keyword.get_options(db)
+    key_words = KeywordGetOptionsListViewModel(db)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": 0,
         "key_stage_id": scheme_of_work.key_stage_id,
         "topic_options": topic_options,
-        "selected_topic_id": lesson["topic_id"], 
+        "selected_topic_id": lesson.topic_id, 
         "year_options": year_options,
-        "selected_year_id": lesson["year_id"],
+        "selected_year_id": lesson.year_id,
         "lesson": lesson,
         "key_words": key_words,
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Copy: {}".format(lesson["title"]), data=data)
+    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Copy: {}".format(lesson.title), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -151,14 +164,16 @@ def lessonplan(request, scheme_of_work_id, lesson_id):
     
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
-    model =  cls_lesson.get_model(db, lesson_id, request.user.id)
+    get_lesson_view =  LessonGetModelViewModel(db, lesson_id, request.user.id)
+    model = get_lesson_view.model
+
     data = {
-        "key_words":model["key_words"],
-        "learning_objectives":model["learning_objectives"],
-        "resources": model["resources"],
+        "key_words":model.key_words,
+        "learning_objectives":model.learning_objectives,
+        "resources": model.resources,
     }
 
-    view_model = ViewModel("", model["title"], model["topic_name"], data=data)
+    view_model = ViewModel("", model.title, model.topic_name, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
@@ -166,11 +181,11 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id):
     """ save_item non-view action """
-
+        
     published = int(request.POST["published"] if request.POST["published"] is not None else 1)
     
     # TODO: replace request.POST[key] with request.POST.get(key, default)
-    model = cls_lesson.LessonModel(
+    data = cls_lesson.LessonModel(
         id_ = request.POST["id"],
         orig_id = int(request.POST["orig_id"]),
         title = request.POST["title"],
@@ -184,27 +199,41 @@ def save(request, scheme_of_work_id, lesson_id):
         created = datetime.now(),
         created_by_id = request.user.id
     )
-
-    model.key_words = request.POST.getlist("key_words")
-
-    model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
+    
+    if len(request.POST.getlist("key_words")) > 0: # handle empty
+        data.key_words = request.POST.getlist("key_words")[0]
+    
+    data.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
     # reset id if a copy
     if int(request.POST["orig_id"]) > 0:
-        model.id = int(request.POST["orig_id"])
+        data.id = int(request.POST["orig_id"])
+        
+
+    # TODO: Create viewmodel from serialized POST data https://www.django-rest-framework.org/api-guide/parsers/#formparser
+
+    viewmodel = LessonSaveViewModel(db, data, request.user.id)
+    model = viewmodel.model
+    
 
     model.validate()
+    
 
     if model.is_valid == True:
         ' save the lesson '
-        model = cls_lesson.save(db, model, request.user.id, published)
-        
+
+        viewmodel.execute(published)
+        model = viewmodel.model
+
+
         if request.POST["next"] != "None"  and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
         else:
             redirect_to_url = reverse('lesson.edit', args=(scheme_of_work_id, model.id))
     else:
-        """ redirect back to page and show message """
+        """ redirect back to page and show message """    
+        handle_log_warning(db, "saving... lesson {} (id:{}) invalid - {}".format(model.title, model.id, model.validation_errors))
+
         request.session.alert_message = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
         redirect_to_url = reverse('lesson.edit', args=(scheme_of_work_id,lesson_id))
 
@@ -212,7 +241,7 @@ def save(request, scheme_of_work_id, lesson_id):
 
 
 def initialise_keywords(request, scheme_of_work_id):
-    lessons = cls_lesson.get_all(db, scheme_of_work_id, auth_user=request.user.id)
+    lessons = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
     for lesson in lessons:
        cls_lesson._upsert_key_words(db, lesson)

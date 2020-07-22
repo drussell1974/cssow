@@ -20,11 +20,11 @@
       <!-- Keywords -->
         <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
         <div id="accordion-keywords">
-        {% for key_word in content.data.key_words.values  %}
+        {% for key_word in content.data.key_words %}
             <div class="keyword-expand">
                 <div class="expand-header" id="heading-keyword{{key_word.id}}">
                     <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                        <u>{{key_word}}</u>
+                        <u>{{key_word.term}}</u>
                     </a>
                 </div>
                 {% if key_word.definition is not None %}

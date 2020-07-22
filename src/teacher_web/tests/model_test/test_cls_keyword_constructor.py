@@ -2,7 +2,7 @@ from unittest import TestCase
 from shared.models.cls_keyword import KeywordModel
 
 
-class test_cls_reference_note_constructor(TestCase):
+class test_cls_keyword_constructor(TestCase):
 
     def setUp(self):
         pass

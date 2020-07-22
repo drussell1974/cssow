@@ -10,6 +10,7 @@ class BaseModel(models.Model):
     created_by_id = 0
     created_by_name = ""
     is_valid = False
+    # TODO: return dictionary with double quotes for json parsing
     validation_errors = {}
   
     def __init__(self, id_, created, created_by_id, created_by_name, published):
@@ -19,6 +20,12 @@ class BaseModel(models.Model):
         self.created_by_name = created_by_name
         self.published = True if published == 1 else 0
 
+
+    def from_dict(self, srl):
+        self.id = srl["id"]
+        self.term = srl["term"]
+        self.definition = srl["definition"]   
+        
     """
     State members
     """

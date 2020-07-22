@@ -52,4 +52,3 @@ class test_db__save_keywords_only(TestCase):
                 , result=[]
                 , log_info=handle_log_info)
         
-            self.assertEqual(int(expected_result[0][0]), actual_result.id)

@@ -5,6 +5,9 @@ from .core.log import handle_log_info
 
 
 class TopicModel(models.Model):
+
+    name = ""
+    
     def __init__(self, id_, name, created = "", created_by = ""):
         self.id = id_
         self.name = name
@@ -52,7 +55,8 @@ def get_options(db, lvl, topic_id = 0):
 
         for row in rows:
             model = TopicModel(row[0], row[1], row[2], row[3])
-            # TODO: call tojson() in basemodel ... data.append(model.tojson())
+    
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
 
     except Exception as e:

@@ -31,7 +31,7 @@ class test_schemeofwork_lesson_whiteboard(UITestCase):
 
         # assert
         self.assertEqual("Keywords", elem.text)
-        self.assertEqual(2, len(elems))
+        self.assertEqual(3, len(elems))
 
 
     def test_page__should_have__learning_objectives(self):

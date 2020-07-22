@@ -55,12 +55,11 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         self.assertEqual("Algorithms", selected_option.text)
 
         ' keyword dropdown '
-        elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-key_words']/option")
-        self.assertEqual(366, len(elem))
-        elem = Select(self.test_context.find_element_by_id("ctl-key_words"))
-        selected_options = elem.all_selected_options
-        self.assertEqual("3D printer", selected_options[0].text)
-        self.assertEqual("Abstraction", selected_options[1].text)
+        elem = self.test_context.find_elements_by_css_selector("div.tokenfield div.token")
+        self.assertEqual(3, len(elem))
+        self.assertEqual("Central Processing Unit (CPU)×", elem[0].text)
+        self.assertEqual("Accumulator (ACC)×", elem[1].text)
+        self.assertEqual("Fetch Decode Execute (FDE)×", elem[2].text)
 
 
     """ Test edits """

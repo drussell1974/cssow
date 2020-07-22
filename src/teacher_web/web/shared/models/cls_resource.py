@@ -151,7 +151,7 @@ def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
             published = row[13], 
             scheme_of_work_id=scheme_of_work_id)
 
-        # TODO: call tojson() in basemodel ... data.append(model.tojson())
+        # TODO: remove __dict__ . The object should be serialised to json further up the stack
         data.append(model.__dict__)
 
     return data
@@ -294,7 +294,7 @@ def get_number_of_resources(db, lesson_id, auth_user):
     select_sql = select_sql.format(lesson_id=lesson_id)
 
     rows = []
-    execHelper.execSql(db, select_sql, rows)
+    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
     return len(rows)
 

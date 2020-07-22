@@ -5,7 +5,8 @@ from shared.models.core.db_helper import ExecHelper
 import shared.models.cls_lesson as cls_lesson 
 
 handle_log_info = cls_lesson.handle_log_info
-_get_number_of_learning_objectives = cls_lesson._get_number_of_learning_objectives
+
+_get_number_of_learning_objectives = cls_lesson.LessonDataAccess._get_number_of_learning_objectives
 
 
 class test_db__get_number_of_learning_objectives(TestCase):

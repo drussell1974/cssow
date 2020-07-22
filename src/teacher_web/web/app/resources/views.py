@@ -7,7 +7,13 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
+
+# TODO: use view models
 from shared.models import cls_resource, cls_lesson, cls_schemeofwork
+
+# view models
+from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel
+
 from shared.models.core import validation_helper
 
 from django.contrib.auth.models import Permission
@@ -21,8 +27,9 @@ def index(request, scheme_of_work_id, lesson_id):
     cls_resource.enable_logging = True
     resources = cls_resource.get_all(db, scheme_of_work_id, lesson_id, request.user.id)
 
-    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
-    
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    lesson = get_lesson_view.model
+
     lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  #TODO: create view_learningepisiode_options: remove this line
 
     data = {
@@ -33,7 +40,7 @@ def index(request, scheme_of_work_id, lesson_id):
         "lesson_options": lesson_options
     }
 
-    view_model = ViewModel("", lesson["title"], lesson["summary"], data=data)
+    view_model = ViewModel("", lesson.title, lesson.summary, data=data)
     
     return render(request, "resources/index.html", view_model.content)
 
@@ -49,7 +56,9 @@ def new(request, scheme_of_work_id, lesson_id):
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    lesson = get_lesson_view.model
+
     get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
 
     data = {
@@ -60,7 +69,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "New", data=data)
+    view_model = ViewModel("", lesson.title, "New", data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -80,7 +89,9 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
             lesson_id=lesson_id)
 
 
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)    
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+    lesson = get_lesson_view.model
+
     get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
 
     data = {
@@ -91,7 +102,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
     
     return render(request, "resources/edit.html", view_model.content)
 
