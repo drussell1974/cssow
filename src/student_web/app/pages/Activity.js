@@ -63,7 +63,6 @@ class Activity extends React.Component {
 };
 
 export const ActivityPageContainer = ({resource, schemeofwork, markdown_html, socialmediadata}) => {
-    console.log(`resource:${resource}, schemeofwork:${schemeofwork}`);
     if (resource === undefined || schemeofwork === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
