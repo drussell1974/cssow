@@ -13,8 +13,8 @@ from shared.view_model import ViewModel
 from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_topic, cls_year
 
 # view models
-from shared.viewmodels.keyword_viewmodels import KeywordGetOptionsListViewModel
-from shared.viewmodels.lesson_viewmodels import LessonSaveViewModel, LessonGetModelViewModel, LessonGetAllViewModel
+from ..default.viewmodels import KeywordGetOptionsListViewModel
+from .viewmodels import LessonSaveViewModel, LessonGetModelViewModel, LessonGetAllViewModel
 
 from datetime import datetime
 

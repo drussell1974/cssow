@@ -61,13 +61,37 @@ Use 'yarn start' from package.json to start up the web server, or directly from 
 
 ## Unit tests
 
-use 'yarn test' from package.json to run the unit tests that include testing routes, or directly from the command line...
+use 'yarn' to run tests from package.json to run the unit tests that include testing routes, or directly from the command line...
 
-> python ./web/manage.py test
+1. Start MYSQL Database from container
+
+>  /build/cssow/$ docker-compose up cssow-db
+
+2. Run api
+
+> /src/teacher-web$ source .python3-venv/bin/activate 
+> /src/teacher-web$ yarn build:dev
+
+Open api url in web browser http://localhost:3002/api/schemesofwork/127/lessons/64
+
+3. Run unit tests
+
+> /src/teacher-web$ yarn test:unit
+
+or coverage
+
+> /src/teacher-web$ yarn test:coverage
+> /src/teacher-web$ serve htmlcov
+
+Open web browser http://localhost:5000
 
 ## Selenium 
 
 Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line...
+
+> /src/teacher-web$ yarn test-ui
+
+To run individual or certain files using wild card
 
 > python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py
 

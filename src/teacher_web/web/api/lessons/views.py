@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from shared.models import cls_ks123pathway, cls_lesson, cls_learningobjective
 
 # view models
-from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
+from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 
 
 class LessonViewSet(APIView):
@@ -21,15 +21,15 @@ class LessonViewSet(APIView):
         resource_type_id = request.GET.get("resource_type_id", 0)
 
         get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id, resource_type_id)
-        return JsonResponse({ "lesson": get_lesson_view.json })
+        return JsonResponse({ "lesson": get_lesson_view.model })
     
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
     
     def get (self, request, scheme_of_work_id):
-        lessons = LessonGetAllViewModel(db, scheme_of_work_id, request.user.id)
-        return JsonResponse({"lessons": lessons.list})
+        get_lessons_view = LessonGetAllViewModel(db, scheme_of_work_id, request.user.id)
+        return JsonResponse({"lessons": get_lessons_view.model})
 
 
 class LessonPathwayObjectivesViewSet(APIView):

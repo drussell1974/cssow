@@ -12,6 +12,7 @@ class SchemeOfWorkListModel(models.Model):
         # TODO: remove __dict__ . The object should be serialised to json further up the stack
         self.schemesofwork = get_all(None, 11, None).__dict__
 
+
 class SchemeOfWorkModel(BaseModel):
 
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1):

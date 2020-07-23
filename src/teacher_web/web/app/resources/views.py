@@ -12,7 +12,7 @@ from shared.view_model import ViewModel
 from shared.models import cls_resource, cls_lesson, cls_schemeofwork
 
 # view models
-from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel
+from ..lessons.viewmodels import LessonGetModelViewModel
 
 from shared.models.core import validation_helper
 

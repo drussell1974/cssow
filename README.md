@@ -19,22 +19,58 @@ source ../../.venv/Python38/Scripts/activate
 
 cd c/dev/schemeofwork_web2py_app/src/teacher_web/web
 
-yarn test
+
+yarn test:all
 
 Configuration
 -------------
 
+See .env files in dotenv folder
+
+> dotenv$ ls -l
+
 Environmental variables are used for Application settings, see .env.development as an exmaple.
 
-Deployment
-----------
+Test
+----
+
+Run from root of solution
+
+Unit tests 
+
+> yarn test:unit
+
+or everything
+
+> yarn test:all
+
+Create and Publish Deployment
+-----------------------------
+
+- Test
+
+Creates a local deployment
+
+> yarn build
+
+> build/cssow$ docker-compose up
+
+- Pubish
+
+Create a live build and publish
+
+> yarn build v1
+
+> build/cssow$ docker-compose push
 
 The project include Docker compose files for deployment
 
-http://hub.docker.com and search for drussell1974 
+http://hub.docker.com/drussell1974
+
 
 Tutorials
 ---------
+
 - About
 
 A react web appliciation with video tutorials 
@@ -47,9 +83,3 @@ A react web appliciation with video tutorials
 cd C/dev/schemeofwork_web2py_app/src/student_web
 
 yarn build-dev
-
-- Test
-
-cd c/dev/schemeofwork_web2py_app/src/student_web
-
-yarn test

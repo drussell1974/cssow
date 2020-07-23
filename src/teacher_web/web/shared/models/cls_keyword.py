@@ -117,6 +117,33 @@ class KeywordDataAccess:
 
 
     @staticmethod
+    def get_all(db, search_term = ""):
+        """
+        Get a full list of terms and definitions
+        :param db: database context
+        :return: list of terms and defintion
+        """
+        execHelper = ExecHelper()
+
+        select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
+
+        if len(search_term) > 0:
+            select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=sql_safe(search_term))
+
+        select_sql = select_sql + " ORDER BY name;"
+        
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+
+        data = []
+
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+
+        return data
+
+
+    @staticmethod
     def get_by_terms(db, key_words_list, allow_all, auth_user):
         """
         Get a full list of terms and definitions
@@ -166,32 +193,6 @@ class KeywordDataAccess:
 
         return model
 
-
-
-def get_all(db, search_term = ""):
-    """
-    Get a full list of terms and definitions
-    :param db: database context
-    :return: list of terms and defintion
-    """
-    execHelper = ExecHelper()
-
-    select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
-
-    if len(search_term) > 0:
-        select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=sql_safe(search_term))
-
-    select_sql = select_sql + " ORDER BY name;"
-    
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-    data = []
-
-    for row in rows:
-        data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
-
-    return data
 
 
 def save_keywords_only(db, key_words):

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel as ViewModel
+from app.lessons.viewmodels import LessonGetModelViewModel as ViewModel
 from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 
@@ -57,7 +57,13 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(99)
+        data_to_return = Model(99, "How to save the world in a day")
+        data_to_return.key_words = [
+                KeywordModel(34, "CPU"),
+                KeywordModel(45, "Fetch Decode Execute"),
+                KeywordModel(106, "RAM"),
+            ]
+
         
         with patch.object(DataAccess, "get_model", return_value=data_to_return):
 
@@ -72,22 +78,21 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             # assert functions was called
             DataAccess.get_model.assert_called()
             self.assertEqual(99, self.viewmodel.model.id)
-            self.assertEqual("", self.viewmodel.model.title)
-            self.assertEqual(0, len(self.viewmodel.model.key_words))
+            self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
+            self.assertEqual(3, len(self.viewmodel.model.key_words))
 
 
     def test_init_called_fetch__return_item__with__key_words(self):
         
         # arrange
         
-        data_to_return = Model(99)
-        
-        DataAccess.get_all_keywords = Mock(
-            return_value = [
+        data_to_return = Model(99, "The hitchhikers guide to the galaxy")
+        data_to_return.key_words = [
                 KeywordModel(34, "CPU"),
                 KeywordModel(45, "Fetch Decode Execute"),
                 KeywordModel(106, "RAM"),
-            ])
+            ]
+
 
         with patch.object(DataAccess, "get_model", return_value=data_to_return):
 
@@ -102,6 +107,9 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             # assert functions was called
             DataAccess.get_model.assert_called()
             self.assertEqual(99, self.viewmodel.model.id)
-            self.assertEqual("", self.viewmodel.model.title)
+            self.assertEqual("The hitchhikers guide to the galaxy", self.viewmodel.model.title)
             self.assertEqual(3, len(self.viewmodel.model.key_words))
+            self.assertEqual("CPU", self.viewmodel.model.key_words[0].term)
+            self.assertEqual("RAM", self.viewmodel.model.key_words[2].term)
+            
             self.assertEqual("CPU,Fetch Decode Execute,RAM", self.viewmodel.model.key_words_str)

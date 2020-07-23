@@ -12,7 +12,7 @@ from shared.models import cls_lesson, cls_learningobjective, cls_schemeofwork, c
 from shared.models.core import validation_helper
 
 # view models
-from shared.viewmodels.lesson_viewmodels import LessonGetModelViewModel
+from app.lessons.viewmodels import LessonGetModelViewModel
 
 
 def index(request, scheme_of_work_id, lesson_id):

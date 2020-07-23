@@ -1,30 +1,16 @@
+import json as to_json
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_info
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess
-from shared.viewmodels.keyword_viewmodels import KeywordGetModelViewModel, KeywordGetModelByTermsViewModel, KeywordSaveViewModel
-
-class LessonModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Model
-        fields = [
-            "id", 
-            "title", 
-            "summary", 
-            "order_of_delivery_id", 
-            "scheme_of_work_id",
-            "topic_id",
-            "year_id",
-            "key_stage_id",
-            "published",
-            "resources",
-            "learning_objectives",
-        ]
+from app.default.viewmodels import KeywordGetModelViewModel, KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
+from shared.serializers.srl_keyword import KeywordModelSerializer
+from shared.serializers.srl_lesson import LessonModelSerializer
 
 
 class LessonGetAllViewModel:
     list = []
-    json = []
+    #json = []
     
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.list = []
@@ -37,9 +23,6 @@ class LessonGetAllViewModel:
 
 class LessonGetModelViewModel:
     model = None
-    json = {}
-
-
 
     def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
         self.db = db
@@ -47,18 +30,10 @@ class LessonGetModelViewModel:
         data = LessonDataAccess.get_model(self.db, lesson_id, auth_user, resource_type_id)
         self.model = data
         if self.model is not None:
-
-            # get key_word objects
-            self.model.key_words = LessonDataAccess.get_all_keywords(self.db, lesson_id)
-            
             # get each terms for each item 
             key_word_map = map(lambda m: m.term, self.model.key_words)
             # assign as comma seperated list
             self.model.key_words_str = ",".join(list(key_word_map))
-
-        # serialize model to json
-        srl = LessonModelSerializer(data)
-        self.json = srl.data
 
 
 class LessonSaveViewModel:

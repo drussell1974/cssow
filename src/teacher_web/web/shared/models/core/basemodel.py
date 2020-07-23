@@ -3,6 +3,8 @@ from datetime import datetime
 import json
 import re
 from django.db import models
+import warnings
+
 
 class BaseModel(models.Model):
     id = 0
@@ -21,10 +23,10 @@ class BaseModel(models.Model):
         self.published = True if published == 1 else 0
 
 
-    def from_dict(self, srl):
-        self.id = srl["id"]
-        self.term = srl["term"]
-        self.definition = srl["definition"]   
+    #def from_dict(self, srl):
+    #    self.id = srl["id"]
+    #    self.term = srl["term"]
+    #    self.definition = srl["definition"]   
         
     """
     State members
@@ -41,8 +43,8 @@ class BaseModel(models.Model):
     """
 
 
-    def get_ui_created(self):
-        return datetime.strftime(self.created, "%d %B %Y")
+    def get_ui_created(self, dt):
+        return datetime.strftime(dt, "%d %B %Y")
 
 
     def set_is_recent(self):
@@ -127,6 +129,11 @@ class BaseModel(models.Model):
                 self.validation_errors[name_of_property] = "required"
                 self.is_valid = False
         self._validate_optional_string(name_of_property, value_to_validate, max_value)
+
+
+    @staticmethod
+    def depreciation_notice():
+        warnings.warn("deprecated", DeprecationWarning)
 
 
 """

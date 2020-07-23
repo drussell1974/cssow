@@ -7,11 +7,10 @@ from .cls_learningobjective import get_all as get_all_objectives
 from .cls_resource import get_all as get_all_resources, get_number_of_resources
 from .cls_keyword import KeywordDataAccess, KeywordModel
 
-
 class LessonModel (BaseModel):
     
-    title = "" #models.CharField(max_length=100, blank=True, default='')
-    summary = "" #models.CharField(max_length=100, blank=True, default='')
+    title = ""
+    summary = ""
     order_of_delivery_id = 0
     scheme_of_work_id = 0
     topic_id = None
@@ -22,7 +21,7 @@ class LessonModel (BaseModel):
     key_words_str = ""
     resources = []
     learning_objectives = []
-
+    number_of_resource = 0
 
     def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
         self.id = id_
@@ -247,7 +246,7 @@ class LessonDataAccess:
                 created_by_id=row[13],
                 created_by_name=row[14])
 
-            model.key_words = LessonDataAccess.get_key_words(db, lesson_id = model.id)
+            model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
             model.learning_objectives = LessonDataAccess.get_all_objectives(db, model.id, auth_user)
             model.resources = LessonDataAccess.get_all_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
             model.pathway_ks123_ids = LessonDataAccess.get_ks123_pathway_objective_ids(db, model.id)
@@ -316,7 +315,7 @@ class LessonDataAccess:
             )
             
             ' get the key words from the learning objectives '
-            model.key_words = LessonDataAccess.get_key_words(db, lesson_id = model.id)
+            model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
             ' get the number of learning objectives ' 
             model.number_of_learning_objective = LessonDataAccess._get_number_of_learning_objectives(db, model.id, auth_user)
             ' get learning objectives for this lesson '
@@ -342,6 +341,8 @@ class LessonDataAccess:
         :param lesson_id:
         :return: serialized keywords
         """
+        BaseModel.depreciation_notice()
+
         execHelper = ExecHelper()
         
 

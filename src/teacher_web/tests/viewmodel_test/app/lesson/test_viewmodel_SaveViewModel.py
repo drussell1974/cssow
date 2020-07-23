@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from shared.viewmodels.lesson_viewmodels import LessonSaveViewModel as ViewModel
+from app.lessons.viewmodels import LessonSaveViewModel as ViewModel
 from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
 
 #Serializer = test_context.KeywordModelSerializer

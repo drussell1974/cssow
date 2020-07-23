@@ -18,7 +18,7 @@ class test_db__get_model(TestCase):
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
 
-        test_context.get_key_words = Mock(return_value=[
+        test_context.get_all_keywords = Mock(return_value=[
             KeywordModel(32, 'Central Processing Unit (CPU)', ''),
             KeywordModel(17, 'Control Unit (CU)', ''),
             KeywordModel(7, 'Registers', '')
@@ -92,7 +92,7 @@ class test_db__get_model(TestCase):
                 "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_lesson as le INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id INNER JOIN sow_topic as top ON top.id = le.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN auth_user as user ON user.id = sow.created_by WHERE le.id = 321 AND (le.published = 1 OR le.created_by = 1);"
                 , [])
             
-            test_context.get_key_words.assert_called_with(self.fake_db, lesson_id=321)
+            test_context.get_all_keywords.assert_called_with(self.fake_db, lesson_id=321)
             self.assertEqual(3, len(actual_results.key_words))
 
             self.assertEqual(321, actual_results.id)

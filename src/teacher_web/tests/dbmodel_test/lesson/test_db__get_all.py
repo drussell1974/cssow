@@ -22,7 +22,7 @@ class test_db__get_all(TestCase):
             mockLO, 
             mockLO])
 
-        test_context.LessonDataAccess.get_key_words = Mock(return_value={32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'})
+        test_context.LessonDataAccess.get_all_keywords = Mock(return_value={32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'})
 
         test_context.LessonDataAccess.get_number_of_resources = Mock(return_value=6)
 
@@ -118,7 +118,7 @@ class test_db__get_all(TestCase):
             self.assertEqual(3, actual_results[0]["parent_topic_id"]),
             self.assertEqual("Data representation", actual_results[0]["parent_topic_name"]),
             self.assertEqual("Understand common numbering systems", actual_results[0]["summary"])
-            test_context.LessonDataAccess.get_key_words.assert_called()        
+            test_context.LessonDataAccess.get_all_keywords.assert_called()        
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0]["key_words"])
 
             test_context.LessonDataAccess.get_all_objectives.assert_called()

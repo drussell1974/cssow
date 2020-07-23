@@ -6,8 +6,7 @@ from django.http import JsonResponse
 from shared.models import cls_topic
 
 # view models
-from shared.viewmodels.keyword_viewmodels import KeywordGetOptionsListViewModel 
-from shared.viewmodels.topic_viewmodels import TopicGetOptionsListViewModel
+from .viewmodels import KeywordGetOptionsListViewModel, TopicGetOptionsListViewModel
 
 class KeywordsListViewSet(APIView):
     ''' API endpoint for list of keywords '''

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from shared.viewmodels.lesson_viewmodels import LessonGetAllViewModel as ViewModel
+from app.lessons.viewmodels import LessonGetAllViewModel as ViewModel
 from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
 
 
