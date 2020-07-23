@@ -1,8 +1,8 @@
+from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_lesson import LessonModel, LessonDataAccess
 from shared.serializers.srl_lesson import LessonModelSerializer
 
-class LessonGetAllViewModel:
-    model = []
+class LessonGetAllViewModel(BaseViewModel):
     
     def __init__(self, db, scheme_of_work_id, auth_user):
 
@@ -14,8 +14,7 @@ class LessonGetAllViewModel:
         self.model = srl_list
 
 
-class LessonGetModelViewModel:
-    model = None
+class LessonGetModelViewModel(BaseViewModel):
 
     def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
         self.db = db

@@ -35,7 +35,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_all.assert_called()
-            self.assertEqual(0, len(self.viewmodel.list))
+            self.assertEqual(0, len(self.viewmodel.model))
 
 
     def test_init_called_fetch__single_row(self):
@@ -56,7 +56,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_all.assert_called()
-            self.assertEqual(1, len(self.viewmodel.list))
+            self.assertEqual(1, len(self.viewmodel.model))
 
 
     def test_init_called_fetch__multiple_rows(self):
@@ -77,4 +77,4 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_all.assert_called()
-            self.assertEqual(3, len(self.viewmodel.list))
+            self.assertEqual(3, len(self.viewmodel.model))

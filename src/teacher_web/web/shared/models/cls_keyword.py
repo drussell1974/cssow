@@ -152,10 +152,10 @@ class KeywordDataAccess:
         :return: list of terms and defintion
         """
         execHelper = ExecHelper()
-
+    
         if len(key_words_list) == 0 and allow_all == False:
             return []
-
+    
 
         select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw"
 

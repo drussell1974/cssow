@@ -35,4 +35,4 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_options.assert_called()
-            self.assertEqual(expected_result, actual_result.data)
+            self.assertEqual(expected_result, actual_result.model)

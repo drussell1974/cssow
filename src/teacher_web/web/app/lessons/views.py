@@ -31,11 +31,11 @@ def index(request, scheme_of_work_id):
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
         "schemeofwork_options": schemeofwork_options,
-        "lessons": lessons_all.list,
+        "lessons": lessons_all.model,
         "topic_name": "",
     }
 
-    view_model = ViewModel("", scheme_of_work_name, "Lessons", data=data)
+    view_model = ViewModel(scheme_of_work_name, scheme_of_work_name, "Lessons", data=data)
     
     return render(request, "lessons/index.html", view_model.content)
 
@@ -53,7 +53,7 @@ def new(request, scheme_of_work_id):
     lesson.scheme_of_work_id = scheme_of_work.id
     year_options = cls_year.get_options(db, scheme_of_work.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = KeywordGetOptionsListViewModel(db).data
+    key_words = KeywordGetOptionsListViewModel(db).model
 
     data = {
         "scheme_of_work_id": int(scheme_of_work_id),
@@ -67,7 +67,7 @@ def new(request, scheme_of_work_id):
         "key_words": key_words,
     }
     
-    view_model = ViewModel("", scheme_of_work.name, "New", data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "New", data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -82,7 +82,7 @@ def edit(request, scheme_of_work_id, lesson_id):
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = KeywordGetOptionsListViewModel(db).data
+    key_words = KeywordGetOptionsListViewModel(db).model
     ks123_pathways = cls_ks123pathway.get_options(db, lesson.year_id, lesson.topic_id)
     
     data = {
@@ -100,7 +100,7 @@ def edit(request, scheme_of_work_id, lesson_id):
         "show_ks123_pathway_selection": lesson.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Edit: {}".format(lesson.title), data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(lesson.title), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -130,7 +130,7 @@ def copy(request, scheme_of_work_id, lesson_id):
         "key_words": key_words,
     }
     
-    view_model = ViewModel("Dave Russell - Computer Science", scheme_of_work.name, "Copy: {}".format(lesson.title), data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Copy: {}".format(lesson.title), data=data)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -138,8 +138,10 @@ def copy(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
-    
-    view_model = ViewModel("", "A-Level Computer Science", "Publish")
+    scheme_of_work_name = "" # TODO: get scheme of work name
+    lesson_name = "" # TODO: get lesson name
+
+    view_model = ViewModel(scheme_of_work_name, lesson_name, "Publish")
     # TODO: redirect
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -157,7 +159,10 @@ def delete(request, scheme_of_work_id, lesson_id):
 def lessonplan(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan '''
 
-    view_model = ViewModel("", "", "lesson plan")
+    scheme_of_work_name = "" # TODO: get scheme of work name
+    lesson_name = "" # TODO: get lesson name
+
+    view_model = ViewModel(scheme_of_work_name, lesson_name, "lesson plan")
     
     return render(request, "lessons/lessonplan.html", view_model.content)
 
@@ -173,7 +178,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
         "resources": model.resources,
     }
 
-    view_model = ViewModel("", model.title, model.topic_name, data=data)
+    view_model = ViewModel(model.title, model.title, model.topic_name, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
@@ -202,7 +207,7 @@ def save(request, scheme_of_work_id, lesson_id):
     
     if len(request.POST.getlist("key_words")) > 0: # handle empty
         data.key_words = request.POST.getlist("key_words")[0]
-    
+
     data.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
     # reset id if a copy
@@ -243,8 +248,8 @@ def save(request, scheme_of_work_id, lesson_id):
 def initialise_keywords(request, scheme_of_work_id):
     lessons = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
-    for lesson in lessons:
-       cls_lesson._upsert_key_words(db, lesson)
+    for lesson in lessons.model:
+       cls_lesson._upsert_key_words(db, lesson.model)
 
     scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
     schemeofwork_options = cls_schemeofwork.get_options(db, auth_user=request.user.id)
@@ -256,7 +261,7 @@ def initialise_keywords(request, scheme_of_work_id):
         "topic_name": "",
     }
 
-    view_model = ViewModel("", scheme_of_work_name, "Lessons", data=data)
+    view_model = ViewModel(scheme_of_work_name, scheme_of_work_name, "Lessons", data=data)
     
     return render(request, "lessons/index.html", view_model.content)
 

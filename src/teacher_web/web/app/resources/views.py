@@ -40,7 +40,7 @@ def index(request, scheme_of_work_id, lesson_id):
         "lesson_options": lesson_options
     }
 
-    view_model = ViewModel("", lesson.title, lesson.summary, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, lesson.summary, data=data)
     
     return render(request, "resources/index.html", view_model.content)
 
@@ -69,7 +69,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson.title, "New", data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "New", data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -102,7 +102,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
     
     return render(request, "resources/edit.html", view_model.content)
 

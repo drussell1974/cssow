@@ -50,7 +50,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_model.assert_called()
-            self.assertIsNone(self.viewmodel.model)
+            self.assertEqual([], self.viewmodel.model)
 
 
     def test_init_called_fetch__return_item(self):

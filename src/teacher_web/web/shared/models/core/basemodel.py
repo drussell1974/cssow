@@ -140,12 +140,12 @@ class BaseModel(models.Model):
 formatting members
 """
 
-def try_int(val):
+def try_int(val, return_value=None):
     """ convert value to int or None """
     try:
         val = int(val)
     except:
-        val = None
+        val = return_value
     return val
 
 
