@@ -24,7 +24,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
 
     def test_page__should_have__sidebar_and_selected_lesson(self):
@@ -70,7 +70,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         self.test_context.implicitly_wait(4)
 
         # assert (TEST parent page is still open)
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture\; CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
 
     def test_page__show_published_only(self):

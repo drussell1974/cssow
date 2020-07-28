@@ -54,7 +54,7 @@ class Log:
         
         str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
         return
-        
+
         execHelper.execCRUDSql(self.db, str_insert)
 
 
@@ -74,6 +74,11 @@ class Log:
         """
         print("\n{}message:'{}', details: {}{}".format(style, msg, details, CONSOLE_STYLE.ENDC))
 
+
+def handle_log_verbose(db, msg, details = "", log_type = LOG_TYPE.Verbose):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, details, log_type)
+    
     
 def handle_log_info(db, msg, details = "", log_type = LOG_TYPE.Information):
     logger = Log(db, settings.LOGGING_LEVEL)
