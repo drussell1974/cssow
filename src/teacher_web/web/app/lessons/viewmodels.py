@@ -1,12 +1,12 @@
-import json as to_json
+import json
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_info
+from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from app.default.viewmodels import KeywordGetModelViewModel, KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
-
+from shared.serializers.srl_keyword import KeywordModelSerializer
 
 class LessonGetAllViewModel(BaseViewModel):
     
@@ -26,37 +26,51 @@ class LessonGetModelViewModel(BaseViewModel):
         # get model
         data = LessonDataAccess.get_model(self.db, lesson_id, auth_user, resource_type_id)
         self.model = data
-        if self.model is not None:
-            # get each terms for each item 
-            key_word_map = map(lambda m: m.term, self.model.key_words)
-            # assign as comma seperated list
-            self.model.key_words_str = ",".join(list(key_word_map))
 
 
 class LessonSaveViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
-        
+    def __init__(self, db, data, key_words_json, auth_user):
+
         self.db = db
         self.auth_user = auth_user
 
-        if type(data) is Model:
-            key_word_ids = data.key_words 
+        # assign data directly to the model
 
-            # assign data directly to the model
-            self.model = data
+        self.model = data
 
-            # transform key_words
-            self.model.key_words = []
-        
-        
-            for keyword_id in key_word_ids.split(","):
+        try:
+
+            # transform key_words from string to dictionary list
+            decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item), json.loads(key_words_json)))
+            
+            #handle_log_warning(self.db, "processing key words", decoded_key_words)
+
+            # TODO: move to execute function for saving
+            for keyword in decoded_key_words:
+                
                 # get or insert
-                save_keyword = KeywordSaveViewModel(db, keyword_id)
-                save_keyword.execute(auth_user)
-                self.model.key_words.append(save_keyword.model)
+                save_keyword = KeywordSaveViewModel(db, keyword)
+                
+                kyw_model = save_keyword.execute(auth_user)
+
+                
+                self.model.key_words.append(kyw_model)
+    
+        except Exception as ex:
+            handle_log_exception(db, "An error occurred processing key words json", ex)
+            raise
 
 
-    def execute(self, published=1):
-        data = LessonDataAccess.save(self.db, self.model, self.auth_user, published)
-        self.model = data        
+    def execute(self, published):
+        self.model.validate()
+        
+        if self.model.is_valid == True:
+            data = LessonDataAccess.save(self.db, self.model, self.auth_user, published)
+            self.model = data   
+        else:
+            #    raise Exception("Lesson is not valid! {}".format(self.model.validation_errors))
+            handle_log_warning(self.db, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
+
+        return self.model
+

@@ -1,6 +1,9 @@
 .error {
     color:#dc3545 !important;
-    font-size: small;
+}
+
+input:invalid {
+    color:#dc3545 !important;
 }
 
 h1, h2, h3 {

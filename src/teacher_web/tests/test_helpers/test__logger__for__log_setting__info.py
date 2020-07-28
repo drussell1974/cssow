@@ -23,7 +23,7 @@ class test__logger__for__log__info(TestCase):
     def test_should_log__log_type__verbose(self):
 
         # act
-        self.test_log.write("Something happened", LOG_TYPE.Verbose)
+        self.test_log.write("Something happened", "", LOG_TYPE.Verbose)
 
         # assert
 
@@ -34,7 +34,7 @@ class test__logger__for__log__info(TestCase):
     def test_should_log__log_type__info(self):
 
         # act
-        self.test_log.write("Something happened", LOG_TYPE.Information)
+        self.test_log.write("Something happened", details="", log_type=LOG_TYPE.Information)
 
         # assert
 
@@ -45,7 +45,7 @@ class test__logger__for__log__info(TestCase):
     def test_should_log__log_type__warning(self):
 
         # act
-        self.test_log.write("Something happened", LOG_TYPE.Warning)
+        self.test_log.write("Something happened", "You can't say I didn't", LOG_TYPE.Warning)
 
         # assert
 
@@ -56,7 +56,7 @@ class test__logger__for__log__info(TestCase):
     def test_should_log__log_type__error(self):
 
         # act
-        self.test_log.write("Something happened", LOG_TYPE.Error)
+        self.test_log.write("Something happened", "oh no!", LOG_TYPE.Error)
 
         # assert
 

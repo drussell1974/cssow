@@ -11,6 +11,16 @@ class LOG_TYPE:
     Error = 1
     NONE = 7
 
+class CONSOLE_STYLE:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 
 class Log:
 
@@ -20,44 +30,66 @@ class Log:
         self.logging_level = log_level_setting
 
 
-    def write(self, details, log_type):
+    def write(self, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
-
+        
         if (self.logging_level % log_type) == 0:
-            self._write_to_sql(details)
-            self._write_to_django_log(details)
+            self._write_to_sql(msg, details, category, subcategory)
+            self._write_to_django_log(msg, details)
+            if log_type == LOG_TYPE.Error:
+                self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
+            if log_type == LOG_TYPE.Warning:
+                self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
+            if log_type == LOG_TYPE.Information:
+                self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
+            if log_type == LOG_TYPE.Verbose:
+                self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
-    def _write_to_sql(self, details):
+    def _write_to_sql(self, msg, details="", category = "", subcategory = ""):
         """ inserts the detail into the sow_logging table """
-
+    
 
         execHelper = ExecHelper()
         
-        str_insert = "INSERT INTO sow_logging (details, created) VALUES ('%s', '%s');" % (sql_safe(details), datetime.utcnow())
-
+        str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
+        return
+        
         execHelper.execCRUDSql(self.db, str_insert)
 
 
-    def _write_to_django_log(self, details):
+    def _write_to_django_log(self, msg, details=""):
         """ 
         Write to the django event log.
         View log when running django debug toolbar
         """
         logger = logging.getLogger(__name__)
         logger.info(details)
-        
-    
-def handle_log_info(db, msg, log_type = LOG_TYPE.Information):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, log_type)
-    
 
-def handle_log_warning(db, msg, log_type = LOG_TYPE.Warning):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, log_type)
+
+    def _write_to_console(self, msg, details="", style=CONSOLE_STYLE.OKBLUE):
+        """ 
+        Write to console using print.
+        View log when running django debug toolbar
+        """
+        print("\n{}message:'{}', details: {}{}".format(style, msg, details, CONSOLE_STYLE.ENDC))
 
     
-def handle_log_error(db, msg, log_type = LOG_TYPE.Error):
+def handle_log_info(db, msg, details = "", log_type = LOG_TYPE.Information):
     logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, log_type)
+    logger.write(msg, details, log_type)
+    
+
+def handle_log_warning(db, msg, details = "", log_type = LOG_TYPE.Warning):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, details, log_type)
+
+    
+def handle_log_error(db, msg, details = "", log_type = LOG_TYPE.Error):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, details, log_type)
+
+
+def handle_log_exception(db, msg, ex, log_type = LOG_TYPE.Error):
+    logger = Log(db, settings.LOGGING_LEVEL)
+    logger.write(msg, "{}".format(ex), log_type)

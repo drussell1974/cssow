@@ -43,8 +43,6 @@ class ExecHelper:
             cur_li = self._execSql(db, "SELECT LAST_INSERT_ID();")
             last_insert_id = int(cur_li[0][0])
 
-            #for tup in cur_li:
-            #    result.append(tup)
 
             db.commit()    
             self._closeSqlConn(db, None)

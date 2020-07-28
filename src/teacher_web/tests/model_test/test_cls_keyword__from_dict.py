@@ -2,7 +2,7 @@ from unittest import TestCase
 from shared.models.cls_keyword import KeywordModel
 
 
-class test_cls_keyword__from_json(TestCase):
+class test_cls_keyword__from_dict(TestCase):
 
     def setUp(self):
         pass
@@ -11,22 +11,24 @@ class test_cls_keyword__from_json(TestCase):
         pass
 
 
-
-    def test__should_raise_exception__when_not_a_string(self):
+    def test__should_raise_exception__when_not_a_dictionary(self):
 
         # arrange
         self.test = KeywordModel()
 
         # act
-        self.test.from_json('{"id":1, "term":"Algorithm", "definition":"A list of instructions"}')
+
+        with self.assertRaises(TypeError):
+            self.test.from_dict('{"id":1, "term":"Algorithm", "definition":"A list of instructions"}')
 
         # assert
         
-        self.assertEqual(1, self.test.id)
-        self.assertEqual("Algorithm", self.test.term)
-        self.assertEqual("A list of instructions", self.test.definition)
-        self.assertTrue(self.test.is_valid)
-        self.assertFalse(self.test.is_new())
+        self.assertEqual(0, self.test.id)
+        self.assertEqual("", self.test.term)
+        self.assertEqual("", self.test.definition)
+        self.assertFalse(self.test.is_valid)
+        self.assertEqual({}, self.test.validation_errors)
+
 
 
     def test__should_have_no__validition_errors__when_valid(self):
@@ -35,7 +37,7 @@ class test_cls_keyword__from_json(TestCase):
         self.test = KeywordModel()
 
         # act
-        self.test.from_json('{"id":1, "term":"Algorithm", "definition":"A list of instructions"}')
+        self.test.from_dict({"id":1, "term":"Algorithm", "definition":"A list of instructions"})
 
         # assert
         
@@ -46,14 +48,13 @@ class test_cls_keyword__from_json(TestCase):
         self.assertFalse(self.test.is_new())
 
 
-
     def test__should_have__validation_errors__when_not_invalid(self):
 
         # arrange
         self.test = KeywordModel()
 
         # act
-        self.test.from_json('{"id":1, "term":"", "definition":"A list of instructions"}')
+        self.test.from_dict({"id":1, "term":"", "definition":"A list of instructions"})
 
         # assert
         self.assertFalse(self.test.is_valid)

@@ -18,7 +18,7 @@ class LessonModel (BaseModel):
     key_stage_id = None
     published = 1
     key_words = []
-    key_words_str = ""
+    key_words_str = []  
     resources = []
     learning_objectives = []
     number_of_resource = 0
@@ -50,6 +50,13 @@ class LessonModel (BaseModel):
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
 
 
+    @property
+    def key_words_str(self):
+        key_word_map = map(lambda m: m.term, self.key_words)
+        # assign as comma seperated list
+        return ",".join(list(key_word_map))
+        
+        
     def from_json(self, str_json, encoding="utf8"):
 
         import json
@@ -136,6 +143,10 @@ class LessonModel (BaseModel):
         # Validate summary
         self._validate_optional_string("summary", self.summary, 80)
 
+        # Validate key_words (array)
+        self._validate_optional_list("key_words", self.key_words, None, 100)
+        self._validate_children("key_words", self, self.key_words)
+
         return self.is_valid
 
 
@@ -179,7 +190,6 @@ class LessonDataAccess:
     @staticmethod
     def save(db, model, auth_user, published=1):
         """ Save Lesson """
-        
         try:
             if model.is_new() == True:
                 _insert(db, model, published, auth_user_id=auth_user)
@@ -783,35 +793,20 @@ def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
 def _upsert_key_words(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__keywords """
     execHelper = ExecHelper()
+      
+    # statement to delete existing
+    str_sqlmulti = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
 
-    # delete existing
-    str_delete = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-
-    # build dictionary of keyword ids 
-
-    list_insert = {}
-            
     if model.key_words is not None:
-        
+        # statements to insert new
+        str_insert = ""
         for key_word in model.key_words:
-            
-            if key_word != None:
-                # add to list of values to insert for lesson > key_word
-                list_insert[key_word.term] = "({lesson_id}, {key_word_id}),".format(lesson_id=model.id, key_word_id=key_word.id)
-            
-        # reinsert
+            str_insert = str_insert + "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES ({lesson_id}, {key_word_id});".format(lesson_id=model.id, key_word_id=key_word.id)        
 
-        str_insert = "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES"
+        str_sqlmulti = str_sqlmulti + str_insert
 
-        for key_word in list_insert:
-            str_insert = str_insert + list_insert[key_word]
-
-        ' Ensure insert values have been appended before inserting'
-        if str_insert.endswith("VALUES") == False:
-            str_insert = str_insert.rstrip(",") + ";"
-            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+    # execute as a transaction
+    results = execHelper.execCRUDSql(db, str_sqlmulti, results, log_info=handle_log_info)
     
     return results
 

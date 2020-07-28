@@ -1,2 +1,2 @@
 class BaseViewModel:
-    model = []
+    model = None

@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_keyword import KeywordModel
 
 
@@ -69,7 +69,7 @@ class test_cls_keyword__validate__definition(TestCase):
 
     def test_max__valid_extreme(self):
         # set up
-
+        
         self.test.definition = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in viverra urna. " \
                           "Vivamus leo massa, feugiat venenatis urna ut, venenatis rutrum massa. Mauris vel justo nisl. " \
                           "Quisque quis risus id ligula tempor pellentesque at at neque. Ut sed viverr. " # length 250 characters
@@ -97,7 +97,7 @@ class test_cls_keyword__validate__definition(TestCase):
         self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
-class test_cls_reference__validate__term(TestCase):
+class test_cls_keyword__validate__term(TestCase):
 
     test = None
 
@@ -165,7 +165,7 @@ class test_cls_reference__validate__term(TestCase):
     def test_max__valid_extreme(self):
         # set up
 
-        self.test.term = "Vivamus leo massa, feugiat venenatis urna ut, venenatis rutrum massa. Mauris vel justo nisl. Quisque" # length 100 characters
+        self.test.term = "Vivamus leo massae feugiat venenatis urna ute venenatis rutrum massae Mauris vel justo nisl Quisquez" # length 100 characters
 
         # test
         self.test.validate()
@@ -186,3 +186,100 @@ class test_cls_reference__validate__term(TestCase):
         # assert
         self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
         self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+    def test__cannot_be_non_alphanumeric_only(self):
+        # set up
+
+        self.test.term = ","
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test__cannot_start_with_comma(self):
+        # set up
+
+        self.test.term = ",AAAA"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test__cannot_start_with_special_characters(self):
+        # set up
+
+        self.test.term = "&AAAA"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test__cannot_include_special_characters(self):
+        # set up
+
+        self.test.term = "AAdfA!"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test__should_not_be_number_only(self):
+        # set up
+
+        self.test.term = "99"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+
+    def test__can_contain_a_number(self):
+        # set up
+
+        self.test.term = "9A"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test_should_be_valid(self):
+
+        for word in ["ABCVDFas df2", "A1234", "ABCVDFas", "A9", "A9B", "A 10", "ABC (DEF)"]:
+            self.test.term = word
+            # test
+            self.test.validate()
+            self.assertTrue("term" not in self.test.validation_errors, "value '{}' should be valid".format(word))
+
+
+    def test_should_not_be_valid(self):
+
+        for word in ["9ABCVDFas df2", "99", " 101", "99 " "9A", "ABCVD,Fasd,JUErE", "A,1,2,3", "1,2,3", "34343434A", ";", "a;", "A{}"]:
+            self.test.term = word
+            # test
+            self.test.validate()
+            self.assertTrue("term" in self.test.validation_errors, "value '{}' should not be valid".format(word))

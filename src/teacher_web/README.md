@@ -91,11 +91,32 @@ Use 'yarn test-ui' from package.json to run automated browser tests (with file p
 
 > /src/teacher-web$ yarn test-ui
 
-To run individual or certain files using wild card
+... or to run individual or certain files using wild card
 
 > python -m unittest discover --start-directory ./tests/ui_test/ --pattern uitest_*.py
 
 # Settings
+
+
+- Logging
+Change logging level in the setting.py file
+
+```
+    # LOGGING_LEVEL: set the logging level as appropriate
+    # Verbose = 8
+    # Information = 4
+    # Warning = 2
+    # Error = 1
+    LOGGING_LEVEL = 2
+```
+
+** check with settings file is being used **
+
+e.g. yarn build:dev task in the package.json shows --settings=web.settings.development.settings, which uses /web/web/settings/development/settings.py
+
+```
+    "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
+```
 
 # Templates
 To get the templates from the root directory
@@ -125,13 +146,22 @@ Use the following guidance as the project structure...
 ├── [projectname]/              <- Django root
 │   ├── __init__.py
 │   ├── settings/
-│   │   ├── common.py
-│   │   ├── development.py
+|   │   ├── settings/
+│   │   |   ├── development
+|   |   │   |   └── settings.py
+│   │   |   ├── production
+|   |   │   |   └── settings.py
+│   │   |   ├── test-ui
+|   |   │      └── settings.py
 │   │   ├── i18n.py
 │   │   ├── __init__.py
-│   │   └── production.py
+│   │   |── production.py
+│   │   └── test.py
+│   ├── local_settings.py <--- NOT USED
+│   ├── asgi.py
 │   ├── urls.py
 │   └── wsgi.py
+├── api/
 ├── apps/
 │   └── __init__.py
 ├── configs/
@@ -156,4 +186,3 @@ Use the following guidance as the project structure...
     ├── core
     │   └── login.html
     └── README
-'''

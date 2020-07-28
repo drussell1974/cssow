@@ -39,7 +39,7 @@ class test_db__save_keywords_only(TestCase):
          # arrange
         keywords_to_save = "a,b,c"
 
-        expected_result = [("12")]
+        expected_result = ("12")
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act

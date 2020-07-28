@@ -80,7 +80,9 @@ class test_db___upsert_key_words(TestCase):
             ExecHelper.execCRUDSql.assert_called()
 
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES(10, 12),(10, 13);"
+             "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = 10;" \
+                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (10, 12);" \
+                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (10, 13);"
              , []
              , log_info=handle_log_info)
 
@@ -91,7 +93,8 @@ class test_db___upsert_key_words(TestCase):
     def test_should_call_execCRUDSql__reinsert__key_words__insert_new(self):
          # arrange
         model = LessonModel(79, "")
-        model.key_words = [KeywordModel(id_ = 0, term="CPU", definition="")]
+        model.key_words = [KeywordModel(id_ = 12, term="CPU", definition="")]
+        
         expected_result = []
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=[]):
@@ -103,7 +106,8 @@ class test_db___upsert_key_words(TestCase):
             ExecHelper.execCRUDSql.assert_called()
 
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES(79, 0);"
+             "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = 79;" \
+                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (79, 12);"
              , []
              , log_info=handle_log_info)
 

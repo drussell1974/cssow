@@ -14,7 +14,8 @@ class BaseModel(models.Model):
     is_valid = False
     # TODO: return dictionary with double quotes for json parsing
     validation_errors = {}
-  
+    error_message = ""
+    
     def __init__(self, id_, created, created_by_id, created_by_name, published):
         self.id = int(id_)
         self.created = created
@@ -70,28 +71,31 @@ class BaseModel(models.Model):
         self.validation_errors.clear()
 
 
-    def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value):
+    def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value, match_regular_expression=(None,None)):
         if value_to_validate is None or len(value_to_validate) < min_value:
             self.validation_errors[name_of_property] = "required"
             self.is_valid = False
         elif len(value_to_validate) > max_value:
             self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
             self.is_valid = False
+        
 
-
-    def _validate_optional_string(self, name_of_property, value_to_validate, max_value):
+    def _validate_optional_string(self, name_of_property, value_to_validate, max_value, match_regular_expression=(None,None)):
         if value_to_validate is not None:
             if len(value_to_validate) > max_value:
-                self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(
-                    len(value_to_validate), max_value)
+                self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
                 self.is_valid = False
 
 
     def _validate_optional_list(self, name_of_property, list_to_validate, sep, max_items):
         if list_to_validate is not None:
-            if len(list_to_validate.split(sep)) > max_items:
-                self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(
-                    len(list_to_validate.split(sep)), max_items)
+            test = list_to_validate
+            
+            if sep is not None:
+                test = list_to_validate.split(sep)
+            
+            if len(test) > max_items:
+                self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(len(test), max_items)
                 self.is_valid = False
 
 
@@ -117,6 +121,26 @@ class BaseModel(models.Model):
                 if re.search("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,20}(:[0-9]{1,5})?(\/.*)?$", value_to_validate) == None:
                     self.validation_errors[name_of_property] = "{} is not a valid url".format(value_to_validate)
                     self.is_valid = False
+
+
+    def _validate_children(self, name_of_property, parent, children_to_validate):
+        if parent.is_valid and children_to_validate is not None:
+            all_errors = ""
+            for value in children_to_validate:
+                value.validate()
+                if value.is_valid == False:
+                    all_errors = all_errors + "|{}(id:{}):{}|".format(name_of_property, value.id, value.validation_errors)
+                    self.is_valid = False
+            # add errors to property only if there are errors
+            if len(all_errors) > 0:
+                self.validation_errors[name_of_property] = all_errors
+
+
+    def _validate_regular_expression(self, name_of_property, value_to_validate, pattern_to_match, friendly_message):
+        if value_to_validate is not None and len(value_to_validate) > 0:
+            if re.fullmatch(pattern_to_match, value_to_validate) is None:
+                self.validation_errors[name_of_property] = "{} is not valid. {}".format(value_to_validate, friendly_message)
+                self.is_valid = False
 
 
     def toJSON(self):

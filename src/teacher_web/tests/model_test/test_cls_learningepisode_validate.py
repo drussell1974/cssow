@@ -1,5 +1,6 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from tests.model_test.learningepisode_testcase import Lesson_TestCase
+from shared.models.cls_keyword import KeywordModel
 
 
 class test_LessonModel_validate__title(Lesson_TestCase):
@@ -597,3 +598,218 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
         # assert
         self.assertTrue("year_id" in test.validation_errors, "year_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
+
+
+
+class test_LessonModel_validate__key_words(Lesson_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words = []
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 0)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str, "")
+
+
+    def test_min__valid(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words = [KeywordModel(1, "Bytes 1")]
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 1)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str, "Bytes 1")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        # generate data
+        for n in range(100):
+            test.key_words.append(
+                KeywordModel(n, "Bytes {}".format(n))
+            )
+        
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str[0:34], "Bytes 0,Bytes 1,Bytes 2,Bytes 3,By")
+        
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        # generate data
+        for n in range(101):
+            test.key_words.append(
+                KeywordModel(n, "Bytes {}".format(n))
+            )
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid)
+        self.assertTrue("key_words" in test.validation_errors, "key_words should have validation error %s" % test.validation_errors)
+        self.assertEqual(test.validation_errors["key_words"], "has 101 items (number of items cannot exceed 100)")
+        
+        self.assertEqual(test.key_words_str[0:34], "Bytes 0,Bytes 1,Bytes 2,Bytes 3,By")
+
+
+    def test_should_be_invalid_for_invalid_nested_object(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words = [KeywordModel(1, "")]
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 1)
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        self.assertEqual(test.validation_errors["key_words"][0:56], "|key_words(id:1):{'term': 'required'}|")
+
+        self.assertEqual(test.key_words_str[0:34], "")
+
+@skip("key_words_str READONLY")
+class test_LessonModel_validate__key_words_str(Lesson_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words_str = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 0)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str, "")
+
+
+    def test_min__valid(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words_str = [KeywordModel(1, "Bytes 1")]
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 1)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str, "Bytes 1")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        # generate data
+        for n in range(100):
+            test.key_words_str.append(
+                KeywordModel(n, "Bytes {}".format(n))
+            )
+        
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+        self.assertFalse("key_words" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        ## test readonly property
+        self.assertEqual(test.key_words_str[0:34], "Bytes 0,Bytes 1,Bytes 2,Bytes 3,By")
+        
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        # generate data
+        for n in range(101):
+            test.key_words_str.append(
+                KeywordModel(n, "Bytes {}".format(n))
+            )
+
+        print("number of key_words: {}".format(len(test.key_words)))
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertEqual(test.validation_errors["key_words"], "has 101 items (number of items cannot exceed 100)")
+        self.assertTrue("key_words" in test.validation_errors, "key_words should have validation error %s" % test.validation_errors)
+        
+        self.assertEqual(test.key_words_str[0:34], "Bytes 0,Bytes 1,Bytes 2,Bytes 3,By")
+
+
+    def test_should_be_invalid_for_invalid_nested_object(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.key_words = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual(len(test.key_words), 1)
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("key_words(id:1)" in test.validation_errors, "key_words should not have validation error %s" % test.validation_errors)
+        self.assertEqual(test.validation_errors["key_words(id:1)"][0:56], "1 or more key_words are not valid ({'term': 'required'})")
+
+        self.assertEqual(test.key_words_str[0:34], "")

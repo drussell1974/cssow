@@ -37,7 +37,7 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
         
     def test__should_have_summary(self):
         # assert
-        self.assertEqual('Von Neumann architecture and Harvard architecture\; CISC and RISC', self.payload["lesson"]["summary"])
+        self.assertEqual('Von Neumann architecture and Harvard architecture, and CISC and RISC', self.payload["lesson"]["summary"])
 
 
     def test__should_have_lesson_objectives(self):

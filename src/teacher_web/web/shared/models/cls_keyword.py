@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import json
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe, to_empty
-from .core.log import handle_log_info
+from .core.log import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
 
 
 class KeywordModel(BaseModel):
@@ -10,35 +11,43 @@ class KeywordModel(BaseModel):
     term = ""
     definition = ""
 
+    exception_handler=None
+    warning_handler=None
+    info_handler=None
+    
     def __init__(self, id_ = 0, term = "", definition = ""):
         self.id = id_
         self.term = term
         self.definition = definition
 
 
-    def from_json(self, str_json, encoding="utf8"):
+    def from_dict(self, dict_obj):
+        
+        if type(dict_obj) is not dict:
+            raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
 
-        # deserialise
-
-        import json
-        keypairs = json.loads(str_json, encoding=encoding)
-    
-        self.id = keypairs["id"]
-        self.term = keypairs["term"]
-        self.definition = keypairs["definition"]  
+        self.id = dict_obj["id"]
+        self.term = dict_obj["term"]
+        self.definition = dict_obj["definition"]  
 
         # validate
-
         self.validate()
-
-        if self.is_valid == False:
-            return None
         
+
         return self 
 
 
-    def validate(self):
+    def from_json(self, str_json, encoding="utf8"):
 
+        if type(str_json) is not str:
+            raise TypeError("str_json Type is {}. Value <{}> must be type string (str).".format(type(str_json), str_json))
+        
+        dict_obj = json.loads(str_json)
+
+        return self.from_dict(dict_obj)
+
+
+    def validate(self):
         """ clean up and validate model """
 
         self._on_before_validate()
@@ -48,6 +57,7 @@ class KeywordModel(BaseModel):
 
         # validate title
         self._validate_required_string("term", self.term, 1, 100)
+        self._validate_regular_expression("term", self.term, r"[^0-9,!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
 
         # validate page_uri
         self._validate_optional_string("definition", self.definition, 250)
@@ -55,7 +65,6 @@ class KeywordModel(BaseModel):
 
     def _clean_up(self):
         """ clean up properties by removing by casting and ensuring safe for inserting etc """
-
         # id
         self.id = int(self.id)
 
@@ -66,6 +75,8 @@ class KeywordModel(BaseModel):
         # trim definition
         if self.definition is not None:
             self.definition = sql_safe(self.definition)
+        else:
+            self.definition = ""
 
  
 """
@@ -190,9 +201,8 @@ class KeywordDataAccess:
             model = _insert(db, model)
         else:
             _update(db, model)
-
+            
         return model
-
 
 
 def save_keywords_only(db, key_words):
@@ -250,14 +260,12 @@ def _insert(db, model):
         , result=rows
         , log_info=handle_log_info
     )
+    
+    # TODO: implement execInsert and pass model
+    if len(rows) > 0:
+        model.id = rows[1]
 
-    rows = []
-    rows = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows)
-
-    for row in rows:
-        model.id = int(row[0])
-
-    return model.id
+    return model
 
 
 def _update(db, model):
@@ -270,6 +278,9 @@ def _update(db, model):
     """
     execHelper = ExecHelper()
     
-    str_update = "UPDATE sow_key_word SET definition = '{definition}' WHERE id = {id};".format(definition=model.definition, id=model.id)
+    str_update = "UPDATE sow_key_word SET name = '{name}', definition = '{definition}' WHERE id = {id};".format(name=model.term, definition=model.definition, id=model.id)
 
     return execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+
+
+        

@@ -43,14 +43,12 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             db = MagicMock()
             db.cursor = MagicMock()
 
-            self.mock_model = Mock()
-
             # act
             self.viewmodel = ViewModel(db, 123, auth_user=99)
 
             # assert functions was called
             DataAccess.get_model.assert_called()
-            self.assertEqual([], self.viewmodel.model)
+            self.assertIsNone(self.viewmodel.model)
 
 
     def test_init_called_fetch__return_item(self):

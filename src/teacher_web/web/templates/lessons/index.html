@@ -72,12 +72,12 @@
       {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objective}}</span>
     </a>
     <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-primary">
-      {{_("Resources")}} <span class="badge badge-light">{{row.number_of_resource}}</span>
+      {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resource}}</span>
     </a>
   </div>
   <h4 class="small">{{ row.topic_name }}</h4>
-    {% for key_word in row.key_words.values %}
-      <i class="badge badge-secondary">{{ key_word }}</i>&nbsp;
+    {% for key_word in row.key_words %}
+      <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
     {% endfor %}
   <p class="post-meta">{{_("Created by")}}
     <a href="#">{{ row.created_by_name }}</a>
@@ -95,6 +95,10 @@
     </p>
 </div>
 <hr>
+
+
+
+
 {% endfor %}
 <!-- Pager Footer -->
 <div class="clearfix">

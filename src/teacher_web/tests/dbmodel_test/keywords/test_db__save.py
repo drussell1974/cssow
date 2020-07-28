@@ -58,7 +58,7 @@ class test_db__save(TestCase):
     def test_should_call_execCRUDSql__update_with__is_new__false(self):
          # arrange
 
-        model = Model(1, term="", definition="Mauris ac velit ultricies, vestibulum.")
+        model = Model(1, term="Lorem Ipsum", definition="Mauris ac velit ultricies, vestibulum.")
         model.is_new = MagicMock(return_value=False)
         model.is_valid = MagicMock(return_value=True)
 
@@ -74,7 +74,7 @@ class test_db__save(TestCase):
             # assert
             
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                "UPDATE sow_key_word SET definition = 'Mauris ac velit ultricies, vestibulum.' WHERE id = 1;"
+                "UPDATE sow_key_word SET name = 'Lorem Ipsum', definition = 'Mauris ac velit ultricies, vestibulum.' WHERE id = 1;"
                 , log_info=handle_log_info)
 
             self.assertEqual(expected_result, actual_result.id)
@@ -90,7 +90,7 @@ class test_db__save(TestCase):
 
         test_context._insert_lesson_lessonobjectives = Mock()
         
-        expected_result = [("100")]
+        expected_result = ("100")
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act

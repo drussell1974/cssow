@@ -82,7 +82,7 @@ def edit(request, scheme_of_work_id, lesson_id):
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = KeywordGetOptionsListViewModel(db).model
+    key_words_options = KeywordGetOptionsListViewModel(db).model
     ks123_pathways = cls_ks123pathway.get_options(db, lesson.year_id, lesson.topic_id)
     
     data = {
@@ -94,8 +94,7 @@ def edit(request, scheme_of_work_id, lesson_id):
         "year_options": year_options,
         "selected_year_id": lesson.year_id,
         "lesson": lesson,
-        "key_words": key_words,
-        "key_words_str": lesson.key_words,
+        "key_words_options": key_words_options,
         "ks123_pathways": ks123_pathways,
         "show_ks123_pathway_selection": lesson.key_stage_id in (1,2,3)
     }
@@ -116,7 +115,7 @@ def copy(request, scheme_of_work_id, lesson_id):
     scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
-    key_words = KeywordGetOptionsListViewModel(db)
+    key_words_options = KeywordGetOptionsListViewModel(db)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -127,7 +126,7 @@ def copy(request, scheme_of_work_id, lesson_id):
         "year_options": year_options,
         "selected_year_id": lesson.year_id,
         "lesson": lesson,
-        "key_words": key_words,
+        "key_words_options": key_words_options,
     }
     
     view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Copy: {}".format(lesson.title), data=data)
@@ -189,8 +188,7 @@ def save(request, scheme_of_work_id, lesson_id):
         
     published = int(request.POST["published"] if request.POST["published"] is not None else 1)
     
-    # TODO: replace request.POST[key] with request.POST.get(key, default)
-    data = cls_lesson.LessonModel(
+    model = cls_lesson.LessonModel(
         id_ = request.POST["id"],
         orig_id = int(request.POST["orig_id"]),
         title = request.POST["title"],
@@ -204,23 +202,19 @@ def save(request, scheme_of_work_id, lesson_id):
         created = datetime.now(),
         created_by_id = request.user.id
     )
-    
-    if len(request.POST.getlist("key_words")) > 0: # handle empty
-        data.key_words = request.POST.getlist("key_words")[0]
 
-    data.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
+    model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
     # reset id if a copy
     if int(request.POST["orig_id"]) > 0:
-        data.id = int(request.POST["orig_id"])
+        model.id = int(request.POST["orig_id"])
         
 
     # TODO: Create viewmodel from serialized POST data https://www.django-rest-framework.org/api-guide/parsers/#formparser
 
-    viewmodel = LessonSaveViewModel(db, data, request.user.id)
+    viewmodel = LessonSaveViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=request.user.id)
     model = viewmodel.model
     
-
     model.validate()
     
 
@@ -241,11 +235,40 @@ def save(request, scheme_of_work_id, lesson_id):
 
         request.session.alert_message = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
         redirect_to_url = reverse('lesson.edit', args=(scheme_of_work_id,lesson_id))
+        
 
+        scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+        year_options = cls_year.get_options(db, model.key_stage_id)
+        topic_options = cls_topic.get_options(db, lvl=1)
+        key_words_options = KeywordGetOptionsListViewModel(db).model
+        ks123_pathways = cls_ks123pathway.get_options(db, model.year_id, model.topic_id)
+        
+        
+        form_data = {
+                "scheme_of_work_id": request.POST["scheme_of_work_id"],
+                "lesson_id": request.POST["id"],
+                "key_stage_id": request.POST.get("key_stage_id", 0),
+                "topic_options": topic_options,
+                "selected_topic_id": request.POST["topic_id"], 
+                "year_options": year_options,
+                "selected_year_id": request.POST.get("year_id", 0),
+                "lesson": model, # lesson model
+                "key_words_options": key_words_options,
+                "ks123_pathways": ks123_pathways,
+                "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
+            }
+            
+        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {} (Errors:{})".format(model.title, model.validation_errors), data=form_data)
+
+        return render(request, "lessons/edit.html", view_model.content)
+        
     return HttpResponseRedirect(redirect_to_url)
 
 
 def initialise_keywords(request, scheme_of_work_id):
+    
+    # OBSELETE
+
     lessons = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
     for lesson in lessons.model:
