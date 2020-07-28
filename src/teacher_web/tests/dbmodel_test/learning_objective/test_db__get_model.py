@@ -50,7 +50,7 @@ class test_db__get_model(TestCase):
                 , []
                 , log_info=handle_log_info)
 
-            self.assertEqual(99, actual_results.id)
+            self.assertEqual(0, actual_results.id)
 
 
     def test__should_call_execSql_return_single_item(self):

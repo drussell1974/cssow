@@ -64,7 +64,7 @@ class test_db__save(TestCase):
             # assert
             
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "UPDATE sow_resource SET title = 'How to make unit tests', publisher = 'Unit test', type_id = 0, url = '', md_document_name = '', is_expired = 0, lesson_id = 13, published = 1 WHERE id = 1;"
+             "UPDATE sow_resource SET title = 'How to make unit tests', publisher = 'Unit test', type_id = 0, page_notes = '', url = '', md_document_name = '', is_expired = 0, lesson_id = 13, published = 1 WHERE id = 1;"
              , log_info=handle_log_info)
             
             self.assertEqual(expected_result, actual_result.id)
@@ -86,7 +86,7 @@ class test_db__save(TestCase):
 
             ExecHelper.execCRUDSql.assert_called_with(
                 self.fake_db, 
-                "INSERT INTO sow_resource (title, publisher, type_id, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('How to make more unit tests', 'Unit test', 0, '', 'NULL', 0, 15, '', 0, 1);SELECT LAST_INSERT_ID();"
+                "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('How to make more unit tests', 'Unit test', 0, '', '', 'NULL', 0, 15, '', 0, 1);SELECT LAST_INSERT_ID();"
                 , []
                 , handle_log_info)
 

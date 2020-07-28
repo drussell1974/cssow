@@ -107,6 +107,8 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
+        ' name '
+        elem = self.test_context.find_element_by_id("ctl-description")
         ' description - Fill in field with some information '
         elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
@@ -122,6 +124,9 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
         #delete
+        
+        # TODO: Edit and delete
+
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
