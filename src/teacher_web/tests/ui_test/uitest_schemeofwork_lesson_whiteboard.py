@@ -51,7 +51,7 @@ class test_schemeofwork_lesson_whiteboard(UITestCase):
 
         # assert
         self.assertEqual("Learning materials", elem.text)
-        self.assertEqual(3, len(elems))
+        self.assertEqual(4, len(elems))
 
 
 

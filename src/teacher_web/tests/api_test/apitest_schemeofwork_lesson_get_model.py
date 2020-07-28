@@ -47,7 +47,7 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
 
     def test__should_have_resources(self):
         # assert
-        self.assertEqual(3, len(self.payload["lesson"]["resources"]))
+        self.assertEqual(4, len(self.payload["lesson"]["resources"]))
 
 
     def test__should_have_key_words(self):

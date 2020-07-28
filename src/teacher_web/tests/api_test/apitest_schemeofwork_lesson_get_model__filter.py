@@ -28,7 +28,7 @@ class apitest_schemeofwork_lesson_get_model__filter(APITestCase):
         self.show_payload(filter_by_resource_type_id=0)
         
         # assert
-        self.assertEqual(3, len(self.payload["lesson"]["resources"]))
+        self.assertEqual(4, len(self.payload["lesson"]["resources"]))
         
         
     def test__should_have_resources__books(self):
