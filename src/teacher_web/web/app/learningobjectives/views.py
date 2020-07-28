@@ -88,6 +88,12 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     cls_learningobjective.enable_logging = True
     model = cls_learningobjective.get_model(db, learning_objective_id, request.user.id)
     
+    # redirect if not found
+    if model is None or model.id == 0:
+        redirect_to_url = reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id])
+        return HttpResponseRedirect(redirect_to_url)
+
+
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
     lesson = get_lesson_view.model
 

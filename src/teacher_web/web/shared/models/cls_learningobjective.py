@@ -220,7 +220,7 @@ def get_all(db, lesson_id, auth_user):
 def get_model(db, id_, auth_user):
     execHelper = ExecHelper()
     
-    model = LearningObjectiveModel(id_)
+    model = LearningObjectiveModel(0)
 
     select_sql = "SELECT"\
                  " lob.id as id,"\

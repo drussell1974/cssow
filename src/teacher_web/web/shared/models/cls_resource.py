@@ -339,12 +339,13 @@ def _update(db, model, auth_user_id):
 
     # 1. Update the lesson
 
-    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
+    str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, page_notes = '{page_note}', url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
     str_update = str_update.format(
         id=model.id,
         title=model.title,
         publisher=model.publisher,
         type_id=to_db_null(model.type_id, as_null=""),
+        page_note=to_db_null(model.page_note),
         page_uri=to_db_null(model.page_uri),
         md_document_name=to_db_null(model.md_document_name),
         is_expired=to_db_bool(model.is_expired),
@@ -366,11 +367,12 @@ def _insert(db, model, auth_user_id):
 
     ## 1. Insert the reference
 
-    str_insert = "INSERT INTO sow_resource (title, publisher, type_id, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
+    str_insert = "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_note}', '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
     str_insert = str_insert.format(
         title=model.title,
         publisher=model.publisher,
         type_id=to_db_null(model.type_id, as_null=""),
+        page_note=to_db_null(model.page_note),
         page_uri=to_db_null(model.page_uri),
         md_document_name=to_db_null(model.md_document_name, as_null=""),
         is_expired=to_db_bool(model.is_expired),
