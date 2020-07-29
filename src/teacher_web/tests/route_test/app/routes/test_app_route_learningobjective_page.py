@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.learningobjectives.views import index, new, edit, delete_item, delete_unpublished, save
+from app.learningobjectives.views import index, new, edit, delete_item, delete_unpublished, save, publish_item
 
 # Create your tests here.
 class test_app_route_learningobjectives_page(TestCase):
@@ -70,3 +70,12 @@ class test_app_route_learningobjectives_page(TestCase):
         self.assertEqual("/schemesofwork/127/lessons/32/learning-objectives/delete_unpublished", url)
     
     
+    def test__learningobjective_publish__url_resolves_to_index(self):
+        url = resolve("/schemesofwork/127/lessons/13/learning-objectives/348/publish")
+        self.assertEqual("learningobjective.publish_item", url.url_name)
+        self.assertEqual(url.func, publish_item)
+
+
+    def test__learningobjective_publish__url_resolves_to_index__reverse(self):
+        url = reverse("learningobjective.publish_item", args=[127,13,348])
+        self.assertEqual("/schemesofwork/127/lessons/13/learning-objectives/348/publish", url)

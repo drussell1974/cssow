@@ -123,7 +123,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description), data=data, alert_message=request.session.get("alert_message", None))
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -160,6 +160,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         
         ' save learning objectives'
         cls_learningobjective.enable_logging = True
+        
         model = cls_learningobjective.save(db, model, int(request.POST["published"]))
 
         ' save keywords '
@@ -195,4 +196,16 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     cls_learningobjective.delete_unpublished(db, lesson_id, request.user.id)
 
+    return HttpResponseRedirect(redirect_to_url)
+
+
+@permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
+def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
+    ''' Publish the learningobjective '''
+    
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    cls_learningobjective.publish_item(db, learning_objective_id, request.user.id)
+
+    # TODO: redirect
     return HttpResponseRedirect(redirect_to_url)

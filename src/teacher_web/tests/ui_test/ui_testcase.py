@@ -50,11 +50,10 @@ class UITestCase(TestCase):
         try:
             self.test_context.implicitly_wait(4)
 
-            elem = self.test_context.find_element_by_id("auth_user_email")
+            elem = self.test_context.find_element_by_id("id_username")
             elem.send_keys(TEST_USER_NAME)
-            #elem.send_keys(Keys.TAB)
-
-            elem = self.test_context.find_element_by_id("auth_user_password")
+            
+            elem = self.test_context.find_element_by_id("id_password")
             elem.send_keys(TEST_USER_PSWD)
 
             ' submit the form '

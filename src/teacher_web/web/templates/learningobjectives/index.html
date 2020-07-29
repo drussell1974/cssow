@@ -81,7 +81,7 @@
 </div>
 {% else %}
   {% for row in content.data.learning_objectives %}
-    <div class="post-preview">
+    <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
       <a href="#{{row.id}}" class="disabled">
         <h4 class="post-title">
@@ -107,8 +107,12 @@
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}
-          - <a href="{% url 'learningobjective.delete_item' content.data.scheme_of_work_id row.lesson_id row.id %} ">{{_("Remove")}}</a>
-           - <a href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">{{_("Edit")}}</a>
+
+          {% if row.published == False %} 
+            <a href="{% url 'learningobjective.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
+          {% endif %}
+          - <a class="delete" href="{% url 'learningobjective.delete_item' content.data.scheme_of_work_id row.lesson_id row.id %} ">{{_("delete")}}</a>
+           - <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">{{_("edit")}}</a>
         {% endif %}
       </p>
           </div>

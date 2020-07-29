@@ -8,6 +8,9 @@ enable_logging = False
 class LearningObjectiveModel (BaseModel):
 
     def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1):
+        # TODO: implement across all classes
+        super().__init__(id_, created, created_by_id, created_by_name, published)
+        
         self.id = int(id_)
         self.description = description
         self.notes = notes
@@ -27,10 +30,6 @@ class LearningObjectiveModel (BaseModel):
         self.key_words = key_words
         self.group_name = group_name
         self.is_key_objective = from_db_bool(is_key_objective)
-        self.created=created
-        self.created_by_id=try_int(created_by_id)
-        self.created_by_name=created_by_name
-        self.published=published
 
 
     def validate(self):
@@ -173,7 +172,8 @@ def get_all(db, lesson_id, auth_user):
                  " le_lo.is_key_objective as is_key_objective,"\
                  " lob.created as created, "\
                  " lob.created_by as created_by_id, "\
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name "\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                 " lob.published as published "\
                  " FROM sow_scheme_of_work as sow "\
                  " INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id "\
                  " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id "\
@@ -209,7 +209,8 @@ def get_all(db, lesson_id, auth_user):
             is_key_objective= row[14],
             created = row[15],
             created_by_id = row[16],
-            created_by_name = row[17])
+            created_by_name = row[17],
+            published=row[18])
 
         # TODO: remove __dict__ . The object should be serialised to json further up the stack
         data.append(model.__dict__)
@@ -238,7 +239,8 @@ def get_model(db, id_, auth_user):
                  " lob.group_name as group_name,"\
                  " lob.created as created,"\
                  " lob.created_by as created_by_id,"\
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                 " lob.published as published "\
                  " FROM sow_scheme_of_work as sow"\
                  " INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id"\
                  " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id"\
@@ -271,7 +273,8 @@ def get_model(db, id_, auth_user):
             group_name=row[12],
             created = row[13],
             created_by_id = row[14],
-            created_by_name = row[15])
+            created_by_name = row[15],
+            published = row[16])
 
     return model
 
@@ -431,13 +434,18 @@ def get_other_objectives(db, lesson_id, scheme_of_work_id, key_word):
 '''
 
 def save(db, model, published=1):
-    model.validate()
-    if model.is_valid == True:
-        if model.is_new() == True:
-            _insert(db, model, published)
-        else:
-            _update(db, model, published)
-    return model
+    
+    if published == 2:
+        _delete(db, model)
+    else:
+        model.validate()
+
+        if model.is_valid == True:
+            if model.is_new() == True:
+                _insert(db, model, published)
+            else:
+                _update(db, model, published)
+        return model
 
 '''
 def add_existing_objective(db, learning_objective_id, lesson_id, auth_user_id):
@@ -470,6 +478,14 @@ def update_is_key_objective(db, learning_objective_id, lesson_id, is_key_objecti
     result = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
     return result
+
+
+def publish_item(db, id_, auth_user_id):
+
+    model = LearningObjectiveModel(id_=id_)
+    model.publish = True
+    return _publish(db, model)
+
 
 """
 Private CRUD functions 
@@ -578,6 +594,19 @@ def _delete_unpublished(db, lesson_id, auth_user_id):
         execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
     
     return rows
+
+
+def _publish(db, model):
+    execHelper = ExecHelper()
+
+    str_publish = "UPDATE sow_learning_objective SET published = {published} WHERE id = {learning_objective_id};"
+    str_publish = str_publish.format(published=1 if model.published else 0, learning_objective_id=model.id)
+    
+    rval = []
+    rval = execHelper.execSql(db, str_publish, rval)
+
+    return rval
+
 
 def _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id):
 

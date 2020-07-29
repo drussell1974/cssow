@@ -53,7 +53,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 1)
 
         # test
         test.validate()
@@ -64,6 +64,7 @@ class Test_basemodel_Constructor(TestCase):
         self.assertEqual(1, test.created_by_id)
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0, "%s" % test.validation_errors)
+
 
     def test_constructor_is_new(self):
 
@@ -78,6 +79,7 @@ class Test_basemodel_Constructor(TestCase):
         self.assertEqual(0, test.id)
         self.assertTrue(test.is_new())
 
+
     def test_constructor_NOT_is_new(self):
 
         # test
@@ -90,3 +92,43 @@ class Test_basemodel_Constructor(TestCase):
         # assert
         self.assertEqual(1, test.id)
         self.assertFalse(test.is_new())
+
+
+
+    def test_constructor_is_unpublished(self):
+
+        # test
+        test = BaseModel(1,
+                        created = self.created_now,
+                        created_by_id = 1,
+                        created_by_name = "Dave Russell",
+                        published = 0)
+
+        # assert
+        self.assertEqual("unpublished", test.published_state)
+
+
+    def test_constructor_is_published(self):
+
+        # test
+        test = BaseModel(1,
+                        created = self.created_now,
+                        created_by_id = 1,
+                        created_by_name = "Dave Russell",
+                        published = 1)
+
+        # assert
+        self.assertEqual("published", test.published_state)
+
+
+    def test_constructor_is_deleting(self):
+
+        # test
+        test = BaseModel(1,
+                        created = self.created_now,
+                        created_by_id = 1,
+                        created_by_name = "Dave Russell",
+                        published = 2)
+
+        # assert
+        self.assertEqual("unpublished", test.published_state)

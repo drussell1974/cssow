@@ -19,9 +19,18 @@ class BaseModel(models.Model):
     def __init__(self, id_, created, created_by_id, created_by_name, published):
         self.id = int(id_)
         self.created = created
-        self.created_by_id = created_by_id
+        self.created_by_id = int(created_by_id)
         self.created_by_name = created_by_name
         self.published = True if published == 1 else 0
+        if self.published == 0:
+            self.published_state = "unpublished"
+        elif self.published == 1:
+            self.published_state = "published"
+        elif self.published == 2:
+            self.published_state =  "deleting"
+        else:
+            self.published_state =  "unknown"
+
 
 
     #def from_dict(self, srl):

@@ -19,7 +19,7 @@
     
       $("#cancelModal").modal("show");
     
-      $("#cancelModalButton").click(function() {
+      $("#cancelModalContinueButton").click(function() {
         window.history.back();
       })
     }
@@ -27,15 +27,14 @@
     function onDeletePressed(event) {           
       // do not submit
       event.preventDefault();
-      event.stopPropagation();
+      //event.stopPropagation();
     
       // contains href button
 
       $("#deleteModal").modal("show");
 
-      $("#deleteModal").on('hide.bs.modal', function() {
-        // redirect
-        
+      $("#deleteModalContinueButton").click(function() {
+        form.submit();
       })
 
     }

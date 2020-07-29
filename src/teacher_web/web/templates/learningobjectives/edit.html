@@ -1,4 +1,4 @@
-{% extends 'default/__layout.onecolumn.edit.html' %}
+{% extends 'default/__layout.onecolumn.html' %}
 
 
 {% block head %}
@@ -85,19 +85,13 @@
     <!-- Notes END -->
     <br>
     <div id="success"></div>
+    <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+    <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
+    <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+    <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
     <div class="form-group">
-        <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
-        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-        <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
-        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
-
-        <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>
-        <button type="submit" name="published" value="0" class="btn btn-secondary" id="saveDraftButton">{{_("Draft")}}</button>
-        <button type="cancel" class="btn btn-primary" id="cancelButton" >{{_("Cancel")}}</button>
-        {% if content.data.learningobjective.id > 0 %}
-            <button type="submit" name="published" value="2" class="btn btn-danger float-right" id="deleteButton">{{_("Delete")}}</button>
-        {% endif %}
+        {% include '_partials/form.buttons.validation.html' %}
     </div>
 </form>
 <hr>

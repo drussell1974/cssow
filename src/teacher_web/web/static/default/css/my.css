@@ -2,6 +2,13 @@
     color:#dc3545 !important;
 }
 
+.unpublished h1, 
+.unpublished h2,
+.unpublished h3,
+.unpublished h4 {
+    opacity: 0.5;
+}
+
 input:invalid {
     color:#dc3545 !important;
 }

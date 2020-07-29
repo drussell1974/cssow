@@ -46,7 +46,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, le.id as lesson_id, sow.key_stage_id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_scheme_of_work as sow INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE lob.id = 99 AND (lob.published = 1 or lob.created_by = 1);"
+                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, le.id as lesson_id, sow.key_stage_id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE lob.id = 99 AND (lob.published = 1 or lob.created_by = 1);"
                 , []
                 , log_info=handle_log_info)
 
@@ -61,7 +61,7 @@ class test_db__get_model(TestCase):
             "State the different numbering systems", 45,
             3, "KS3",
             "Binary,Denary,Hexadecimal", "Revise the names three different numbering systems",
-            "Theory", "2020-07-17 02:12:34", 1, "test_user"
+            "Theory", "2020-07-17 02:12:34", 1, "test_user", 1
         )]
         
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
@@ -72,7 +72,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, le.id as lesson_id, sow.key_stage_id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_scheme_of_work as sow INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE lob.id = 321 AND (lob.published = 1 or lob.created_by = 1);"
+                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, le.id as lesson_id, sow.key_stage_id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE lob.id = 321 AND (lob.published = 1 or lob.created_by = 1);"
                 , []
                 , log_info=handle_log_info)
             
