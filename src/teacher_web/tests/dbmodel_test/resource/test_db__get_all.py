@@ -52,28 +52,20 @@ class test_db__get_all(TestCase):
     def test__should_call_execSql_return_single_item(self):
         # arrange
         expected_result = [(
-            321, 
-            "Understanding numbering systems",
-            1,
-            5,
-            "Computer Science",
-            2,
-            "Denary",
-            3,
-            "Data representation",
-            38,
-            11,
-            "Yr10",
-            "Understand common numbering systems",
-            "2020-07-16 01:04:59",
-            1,
-            "test_user",
-            0,
-            "Denary,Binary,Hexadecimal",
-            4,
-            "learning_objectives",
-            23,
-            343
+            621,                                # id 0
+            "Understanding numbering systems",  # title 1
+            "Phaidon",                          # publisher 2
+            5,                                  # type_id 3
+            "Book",                             # type_name 4
+            "fa-book",                          # type_icon 5 
+            "README.md",                        # md_document_name 6
+            "Denary,Binary,Hexadecimal",        # page_note 7
+            "http://daverussell.co.uk",         # page_uri 8
+            123,                                # lesson_id 9
+            "2020-07-16 01:04:59",              # created 10
+            1,                                  # create_by_id 11
+            "test_user",                        # created_by_name 12
+            0                                   # pubished 13
         )]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
@@ -90,35 +82,70 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(1, len(actual_results))
 
-            self.assertEqual(321, actual_results[0]["id"])
+            self.assertEqual(621, actual_results[0]["id"])
             self.assertEqual("Understanding numbering systems", actual_results[0]["title"]),
-            #self.assertEqual(2, actual_results[0]["topic_id"]),
-            #self.assertEqual("Denary", actual_results[0]["topic_name"]),
-            #self.assertEqual(3, actual_results[0]["parent_topic_id"]),
-            #self.assertEqual("Data representation", actual_results[0]["parent_topic_name"]),
-            #self.assertEqual("Understand common numbering systems", actual_results[0]["summary"])
-            #self.assertEqual({}, actual_results[0]["key_words"])
-
+            self.assertEqual("Phaidon", actual_results[0]["publisher"])
+            self.assertEqual(5, actual_results[0]["type_id"])
+            self.assertEqual("Book", actual_results[0]["type_name"])
+            self.assertEqual("fa-book", actual_results[0]["type_icon"])
+            self.assertEqual("README.md", actual_results[0]["md_document_name"])
+            self.assertEqual("Denary,Binary,Hexadecimal", actual_results[0]["page_note"])
+            self.assertEqual("http://daverussell.co.uk", actual_results[0]["page_uri"])
+            self.assertEqual("2020-07-16 01:04:59", actual_results[0]["created"])
+            self.assertEqual(123, actual_results[0]["lesson_id"])
+            self.assertEqual(1, actual_results[0]["created_by_id"])
+            self.assertEqual("test_user", actual_results[0]["created_by_name"])
+            self.assertEqual(0, actual_results[0]["published"])
+            
 
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
-        expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Binary",3,"Data representation",38,
-            10,"Yr10","Understand binary representation in computer systems",
-            "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal,Number Systems",
-            4,"learning_objectives",23,343
+        expected_result = [(
+            321,                                # id 0
+            "Understanding numbering systems",  # title 1
+            "Phaidon",                          # publisher 2
+            1,                                  # type_id 3
+            "Book",                             # type_name 4
+            "fa-book",                          # type_icon 5 
+            "README.md",                        # md_document_name 6
+            "Denary,Binary,Hexadecimal",        # page_note 7
+            "http://daverussell.co.uk",         # page_uri 8
+            123,                                # lesson_id 9
+            "2020-07-16 01:04:59",              # created 10
+            1,                                  # create_by_id 11
+            "test_user",                        # created_by_name 12
+            0                                   # pubished 13
+        ),(
+            322,                                # id 0
+            "Convert binary to decimal",        # title 1
+            "YouTube",                          # publisher 2
+            2,                                  # type_id 3
+            "Video",                            # type_name 4
+            "fa-film",                          # type_icon 5 
+            "",                                 # md_document_name 6
+            "Step by step Video",               # page_note 7
+            "http://youtube.com/Z934AER5",      # page_uri 8
+            123,                                # lesson_id 9
+            "2020-07-16 01:46:32",              # created 10
+            1,                                  # create_by_id 11
+            "test_user",                        # created_by_name 12
+            0                                   # pubished 13
         ),
-        (322, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Denary",3,"Data representation",38,
-            10,"Yr10","Understand common numbering systems",
-            "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
-            4,"learning_objectives",23,343
-        ),
-        (323, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Hexadecimal",3,"Data representation",38,
-            10,"Yr10","Understand hexadecimal representation in computer systems",
-            "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
-            4,"learning_objectives",23,343
+        (
+            323,                                # id 0
+            "Convert binary to hex",            # title 1
+            "Dave Russell",                     # publisher 2
+            3,                                  # type_id 3
+            "Markdown",                         # type_name 4
+            "fa-book",                          # type_icon 5 
+            "",                                 # md_document_name 6
+            "Step by step walkthrough",         # page_note 7
+            "",                                 # page_uri 8
+            123,                                # lesson_id 9
+            "2020-07-16 01:46:32",              # created 10
+            1,                                  # create_by_id 11
+            "test_user",                        # created_by_name 12
+            0                                   # pubished 13
         )]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
@@ -138,19 +165,8 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(321, actual_results[0]["id"])
             self.assertEqual("Understanding numbering systems", actual_results[0]["title"]),
-            #self.assertEqual(2, actual_results[0]["topic_id"]),
-            #self.assertEqual("Binary", actual_results[0]["topic_name"]),
-            #self.assertEqual(3, actual_results[0]["parent_topic_id"]),
-            #self.assertEqual("Data representation", actual_results[0]["parent_topic_name"]),
-            #self.assertEqual("Understand binary representation in computer systems", actual_results[0]["summary"])
-            #self.assertEqual({}, actual_results[0]["key_words"])
-
+            self.assertEqual("Denary,Binary,Hexadecimal", actual_results[0]["page_note"]),
             
             self.assertEqual(323, actual_results[2]["id"])
-            self.assertEqual("Understanding numbering systems", actual_results[2]["title"]),
-            #self.assertEqual(2, actual_results[2]["topic_id"]),
-            #self.assertEqual("Hexadecimal", actual_results[2]["topic_name"]),
-            #self.assertEqual(3, actual_results[2]["parent_topic_id"]),
-            #self.assertEqual("Data representation", actual_results[2]["parent_topic_name"]),
-            #self.assertEqual("Understand hexadecimal representation in computer systems", actual_results[2]["summary"])
-            #self.assertEqual({}, actual_results[2]["key_words"])
+            self.assertEqual("Convert binary to hex", actual_results[2]["title"]),
+            self.assertEqual("Step by step walkthrough", actual_results[2]["page_note"]),

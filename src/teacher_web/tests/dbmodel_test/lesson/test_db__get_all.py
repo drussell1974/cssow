@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_lesson as test_context 
+from shared.models.cls_learningobjective import LearningObjectiveDataAccess
 
 get_all = test_context.LessonDataAccess.get_all
 handle_log_info = test_context.handle_log_info
@@ -18,7 +19,7 @@ class test_db__get_all(TestCase):
         mockLO = Mock()
         mockLO.id = 23
         mockLO.description = "Objective 1"
-        test_context.LessonDataAccess.get_all_objectives = Mock(return_value=[
+        LearningObjectiveDataAccess.get_all = Mock(return_value=[
             mockLO, 
             mockLO])
 
@@ -121,7 +122,7 @@ class test_db__get_all(TestCase):
             test_context.LessonDataAccess.get_all_keywords.assert_called()        
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0]["key_words"])
 
-            test_context.LessonDataAccess.get_all_objectives.assert_called()
+            LearningObjectiveDataAccess.get_all.assert_called()
             test_context.LessonDataAccess.get_number_of_resources.assert_called()
             test_context.LessonDataAccess.get_related_topic_ids.assert_called()
             test_context.LessonDataAccess.get_ks123_pathway_objective_ids.assert_called()
@@ -161,6 +162,14 @@ class test_db__get_all(TestCase):
                  , []
                  , log_info=handle_log_info)
 
+
+
+            LearningObjectiveDataAccess.get_all.assert_called()
+            test_context.LessonDataAccess.get_number_of_resources.assert_called()
+            test_context.LessonDataAccess.get_related_topic_ids.assert_called()
+            test_context.LessonDataAccess.get_ks123_pathway_objective_ids.assert_called()
+            test_context.LessonDataAccess._get_number_of_learning_objectives.assert_called()
+            
             self.assertEqual(3, len(actual_results))
 
 

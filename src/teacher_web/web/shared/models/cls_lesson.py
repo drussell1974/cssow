@@ -3,7 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
-from .cls_learningobjective import get_all as get_all_objectives
+from .cls_learningobjective import LearningObjectiveDataAccess # get_all as get_all_objectives
 from .cls_resource import get_all as get_all_resources, get_number_of_resources
 from .cls_keyword import KeywordDataAccess, KeywordModel
 
@@ -257,7 +257,7 @@ class LessonDataAccess:
                 created_by_name=row[14])
 
             model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
-            model.learning_objectives = LessonDataAccess.get_all_objectives(db, model.id, auth_user)
+            model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
             model.resources = LessonDataAccess.get_all_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
             model.pathway_ks123_ids = LessonDataAccess.get_ks123_pathway_objective_ids(db, model.id)
             
@@ -329,7 +329,7 @@ class LessonDataAccess:
             ' get the number of learning objectives ' 
             model.number_of_learning_objective = LessonDataAccess._get_number_of_learning_objectives(db, model.id, auth_user)
             ' get learning objectives for this lesson '
-            model.learning_objectives = LessonDataAccess.get_all_objectives(db, model.id, auth_user)
+            model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
             ' get number of resources for this lesson '
             model.number_of_resource = LessonDataAccess.get_number_of_resources(db, model.id, auth_user)
             ' get related topics '
@@ -401,7 +401,7 @@ class LessonDataAccess:
 
     @staticmethod
     def get_all_objectives(db, id, auth_user):
-        return get_all_objectives(db, lesson_id=id, auth_user=auth_user)
+        return LearningObjectiveDataAccess.get_all(db, lesson_id=id, auth_user=auth_user)
     
     
     @staticmethod

@@ -40,10 +40,10 @@ class LessonSaveViewModel(BaseViewModel):
         self.model = data
 
         try:
-
+            
             # transform key_words from string to dictionary list
             decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item), json.loads(key_words_json)))
-            
+                    
             #handle_log_warning(self.db, "processing key words", decoded_key_words)
 
             # TODO: move to execute function for saving
@@ -64,7 +64,7 @@ class LessonSaveViewModel(BaseViewModel):
 
     def execute(self, published):
         self.model.validate()
-        
+
         if self.model.is_valid == True:
             data = LessonDataAccess.save(self.db, self.model, self.auth_user, published)
             self.model = data   

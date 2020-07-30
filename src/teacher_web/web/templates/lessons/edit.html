@@ -150,9 +150,11 @@
     <div id="success"></div>
     <div class="form-group">
 
-      <button type="submit" name="published" value="2" class="btn btn-secondary" id="btn-delete">{{_("Delete")}}</button>
       <button type="submit" name="published" value="0" class="btn btn-primary" id="draftButton">{{_("Draft")}}</button>
       <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save and Publish")}}</button>
+      <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
+      <!-- RIGHT -->
+      <button type="submit" name="published" value="2" class="btn btn-danger float-right" id="btn-delete">{{_("Delete")}}</button>
       <!-- Hidden Fields -->
       <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
       <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
@@ -161,7 +163,6 @@
       <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
       <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
       <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
-      <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
     </div>
   </form><!-- form#form -->
 {% endblock %}

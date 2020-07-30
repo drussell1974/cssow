@@ -23,6 +23,7 @@
 {% endblock %}
 
 {% block maincontent %}
+<!-- #231: needs-validation class to select form in formValidation.js -->
 <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.save' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
     {% csrf_token %}
     <!-- Solo Taxonomy START -->
@@ -91,7 +92,7 @@
     <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
     <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
     <div class="form-group">
-        <!-- #231: use form.buttons.validition partial -->
+        <!-- #TODO: #231: use form.buttons.validition partial -->
         {% include '_partials/form.buttons.validation.html' %}
     </div>
 </form>

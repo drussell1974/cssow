@@ -1,3 +1,4 @@
+import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
@@ -7,8 +8,8 @@ from app.lessons.viewmodels import LessonSaveViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
+from shared.serializers.srl_keyword import KeywordModelSerializer
 
-#Serializer = test_context.KeywordModelSerializer
 
 class test_viewmodel_SaveViewModel(TestCase):
 
@@ -20,42 +21,43 @@ class test_viewmodel_SaveViewModel(TestCase):
     def tearDown(self):
         pass
 
-    @skip("Ensure correct mock keyword array is being returned")
+    #@skip("Ensure correct mock keyword array is being returned")
     def test_execute_called_save__add_model_to_data(self):
         
         # arrange
         
-        on_save__data_to_return = Model(99, "Quisque eu venenatis sem")
-        
+        on_save__data_to_return = Model(92, "Quisque eu venenatis sem")
+        on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(DataAccess, "save", return_value=on_save__data_to_return):
 
                 return_keyword_model = KeywordModel(4, term="Four")
+                return_keyword_model.is_valid = True
+
                 save_keyword.execute = Mock(return_value=return_keyword_model)
                 save_keyword.model = return_keyword_model
 
                 # act
                 mock_model = Model(0, "Proin id massa metus. Aliqua tincidunt.")
-                mock_model.key_words = "12,13,14"
                 mock_model.scheme_of_work_id = 12
                 mock_model.topic_id = 12
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
 
-                test_context = ViewModel(self.mock_db, mock_model, key_words_json="", auth_user=99)
-                test_context.execute()
+                test_context = ViewModel(self.mock_db, mock_model, '[{"id": 4, "term": "Four", "definition": ""}]', auth_user=99)
+                test_context.execute(published=1)
                                 
                 # assert functions was called
-                #DataAccess.save.assert_called()
+                DataAccess.save.assert_called()
 
-                self.assertEqual("", test_context.model.validation_errors)            
-                self.assertEqual(99, test_context.model.id)
-                self.assertEqual("Integer convallis erat maximus bibendum", test_context.model.title)
+                self.assertEqual({}, test_context.model.validation_errors)            
+                self.assertEqual(92, test_context.model.id)
+                self.assertEqual("Quisque eu venenatis sem", test_context.model.title)
                 self.assertEqual([], test_context.model.key_words)
-                self.assertTrue(test_context.model.is_valid)            
-                self.assertEqual("", test_context.model.validation_errors)            
-
+                self.assertEqual({}, test_context.model.validation_errors)            
+                self.assertTrue(test_context.model.is_valid)
+                
 
     def test_execute_called_save__add_model_to_data__return_invalid(self):
         

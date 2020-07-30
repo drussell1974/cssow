@@ -47,7 +47,6 @@ def index(request, scheme_of_work_id, lesson_id):
 
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
-    print('Creating a new resource...')
 
     model = cls_resource.ResourceModel(
         id_=0,
@@ -102,7 +101,9 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
+    #TODO: #231: pass the active model to ViewModel
+    #TODO: #231: pass the delete item route
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -118,7 +119,6 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         model.md_document_name = f
         
     """ save_item non-view action """
-    print('saving resource... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id)
     # create instance of model from request.vars
     cls_resource.enable_logging = True
     model = cls_resource.ResourceModel(
@@ -145,12 +145,10 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
 
     model.validate()
 
-    print("saving resource - model.is_valid:", model.is_valid, ", model.validation_errors:", model.validation_errors)
-    
     if model.is_valid == True:
         ' save resource'
         #cls_resource.enable_logging = True
-        model = cls_resource.save(db, model, int(request.POST["published"]))
+        model = cls_resource.save(db, model, request.user.id, int(request.POST["published"]))
 
         ' upload file if Markdown document '
         if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
@@ -187,5 +185,15 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     cls_resource.delete_unpublished(db, lesson_id, request.user.id)
+
+    return HttpResponseRedirect(redirect_to_url)
+
+
+def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
+    ''' Publish the learningobjective '''
+    #231: published item     
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    cls_resource.publish_item(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)

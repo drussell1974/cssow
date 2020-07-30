@@ -784,8 +784,6 @@ class test_LessonModel_validate__key_words_str(Lesson_TestCase):
                 KeywordModel(n, "Bytes {}".format(n))
             )
 
-        print("number of key_words: {}".format(len(test.key_words)))
-
         # test
         test.validate()
 

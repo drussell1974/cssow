@@ -1,9 +1,9 @@
 from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
+from selenium.webdriver.support.select import Select
 
-
-class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
+class uitest_schemeofwork_resources_edit_delete(UITestCase):
 
     test_context = WebBrowserContext()
     
@@ -11,49 +11,53 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
 
         #self.test_context.implicitly_wait(10)
         # setup
-        #231: create a new learning objective
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        #231: create a new resource
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/resources/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
-        # create learning objective
-
+         # setup
+        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-        ' ctl-solo_taxonomy_id - SELECT VALID '
+        # test
 
-        elem = self.test_context.find_element_by_id("ctl-solo_taxonomy_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "Multistructural: Describe, List (give an account or give examples of)":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
+        ' Create valid information '
 
-        ' description '
-
-        elem = self.test_context.find_element_by_id("ctl-description")
+        ' ctl-title '
+        elem = self.test_context.find_element_by_id("ctl-title")
         elem.send_keys("test_page__should_redirect_to_index_if_valid")
 
-        ' ctl-content_id SELECT VALID '
-
-        elem = self.test_context.find_element_by_id("ctl-content_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "fundamentals of programming":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
-
-        ' group_name Enter Valid '
-
-        elem = self.test_context.find_element_by_id("ctl-group_name")
-        elem.clear()
-        elem.send_keys("Loerm ipsum dol")
+        ' ctl-uri '
+        elem = self.test_context.find_element_by_id("ctl-uri")
+        elem.send_keys("https://www.pgonline.co.uk/resources/computer-science/a-level-ocr/ocr-a-level-textbook/")
         
+        ' ctl-publisher '
+        elem = self.test_context.find_element_by_id("ctl-publisher")
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
+
+        ' ctl-type_id '
+        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
+        elem.select_by_visible_text("Markdown")
+
+        ' ctl-md_document_name '
+        elem = self.test_context.find_element_by_id("ctl-md_file")
+        import os
+        test_file = "{}/README.md".format(os.getcwd())
+        elem.send_keys(test_file)
+
+        ' ctl-notes '
+        elem = self.test_context.find_element_by_id("ctl-notes")
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mollis ligula dui, quis feugiat elit hendrerit condimentum. Mauris dignissim ultrices.")
+
         ' submit the form '
+        #self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_id("saveDraftButton")
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
+
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
@@ -96,13 +100,13 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         elem = self.test_context.find_element_by_id("deleteModalContinueButton")
         elem.click()
         
-        self.wait(s=5)
+        self.wait(s=2)
 
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         
-        #231: items after should be less than before
+        #TODO: #231: items after should be less than before
         
-        self.assertEqual(8, len(items_after))
+        self.assertEqual(4, len(items_after))

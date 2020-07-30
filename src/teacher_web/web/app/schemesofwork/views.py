@@ -86,8 +86,6 @@ def save(request, scheme_of_work_id):
     
     model.validate()
 
-    print("saving... model.is_valid :", model.is_valid)
-        
     if model.is_valid == True:
         ' save the lesson '
         cls_schemeofwork.enable_logging = True
@@ -100,7 +98,6 @@ def save(request, scheme_of_work_id):
     else:
         """ redirect back to page and show message """
         request.session.alert_message = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
-        print("saving... scheme_of_work_id:", scheme_of_work_id, ", model.validation_errors:", model.validation_errors)
         redirect_to_url = reverse('schemesofwork.edit', args=[scheme_of_work_id])
 
     return HttpResponseRedirect(redirect_to_url)

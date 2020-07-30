@@ -18,6 +18,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # setup
         test = BaseModel(0,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -32,8 +33,9 @@ class Test_basemodel_Constructor(TestCase):
 
     def test_constructor_default(self):
 
-        # test
+        # test (These are required)
         test = BaseModel(0,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -41,6 +43,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # assert
         self.assertEqual(0, test.id)
+        self.assertEqual("Some name or title", test.display_name)
         self.assertEqual(False, test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0)
 
@@ -50,6 +53,7 @@ class Test_basemodel_Constructor(TestCase):
         # setup
 
         test = BaseModel(id_=1,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -70,6 +74,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # test
         test = BaseModel(0,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -84,6 +89,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # test
         test = BaseModel(1,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -99,6 +105,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # test
         test = BaseModel(1,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -112,6 +119,7 @@ class Test_basemodel_Constructor(TestCase):
 
         # test
         test = BaseModel(1,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
@@ -125,10 +133,11 @@ class Test_basemodel_Constructor(TestCase):
 
         # test
         test = BaseModel(1,
+                        display_name = "Some name or title",
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
                         published = 2)
 
         # assert
-        self.assertEqual("unpublished", test.published_state)
+        self.assertEqual("deleting", test.published_state)

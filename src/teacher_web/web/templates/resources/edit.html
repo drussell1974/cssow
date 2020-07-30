@@ -19,7 +19,8 @@
 {% endblock %}
 
 {% block maincontent %}
-<form name="edit-resource" id="form" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
+<!-- #TODO: #231: needs-validation class to select form in formValidation.js -->
+<form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
     <!-- Title START -->
     <div class="control-group">
@@ -93,33 +94,31 @@
     <div class="control-group">
         <div class="form-group controls">
             <label>{{_("Notes")}}</label>
-            <textarea rows="5" class="form-control" name="page_note" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500">
-                {{content.data.resource.page_note}}
-            </textarea>
+            <input type="text" class="form-control" name="page_note" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.resource.page_note}}" />
             <p class="help-block text-danger"></p>
         </div>
     </div>
     <!-- Notes END -->
     <br>
     <div id="success"></div>
+    
+    <input type="hidden" name="id" value="{{content.data.resource.id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+    <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+    <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+    
     <div class="form-group">
-        <input type="hidden" name="id" value="{{content.data.resource.id}}">
-        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
-        <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>
-        <button type="submit" name="published" value="0" class="btn btn-secondary" id="saveDraftButton">{{_("Draft")}}</button>
-        <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{_("Cancel")}}</button>
+        <!-- #TODO: #231: use form.buttons.validition partial -->
+        {% include '_partials/form.buttons.validation.html' %}
     </div>
+</div>
 </form>
 <hr>
 {% endblock %}
 
 
 {% block page_js %}
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <!-- Bootstrap tokenfield javascript -->
+    <!-- #TODO: #231: remove jquery scripts to fix modal not working with errors - should not be called in __layout and after bootstrap -->
     
     <script>
         const md_document_control_group = document.querySelector("#md_document--control-group");

@@ -93,7 +93,7 @@
           {% elif row.solo_taxonomy_level == "D" %}
             <i class="fas fa-trophy"></i>
           {% endif %}
-          {{ row.description}}
+          {{ row.description}} {{ row.published_state }}
         </h4>
         {% if request.user.is_authenticated %}
           <div class="custom-control custom-checkbox">  
@@ -110,7 +110,7 @@
         {% if request.user.is_authenticated %}
 
           {% if row.published == False %} 
-            <!-- #231: published item from index -->
+          <!-- #TODO: #231: published item from index -->
             <a href="{% url 'learningobjective.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
           {% endif %}
           - <a class="delete" href="{% url 'learningobjective.delete_item' content.data.scheme_of_work_id row.lesson_id row.id %} ">{{_("delete")}}</a>

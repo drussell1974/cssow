@@ -76,9 +76,7 @@
     <div class="control-group">
         <div class="form-group controls">
             <label>{{_("Description")}}</label>
-            <textarea rows="5" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" required>
-                {{content.data.scheme_of_work.description}}
-            </textarea>
+            <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" required value="{{content.data.scheme_of_work.description}}" />
             <p class="help-block text-danger"></p>
         </div>
     </div>
@@ -90,6 +88,8 @@
         <button type="submit" name="published" value="0" class="btn btn-primary" id="saveButton">{{_("Draft")}}</button>
         <button type="submit" name="published" value="1" class="btn btn-primary" id="saveAndPublishButton">{{_("Save and publish")}}</button>
         <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
+        <!-- RIGHT -->
+        <button type="submit" name="published" value="2" class="btn btn-danger float-right" id="btn-delete">{{_("Delete")}}</button>
     </div>
 </form>
 {% endblock %}

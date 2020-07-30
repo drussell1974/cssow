@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
+from .viewmodels import LearningObjectiveSaveViewModel, LearningObjectiveGetModelViewModel, LearningObjectiveGetAllViewModel
+
 
 # TODO: use view models
 from shared.models import cls_lesson, cls_learningobjective, cls_schemeofwork, cls_solotaxonomy, cls_content, cls_examboard
@@ -21,7 +23,7 @@ def index(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    learning_objectives = cls_learningobjective.get_all(db, lesson_id, request.user.id)
+    learningobjectives_view = LearningObjectiveGetAllViewModel(db, lesson_id, request.user.id)
     
     lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  
     
@@ -29,7 +31,7 @@ def index(request, scheme_of_work_id, lesson_id):
         "scheme_of_work_id":int(scheme_of_work_id),
         "lesson_id":int(lesson_id),
         "lesson": lesson,
-        "learning_objectives": learning_objectives,
+        "learning_objectives": learningobjectives_view.model,
         "lesson_options": lesson_options,
     }
 
@@ -41,27 +43,27 @@ def index(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
-    print('Creating a new learning objective...')
 
     # check if an existing_learning_objective_id has been passed
      
-    model = cls_learningobjective.get_model(db, 0, request.user.id)
-
+    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, request.user.id)
+    model = get_lessonobjective_view.model
+    
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
         # required for creating a new object
-        model.scheme_of_work_id = int(scheme_of_work_id)
+        get_lessonobjective_view.model.scheme_of_work_id = int(scheme_of_work_id)
         
     if lesson_id is not None:
         # required for creating a new object
-        model.lesson_id = int(lesson_id)
+        get_lessonobjective_view.model.lesson_id = int(lesson_id)
 
     key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
 
-    model.lesson_id = lesson.id
-    model.key_stage_id = key_stage_id
+    get_lessonobjective_view.model.lesson_id = lesson.id
+    get_lessonobjective_view.model.key_stage_id = key_stage_id
 
     solo_taxonomy_options = cls_solotaxonomy.get_options(db)
 
@@ -85,9 +87,9 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Edit an existing learning objective '''
     
-    cls_learningobjective.enable_logging = True
-    model = cls_learningobjective.get_model(db, learning_objective_id, request.user.id)
-    
+    get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, request.user.id)
+    model = get_model_viewmodel.model
+
     # redirect if not found
     if model is None or model.id == 0:
         redirect_to_url = reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id])
@@ -122,7 +124,8 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         "solo_taxonomy_options": solo_taxonomy_options,
         "content_options": content_options,
     }
-    #231: pass the active model to ViewModel
+    #TODO: #231: pass the active model to ViewModel
+    #TODO: #231: pass the delete item route
     view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "learningobjectives/edit.html", view_model.content)
@@ -131,7 +134,6 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
-    print('saving learning objective... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id, ", learning_objective_id:", learning_objective_id)
     
     # create instance of model from request.vars
 
@@ -152,16 +154,19 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    model.validate()
+    viewmodel = LearningObjectiveSaveViewModel(db, model, request.user.id)
     
-    print("saving learning objective - model.is_valid:", model.is_valid, ", model.validation_errors:", model.validation_errors)
+    model = viewmodel.model
+
+    model.validate()
     
     if model.is_valid == True:
         
         ' save learning objectives'
-        cls_learningobjective.enable_logging = True
-        
-        model = cls_learningobjective.save(db, model, int(request.POST["published"]))
+        viewmodel.execute(int(request.POST["published"]))
+        model = viewmodel.model
+
+        #model = cls_learningobjective.save(db, model, request.user.id, int(request.POST["published"]))
 
         ' save keywords '
         if request.POST["next"] != None and request.POST["next"] != "":

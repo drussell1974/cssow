@@ -69,7 +69,7 @@ class test_app_route_learningobjectives_page(TestCase):
         url = reverse("learningobjective.delete_unpublished", args=[127, 32])
         self.assertEqual("/schemesofwork/127/lessons/32/learning-objectives/delete_unpublished", url)
     
-    
+    #TODO: #231: test route for publish_item
     def test__learningobjective_publish__url_resolves_to_index(self):
         url = resolve("/schemesofwork/127/lessons/13/learning-objectives/348/publish")
         self.assertEqual("learningobjective.publish_item", url.url_name)

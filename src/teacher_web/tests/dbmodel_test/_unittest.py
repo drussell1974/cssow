@@ -24,12 +24,10 @@ class FakeDb:
 
 
     def __enter___(self):
-        print("enter...")
         return Cursor()
 
     
     def __exit___(self,  type, value, traceback):
-        print("exit...")
         pass
 
     def cursor(self):

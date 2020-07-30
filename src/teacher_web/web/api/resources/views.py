@@ -13,10 +13,9 @@ class ResourceViewSet(APIView):
     ''' API endpoint for a lesson '''
 
     def get(self, request, scheme_of_work_id, lesson_id, resource_id):
-        
-        #resource_type_id = request.GET.get("resource_type_id", 0)
 
         resource = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
+
         return JsonResponse({"resource": resource.__dict__})
     
 """

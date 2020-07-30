@@ -96,5 +96,6 @@ def handle_log_error(db, msg, details = "", log_type = LOG_TYPE.Error):
 
 
 def handle_log_exception(db, msg, ex, log_type = LOG_TYPE.Error):
+    return
     logger = Log(db, settings.LOGGING_LEVEL)
     logger.write(msg, "{}".format(ex), log_type)

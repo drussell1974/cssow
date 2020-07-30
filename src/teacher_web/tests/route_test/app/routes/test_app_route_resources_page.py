@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.resources.views import index, new, edit, delete_item, save, delete_unpublished
+from app.resources.views import index, new, edit, delete_item, save, delete_unpublished, publish_item
 
 # Create your tests here.
 class test_app_route_resources_page(TestCase):
@@ -68,4 +68,16 @@ class test_app_route_resources_page(TestCase):
     def test__resources_save__url_resolves_to_save__reverse(self):
         url = reverse("resource.delete_unpublished", args=[127, 32])
         self.assertEqual("/schemesofwork/127/lessons/32/resources/delete_unpublished", url)
+
+    #TODO: #231: test route for publish_item
+    def test__learningobjective_publish__url_resolves_to_index(self):
+        url = resolve("/schemesofwork/127/lessons/13/resources/545/publish_item")
+        self.assertEqual("resource.publish_item", url.url_name)
+        self.assertEqual(url.func, publish_item)
+
+
+    def test__learningobjective_publish__url_resolves_to_index__reverse(self):
+        url = reverse("resource.publish_item", args=[127,13,545])
+        self.assertEqual("/schemesofwork/127/lessons/13/resources/545/publish_item", url)
+
 

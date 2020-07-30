@@ -19,8 +19,10 @@ class ResourceTypeModel:
 
 class ResourceModel (BaseModel):
         
-    def __init__(self, id_, lesson_id, scheme_of_work_id, title, publisher, page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
-        self.id = int(id_)
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
+        
+        #TODO: #231 call super().__init__(id_, created, created_by_id, created_by_name, published)
+        super().__init__( id_, title, created, created_by_id, created_by_name, published)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
@@ -32,11 +34,13 @@ class ResourceModel (BaseModel):
         self.lesson_id = lesson_id
         self.scheme_of_work_id = scheme_of_work_id
         self.last_accessed = last_accessed
-        self.created = created
-        self.created_by_id = try_int(created_by_id)
-        self.created_by_name = created_by_name
-        self.published = published
+        #self.created = created
+        #self.created_by_id = try_int(created_by_id)
+        #self.created_by_name = created_by_name
+        #self.published = published
         self.is_expired = is_expired
+
+        self.set_published_state()  
 
 
     def validate(self):
@@ -93,7 +97,6 @@ class ResourceModel (BaseModel):
             self.md_document_name = sql_safe(self.md_document_name)
 
 
-
 """
 DAL
 """
@@ -105,6 +108,7 @@ def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
     """ Get resources for lesson """
     execHelper = ExecHelper()
 
+    #TODO: #231 get published
     str_select = "SELECT" \
                 " res.id as id," \
                 " res.title as title," \
@@ -160,7 +164,7 @@ def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
 def get_model(db, id_, scheme_of_work_id, auth_user):
     """ Get Resource """
     execHelper = ExecHelper()
-
+    #TODO: #231 get published
     str_select = "SELECT" \
                 " res.id as id," \
                 " res.title as title," \
@@ -299,17 +303,22 @@ def get_number_of_resources(db, lesson_id, auth_user):
     return len(rows)
 
 
-def save(db, model, auth_user):
+def save(db, model, auth_user, published=1):
     '''
     Upsert the reference
     :param db: database context
     :param model: the ReferenceModel
     :return: the updated ReferenceModel
     '''
-    if model.is_new() == True:
-        model.id = _insert(db, model, auth_user)
+    #TODO: #231: Add delete        
+    if published == 2:
+        _delete(db, model.id, auth_user)
     else:
-        _update(db, model, auth_user)
+        
+        if model.is_new() == True:
+            model.id = _insert(db, model, auth_user)
+        else:
+            _update(db, model, auth_user)
 
     return model
 
@@ -327,6 +336,13 @@ def delete_unpublished(db, lesson_id, auth_user_id):
     """ Delete all unpublished lessons """
 
     return _delete_unpublished(db, lesson_id, auth_user_id)
+
+
+def publish_item(db, id_, auth_user_id):
+
+    model = ResourceModel(id_=id_)
+    model.publish = True
+    return _publish(db, model)
 
 
 """
@@ -412,3 +428,15 @@ def _delete_unpublished(db, lesson_id, auth_user_id):
     rows = []
     rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
     return rows
+
+
+def _publish(db, model):
+    execHelper = ExecHelper()
+
+    str_publish = "UPDATE sow_resource SET published = {published} WHERE id = {resource_id};"
+    str_publish = str_publish.format(published=1 if model.published else 0, resource_id=model.id)
+    
+    rval = []
+    rval = execHelper.execSql(db, str_publish, rval)
+
+    return rval

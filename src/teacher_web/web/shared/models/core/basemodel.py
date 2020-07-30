@@ -5,9 +5,9 @@ import re
 from django.db import models
 import warnings
 
-
 class BaseModel(models.Model):
     id = 0
+    display_name = ""
     created = ""
     created_by_id = 0
     created_by_name = ""
@@ -15,23 +15,17 @@ class BaseModel(models.Model):
     # TODO: return dictionary with double quotes for json parsing
     validation_errors = {}
     error_message = ""
-    
-    def __init__(self, id_, created, created_by_id, created_by_name, published):
+    published = 0
+
+
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published):
         self.id = int(id_)
+        self.display_name = display_name
         self.created = created
         self.created_by_id = int(created_by_id)
         self.created_by_name = created_by_name
-        self.published = True if published == 1 else 0
-        if self.published == 0:
-            self.published_state = "unpublished"
-        elif self.published == 1:
-            self.published_state = "published"
-        elif self.published == 2:
-            self.published_state =  "deleting"
-        else:
-            self.published_state =  "unknown"
-
-
+        self.published = published
+        self.set_published_state()
 
     #def from_dict(self, srl):
     #    self.id = srl["id"]
@@ -41,6 +35,17 @@ class BaseModel(models.Model):
     """
     State members
     """
+
+    def set_published_state(self):
+        if self.published == 0:
+            self.published_state = "unpublished"
+        elif self.published == 1:
+            self.published_state = "published"
+        elif self.published == 2:
+            self.published_state = "deleting"
+        else:
+            self.published_state = "unknown"    
+            
 
     def is_new(self):
         if self.id == 0:

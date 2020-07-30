@@ -36,7 +36,6 @@
       $("#deleteModalContinueButton").click(function() {
         form.submit();
       })
-
     }
 
     // prevent validation when cancel button is clicked 
@@ -49,13 +48,16 @@
     });
 
     // prevent validation when delete button is clicked 
-
-    document.getElementById('deleteButton').addEventListener('click', function(event) {
-      // set all forms to cancel validation
-      Array.prototype.filter.call(forms, function(form) {
-        form.setAttribute('novalidate', "");
-      })
-    });
+    var deleteButtonElem = document.getElementById('deleteButton');
+    console.log(deleteButtonElem)
+    if (deleteButtonElem != undefined) { 
+      deleteButtonElem.addEventListener('click', function(event) {
+        // set all forms to cancel validation
+        Array.prototype.filter.call(forms, function(form) {
+          form.setAttribute('novalidate', "");
+        })
+      });
+    }
 
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
