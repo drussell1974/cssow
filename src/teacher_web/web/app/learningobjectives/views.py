@@ -122,7 +122,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         "solo_taxonomy_options": solo_taxonomy_options,
         "content_options": content_options,
     }
-    
+    #231: pass the active model to ViewModel
     view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "learningobjectives/edit.html", view_model.content)
@@ -202,7 +202,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
-    
+    #231: published item     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     cls_learningobjective.publish_item(db, learning_objective_id, request.user.id)

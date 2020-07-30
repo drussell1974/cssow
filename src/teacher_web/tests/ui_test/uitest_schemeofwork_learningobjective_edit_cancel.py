@@ -8,6 +8,7 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
 
     def setUp(self):
         # setup
+        #231: open a learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
 
 
@@ -33,11 +34,13 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
 
         ' Open Modal '
 
+        #231: click the cancel button
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
 
         ' click no '        
         
+        #231: then click the stay button
         elem = self.test_context.find_element_by_id("cancelModalStayButton")
         elem.click()
         
@@ -58,12 +61,14 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
 
         ' Open Modal '
 
+        #231: click the cancel button
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
 
 
         ' click no (finding button appears to cancel dialog) '        
         
+        #231: then click the continue button
         elem = self.test_context.find_element_by_id("cancelModalContinueButton")
         elem.click()
         

@@ -9,6 +9,7 @@ class uitest_schemeofwork_learningobjective_edit_delete__cancel(UITestCase):
     
     def setUp(self):
         # setUp use existing
+        #231: open a learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
 
 
@@ -38,15 +39,19 @@ class uitest_schemeofwork_learningobjective_edit_delete__cancel(UITestCase):
         elem.click()
 
         ' Open Modal '
+        
+        #231: click the delete button
 
         elem = self.test_context.find_element_by_id("deleteButton")
         elem.click()
 
         ' Delete Item from Modal '        
-        
+        #231: then click the stay button
+
         elem = self.test_context.find_element_by_id("deleteModalStayButton")
         elem.click()
         
+        #231: stay on page
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
         

@@ -11,6 +11,7 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
 
         #self.test_context.implicitly_wait(10)
         # setup
+        #231: create a new learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
         # create learning objective
@@ -74,6 +75,7 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
+        #231: find the unpublished learning objective in the index
 
         elem = self.test_context.find_element_by_css_selector(".unpublished .edit")
 
@@ -84,11 +86,13 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
 
         ' After opening edit Open Modal '
 
+        #231: click the delete button
         elem = self.test_context.find_element_by_id("deleteButton")
         elem.click()
 
         ' Delete Item from Modal '        
         
+        #231: then click the continue button
         elem = self.test_context.find_element_by_id("deleteModalContinueButton")
         elem.click()
         
@@ -99,6 +103,6 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         
-        # items after should be less than before
-         
+        #231: items after should be less than before
+        
         self.assertEqual(8, len(items_after))
