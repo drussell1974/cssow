@@ -38,9 +38,7 @@ class test_db__delete(TestCase):
          # arrange
         model = LessonModel(101, "")
         
-        expected_result = 1
-
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=model):
             # act
 
             actual_result = delete(self.fake_db, 1, model.id)
@@ -53,4 +51,4 @@ class test_db__delete(TestCase):
              , []
              , log_info=handle_log_info)
             
-            self.assertEqual(expected_result, actual_result)
+            self.assertEqual(101, actual_result.id)

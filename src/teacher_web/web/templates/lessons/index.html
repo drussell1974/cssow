@@ -59,7 +59,8 @@
 
 {% for row in content.data.lessons %}
   
-<div class="post-preview">
+<!-- #TODO: #231: show published_state as class -->
+<div class="post-preview {{ row.published_state }}">
   <a name="{{ row.id}}"></a>
   <h2 class="post-title">
     Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
@@ -89,7 +90,7 @@
           <a href="{% url 'lesson.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
         {% endif %}
         - <a href="{% url 'lesson.delete' row.scheme_of_work_id row.id %}">{{_("delete")}}</a> 
-        - <a href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">{{_("edit")}}</a> 
+        - <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">{{_("edit")}}</a> 
         - <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
     {% endif %} 
     </p>

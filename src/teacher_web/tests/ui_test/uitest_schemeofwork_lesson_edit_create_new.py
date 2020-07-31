@@ -125,7 +125,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("draftButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
 

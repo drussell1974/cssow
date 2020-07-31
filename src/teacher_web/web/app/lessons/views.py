@@ -99,7 +99,8 @@ def edit(request, scheme_of_work_id, lesson_id):
         "show_ks123_pathway_selection": lesson.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(lesson.title), data=data)
+    #TODO: #231: pass the active model to ViewModel
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(lesson.title), data=data, active_model=lesson)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -209,7 +210,7 @@ def save(request, scheme_of_work_id, lesson_id):
     if int(request.POST["orig_id"]) > 0:
         model.id = int(request.POST["orig_id"])
         
-
+    
     # TODO: Create viewmodel from serialized POST data https://www.django-rest-framework.org/api-guide/parsers/#formparser
 
     viewmodel = LessonSaveViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=request.user.id)
@@ -217,9 +218,9 @@ def save(request, scheme_of_work_id, lesson_id):
     
     model.validate()
     
-
     if model.is_valid == True:
         ' save the lesson '
+
 
         viewmodel.execute(published)
         model = viewmodel.model

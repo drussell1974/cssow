@@ -330,9 +330,6 @@ class LearningObjectiveDataAccess:
     
         model.id = new_id
 
-        #for row in rows:
-        #    model.id = int(row[0])
-
         rows = _insert_lesson_lessonobjectives(db, model, rows)
         
         return model

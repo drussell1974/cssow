@@ -77,7 +77,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("draftButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -99,7 +99,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("draftButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         

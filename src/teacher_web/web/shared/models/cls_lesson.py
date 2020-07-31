@@ -24,6 +24,8 @@ class LessonModel (BaseModel):
     number_of_resource = 0
 
     def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+        #231: implement across all classes
+        super().__init__(id_, title, created, created_by_id, created_by_name, published)
         self.id = id_
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
@@ -42,10 +44,10 @@ class LessonModel (BaseModel):
         self.summary = summary
         self.pathway_objective_ids = []
         self.pathway_ks123_ids = []
-        self.created=created
-        self.created_by_id=try_int(created_by_id)
-        self.created_by_name=created_by_name
-        self.published=published
+        #self.created=created
+        #self.created_by_id=try_int(created_by_id)
+        #self.created_by_name=created_by_name
+        #self.published=published
         self.orig_id = orig_id
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
 
@@ -191,12 +193,13 @@ class LessonDataAccess:
     def save(db, model, auth_user, published=1):
         """ Save Lesson """
         try:
+            #TODO: #231: Add delete       
             if model.is_new() == True:
-                _insert(db, model, published, auth_user_id=auth_user)
+                model = _insert(db, model, published, auth_user_id=auth_user)
             elif published == 2:
-                delete(db, auth_user, model.id)
+                model = delete(db, auth_user, model.id)
             else:
-                _update(db, model, published, auth_user_id=auth_user)
+                model = _update(db, model, published, auth_user_id=auth_user)
 
             return model
         except:
@@ -239,6 +242,7 @@ class LessonDataAccess:
         rows = execHelper.execSql(db, select_sql, rows)
 
         for row in rows:
+            #TODO: #231 get published
             model = LessonModel(
                 id_=row[0],
                 title = row[1],
@@ -269,6 +273,7 @@ class LessonDataAccess:
 
         execHelper = ExecHelper()
             
+        #TODO: #231 get published
         select_sql = "SELECT "\
                     " le.id as id," \
                     " le.title as title,"\
@@ -632,7 +637,7 @@ def _update(db, model, published, auth_user_id):
 
     _upsert_key_words(db, model, rows, auth_user_id=auth_user_id)
 
-    return True
+    return model
 
 
 def _insert(db, model, published, auth_user_id):
@@ -682,7 +687,7 @@ def _insert(db, model, published, auth_user_id):
     if model.is_copy():
         _copy_objective_ids(db, model, rows, auth_user_id)
 
-    return model.id
+    return model
 
 
 def _upsert_related_topic_ids(db, model, results, auth_user_id):
@@ -814,14 +819,14 @@ def _upsert_key_words(db, model, results, auth_user_id):
 def _delete(db, model):
 
     execHelper = ExecHelper()
-
+    
     str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
     str_delete = str_delete.format(lesson_id=model.id)
 
     rval = []
     rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
 
-    return rval
+    return model
 
 
 def _publish(db, model):

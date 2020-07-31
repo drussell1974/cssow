@@ -81,7 +81,7 @@
 </div>
 {% else %}
   {% for row in content.data.learning_objectives %}
-    <!-- #231: show published_state as class -->
+    <!-- #TODO: #231: show published_state as class -->
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
       <a href="#{{row.id}}" class="disabled">
