@@ -144,13 +144,17 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    model.validate()
+    save_resource_view = ResourceSaveViewModel(db, model, request.user.id)
+    
+    save_resource_view.execute(int(request.POST["published"]))
+
+    model = save_resource_view.model
+ 
 
     if model.is_valid == True:
         ' save resource'
         #cls_resource.enable_logging = True
-        model = cls_resource.save(db, model, request.user.id, int(request.POST["published"]))
-
+    
         ' upload file if Markdown document '
         if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
@@ -179,7 +183,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
             "resource_id": model.id,
             "resource": model,
             "get_resource_type_options": get_resource_type_options,
-            "validation_errors":model.val
+            "validation_errors":model.validation_errors
         }
         view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
         
@@ -193,7 +197,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.delete(db, resource_id, request.user.id)
+    cls_resource.ResourceDataAccess.delete(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 

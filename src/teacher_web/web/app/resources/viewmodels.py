@@ -39,7 +39,7 @@ class ResourceSaveViewModel(BaseViewModel):
     def execute(self, published):
         self.model.validate()
 
-        if self.model.is_valid == True:
+        if self.model.is_valid == True or published == 2:
             data = DataAccess.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:

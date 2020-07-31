@@ -71,6 +71,33 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertEqual("published", test_context.model.published_state)
 
 
+    def test_execute_called_update(self):
+        
+        # arrange
+
+        mock_model = Model(101, "Donec non elit dui. Nunc eget viverra eros.")
+        mock_model.solo_taxonomy_id = 1
+        mock_model.lesson_id = 134
+
+        on_save__data_to_return = Model(101, "Donec non elit dui. Nunc eget viverra eros.")
+        
+        with patch.object(DataAccess, "_update", return_value=on_save__data_to_return):
+
+            # act
+
+            test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+            test_context.execute(published=1)
+                            
+            # assert functions was called
+            
+            DataAccess._update.assert_called()
+
+            self.assertEqual(101, test_context.model.id)
+            self.assertEqual("Donec non elit dui. Nunc eget viverra eros.", test_context.model.description)
+            self.assertEqual(1, test_context.model.published)
+            self.assertEqual("published", test_context.model.published_state)
+
+
     def test_execute_called_delete(self):
         
         # arrange

@@ -7,7 +7,7 @@ import shared.models.cls_resource as test_context
 
 # create test context
 
-delete = test_context.delete
+delete = test_context.ResourceDataAccess.delete
 handle_log_info = test_context.handle_log_info
 Model = test_context.ResourceModel
 
