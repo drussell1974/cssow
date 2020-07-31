@@ -31,7 +31,7 @@
 
 
 {% block maincontent %}
-<form name="edit-schemeofwork" id="form" method="post" action="{% url 'schemesofwork.save' content.data.scheme_of_work_id %}">
+<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.save' content.data.scheme_of_work_id %}">
     {% csrf_token %}
     <div class="control-group">
         <div class="form-group controls">
@@ -82,14 +82,12 @@
     </div>
     <br>
     <div id="success"></div>
+    
     <div class="form-group">
-        <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
-        <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
-        <button type="submit" name="published" value="0" class="btn btn-primary" id="saveButton">{{_("Draft")}}</button>
-        <button type="submit" name="published" value="1" class="btn btn-primary" id="saveAndPublishButton">{{_("Save and publish")}}</button>
-        <button type="cancel" class="btn btn-primary" id="cancelButton">{{_("Cancel")}}</button>
-        <!-- RIGHT -->
-        <button type="submit" name="published" value="2" class="btn btn-danger float-right" id="btn-delete">{{_("Delete")}}</button>
+        <!-- #TODO: #231: use form.buttons.validition partial -->
+        {% include '_partials/form.buttons.validation.html' %}
     </div>
+    <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
+    <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
 </form>
 {% endblock %}

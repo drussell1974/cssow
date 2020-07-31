@@ -227,7 +227,6 @@ class ResourceDataAccess:
             ResourceDataAccess._delete(db, model.id, auth_user)
             model.published = 2
         else:
-            
             if model.is_new() == True:
                 model = ResourceDataAccess._insert(db, model, auth_user)
             else:

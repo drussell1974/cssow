@@ -16,7 +16,8 @@ class SchemeOfWorkListModel(models.Model):
 class SchemeOfWorkModel(BaseModel):
 
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1):
-        self.id = int(id_)
+        #231: implement across all classes
+        super().__init__(id_, name, created, created_by_id, created_by_name, published)
         self.name = name
         self.description = description
         self.exam_board_id = try_int(exam_board_id)
@@ -24,10 +25,6 @@ class SchemeOfWorkModel(BaseModel):
         self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
         self.is_recent = is_recent
-        self.created=created
-        self.created_by_id=try_int(created_by_id)
-        self.created_by_name=created_by_name
-        self.published=published
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
 
     def validate(self):
@@ -276,10 +273,15 @@ def get_key_stage_id_only(db, scheme_of_work_id):
 
 
 def save(db, model, published=1):
+
+    #TODO: #231: Add delete    
     if model.is_new() == True:
         _insert(db, model, published)
     else:
-        _update(db, model, published)
+        if try_int(published) == 2:
+            _delete(db, model)
+        else:
+            _update(db, model, published)
 
     return model
 
@@ -351,7 +353,7 @@ def _insert(db, model, published):
 def _delete(db, model):
     execHelper = ExecHelper()
     rval = []
-    str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id};"
+    str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id} and published NOT IN (1);"
     str_delete = str_delete.format(scheme_of_work_id=model.id)
     
     rval = execHelper.execCRUDSql(db, str_delete, rval, handle_log_info)
@@ -375,7 +377,7 @@ def _delete_unpublished(db, auth_user_id):
     execHelper = ExecHelper()
     
     """ Delete all unpublished learning objectives """
-    str_delete = "DELETE FROM sow_scheme_of_work WHERE published = 0;"
+    str_delete = "DELETE FROM sow_scheme_of_work WHERE published IN (0,2);"
         
     rows = []
     rows = execHelper.execSql(db, str_delete, rows, handle_log_info)

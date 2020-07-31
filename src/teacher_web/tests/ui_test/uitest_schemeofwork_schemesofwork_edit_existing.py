@@ -28,12 +28,6 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
         
-        save = self.test_context.find_element_by_id('saveButton')
-        self.assertEqual("DRAFT", save.text)
-
-        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
-        self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
-
 
     def test_page__breadcrumb_navigate_to_lesson_index(self):
         # test
@@ -79,6 +73,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -93,7 +88,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveAndPublishButton")
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         

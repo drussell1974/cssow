@@ -48,19 +48,19 @@ def new(request):
 def edit(request, scheme_of_work_id):
     """ edit action """
 
-    scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    model = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
 
     examboard_options = cls_examboard.get_options(db)
     keystage_options = cls_keystage.get_options(db)
 
     data = {
-        "scheme_of_work_id": scheme_of_work.id,
-        "scheme_of_work": scheme_of_work,
+        "scheme_of_work_id": model.id,
+        "scheme_of_work": model,
         "examboard_options": examboard_options,
         "keystage_options": keystage_options,
     }
  
-    view_model = ViewModel("", "Schemes of Work", scheme_of_work.name, data=data)
+    view_model = ViewModel("", "Schemes of Work", model.name, data=data, active_model=model)
 
     return render(request, "schemesofwork/edit.html", view_model.content)
     
@@ -85,10 +85,8 @@ def save(request, scheme_of_work_id):
     published = request.POST["published"]
     
     model.validate()
-
     if model.is_valid == True:
         ' save the lesson '
-        cls_schemeofwork.enable_logging = True
         model = cls_schemeofwork.save(db, model, published)
         
         if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":

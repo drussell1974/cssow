@@ -149,19 +149,17 @@
     <br>
     <div id="success"></div>
     <div class="form-group">
-      <div class="form-group">
-          <!-- #TODO: #231: use form.buttons.validition partial -->
-          {% include '_partials/form.buttons.validation.html' %}
-      </div>
-      <!-- Hidden Fields -->
-      <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
-      <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
-      <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
-      <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
-      <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
-      <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
-      <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
+        <!-- #TODO: #231: use form.buttons.validition partial -->
+        {% include '_partials/form.buttons.validation.html' %}
     </div>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
+    <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
+    <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
+    <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
+    <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
+    <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
   </form><!-- form#form -->
 {% endblock %}
 

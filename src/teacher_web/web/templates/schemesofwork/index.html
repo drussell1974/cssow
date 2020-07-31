@@ -19,7 +19,8 @@
           </div>
         {% endif %}
       {% for row in content.data.schemes_of_work %}
-      <div class="post-preview {% if row.is_recent == True %}recent{% endif %}">
+      <!-- #TODO: #231: show published_state as class -->
+      <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
         <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}">
           <h2 class="post-title">
               {{ row.name }}
@@ -42,7 +43,7 @@
              <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
              {% endif %}
              - <a href="{% url 'schemesofwork.delete_item' row.id %}">{{_("Delete")}}</a> 
-             - <a href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}"">{{_("Edit")}}</a>
+             - <a class="edit" href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}"">{{_("Edit")}}</a>
           {% endif %}</p>
       </div>
       <hr>
