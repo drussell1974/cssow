@@ -59,7 +59,7 @@ class LessonPage extends React.Component {
 };
 
 export const LessonPageContainer = ({schemeofwork, lesson, keywords, socialmediadata}) => {
-    
+    // CHECKING UNDEFINDED NOT NEEDED AS SHOULD BE HANDLED BY SUBCOMPONENTS
     if (lesson === undefined || schemeofwork === undefined || keywords === undefined) {
         return ( 
             <React.Fragment></React.Fragment>

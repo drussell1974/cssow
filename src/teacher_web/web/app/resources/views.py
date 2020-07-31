@@ -25,8 +25,9 @@ from shared.filehandler import handle_uploaded_markdown
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
-    cls_resource.enable_logging = True
-    resources = cls_resource.get_all(db, scheme_of_work_id, lesson_id, request.user.id)
+    
+    getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, request.user.id)
+    resources = getall_resources_view.model
 
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model

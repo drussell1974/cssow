@@ -22,7 +22,7 @@ class BaseModel(models.Model):
         self.id = int(id_)
         self.display_name = display_name
         self.created = created
-        self.created_by_id = int(created_by_id)
+        self.created_by_id = try_int(created_by_id)
         self.created_by_name = created_by_name
         self.published = published
         self.set_published_state()

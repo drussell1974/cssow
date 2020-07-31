@@ -9,12 +9,12 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 
 class ResourceGetAllViewModel(BaseViewModel):
     
-    def __init__(self, db, scheme_of_work_id, auth_user):
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user):
         
         self.model = []
         
         # get model
-        data = DataAccess.get_all(db, scheme_of_work_id, auth_user)
+        data = DataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user)
         self.model = data
 
 

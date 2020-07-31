@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 from shared.models.cls_lesson import LessonDataAccess as test_context, KeywordModel, handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveDataAccess
+from shared.models.cls_resource import ResourceDataAccess
 # test context
 
 get_model = test_context.get_model
@@ -25,7 +26,7 @@ class test_db__get_model(TestCase):
         ])
 
         LearningObjectiveDataAccess.get_all = Mock(return_value=[1,2,3])
-        test_context.get_all_resources = Mock(return_value=[])
+        ResourceDataAccess.get_all = Mock(return_value=[])
         test_context.get_pathway_objective_ids = Mock(return_value=[])
         test_context.get_ks123_pathway_objective_ids = Mock(return_value=[])
 

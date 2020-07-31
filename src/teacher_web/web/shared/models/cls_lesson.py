@@ -4,7 +4,7 @@ from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
 from .cls_learningobjective import LearningObjectiveDataAccess # get_all as get_all_objectives
-from .cls_resource import get_all as get_all_resources, get_number_of_resources
+from .cls_resource import ResourceDataAccess, get_number_of_resources
 from .cls_keyword import KeywordDataAccess, KeywordModel
 
 class LessonModel (BaseModel):
@@ -258,7 +258,7 @@ class LessonDataAccess:
 
             model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
             model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
-            model.resources = LessonDataAccess.get_all_resources(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
+            model.resources = ResourceDataAccess.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
             model.pathway_ks123_ids = LessonDataAccess.get_ks123_pathway_objective_ids(db, model.id)
             
         return model
@@ -403,11 +403,11 @@ class LessonDataAccess:
     def get_all_objectives(db, id, auth_user):
         return LearningObjectiveDataAccess.get_all(db, lesson_id=id, auth_user=auth_user)
     
-    
+    """
     @staticmethod
     def get_all_resources(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id):
         return get_all_resources(db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user, resource_type_id=resource_type_id)
-    
+    """
     
     @staticmethod
     def get_pathway_objective_ids(db, lesson_id):

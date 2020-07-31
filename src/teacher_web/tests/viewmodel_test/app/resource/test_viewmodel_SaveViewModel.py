@@ -8,7 +8,6 @@ from shared.models.cls_resource import ResourceDataAccess as DataAccess, Resourc
 
 #Serializer = test_context.KeywordModelSerializer
 
-@skip("needs implementing")
 class test_viewmodel_SaveViewModel(TestCase):
 
     def setUp(self):
@@ -20,6 +19,7 @@ class test_viewmodel_SaveViewModel(TestCase):
         pass
 
 
+    @skip("needs implementing")
     def test_execute_called_save__add_model_to_data(self):
         
         # arrange
@@ -45,6 +45,7 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.title)
 
 
+    @skip("needs implementing")
     def test_execute_called_insert(self):
         
         # arrange
@@ -71,7 +72,8 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertEqual(1, test_context.model.published)
             self.assertEqual("published", test_context.model.published_state)
 
-
+    
+    @skip("needs implementing")
     def test_execute_called_delete(self):
         
         # arrange
@@ -99,6 +101,7 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertEqual(2, test_context.model.published)
 
 
+    @skip("needs implementing")
     def test_execute_called_save__add_model_to_data__return_invalid(self):
          
         # arrange

@@ -63,6 +63,7 @@ class Activity extends React.Component {
 };
 
 export const ActivityPageContainer = ({resource, schemeofwork, markdown_html, socialmediadata}) => {
+    // CHECKING UNDEFINDED NOT NEEDED AS SHOULD BE HANDLED BY SUBCOMPONENTS
     if (resource === undefined || schemeofwork === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
