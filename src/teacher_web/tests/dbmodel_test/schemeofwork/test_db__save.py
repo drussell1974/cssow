@@ -5,7 +5,7 @@ import shared.models.cls_schemeofwork as test_context
 
 # create test context
 
-save = test_context.save
+save = test_context.SchemeOfWorkDataAccess.save
 handle_log_info = test_context.handle_log_info
 Model = test_context.SchemeOfWorkModel
 
@@ -53,11 +53,10 @@ class test_db__save(TestCase):
 
     def test_should_call_execCRUDSql__update_with__is_new__false(self):
          # arrange
-        model = Model(1)
+        model = Model(89)
         
-        expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=model):
             # act
 
             actual_result = save(self.fake_db, model)
@@ -69,7 +68,7 @@ class test_db__save(TestCase):
             # "UPDATE sow_scheme_of_work SET name = '', description = '', exam_board_id = 0, key_stage_id = 0, published = 1 WHERE id =  1;", 
             # log_info=handle_log_info)
             
-            self.assertEqual(expected_result, actual_result.id)
+            self.assertEqual(89, actual_result.id)
 
 
     def test_should_call_execCRUDSql__insert__when__is_new__true(self):
@@ -77,9 +76,8 @@ class test_db__save(TestCase):
 
         model = Model(0)
 
-        expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=([], 101)):
             # act
 
             actual_result = save(self.fake_db, model)
@@ -92,4 +90,4 @@ class test_db__save(TestCase):
             #    "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('', '', 0, 0, '', 0, 1);SELECT LAST_INSERT_ID();", [], 
             #    log_info=handle_log_info)
 
-            self.assertEqual(expected_result, actual_result.id)
+            self.assertEqual(101, actual_result.id)

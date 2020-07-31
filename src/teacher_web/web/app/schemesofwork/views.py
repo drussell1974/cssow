@@ -6,13 +6,15 @@ from django.contrib.auth.decorators import permission_required
 from shared.models import cls_schemeofwork, cls_examboard, cls_keystage
 from shared.models.core import validation_helper
 from datetime import datetime
+
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess 
 from shared.view_model import ViewModel
 
 
 # Create your views here.
 
 def index(request):
-    schemes_of_work = cls_schemeofwork.get_all(db, key_stage_id=0, auth_user=request.user.id)
+    schemes_of_work = SchemeOfWorkDataAccess.get_all(db, key_stage_id=0, auth_user=request.user.id)
     
     data = {
         "schemes_of_work":schemes_of_work
@@ -48,7 +50,7 @@ def new(request):
 def edit(request, scheme_of_work_id):
     """ edit action """
 
-    model = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    model = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
 
     examboard_options = cls_examboard.get_options(db)
     keystage_options = cls_keystage.get_options(db)
@@ -87,7 +89,7 @@ def save(request, scheme_of_work_id):
     model.validate()
     if model.is_valid == True:
         ' save the lesson '
-        model = cls_schemeofwork.save(db, model, published)
+        model = SchemeOfWorkDataAccess.save(db, model, published)
         
         if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
             redirect_to_url = request.POST.get("next", None)

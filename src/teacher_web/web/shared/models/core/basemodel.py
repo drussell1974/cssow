@@ -19,7 +19,7 @@ class BaseModel(models.Model):
 
 
     def __init__(self, id_, display_name, created, created_by_id, created_by_name, published):
-        self.id = int(id_)
+        self.id = try_int(id_)
         self.display_name = display_name
         self.created = created
         self.created_by_id = try_int(created_by_id)

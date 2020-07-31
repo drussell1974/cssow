@@ -7,6 +7,8 @@ from django.urls import reverse
 
 from shared.models.core import validation_helper
 from shared.models.core.log import handle_log_warning, handle_log_info
+
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
 from shared.view_model import ViewModel
 
 # TODO: use view models
@@ -44,7 +46,7 @@ def index(request, scheme_of_work_id):
 def new(request, scheme_of_work_id):
     ''' Create a new lesson '''
     
-    scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
     
     get_lesson_view = LessonGetModelViewModel(db, 0, request.user.id)
     lesson = get_lesson_view.model
@@ -79,7 +81,7 @@ def edit(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
     key_words_options = KeywordGetOptionsListViewModel(db).model
@@ -113,7 +115,7 @@ def copy(request, scheme_of_work_id, lesson_id):
     
     lesson.id = 0 # reset id
 
-    scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+    scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
     year_options = cls_year.get_options(db, lesson.key_stage_id)
     topic_options = cls_topic.get_options(db, lvl=1)
     key_words_options = KeywordGetOptionsListViewModel(db)
@@ -238,7 +240,7 @@ def save(request, scheme_of_work_id, lesson_id):
         redirect_to_url = reverse('lesson.edit', args=(scheme_of_work_id,lesson_id))
         
 
-        scheme_of_work = cls_schemeofwork.get_model(db, scheme_of_work_id, request.user.id)
+        scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
         year_options = cls_year.get_options(db, model.key_stage_id)
         topic_options = cls_topic.get_options(db, lvl=1)
         key_words_options = KeywordGetOptionsListViewModel(db).model
