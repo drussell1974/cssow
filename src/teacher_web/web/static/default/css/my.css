@@ -63,6 +63,17 @@ h4, h5, h6 {
     background-color: #e2e3e5;
 }
 
+/*.navbar-nav .nav-link:not(:last-child):after {*/
+
+.breadcrumb-custom .navbar-nav .nav-item:not(:nth-last-child(1)) .nav-link:after {
+    content:">";
+    padding-left: 10px;
+}
+
+.navbar-nav .nav-link:not(:nth-last-of-type(1)):after {
+    text-decoration: solid;
+}
+
 /*.pagination div:after {
     content: ' | ';
     white-space: pre;

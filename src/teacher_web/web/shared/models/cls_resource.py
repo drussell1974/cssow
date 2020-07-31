@@ -97,6 +97,68 @@ class ResourceModel (BaseModel):
             self.md_document_name = sql_safe(self.md_document_name)
 
 
+class ResourceDataAccess:
+
+    @staticmethod    
+    def get_all():
+        raise NotImplementedError()
+
+    @staticmethod
+    def get_model(db, id_, scheme_of_work_id, auth_user):
+        """ Get Resource """
+        execHelper = ExecHelper()
+        #TODO: #231 get published
+        str_select = "SELECT" \
+                    " res.id as id," \
+                    " res.title as title," \
+                    " res.publisher as publisher," \
+                    " res.type_id as type_id,"\
+                    " res_typ.name as resource_type_name,"\
+                    " res_typ.task_icon as task_icon,"\
+                    " res.md_document_name as md_document_name, "\
+                    " res.page_notes as page_notes, "\
+                    " res.url as page_uri, " \
+                    " res.lesson_id as lesson_id, "\
+                    " res.created as created, "\
+                    " res.created_by as created_by_id, "\
+                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
+                    " res.published as published " \
+                    "FROM sow_resource AS res " \
+                    " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
+                    " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
+                    "WHERE res.id = {id} " \
+                    " AND (res.published = 1 OR res.created_by = {auth_user});"
+
+        str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
+
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+        data = None
+        
+        for row in rows:
+            model = ResourceModel(
+                id_=row[0], 
+                title=row[1], 
+                publisher=row[2], 
+                type_id=row[3],
+                type_name=row[4],
+                type_icon=row[5],
+                md_document_name=to_empty(row[6]),
+                page_note=row[7], 
+                page_uri=row[8], 
+                lesson_id=row[9],
+                created = row[10],
+                created_by_id = row[11],
+                created_by_name = row[12], 
+                published = row[13], 
+                scheme_of_work_id=scheme_of_work_id)
+
+            data = model
+            
+
+        return data
+
 """
 DAL
 """
@@ -159,63 +221,6 @@ def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
         data.append(model.__dict__)
 
     return data
-
-
-def get_model(db, id_, scheme_of_work_id, auth_user):
-    """ Get Resource """
-    execHelper = ExecHelper()
-    #TODO: #231 get published
-    str_select = "SELECT" \
-                " res.id as id," \
-                " res.title as title," \
-                " res.publisher as publisher," \
-                " res.type_id as type_id,"\
-                " res_typ.name as resource_type_name,"\
-                " res_typ.task_icon as task_icon,"\
-                " res.md_document_name as md_document_name, "\
-                " res.page_notes as page_notes, "\
-                " res.url as page_uri, " \
-                " res.lesson_id as lesson_id, "\
-                " res.created as created, "\
-                " res.created_by as created_by_id, "\
-                " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                " res.published as published " \
-                "FROM sow_resource AS res " \
-                " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
-                " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                "WHERE res.id = {id} " \
-                " AND (res.published = 1 OR res.created_by = {auth_user});"
-
-    str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
-
-    rows = []
-    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-    data = None
-    
-    for row in rows:
-        model = ResourceModel(
-            id_=row[0], 
-            title=row[1], 
-            publisher=row[2], 
-            type_id=row[3],
-            type_name=row[4],
-            type_icon=row[5],
-            md_document_name=to_empty(row[6]),
-            page_note=row[7], 
-            page_uri=row[8], 
-            lesson_id=row[9],
-            created = row[10],
-            created_by_id = row[11],
-            created_by_name = row[12], 
-            published = row[13], 
-            scheme_of_work_id=scheme_of_work_id)
-
-        data = model
-        
-
-    return data
-
 
 
 def get_resource_type_options(db, auth_user):

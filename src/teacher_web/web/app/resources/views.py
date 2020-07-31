@@ -13,6 +13,7 @@ from shared.models import cls_resource, cls_lesson, cls_schemeofwork
 
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
+from ..resources.viewmodels import ResourceGetModelViewModel, ResourceGetAllViewModel, ResourceSaveViewModel
 
 from shared.models.core import validation_helper
 
@@ -40,7 +41,7 @@ def index(request, scheme_of_work_id, lesson_id):
         "lesson_options": lesson_options
     }
 
-    view_model = ViewModel(lesson.title, lesson.title, lesson.summary, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, lesson.summary, data=data, active_model=lesson)
     
     return render(request, "resources/index.html", view_model.content)
 
@@ -76,8 +77,8 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
-    cls_resource.enable_logging = True
-    model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
+    get_model_view = ResourceGetModelViewModel(db, resource_id, scheme_of_work_id, request.user.id)
+    model = get_model_view.model
 
     if model == None:
         model = cls_resource.ResourceModel(
@@ -120,7 +121,6 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         
     """ save_item non-view action """
     # create instance of model from request.vars
-    cls_resource.enable_logging = True
     model = cls_resource.ResourceModel(
         id_=resource_id,
         lesson_id=lesson_id,
@@ -153,18 +153,36 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         ' upload file if Markdown document '
         if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
-
+            
         ' redirect as necessary '
         if request.POST["next"] != None and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
+            
         else:
             redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id, model.id))
     else:
         """ redirect back to page and show message """
 
-        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
+        #request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
         
-        redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
+        #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
+
+        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+        lesson = get_lesson_view.model
+            
+        get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+
+        data = {
+            "scheme_of_work_id": scheme_of_work_id,
+            "lesson_id": lesson_id,
+            "resource_id": model.id,
+            "resource": model,
+            "get_resource_type_options": get_resource_type_options,
+            "validation_errors":model.val
+        }
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
+        
+        return render(request, "resources/edit.html", view_model.content)
 
     return HttpResponseRedirect(redirect_to_url)
 

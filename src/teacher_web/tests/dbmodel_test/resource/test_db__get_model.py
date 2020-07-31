@@ -6,7 +6,7 @@ import shared.models.cls_resource as test_context
 
 # test context
 
-get_model = test_context.get_model
+get_model = test_context.ResourceDataAccess.get_model
 handle_log_info = test_context.handle_log_info
 
 class test_db__get_model(TestCase):

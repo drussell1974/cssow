@@ -165,9 +165,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         ' save learning objectives'
         viewmodel.execute(int(request.POST["published"]))
         model = viewmodel.model
-
-        #model = cls_learningobjective.save(db, model, request.user.id, int(request.POST["published"]))
-
+        
         ' save keywords '
         if request.POST["next"] != None and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
