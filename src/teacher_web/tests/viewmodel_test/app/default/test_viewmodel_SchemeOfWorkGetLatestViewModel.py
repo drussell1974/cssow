@@ -7,7 +7,7 @@ from app.default.viewmodels import SchemeOfWorkGetLatestViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as DataAccess, SchemeOfWorkModel as Model
 
 
-class test_viewmodel_GetLatestViewModel(TestCase):
+class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
 
     def setUp(self):        
         pass

@@ -6,7 +6,7 @@ from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
-from shared.models.cls_topic import TopicModel, get_options
+from shared.models.cls_topic import TopicModel, TopicDataAccess
 from shared.models.cls_keyword import KeywordDataAccess, KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
@@ -25,7 +25,7 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
 class TopicGetOptionsListViewModel(BaseViewModel):
     def __init__(self, db, topic_id, lvl=2):
-        self.model = get_options(db, topic_id=topic_id, lvl=lvl)
+        self.model = TopicDataAccess.get_options(db, topic_id=topic_id, lvl=lvl)
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):

@@ -26,46 +26,34 @@ class TopicModel(models.Model):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
-"""
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
+class TopicDataAccess:
     
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
-"""
+    @staticmethod
+    def get_options(db, lvl, topic_id = 0):
 
-def get_options(db, lvl, topic_id = 0):
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use TopicDataAccess.get_options()")
 
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use TopicDataAccess.get_options()")
+        execHelper = ExecHelper()
 
-    execHelper = ExecHelper()
+        str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
+        str_select = str_select.format(lvl=int(lvl), topic_id=int(topic_id))
 
-    str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
-    str_select = str_select.format(lvl=int(lvl), topic_id=int(topic_id))
+        data = []
 
-    data = []
+        try:
 
-    try:
+            rows = []
+            rows = execHelper.execSql(db, str_select, rows, handle_log_info)
 
-        rows = []
-        rows = execHelper.execSql(db, str_select, rows, handle_log_info)
-
-        for row in rows:
-            model = TopicModel(row[0], row[1], row[2], row[3])
-    
-            # TODO: remove __dict__ . The object should be serialised to json further up the stack
-            data.append(model.__dict__)
-
-    except Exception as e:
-        raise Exception("Error getting topics", e)
-
+            for row in rows:
+                model = TopicModel(row[0], row[1], row[2], row[3])
         
-    return data
+                # TODO: remove __dict__ . The object should be serialised to json further up the stack
+                data.append(model.__dict__)
+
+        except Exception as e:
+            raise Exception("Error getting topics", e)
+
+            
+        return data

@@ -12,7 +12,9 @@ from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
 from shared.view_model import ViewModel
 
 # TODO: use view models
-from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective, cls_topic, cls_year
+from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective
+from shared.models.cls_year import YearDataAccess
+from shared.models.cls_topic import TopicDataAccess
 
 # view models
 from ..default.viewmodels import KeywordGetOptionsListViewModel
@@ -53,8 +55,8 @@ def new(request, scheme_of_work_id):
 
     lesson.key_stage_id = scheme_of_work.key_stage_id
     lesson.scheme_of_work_id = scheme_of_work.id
-    year_options = cls_year.get_options(db, scheme_of_work.key_stage_id)
-    topic_options = cls_topic.get_options(db, lvl=1)
+    year_options = YearDataAccess.get_options(db, scheme_of_work.key_stage_id)
+    topic_options = TopicDataAccess.get_options(db, lvl=1)
     key_words = KeywordGetOptionsListViewModel(db).model
 
     data = {
@@ -82,8 +84,8 @@ def edit(request, scheme_of_work_id, lesson_id):
     lesson = get_lesson_view.model
 
     scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
-    year_options = cls_year.get_options(db, lesson.key_stage_id)
-    topic_options = cls_topic.get_options(db, lvl=1)
+    year_options = YearDataAccess.get_options(db, lesson.key_stage_id)
+    topic_options = TopicDataAccess.get_options(db, lvl=1)
     key_words_options = KeywordGetOptionsListViewModel(db).model
     ks123_pathways = cls_ks123pathway.get_options(db, lesson.year_id, lesson.topic_id)
     
@@ -116,8 +118,8 @@ def copy(request, scheme_of_work_id, lesson_id):
     lesson.id = 0 # reset id
 
     scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
-    year_options = cls_year.get_options(db, lesson.key_stage_id)
-    topic_options = cls_topic.get_options(db, lvl=1)
+    year_options = YearDataAccess.get_options(db, lesson.key_stage_id)
+    topic_options = TopicDataAccess.get_options(db, lvl=1)
     key_words_options = KeywordGetOptionsListViewModel(db)
     
     data = {
@@ -241,8 +243,8 @@ def save(request, scheme_of_work_id, lesson_id):
         
 
         scheme_of_work = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
-        year_options = cls_year.get_options(db, model.key_stage_id)
-        topic_options = cls_topic.get_options(db, lvl=1)
+        year_options = YearDataAccess.get_options(db, model.key_stage_id)
+        topic_options = TopicDataAccess.get_options(db, lvl=1)
         key_words_options = KeywordGetOptionsListViewModel(db).model
         ks123_pathways = cls_ks123pathway.get_options(db, model.year_id, model.topic_id)
         

@@ -1,9 +1,9 @@
 from unittest import TestCase
-import shared.models.cls_year as db_year
+from shared.models.cls_year import YearDataAccess
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-class test_db_year__get_options(TestCase):
+class test_YearDataAccess__get_options(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -23,7 +23,7 @@ class test_db_year__get_options(TestCase):
         with patch.object(ExecHelper, "execSql", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                db_year.get_options(self.fake_db, key_stage_id = 4)
+                YearDataAccess.get_options(self.fake_db, key_stage_id = 4)
             
 
     def test__should_call_execSql_no_items(self):
@@ -34,7 +34,7 @@ class test_db_year__get_options(TestCase):
                 
             # act
             
-            rows = db_year.get_options(self.fake_db, key_stage_id = 1)
+            rows = YearDataAccess.get_options(self.fake_db, key_stage_id = 1)
             
             # assert
 
@@ -50,7 +50,7 @@ class test_db_year__get_options(TestCase):
             
             # act
 
-            rows = db_year.get_options(self.fake_db, key_stage_id = 2)
+            rows = YearDataAccess.get_options(self.fake_db, key_stage_id = 2)
             
             # assert
 
@@ -65,7 +65,7 @@ class test_db_year__get_options(TestCase):
         
         with patch.object(ExecHelper, "execSql", return_value=expected_result):
             # act
-            rows = db_year.get_options(self.fake_db, key_stage_id = 3)
+            rows = YearDataAccess.get_options(self.fake_db, key_stage_id = 3)
             
             # assert
 

@@ -1,7 +1,9 @@
 from ._unittest import TestCase, FakeDb
-import shared.models.cls_topic as db_topic
+from shared.models.cls_topic import TopicDataAccess, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+
+
 
 class test_db_topic__get_options__level_1(TestCase):
 
@@ -9,7 +11,7 @@ class test_db_topic__get_options__level_1(TestCase):
         ' pass function to this fake class to mock the web2py database functions '
         self.fake_db = FakeDb()
         self.fake_db.connect()
-        db_topic.handle_log_info = MagicMock()
+        handle_log_info = MagicMock()
 
 
     def tearDown(self):
@@ -23,7 +25,7 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, "execSql", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                db_topic.get_options(self.fake_db, lvl = 1)
+                TopicDataAccess.get_options(self.fake_db, lvl = 1)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -34,10 +36,12 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 1)
+            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 1)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 1;', [], db_topic.handle_log_info)
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 1;'
+            , []
+            , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
@@ -49,10 +53,12 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
             
             # act
-            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 2)
+            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 2)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 2;', [], db_topic.handle_log_info)
+            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 2;'
+            , []
+            , handle_log_info)
             self.assertEqual(1, len(rows))
             self.assertEqual("Operators", rows[0]["name"], "First item not as expected")
         
@@ -67,10 +73,12 @@ class test_db_topic__get_options__level_1(TestCase):
             
             # act
             
-            rows = db_topic.get_options(self.fake_db, lvl = 2, topic_id = 3)
+            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 3)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 3;', [], db_topic.handle_log_info)
+            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 3;'
+            , []
+            , handle_log_info)
             self.assertEqual(3, len(rows))
             self.assertEqual("Binary", rows[0]["name"], "First item not as expected")
             self.assertEqual("Data compression", rows[len(rows)-1]["name"], "Last item not as expected")

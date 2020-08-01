@@ -19,24 +19,24 @@ class YearModel(models.Model):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
-def get_options(db, key_stage_id):
+class YearDataAccess:
 
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use YearDataAccess.get_options()")
+    @staticmethod
+    def get_options(db, key_stage_id):
 
-    helper = ExecHelper()
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use YearDataAccess.get_options()")
 
-    str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
-    rows = []
-    rows = helper.execSql(db, str_select, rows)
+        helper = ExecHelper()
 
-    data = []
+        str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
+        rows = []
+        rows = helper.execSql(db, str_select, rows)
 
-    for row in rows:
-        model = YearModel(row[0], row[1])
-        data.append(model)
+        data = []
 
-    return data
+        for row in rows:
+            model = YearModel(row[0], row[1])
+            data.append(model)
+
+        return data

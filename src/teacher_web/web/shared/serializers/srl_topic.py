@@ -1,5 +1,5 @@
 from rest_framework import serializers, status
-from shared.models.cls_topic import TopicModel, get_options
+from shared.models.cls_topic import TopicModel
 
 class TopicModelSerializer(serializers.ModelSerializer):
    

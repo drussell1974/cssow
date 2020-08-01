@@ -2,9 +2,6 @@ from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
 
-# TODO: use view model
-from shared.models import cls_topic
-
 # view models
 from api.default.viewmodels import KeywordGetOptionsListViewModel, TopicGetOptionsListViewModel
 
