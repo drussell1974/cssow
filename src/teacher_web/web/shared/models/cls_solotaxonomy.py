@@ -25,32 +25,23 @@ class SoloTaxonomyModel(BaseModel):
         if self.lvl is not None:
             self.lvl = sql_safe(self.lvl)
 
-"""
-DAL
-"""
+class SoloTaxonomyDataAccess:
 
-"""
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
+    @staticmethod
+    def get_options(db):
     
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
-"""
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SoloTaxonomyDataAccess.get_options()")
 
-def get_options(db):
-    execHelper = ExecHelper()
-    
-    rows = []
-    rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
+        execHelper = ExecHelper()
+        
+        rows = []
+        rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
 
-    data = []
+        data = []
 
-    for row in rows:
-        model = SoloTaxonomyModel(row[0], row[1], row[2])
-        data.append(model)
+        for row in rows:
+            model = SoloTaxonomyModel(row[0], row[1], row[2])
+            data.append(model)
 
-    return data
+        return data

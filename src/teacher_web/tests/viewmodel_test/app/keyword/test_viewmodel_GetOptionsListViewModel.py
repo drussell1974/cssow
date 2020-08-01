@@ -22,7 +22,6 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         # arrange
         
-        expected_result = []
         data_to_return = []
         
         with patch.object(DataAccess, "get_options", return_value=data_to_return):
@@ -35,4 +34,46 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
 
             # assert functions was called
             DataAccess.get_options.assert_called()
-            self.assertEqual(expected_result, actual_result.model)
+            self.assertEqual(0, len(actual_result.model))
+            
+
+    def test_init_called_fetch__single_item(self):
+        
+        # arrange
+        
+        data_to_return = [Model(34)]
+        
+        with patch.object(DataAccess, "get_options", return_value=data_to_return):
+            
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            # act
+            actual_result = ViewModel(db)
+
+            # assert functions was called
+            DataAccess.get_options.assert_called()
+            
+            self.assertEqual(1, len(actual_result.model))
+            
+
+
+    def test_init_called_fetch__single_item(self):
+        
+        # arrange
+        
+        data_to_return = [Model(34), Model(35), Model(36)]
+        
+        with patch.object(DataAccess, "get_options", return_value=data_to_return):
+            
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            # act
+            actual_result = ViewModel(db)
+
+            # assert functions was called
+            DataAccess.get_options.assert_called()
+            
+            self.assertEqual(3, len(actual_result.model))
+            

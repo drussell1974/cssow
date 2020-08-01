@@ -8,6 +8,9 @@ enable_logging = False
 class ReferenceModel (BaseModel):
 
     def __init__(self, id_, reference_type_id, title, publisher, year_published, scheme_of_work_id, reference_type_name = "", authors = "", uri = "", last_accessed = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+        
+        BaseModel.depreciation_notice("Use ResourceModel")
+
         self.id = int(id_)
         self.reference_type_id = int(reference_type_id)
         self.reference_type_name = reference_type_name

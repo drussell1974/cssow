@@ -172,7 +172,6 @@ class LearningObjectiveDataAccess:
         return model
 
 
-
     @staticmethod
     def get_all(db, lesson_id, auth_user):
 
@@ -260,11 +259,11 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def delete(db, auth_user_id, id_):
+    def delete(db, model, auth_user_id):
         """ Delete learning objective """
-        
-        model = LearningObjectiveModel(id_)
-        return LearningObjectiveDataAccess._delete(db, model)
+        model = LearningObjectiveDataAccess._delete(db, model)
+        #model.published = 2
+        return model
 
 
     @staticmethod
@@ -274,6 +273,12 @@ class LearningObjectiveDataAccess:
         model.publish = True
         return _publish(db, model)
 
+
+    @staticmethod
+    def delete_unpublished(db, lesson_id, auth_user_id):
+        """ Delete all unpublished learning objectives """
+        LearningObjectiveDataAccess._delete_unpublished(db, lesson_id, auth_user_id)
+        
 
     @staticmethod
     def _delete(db, model):
@@ -335,6 +340,43 @@ class LearningObjectiveDataAccess:
         
         return model
 
+    @staticmethod
+    def _delete_unpublished(db, lesson_id, auth_user_id):
+        """ Delete all unpublished learning objectives """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LearningObjectiveDataAccess._delete_unpublished()")
+
+        execHelper = ExecHelper()
+
+        rows = _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id)
+        
+        for row in rows:
+            _id = row[0]
+            str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = {lesson_id} AND learning_objective_id={_id};".format(lesson_id=lesson_id,_id=_id)
+            execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
+        
+        return rows
+
+    @staticmethod
+    def _publish(db, model):
+        
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LearningObjectiveDataAccess._publish()")
+
+
+        execHelper = ExecHelper()
+
+        str_publish = "UPDATE sow_learning_objective SET published = {published} WHERE id = {learning_objective_id};"
+        str_publish = str_publish.format(published=1 if model.published else 0, learning_objective_id=model.id)
+        
+        rval = []
+        rval = execHelper.execSql(db, str_publish, rval)
+
+        return rval
+
+
+
 
 def sort_by_solo_taxonomy_level(unsorted_list):
     """
@@ -342,6 +384,8 @@ def sort_by_solo_taxonomy_level(unsorted_list):
     :param unsorted_list: the unsorted data
     :return: a sorted list
     """
+
+    BaseModel.depreciation_notice("Not referenced")
 
     staging_list = unsorted_list
 
@@ -385,6 +429,9 @@ from .core.db_helper import to_db_null, to_empty, sql_safe, to_db_bool
 
 
 def get_all_pathway_objectives(db, key_stage_id, key_words):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("Check usage or use LearningObjectiveAccess.get_all_pathway_objectives()")
 
     execHelper = ExecHelper()
 
@@ -449,6 +496,8 @@ def get_all_pathway_objectives(db, key_stage_id, key_words):
 
 
 def get_linked_pathway_objectives(db, lesson_id):
+
+    BaseModel.depreciation_notice("Not referenced")
 
     execHelper = ExecHelper()
 
@@ -549,13 +598,11 @@ def add_existing_objective(db, learning_objective_id, lesson_id, auth_user_id):
 '''
 
 
-def delete_unpublished(db, lesson_id, auth_user_id):
-    """ Delete all unpublished learning objectives """
-
-    _delete_unpublished(db, lesson_id, auth_user_id)
-    
 
 def update_is_key_objective(db, learning_objective_id, lesson_id, is_key_objective):
+    
+    BaseModel.depreciation_notice("Not referenced")
+
     execHelper = ExecHelper()
     str_update = "UPDATE sow_learning_objective__has__lesson SET is_key_objective = {is_key_objective} WHERE learning_objective_id = {learning_objective_id};"
     str_update = str_update.format(learning_objective_id=int(learning_objective_id), lesson_id=int(lesson_id), is_key_objective=to_db_bool(is_key_objective))
@@ -571,6 +618,10 @@ Private CRUD functions
 
 def _insert_lesson_lessonobjectives(db, model, results):
     """ insert into linking table between objective and lesson """
+    
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._insert_lesson_lessonobjectives()")
+
     execHelper = ExecHelper()
 
     str_insert = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
@@ -583,6 +634,10 @@ def _insert_lesson_lessonobjectives(db, model, results):
 
 def _update_lesson_lessonobjectives(db, model, results):
     """ insert if entry in sow_learning_objective__has__lesson doesn't already map sow learning_objective and sow_lesson """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._update_lesson_lessonobjectives()")
+
     execHelper = ExecHelper()
 
     str_check_duplicate = "SELECT id FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id} AND lesson_id = {lesson_id};"
@@ -599,33 +654,13 @@ def _update_lesson_lessonobjectives(db, model, results):
     return results
 
 
-def _delete_unpublished(db, lesson_id, auth_user_id):
-    """ Delete all unpublished learning objectives """
-    execHelper = ExecHelper()
-
-    rows = _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id)
-    
-    for row in rows:
-        _id = row[0]
-        str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = {lesson_id} AND learning_objective_id={_id};".format(lesson_id=lesson_id,_id=_id)
-        execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
-    
-    return rows
-
-
-def _publish(db, model):
-    execHelper = ExecHelper()
-
-    str_publish = "UPDATE sow_learning_objective SET published = {published} WHERE id = {learning_objective_id};"
-    str_publish = str_publish.format(published=1 if model.published else 0, learning_objective_id=model.id)
-    
-    rval = []
-    rval = execHelper.execSql(db, str_publish, rval)
-
-    return rval
 
 
 def _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._get_lesson_learningobjective_ids()")
+
 
     execHelper = ExecHelper()
 

@@ -2,7 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import get_latest_schemes_of_work
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
+
+get_latest_schemes_of_work = SchemeOfWorkDataAccess.get_latest_schemes_of_work
 
 class test_db__get_latest_schemes_of_work(TestCase):
     

@@ -112,7 +112,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, key_stage_id=0, auth_user = 0):
+    def get_all(db, auth_user, key_stage_id=0):
 
         execHelper = ExecHelper()
 
@@ -159,6 +159,64 @@ class SchemeOfWorkDataAccess:
 
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
+
+        return data
+
+
+    @staticmethod
+    def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
+        """
+        Gets the latest schemes of work with learning objectives
+        :param db: the database context
+        :param top: number of records to return
+        :return: list of schemes of work models
+        """
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_latest_schemes_of_work()")
+        
+        execHelper = ExecHelper()
+        
+        select_sql = "SELECT DISTINCT "\
+                    " sow.id as id," \
+                    " sow.name as name," \
+                    " sow.description as description," \
+                    " sow.exam_board_id as exam_board_id," \
+                    " exam.name as exam_board_name," \
+                    " sow.key_stage_id as key_stage_id," \
+                    " kys.name as key_stage_name," \
+                    " sow.created as created," \
+                    " sow.created_by as created_by_id," \
+                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
+                    " sow.published as published"\
+                    " FROM sow_scheme_of_work as sow" \
+                    " LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id"\
+                    " LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id"\
+                    " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id" \
+                    " LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
+                    " LEFT JOIN auth_user as user ON user.id = sow.created_by" \
+                    " WHERE sow.published = 1 OR sow.created_by = {auth_user}"\
+                    " ORDER BY sow.created DESC LIMIT {top};"
+        select_sql = select_sql.format(auth_user=to_db_null(auth_user), top=top)
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+
+        data = []
+
+        for row in rows:
+
+            model = SchemeOfWorkModel(id_=row[0],
+                                    name=row[1],
+                                    description=row[2],
+                                    exam_board_id=row[3],
+                                    exam_board_name=row[4],
+                                    key_stage_id=row[5],
+                                    key_stage_name=row[6],
+                                    created=row[7],
+                                    created_by_id=row[8],
+                                    created_by_name=row[9],
+                                    published=row[10])
+            data.append(model)
 
         return data
 
@@ -226,6 +284,7 @@ class SchemeOfWorkDataAccess:
 
         return model
 
+
     @staticmethod
     def _delete(db, model):
         execHelper = ExecHelper()
@@ -241,6 +300,64 @@ class SchemeOfWorkDataAccess:
         return model
 
 
+    @staticmethod
+    def get_key_stage_id_only(db, scheme_of_work_id):
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_key_stage_id_only()")
+
+        execHelper = ExecHelper()
+        
+        select_sql = ("SELECT "\
+                    "  sow.key_stage_id as key_stage_id "\
+                    " FROM sow_scheme_of_work as sow "\
+                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
+                    " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+
+        key_stage_id = 0
+        for row in rows:
+            key_stage_id = row[0]
+
+        return key_stage_id
+
+
+    @staticmethod
+    def delete_unpublished(db, auth_user_id):
+        """ Delete all unpublished schemes of work """
+
+        execHelper = ExecHelper()
+        
+        """ Delete all unpublished learning objectives """
+        str_delete = "DELETE FROM sow_scheme_of_work WHERE published IN (0,2);"
+            
+        rows = []
+        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+        return rows
+
+    @staticmethod
+    def publish(db, auth_user_id, id_):
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.publish()")
+
+        model = SchemeOfWorkModel(id_)
+        model.publish = True
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess._publish()")
+
+        execHelper = ExecHelper()
+        
+        str_update = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
+        str_update = str_update.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
+
+        rval = []
+        execHelper.execCRUDSql(db, str_update, rval, handle_log_info)
+
+        return rval
+
+
 
 """
 DAL
@@ -248,6 +365,9 @@ DAL
 from .core.db_helper import to_db_null
 
 def get_options(db, auth_user = 0):
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_options()")
+
     execHelper = ExecHelper()
     
     str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
@@ -264,61 +384,10 @@ def get_options(db, auth_user = 0):
     return data
 
 
-def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
-    """
-    Gets the latest schemes of work with learning objectives
-    :param db: the database context
-    :param top: number of records to return
-    :return: list of schemes of work models
-    """
-    execHelper = ExecHelper()
-    
-    select_sql = "SELECT DISTINCT "\
-                 " sow.id as id," \
-                 " sow.name as name," \
-                 " sow.description as description," \
-                 " sow.exam_board_id as exam_board_id," \
-                 " exam.name as exam_board_name," \
-                 " sow.key_stage_id as key_stage_id," \
-                 " kys.name as key_stage_name," \
-                 " sow.created as created," \
-                 " sow.created_by as created_by_id," \
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
-                 " sow.published as published"\
-                 " FROM sow_scheme_of_work as sow" \
-                 " LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id"\
-                 " LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id"\
-                 " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id" \
-                 " LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
-                 " LEFT JOIN auth_user as user ON user.id = sow.created_by" \
-                 " WHERE sow.published = 1 OR sow.created_by = {auth_user}"\
-                 " ORDER BY sow.created DESC LIMIT {top};"
-    select_sql = select_sql.format(auth_user=to_db_null(auth_user), top=top)
-
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows)
-
-    data = []
-
-    for row in rows:
-
-        model = SchemeOfWorkModel(id_=row[0],
-                                  name=row[1],
-                                  description=row[2],
-                                  exam_board_id=row[3],
-                                  exam_board_name=row[4],
-                                  key_stage_id=row[5],
-                                  key_stage_name=row[6],
-                                  created=row[7],
-                                  created_by_id=row[8],
-                                  created_by_name=row[9],
-                                  published=row[10])
-        data.append(model)
-
-    return data
-
-
 def get_schemeofwork_name_only(db, scheme_of_work_id):
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_schemeofwork_name_only()")
+
     execHelper = ExecHelper()
     
     select_sql = "SELECT "\
@@ -337,60 +406,3 @@ def get_schemeofwork_name_only(db, scheme_of_work_id):
 
     return scheme_of_work_name
 
-
-def get_key_stage_id_only(db, scheme_of_work_id):
-    execHelper = ExecHelper()
-    
-    select_sql = ("SELECT "\
-                  "  sow.key_stage_id as key_stage_id "\
-                  " FROM sow_scheme_of_work as sow "\
-                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                  " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows)
-
-    key_stage_id = 0
-    for row in rows:
-        key_stage_id = row[0]
-
-    return key_stage_id
-
-
-def delete_unpublished(db, auth_user_id):
-    """ Delete all unpublished schemes of work """
-
-    return _delete_unpublished(db, auth_user_id)
-
-
-def publish(db, auth_user_id, id_):
-    model = SchemeOfWorkModel(id_)
-    model.publish = True
-    return _publish(db, model)
-
-
-"""
-Private CRUD functions
-"""
-
-
-def _publish(db, model):
-    execHelper = ExecHelper()
-    
-    str_update = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
-    str_update = str_update.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
-
-    rval = []
-    execHelper.execCRUDSql(db, str_update, rval, handle_log_info)
-
-    return rval
-
-
-def _delete_unpublished(db, auth_user_id):
-    execHelper = ExecHelper()
-    
-    """ Delete all unpublished learning objectives """
-    str_delete = "DELETE FROM sow_scheme_of_work WHERE published IN (0,2);"
-        
-    rows = []
-    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
-    return rows

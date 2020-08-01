@@ -23,7 +23,7 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                SchemeOfWorkDataAccess.get_all(self.fake_db, 4)
+                SchemeOfWorkDataAccess.get_all(self.fake_db, 99, key_stage_id=4)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -33,11 +33,11 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 5)
+            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 99, key_stage_id=5)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 5 or 5 = 0) AND (sow.published = 1 OR sow.created_by = 0) ORDER BY sow.key_stage_id;", [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 5 or 5 = 0) AND (sow.published = 1 OR sow.created_by = 99) ORDER BY sow.key_stage_id;", [])
             self.assertEqual(0, len(rows))
 
 
@@ -48,11 +48,11 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 3)
+            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 99, key_stage_id=3)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 3 or 3 = 0) AND (sow.published = 1 OR sow.created_by = 0) ORDER BY sow.key_stage_id;", [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 3 or 3 = 0) AND (sow.published = 1 OR sow.created_by = 99) ORDER BY sow.key_stage_id;", [])
             self.assertEqual(1, len(rows))
             self.assertEqual(6, rows[0]["id"])
             self.assertEqual("Lorem", rows[0]["name"])
@@ -71,11 +71,11 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 3)
+            rows = SchemeOfWorkDataAccess.get_all(self.fake_db, 99, key_stage_id=3)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 3 or 3 = 0) AND (sow.published = 1 OR sow.created_by = 0) ORDER BY sow.key_stage_id;", [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,"SELECT   sow.id as id,   sow.name as name,   sow.description as description,   sow.exam_board_id as exam_board_id,   exam.name as exam_board_name,   sow.key_stage_id as key_stage_id,   kys.name as key_stage_name,   sow.created as created,   sow.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,   sow.published as published FROM sow_scheme_of_work as sow   LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id   INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id   LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE (sow.key_stage_id = 3 or 3 = 0) AND (sow.published = 1 OR sow.created_by = 99) ORDER BY sow.key_stage_id;", [])
             self.assertEqual(3, len(rows))
 
             self.assertEqual(6, rows[0]["id"])

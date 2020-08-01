@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from shared.models.core.db_helper import ExecHelper, sql_safe
+from shared.models.core.basemodel import BaseModel
 
 class YearModel(models.Model):
     def __init__(self, id_, name):
@@ -22,6 +23,9 @@ class YearModel(models.Model):
 DAL
 """
 def get_options(db, key_stage_id):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use YearDataAccess.get_options()")
 
     helper = ExecHelper()
 

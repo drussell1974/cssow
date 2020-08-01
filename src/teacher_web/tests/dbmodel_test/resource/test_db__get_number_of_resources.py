@@ -6,7 +6,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_resource as test_context 
 
-get_number_of_resources = test_context.get_number_of_resources
+get_number_of_resources = test_context.ResourceDataAccess.get_number_of_resources
 handle_log_info = test_context.handle_log_info
 
 class test_db__get_resource_type_options(TestCase):

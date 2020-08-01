@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 # test context
 
-from app.schemesofwork.viewmodels import SchemeOfWorkSaveViewModel as ViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkSaveModelViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as DataAccess, SchemeOfWorkModel as Model
 
 #Serializer = test_context.KeywordModelSerializer

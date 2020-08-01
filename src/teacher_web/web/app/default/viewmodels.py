@@ -5,9 +5,22 @@ import io
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
 from shared.models.cls_topic import TopicModel, get_options
 from shared.models.cls_keyword import KeywordDataAccess, KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
+
+
+
+class SchemeOfWorkGetLatestViewModel(BaseViewModel):
+    
+    def __init__(self, db, top, auth_user):
+        self.model = []
+
+        self.db = db
+        # get model
+        data = SchemeOfWorkDataAccess.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
+        self.model = data
 
 
 class TopicGetOptionsListViewModel(BaseViewModel):

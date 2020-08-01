@@ -27,6 +27,9 @@ DAL
 
 def get_options(db, year_id, topic_id):
 
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use KS123DataAccess.get_options()")
+
     execHelper = ExecHelper()
 
     str_select = "SELECT id, objective FROM sow_ks123_pathway WHERE year_id = {year_id} and topic_id = {topic_id};"\
@@ -45,6 +48,10 @@ def get_options(db, year_id, topic_id):
 
 
 def get_linked_pathway_ks123(db, lesson_id):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("Check usage or move to KS123DataAccess.get_linked_pathway_ks123")
+
     execHelper = ExecHelper()
     
 

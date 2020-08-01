@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_lesson as test_context 
 from shared.models.cls_learningobjective import LearningObjectiveDataAccess
+from shared.models.cls_resource import ResourceDataAccess
 
 get_all = test_context.LessonDataAccess.get_all
 handle_log_info = test_context.handle_log_info
@@ -25,7 +26,7 @@ class test_db__get_all(TestCase):
 
         test_context.LessonDataAccess.get_all_keywords = Mock(return_value={32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'})
 
-        test_context.LessonDataAccess.get_number_of_resources = Mock(return_value=6)
+        ResourceDataAccess.get_number_of_resources = Mock(return_value=6)
 
         test_context.LessonDataAccess.get_related_topic_ids = Mock(return_value=[
             {"id":56, "name":"Hardware", "checked":None, "disabled":False},
@@ -123,7 +124,7 @@ class test_db__get_all(TestCase):
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0]["key_words"])
 
             LearningObjectiveDataAccess.get_all.assert_called()
-            test_context.LessonDataAccess.get_number_of_resources.assert_called()
+            ResourceDataAccess.get_number_of_resources.assert_called()
             test_context.LessonDataAccess.get_related_topic_ids.assert_called()
             test_context.LessonDataAccess.get_ks123_pathway_objective_ids.assert_called()
             test_context.LessonDataAccess._get_number_of_learning_objectives.assert_called()
@@ -165,7 +166,7 @@ class test_db__get_all(TestCase):
 
 
             LearningObjectiveDataAccess.get_all.assert_called()
-            test_context.LessonDataAccess.get_number_of_resources.assert_called()
+            ResourceDataAccess.get_number_of_resources.assert_called()
             test_context.LessonDataAccess.get_related_topic_ids.assert_called()
             test_context.LessonDataAccess.get_ks123_pathway_objective_ids.assert_called()
             test_context.LessonDataAccess._get_number_of_learning_objectives.assert_called()

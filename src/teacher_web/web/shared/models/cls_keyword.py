@@ -212,6 +212,9 @@ def save_keywords_only(db, key_words):
     :param key_words: list of keywords to save
     """
     ' get all the keywords from the database '
+
+    BaseModel.depreciation_notice("Not referenced")
+
     existing_keywords = KeywordDataAccess.get_options(db)
 
     new_id = 0
@@ -235,6 +238,9 @@ def delete(db, id):
     :param id: identify of the key term
     :return:
     """
+
+    BaseModel.depreciation_notice("Not referenced")
+
     execHelper = ExecHelper()
     
 
@@ -250,6 +256,8 @@ def _insert(db, model):
     :param definition: key definition
     :return:
     """
+
+    #TODO: #230 Move to DataAccess
 
     execHelper = ExecHelper()
 
@@ -276,6 +284,9 @@ def _update(db, model):
     :param definition: key definition
     :return:
     """
+
+    #TODO: #230 Move to DataAccess
+    
     execHelper = ExecHelper()
     
     str_update = "UPDATE sow_key_word SET name = '{name}', definition = '{definition}' WHERE id = {id};".format(name=model.term, definition=model.definition, id=model.id)

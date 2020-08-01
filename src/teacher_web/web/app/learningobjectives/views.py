@@ -6,11 +6,23 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from .viewmodels import LearningObjectiveSaveViewModel, LearningObjectiveGetModelViewModel, LearningObjectiveGetAllViewModel
+from shared.models.cls_learningobjective import LearningObjectiveModel
 
+from .viewmodels import LearningObjectiveSaveViewModel
+from .viewmodels import LearningObjectiveGetModelViewModel
+from .viewmodels import LearningObjectiveGetAllViewModel
+from .viewmodels import LearningObjectiveDeleteUnpublishedViewModel
+from .viewmodels import LearningObjectivePublishModelViewModel
+
+#from app.lessons.viewmodels import LessonGetOptionsViewModel
 
 # TODO: use view models
-from shared.models import cls_lesson, cls_learningobjective, cls_schemeofwork, cls_solotaxonomy, cls_content, cls_examboard
+from shared.models.cls_lesson import LessonDataAccess
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
+from shared.models.cls_solotaxonomy import SoloTaxonomyDataAccess
+from shared.models.cls_content import ContentDataAccess
+from shared.models.cls_examboard import ExamBoardDataAccess
+
 from shared.models.core import validation_helper
 
 # view models
@@ -25,7 +37,7 @@ def index(request, scheme_of_work_id, lesson_id):
 
     learningobjectives_view = LearningObjectiveGetAllViewModel(db, lesson_id, request.user.id)
     
-    lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  
+    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -60,14 +72,14 @@ def new(request, scheme_of_work_id, lesson_id):
         # required for creating a new object
         get_lessonobjective_view.model.lesson_id = int(lesson_id)
 
-    key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkDataAccess.get_key_stage_id_only(db, int(scheme_of_work_id))
 
     get_lessonobjective_view.model.lesson_id = lesson.id
     get_lessonobjective_view.model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = cls_solotaxonomy.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyDataAccess.get_options(db)
 
-    content_options = cls_content.get_options(db, key_stage_id)
+    content_options = ContentDataAccess.get_options(db, key_stage_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -107,14 +119,14 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         # required for creating a new object
         model.lesson_id = int(lesson_id)
     
-    key_stage_id = cls_schemeofwork.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkDataAccess.get_key_stage_id_only(db, int(scheme_of_work_id))
 
     model.lesson_id = lesson.id
     model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = cls_solotaxonomy.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyDataAccess.get_options(db)
 
-    content_options = cls_content.get_options(db, key_stage_id)
+    content_options = ContentDataAccess.get_options(db, key_stage_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -136,7 +148,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     
     # create instance of model from request.vars
 
-    model = cls_learningobjective.LearningObjectiveModel(
+    model = LearningObjectiveModel(
         id_=request.POST.get("id", 0),
         description=request.POST.get("description", ""),
         solo_taxonomy_id=request.POST.get("solo_taxonomy_id", 0),
@@ -180,23 +192,12 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
 
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
-def delete_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
-    """ delete item and redirect back to referer """
-    
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    cls_learningobjective.delete(db, request.user.id, learning_objective_id)
-
-    return HttpResponseRedirect(redirect_to_url)
-
-
-@permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_learningobjective.delete_unpublished(db, lesson_id, request.user.id)
+    LearningObjectiveDeleteUnpublishedViewModel(db, lesson_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -207,7 +208,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     #TODO: #231: published item     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_learningobjective.LearningObjectiveDataAccess.publish_item(db, learning_objective_id, request.user.id)
+    LearningObjectivePulishModelViewModel(db, learning_objective_id, request.user.id)
 
     # TODO: redirect
     return HttpResponseRedirect(redirect_to_url)

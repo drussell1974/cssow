@@ -6,7 +6,7 @@ import shared.models.cls_resource as test_context
 # Test Context
 
 Model = test_context.ResourceModel
-delete_unpublished = test_context.delete_unpublished
+delete_unpublished = test_context.ResourceDataAccess.delete_unpublished
 handle_log_info = test_context.handle_log_info
 
 

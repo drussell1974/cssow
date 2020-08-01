@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.schemesofwork.views import delete, edit, index, new, save, delete_unpublished
+from app.schemesofwork.views import edit, index, new, save, delete_unpublished
 
 # Create your tests here.
 class test_app_route_schemesofwork_page(TestCase):
@@ -47,17 +47,6 @@ class test_app_route_schemesofwork_page(TestCase):
     def test__schemesofwork_edit__resolves_to_edit__reverse(self):
         url = reverse("schemesofwork.edit", args=[127])
         self.assertEqual("/schemesofwork/127/edit", url)
-
-
-    def test__schemesofwork_delete__resolves_to_delete(self):
-        url = resolve("/schemesofwork/127/delete")
-        self.assertEqual("schemesofwork.delete_item", url.url_name)
-        self.assertEqual(url.func, delete)
-
-    
-    def test__schemesofwork_delete__resolves_to_delete__reverse(self):
-        url = reverse("schemesofwork.delete_item", args=[127])
-        self.assertEqual("/schemesofwork/127/delete", url)
 
 
     def test__schemesofwork_publish_item__resolves_to_publish(self):

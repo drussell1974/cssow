@@ -48,3 +48,16 @@ class LearningObjectiveSaveViewModel(BaseViewModel):
 
         return self.model
 
+
+class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
+
+    def __init__(self, db, lesson_id, auth_user):
+        data = DataAccess.delete_unpublished(db, lesson_id, auth_user)
+        self.model = data
+
+
+class LearningObjectivePublishModelViewModel(BaseViewModel):
+
+    def __init__(self, db, learning_objective_id, auth_user):
+        data = DataAccess.publish_item(db, learning_objective_id, auth_user)
+        self.model = data

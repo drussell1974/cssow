@@ -43,7 +43,7 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = delete(self.fake_db, 1, model.id)
+            actual_result = delete(self.fake_db, model, 99)
             
             # assert
             ExecHelper.execCRUDSql.assert_called()

@@ -3,21 +3,28 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from shared.models import cls_schemeofwork, cls_examboard, cls_keystage
+from shared.models.cls_schemeofwork import SchemeOfWorkModel 
+from shared.models.cls_examboard import ExamBoardDataAccess
+from shared.models.cls_keystage import KeyStageDataAccess
 from shared.models.core import validation_helper
 from datetime import datetime
 
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess 
 from shared.view_model import ViewModel
 
+from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkSaveModelViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkGetAllViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 # Create your views here.
 
 def index(request):
-    schemes_of_work = SchemeOfWorkDataAccess.get_all(db, key_stage_id=0, auth_user=request.user.id)
+
+    getall_view =  SchemeOfWorkGetAllViewModel(db, auth_user=request.user.id)
     
     data = {
-        "schemes_of_work":schemes_of_work
+        "schemes_of_work":getall_view.model
     }
 
     view_model = ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", data=data)
@@ -29,10 +36,10 @@ def index(request):
 def new(request):
     """ Create new scheme of work """
 
-    scheme_of_work = cls_schemeofwork.SchemeOfWorkModel(id_=0)
+    scheme_of_work = SchemeOfWorkModel(id_=0)
 
-    examboard_options = cls_examboard.get_options(db)
-    keystage_options = cls_keystage.get_options(db)
+    examboard_options = ExamBoardDataAccess.get_options(db)
+    keystage_options = KeyStageDataAccess.get_options(db)
 
     data = {
         "scheme_of_work_id": scheme_of_work.id,
@@ -49,11 +56,13 @@ def new(request):
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id):
     """ edit action """
+    # TODO: Use ViewModel
+    
+    getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, request.user.id)
+    model = getmodel_view.model
 
-    model = SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, request.user.id)
-
-    examboard_options = cls_examboard.get_options(db)
-    keystage_options = cls_keystage.get_options(db)
+    examboard_options = ExamBoardDataAccess.get_options(db)
+    keystage_options = KeyStageDataAccess.get_options(db)
 
     data = {
         "scheme_of_work_id": model.id,
@@ -73,7 +82,7 @@ def save(request, scheme_of_work_id):
 
     # create instance of model from request.vars
 
-    model = cls_schemeofwork.SchemeOfWorkModel(
+    model = SchemeOfWorkModel(
         id_=request.POST.get("id", 0),
         name=request.POST.get("name", ""),
         description=request.POST.get("description", ""),
@@ -84,13 +93,13 @@ def save(request, scheme_of_work_id):
 
     # validate the model and save if valid otherwise redirect to default invalid
 
-    published = request.POST["published"]
+    save_view = SchemeOfWorkSaveModelViewModel(db, model, request.user.id)
+    save_view.execute(request.POST["published"])
+    model = save_view.model
     
-    model.validate()
     if model.is_valid == True:
         ' save the lesson '
-        model = SchemeOfWorkDataAccess.save(db, model, published)
-        
+
         if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
             redirect_to_url = request.POST.get("next", None)
         else:
@@ -108,18 +117,8 @@ def delete_unpublished(request):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
+    # TODO: Use ViewModel
 
-    cls_schemeofwork.delete_unpublished(db, request.user.id)
-
-    return HttpResponseRedirect(redirect_to_url)
-
-
-@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
-def delete(request, scheme_of_work_id):
-    """ delete item and redirect back to referer """
-
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    cls_schemeofwork.delete(db, request.user.id, 0)
+    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)

@@ -24,26 +24,30 @@ DAL
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 
+class ContentDataAccess:
 
-def get_options(db, key_stage_id):
+    @staticmethod
+    def get_options(db, key_stage_id):
 
-    execHelper = ExecHelper()
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use ContentDataAccess.get_options()")
+        execHelper = ExecHelper()
 
-    str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
+        str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
-    data = []
+        data = []
 
-    try:
-        rows = []
-        rows = execHelper.execSql(db, str_select, rows, handle_log_info)
+        try:
+            rows = []
+            rows = execHelper.execSql(db, str_select, rows, handle_log_info)
 
-        for row in rows:
-            model = ContentModel(row[0], row[1])
-            data.append(model)
-    except Exception as e:
-        last_sql = (str_select, "FAILED")
-        raise Exception("Error getting content", e)
+            for row in rows:
+                model = ContentModel(row[0], row[1])
+                data.append(model)
+        except Exception as e:
+            last_sql = (str_select, "FAILED")
+            raise Exception("Error getting content", e)
 
-    last_sql = (str_select, "SUCCESS")
+        last_sql = (str_select, "SUCCESS")
 
-    return data
+        return data

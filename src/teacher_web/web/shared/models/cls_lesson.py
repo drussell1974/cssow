@@ -4,7 +4,7 @@ from .core.basemodel import BaseModel, try_int
 from .core.db_helper import sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
 from .cls_learningobjective import LearningObjectiveDataAccess # get_all as get_all_objectives
-from .cls_resource import ResourceDataAccess, get_number_of_resources
+from .cls_resource import ResourceDataAccess
 from .cls_keyword import KeywordDataAccess, KeywordModel
 
 class LessonModel (BaseModel):
@@ -335,7 +335,7 @@ class LessonDataAccess:
             ' get learning objectives for this lesson '
             model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
             ' get number of resources for this lesson '
-            model.number_of_resource = LessonDataAccess.get_number_of_resources(db, model.id, auth_user)
+            model.number_of_resource = ResourceDataAccess.get_number_of_resources(db, model.id, auth_user)
             ' get related topics '
             model.related_topic_ids = LessonDataAccess.get_related_topic_ids(db, model.id, model.topic_id)
             ' get ks123 pathways '
@@ -405,6 +405,9 @@ class LessonDataAccess:
 
     @staticmethod
     def get_all_objectives(db, id, auth_user):
+        
+        BaseModel.depreciation_notice("not referenced")
+
         return LearningObjectiveDataAccess.get_all(db, lesson_id=id, auth_user=auth_user)
     
     """
@@ -535,50 +538,52 @@ class LessonDataAccess:
         return serializable_list
 
 
+
     @staticmethod
-    def get_number_of_resources(db, lesson_id, auth_user):
-        return get_number_of_resources(db, lesson_id=lesson_id, auth_user=auth_user)
+    def get_options(db, scheme_of_work_id, auth_user):
+
+        BaseModel.depreciation_notice("use LessonDataAccess.get_options()")
+
+        execHelper = ExecHelper()
+        
+        str_select = "SELECT le.id as id," \
+                    " le.title as title," \
+                    " le.order_of_delivery_id as order_of_delivery_id," \
+                    " top.id as topic_id," \
+                    " top.name as name," \
+                    " yr.id as year_id," \
+                    " yr.name as year_name " \
+                    "FROM sow_lesson as le" \
+                    " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
+                    " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
+                    "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.year_id, le.order_of_delivery_id;"
+
+        str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
+
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows)
+
+        data = []
+
+        for row in rows:
+            model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
+            ' get related topics '
+            model.related_topic_ids = LessonDataAccess.get_related_topic_ids(db, model.id, model.topic_id)
+
+            data.append(model)
+
+        return data
 
 
 """
 DAL
 """
 
-def get_options(db, scheme_of_work_id, auth_user):
-
-    execHelper = ExecHelper()
-    
-    str_select = "SELECT le.id as id," \
-                 " le.title as title," \
-                 " le.order_of_delivery_id as order_of_delivery_id," \
-                 " top.id as topic_id," \
-                 " top.name as name," \
-                 " yr.id as year_id," \
-                 " yr.name as year_name " \
-                 "FROM sow_lesson as le" \
-                 " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
-                 " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
-                 "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.year_id, le.order_of_delivery_id;"
-
-    str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
-
-    rows = []
-    rows = execHelper.execSql(db, str_select, rows)
-
-    data = []
-
-    for row in rows:
-        model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
-        ' get related topics '
-        model.related_topic_ids = LessonDataAccess.get_related_topic_ids(db, model.id, model.topic_id)
-
-        data.append(model)
-
-    return data
-
-
 def delete(db, auth_user_id, id_):
     """ Delete Lesson """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess.delete()")
 
     model = LessonModel(id_=id_, title="")
     return _delete(db, model)
@@ -587,10 +592,16 @@ def delete(db, auth_user_id, id_):
 def delete_unpublished(db, scheme_of_work_id, auth_user_id):
     """ Delete all unpublished lessons """
 
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess.delete_unpublished()")
+
     return _delete_unpublished(db, scheme_of_work_id, auth_user_id)
 
 
 def publish(db, auth_user_id, id_):
+    
+    BaseModel.depreciation_notice("Not referenced")
+
     model = LessonModel(id_=id_, title="")
     model.publish = True
     return _publish(db, model)
@@ -602,6 +613,10 @@ Private CRUD functions
 
 def _update(db, model, published, auth_user_id):
     """ updates the sow_lesson and sow_lesson__has__topics """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._update()")
+
     execHelper = ExecHelper()
     
     # 1. Update the lesson
@@ -641,6 +656,9 @@ def _update(db, model, published, auth_user_id):
 
 def _insert(db, model, published, auth_user_id):
     """ inserts the sow_lesson and sow_lesson__has__topics """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._insert()")
 
     execHelper = ExecHelper()
 
@@ -691,6 +709,10 @@ def _insert(db, model, published, auth_user_id):
 
 def _upsert_related_topic_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._upsert_related_topics_ids()")
+
     execHelper = ExecHelper()
 
     # delete existing
@@ -717,6 +739,10 @@ def _upsert_related_topic_ids(db, model, results, auth_user_id):
 
 def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_objectives_ids()")
+
     execHelper = ExecHelper()
 
     # delete existing
@@ -743,6 +769,10 @@ def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
 
 def _copy_objective_ids(db, model, results, auth_user_id):
     """ inserts sow_learning_objective__has__lesson """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._copy_objective_ids()")
+
     execHelper = ExecHelper()
     
 
@@ -770,6 +800,10 @@ def _copy_objective_ids(db, model, results, auth_user_id):
 
 def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__topics """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_ks123_ids()")
+
     execHelper = ExecHelper()
 
     # delete existing
@@ -796,6 +830,10 @@ def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
 
 def _upsert_key_words(db, model, results, auth_user_id):
     """ deletes and reinserts sow_lesson__has__keywords """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._upsert_key_words()")
+
     execHelper = ExecHelper()
       
     # statement to delete existing
@@ -817,6 +855,9 @@ def _upsert_key_words(db, model, results, auth_user_id):
 
 def _delete(db, model):
 
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._delete()")
+
     execHelper = ExecHelper()
     
     str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
@@ -829,6 +870,10 @@ def _delete(db, model):
 
 
 def _publish(db, model):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._publish()")
+
     execHelper = ExecHelper()
 
     str_publish = "UPDATE sow_lesson SET published = {published} WHERE id = {lesson_id};"
@@ -842,6 +887,10 @@ def _publish(db, model):
 
 def _delete_unpublished(db, scheme_of_work_id, auth_user_id):
     """ Delete all unpublished learning objectives """
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use LessonDataAccess._delete_unpublished()")
+
     execHelper = ExecHelper()
     
     str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published = 0;".format(scheme_of_work_id)

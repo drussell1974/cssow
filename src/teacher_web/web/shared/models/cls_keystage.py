@@ -20,32 +20,24 @@ class KeyStageModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
 
-"""
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
-"""
+class KeyStageDataAccess:
 
-def get_options(db):
-    execHelper = ExecHelper()
+    @staticmethod
+    def get_options(db):
+        
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use KeyStage.get_options()")
 
-    rows = []
-    rows = execHelper.execSql(db, "SELECT id, name FROM sow_key_stage;", rows, log_info=handle_log_info)
+        execHelper = ExecHelper()
 
-    data = []
+        rows = []
+        rows = execHelper.execSql(db, "SELECT id, name FROM sow_key_stage;", rows, log_info=handle_log_info)
 
-    for row in rows:
-        model = KeyStageModel(row[0], row[1])
-        data.append(model)
+        data = []
 
-    return data
+        for row in rows:
+            model = KeyStageModel(row[0], row[1])
+            data.append(model)
+
+        return data

@@ -2,7 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
-from shared.models.cls_schemeofwork import SchemeOfWorkModel, publish
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess
+
+publish = SchemeOfWorkDataAccess.publish
 
 
 class test_db__publish(TestCase):

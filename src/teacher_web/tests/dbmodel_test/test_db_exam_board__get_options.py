@@ -5,6 +5,9 @@ from unittest import skip
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 
+get_options = test_context.ExamBoardDataAccess.get_options
+
+
 class test_db_exam_board__get_options(TestCase):
     
     def setUp(self):
@@ -35,7 +38,7 @@ class test_db_exam_board__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = test_context.get_options(self.fake_db)
+            rows = get_options(self.fake_db)
             
             # assert
 
@@ -50,7 +53,7 @@ class test_db_exam_board__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = test_context.get_options(self.fake_db)
+            rows = get_options(self.fake_db)
             
             # assert
 
@@ -67,7 +70,7 @@ class test_db_exam_board__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = test_context.get_options(self.fake_db)
+            rows = get_options(self.fake_db)
             
             # assert
 

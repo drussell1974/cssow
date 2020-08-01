@@ -9,7 +9,8 @@ from django.urls import reverse
 from shared.view_model import ViewModel
 
 # TODO: use view models
-from shared.models import cls_resource, cls_lesson, cls_schemeofwork
+from shared.models.cls_resource import ResourceModel, ResourceDataAccess, MARKDOWN_TYPE_ID
+from shared.models.cls_lesson import LessonDataAccess
 
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
@@ -32,7 +33,7 @@ def index(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  #TODO: create view_learningepisiode_options: remove this line
+    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  #TODO: create view_learningepisiode_options: remove this line
 
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -50,7 +51,7 @@ def index(request, scheme_of_work_id, lesson_id):
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
-    model = cls_resource.ResourceModel(
+    model = ResourceModel(
         id_=0,
         title="",
         publisher="",
@@ -60,7 +61,7 @@ def new(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
     lesson = get_lesson_view.model
 
-    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+    get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -82,7 +83,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     model = get_model_view.model
 
     if model == None:
-        model = cls_resource.ResourceModel(
+        model = ResourceModel(
             id_=0,
             title="",
             publisher="",
@@ -93,7 +94,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
     lesson = get_lesson_view.model
 
-    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+    get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -122,7 +123,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         
     """ save_item non-view action """
     # create instance of model from request.vars
-    model = cls_resource.ResourceModel(
+    model = ResourceModel(
         id_=resource_id,
         lesson_id=lesson_id,
         scheme_of_work_id=scheme_of_work_id,
@@ -138,7 +139,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     )
 
     ' set property if Markdown document is being uploaded '
-    if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+    if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
         model.md_document_name = request.FILES['md_file']
     
     # validate the model and save if valid otherwise redirect to default invalid
@@ -153,10 +154,9 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
 
     if model.is_valid == True:
         ' save resource'
-        #cls_resource.enable_logging = True
-    
+
         ' upload file if Markdown document '
-        if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+        if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
             
         ' redirect as necessary '
@@ -175,7 +175,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
         lesson = get_lesson_view.model
             
-        get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+        get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
 
         data = {
             "scheme_of_work_id": scheme_of_work_id,
@@ -197,7 +197,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.ResourceDataAccess.delete(db, resource_id, request.user.id)
+    ResourceDataAccess.delete(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -207,7 +207,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.delete_unpublished(db, lesson_id, request.user.id)
+    ResourceDataAccess.delete_unpublished(db, lesson_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 

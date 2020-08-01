@@ -2,10 +2,10 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-import shared.models.cls_solotaxonomy as testcontext 
+import shared.models.cls_solotaxonomy as test_context 
 
-get_options = testcontext.get_options
-handle_log_info = testcontext.handle_log_info
+get_options = test_context.SoloTaxonomyDataAccess.get_options
+handle_log_info = test_context.handle_log_info
 
 
 class test_db__get_options(TestCase):

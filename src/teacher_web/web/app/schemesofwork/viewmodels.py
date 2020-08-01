@@ -8,25 +8,25 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 
 class SchemeOfWorkGetAllViewModel(BaseViewModel):
     
-    def __init__(self, db, scheme_of_work_id, auth_user):
+    def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 
         self.db = db
         # get model
-        data = DataAccess.get_all(self.db, scheme_of_work_id, auth_user)
+        data = DataAccess.get_all(self.db, auth_user, key_stage_id)
         self.model = data
 
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
     
-    def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        data = DataAccess.get_model(self.db, lesson_id, auth_user, resource_type_id)
+        data = DataAccess.get_model(self.db, scheme_of_work_id, auth_user)
         self.model = data
 
 
-class SchemeOfWorkSaveViewModel(BaseViewModel):
+class SchemeOfWorkSaveModelViewModel(BaseViewModel):
 
     def __init__(self, db, data, auth_user):
 
@@ -49,3 +49,17 @@ class SchemeOfWorkSaveViewModel(BaseViewModel):
             handle_log_warning(self.db, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
 
         return self.model
+
+
+class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
+
+    def __init__(self, db, auth_user):
+        data = DataAccess.delete_unpublished(db, auth_user)
+        self.model = data
+
+
+class SchemeOfWorkPublishModelViewModel(BaseViewModel):
+
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        data = DataAccess.publish(db, auth_user, scheme_of_work_id)
+        self.model = data

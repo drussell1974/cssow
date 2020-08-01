@@ -97,6 +97,9 @@ class ResourceModel (BaseModel):
             self.md_document_name = sql_safe(self.md_document_name)
 
 
+from datetime import datetime
+from .core.db_helper import to_db_null, to_empty, to_db_bool
+
 class ResourceDataAccess:
 
     @staticmethod
@@ -318,110 +321,77 @@ class ResourceDataAccess:
         return rval
 
 
-"""
-DAL
-"""
-from datetime import datetime
-from .core.db_helper import to_db_null, to_empty, to_db_bool
+
+    @staticmethod
+    def get_resource_type_options(db, auth_user):
+        
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use ResourceDataAccess.get_resource_type_options()")
+
+        execHelper = ExecHelper()
+
+        str_select = "SELECT" \
+                    " type.id as id," \
+                    " type.name as name " \
+                    "FROM sow_resource_type as type "\
+                    "WHERE type.published = 1 OR type.created_by = {auth_user};"
+
+        str_select = str_select.format(auth_user=to_db_null(auth_user))
+
+        data = []
+
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+        for row in rows:
+            data.append(ResourceTypeModel(id=row[0], name=row[1]))
+
+        return data
 
 
+    @staticmethod
+    def get_number_of_resources(db, lesson_id, auth_user):
+        """
+        get the number of resources for the lesson
+        :param db: database context
+        :param learning_epsiode_id:
+        :param auth_user:
+        :return:
+        """
+        #TODO: #230 Move to DataAccess
 
-def get_resource_type_options(db, auth_user):
-    execHelper = ExecHelper()
+        execHelper = ExecHelper()
+        
+        select_sql = "SELECT " \
+                    " lesson_id " \
+                    "FROM sow_resource "\
+                    "WHERE lesson_id = {lesson_id};"
 
-    str_select = "SELECT" \
-                 " type.id as id," \
-                 " type.name as name " \
-                 "FROM sow_resource_type as type "\
-                 "WHERE type.published = 1 OR type.created_by = {auth_user};"
+        select_sql = select_sql.format(lesson_id=lesson_id)
 
-    str_select = str_select.format(auth_user=to_db_null(auth_user))
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-    data = []
-
-    rows = []
-    rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-    for row in rows:
-        data.append(ResourceTypeModel(id=row[0], name=row[1]))
-
-    return data
-
-'''
-def get_options(db, scheme_of_work_id, lesson_id, auth_user):
-    execHelper = ExecHelper()
-
-    str_select = "SELECT " \
-                 " ref.id as id," \
-                 " ref.title as title," \
-                 " ref.publisher as publisher," \
-                 " ref.year_published as year_published," \
-                 " ref.authors as authors," \
-                 " ref.url as uri," \
-                 " le_ref.id as page_id," \
-                 " le_ref.page_notes," \
-                 " le_ref.page_url," \
-                 "FROM sow_resource as ref " \
-                 "INNER JOIN sow_lesson as le ON le.scheme_of_work_id = ref.scheme_of_work_id AND le.id = {lesson_id} " \
-                 "LEFT JOIN sow_lesson__has__references as le_ref ON le_ref.lesson_id = le.id AND le_ref.reference_id = ref.id " \
-                 "LEFT JOIN sow_reference_type as ref_type ON ref.reference_type_id = ref_type.id " \
-                 "WHERE ref.scheme_of_work_id = {scheme_of_work_id}" \
-                 " OR (ref.published = 1 OR ref.created_by = {auth_user}) " \
-                 "ORDER BY reference_type_id, title, authors;"
-
-    str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
-
-    rows = []
-    rows = execHelper.execSql(db, str_select, rows)
-
-    data = []
-
-    for row in rows:
-        model = ResourceModel(id_=row[0], title=row[1], publisher=row[2], type_id=row[1], type_name = row[2], authors=row[6], uri=row[7], scheme_of_work_id = scheme_of_work_id)
-        model.page_id = row[8]
-        model.page_note = row[9] if row[9] is not None else ''
-        model.page_uri = row[10] if row[10] is not None else ''
-        # TODO: call tojson() in basemodel ... data.append(model.tojson())
-        data.append(model.__dict__)
-
-    return data
-'''
+        return len(rows)
 
 
-def get_number_of_resources(db, lesson_id, auth_user):
-    """
-    get the number of resources for the lesson
-    :param db: database context
-    :param learning_epsiode_id:
-    :param auth_user:
-    :return:
-    """
-    execHelper = ExecHelper()
-    
-    select_sql = "SELECT " \
-                 " lesson_id " \
-                 "FROM sow_resource "\
-                 "WHERE lesson_id = {lesson_id};"
+    @staticmethod
+    def delete_unpublished(db, lesson_id, auth_user_id):
+        """ Delete all unpublished lessons """
 
-    select_sql = select_sql.format(lesson_id=lesson_id)
+        #TODO: #230 Move to DataAccess
 
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-    return len(rows)
+        return _delete_unpublished(db, lesson_id, auth_user_id)
 
 
-def delete_unpublished(db, lesson_id, auth_user_id):
-    """ Delete all unpublished lessons """
+    @staticmethod
+    def publish_item(db, id_, auth_user_id):
 
-    return _delete_unpublished(db, lesson_id, auth_user_id)
+        #TODO: #230 Move to DataAccess
 
-
-def publish_item(db, id_, auth_user_id):
-
-    model = ResourceModel(id_=id_)
-    model.publish = True
-    return _publish(db, model)
+        model = ResourceModel(id_=id_)
+        model.publish = True
+        return _publish(db, model)
 
 
 """
@@ -430,6 +400,9 @@ Private CRUD functions
 
 def _delete_unpublished(db, lesson_id, auth_user_id):
     """ Delete all unpublished resources """
+    
+    #TODO: #230 Move to DataAccess
+
     execHelper = ExecHelper()
     
     str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
@@ -440,6 +413,9 @@ def _delete_unpublished(db, lesson_id, auth_user_id):
 
 
 def _publish(db, model):
+
+    #TODO: #230 Move to DataAccess
+
     execHelper = ExecHelper()
 
     str_publish = "UPDATE sow_resource SET published = {published} WHERE id = {resource_id};"

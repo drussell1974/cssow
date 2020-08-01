@@ -16,5 +16,5 @@ class SchemeOfWorkListViewSet(APIView):
     ''' API endpoint for list of lessons '''
 
     def get (self, request):
-        schemesofwork = SchemeOfWorkDataAccess.get_all(db, 0, request.user.id)
+        schemesofwork = SchemeOfWorkDataAccess.get_all(db, request.user.id)
         return JsonResponse({"schemesofwork": schemesofwork})

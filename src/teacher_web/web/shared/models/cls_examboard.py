@@ -19,20 +19,24 @@ class ExamBoardModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
-def get_options(db):
-    execHelper = ExecHelper()
-    
 
-    rows = []
-    rows = execHelper.execSql(db, "SELECT id, name FROM sow_exam_board;", rows, handle_log_info)
+class ExamBoardDataAccess:
 
-    data = []
+    @staticmethod
+    def get_options(db):
 
-    for row in rows:
-        model = ExamBoardModel(row[0], row[1])
-        data.append(model)
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use ExamBoardDataAccess.get_options()")
 
-    return data
+        execHelper = ExecHelper()
+        
+        rows = []
+        rows = execHelper.execSql(db, "SELECT id, name FROM sow_exam_board;", rows, handle_log_info)
+
+        data = []
+
+        for row in rows:
+            model = ExamBoardModel(row[0], row[1])
+            data.append(model)
+
+        return data

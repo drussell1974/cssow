@@ -170,8 +170,8 @@ class BaseModel(models.Model):
 
 
     @staticmethod
-    def depreciation_notice():
-        warnings.warn("deprecated", DeprecationWarning)
+    def depreciation_notice(msg="depreciated"):
+        warnings.warn(msg, DeprecationWarning)
 
 
 """

@@ -17,23 +17,6 @@
 {% endblock %}
 
 
-{% block contentheading %}
-<div class="alert alert-secondary">
-  <h5 class="secondary-heading">
-    {{ content.sub_heading }}
-      {% if request.user.is_authenticated %}
-      - <a class="small" id="btn-edit" href="{% url 'lesson.edit' content.data.lesson_id content.data.scheme_of_work_id %}?next={{ request.url }}">{{_("Edit")}}</a> 
-      {% endif %}
-  </h5>
-  {% if content.data.strap_line is not None %}
-  <p class="lead">
-      {{ content.data.strap_line }}
-  </p>
-  {% endif %}
-</div>
-{% endblock %}
-
-
 {% block sidecontent %}
 <!-- Blackboard display button START -->
 <section class="alert alert-secondary">
@@ -65,11 +48,39 @@
 {% endblock %}
 
 
+{% block contentheading %}
+<!-- Move to right column in index.template -->
+{% endblock %}
+
+
 {% block maincontent %}
 
-{% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'resource.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_('New')}}</a>
+
+<!-- block content heading -->
+<h1 class="secondary-heading">
+  {{ content.sub_heading }}
+</h1>
+{% if content.data.strap_line is not None %}
+<p class="lead">
+    {{ content.data.strap_line }}
+</p>
 {% endif %}
+<div class="links btn-group btn-group-toggle" data-toggle__x="buttons__x">
+  <a href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" class="btn btn-outline-dark">
+    {{_("Learning objectives")}} <span class="badge badge-light"></span>
+  </a>
+  <a href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}"  class="btn btn-outline-dark">
+    {{_("Resources")}} <span class="badge badge-light" ></span>
+  </a>
+  {% if request.user.is_authenticated %}
+  <a class="btn btn-outline-dark"  id="btn-edit" href="{% url 'lesson.edit' content.data.lesson_id content.data.scheme_of_work_id %}?next={{ request.url }}">{{_("Edit")}}</a> 
+  <a class="btn btn-outline-dark" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Copy")}}</a>
+  <a class="btn btn-warning" id="btn-new" href="{% url 'resource.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_('Add resource')}}</a>
+  {% endif %}
+</div>
+<!--// block contentheading END-->
+
+
 
 <h2 class="group-heading">{{_("Resources")}}</h2>
             

@@ -6,6 +6,9 @@ from .core.log import handle_log_info
 class LessonPlanModel (BaseModel):
 
     def __init__(self, id_, lesson_id, title, description, order_of_delivery_id = 0, duration = 0, task_icon = ""):
+        
+        BaseModel.depreciation_notice("check usage")
+
         self.id = int(id_)
         self.lesson_id = lesson_id
         self.title = title

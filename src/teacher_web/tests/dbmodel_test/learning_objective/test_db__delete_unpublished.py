@@ -6,7 +6,7 @@ import shared.models.cls_learningobjective as test_context
 # Test Context
 
 Model = test_context.LearningObjectiveModel
-delete_unpublished = test_context.delete_unpublished
+delete_unpublished = test_context.LearningObjectiveDataAccess.delete_unpublished
 handle_log_info = test_context.handle_log_info
 
 

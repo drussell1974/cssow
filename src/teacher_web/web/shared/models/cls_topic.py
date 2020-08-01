@@ -2,6 +2,7 @@
 from django.db import models
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
+from shared.models.core.basemodel import BaseModel
 
 
 class TopicModel(models.Model):
@@ -41,6 +42,10 @@ def handle_log_info(db, msg):
 """
 
 def get_options(db, lvl, topic_id = 0):
+
+    #TODO: #230 Move to DataAccess
+    BaseModel.depreciation_notice("use TopicDataAccess.get_options()")
+
     execHelper = ExecHelper()
 
     str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
