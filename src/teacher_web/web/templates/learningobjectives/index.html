@@ -84,8 +84,8 @@
     <!-- #TODO: #231: show published_state as class -->
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
-      <a href="#{{row.id}}" class="disabled">
-        <h4 class="post-title">
+      <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+        <h2 class="post-title">
           {% if row.solo_taxonomy_level == "B" %}
             <i class="far fa-star"></i>
           {% elif row.solo_taxonomy_level == "C" %}
@@ -94,17 +94,17 @@
             <i class="fas fa-trophy"></i>
           {% endif %}
           {{ row.description}} {{ row.published_state }}
-        </h4>
+        </h2>
         {% if request.user.is_authenticated %}
           <div class="custom-control custom-checkbox">  
             <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{row.id}}" {% if row.is_key_objective %} checked {% endif %} value="{{ row.id }}">
             <label class="custom-control-label small" for="chk-is_key_objective-{{ row.id }}" id="lbl-is_key_objective-{{ row.id }}">{{_("This is a key learning objective")}}</label>
           </div>
         {% endif %}
-        <h5 class="post-subtitle">
+        <h3 class="post-subtitle">
             {{ row.topic_name}}
-        </h5>
-      </a>
+        </h3>
+      </a>  
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}
@@ -113,8 +113,6 @@
           <!-- #TODO: #231: published item from index -->
             <a href="{% url 'learningobjective.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
           {% endif %}
-          - <a class="delete" href="{% url 'learningobjective.delete_item' content.data.scheme_of_work_id row.lesson_id row.id %} ">{{_("delete")}}</a>
-           - <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">{{_("edit")}}</a>
         {% endif %}
       </p>
           </div>

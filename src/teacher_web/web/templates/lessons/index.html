@@ -62,21 +62,24 @@
 <!-- #TODO: #231: show published_state as class -->
 <div class="post-preview {{ row.published_state }}">
   <a name="{{ row.id}}"></a>
-  <h2 class="post-title">
-    Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
-  </h2>
-  {% if row.summary != "" %}
-    <h3 class="post-subtitle">{{ row.summary }}</h3>
-  {% endif %}
+  
+  <h4 class="small">{{ row.topic_name }}</h4>
+  <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">
+    <h2 class="post-title">
+      Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
+    </h2>
+    {% if row.summary != "" %}
+      <h3 class="post-subtitle">{{ row.summary }}</h3>
+    {% endif %}
+  </a>
   <div class="links">
-    <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-primary">
+    <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark">
       {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objective}}</span>
     </a>
-    <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-primary">
+    <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark">
       {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resource}}</span>
     </a>
   </div>
-  <h4 class="small">{{ row.topic_name }}</h4>
     {% for key_word in row.key_words %}
       <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
     {% endfor %}
@@ -89,9 +92,7 @@
         {% if row.published == False %} 
           <a href="{% url 'lesson.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
         {% endif %}
-        - <a href="{% url 'lesson.delete' row.scheme_of_work_id row.id %}">{{_("delete")}}</a> 
-        - <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">{{_("edit")}}</a> 
-        - <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
+        <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
     {% endif %} 
     </p>
 </div>

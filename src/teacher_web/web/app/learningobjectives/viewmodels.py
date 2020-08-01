@@ -20,10 +20,10 @@ class LearningObjectiveGetAllViewModel(BaseViewModel):
 
 class LearningObjectiveGetModelViewModel(BaseViewModel):
     
-    def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, learning_objective_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
-        data = DataAccess.get_model(self.db, lesson_id, auth_user)
+        data = DataAccess.get_model(self.db, learning_objective_id, auth_user)
         self.model = data
 
 

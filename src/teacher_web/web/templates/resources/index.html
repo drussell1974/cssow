@@ -83,13 +83,13 @@
     <!-- #TODO: #231 get pubished state -->
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
-      <a href="{{row.page_uri}}" class="disabled">
-        <h4 class="post-title">
+      <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+        <h2 class="post-title">
           <i class="fa {{row.type_icon}}"></i> {{ row.title }}
-        </h4>
-        <h5 class="post-subtitle">
+        </h2>
+        <h3 class="post-subtitle">
             {{ row.publisher }}
-        </h5>
+        </h3>
       </a>
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
@@ -98,9 +98,6 @@
             <!-- #TODO: #231: published item from index -->
               <a href="{% url 'resource.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
           {% endif %}
-          <!-- #TODO: #231 set class -->
-          - <a class="delete" href="{% url 'resource.delete_item' content.data.scheme_of_work_id content.data.lesson_id row.id %} ">{{_("Remove")}}</a>
-          - <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">{{_("Edit")}}</a>
         {% endif %}
       </p>
           </div>

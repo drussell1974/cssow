@@ -84,7 +84,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         ' Open edit '
         #231: find the unpublished learning objective in the index
 
-        elem = self.test_context.find_element_by_css_selector(".unpublished .edit")
+        elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
 
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)

@@ -110,6 +110,7 @@ class LearningObjectiveDataAccess:
 
     @staticmethod
     def get_model(db, id_, auth_user):
+
         execHelper = ExecHelper()
         #231: create empty model
         model = LearningObjectiveModel(0)
