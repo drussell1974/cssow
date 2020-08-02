@@ -31,14 +31,15 @@
 
 
 {% block maincontent %}
-<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.save' content.data.scheme_of_work_id %}">
+
+<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.data.scheme_of_work_id %}">
     {% csrf_token %}
     <div class="control-group">
         <div class="form-group controls">
             <label>{{_("Title")}}</label>
             <input type="text" name="name" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-name" name="name" required
                     maxlength="40" value='{{content.data.scheme_of_work.name}}'>
-            <p class="help-block text-danger"></p>
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
     </div>
     <div class="control-group">
@@ -54,7 +55,7 @@
                     {% endif %}
                 {% endfor %}
             </select>
-            <p class="help-block text-danger"></p>
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
     </div>
     <div class="control-group">
@@ -70,14 +71,14 @@
                     {% endif %}
                 {% endfor %}
             </select>
-            <p class="help-block text-danger"></p>
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
     </div>
     <div class="control-group">
         <div class="form-group controls">
             <label>{{_("Description")}}</label>
-            <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" required value="{{content.data.scheme_of_work.description}}" />
-            <p class="help-block text-danger"></p>
+            <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" value="{{content.data.scheme_of_work.description}}" />
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
     </div>
     <br>

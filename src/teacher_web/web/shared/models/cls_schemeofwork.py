@@ -27,6 +27,7 @@ class SchemeOfWorkModel(BaseModel):
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
 
+
     def validate(self):
 
         """ clean up and validate model """
@@ -39,7 +40,7 @@ class SchemeOfWorkModel(BaseModel):
         # Validate name
         self._validate_required_string("name", self.name, 1, 40)
         # Validate description
-        self._validate_optional_string("description", self.description, 1500)
+        self._validate_required_string("description", self.description, 1, 1500)
         # Validate exam board
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
@@ -62,6 +63,30 @@ class SchemeOfWorkModel(BaseModel):
 
         if self.exam_board_name is not None:
             self.exam_board_name = sql_safe(self.exam_board_name)
+
+    @staticmethod
+    def get_all(db, auth_user, key_stage_id=0):
+        return SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
+
+
+    @staticmethod
+    def get_by_id(db, id, auth_user):
+        return SchemeOfWorkDataAccess.get_model(db, id, auth_user)
+
+
+    @staticmethod
+    def save(db, model, published=1):
+        return SchemeOfWorkDataAccess.save(db, model, published)
+
+
+    @staticmethod
+    def delete_unpublished(db, auth_user):
+        return SchemeOfWorkDataAccess.delete_unpublished(db, auth_user)
+
+
+    @staticmethod
+    def publish_by_id(db, id, auth_user):
+        return SchemeOfWorkDataAccess.publish(db, auth_user, id)        
 
 
 class SchemeOfWorkDataAccess:

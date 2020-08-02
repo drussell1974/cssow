@@ -23,7 +23,8 @@ class test_viewmodel_SaveViewModel(TestCase):
         
         # arrange
 
-        mock_model = Model(0, "Proin id massa metus. Aliqua tincidunt.")
+        mock_model = Model(0, name="Proin id massa metus. Aliqua tincidunt.")
+        mock_model.description = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur"
         mock_model.exam_board_id = 56
         mock_model.key_stage_id = 5
         mock_model.lesson_id = 230
@@ -50,6 +51,7 @@ class test_viewmodel_SaveViewModel(TestCase):
         # arrange
 
         mock_model = Model(0, "Aliquam pellentesque urna ac hendrerit")
+        mock_model.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore"
         mock_model.key_stage_id = 2
         mock_model.lesson_id = 11
         mock_model.exam_board_id = 56
@@ -76,7 +78,8 @@ class test_viewmodel_SaveViewModel(TestCase):
         
         # arrange
 
-        mock_model = Model(101, "Fusce mattis sagittis orci, quis")
+        mock_model = Model(101, name="Fusce mattis sagittis orci, quis")
+        mock_model.description = "Lorem ipsum dolor sit amet."
         mock_model.key_stage_id = 3
         mock_model.lesson_id = 46
         mock_model.exam_board_id = 56
@@ -105,6 +108,7 @@ class test_viewmodel_SaveViewModel(TestCase):
         # arrange
 
         mock_model = Model(99, "Vestibulum lobortis, lectus et porttitor")
+        mock_model.description = "Lorem ipsum dolor sit amet."
         mock_model.published = 1
         mock_model.key_stage_id = 5
         mock_model.lesson_id = 338
@@ -133,10 +137,10 @@ class test_viewmodel_SaveViewModel(TestCase):
          
         # arrange
 
-        mock_model = Model(99, "Suspendisse nisi dui, lobortis ut")
+        mock_model = Model(99, name="Suspendisse nisi dui, lobortis ut")
         mock_model.key_stage_id = 3
         mock_model.lesson_id = 0 # invalid value
-
+        mock_model.description = "unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
 
         with patch.object(DataAccess, "save", return_value=None):
                 

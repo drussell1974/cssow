@@ -119,8 +119,8 @@ class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
         test.validate()
 
         # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("description" in test.validation_errors, "description should have validation error %s" % test.validation_errors)
 
 
     def test_min__valid_extreme_is_NONE(self):
@@ -133,8 +133,8 @@ class test_SchemeOfWork_validate__description(SchemeOfWork_TestCase):
         test.validate()
 
         # assert
-        self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("description" in test.validation_errors, "description should have no validation error %s" % test.validation_errors)
 
 
     def test_min__valid_extreme_trim_whitespace(self):

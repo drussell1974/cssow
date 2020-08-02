@@ -1,5 +1,15 @@
 <!-- VALIDATION ERROR - json value -->
-<input type="hidden" name="validation_errors" value="{{ content.data.validation_errors }}" id="hdn-validation_errors" />
+<input type="hidden" name="validation_errors" value="{{ content.validation_errors }}" id="hdn-validation_errors" />
+
+{% if content.validation_errors %}
+    <ul class="list-group alaert alert-danger">
+    {% for key, value in content.validation_errors.items %}
+        <li class="list-group-item strong"> 
+            <small>{{ key }}: {{ value }}</small>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
 
 <!-- BUTTONS -->
 <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>

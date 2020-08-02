@@ -58,11 +58,43 @@ def edit(request, scheme_of_work_id):
     """ edit action """
     # TODO: Use ViewModel
     
-    getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, request.user.id)
-    model = getmodel_view.model
-
     examboard_options = ExamBoardDataAccess.get_options(db)
     keystage_options = KeyStageDataAccess.get_options(db)
+
+
+    if request.method == "GET":
+
+        getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, request.user.id)
+        model = getmodel_view.model
+        
+    elif request.method == "POST":
+    
+        # create instance of model from request.vars
+
+        model = SchemeOfWorkModel(
+            id_=request.POST.get("id", 0),
+            name=request.POST.get("name", ""),
+            description=request.POST.get("description", ""),
+            exam_board_id=request.POST.get("exam_board_id", 0),
+            key_stage_id=request.POST.get("key_stage_id", 0),
+            created=datetime.now(),
+            created_by_id=request.user.id)
+
+        # validate the model and save if valid otherwise redirect to default invalid
+
+        save_view = SchemeOfWorkSaveModelViewModel(db, model, request.user.id)
+        save_view.execute(request.POST["published"])
+        model = save_view.model
+
+        if model.is_valid == True:
+            ' save the lesson '
+
+            if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
+                redirect_to_url = request.POST.get("next", None)
+            else:
+                redirect_to_url = reverse('schemesofwork.edit', args=[model.id])
+            return HttpResponseRedirect(redirect_to_url)
+
 
     data = {
         "scheme_of_work_id": model.id,
@@ -70,11 +102,11 @@ def edit(request, scheme_of_work_id):
         "examboard_options": examboard_options,
         "keystage_options": keystage_options,
     }
- 
+
     view_model = ViewModel("", "Schemes of Work", model.name, data=data, active_model=model)
 
     return render(request, "schemesofwork/edit.html", view_model.content)
-    
+
 
 @permission_required('cssow.publish_schemeofworkmodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id):

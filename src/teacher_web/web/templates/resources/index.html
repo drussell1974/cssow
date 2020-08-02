@@ -74,22 +74,19 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" class="btn btn-outline-dark nav-link">
-          {{_("show learning objectives")}} <span class="badge badge-light"></span>
+          {{_("learning objectives")}} <span class="badge badge-light"></span>
         </a>
       </li>
       <li class="nav-item active">
         <a href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}"  class="btn btn-outline-dark nav-link">
-          {{_("show resources")}} <span class="badge badge-light" ></span>
+          {{_("resources")}} <span class="badge badge-light" ></span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-outline-dark nav-link" id="btn-edit" href="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}?next={{ request.url }}">{{_("edit lesson")}}</a> 
+        <a class="btn btn-outline-dark nav-link" id="btn-edit" href="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}?next={{ request.url }}">{{_("edit")}}</a> 
       </li>
       <li class="nav-item">
-        <a class="btn btn-outline-dark nav-link" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("copy lesson")}}</a>
-      </li>
-      <li class="nav-item">
-        <a class="btn btn-warning nav-link" id="btn-new" href="{% url 'learningobjective.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("add objective")}}</a>
+        <a class="btn btn-outline-dark nav-link" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("copy")}}</a>
       </li>
     </ul>
   </div>
@@ -97,10 +94,10 @@
 <!--// block contentheading END-->
 
 
-<h2 class="group-heading">{{_("Resources")}}</h2>
+<h2 class="group-heading">{{_("Resources")}} <a class="btn btn-warning float-right" id="btn-new" href="{% url 'resource.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("add")}}</a> </h2>
 {% if content.data.resources|length == 0 %}
-<div class="alert alert-info" role="alert">
-    <span class="small">{{_('There are no resources for this lesson.')}}</span>
+<div class="" role="alert">
+    <span class="large">{{_('There are no resources for this lesson.')}}</span>
 </div>
 {% else %}
   {% for row in content.data.resources %}
@@ -127,10 +124,10 @@
     </div>
     <hr>
   {% endfor %}
-  {% endif %}
-
   {% if request.user.is_authenticated %}
     <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'resource.delete_unpublished' content.data.scheme_of_work_id content.data.lesson_id %}">{{_('Clean')}}</a>
   {% endif %}
+  {% endif %}
+
 
 {% endblock %}

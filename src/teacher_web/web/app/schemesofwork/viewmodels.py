@@ -2,7 +2,7 @@ import json
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
 
@@ -13,7 +13,7 @@ class SchemeOfWorkGetAllViewModel(BaseViewModel):
 
         self.db = db
         # get model
-        data = DataAccess.get_all(self.db, auth_user, key_stage_id)
+        data = Model.get_all(self.db, auth_user, key_stage_id)
         self.model = data
 
 
@@ -22,7 +22,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        data = DataAccess.get_model(self.db, scheme_of_work_id, auth_user)
+        data = Model.get_by_id(self.db, scheme_of_work_id, auth_user)
         self.model = data
 
 
@@ -42,7 +42,7 @@ class SchemeOfWorkSaveModelViewModel(BaseViewModel):
         self.model.validate()
 
         if self.model.is_valid == True:
-            data = DataAccess.save(self.db, self.model, published)
+            data = Model.save(self.db, self.model, published)
             self.model = data   
         else:
             #    raise Exception("Scheme of work is not valid! {}".format(self.model.validation_errors))
@@ -54,12 +54,12 @@ class SchemeOfWorkSaveModelViewModel(BaseViewModel):
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, auth_user):
-        data = DataAccess.delete_unpublished(db, auth_user)
+        data = Model.delete_unpublished(db, auth_user)
         self.model = data
 
 
 class SchemeOfWorkPublishModelViewModel(BaseViewModel):
 
     def __init__(self, db, scheme_of_work_id, auth_user):
-        data = DataAccess.publish(db, auth_user, scheme_of_work_id)
+        data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
         self.model = data

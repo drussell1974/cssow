@@ -60,36 +60,28 @@ class LessonModel (BaseModel):
         
         
     def from_json(self, str_json, encoding="utf8"):
+        try:
+            import json
+            keypairs = json.loads(str_json, encoding=encoding)        
 
-        import json
-        keypairs = json.loads(str_json, encoding=encoding)        
+            self.id = int(keypairs["id"])
+            self.title = keypairs["title"]
+            self.summary = keypairs["summary"]
+            self.order_of_delivery_id = int(keypairs["order_of_delivery_id"])
+            self.scheme_of_work_id = int(keypairs["scheme_of_work_id"])
+            self.topic_id = int(keypairs["topic_id"])
+            self.key_stage_id = int(keypairs["key_stage_id"])
+            self.year_id = int(keypairs["year_id"])
+            self.published=keypairs["published"]
 
-        self.id = int(keypairs["id"])
-        self.title = keypairs["title"]
-        self.summary = keypairs["summary"]
-        self.order_of_delivery_id = int(keypairs["order_of_delivery_id"])
-        self.scheme_of_work_id = int(keypairs["scheme_of_work_id"])
-        self.topic_id = int(keypairs["topic_id"])
-        #self.parent_topic_id = None if parent_topic_id is None else int(parent_topic_id)
-        #self.parent_topic_name = parent_topic_name
-        #self.related_topic_ids = related_topic_ids
-        self.key_stage_id = int(keypairs["key_stage_id"])
-        self.year_id = int(keypairs["year_id"])
-        #self.key_words = []
-        #self.pathway_objective_ids = []
-        #self.pathway_ks123_ids = []
-        #self.created=created
-        #self.created_by_id=try_int(created_by_id)
-        #self.created_by_name=created_by_name
-        self.published=keypairs["published"]
-        #self.orig_id = orig_id
-        #self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
+            self.validate()
 
-        self.validate()
+            if self.is_valid == False:
+                return None
+        except Exception as e:
+            self.validation_errors["title"] = "invalid json" 
+            raise e
 
-        if self.is_valid == False:
-            return None
-        
         return self
 
 
