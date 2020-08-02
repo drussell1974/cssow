@@ -2,20 +2,20 @@ import json
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess
+from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from app.default.viewmodels import KeywordGetModelViewModel, KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
-from shared.serializers.srl_keyword import KeywordModelSerializer
 
-class LessonGetAllViewModel(BaseViewModel):
+
+class LessonIndexViewModel(BaseViewModel):
     
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.model = []
 
         self.db = db
         # get model
-        data = LessonDataAccess.get_all(self.db, scheme_of_work_id, auth_user)
+        data = Model.get_all(self.db, scheme_of_work_id, auth_user)
         self.model = data
 
 
@@ -24,11 +24,11 @@ class LessonGetModelViewModel(BaseViewModel):
     def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
-        data = LessonDataAccess.get_model(self.db, lesson_id, auth_user, resource_type_id)
+        data = Model.get_model(self.db, lesson_id, auth_user, resource_type_id)
         self.model = data
 
 
-class LessonSaveViewModel(BaseViewModel):
+class LessonEditViewModel(BaseViewModel):
 
     def __init__(self, db, data, key_words_json, auth_user):
 
@@ -66,7 +66,7 @@ class LessonSaveViewModel(BaseViewModel):
         self.model.validate()
 
         if self.model.is_valid == True:
-            data = LessonDataAccess.save(self.db, self.model, self.auth_user, published)
+            data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
             #    raise Exception("Lesson is not valid! {}".format(self.model.validation_errors))
@@ -75,3 +75,19 @@ class LessonSaveViewModel(BaseViewModel):
         return self.model
 
 
+class LessonPublishViewModel(BaseViewModel):
+
+    def __init__(self, db, auth_user, lesson_id):
+        self.model = Model.publish(db, auth_user, lesson_id)
+    
+
+class LessonDeleteViewModel(BaseViewModel):
+
+    def __init__(self, db, auth_user, lesson_id):
+        self.model = Model.delete(db, auth_user, lesson_id)
+
+
+class LessonDeleteUnpublishedViewModel(BaseViewModel):
+    
+    def __init__(self, db, auth_user, lesson_id):
+        self.model = Model.delete_unpublished(db, auth_user, lesson_id)

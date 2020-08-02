@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.schemesofwork.viewmodels import SchemeOfWorkGetAllViewModel as ViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as DataAccess, SchemeOfWorkModel as Model
 
 

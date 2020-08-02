@@ -6,7 +6,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
 
-class SchemeOfWorkGetAllViewModel(BaseViewModel):
+class SchemeOfWorkIndexViewModel(BaseViewModel):
     
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
@@ -26,7 +26,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
         self.model = data
 
 
-class SchemeOfWorkSaveModelViewModel(BaseViewModel):
+class SchemeOfWorkEditViewModel(BaseViewModel):
 
     def __init__(self, db, data, auth_user):
 

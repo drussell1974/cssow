@@ -13,8 +13,8 @@ from datetime import datetime
 from shared.view_model import ViewModel
 
 from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkSaveModelViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkGetAllViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
@@ -22,7 +22,7 @@ from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 def index(request):
 
-    getall_view =  SchemeOfWorkGetAllViewModel(db, auth_user=request.user.id)
+    getall_view =  SchemeOfWorkIndexViewModel(db, auth_user=request.user.id)
     
     data = {
         "schemes_of_work":getall_view.model
@@ -63,7 +63,7 @@ def edit(request, scheme_of_work_id = 0):
 
         # validate the model and save if valid otherwise redirect to default invalid
 
-        save_view = SchemeOfWorkSaveModelViewModel(db, model, request.user.id)
+        save_view = SchemeOfWorkEditViewModel(db, model, request.user.id)
         save_view.execute(request.POST["published"])
         model = save_view.model
 

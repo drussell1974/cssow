@@ -15,27 +15,25 @@ from shared.models.cls_lesson import LessonDataAccess
 
 # view models
 from shared.models.cls_lesson import LessonModel
-from .viewmodels import LessonSaveViewModel, LessonGetModelViewModel, LessonGetAllViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel
 
 from datetime import datetime
 
 # Create your views here.        
 def index(request, scheme_of_work_id):
     """ Get lessons for scheme of work """
+    
+    lessonIndexView = LessonIndexViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
     scheme_of_work_name = LessonModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user=request.user.id)
 
-    #TODO: #235 Rename: LessonIndexViewModel
-
-    lessons_all = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
-    
     schemeofwork_options = LessonModel.get_schemeofwork_options(db, auth_user=request.user.id)
     
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
         "schemeofwork_options": schemeofwork_options,
-        "lessons": lessons_all.model,
+        "lessons": lessonIndexView.model,
         "topic_name": "",
     }
 
@@ -92,7 +90,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         
         #TODO: #235 Rename: LessonEditViewModel
 
-        viewmodel = LessonSaveViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=request.user.id)
+        viewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=request.user.id)
 
         viewmodel.execute(published)
         model = viewmodel.model
@@ -142,9 +140,11 @@ def publish(request, scheme_of_work_id, lesson_id):
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #TODO: #235 Create ViewModel
+    publishlesson_view = LessonPublishViewModel(db, request.user.id, lesson_id)
 
-    LessonDataAccess.publish(db, request.user.id, lesson_id)
+    # check for null and 404
+
+    # catch errors 500
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -155,9 +155,7 @@ def delete(request, scheme_of_work_id, lesson_id):
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #TODO: #235 Create ViewModel
-
-    LessonDataAccess.delete(db, request.user.id, lesson_id)
+    viewmodel = LessonDeleteViewModel(db, request.user.id, lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
@@ -196,7 +194,7 @@ def initialise_keywords(request, scheme_of_work_id):
     
     raise DeprecationWarning("Not longer used.")
 
-    lessons = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
+    lessons = LessonIndexViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
     #for lesson in lessons.model:
     #    LessonModel._upsert_key_words(db, lesson.model)
@@ -222,8 +220,7 @@ def delete_unpublished(request, scheme_of_work_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #TODO: #235 Create ViewModel
-
-    LessonDataAccess.delete_unpublished(db, scheme_of_work_id, request.user.id)
+    #235 Create ViewModel
+    LessonDeleteUnpublishedViewModel(db, scheme_of_work_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)

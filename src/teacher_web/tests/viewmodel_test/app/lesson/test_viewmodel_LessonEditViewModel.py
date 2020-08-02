@@ -4,14 +4,14 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 # test context
 
-from app.lessons.viewmodels import LessonSaveViewModel as ViewModel
+from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.serializers.srl_keyword import KeywordModelSerializer
 
 
-class test_viewmodel_SaveViewModel(TestCase):
+class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
         self.mock_db = MagicMock()

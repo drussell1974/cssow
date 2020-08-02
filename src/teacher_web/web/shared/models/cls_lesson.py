@@ -215,6 +215,38 @@ class LessonModel (BaseModel):
         return KS123PathwayDataAccess.get_options(db, year_id, topic_id)
 
 
+    @staticmethod
+    def get_model(db, lesson_id, auth_user, resource_type_id):
+        return LessonDataAccess.get_model(db, lesson_id, auth_user, resource_type_id)
+
+
+    @staticmethod
+    def get_all(db, scheme_of_work_id, auth_user):
+        return LessonDataAccess.get_all(db, scheme_of_work_id, auth_user)
+
+
+    @staticmethod
+    def save(db, model, auth_user, published):
+        return LessonDataAccess.save(db, model, auth_user, published)
+
+
+    @staticmethod
+    def publish(db, auth_user, lesson_id):
+        return LessonDataAccess.publish(db, auth_user, lesson_id)
+    
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        return LessonDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
+
+
+    @staticmethod
+    def delete(db, auth_user, lesson_id):
+        model = LessonModel(lesson_id)
+        LessonDataAccess._delete(db, auth_user, model)
+        return model
+
+
 class LessonDataAccess:
 
     @staticmethod
