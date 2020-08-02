@@ -40,7 +40,7 @@ class SchemeOfWorkSaveModelViewModel(BaseViewModel):
 
     def execute(self, published):
         self.model.validate()
-
+        
         if self.model.is_valid == True:
             data = Model.save(self.db, self.model, published)
             self.model = data   

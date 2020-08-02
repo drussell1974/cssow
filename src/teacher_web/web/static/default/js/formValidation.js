@@ -68,7 +68,7 @@
         var dict_errors = JSON.parse(string_errors.value.replace(new RegExp("'","g"),"\""));
         console.log(typeof dict_errors)
         for (var key in dict_errors) {
-          var inputElem = document.querySelector(`input[name='${key}']`);
+          var inputElem = document.querySelector(`input[name='${key}'], select[name='${key}']`);
           if (inputElem != null) {   
             var dangerElem = inputElem.parentNode.getElementsByClassName(dangerClassName);
             if (dangerElem != null) {

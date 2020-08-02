@@ -11,9 +11,8 @@ from shared.models.cls_keyword import KeywordDataAccess, KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
 
-
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
-    
+    # TODO: #235 Rename to {ViewName}ViewModel
     def __init__(self, db, top, auth_user):
         self.model = []
 
@@ -24,24 +23,25 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
 
 class TopicGetOptionsListViewModel(BaseViewModel):
+    #TODO: #235 Rename to {ViewName}ViewModel
     def __init__(self, db, topic_id, lvl=2):
         self.model = TopicDataAccess.get_options(db, topic_id=topic_id, lvl=lvl)
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
-
+    # TODO: #235 Depracate not a matching View
     def __init__(self, db):
         self.model = KeywordDataAccess.get_options(db)
 
 
 class KeywordGetAllListViewModel(BaseViewModel):
-
+    #TODO: #235 Depracate not a matching View
     def __init__(self, db, lesson_id):
         self.model = KeywordDataAccess.get_all(db, lesson_id)
 
 
 class KeywordGetModelViewModel(BaseViewModel):
-    
+    #TODO: #235 Depracate not a matching View
     def __init__(self, db, lesson_id, auth_user):
         self.db = db
         # get model
@@ -59,7 +59,7 @@ class KeywordGetModelByTermsViewModel(BaseViewModel):
         
 
 class KeywordSaveViewModel(BaseViewModel):
-
+    #TODO: Rename or Depracate. No matching View
     def __init__(self, db, model):
         self.db = db
         self.model = model

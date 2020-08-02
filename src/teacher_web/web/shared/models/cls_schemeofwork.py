@@ -64,6 +64,7 @@ class SchemeOfWorkModel(BaseModel):
         if self.exam_board_name is not None:
             self.exam_board_name = sql_safe(self.exam_board_name)
 
+
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
         return SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
@@ -248,7 +249,7 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def save(db, model, published=1):
-
+        
         #TODO: #231: Add delete    
         if model.is_new() == True:
             model = SchemeOfWorkDataAccess._insert(db, model, published)
@@ -312,6 +313,7 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def _delete(db, model):
+        
         execHelper = ExecHelper()
         rval = []
         str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id} and published NOT IN (1);"

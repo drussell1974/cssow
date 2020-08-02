@@ -27,9 +27,6 @@
 
 {% block contentheading %}
   <div class="alert alert-secondary">
-    {% if content.data.lesson.is_copy %}
-    <i class="btn btn-danger float-right" id="copy-of-{{content.data.lesson.orig_id}}">{{_("Copy")}}</i>
-    {% endif %}
     <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
     {% if content.strap_line is not None %}
       <p class="lead">{{ content.strap_line }}</p>
@@ -39,7 +36,13 @@
 
 
 {% block maincontent %}
-<form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.save' content.data.scheme_of_work_id content.data.lesson_id %}">
+{% if content.data.is_copy %}
+<div class="alert alert-warning">
+  <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
+</div>
+{% endif %}
+
+<form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}">
     {% csrf_token %}
     <div class="control-group">
       <div class="form-group  controls">
@@ -50,7 +53,7 @@
             <option value="{{opt.id}}" {% if opt.id == content.data.lesson.year_id %} selected {% endif %}>{{opt.name}}</option>
             {% endfor %}
         </select>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
     </div>
     <div class="control-group">
@@ -59,7 +62,7 @@
         <!-- in the future select from planner -->
         <input type="number" name="order_of_delivery_id" class="form-control" placeholder="{{_('Enter an order of delivery')}}" id="ctl-order_of_delivery_id" required
                min="1" max="9999" value='{{content.data.lesson.order_of_delivery_id}}'>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
         <hr>
     </div>
@@ -68,7 +71,7 @@
         <label>{{_("Title")}}</label>
         <input type="text" name="title" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" required
                maxlength="45" value='{{content.data.lesson.title}}'>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
         <hr>
     </div>
@@ -77,27 +80,27 @@
         <label>{{_("Summary")}}</label>
         <input type="text" name="summary" class="form-control" placeholder="{{_('Enter a summary')}} {{_('(optional)')}}" id="ctl-summary"
                maxlength="80" value='{{content.data.lesson.summary}}'>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
         <hr>
     </div>
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Topic")}}</label>
-        <select class="form-control" name="topic_id" id="ctl-topic_id" required>
+        <select class="form-control" name="topic_id" id="ctl-topic_id">
             <option value="" {% if has_objectives == True %} disabled {% endif %}>- {{_("Select an option")}} -</option>
             {% for opt in content.data.topic_options %}
             <option value="{{opt.id}}" {% if opt.id == content.data.lesson.topic_id %} selected {% elif has_objectives == True %} disabled {% endif %}>{{opt.name}}</option>
             {% endfor %}
         </select>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
     </div>
      <div class="control-group">
       <div class="form-group controls">
         <div id="div-related_topic_id">
         </div>
-        <p class="help-block text-danger"></p>
+        <div class="help-block text-danger invalid-feedback"></div>
       </div>
     </div>
     {% if content.data.show_ks123_pathway_selection %}
@@ -118,7 +121,7 @@
           <div id="div-pathway_ks123_id">
             </div>
             <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
-            <p class="help-block text-danger"></p>
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
       </div>
       <!-- KS123 Pathway END -->
@@ -143,7 +146,7 @@
             <div id="div-pathway_objective_id">
               <select id="ctl-pathway_objective_id" multiple></select>
             </div>
-            <p class="help-block text-danger"></p>
+            <div class="help-block text-danger invalid-feedback"></div>
         </div>
       </div>
     <br>

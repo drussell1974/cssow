@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.schemesofwork.views import edit, index, new, save, delete_unpublished
+from app.schemesofwork.views import edit, index, delete_unpublished
 
 # Create your tests here.
 class test_app_route_schemesofwork_page(TestCase):
@@ -19,7 +19,7 @@ class test_app_route_schemesofwork_page(TestCase):
     def test__schemeofwork_new__resolves_to_new(self):
         url = resolve("/schemesofwork/new")
         self.assertEqual("schemesofwork.new", url.url_name)
-        self.assertEqual(url.func, new)
+        self.assertEqual(url.func, edit)
 
 
     def test__schemeofwork_new__resolves_to_new__reverse(self):
@@ -58,17 +58,6 @@ class test_app_route_schemesofwork_page(TestCase):
     def test__schemesofwork_publish_item__resolves_to_publish__reverse(self):
         url = reverse("schemesofwork.publish_item", args=[127])
         self.assertEqual("/schemesofwork/127/publish", url)
-
-    
-    def test__schemesofwork_save__resolves_to_save(self):
-        url = resolve("/schemesofwork/127/save")
-        self.assertEqual("schemesofwork.save", url.url_name)
-        self.assertEqual(url.func, save)
-
-
-    def test__schemesofwork_save__resolves_to_save__reverse(self):
-        url = reverse("schemesofwork.save", args=[127])
-        self.assertEqual("/schemesofwork/127/save", url)
 
 
     def test__schemesofwork_delete_unpublished__resolves_to_delete_unpublished(self):

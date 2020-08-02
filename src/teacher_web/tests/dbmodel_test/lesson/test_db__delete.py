@@ -45,7 +45,7 @@ class test_db__delete(TestCase):
             ExecHelper.execCRUDSql.assert_called()
 
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson WHERE id = 101;"
+             "DELETE FROM sow_lesson WHERE id = 101 AND published IN (0,2);"
              , []
              , log_info=handle_log_info)
             

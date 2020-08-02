@@ -3,9 +3,13 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
-from .cls_learningobjective import LearningObjectiveDataAccess # get_all as get_all_objectives
-from .cls_resource import ResourceDataAccess
+from .cls_schemeofwork import SchemeOfWorkDataAccess
+from .cls_learningobjective import LearningObjectiveDataAccess
+from .cls_resource import ResourceDataAccess, ResourceModel
 from .cls_keyword import KeywordDataAccess, KeywordModel
+from .cls_topic import TopicDataAccess, TopicModel
+from .cls_year import YearDataAccess, YearModel
+from .cls_ks123pathway import KS123PathwayDataAccess, KS123PathwayModel
 
 
 class LessonModel (BaseModel):
@@ -31,7 +35,7 @@ class LessonModel (BaseModel):
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
         self.scheme_of_work_name = scheme_of_work_name
-        self.topic_id = int(topic_id)
+        self.topic_id = try_int(topic_id, return_value=0)
         self.topic_name = topic_name
         self.parent_topic_id = None if parent_topic_id is None else int(parent_topic_id)
         self.parent_topic_name = parent_topic_name
@@ -174,6 +178,41 @@ class LessonModel (BaseModel):
                 if ob not in staging_list:
                     staging_list.append(sql_safe(ob))
             self.pathway_objective_ids = staging_list
+
+
+    @staticmethod
+    def get_schemeofwork_model(db, scheme_of_work_id, auth_user):
+        return SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, auth_user)
+
+
+    @staticmethod
+    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
+        return SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
+
+
+    @staticmethod
+    def get_schemeofwork_options(db, auth_user):
+        return SchemeOfWorkDataAccess.get_options(db, auth_user)
+
+
+    @staticmethod
+    def get_topic_options(db, lvl=1, topic_id=0):
+        return TopicDataAccess.get_options(db, lvl, topic_id)
+
+
+    @staticmethod
+    def get_keyword_options(db):
+        return KeywordDataAccess.get_options(db)
+
+
+    @staticmethod
+    def get_year_options(db, auth_user, key_stage_id):
+        return YearDataAccess.get_options(db, key_stage_id)
+
+
+    @staticmethod
+    def get_ks123pathway_options(db, year_id, topic_id):
+        return KS123PathwayDataAccess.get_options(db, year_id, topic_id)
 
 
 class LessonDataAccess:
@@ -320,6 +359,33 @@ class LessonDataAccess:
 
 
     @staticmethod
+    def get_all_keywords(db, lesson_id):
+        """
+        Get a full list of terms and definitions
+        :param db: database context
+        :lesson_id: unique identifier for the lesson
+        :return: list of terms and defintion
+        """
+        
+        execHelper = ExecHelper()
+
+        select_sql =    "SELECT kw.id as id, name as term, definition as definition " \
+                        "FROM sow_lesson__has__key_words lkw " \
+                        "INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id " \
+                        "WHERE lkw.lesson_id = {} AND published = 1;".format(lesson_id)
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+
+        data = []
+
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+
+        return data
+
+
+    @staticmethod
     def get_key_words(db, lesson_id):
         """
         Get the keywords for the lesson
@@ -346,33 +412,6 @@ class LessonDataAccess:
             to_dict[id] = name
         
         return to_dict
-
-
-    @staticmethod
-    def get_all_keywords(db, lesson_id):
-        """
-        Get a full list of terms and definitions
-        :param db: database context
-        :lesson_id: unique identifier for the lesson
-        :return: list of terms and defintion
-        """
-        
-        execHelper = ExecHelper()
-
-        select_sql =    "SELECT kw.id as id, name as term, definition as definition " \
-                        "FROM sow_lesson__has__key_words lkw " \
-                        "INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id " \
-                        "WHERE lkw.lesson_id = {} AND published = 1;".format(lesson_id)
-
-        rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
-
-        return data
 
 
     @staticmethod
@@ -507,8 +546,6 @@ class LessonDataAccess:
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
-
-        BaseModel.depreciation_notice("use LessonDataAccess.get_options()")
 
         execHelper = ExecHelper()
         
@@ -663,7 +700,7 @@ class LessonDataAccess:
         """ Delete Lesson """
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
+        str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id} AND published IN (0,2);"
         str_delete = str_delete.format(lesson_id=model.id)
 
         rval = []
@@ -836,7 +873,6 @@ class LessonDataAccess:
         return results
 
 
-    # not used
     @staticmethod
     def publish(db, auth_user_id, id_):
 

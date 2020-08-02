@@ -202,7 +202,7 @@ class test_db__save(TestCase):
 
             ExecHelper.execCRUDSql.assert_called_with(
                 self.fake_db, 
-                "DELETE FROM sow_lesson WHERE id = 23;"
+                "DELETE FROM sow_lesson WHERE id = 23 AND published IN (0,2);"
                 , []
                 , log_info=handle_log_info)
 
