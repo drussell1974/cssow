@@ -1,13 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_learningobjective as test_context
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-# Test Context
-
-Model = test_context.LearningObjectiveModel
-delete_unpublished = test_context.LearningObjectiveDataAccess.delete_unpublished
-handle_log_info = test_context.handle_log_info
+delete_unpublished = LearningObjectiveDataAccess.delete_unpublished
 
 
 class test_db__delete_unpublished(TestCase):
@@ -43,7 +39,7 @@ class test_db__delete_unpublished(TestCase):
         
         expected_result = []
 
-        test_context._get_lesson_learning_objective_ids = Mock(return_value=[("5654"),("332"),("4545")])
+        LearningObjectiveDataAccess._get_lesson_learning_objective_ids = Mock(return_value=[("5654"),("332"),("4545")])
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
@@ -55,4 +51,4 @@ class test_db__delete_unpublished(TestCase):
                 'DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = 19 AND learning_objective_id=4;'
                 , log_info=handle_log_info)
 
-            test_context._get_lesson_learning_objective_ids.assert_called_with(self.fake_db, 19, 99)
+            LearningObjectiveDataAccess._get_lesson_learning_objective_ids.assert_called_with(self.fake_db, 19, 99)

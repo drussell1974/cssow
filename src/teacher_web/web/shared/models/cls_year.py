@@ -3,6 +3,7 @@ from django.db import models
 from shared.models.core.db_helper import ExecHelper, sql_safe
 from shared.models.core.basemodel import BaseModel
 
+
 class YearModel(models.Model):
     def __init__(self, id_, name):
         self.id = id_
@@ -18,6 +19,7 @@ class YearModel(models.Model):
         # name
         if self.name is not None:
             self.name = sql_safe(self.name)
+
 
 class YearDataAccess:
 

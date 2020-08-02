@@ -1,8 +1,9 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_reference import ReferenceModel
 
 from unittest import TestCase
 
+@skip("Deprecated. No longer used")
 class test_cls_reference__clean_up(TestCase):
 
     def setUp(self):

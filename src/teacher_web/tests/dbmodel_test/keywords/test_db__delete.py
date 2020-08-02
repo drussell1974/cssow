@@ -1,14 +1,12 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_keyword as test_context
+from shared.models.cls_keyword import KeywordModel as Model, KeywordDataAccess, handle_log_info
 
-Model = test_context.KeywordModel
-delete = test_context.delete
-handle_log_info = test_context.handle_log_info
+
+delete = KeywordDataAccess.delete
 
 class test_db__delete(TestCase):
-
 
     def setUp(self):
         ' fake database context '

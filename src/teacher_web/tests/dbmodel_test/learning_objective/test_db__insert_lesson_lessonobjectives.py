@@ -2,13 +2,10 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-import shared.models.cls_learningobjective as test_context
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-# test context
+_insert_lesson_lessonobjectives = LearningObjectiveDataAccess._insert_lesson_lessonobjectives
 
-Model = test_context.LearningObjectiveModel
-_insert_lesson_lessonobjectives = test_context._insert_lesson_lessonobjectives
-handle_log_info = test_context.handle_log_info
 
 class test_db___insert_lesson_lessonobjectives(TestCase):
     

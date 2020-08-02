@@ -25,6 +25,7 @@ class SoloTaxonomyModel(BaseModel):
         if self.lvl is not None:
             self.lvl = sql_safe(self.lvl)
 
+
 class SoloTaxonomyDataAccess:
 
     @staticmethod

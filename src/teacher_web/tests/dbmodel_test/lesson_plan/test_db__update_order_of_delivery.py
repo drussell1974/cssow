@@ -3,14 +3,14 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 
-import shared.models.cls_lessonplan as test_context 
+from shared.models.cls_lessonplan import LessonPlanModel as Model, LessonPlanDataAccess, handle_log_info
 
 # create test context
 
-update_order_of_delivery = test_context.update_order_of_delivery
-handle_log_info = test_context.handle_log_info
-Model = test_context.LessonPlanModel
+update_order_of_delivery = LessonPlanDataAccess.update_order_of_delivery
 
+
+@skip("Depreceasted. No longer used.")
 class test_db__update_order_of_delivery(TestCase):
 
 

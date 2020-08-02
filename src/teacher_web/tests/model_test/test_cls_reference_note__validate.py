@@ -1,7 +1,7 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_reference_note import ReferenceNoteModel
 
-
+@skip("Deprecated. No longer used")
 class test_cls_reference_validate__page_note(TestCase):
 
     test = None
@@ -97,6 +97,7 @@ class test_cls_reference_validate__page_note(TestCase):
         self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
+@skip("Deprecated. No longer used")
 class test_cls_reference_validate__page_uri(TestCase):
 
     test = None
@@ -265,6 +266,7 @@ class test_cls_reference_validate__page_uri(TestCase):
         self.assertFalse(self.test.is_valid, "is_valid should be True")
 
 
+@skip("Deprecated. No longer used")
 class test_cls_reference_validate__task_icon(TestCase):
 
     test = None

@@ -3,6 +3,7 @@ import shared.models.cls_schemeofwork as test_context
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
+SchemeOfWorkDataAccess = test_context.SchemeOfWorkDataAccess
 
 class test_db__get_options(TestCase):
     
@@ -24,7 +25,7 @@ class test_db__get_options(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                test_context.get_options(self.fake_db)
+                SchemeOfWorkDataAccess.get_options(self.fake_db)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -34,7 +35,7 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = test_context.get_options(self.fake_db)
+            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
             
             # assert
 
@@ -49,7 +50,7 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = test_context.get_options(self.fake_db)
+            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
             
             # assert
 
@@ -71,7 +72,7 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = test_context.get_options(self.fake_db)
+            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
             
             # assert
 

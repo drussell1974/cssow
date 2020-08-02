@@ -7,7 +7,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # TODO: use view models
-from shared.models import cls_ks123pathway, cls_lesson, cls_learningobjective
+from shared.models.cls_learningobjective import LearningObjectiveDataAccess
+from shared.models.cls_ks123pathway import KS123PathwayDataAccess
+from shared.models.cls_lesson import LessonDataAccess 
 
 # view models
 from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
@@ -36,34 +38,26 @@ class LessonPathwayObjectivesViewSet(APIView):
     ''' API endpoint for list of lessons pathway objectives'''
 
     def get(self, request, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
+
+        raise DeprecationWarning("verify usage")
+    
         ''' get the pathway objectives '''
-        pathwayobjectives = cls_learningobjective.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
-        should_be_checked = cls_lesson.LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
+        pathwayobjectives = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
+        should_be_checked = LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
 
         return JsonResponse({
             "pathway-objectives": pathwayobjectives, 
             "should-be-checked": should_be_checked 
         })
 
-    '''
-    def _view_pathway_objectives_readonly(request, scheme_of_work_id, lesson_id):
-        #lesson_id = 0 if request.vars.lesson_id  is None else request.vars.lesson_id
-
-        data = cls_learningobjective.get_linked_pathway_objectives(db, lesson_id = lesson_id)
-
-        return dict(data=data)
-    '''
-
 
 class LessonPathwayKs123ViewSet(APIView):
     def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
-        '''
-        lesson_id = 0 if request.vars.lesson_id  is None else request.vars.lesson_id
-        year_id = 0 if request.vars.year_id is None else request.vars.year_id
-        topic_id = 0 if request.vars.topic_id is None else request.vars.topic_id
-        '''
-        data = cls_ks123pathway.get_options(db, year_id = year_id, topic_id = topic_id)
-        should_be_checked = cls_ks123pathway.get_linked_pathway_ks123(db, lesson_id)
+
+        raise DeprecationWarning("Not referenced. Confirm usage")
+
+        data = KS123PathwayDataAccess.get_options(db, year_id = year_id, topic_id = topic_id)
+        should_be_checked = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
 
         ks123pathway = []
         for item in data:
@@ -77,12 +71,3 @@ class LessonPathwayKs123ViewSet(APIView):
 
         #return dict(view_model=view_model)
         return JsonResponse({"ks123-pathway": ks123pathway})
-
-    '''
-    def _view_pathway_ks123_readonly(request, scheme_of_work_id, lesson_id):
-        #lesson_id = 0 if request.vars.lesson_id  is None else request.vars.lesson_id
-
-        data = cls_ks123pathway.get_linked_pathway_ks123(db, lesson_id = lesson_id)
-
-        return dict(data=data)
-    '''

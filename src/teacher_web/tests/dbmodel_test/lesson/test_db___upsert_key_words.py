@@ -2,14 +2,10 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
-# test context 
+_upsert_key_words = LessonDataAccess._upsert_key_words
 
-import shared.models.cls_lesson as cls_lesson
-
-LessonModel = cls_lesson.LessonModel
-_upsert_key_words = cls_lesson._upsert_key_words
-handle_log_info = cls_lesson.handle_log_info
 
 class test_db___upsert_key_words(TestCase):
 

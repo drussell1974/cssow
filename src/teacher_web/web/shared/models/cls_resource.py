@@ -2,9 +2,13 @@
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
+from datetime import datetime
+from .core.db_helper import to_db_null, to_empty, to_db_bool
+
 
 # TODO: Get this from settings
 MARKDOWN_TYPE_ID = 10
+
 
 def check_type_id(model):
     """ checks if the type_id is a markdown document """
@@ -21,7 +25,6 @@ class ResourceModel (BaseModel):
         
     def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
         
-        #TODO: #231 call super().__init__(id_, created, created_by_id, created_by_name, published)
         super().__init__( id_, title, created, created_by_id, created_by_name, published)
         self.title = title
         self.publisher = publisher
@@ -96,9 +99,6 @@ class ResourceModel (BaseModel):
         if self.md_document_name is not None:
             self.md_document_name = sql_safe(self.md_document_name)
 
-
-from datetime import datetime
-from .core.db_helper import to_db_null, to_empty, to_db_bool
 
 class ResourceDataAccess:
 
@@ -377,51 +377,28 @@ class ResourceDataAccess:
 
     @staticmethod
     def delete_unpublished(db, lesson_id, auth_user_id):
-        """ Delete all unpublished lessons """
-
+        """ Delete all unpublished resources """
+        
         #TODO: #230 Move to DataAccess
 
-        return _delete_unpublished(db, lesson_id, auth_user_id)
+        execHelper = ExecHelper()
+        
+        str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
+            
+        rows = []
+        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+        return rows
 
 
     @staticmethod
     def publish_item(db, id_, auth_user_id):
-
-        #TODO: #230 Move to DataAccess
-
-        model = ResourceModel(id_=id_)
-        model.publish = True
-        return _publish(db, model)
-
-
-"""
-Private CRUD functions 
-"""
-
-def _delete_unpublished(db, lesson_id, auth_user_id):
-    """ Delete all unpublished resources """
-    
-    #TODO: #230 Move to DataAccess
-
-    execHelper = ExecHelper()
-    
-    str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
         
-    rows = []
-    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
-    return rows
+        execHelper = ExecHelper()
 
+        str_publish = "UPDATE sow_resource SET published = {published} WHERE id = {resource_id};"
+        str_publish = str_publish.format(published=1 if model.published else 0, resource_id=model.id)
+        
+        rval = []
+        rval = execHelper.execSql(db, str_publish, rval)
 
-def _publish(db, model):
-
-    #TODO: #230 Move to DataAccess
-
-    execHelper = ExecHelper()
-
-    str_publish = "UPDATE sow_resource SET published = {published} WHERE id = {resource_id};"
-    str_publish = str_publish.format(published=1 if model.published else 0, resource_id=model.id)
-    
-    rval = []
-    rval = execHelper.execSql(db, str_publish, rval)
-
-    return rval
+        return rval

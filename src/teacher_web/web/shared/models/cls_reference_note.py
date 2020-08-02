@@ -2,10 +2,11 @@
 from shared.models.core.basemodel import BaseModel
 from shared.models.core.db_helper import sql_safe
 
+
 class ReferenceNoteModel (BaseModel):
     def __init__(self, id_, reference_id, lesson_id, page_note, page_uri="", task_icon = ""):
         
-        BaseModel.depreciation_notice("Use ResourceModel")
+        raise DeprecationWarning("No longer used.")
 
         self.id = int(id_)
         self.page_note = page_note

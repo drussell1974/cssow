@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe, to_empty
+from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
 from .cls_learningobjective import LearningObjectiveDataAccess # get_all as get_all_objectives
 from .cls_resource import ResourceDataAccess
 from .cls_keyword import KeywordDataAccess, KeywordModel
+
 
 class LessonModel (BaseModel):
     
@@ -183,28 +184,7 @@ class LessonModel (BaseModel):
             self.pathway_objective_ids = staging_list
 
 
-
-from .core.db_helper import ExecHelper, to_db_null
-
 class LessonDataAccess:
-
-    @staticmethod
-    def save(db, model, auth_user, published=1):
-        """ Save Lesson """
-        try:
-            #TODO: #231: Add delete       
-            if model.is_new() == True:
-                model = _insert(db, model, published, auth_user_id=auth_user)
-            elif published == 2:
-                model = delete(db, auth_user, model.id)
-            else:
-                model = _update(db, model, published, auth_user_id=auth_user)
-
-            return model
-        except:
-            handle_log_error(db, "error saving lesson")
-            raise
-
 
     @staticmethod
     def get_model(db, id_, auth_user, resource_type_id = 0):
@@ -406,15 +386,10 @@ class LessonDataAccess:
     @staticmethod
     def get_all_objectives(db, id, auth_user):
         
-        BaseModel.depreciation_notice("not referenced")
+        raise DeprecationWarning("Not referenced. Confirm usage")
 
         return LearningObjectiveDataAccess.get_all(db, lesson_id=id, auth_user=auth_user)
     
-    """
-    @staticmethod
-    def get_all_resources(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id):
-        return get_all_resources(db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user, resource_type_id=resource_type_id)
-    """
     
     @staticmethod
     def get_pathway_objective_ids(db, lesson_id):
@@ -538,7 +513,6 @@ class LessonDataAccess:
         return serializable_list
 
 
-
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
 
@@ -557,6 +531,7 @@ class LessonDataAccess:
                     " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
                     " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
                     "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.year_id, le.order_of_delivery_id;"
+    
 
         str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
@@ -575,326 +550,311 @@ class LessonDataAccess:
         return data
 
 
-"""
-DAL
-"""
-
-def delete(db, auth_user_id, id_):
-    """ Delete Lesson """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess.delete()")
-
-    model = LessonModel(id_=id_, title="")
-    return _delete(db, model)
-
-
-def delete_unpublished(db, scheme_of_work_id, auth_user_id):
-    """ Delete all unpublished lessons """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess.delete_unpublished()")
-
-    return _delete_unpublished(db, scheme_of_work_id, auth_user_id)
-
-
-def publish(db, auth_user_id, id_):
-    
-    BaseModel.depreciation_notice("Not referenced")
-
-    model = LessonModel(id_=id_, title="")
-    model.publish = True
-    return _publish(db, model)
-
-
-"""
-Private CRUD functions 
-"""
-
-def _update(db, model, published, auth_user_id):
-    """ updates the sow_lesson and sow_lesson__has__topics """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._update()")
-
-    execHelper = ExecHelper()
-    
-    # 1. Update the lesson
-
-    str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
-    str_update = str_update.format(
-        title = model.title,
-        order_of_delivery_id=model.order_of_delivery_id,
-        year_id=model.year_id,
-        scheme_of_work_id=model.scheme_of_work_id,
-        topic_id=model.topic_id,
-        summary=to_db_null(model.summary),
-        published=published,
-        lesson_id=model.id)
-    
-    rows = []
-    rows = execHelper.execCRUDSql(db, str_update, rows, log_info=handle_log_info)
-
-    # 2. upsert related topics
-    
-    _upsert_related_topic_ids(db, model, rows, auth_user_id=auth_user_id)
-
-    # 3. insert pathway objectives
-
-    _upsert_pathway_objective_ids(db, model, rows, auth_user_id=auth_user_id)
-
-    # 4. insert pathway ks123
-
-    _upsert_pathway_ks123_ids(db, model, rows, auth_user_id=auth_user_id)
-
-    # 5. insert key words
-
-    _upsert_key_words(db, model, rows, auth_user_id=auth_user_id)
-
-    return model
-
-
-def _insert(db, model, published, auth_user_id):
-    """ inserts the sow_lesson and sow_lesson__has__topics """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._insert()")
-
-    execHelper = ExecHelper()
-
-    # 1. Insert the lesson
-
-    str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
-    str_insert = str_insert.format(
-        title = model.title,
-        order_of_delivery_id=model.order_of_delivery_id,
-        year_id=model.year_id,
-        scheme_of_work_id=model.scheme_of_work_id,
-        topic_id=model.topic_id,
-        summary=to_db_null(model.summary),
-        created=model.created,
-        created_by=model.created_by_id,
-        published=published)
-    
-    rows = []
-    result = execHelper.execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
-    
-    model.id = result[1]
-
-    #for row in rows:
-    #    model.id = int(row[0])
-
-    # 2. insert related topics
-
-    _upsert_related_topic_ids(db, model, rows, auth_user_id)
-
-    # 3. insert pathway objectives
-
-    _upsert_pathway_objective_ids(db, model, rows, auth_user_id)
-
-    # 4. insert pathway ks123
-
-    _upsert_pathway_ks123_ids(db, model, rows, auth_user_id)
-
-    # 5. insert key words
-
-    _upsert_key_words(db, model, rows, auth_user_id)
-
-    # 6. insert objectives
-    if model.is_copy():
-        _copy_objective_ids(db, model, rows, auth_user_id)
-
-    return model
-
-
-def _upsert_related_topic_ids(db, model, results, auth_user_id):
-    """ deletes and reinserts sow_lesson__has__topics """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._upsert_related_topics_ids()")
-
-    execHelper = ExecHelper()
-
-    # delete existing
-    str_delete = "DELETE FROM sow_lesson__has__topics WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-    
-    if len(model.related_topic_ids) > 0:
-        # reinsert
-        str_insert = "INSERT INTO sow_lesson__has__topics (lesson_id, topic_id) VALUES"
-
-        for topic_id in model.related_topic_ids:
-            if topic_id.isdigit():
-                str_insert = str_insert + "({lesson_id}, {topic_id}),".format(lesson_id=model.id, topic_id=topic_id)
-
-        ' Ensure insert values have been appended before inserting'
-        if str_insert.endswith("VALUES") == False:
-            str_insert = str_insert.rstrip(",") + ";"
-
-            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
-    
-    return results
-
-
-def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
-    """ deletes and reinserts sow_lesson__has__topics """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_objectives_ids()")
-
-    execHelper = ExecHelper()
-
-    # delete existing
-    str_delete = "DELETE FROM sow_lesson__has__pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-
-    if model.pathway_objective_ids is not None:
-        # reinsert
-        str_insert = "INSERT INTO sow_lesson__has__pathway (lesson_id, learning_objective_id) VALUES"
-
-        for objective_id in model.pathway_objective_ids:
-            if objective_id.isdigit():
-                str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id)
-
-        ' Ensure insert values have been appended before inserting'
-        if str_insert.endswith("VALUES") == False:
-            str_insert = str_insert.rstrip(",") + ";"
-
-            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
-    
-    return results
-
-
-def _copy_objective_ids(db, model, results, auth_user_id):
-    """ inserts sow_learning_objective__has__lesson """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._copy_objective_ids()")
-
-    execHelper = ExecHelper()
-    
-
-    # delete existing
-    str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {id};".format(id=model.orig_id)
-
-    objective_ids = []
-    objective_ids = execHelper.execSql(db, str_select, objective_ids, log_info=handle_log_info)
-
-    if len(objective_ids) > 0:
-        # reinsert
-        str_insert = "INSERT INTO sow_learning_objective__has__lesson (lesson_id, learning_objective_id) VALUES"
-
-        for objective_id in objective_ids:
-            str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id[0])
-
-        ' Ensure insert values have been appended before inserting'
-        if str_insert.endswith("VALUES") == False:
-            str_insert = str_insert.rstrip(",") + ";"
-
-            execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
-    
-    return results
-
-
-def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
-    """ deletes and reinserts sow_lesson__has__topics """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_ks123_ids()")
-
-    execHelper = ExecHelper()
-
-    # delete existing
-    str_delete = "DELETE FROM sow_lesson__has__ks123_pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-    results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-    
-    if len(model.pathway_ks123_ids) > 0:
-        # reinsert
-        str_insert = "INSERT INTO sow_lesson__has__ks123_pathway (lesson_id, ks123_pathway_id) VALUES"
-
-        for objective_id in model.pathway_ks123_ids:
-            if objective_id.isdigit():
-                str_insert = str_insert + "({lesson_id}, {ks123_pathway_id}),".format(lesson_id=model.id, ks123_pathway_id=objective_id)
-
-        ' Ensure insert values have been appended before inserting'
-        if str_insert.endswith("VALUES") == False:
-            str_insert = str_insert.rstrip(",") + ";"
-            
-            results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
-
-    return results
-
-
-def _upsert_key_words(db, model, results, auth_user_id):
-    """ deletes and reinserts sow_lesson__has__keywords """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._upsert_key_words()")
-
-    execHelper = ExecHelper()
-      
-    # statement to delete existing
-    str_sqlmulti = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-    if model.key_words is not None:
-        # statements to insert new
-        str_insert = ""
-        for key_word in model.key_words:
-            str_insert = str_insert + "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES ({lesson_id}, {key_word_id});".format(lesson_id=model.id, key_word_id=key_word.id)        
-
-        str_sqlmulti = str_sqlmulti + str_insert
-
-    # execute as a transaction
-    results = execHelper.execCRUDSql(db, str_sqlmulti, results, log_info=handle_log_info)
-    
-    return results
-
-
-def _delete(db, model):
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._delete()")
-
-    execHelper = ExecHelper()
-    
-    str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
-    str_delete = str_delete.format(lesson_id=model.id)
-
-    rval = []
-    rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
-
-    return model
-
-
-def _publish(db, model):
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._publish()")
-
-    execHelper = ExecHelper()
-
-    str_publish = "UPDATE sow_lesson SET published = {published} WHERE id = {lesson_id};"
-    str_publish = str_publish.format(published=1 if model.published else 0, lesson_id=model.id)
-    
-    rval = []
-    rval = execHelper.execSql(db, str_publish, rval)
-
-    return rval
-
-
-def _delete_unpublished(db, scheme_of_work_id, auth_user_id):
-    """ Delete all unpublished learning objectives """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LessonDataAccess._delete_unpublished()")
-
-    execHelper = ExecHelper()
-    
-    str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published = 0;".format(scheme_of_work_id)
+    @staticmethod
+    def save(db, model, auth_user, published=1):
+        """ Save Lesson """
+        try:
+            #TODO: #231: Add delete       
+            if model.is_new() == True:
+                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user)
+            elif published == 2:
+                model = LessonDataAccess._delete(db, auth_user, model)
+            else:
+                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user)
+
+            return model
+        except:
+            handle_log_error(db, "error saving lesson")
+            raise
+
+
+    @staticmethod
+    def _update(db, model, published, auth_user_id):
+        """ updates the sow_lesson and sow_lesson__has__topics """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._update()")
+
+        execHelper = ExecHelper()
         
-    rows = []
-    rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
-    return rows
+        # 1. Update the lesson
+
+        str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
+        str_update = str_update.format(
+            title = model.title,
+            order_of_delivery_id=model.order_of_delivery_id,
+            year_id=model.year_id,
+            scheme_of_work_id=model.scheme_of_work_id,
+            topic_id=model.topic_id,
+            summary=to_db_null(model.summary),
+            published=published,
+            lesson_id=model.id)
+        
+        rows = []
+        rows = execHelper.execCRUDSql(db, str_update, rows, log_info=handle_log_info)
+
+        # 2. upsert related topics
+        
+        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user_id=auth_user_id)
+
+        # 3. insert pathway objectives
+
+        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id=auth_user_id)
+
+        # 4. insert pathway ks123
+
+        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id=auth_user_id)
+
+        # 5. insert key words
+
+        LessonDataAccess._upsert_key_words(db, model, rows, auth_user_id=auth_user_id)
+
+        return model
+
+
+    @staticmethod
+    def _insert(db, model, published, auth_user_id):
+        """ inserts the sow_lesson and sow_lesson__has__topics """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._insert()")
+
+        execHelper = ExecHelper()
+
+        # 1. Insert the lesson
+
+        str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
+        str_insert = str_insert.format(
+            title = model.title,
+            order_of_delivery_id=model.order_of_delivery_id,
+            year_id=model.year_id,
+            scheme_of_work_id=model.scheme_of_work_id,
+            topic_id=model.topic_id,
+            summary=to_db_null(model.summary),
+            created=model.created,
+            created_by=model.created_by_id,
+            published=published)
+        
+        rows = []
+        result = execHelper.execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
+        
+        model.id = result[1]
+
+        #for row in rows:
+        #    model.id = int(row[0])
+
+        # 2. insert related topics
+
+        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user_id)
+
+        # 3. insert pathway objectives
+
+        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id)
+
+        # 4. insert pathway ks123
+
+        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id)
+
+        # 5. insert key words
+
+        LessonDataAccess._upsert_key_words(db, model, rows, auth_user_id)
+
+        # 6. insert objectives
+        if model.is_copy():
+            LessonDataAccess._copy_objective_ids(db, model, rows, auth_user_id)
+
+        return model
+
+
+    @staticmethod
+    def _delete(db, auth_user_id, model):
+        """ Delete Lesson """
+        execHelper = ExecHelper()
+        
+        str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id};"
+        str_delete = str_delete.format(lesson_id=model.id)
+
+        rval = []
+        rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
+
+        return model
+
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+        """ Delete all unpublished lessons """
+
+        execHelper = ExecHelper()
+        
+        str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published IN (0,2);".format(scheme_of_work_id)
+            
+        rows = []
+        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+        return rows
+
+
+    @staticmethod
+    def _upsert_related_topic_ids(db, model, results, auth_user_id):
+        """ deletes and reinserts sow_lesson__has__topics """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._upsert_related_topics_ids()")
+
+        execHelper = ExecHelper()
+
+        # delete existing
+        str_delete = "DELETE FROM sow_lesson__has__topics WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+
+        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
+        
+        if len(model.related_topic_ids) > 0:
+            # reinsert
+            str_insert = "INSERT INTO sow_lesson__has__topics (lesson_id, topic_id) VALUES"
+
+            for topic_id in model.related_topic_ids:
+                if topic_id.isdigit():
+                    str_insert = str_insert + "({lesson_id}, {topic_id}),".format(lesson_id=model.id, topic_id=topic_id)
+
+            ' Ensure insert values have been appended before inserting'
+            if str_insert.endswith("VALUES") == False:
+                str_insert = str_insert.rstrip(",") + ";"
+
+                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        
+        return results
+
+
+    @staticmethod
+    def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
+        """ deletes and reinserts sow_lesson__has__topics """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_objectives_ids()")
+
+        execHelper = ExecHelper()
+
+        # delete existing
+        str_delete = "DELETE FROM sow_lesson__has__pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+
+        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
+
+        if model.pathway_objective_ids is not None:
+            # reinsert
+            str_insert = "INSERT INTO sow_lesson__has__pathway (lesson_id, learning_objective_id) VALUES"
+
+            for objective_id in model.pathway_objective_ids:
+                if objective_id.isdigit():
+                    str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id)
+
+            ' Ensure insert values have been appended before inserting'
+            if str_insert.endswith("VALUES") == False:
+                str_insert = str_insert.rstrip(",") + ";"
+
+                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        
+        return results
+
+
+    @staticmethod
+    def _copy_objective_ids(db, model, results, auth_user_id):
+        """ inserts sow_learning_objective__has__lesson """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._copy_objective_ids()")
+
+        execHelper = ExecHelper()
+        
+
+        # delete existing
+        str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {id};".format(id=model.orig_id)
+
+        objective_ids = []
+        objective_ids = execHelper.execSql(db, str_select, objective_ids, log_info=handle_log_info)
+
+        if len(objective_ids) > 0:
+            # reinsert
+            str_insert = "INSERT INTO sow_learning_objective__has__lesson (lesson_id, learning_objective_id) VALUES"
+
+            for objective_id in objective_ids:
+                str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id[0])
+
+            ' Ensure insert values have been appended before inserting'
+            if str_insert.endswith("VALUES") == False:
+                str_insert = str_insert.rstrip(",") + ";"
+
+                execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        
+        return results
+
+
+    @staticmethod
+    def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
+        """ deletes and reinserts sow_lesson__has__topics """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_ks123_ids()")
+
+        execHelper = ExecHelper()
+
+        # delete existing
+        str_delete = "DELETE FROM sow_lesson__has__ks123_pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+
+        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
+        
+        if len(model.pathway_ks123_ids) > 0:
+            # reinsert
+            str_insert = "INSERT INTO sow_lesson__has__ks123_pathway (lesson_id, ks123_pathway_id) VALUES"
+
+            for objective_id in model.pathway_ks123_ids:
+                if objective_id.isdigit():
+                    str_insert = str_insert + "({lesson_id}, {ks123_pathway_id}),".format(lesson_id=model.id, ks123_pathway_id=objective_id)
+
+            ' Ensure insert values have been appended before inserting'
+            if str_insert.endswith("VALUES") == False:
+                str_insert = str_insert.rstrip(",") + ";"
+                
+                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+
+        return results
+
+
+    @staticmethod
+    def _upsert_key_words(db, model, results, auth_user_id):
+        """ deletes and reinserts sow_lesson__has__keywords """
+
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use LessonDataAccess._upsert_key_words()")
+
+        execHelper = ExecHelper()
+        
+        # statement to delete existing
+        str_sqlmulti = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+
+        if model.key_words is not None:
+            # statements to insert new
+            str_insert = ""
+            for key_word in model.key_words:
+                str_insert = str_insert + "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES ({lesson_id}, {key_word_id});".format(lesson_id=model.id, key_word_id=key_word.id)        
+
+            str_sqlmulti = str_sqlmulti + str_insert
+
+        # execute as a transaction
+        results = execHelper.execCRUDSql(db, str_sqlmulti, results, log_info=handle_log_info)
+        
+        return results
+
+
+    # not used
+    @staticmethod
+    def publish(db, auth_user_id, id_):
+
+        execHelper = ExecHelper()
+
+        str_publish = "UPDATE sow_lesson SET published = {published} WHERE id = {lesson_id};"
+        str_publish = str_publish.format(published=1, lesson_id=id_)
+        
+        rval = []
+        rval = execHelper.execSql(db, str_publish, rval)
+
+        return rval
+

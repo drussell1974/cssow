@@ -1,11 +1,9 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_lesson as cls_lesson
+from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
-LessonModel = cls_lesson.LessonModel
-_copy_objective_ids = cls_lesson._copy_objective_ids
-handle_log_info = cls_lesson.handle_log_info
+_copy_objective_ids = LessonDataAccess._copy_objective_ids
 
 
 class test_db___upsert_related_topic_ids(TestCase):

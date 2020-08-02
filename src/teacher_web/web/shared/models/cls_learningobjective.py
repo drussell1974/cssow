@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+from .core.db_helper import to_db_null, to_empty, sql_safe, to_db_bool
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, from_db_bool
 from .core.log import handle_log_info
 
-enable_logging = False
 
 class LearningObjectiveModel (BaseModel):
 
@@ -305,7 +306,7 @@ class LearningObjectiveDataAccess:
 
         rows = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
-        rows = _update_lesson_lessonobjectives(db, model, rows)
+        rows = LearningObjectiveDataAccess._update_lesson_lessonobjectives(db, model, rows)
 
         return rows
 
@@ -336,20 +337,18 @@ class LearningObjectiveDataAccess:
     
         model.id = new_id
 
-        rows = _insert_lesson_lessonobjectives(db, model, rows)
+        rows = LearningObjectiveDataAccess._insert_lesson_lessonobjectives(db, model, rows)
         
         return model
+
 
     @staticmethod
     def _delete_unpublished(db, lesson_id, auth_user_id):
         """ Delete all unpublished learning objectives """
 
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LearningObjectiveDataAccess._delete_unpublished()")
-
         execHelper = ExecHelper()
 
-        rows = _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id)
+        rows = LearningObjectiveDataAccess._get_lesson_learning_objective_ids(db, lesson_id, auth_user_id)
         
         for row in rows:
             _id = row[0]
@@ -357,6 +356,7 @@ class LearningObjectiveDataAccess:
             execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
         
         return rows
+
 
     @staticmethod
     def _publish(db, model):
@@ -376,300 +376,224 @@ class LearningObjectiveDataAccess:
         return rval
 
 
-
-
-def sort_by_solo_taxonomy_level(unsorted_list):
-    """
-    Bubble sort by solo taxonomy level
-    :param unsorted_list: the unsorted data
-    :return: a sorted list
-    """
-
-    BaseModel.depreciation_notice("Not referenced")
-
-    staging_list = unsorted_list
-
-    while True:
-        swapped = False
-        for i in range(len(staging_list)-1):
-            if staging_list[i].solo_taxonomy_level > staging_list[i+1].solo_taxonomy_level:
-                """ put item in the correct position """
-                temp1 = staging_list[i]
-                temp2 = staging_list[i+1]
-
-                staging_list[i] = temp2
-                staging_list[i+1] = temp1
-                swapped = True
-
-        if swapped == False:
-            """ no more sorting required so finish """
-            break
-
-    return staging_list
-
-"""
-DAL
-"""
-"""
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=enable_logging)
-"""
-
-# -*- coding: utf-8 -*-
-from datetime import datetime
-#from .cls_learningobjective import LearningObjectiveModel
-from .core.db_helper import to_db_null, to_empty, sql_safe, to_db_bool
-
-
-def get_all_pathway_objectives(db, key_stage_id, key_words):
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("Check usage or use LearningObjectiveAccess.get_all_pathway_objectives()")
-
-    execHelper = ExecHelper()
-
-    select_sql = "SELECT"\
-                 " lob.id as id,"\
-                 " lob.description as description,"\
-                 " solo.id as solo_id,"\
-                 " solo.name as solo_taxonomy_name,"\
-                 " solo.lvl as solo_taxonomy_level,"\
-                 " cnt.id as content_id,"\
-                 " cnt.description as content_description,"\
-                 " ks.id as key_stage_id,"\
-                 " ks.name as key_stage_name,"\
-                 " lob.key_words as key_words,"\
-                 " lob.group_name as group_name,"\
-                 " lob.created as created,"\
-                 " lob.created_by as created_by_id,"\
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
-                " FROM sow_learning_objective as lob"\
-                " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
-                " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
-                " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
-                " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
-                " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
-                " WHERE ks.id < {key_stage_id}" \
-                " ORDER BY ks.name DESC, solo.lvl;"
-
-    select_sql = select_sql.format(key_stage_id=int(key_stage_id))
-
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows)
-
-    data = []
-
-    for row in rows:
-        if len(row[15]) > 0 and key_words is not None:
-            for keyword in key_words.split(","):
-                if len(keyword) > 0 and keyword in row[15]:
-                    model = LearningObjectiveModel(
-                        id_ = row[0],
-                        description = row[1],
-                        solo_taxonomy_id = row[2],
-                        solo_taxonomy_name = row[3],
-                        solo_taxonomy_level = row[4],
-                        content_id = row[5],
-                        content_description = row[6],
-                        key_stage_id = row[7],
-                        key_stage_name = row[8],
-                        key_words = row[9],
-                        group_name = row[10],
-                        created = row[11],
-                        created_by_id = row[12],
-                        created_by_name = row[13]
-                        )
-
-                    # TODO: remove __dict__ . The object should be serialised to json further up the stack      
-                    data.append(model.__dict__)
-                    break # only add objective once
-
-    return data
-
-
-def get_linked_pathway_objectives(db, lesson_id):
-
-    BaseModel.depreciation_notice("Not referenced")
-
-    execHelper = ExecHelper()
-
-    select_sql = "SELECT"\
-                 " lob.id as id,"\
-                 " lob.description as description,"\
-                 " solo.id as solo_id,"\
-                 " solo.name as solo_taxonomy_name,"\
-                 " solo.lvl as solo_taxonomy_level,"\
-                 " cnt.id as content_id,"\
-                 " cnt.description as content_description,"\
-                 " ks.id as key_stage_id,"\
-                 " ks.name as key_stage_name,"\
-                 " lob.key_words as key_words,"\
-                 " lob.group_name as group_name,"\
-                 " lob.created as created,"\
-                 " lob.created_by as created_by_id,"\
-                 " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
-                " FROM sow_learning_objective as lob"\
-                " INNER JOIN sow_lesson__has__pathway as pw ON pw.learning_objective_id = lob.id"\
-                " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
-                " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
-                " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
-                " WHERE pw.lesson_id = {lesson_id}" \
-                " ORDER BY ks.name DESC, solo.lvl;"
-
-    select_sql = select_sql.format(lesson_id=int(lesson_id))
-    
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows)
-
-    data = []
-
-    for row in rows:
-        model = LearningObjectiveModel(
-            id_ = row[0],
-            description = row[1],
-            solo_taxonomy_id = row[2],
-            solo_taxonomy_name = row[3],
-            solo_taxonomy_level = row[4],
-            content_id = row[5],
-            content_description = row[6],
-            key_stage_id = row[7],
-            key_stage_name = row[8],
-            key_words = row[9],
-            group_name = row[10],
-            created = row[11],
-            created_by_id = row[12],
-            created_by_name = row[13]
-            )
+    @staticmethod
+    def _insert_lesson_lessonobjectives(db, model, results):
+        """ insert into linking table between objective and lesson """
         
-        data.append(model)
 
-    return data
+        execHelper = ExecHelper()
 
-'''
-def get_other_objectives(db, lesson_id, scheme_of_work_id, key_word):
+        str_insert = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
+        str_insert = str_insert.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
+        
+        results = execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
 
-    execHelper = ExecHelper()
+        return results
 
-    select_sql = "SELECT DISTINCT"\
-                 " lob.id as id,"\
-                 " lob.description as description,"\
-                 " lob.key_words as key_words "\
-                 " FROM sow_learning_objective as lob"\
-                 " INNER JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.learning_objective_id = lob.id" \
-                 " INNER JOIN sow_lesson as le ON le.id = lo_le.lesson_id" \
-                 " WHERE le.scheme_of_work_id = {scheme_of_work_id}" \
-                 " AND lob.id NOT IN (SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {lesson_id});"
 
-    select_sql = select_sql.format(scheme_of_work_id=int(scheme_of_work_id),lesson_id=int(lesson_id), key_word=sql_safe(key_word))
+    @staticmethod
+    def _update_lesson_lessonobjectives(db, model, results):
+        """ insert if entry in sow_learning_objective__has__lesson doesn't already map sow learning_objective and sow_lesson """
 
-    rows = execHelper.execSql(select_sql)
+        execHelper = ExecHelper()
 
-    data = []
+        str_check_duplicate = "SELECT id FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id} AND lesson_id = {lesson_id};"
+        str_check_duplicate = str_check_duplicate.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
+        
+        duplicates = [] 
+        duplicates = execHelper.execSql(db, str_check_duplicate, duplicates, handle_log_info)
 
-    for row in rows:
-        if len(key_word) > 0 and key_word.lower() in row[2].lower():
+        if(len(duplicates) == 0):
+            str_insert2 = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
+            str_insert2 = str_insert2.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
+            results = execHelper.execCRUDSql(db, str_insert2, log_info=handle_log_info)
+        
+        return results
+
+
+    @staticmethod
+    def _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id):
+
+        execHelper = ExecHelper()
+
+        rows = []
+        
+        str_select = "SELECT lol.learning_objective_id "\
+            "FROM sow_learning_objective__has__lesson AS lol "\
+            "INNER JOIN sow_lesson AS l ON l.id = lol.lesson_id "\
+            "INNER JOIN sow_learning_objective AS lo ON lo.id = lol.learning_objective_id "\
+            "WHERE lo.published = 0 AND l.id={lesson_id} AND l.created_by = {auth_user_id};".format(lesson_id=lesson_id, auth_user_id=auth_user_id)
+        
+        return execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+
+    @staticmethod
+    def sort_by_solo_taxonomy_level(unsorted_list):
+        """
+        Bubble sort by solo taxonomy level
+        :param unsorted_list: the unsorted data
+        :return: a sorted list
+        """
+
+        raise DeprecationWarning("No longer used.")
+
+        staging_list = unsorted_list
+
+        while True:
+            swapped = False
+            for i in range(len(staging_list)-1):
+                if staging_list[i].solo_taxonomy_level > staging_list[i+1].solo_taxonomy_level:
+                    """ put item in the correct position """
+                    temp1 = staging_list[i]
+                    temp2 = staging_list[i+1]
+
+                    staging_list[i] = temp2
+                    staging_list[i+1] = temp1
+                    swapped = True
+
+            if swapped == False:
+                """ no more sorting required so finish """
+                break
+
+        return staging_list
+
+
+    @staticmethod
+    def get_all_pathway_objectives(db, key_stage_id, key_words):
+
+        execHelper = ExecHelper()
+
+        select_sql = "SELECT"\
+                    " lob.id as id,"\
+                    " lob.description as description,"\
+                    " solo.id as solo_id,"\
+                    " solo.name as solo_taxonomy_name,"\
+                    " solo.lvl as solo_taxonomy_level,"\
+                    " cnt.id as content_id,"\
+                    " cnt.description as content_description,"\
+                    " ks.id as key_stage_id,"\
+                    " ks.name as key_stage_name,"\
+                    " lob.key_words as key_words,"\
+                    " lob.group_name as group_name,"\
+                    " lob.created as created,"\
+                    " lob.created_by as created_by_id,"\
+                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                    " FROM sow_learning_objective as lob"\
+                    " LEFT JOIN sow_topic as top ON top.id = lob.topic_id"\
+                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
+                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
+                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
+                    " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
+                    " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
+                    " WHERE ks.id < {key_stage_id}" \
+                    " ORDER BY ks.name DESC, solo.lvl;"
+
+        select_sql = select_sql.format(key_stage_id=int(key_stage_id))
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+
+        data = []
+
+        for row in rows:
+            if len(row[15]) > 0 and key_words is not None:
+                for keyword in key_words.split(","):
+                    if len(keyword) > 0 and keyword in row[15]:
+                        model = LearningObjectiveModel(
+                            id_ = row[0],
+                            description = row[1],
+                            solo_taxonomy_id = row[2],
+                            solo_taxonomy_name = row[3],
+                            solo_taxonomy_level = row[4],
+                            content_id = row[5],
+                            content_description = row[6],
+                            key_stage_id = row[7],
+                            key_stage_name = row[8],
+                            key_words = row[9],
+                            group_name = row[10],
+                            created = row[11],
+                            created_by_id = row[12],
+                            created_by_name = row[13]
+                            )
+
+                        # TODO: remove __dict__ . The object should be serialised to json further up the stack      
+                        data.append(model.__dict__)
+                        break # only add objective once
+
+        return data
+
+
+    @staticmethod
+    def get_linked_pathway_objectives(db, lesson_id):
+
+        raise DeprecationWarning("Not referenced. Confirm usage")
+
+        execHelper = ExecHelper()
+
+        select_sql = "SELECT"\
+                    " lob.id as id,"\
+                    " lob.description as description,"\
+                    " solo.id as solo_id,"\
+                    " solo.name as solo_taxonomy_name,"\
+                    " solo.lvl as solo_taxonomy_level,"\
+                    " cnt.id as content_id,"\
+                    " cnt.description as content_description,"\
+                    " ks.id as key_stage_id,"\
+                    " ks.name as key_stage_name,"\
+                    " lob.key_words as key_words,"\
+                    " lob.group_name as group_name,"\
+                    " lob.created as created,"\
+                    " lob.created_by as created_by_id,"\
+                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
+                    " FROM sow_learning_objective as lob"\
+                    " INNER JOIN sow_lesson__has__pathway as pw ON pw.learning_objective_id = lob.id"\
+                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
+                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
+                    " LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id"\
+                    " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
+                    " WHERE pw.lesson_id = {lesson_id}" \
+                    " ORDER BY ks.name DESC, solo.lvl;"
+
+        select_sql = select_sql.format(lesson_id=int(lesson_id))
+        
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+
+        data = []
+
+        for row in rows:
             model = LearningObjectiveModel(
                 id_ = row[0],
                 description = row[1],
-                key_words = row[2]
-            )
+                solo_taxonomy_id = row[2],
+                solo_taxonomy_name = row[3],
+                solo_taxonomy_level = row[4],
+                content_id = row[5],
+                content_description = row[6],
+                key_stage_id = row[7],
+                key_stage_name = row[8],
+                key_words = row[9],
+                group_name = row[10],
+                created = row[11],
+                created_by_id = row[12],
+                created_by_name = row[13]
+                )
+            
             data.append(model)
 
-    return data
-'''
-
-'''
-def add_existing_objective(db, learning_objective_id, lesson_id, auth_user_id):
-    model = LearningObjectiveModel(id_ = learning_objective_id, lesson_id = lesson_id)
-
-    # insert into linking table between objective and lesson
-    str_insert = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
-    str_insert = str_insert.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-    db.executesql(str_insert)
-'''
+        return data
 
 
+    @staticmethod
+    def update_is_key_objective(db, learning_objective_id, lesson_id, is_key_objective):
+        
+        raise DeprecationWarning("No longer used.")
 
-def update_is_key_objective(db, learning_objective_id, lesson_id, is_key_objective):
-    
-    BaseModel.depreciation_notice("Not referenced")
+        execHelper = ExecHelper()
+        str_update = "UPDATE sow_learning_objective__has__lesson SET is_key_objective = {is_key_objective} WHERE learning_objective_id = {learning_objective_id};"
+        str_update = str_update.format(learning_objective_id=int(learning_objective_id), lesson_id=int(lesson_id), is_key_objective=to_db_bool(is_key_objective))
 
-    execHelper = ExecHelper()
-    str_update = "UPDATE sow_learning_objective__has__lesson SET is_key_objective = {is_key_objective} WHERE learning_objective_id = {learning_objective_id};"
-    str_update = str_update.format(learning_objective_id=int(learning_objective_id), lesson_id=int(lesson_id), is_key_objective=to_db_bool(is_key_objective))
+        result = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
 
-    result = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+        return result
 
-    return result
-
-
-"""
-Private CRUD functions 
-"""
-
-def _insert_lesson_lessonobjectives(db, model, results):
-    """ insert into linking table between objective and lesson """
-    
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._insert_lesson_lessonobjectives()")
-
-    execHelper = ExecHelper()
-
-    str_insert = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
-    str_insert = str_insert.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-    
-    results = execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
-
-    return results
-
-
-def _update_lesson_lessonobjectives(db, model, results):
-    """ insert if entry in sow_learning_objective__has__lesson doesn't already map sow learning_objective and sow_lesson """
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._update_lesson_lessonobjectives()")
-
-    execHelper = ExecHelper()
-
-    str_check_duplicate = "SELECT id FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id} AND lesson_id = {lesson_id};"
-    str_check_duplicate = str_check_duplicate.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-    
-    duplicates = [] 
-    duplicates = execHelper.execSql(db, str_check_duplicate, duplicates, handle_log_info)
-
-    if(len(duplicates) == 0):
-        str_insert2 = "INSERT INTO sow_learning_objective__has__lesson (learning_objective_id, lesson_id) VALUES ({learning_objective_id}, {lesson_id});"
-        str_insert2 = str_insert2.format(learning_objective_id=model.id, lesson_id=model.lesson_id)
-        results = execHelper.execCRUDSql(db, str_insert2, log_info=handle_log_info)
-    
-    return results
-
-
-
-
-def _get_lesson_learning_objective_ids(db, lesson_id, auth_user_id):
-
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use LearningObjectiveDataAccess._get_lesson_learningobjective_ids()")
-
-
-    execHelper = ExecHelper()
-
-    rows = []
-    
-    str_select = "SELECT lol.learning_objective_id "\
-        "FROM sow_learning_objective__has__lesson AS lol "\
-        "INNER JOIN sow_lesson AS l ON l.id = lol.lesson_id "\
-        "INNER JOIN sow_learning_objective AS lo ON lo.id = lol.learning_objective_id "\
-        "WHERE lo.published = 0 AND l.id={lesson_id} AND l.created_by = {auth_user_id};".format(lesson_id=lesson_id, auth_user_id=auth_user_id)
-    
-    return execHelper.execSql(db, str_select, rows, log_info=handle_log_info)

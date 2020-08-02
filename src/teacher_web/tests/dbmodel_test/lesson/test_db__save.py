@@ -2,11 +2,9 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
-import shared.models.cls_lesson as test_context
+from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
 
-Model = test_context.LessonModel
-save = test_context.LessonDataAccess.save
-handle_log_info = test_context.handle_log_info
+save = LessonDataAccess.save
 
 class test_db__save(TestCase):
 
@@ -14,7 +12,7 @@ class test_db__save(TestCase):
     def setUp(self):
         ' fake database context '
         self.fake_db = Mock()
-        self.fake_db.cursor = Mock()
+        self.fake_db.cursor = MagicMock()
         
         
     def tearDown(self):
@@ -58,11 +56,11 @@ class test_db__save(TestCase):
 
         # Mock functions not being tested
         
-        test_context._upsert_related_topic_ids = MagicMock()
-        test_context._upsert_pathway_objective_ids = MagicMock()
-        test_context._upsert_pathway_ks123_ids = MagicMock()
-        test_context._upsert_key_words = MagicMock()
-        test_context._copy_objective_ids = Mock()
+        LessonDataAccess._upsert_related_topic_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_objective_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_ks123_ids = MagicMock()
+        LessonDataAccess._upsert_key_words = MagicMock()
+        LessonDataAccess._copy_objective_ids = Mock()
 
         expected_result = ([], 341)
 
@@ -73,7 +71,7 @@ class test_db__save(TestCase):
             
             # assert
             
-            test_context._copy_objective_ids.assert_called()
+            LessonDataAccess._copy_objective_ids.assert_called()
 
             self.assertEqual(341, actual_result.id)
 
@@ -85,11 +83,11 @@ class test_db__save(TestCase):
 
         # Mock functions not being tested
         
-        test_context._upsert_related_topic_ids = Mock()
-        test_context._upsert_pathway_objective_ids = Mock()
-        test_context._upsert_pathway_ks123_ids = Mock()
-        test_context._upsert_key_words = Mock()
-        test_context._copy_objective_ids = MagicMock()
+        LessonDataAccess._upsert_related_topic_ids = Mock()
+        LessonDataAccess._upsert_pathway_objective_ids = Mock()
+        LessonDataAccess._upsert_pathway_ks123_ids = Mock()
+        LessonDataAccess._upsert_key_words = Mock()
+        LessonDataAccess._copy_objective_ids = MagicMock()
 
         expected_result = ([], 454)
 
@@ -100,7 +98,7 @@ class test_db__save(TestCase):
             
             # assert
             
-            test_context._copy_objective_ids.assert_not_called()
+            LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(expected_result[1], actual_result.id)
 
@@ -110,11 +108,11 @@ class test_db__save(TestCase):
         model = Model(1, "CPU and RAM")
         
         # Mock functions not being tested
-        test_context._upsert_related_topic_ids = Mock()
-        test_context._upsert_pathway_objective_ids = Mock()
-        test_context._upsert_pathway_ks123_ids = Mock()
-        test_context._upsert_key_words = Mock()
-        test_context._copy_objective_ids = Mock()
+        LessonDataAccess._upsert_related_topic_ids = Mock()
+        LessonDataAccess._upsert_pathway_objective_ids = Mock()
+        LessonDataAccess._upsert_pathway_ks123_ids = Mock()
+        LessonDataAccess._upsert_key_words = Mock()
+        LessonDataAccess._copy_objective_ids = Mock()
 
 
         expected_result = model.id
@@ -133,11 +131,11 @@ class test_db__save(TestCase):
 
             # check subsequent functions where called
             
-            test_context._upsert_related_topic_ids.assert_called()
-            test_context._upsert_pathway_objective_ids.assert_called()
-            test_context._upsert_pathway_ks123_ids.assert_called()
-            test_context._upsert_key_words.assert_called()
-            test_context._copy_objective_ids.assert_not_called()
+            LessonDataAccess._upsert_related_topic_ids.assert_called()
+            LessonDataAccess._upsert_pathway_objective_ids.assert_called()
+            LessonDataAccess._upsert_pathway_ks123_ids.assert_called()
+            LessonDataAccess._upsert_key_words.assert_called()
+            LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(expected_result, actual_result.id)
 
@@ -148,12 +146,12 @@ class test_db__save(TestCase):
         model = Model(0, "")
 
         # mock functions not being tested    
-        test_context._upsert_related_topic_ids = MagicMock()
-        test_context._upsert_pathway_objective_ids = MagicMock()
-        test_context._upsert_pathway_ks123_ids = MagicMock()
-        test_context._upsert_key_words = MagicMock()
-        test_context._copy_objective_ids = MagicMock()
-        test_context._copy_objective_ids.assert_not_called()
+        LessonDataAccess._upsert_related_topic_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_objective_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_ks123_ids = MagicMock()
+        LessonDataAccess._upsert_key_words = MagicMock()
+        LessonDataAccess._copy_objective_ids = MagicMock()
+        LessonDataAccess._copy_objective_ids.assert_not_called()
 
         expected_result = ("100", 876)
 
@@ -172,11 +170,11 @@ class test_db__save(TestCase):
 
             # check subsequent functions where called
             
-            test_context._upsert_related_topic_ids.assert_called()
-            test_context._upsert_pathway_objective_ids.assert_called()
-            test_context._upsert_pathway_ks123_ids.assert_called()
-            test_context._upsert_key_words.assert_called()
-            test_context._copy_objective_ids.assert_not_called()
+            LessonDataAccess._upsert_related_topic_ids.assert_called()
+            LessonDataAccess._upsert_pathway_objective_ids.assert_called()
+            LessonDataAccess._upsert_pathway_ks123_ids.assert_called()
+            LessonDataAccess._upsert_key_words.assert_called()
+            LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(expected_result[1], actual_result.id)
 
@@ -187,11 +185,11 @@ class test_db__save(TestCase):
         model = Model(23, "")
         
         # mock functions not being tested    
-        test_context._upsert_related_topic_ids = MagicMock()
-        test_context._upsert_pathway_objective_ids = MagicMock()
-        test_context._upsert_pathway_ks123_ids = MagicMock()
-        test_context._upsert_key_words = MagicMock()
-        test_context._copy_objective_ids = MagicMock()
+        LessonDataAccess._upsert_related_topic_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_objective_ids = MagicMock()
+        LessonDataAccess._upsert_pathway_ks123_ids = MagicMock()
+        LessonDataAccess._upsert_key_words = MagicMock()
+        LessonDataAccess._copy_objective_ids = MagicMock()
 
         expected_result = model.id
 
@@ -210,10 +208,10 @@ class test_db__save(TestCase):
 
             # check subsequent functions where called
             
-            test_context._upsert_related_topic_ids.assert_not_called()
-            test_context._upsert_pathway_objective_ids.assert_not_called()
-            test_context._upsert_pathway_ks123_ids.assert_not_called()
-            test_context._upsert_key_words.assert_not_called()
-            test_context._copy_objective_ids.assert_not_called()
+            LessonDataAccess._upsert_related_topic_ids.assert_not_called()
+            LessonDataAccess._upsert_pathway_objective_ids.assert_not_called()
+            LessonDataAccess._upsert_pathway_ks123_ids.assert_not_called()
+            LessonDataAccess._upsert_key_words.assert_not_called()
+            LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(expected_result, actual_result.id)

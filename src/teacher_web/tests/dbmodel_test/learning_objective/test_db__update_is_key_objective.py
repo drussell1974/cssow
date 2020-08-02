@@ -1,15 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-import shared.models.cls_learningobjective as test_context
+update_is_key_objective = LearningObjectiveDataAccess.update_is_key_objective
 
-# test context
-
-Model = test_context.LearningObjectiveModel
-update_is_key_objective = test_context.update_is_key_objective
-handle_log_info = test_context.handle_log_info
-
+@skip("Deprecated. Not implemented.")
 class test_db__update_is_key_objective(TestCase):
     
 

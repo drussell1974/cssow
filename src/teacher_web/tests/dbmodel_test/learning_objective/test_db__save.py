@@ -2,13 +2,9 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
-import shared.models.cls_learningobjective as test_context
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-# create test context
-
-Model = test_context.LearningObjectiveModel
-save = test_context.LearningObjectiveDataAccess.save
-handle_log_info = test_context.handle_log_info
+save = LearningObjectiveDataAccess.save
 
 
 class test_db__save(TestCase):
@@ -60,7 +56,7 @@ class test_db__save(TestCase):
         model.is_new = MagicMock(return_value=False)
         model.is_valid = MagicMock(return_value=True)
 
-        test_context._update_lesson_lessonobjectives = Mock()
+        LearningObjectiveDataAccess._update_lesson_lessonobjectives = Mock()
 
         expected_result = model.id
 
@@ -75,7 +71,7 @@ class test_db__save(TestCase):
                 "UPDATE sow_learning_objective SET description = 'Mauris ac velit ultricies, vestibulum.', group_name = '', notes = '', key_words = '', solo_taxonomy_id = 1, content_id = NULL, parent_id = NULL, published = 1 WHERE id = 1;"
                 , log_info=handle_log_info)
 
-            test_context._update_lesson_lessonobjectives.assert_called()
+            LearningObjectiveDataAccess._update_lesson_lessonobjectives.assert_called()
 
             self.assertEqual(expected_result, actual_result.id)
 
@@ -88,7 +84,7 @@ class test_db__save(TestCase):
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
 
-        test_context._insert_lesson_lessonobjectives = Mock()
+        LearningObjectiveDataAccess._insert_lesson_lessonobjectives = Mock()
         
         expected_result = ("100",23)
 

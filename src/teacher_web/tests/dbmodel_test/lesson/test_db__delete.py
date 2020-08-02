@@ -1,11 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_lesson as cls_lesson
+from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
-LessonModel = cls_lesson.LessonModel
-delete = cls_lesson.delete
-handle_log_info = cls_lesson.handle_log_info
+delete = LessonDataAccess._delete
 
 class test_db__delete(TestCase):
 
@@ -31,7 +29,7 @@ class test_db__delete(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                delete(self.fake_db, 1, model.id)
+                delete(self.fake_db, 1, model)
 
 
     def test_should_call_execCRUDSql(self):
@@ -41,7 +39,7 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=model):
             # act
 
-            actual_result = delete(self.fake_db, 1, model.id)
+            actual_result = delete(self.fake_db, 1, model)
             
             # assert
             ExecHelper.execCRUDSql.assert_called()

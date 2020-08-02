@@ -78,10 +78,6 @@ class KeywordModel(BaseModel):
         else:
             self.definition = ""
 
- 
-"""
-DAL
-"""
 
 class KeywordDataAccess:
 
@@ -198,100 +194,101 @@ class KeywordDataAccess:
         """
         
         if model.is_new():
-            model = _insert(db, model)
+            model = KeywordDataAccess._insert(db, model)
         else:
-            _update(db, model)
+            model = KeywordDataAccess._update(db, model)
             
         return model
 
 
-def save_keywords_only(db, key_words):
-    """
-    Saves keywords not already in the database
-    :param db: database context
-    :param key_words: list of keywords to save
-    """
-    ' get all the keywords from the database '
+    @staticmethod
+    def _insert(db, model):
+        """
+        Inserts key word and definition
+        :param db: database context
+        :param key_word: key term
+        :param definition: key definition
+        :return:
+        """
 
-    BaseModel.depreciation_notice("Not referenced")
+        #TODO: #230 Move to DataAccess
 
-    existing_keywords = KeywordDataAccess.get_options(db)
+        execHelper = ExecHelper()
 
-    new_id = 0
-    ' insert the keywords not already in the database '
-    for key_word in key_words:
-        ' trim white space '
-        key_word = key_word.lstrip(' ').rstrip(' ')
-        ' check if the keyword exists and insert as necessary  '
-        if key_word in existing_keywords or len(key_word) == 0:
-            pass
-        else:
-            new_id = _insert(db, KeywordModel(0, term=key_word, definition=""))
-
-    return new_id
-
-
-def delete(db, id):
-    """
-    Delete the keyword by term
-    :param db: database context
-    :param id: identify of the key term
-    :return:
-    """
-
-    BaseModel.depreciation_notice("Not referenced")
-
-    execHelper = ExecHelper()
-    
-
-    str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
-    return execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
-
-
-def _insert(db, model):
-    """
-    Inserts key word and definition
-    :param db: database context
-    :param key_word: key term
-    :param definition: key definition
-    :return:
-    """
-
-    #TODO: #230 Move to DataAccess
-
-    execHelper = ExecHelper()
-
-    rows = []
-    
-    rows = execHelper.execCRUDSql(db, 
-        "INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(model.term), definition=sql_safe(model.definition))
-        , result=rows
-        , log_info=handle_log_info
-    )
-    
-    # TODO: implement execInsert and pass model
-    if len(rows) > 0:
-        model.id = rows[1]
-
-    return model
-
-
-def _update(db, model):
-    """
-    Inserts key word and definition
-    :param db: database context
-    :param key_word: key term
-    :param definition: key definition
-    :return:
-    """
-
-    #TODO: #230 Move to DataAccess
-    
-    execHelper = ExecHelper()
-    
-    str_update = "UPDATE sow_key_word SET name = '{name}', definition = '{definition}' WHERE id = {id};".format(name=model.term, definition=model.definition, id=model.id)
-
-    return execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
-
-
+        rows = []
         
+        rows = execHelper.execCRUDSql(db, 
+            "INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(model.term), definition=sql_safe(model.definition))
+            , result=rows
+            , log_info=handle_log_info
+        )
+        
+        # TODO: implement execInsert and pass model
+        if len(rows) > 0:
+            model.id = rows[1]
+
+        return model
+
+
+    @staticmethod
+    def _update(db, model):
+        """
+        Inserts key word and definition
+        :param db: database context
+        :param key_word: key term
+        :param definition: key definition
+        :return:
+        """
+
+        #TODO: #230 Move to DataAccess
+        
+        execHelper = ExecHelper()
+        
+        str_update = "UPDATE sow_key_word SET name = '{name}', definition = '{definition}' WHERE id = {id};".format(name=model.term, definition=model.definition, id=model.id)
+
+        execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+
+        return model
+ 
+
+    @staticmethod
+    def delete(db, id):
+        """
+        Delete the keyword by term
+        :param db: database context
+        :param id: identify of the key term
+        :return:
+        """
+
+        execHelper = ExecHelper()
+        
+
+        str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
+        return execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
+
+    
+    @staticmethod
+    def save_keywords_only(db, key_words):
+        """
+        Saves keywords not already in the database
+        :param db: database context
+        :param key_words: list of keywords to save
+        """
+        ' get all the keywords from the database '
+
+        raise DeprecationWarning("Confirmm usage")
+
+        existing_keywords = KeywordDataAccess.get_options(db)
+
+        new_id = 0
+        ' insert the keywords not already in the database '
+        for key_word in key_words:
+            ' trim white space '
+            key_word = key_word.lstrip(' ').rstrip(' ')
+            ' check if the keyword exists and insert as necessary  '
+            if key_word in existing_keywords or len(key_word) == 0:
+                pass
+            else:
+                new_id = _insert(db, KeywordModel(0, term=key_word, definition=""))
+
+        return new_id

@@ -25,6 +25,7 @@ class uitest_schemeofwork_default_change_password(UITestCase):
 
         self.test_context.find_element_by_id("btn-password_change").click()
 
+        self.wait(s=2)
         # assert
         # TODO: set title
         #self.assertWebPageTitleAndHeadings('', 'Reset password', 'Enter a new password')

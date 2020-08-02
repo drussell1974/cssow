@@ -2,14 +2,11 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
-import shared.models.cls_reference as test_context 
+from shared.models.cls_reference import ReferenceModel as Model, ReferenceDataAccess, handle_log_info
 
-# create test context
+save = ReferenceDataAccess.save
 
-save = test_context.save
-handle_log_info = test_context.handle_log_info
-Model = test_context.ReferenceModel
-
+@skip("Deprecated. No longer used.")
 class test_db__save(TestCase):
 
 

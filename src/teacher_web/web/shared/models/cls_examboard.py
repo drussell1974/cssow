@@ -3,6 +3,7 @@ from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 
+
 class ExamBoardModel(BaseModel):
     def __init__(self, id_, name):
         self.id = id_

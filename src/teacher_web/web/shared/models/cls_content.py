@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+
 
 class ContentModel(BaseModel):
     def __init__(self, id_, description):
@@ -17,12 +20,6 @@ class ContentModel(BaseModel):
         if self.description is not None:
             self.description = sql_safe(self.description)
 
-"""
-DAL
-"""
-
-from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
 
 class ContentDataAccess:
 

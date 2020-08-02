@@ -1,7 +1,8 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_lessonplan import LessonPlanModel
 
 
+@skip("Deprecated. No longer used")
 class test_cls_lessonplan_validate__title(TestCase):
 
     test = None
@@ -108,6 +109,7 @@ class test_cls_lessonplan_validate__title(TestCase):
         self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
+@skip("Deprecated. No longer used")
 class test_cls_lessonplan_validate__description(TestCase):
 
     test = None
@@ -238,6 +240,7 @@ class test_cls_lessonplan_validate__description(TestCase):
         self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
+@skip("Deprecated. No longer used")
 class test_cls_lessonplan_validate__task_icon(TestCase):
 
     test = None

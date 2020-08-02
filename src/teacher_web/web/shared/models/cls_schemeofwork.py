@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, sql_safe
+from .core.db_helper import ExecHelper, sql_safe, to_db_null
 from shared.models.core.log import handle_log_info
 
 
@@ -357,52 +357,47 @@ class SchemeOfWorkDataAccess:
 
         return rval
 
+    @staticmethod
+    def get_options(db, auth_user = 0):
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_options()")
+
+        execHelper = ExecHelper()
+        
+        str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
+        str_select = str_select.format(auth_user=to_db_null(auth_user))
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows)
+
+        data = []
+
+        for row in rows:
+            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
+            data.append(model)
+
+        return data
 
 
-"""
-DAL
-"""
-from .core.db_helper import to_db_null
+    @staticmethod
+    def get_schemeofwork_name_only(db, scheme_of_work_id):
+        #TODO: #230 Move to DataAccess
+        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_schemeofwork_name_only()")
 
-def get_options(db, auth_user = 0):
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_options()")
+        execHelper = ExecHelper()
+        
+        select_sql = "SELECT "\
+                    "  sow.name as name "\
+                    " FROM sow_scheme_of_work as sow "\
+                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
+                    " WHERE sow.id = {scheme_of_work_id};"
+        select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
 
-    execHelper = ExecHelper()
-    
-    str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
-    str_select = str_select.format(auth_user=to_db_null(auth_user))
-    rows = []
-    rows = execHelper.execSql(db, str_select, rows)
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
 
-    data = []
+        scheme_of_work_name = ""
+        for row in rows:
+            scheme_of_work_name = row[0]
 
-    for row in rows:
-        model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
-        data.append(model)
-
-    return data
-
-
-def get_schemeofwork_name_only(db, scheme_of_work_id):
-    #TODO: #230 Move to DataAccess
-    BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_schemeofwork_name_only()")
-
-    execHelper = ExecHelper()
-    
-    select_sql = "SELECT "\
-                  "  sow.name as name "\
-                  " FROM sow_scheme_of_work as sow "\
-                  " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                  " WHERE sow.id = {scheme_of_work_id};"
-    select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
-
-    rows = []
-    rows = execHelper.execSql(db, select_sql, rows)
-
-    scheme_of_work_name = ""
-    for row in rows:
-        scheme_of_work_name = row[0]
-
-    return scheme_of_work_name
+        return scheme_of_work_name
 

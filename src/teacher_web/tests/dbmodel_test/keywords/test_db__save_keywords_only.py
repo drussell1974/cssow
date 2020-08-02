@@ -2,14 +2,11 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
+from shared.models.cls_keyword import KeywordDataAccess, handle_log_info
 
-import shared.models.cls_keyword as test_context 
+save_keywords_only = KeywordDataAccess.save_keywords_only
 
-# create test context
-
-save_keywords_only = test_context.save_keywords_only
-handle_log_info = test_context.handle_log_info
-
+@skip("Deprecated. Not implemented.")
 class test_db__save_keywords_only(TestCase):
 
 

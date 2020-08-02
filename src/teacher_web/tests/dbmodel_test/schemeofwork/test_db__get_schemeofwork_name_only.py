@@ -2,7 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import get_schemeofwork_name_only
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
+
+get_schemeofwork_name_only = SchemeOfWorkDataAccess.get_schemeofwork_name_only
 
 
 class test_db__get_schemeofwork_name_only(TestCase):

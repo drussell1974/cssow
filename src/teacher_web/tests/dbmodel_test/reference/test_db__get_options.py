@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_reference import ReferenceDataAccess, handle_log_info
 
-import shared.models.cls_reference as testcontext 
+get_options = ReferenceDataAccess.get_options
 
-get_options = testcontext.get_options
-handle_log_info = testcontext.handle_log_info
-
-
+@skip("Deprecated. No longer used")
 class test_db__get_options(TestCase):
     
     def setUp(self):

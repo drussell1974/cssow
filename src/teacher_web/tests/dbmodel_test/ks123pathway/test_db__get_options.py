@@ -2,11 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_ks123pathway import KS123PathwayModel, KS123PathwayDataAccess, handle_log_info
 
-import shared.models.cls_ks123pathway as test_context
-
-get_options = test_context.get_options
-handle_log_info =  test_context.handle_log_info
+get_options = KS123PathwayDataAccess.get_options
 
 
 class test_db__get_options(TestCase):

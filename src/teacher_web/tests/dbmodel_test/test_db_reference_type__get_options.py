@@ -4,7 +4,7 @@ from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
 
-
+@skip("Deprecated. No longer used")
 class test_db_reference_type__get_options(TestCase):
     
     def setUp(self):

@@ -21,7 +21,7 @@ class test_viewmodel_SaveViewModel(TestCase):
     def tearDown(self):
         pass
 
-    #@skip("Ensure correct mock keyword array is being returned")
+
     def test_execute_called_save__add_model_to_data(self):
         
         # arrange
@@ -64,7 +64,6 @@ class test_viewmodel_SaveViewModel(TestCase):
         # arrange
         
         
-        # TODO: Mock KeywordSaveViewModel to return keyword array
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(DataAccess, "save", return_value=None):
                 

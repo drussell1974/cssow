@@ -12,7 +12,10 @@ from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
 from shared.view_model import ViewModel
 
 # TODO: use view models
-from shared.models import cls_lesson, cls_schemeofwork, cls_ks123pathway, cls_learningobjective
+from shared.models import cls_schemeofwork, cls_learningobjective
+
+from shared.models.cls_lesson import LessonModel, LessonDataAccess
+from shared.models.cls_ks123pathway import KS123PathwayDataAccess
 from shared.models.cls_year import YearDataAccess
 from shared.models.cls_topic import TopicDataAccess
 
@@ -26,10 +29,10 @@ from datetime import datetime
 def index(request, scheme_of_work_id):
     """ Get lessons for scheme of work """
 
-    scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
 
     lessons_all = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
-    schemeofwork_options = cls_schemeofwork.get_options(db, auth_user=request.user.id)
+    schemeofwork_options = SchemeOfWorkDataAccess.get_options(db, auth_user=request.user.id)
     
     
     data = {
@@ -87,7 +90,7 @@ def edit(request, scheme_of_work_id, lesson_id):
     year_options = YearDataAccess.get_options(db, lesson.key_stage_id)
     topic_options = TopicDataAccess.get_options(db, lvl=1)
     key_words_options = KeywordGetOptionsListViewModel(db).model
-    ks123_pathways = cls_ks123pathway.get_options(db, lesson.year_id, lesson.topic_id)
+    ks123_pathways = KS123PathwayDataAccess.get_options(db, lesson.year_id, lesson.topic_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -142,12 +145,12 @@ def copy(request, scheme_of_work_id, lesson_id):
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
-    scheme_of_work_name = "" # TODO: get scheme of work name
-    lesson_name = "" # TODO: get lesson name
+    
+    redirect_to_url = request.META.get('HTTP_REFERER')
 
-    view_model = ViewModel(scheme_of_work_name, lesson_name, "Publish")
-    # TODO: redirect
-    return render(request, "lessons/edit.html", view_model.content)
+    LessonDataAccess.publish(db, request.user.id, lesson_id)
+
+    return HttpResponseRedirect(redirect_to_url)
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
@@ -156,9 +159,10 @@ def delete(request, scheme_of_work_id, lesson_id):
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_lesson.delete(db, request.user.id, lesson_id)
+    LessonDataAccess.delete(db, request.user.id, lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
+    
     
 def lessonplan(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan '''
@@ -193,7 +197,7 @@ def save(request, scheme_of_work_id, lesson_id):
         
     published = int(request.POST["published"] if request.POST["published"] is not None else 1)
     
-    model = cls_lesson.LessonModel(
+    model = LessonModel(
         id_ = request.POST["id"],
         orig_id = int(request.POST["orig_id"]),
         title = request.POST["title"],
@@ -246,7 +250,7 @@ def save(request, scheme_of_work_id, lesson_id):
         year_options = YearDataAccess.get_options(db, model.key_stage_id)
         topic_options = TopicDataAccess.get_options(db, lvl=1)
         key_words_options = KeywordGetOptionsListViewModel(db).model
-        ks123_pathways = cls_ks123pathway.get_options(db, model.year_id, model.topic_id)
+        ks123_pathways = KS123DataAccess.get_options(db, model.year_id, model.topic_id)
         
         
         form_data = {
@@ -272,15 +276,15 @@ def save(request, scheme_of_work_id, lesson_id):
 
 def initialise_keywords(request, scheme_of_work_id):
     
-    # OBSELETE
+    raise DeprecationWarning("Not longer used.")
 
     lessons = LessonGetAllViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
-    for lesson in lessons.model:
-       cls_lesson._upsert_key_words(db, lesson.model)
+    #for lesson in lessons.model:
+    #   LessonDataAccess._upsert_key_words(db, lesson.model)
 
-    scheme_of_work_name = cls_schemeofwork.get_schemeofwork_name_only(db, scheme_of_work_id)
-    schemeofwork_options = cls_schemeofwork.get_options(db, auth_user=request.user.id)
+    #scheme_of_work_name = LessonDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
+    schemeofwork_options = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user=request.user.id)
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -289,7 +293,7 @@ def initialise_keywords(request, scheme_of_work_id):
         "topic_name": "",
     }
 
-    view_model = ViewModel(scheme_of_work_name, scheme_of_work_name, "Lessons", data=data)
+    view_model = ViewModel("scheme_of_work_name", "scheme_of_work_name", "Lessons", data=data)
     
     return render(request, "lessons/index.html", view_model.content)
 
@@ -300,6 +304,6 @@ def delete_unpublished(request, scheme_of_work_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_lesson.delete_unpublished(db, scheme_of_work_id, request.user.id)
+    LessonDataAccess.delete_unpublished(db, scheme_of_work_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)

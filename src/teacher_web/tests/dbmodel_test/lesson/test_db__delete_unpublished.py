@@ -1,13 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_lesson as cls_lesson
+from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
 # Test Context
 
-LessonModel = cls_lesson.LessonModel
-delete_unpublished = cls_lesson.delete_unpublished
-handle_log_info = cls_lesson.handle_log_info
+delete_unpublished = LessonDataAccess.delete_unpublished
 
 
 class test_db__delete_unpublished(TestCase):
@@ -52,7 +50,7 @@ class test_db__delete_unpublished(TestCase):
             ExecHelper.execSql.assert_called()
 
             ExecHelper.execSql.assert_called_with(self.fake_db, 
-                'DELETE FROM sow_lesson WHERE scheme_of_work_id = 1 AND published = 0;'
+                'DELETE FROM sow_lesson WHERE scheme_of_work_id = 1 AND published IN (0,2);'
                 , []
                 , handle_log_info)
 
