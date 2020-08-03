@@ -59,7 +59,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-        #TODO: #231: items after should be less than before
+        #231: items after should be less than before
         
         items_before = self.test_context.find_elements_by_class_name("post-preview")
         self.assertEqual(4, len(items_before))
@@ -109,7 +109,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', "Schemes of Work", 'Our shared schemes of work by key stage')
         
-        #TODO: #231: items after should be less than before
+        #231: items after should be less than before
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         self.assertEqual(3, len(items_after))

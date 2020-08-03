@@ -131,7 +131,7 @@ class ResourceDataAccess:
     def get_model(db, id_, scheme_of_work_id, auth_user):
         """ Get Resource """
         execHelper = ExecHelper()
-        #TODO: #231 get published
+        
         str_select = "SELECT" \
                     " res.id as id," \
                     " res.title as title," \
@@ -189,7 +189,6 @@ class ResourceDataAccess:
         """ Get resources for lesson """
         execHelper = ExecHelper()
 
-        #TODO: #231 get published
         str_select = "SELECT" \
                     " res.id as id," \
                     " res.title as title," \
@@ -250,7 +249,7 @@ class ResourceDataAccess:
         :param model: the ReferenceModel
         :return: the updated ReferenceModel
         '''
-        #TODO: #231: Add delete        
+        
         if published == 2:
             ResourceDataAccess._delete(db, model.id, auth_user)
             model.published = 2
@@ -350,9 +349,6 @@ class ResourceDataAccess:
     @staticmethod
     def get_resource_type_options(db, auth_user):
         
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use ResourceDataAccess.get_resource_type_options()")
-
         execHelper = ExecHelper()
 
         str_select = "SELECT" \
@@ -383,8 +379,7 @@ class ResourceDataAccess:
         :param auth_user:
         :return:
         """
-        #TODO: #230 Move to DataAccess
-
+        
         execHelper = ExecHelper()
         
         select_sql = "SELECT " \
@@ -404,8 +399,6 @@ class ResourceDataAccess:
     def delete_unpublished(db, lesson_id, auth_user_id):
         """ Delete all unpublished resources """
         
-        #TODO: #230 Move to DataAccess
-
         execHelper = ExecHelper()
         
         str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)

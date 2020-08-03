@@ -29,9 +29,6 @@ class KeyStageDataAccess:
 
     @staticmethod
     def get_options(db):
-        
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use KeyStage.get_options()")
 
         execHelper = ExecHelper()
 

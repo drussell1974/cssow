@@ -19,7 +19,6 @@
           </div>
         {% endif %}
       {% for row in content.data.schemes_of_work %}
-      <!-- #TODO: #231: show published_state as class -->
       <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
         <a class="edit" href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}">
           <h2 class="post-title">

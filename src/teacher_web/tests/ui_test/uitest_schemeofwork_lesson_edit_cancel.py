@@ -47,7 +47,6 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
 
         # assert
         ' should still be on the same page '
-        #TODO: #231: assert we're still on the same page
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
 
 

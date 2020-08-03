@@ -117,6 +117,11 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
+    def get_all_pathway_objectives(db, key_stage_id):
+        return LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id)
+
+
+    @staticmethod
     def delete_unpublished(db, lesson_id, auth_user):
         return LearningObjectiveDataAccess.delete_unpublished(db, lesson_id, auth_user)
 
@@ -129,6 +134,7 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     def save(db, model, auth_user, published):
         return LearningObjectiveDataAccess.save(db, model, auth_user, published)
+
 
 class LearningObjectiveDataAccess:
 
@@ -384,10 +390,6 @@ class LearningObjectiveDataAccess:
 
     @staticmethod
     def _publish(db, model):
-        
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LearningObjectiveDataAccess._publish()")
-
 
         execHelper = ExecHelper()
 

@@ -4,10 +4,11 @@ omit =
    */node_modules/*
    web/manage.py
    web/web/*
+   web/**/views.py
    *cls_reference*
-   *cls_lesson_plan*
+   *cls_lessonplan*
 
 [coverage:report]
-fail_under = 85
+fail_under = 95
 show_missing = True
 skip_covered = False

@@ -48,7 +48,7 @@ class uitest_schemeofwork_lesson_edit_delete__cancel(UITestCase):
         elem = self.test_context.find_element_by_id("deleteModalStayButton")
         elem.click()
         
-        #TODO: #231: assert we're still on the stay on page
+        #231: assert we're still on the stay on page
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
         

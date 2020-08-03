@@ -20,6 +20,16 @@ class KS123PathwayModel(BaseModel):
         # objective
         if self.objective is not None:
             self.objective = sql_safe(self.objective)
+    
+    
+    @staticmethod
+    def get_options(db, year_id, topic_id):
+        return KS123PathwayDataAccess.get_options(db, year_id, topic_id)
+
+
+    @staticmethod
+    def get_(db, lesson_id):
+        return KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
 
 
 class KS123PathwayDataAccess:
@@ -46,9 +56,6 @@ class KS123PathwayDataAccess:
 
     @staticmethod
     def get_linked_pathway_ks123(db, lesson_id):
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("Check usage or move to KS123DataAccess.get_linked_pathway_ks123")
 
         execHelper = ExecHelper()
         

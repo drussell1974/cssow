@@ -26,8 +26,6 @@ class ContentDataAccess:
     @staticmethod
     def get_options(db, key_stage_id):
 
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use ContentDataAccess.get_options()")
         execHelper = ExecHelper()
 
         str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))

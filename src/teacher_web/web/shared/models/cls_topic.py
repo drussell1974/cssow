@@ -35,10 +35,7 @@ class TopicDataAccess:
     
     @staticmethod
     def get_options(db, lvl, topic_id = 0):
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use TopicDataAccess.get_options()")
-
+        
         execHelper = ExecHelper()
 
         str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"

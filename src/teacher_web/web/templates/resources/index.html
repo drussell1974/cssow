@@ -101,7 +101,6 @@
 </div>
 {% else %}
   {% for row in content.data.resources %}
-    <!-- #TODO: #231 get pubished state -->
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
       <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
@@ -116,7 +115,6 @@
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}
           {% if row.published == False %} 
-            <!-- #TODO: #231: published item from index -->
               <a href="{% url 'resource.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
           {% endif %}
         {% endif %}

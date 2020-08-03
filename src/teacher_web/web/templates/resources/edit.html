@@ -19,7 +19,6 @@
 {% endblock %}
 
 {% block maincontent %}
-<!-- #TODO: #231: needs-validation class to select form in formValidation.js -->
 <form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
     <!-- Title START -->
@@ -102,7 +101,6 @@
     <br>
     <div id="success"></div>
     <div class="form-group">
-        <!-- #TODO: #231: use form.buttons.validition partial -->
         {% include '_partials/form.buttons.validation.html' %}
     </div>
     
@@ -116,7 +114,6 @@
 
 
 {% block page_js %}
-    <!-- #TODO: #231: remove jquery scripts to fix modal not working with errors - should not be called in __layout and after bootstrap -->
     
     <script>
         const md_document_control_group = document.querySelector("#md_document--control-group");

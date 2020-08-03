@@ -31,9 +31,6 @@ class SoloTaxonomyDataAccess:
     @staticmethod
     def get_options(db):
     
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SoloTaxonomyDataAccess.get_options()")
-
         execHelper = ExecHelper()
         
         rows = []

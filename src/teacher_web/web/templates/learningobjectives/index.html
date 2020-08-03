@@ -105,7 +105,6 @@
 </div>
 {% else %}
   {% for row in content.data.learning_objectives %}
-    <!-- #TODO: #231: show published_state as class -->
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
       <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
@@ -134,7 +133,6 @@
         {% if request.user.is_authenticated %}
 
           {% if row.published == False %} 
-          <!-- #TODO: #231: published item from index -->
             <a href="{% url 'learningobjective.publish_item' content.data.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
           {% endif %}
         {% endif %}

@@ -241,8 +241,6 @@ class KeywordDataAccess:
         :return:
         """
 
-        #TODO: #230 Move to DataAccess
-
         execHelper = ExecHelper()
 
         rows = []
@@ -269,8 +267,6 @@ class KeywordDataAccess:
         :param definition: key definition
         :return:
         """
-
-        #TODO: #230 Move to DataAccess
         
         execHelper = ExecHelper()
         

@@ -25,10 +25,6 @@ class YearDataAccess:
 
     @staticmethod
     def get_options(db, key_stage_id):
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use YearDataAccess.get_options()")
-
         helper = ExecHelper()
 
         str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))

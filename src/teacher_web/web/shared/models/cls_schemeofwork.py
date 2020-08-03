@@ -205,8 +205,6 @@ class SchemeOfWorkDataAccess:
         :param top: number of records to return
         :return: list of schemes of work models
         """
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_latest_schemes_of_work()")
         
         execHelper = ExecHelper()
         
@@ -258,7 +256,6 @@ class SchemeOfWorkDataAccess:
     @staticmethod
     def save(db, model, published=1):
         
-        #TODO: #231: Add delete    
         if try_int(published) == 2:
             model = SchemeOfWorkDataAccess._delete(db, model)
         else:
@@ -335,8 +332,6 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def get_key_stage_id_only(db, scheme_of_work_id):
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_key_stage_id_only()")
 
         execHelper = ExecHelper()
         
@@ -370,15 +365,9 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def publish(db, auth_user_id, id_):
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.publish()")
-
+        
         model = SchemeOfWorkModel(id_)
         model.publish = True
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess._publish()")
 
         execHelper = ExecHelper()
         
@@ -392,8 +381,6 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def get_options(db, auth_user = 0):
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_options()")
 
         execHelper = ExecHelper()
         
@@ -413,9 +400,7 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def get_schemeofwork_name_only(db, scheme_of_work_id):
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use SchemeOfWorkDataAccess.get_schemeofwork_name_only()")
-
+        
         execHelper = ExecHelper()
         
         select_sql = "SELECT "\

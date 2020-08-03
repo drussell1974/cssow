@@ -84,12 +84,6 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
 
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
-        # reset id if a copy
-        #if int(request.POST["orig_id"]) > 0:
-        #    model.id = int(request.POST["orig_id"])
-        
-        #TODO: #235 Rename: LessonEditViewModel
-
         viewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=request.user.id)
 
         viewmodel.execute(published)
@@ -173,8 +167,6 @@ def lessonplan(request, scheme_of_work_id, lesson_id):
     
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
-
-    #TODO: #235 Create ViewModel
 
     get_lesson_view =  LessonGetModelViewModel(db, lesson_id, request.user.id)
     model = get_lesson_view.model

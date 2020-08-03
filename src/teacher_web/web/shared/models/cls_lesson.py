@@ -284,7 +284,6 @@ class LessonDataAccess:
         rows = execHelper.execSql(db, select_sql, rows)
 
         for row in rows:
-            #TODO: #231 get published
             model = LessonModel(
                 id_=row[0],
                 title = row[1],
@@ -315,7 +314,6 @@ class LessonDataAccess:
 
         execHelper = ExecHelper()
             
-        #TODO: #231 get published
         select_sql = "SELECT "\
                     " le.id as id," \
                     " le.title as title,"\
@@ -614,8 +612,7 @@ class LessonDataAccess:
     @staticmethod
     def save(db, model, auth_user, published=1):
         """ Save Lesson """
-        try:
-            #TODO: #231: Add delete       
+        try:     
             if model.is_new() == True:
                 model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user)
             elif published == 2:
@@ -632,9 +629,6 @@ class LessonDataAccess:
     @staticmethod
     def _update(db, model, published, auth_user_id):
         """ updates the sow_lesson and sow_lesson__has__topics """
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._update()")
 
         execHelper = ExecHelper()
         
@@ -676,9 +670,6 @@ class LessonDataAccess:
     @staticmethod
     def _insert(db, model, published, auth_user_id):
         """ inserts the sow_lesson and sow_lesson__has__topics """
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._insert()")
 
         execHelper = ExecHelper()
 
@@ -758,9 +749,6 @@ class LessonDataAccess:
     def _upsert_related_topic_ids(db, model, results, auth_user_id):
         """ deletes and reinserts sow_lesson__has__topics """
 
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._upsert_related_topics_ids()")
-
         execHelper = ExecHelper()
 
         # delete existing
@@ -789,9 +777,6 @@ class LessonDataAccess:
     def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
         """ deletes and reinserts sow_lesson__has__topics """
 
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_objectives_ids()")
-
         execHelper = ExecHelper()
 
         # delete existing
@@ -819,9 +804,6 @@ class LessonDataAccess:
     @staticmethod
     def _copy_objective_ids(db, model, results, auth_user_id):
         """ inserts sow_learning_objective__has__lesson """
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._copy_objective_ids()")
 
         execHelper = ExecHelper()
         
@@ -852,9 +834,6 @@ class LessonDataAccess:
     def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
         """ deletes and reinserts sow_lesson__has__topics """
 
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._upsert_pathway_ks123_ids()")
-
         execHelper = ExecHelper()
 
         # delete existing
@@ -882,9 +861,6 @@ class LessonDataAccess:
     @staticmethod
     def _upsert_key_words(db, model, results, auth_user_id):
         """ deletes and reinserts sow_lesson__has__keywords """
-
-        #TODO: #230 Move to DataAccess
-        BaseModel.depreciation_notice("use LessonDataAccess._upsert_key_words()")
 
         execHelper = ExecHelper()
         

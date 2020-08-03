@@ -33,8 +33,8 @@ def index(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  #TODO: create view_learningepisiode_options: remove this line
-
+    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  
+    
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
         "lesson_id":int(lesson_id),
@@ -104,8 +104,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    #TODO: #231: pass the active model to ViewModel
-    #TODO: #231: pass the delete item route
+    #231: pass the active model to ViewModel
     view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "resources/edit.html", view_model.content)

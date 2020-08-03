@@ -109,6 +109,6 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         
-        #TODO: #231: items after should be less than before
+        #231: items after should be less than before
         
         self.assertEqual(4, len(items_after))

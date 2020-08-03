@@ -7,9 +7,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # TODO: use view models
-from shared.models.cls_learningobjective import LearningObjectiveDataAccess
-from shared.models.cls_ks123pathway import KS123PathwayDataAccess
-from shared.models.cls_lesson import LessonDataAccess 
+from shared.models.cls_learningobjective import LearningObjectiveModel
+from shared.models.cls_ks123pathway import KS123PathwayModel
+from shared.models.cls_lesson import LessonModel 
 
 # view models
 from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
@@ -42,8 +42,8 @@ class LessonPathwayObjectivesViewSet(APIView):
         raise DeprecationWarning("verify usage")
     
         ''' get the pathway objectives '''
-        pathwayobjectives = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
-        should_be_checked = LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
+        pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
+        should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id)
 
         return JsonResponse({
             "pathway-objectives": pathwayobjectives, 
@@ -56,8 +56,8 @@ class LessonPathwayKs123ViewSet(APIView):
 
         raise DeprecationWarning("Not referenced. Confirm usage")
 
-        data = KS123PathwayDataAccess.get_options(db, year_id = year_id, topic_id = topic_id)
-        should_be_checked = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
+        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id)
+        should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id)
 
         ks123pathway = []
         for item in data:

@@ -77,7 +77,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         ' should return to edit be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
 
-        #TODO: #231: items after should be less than before
+        #231: items after should be less than before
         
         items_before = self.test_context.find_elements_by_class_name("post-preview")
         self.assertEqual(27, len(items_before))
