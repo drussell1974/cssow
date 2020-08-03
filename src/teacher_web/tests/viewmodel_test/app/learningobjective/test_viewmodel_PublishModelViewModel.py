@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.learningobjectives.viewmodels import LearningObjectivePublishModelViewModel as ViewModel
-from shared.models.cls_learningobjective import LearningObjectiveDataAccess as DataAccess, LearningObjectiveModel as Model
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model
 
 
 class test_viewmodel_PublishModelViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_PublishModelViewModel(TestCase):
         
         data_to_return = Model(56)
         
-        with patch.object(DataAccess, "publish_item", return_value=data_to_return):
+        with patch.object(Model, "publish_item", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -34,4 +34,4 @@ class test_viewmodel_PublishModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
 
             # assert functions was called
-            DataAccess.publish_item.assert_called()
+            Model.publish_item.assert_called()

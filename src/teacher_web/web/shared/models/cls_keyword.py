@@ -79,6 +79,36 @@ class KeywordModel(BaseModel):
             self.definition = ""
 
 
+    @staticmethod
+    def get_model(db, id, auth_user):
+        return KeywordDataAccess.get_model(db, id, auth_user)
+
+
+    @staticmethod
+    def get_options(db):
+        return KeywordDataAccess.get_options(db)
+
+
+    @staticmethod
+    def get_model(db, id, auth_user):
+        return KeywordDataAccess.get_model(db, id, auth_user)
+
+
+    @staticmethod
+    def get_all(db, search_term = ""):
+        return KeywordDataAccess.get_all(db, search_term)
+
+
+    @staticmethod
+    def get_by_terms(db, key_words_list, allow_all, auth_user):
+        return KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, auth_user)
+
+
+    @staticmethod
+    def save(db, model):
+        return KeywordDataAccess.save(db, model)
+
+
 class KeywordDataAccess:
 
 

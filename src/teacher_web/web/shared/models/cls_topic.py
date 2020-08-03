@@ -26,6 +26,10 @@ class TopicModel(models.Model):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+    @staticmethod
+    def get_options(db, lvl, topic_id = 0):
+        return TopicDataAccess.get_options(db, lvl, topic_id)
+
 
 class TopicDataAccess:
     

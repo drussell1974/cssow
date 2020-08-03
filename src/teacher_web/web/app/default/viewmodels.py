@@ -5,9 +5,9 @@ import io
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception, handle_log_warning
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
-from shared.models.cls_topic import TopicModel, TopicDataAccess
-from shared.models.cls_keyword import KeywordDataAccess, KeywordModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_topic import TopicModel
+from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
 
@@ -18,26 +18,26 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
         self.db = db
         # get model
-        data = SchemeOfWorkDataAccess.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
+        data = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
         self.model = data
 
 
 class TopicGetOptionsListViewModel(BaseViewModel):
     #TODO: #235 Rename to {ViewName}ViewModel
     def __init__(self, db, topic_id, lvl=2):
-        self.model = TopicDataAccess.get_options(db, topic_id=topic_id, lvl=lvl)
+        self.model = TopicModel.get_options(db, topic_id=topic_id, lvl=lvl)
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
     # TODO: #235 Depracate not a matching View
     def __init__(self, db):
-        self.model = KeywordDataAccess.get_options(db)
+        self.model = KeywordModel.get_options(db)
 
 
 class KeywordGetAllListViewModel(BaseViewModel):
     #TODO: #235 Depracate not a matching View
     def __init__(self, db, lesson_id):
-        self.model = KeywordDataAccess.get_all(db, lesson_id)
+        self.model = KeywordModel.get_all(db, lesson_id)
 
 
 class KeywordGetModelViewModel(BaseViewModel):
@@ -46,7 +46,7 @@ class KeywordGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
 
-        data = KeywordDataAccess.get_model(self.db, lesson_id, auth_user)
+        data = KeywordModel.get_model(self.db, lesson_id, auth_user)
 
         self.model = data
         
@@ -55,7 +55,7 @@ class KeywordGetModelByTermsViewModel(BaseViewModel):
 
     def __init__(self, db, key_words_list, allow_all, auth_user):
 
-        self.model = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, auth_user)
+        self.model = KeywordModel.get_by_terms(db, key_words_list, allow_all, auth_user)
         
 
 class KeywordSaveViewModel(BaseViewModel):
@@ -81,7 +81,7 @@ class KeywordSaveViewModel(BaseViewModel):
             self.model.validate()
 
             if self.model.is_valid == True:
-                data = KeywordDataAccess.save(self.db, self.model)
+                data = KeywordModel.save(self.db, self.model)
                 self.model = data
             else:
                 handle_log_warning(self.db, "saving keyword", "keywordnot valid (keyword id:{}, term:'{}', definition:'{}')".format(self.model.id, self.model.term, self.model.definition))
@@ -90,7 +90,7 @@ class KeywordSaveViewModel(BaseViewModel):
         
         return self.model
 
-
+'''
     def _find_keyword_by_id(self, db, id, auth_user):
         """ Get the model by id """
         
@@ -119,3 +119,4 @@ class KeywordSaveViewModel(BaseViewModel):
             return KeywordModel(0, term, definition)
         else:
             return get_keyword.model[0]
+'''

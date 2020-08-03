@@ -20,6 +20,10 @@ class KeyStageModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+    @staticmethod
+    def get_options(db):
+        return KeyStageDataAccess.get_options(db)
+        
 
 class KeyStageDataAccess:
 

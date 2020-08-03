@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.default.viewmodels import KeywordGetOptionsListViewModel as ViewModel
-from shared.models.cls_keyword import KeywordDataAccess as DataAccess, KeywordModel as Model
+from shared.models.cls_keyword import KeywordModel as Model
 
 #Serializer = test_context.KeywordModelSerializer
 
@@ -24,7 +24,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_options", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -33,7 +33,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             actual_result = ViewModel(db)
 
             # assert functions was called
-            DataAccess.get_options.assert_called()
+            Model.get_options.assert_called()
             self.assertEqual(0, len(actual_result.model))
             
 
@@ -43,7 +43,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = [Model(34)]
         
-        with patch.object(DataAccess, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_options", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -52,7 +52,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             actual_result = ViewModel(db)
 
             # assert functions was called
-            DataAccess.get_options.assert_called()
+            Model.get_options.assert_called()
             
             self.assertEqual(1, len(actual_result.model))
             
@@ -64,7 +64,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = [Model(34), Model(35), Model(36)]
         
-        with patch.object(DataAccess, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_options", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -73,7 +73,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             actual_result = ViewModel(db)
 
             # assert functions was called
-            DataAccess.get_options.assert_called()
+            Model.get_options.assert_called()
             
             self.assertEqual(3, len(actual_result.model))
             

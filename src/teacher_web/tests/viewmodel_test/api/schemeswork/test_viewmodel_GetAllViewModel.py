@@ -3,11 +3,11 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.learningobjectives.viewmodels import LearningObjectiveGetAllViewModel as ViewModel
-from shared.models.cls_learningobjective import LearningObjectiveModel as Model
+from api.schemesofwork.viewmodels import SchemeOfWorkGetAllViewModel as ViewModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
-class test_viewmodel_GetAllViewModel(TestCase):
+class test_viewmodel_SchemeOfWorkGetAllViewModel(TestCase):
 
     def setUp(self):        
         pass
@@ -31,7 +31,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            self.viewmodel = ViewModel(db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -52,7 +52,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            self.viewmodel = ViewModel(db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -73,7 +73,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            self.viewmodel = ViewModel(db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()

@@ -5,4 +5,4 @@ from django.db import models
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResourceModel
-        fields = ["id", "title"]
+        fields = ["id", "title","lesson_id","md_document_name", "page_note", "page_uri","publisher","type_id","type_name"]

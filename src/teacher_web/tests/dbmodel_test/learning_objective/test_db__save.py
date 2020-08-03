@@ -103,3 +103,30 @@ class test_db__save(TestCase):
                 
             self.assertEqual(23, actual_result.id)
 
+
+    def test_should_call_execCRUDSql__delete__when__published_state_is_delete__true(self):
+        # arrange
+
+        model = Model(99, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
+        
+        model.is_new = MagicMock(return_value=True)
+        model.is_valid = MagicMock(return_value=True)
+
+        LearningObjectiveDataAccess._insert_lesson_lessonobjectives = Mock()
+        
+        expected_result = ("100",23)
+
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+            # act
+
+            actual_result = save(self.fake_db, model, 99, published=2)
+
+            # assert
+
+            ExecHelper.execCRUDSql.assert_called_with(
+                self.fake_db, 
+                "DELETE FROM sow_learning_objective__has__lesson WHERE learning_objective_id = 99;"
+                , log_info=handle_log_info)
+                
+            self.assertEqual(99, actual_result.id)
+

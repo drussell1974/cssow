@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel as ViewModel
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as DataAccess, SchemeOfWorkModel as Model
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         
         data_to_return = Model(56)
         
-        with patch.object(DataAccess, "delete_unpublished", return_value=data_to_return):
+        with patch.object(Model, "delete_unpublished", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -32,4 +32,4 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             self.viewmodel = ViewModel(db, auth_user=99)
 
             # assert functions was called
-            DataAccess.delete_unpublished.assert_called()
+            Model.delete_unpublished.assert_called()

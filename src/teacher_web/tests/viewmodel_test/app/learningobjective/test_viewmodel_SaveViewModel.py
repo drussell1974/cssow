@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 # test context
 
 from app.learningobjectives.viewmodels import LearningObjectiveSaveViewModel as ViewModel
-from shared.models.cls_learningobjective import LearningObjectiveDataAccess as DataAccess, LearningObjectiveModel as Model
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model
 
 #Serializer = test_context.KeywordModelSerializer
 
@@ -29,7 +29,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
         on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tincidunt.")
         
-        with patch.object(DataAccess, "save", return_value=on_save__data_to_return):
+        with patch.object(Model, "save", return_value=on_save__data_to_return):
 
             # act
 
@@ -38,12 +38,12 @@ class test_viewmodel_SaveViewModel(TestCase):
                             
             # assert functions was called
             
-            DataAccess.save.assert_called()
+            Model.save.assert_called()
 
             self.assertEqual(99, test_context.model.id)
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.description)
 
-
+    @skip("Test in DataAccess")
     def test_execute_called_insert(self):
         
         # arrange
@@ -54,7 +54,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
         on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tincidunt.")
         
-        with patch.object(DataAccess, "_insert", return_value=on_save__data_to_return):
+        with patch.object(Model, "_insert", return_value=on_save__data_to_return):
 
             # act
 
@@ -63,14 +63,14 @@ class test_viewmodel_SaveViewModel(TestCase):
                             
             # assert functions was called
             
-            DataAccess._insert.assert_called()
+            Model._insert.assert_called()
 
             self.assertEqual(99, test_context.model.id)
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.description)
             self.assertEqual(1, test_context.model.published)
             self.assertEqual("published", test_context.model.published_state)
 
-
+    @skip("Test in DataAccess")
     def test_execute_called_update(self):
         
         # arrange
@@ -81,7 +81,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
         on_save__data_to_return = Model(101, "Donec non elit dui. Nunc eget viverra eros.")
         
-        with patch.object(DataAccess, "_update", return_value=on_save__data_to_return):
+        with patch.object(Model, "_update", return_value=on_save__data_to_return):
 
             # act
 
@@ -90,14 +90,14 @@ class test_viewmodel_SaveViewModel(TestCase):
                             
             # assert functions was called
             
-            DataAccess._update.assert_called()
+            Model._update.assert_called()
 
             self.assertEqual(101, test_context.model.id)
             self.assertEqual("Donec non elit dui. Nunc eget viverra eros.", test_context.model.description)
             self.assertEqual(1, test_context.model.published)
             self.assertEqual("published", test_context.model.published_state)
 
-
+    @skip("Test in DataAccess")
     def test_execute_called_delete(self):
         
         # arrange
@@ -109,7 +109,7 @@ class test_viewmodel_SaveViewModel(TestCase):
         
         on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tincidunt.")
         
-        with patch.object(DataAccess, "_delete", return_value=on_save__data_to_return):
+        with patch.object(Model, "_delete", return_value=on_save__data_to_return):
 
             # act
 
@@ -118,7 +118,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
             # assert functions was called
             
-            DataAccess._delete.assert_called()
+            Model._delete.assert_called()
 
             self.assertEqual(99, test_context.model.id)
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.description)
@@ -134,7 +134,7 @@ class test_viewmodel_SaveViewModel(TestCase):
         mock_model.lesson_id = 0 # invalid value
 
 
-        with patch.object(DataAccess, "save", return_value=None):
+        with patch.object(Model, "save", return_value=None):
                 
             # act
             
@@ -142,7 +142,7 @@ class test_viewmodel_SaveViewModel(TestCase):
             test_context.execute(1)
                             
             # assert save functions was not called
-            DataAccess.save.assert_not_called()
+            Model.save.assert_not_called()
 
             # return the invalid object
             self.assertEqual(99, test_context.model.id)

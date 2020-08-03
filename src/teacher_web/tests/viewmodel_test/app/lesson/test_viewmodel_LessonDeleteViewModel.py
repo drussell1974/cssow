@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 # test context
 
 from app.lessons.viewmodels import LessonDeleteViewModel as ViewModel
-from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
+from shared.models.cls_lesson import LessonModel as Model
 
 
 class test_viewmodel_LessonDeleteViewModel(TestCase):

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.resources.viewmodels import ResourceGetAllViewModel as ViewModel
-from shared.models.cls_resource import ResourceDataAccess as DataAccess, ResourceModel as Model
+from shared.models.cls_resource import ResourceDataAccess as Model, ResourceModel as Model
 
 
 class test_viewmodel_GetAllViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -34,7 +34,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.viewmodel = ViewModel(db, lesson_id=99, scheme_of_work_id=12, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             self.assertEqual(0, len(self.viewmodel.model))
 
 
@@ -44,7 +44,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = [Model(56)]
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -55,7 +55,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.viewmodel = ViewModel(db, lesson_id=92, scheme_of_work_id=12, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             self.assertEqual(1, len(self.viewmodel.model))
 
 
@@ -65,7 +65,7 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = [Model(56),Model(57),Model(58)]
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -76,5 +76,5 @@ class test_viewmodel_GetAllViewModel(TestCase):
             self.viewmodel = ViewModel(db,  lesson_id=20, scheme_of_work_id=100, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))

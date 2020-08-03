@@ -5,7 +5,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
-from app.default.viewmodels import KeywordGetModelViewModel, KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
+from app.default.viewmodels import KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
 
 
 class LessonIndexViewModel(BaseViewModel):

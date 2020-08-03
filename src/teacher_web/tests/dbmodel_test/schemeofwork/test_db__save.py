@@ -1,13 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_schemeofwork as test_context
+from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess, SchemeOfWorkModel as Model, handle_log_info
 
 # create test context
 
-save = test_context.SchemeOfWorkDataAccess.save
-handle_log_info = test_context.handle_log_info
-Model = test_context.SchemeOfWorkModel
+save = SchemeOfWorkDataAccess.save
 
 
 class test_db__save(TestCase):
@@ -91,3 +89,22 @@ class test_db__save(TestCase):
             #    log_info=handle_log_info)
 
             self.assertEqual(101, actual_result.id)
+
+
+    def test_should_call_execCRUDSql__delete_when_published_is_delete(self):
+        # arrange
+
+        model = Model(99)
+
+
+        with patch.object(ExecHelper, 'execCRUDSql', return_value=([], 101)):
+            # act
+
+            actual_result = save(self.fake_db, model, published=2)
+
+            # assert
+
+            ExecHelper.execCRUDSql.assert_called()
+
+
+            self.assertEqual(99, actual_result.id)

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.learningobjectives.viewmodels import LearningObjectiveGetModelViewModel as ViewModel
-from shared.models.cls_learningobjective import LearningObjectiveDataAccess as DataAccess, LearningObjectiveModel as Model
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model
 
 
 class test_viewmodel_GetModelViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -34,7 +34,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
             self.assertEqual(0, len(self.viewmodel.model))
 
 
@@ -44,7 +44,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         data_to_return = Model(56, "How to save the world in a day")
         
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -55,7 +55,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
 
             self.assertEqual(56, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.description)

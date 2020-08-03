@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.default.viewmodels import KeywordGetAllListViewModel as ViewModel
-from shared.models.cls_keyword import KeywordDataAccess as DataAccess, KeywordModel as Model
+from shared.models.cls_keyword import KeywordModel as Model
 
 
 class test_viewmodel_KeywordGetAllListViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -31,7 +31,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
             # act
             actual_result = ViewModel(db, lesson_id=34)
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             self.assertEqual(0, len(actual_result.model))
             
 
@@ -41,7 +41,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
         
         data_to_return = [Model(34, "")]
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -50,7 +50,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
             actual_result = ViewModel(db, lesson_id=38)
 
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             
             self.assertEqual(1, len(actual_result.model))
             
@@ -62,7 +62,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
         
         data_to_return = [Model(91, "Tic"), Model(92, "Tac"), Model(93, "Toe")]
         
-        with patch.object(DataAccess, "get_all", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
@@ -71,7 +71,7 @@ class test_viewmodel_KeywordGetAllListViewModel(TestCase):
             actual_result = ViewModel(db, lesson_id=92)
 
             # assert functions was called
-            DataAccess.get_all.assert_called()
+            Model.get_all.assert_called()
             
             self.assertEqual(3, len(actual_result.model))
             

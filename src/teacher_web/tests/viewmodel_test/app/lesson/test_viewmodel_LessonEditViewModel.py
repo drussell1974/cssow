@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
-from shared.models.cls_lesson import LessonDataAccess as DataAccess, LessonModel as Model
+from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.serializers.srl_keyword import KeywordModelSerializer
 
@@ -30,7 +30,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(DataAccess, "save", return_value=on_save__data_to_return):
+            with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                 return_keyword_model = KeywordModel(4, term="Four")
                 return_keyword_model.is_valid = True
@@ -49,7 +49,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 test_context.execute(published=1)
                                 
                 # assert functions was called
-                DataAccess.save.assert_called()
+                Model.save.assert_called()
 
                 self.assertEqual({}, test_context.model.validation_errors)            
                 self.assertEqual(92, test_context.model.id)
@@ -65,7 +65,7 @@ class test_viewmodel_EditViewModel(TestCase):
         
         
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(DataAccess, "save", return_value=None):
+            with patch.object(Model, "save", return_value=None):
                 
                 save_keyword.model = Mock(return_value=KeywordModel(12))
 
@@ -80,7 +80,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 test_context.execute(0)
                                 
                 # assert save functions was not called
-                DataAccess.save.assert_not_called()
+                Model.save.assert_not_called()
 
                 self.assertEqual(99, test_context.model.id)
                 self.assertEqual("", test_context.model.title)
@@ -103,7 +103,7 @@ class test_viewmodel_EditViewModel(TestCase):
         
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(DataAccess, "save", return_value=None):
+            with patch.object(Model, "save", return_value=None):
                 
                 save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM"))
 
@@ -113,7 +113,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 test_context.execute(0)
                 
                 # assert save function was NOT called
-                DataAccess.save.assert_not_called()
+                Model.save.assert_not_called()
                 
                 self.assertEqual(99, test_context.model.id)
                 self.assertEqual("Quisque eu venenatis sem", test_context.model.title)
@@ -135,7 +135,7 @@ class test_viewmodel_EditViewModel(TestCase):
         
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(DataAccess, "save", return_value=None):
+            with patch.object(Model, "save", return_value=None):
                 
                 save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM"))
 
@@ -145,7 +145,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     test_context.execute(0)
                     
                     # assert save function was NOT called
-                    DataAccess.save.assert_not_called()
+                    Model.save.assert_not_called()
                     
                     self.assertEqual(99, test_context.model.id)
                     self.assertEqual("Quisque eu venenatis sem", test_context.model.title)

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.default.viewmodels import KeywordGetModelViewModel as ViewModel
-from shared.models.cls_keyword import KeywordDataAccess as DataAccess, KeywordModel as Model
+from shared.models.cls_keyword import KeywordModel as Model
 
 
 class test_viewmodel_KeywordGetModelViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
         
         data_to_return = None
         
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -32,7 +32,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, 22, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
             self.assertIsNone(self.viewmodel.model)
 
 
@@ -42,7 +42,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
         
         data_to_return = Model(101, "Abstraction")
         
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -51,7 +51,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, 23, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
             self.assertEqual(101, self.viewmodel.model.id)
             self.assertEqual("Abstraction", self.viewmodel.model.term)
             

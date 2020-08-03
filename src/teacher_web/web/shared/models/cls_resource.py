@@ -23,6 +23,16 @@ class ResourceTypeModel:
 
 class ResourceModel (BaseModel):
         
+    id = 0
+    title = ""
+    lesson_id = 0
+    md_document_name = ""
+    page_note = ""
+    page_uri = ""
+    publisher = ""
+    type_id = 0
+    type_name = ""
+
     def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
         
         super().__init__( id_, title, created, created_by_id, created_by_name, published)
@@ -98,6 +108,21 @@ class ResourceModel (BaseModel):
         # trim md_document_name
         if self.md_document_name is not None:
             self.md_document_name = sql_safe(self.md_document_name)
+
+
+    @staticmethod
+    def get_model(db, resource_id, scheme_of_work_id, auth_user):
+        return ResourceDataAccess.get_model(db, resource_id, scheme_of_work_id, auth_user)
+
+
+    @staticmethod
+    def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
+        return ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id)
+
+
+    @staticmethod
+    def save(db, model, auth_user, published):
+        return ResourceDataAccess.save(db, model, auth_user, published)
 
 
 class ResourceDataAccess:

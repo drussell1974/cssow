@@ -106,6 +106,30 @@ class LearningObjectiveModel (BaseModel):
             self.group_name = sql_safe(self.group_name)
 
 
+    @staticmethod
+    def get_model(db, learning_objective_id, auth_user):
+        return LearningObjectiveDataAccess.get_model(db, learning_objective_id, auth_user)
+
+
+    @staticmethod
+    def get_all(db, lesson_id, auth_user):
+        return LearningObjectiveDataAccess.get_all(db, lesson_id, auth_user)
+
+
+    @staticmethod
+    def delete_unpublished(db, lesson_id, auth_user):
+        return LearningObjectiveDataAccess.delete_unpublished(db, lesson_id, auth_user)
+
+
+    @staticmethod
+    def publish_item(db, learning_objective_id, auth_user):
+        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, auth_user)
+
+
+    @staticmethod
+    def save(db, model, auth_user, published):
+        return LearningObjectiveDataAccess.save(db, model, auth_user, published)
+
 class LearningObjectiveDataAccess:
 
 

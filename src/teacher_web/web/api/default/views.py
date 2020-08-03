@@ -19,7 +19,7 @@ class RelatedTopicsListViewSet(APIView):
     ''' API endpoint for list of related topics '''
     def get (self, request, topic_id):
 
-        topics = TopicGetOptionsListViewModel(db, topic_id)
+        topics_view = TopicGetOptionsListViewModel(db, topic_id)
 
-        return JsonResponse({"related-topics": topics.model}, safe = False)
+        return JsonResponse({"related-topics": topics_view.model}, safe = False)
     

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.default.viewmodels import KeywordGetModelByTermsViewModel as ViewModel
-from shared.models.cls_keyword import KeywordDataAccess as DataAccess, KeywordModel as Model
+from shared.models.cls_keyword import KeywordModel as Model
 
 
 class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
@@ -21,7 +21,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
         
         # arrange
         
-        with patch.object(DataAccess, "get_by_terms", side_effect=KeyError):
+        with patch.object(Model, "get_by_terms", side_effect=KeyError):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -38,7 +38,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
         
         data_to_return = None
         
-        with patch.object(DataAccess, "get_by_terms", return_value=data_to_return):
+        with patch.object(Model, "get_by_terms", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -47,7 +47,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             result = ViewModel(db, 22, allow_all=True, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_by_terms.assert_called()
+            Model.get_by_terms.assert_called()
             self.assertIsNone(result.model)
 
 
@@ -57,7 +57,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
         
         data_to_return = Model(101)
         
-        with patch.object(DataAccess, "get_by_terms", return_value=data_to_return):
+        with patch.object(Model, "get_by_terms", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -66,7 +66,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             result = ViewModel(db, 23, allow_all=True, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_by_terms.assert_called()
+            Model.get_by_terms.assert_called()
             self.assertEqual(101, result.model.id)
 
 
@@ -74,7 +74,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
         
         # arrange
         
-        with patch.object(DataAccess, "get_by_terms", return_value=Model(101)):
+        with patch.object(Model, "get_by_terms", return_value=Model(101)):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -83,5 +83,5 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             result = ViewModel(db, "DIMM", allow_all=True, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_by_terms.assert_called()
+            Model.get_by_terms.assert_called()
             self.assertEqual(101, result.model.id)

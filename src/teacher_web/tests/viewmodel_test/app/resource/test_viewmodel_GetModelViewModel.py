@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.resources.viewmodels import ResourceGetModelViewModel as ViewModel
-from shared.models.cls_resource import ResourceDataAccess as DataAccess, ResourceModel as Model
+from shared.models.cls_resource import ResourceModel as Model
 
 
 class test_viewmodel_GetModelViewModel(TestCase):
@@ -25,13 +25,13 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             # act
             self.viewmodel = ViewModel(self.fake_db, 99, 12, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
             self.assertEqual(0, len(self.viewmodel.model))
 
 
@@ -42,7 +42,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         data_to_return = Model(34, title="How to save the world in a day")
         
 
-        with patch.object(DataAccess, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -53,7 +53,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.viewmodel = ViewModel(self.fake_db, 34, scheme_of_work_id=109, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_model.assert_called()
+            Model.get_model.assert_called()
 
             self.assertEqual(34, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.title)

@@ -4,6 +4,8 @@ omit =
    */node_modules/*
    web/manage.py
    web/web/*
+   *cls_reference*
+   *cls_lesson_plan*
 
 [coverage:report]
 fail_under = 85

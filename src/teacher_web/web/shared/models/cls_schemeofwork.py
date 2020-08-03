@@ -15,6 +15,9 @@ class SchemeOfWorkListModel(models.Model):
 
 class SchemeOfWorkModel(BaseModel):
 
+    name = ""
+    description = ""
+    
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published)
@@ -74,7 +77,7 @@ class SchemeOfWorkModel(BaseModel):
     def get_by_id(db, id, auth_user):
         return SchemeOfWorkDataAccess.get_model(db, id, auth_user)
 
-
+    
     @staticmethod
     def save(db, model, published=1):
         return SchemeOfWorkDataAccess.save(db, model, published)
@@ -88,6 +91,11 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def publish_by_id(db, id, auth_user):
         return SchemeOfWorkDataAccess.publish(db, auth_user, id)        
+
+
+    @staticmethod
+    def get_latest_schemes_of_work(db, top, auth_user):
+        return SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user)
 
 
 class SchemeOfWorkDataAccess:
@@ -251,11 +259,11 @@ class SchemeOfWorkDataAccess:
     def save(db, model, published=1):
         
         #TODO: #231: Add delete    
-        if model.is_new() == True:
-            model = SchemeOfWorkDataAccess._insert(db, model, published)
+        if try_int(published) == 2:
+            model = SchemeOfWorkDataAccess._delete(db, model)
         else:
-            if try_int(published) == 2:
-                model = SchemeOfWorkDataAccess._delete(db, model)
+            if model.is_new() == True:
+                model = SchemeOfWorkDataAccess._insert(db, model, published)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published)
 
@@ -319,9 +327,7 @@ class SchemeOfWorkDataAccess:
         str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id} and published NOT IN (1);"
         str_delete = str_delete.format(scheme_of_work_id=model.id)
         
-        rval = execHelper.execCRUDSql(db, str_delete, rval, handle_log_info)
-
-        # TODO: set published = 2 for all objects being deleted
+        rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
 
         model.published = 2        
         return model
