@@ -20,10 +20,19 @@ class KeyStageModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+
     @staticmethod
     def get_options(db):
-        return KeyStageDataAccess.get_options(db)
         
+        rows = KeyStageDataAccess.get_options(db)
+        data = []
+
+        for row in rows:
+            model = KeyStageModel(row[0], row[1])
+            data.append(model)
+
+        return data
+
 
 class KeyStageDataAccess:
 
@@ -34,11 +43,4 @@ class KeyStageDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, "SELECT id, name FROM sow_key_stage;", rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            model = KeyStageModel(row[0], row[1])
-            data.append(model)
-
-        return data
+        return rows

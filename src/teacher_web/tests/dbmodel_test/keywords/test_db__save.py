@@ -7,7 +7,7 @@ import shared.models.cls_keyword as test_context
 # create test context
 
 Model = test_context.KeywordModel
-save = test_context.KeywordDataAccess.save
+save = test_context.KeywordModel.save
 handle_log_info = test_context.handle_log_info
 
 
@@ -90,7 +90,7 @@ class test_db__save(TestCase):
 
         test_context._insert_lesson_lessonobjectives = Mock()
         
-        expected_result = ("100")
+        expected_result = ([], "100")
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
@@ -105,5 +105,5 @@ class test_db__save(TestCase):
                 , result=[]
                 , log_info=handle_log_info)
                 
-            #self.assertEqual(expected_result, actual_result.id)
+            self.assertNotEqual(0, actual_result.id)
 

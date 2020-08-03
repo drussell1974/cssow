@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.cls_schemeofwork import SchemeOfWorkModel 
-from shared.models.cls_examboard import ExamBoardDataAccess
-from shared.models.cls_keystage import KeyStageDataAccess
+from shared.models.cls_examboard import ExamBoardModel
+from shared.models.cls_keystage import KeyStageModel
 from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.models.core import validation_helper
 from datetime import datetime
@@ -79,8 +79,8 @@ def edit(request, scheme_of_work_id = 0):
             handle_log_warning(db, "scheme of work {} (id:{}) is invalid posting back to client - {}".format(model.name, model.id, model.validation_errors))
 
     # get options
-    examboard_options = ExamBoardDataAccess.get_options(db)
-    keystage_options = KeyStageDataAccess.get_options(db)
+    examboard_options = ExamBoardModel.get_options(db)
+    keystage_options = KeyStageModel.get_options(db)
 
     # view data
     data = {

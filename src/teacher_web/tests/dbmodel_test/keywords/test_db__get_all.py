@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_keyword as test_context 
 
-get_all = test_context.KeywordDataAccess.get_all
+get_all = test_context.KeywordModel.get_all
 handle_log_info = test_context.handle_log_info
 
 class test_db__get_all(TestCase):

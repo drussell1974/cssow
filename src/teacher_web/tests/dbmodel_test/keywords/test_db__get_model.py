@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_keyword as test_context 
 
-get_model = test_context.KeywordDataAccess.get_model
+get_model = test_context.KeywordModel.get_model
 handle_log_info = test_context.handle_log_info
 Model = test_context.KeywordModel
 

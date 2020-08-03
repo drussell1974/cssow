@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_keystage as testcontext 
 
-get_options = testcontext.KeyStageDataAccess.get_options
+get_options = testcontext.KeyStageModel.get_options
 handle_log_info = testcontext.handle_log_info
 
 

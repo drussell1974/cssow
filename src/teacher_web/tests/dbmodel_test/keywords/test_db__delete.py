@@ -1,10 +1,10 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_keyword import KeywordModel as Model, KeywordDataAccess, handle_log_info
+from shared.models.cls_keyword import KeywordModel as Model, handle_log_info
 
 
-delete = KeywordDataAccess.delete
+delete = Model.delete
 
 class test_db__delete(TestCase):
 
@@ -13,7 +13,7 @@ class test_db__delete(TestCase):
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
         
-
+    
     def tearDown(self):
         pass
 

@@ -81,7 +81,14 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, auth_user):
-        return KeywordDataAccess.get_model(db, id, auth_user)
+        rows = KeywordDataAccess.get_model(db, id, auth_user)
+        
+        data = KeywordModel(0, "", "")
+
+        for row in rows:
+            data = KeywordModel(row[0], row[1], row[2])
+
+        return data
 
 
     @staticmethod
@@ -90,23 +97,41 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, id, auth_user):
-        return KeywordDataAccess.get_model(db, id, auth_user)
-
-
-    @staticmethod
     def get_all(db, search_term = ""):
-        return KeywordDataAccess.get_all(db, search_term)
+        rows = KeywordDataAccess.get_all(db, search_term)
+        data = []
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+        return data
 
 
     @staticmethod
     def get_by_terms(db, key_words_list, allow_all, auth_user):
-        return KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, auth_user)
+        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, auth_user)
+
+        data = []
+
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], row[2]))
+
+        return data
 
 
     @staticmethod
     def save(db, model):
-        return KeywordDataAccess.save(db, model)
+        if model.is_new():
+            data = KeywordDataAccess._insert(db, model)
+            model.id = data[1]            
+            model.published = 2
+        else:
+            data = KeywordDataAccess._update(db, model)
+
+        return model
+
+
+    @staticmethod
+    def delete(db, id):
+        return KeywordDataAccess.delete(db, id)
 
 
 class KeywordDataAccess:
@@ -145,12 +170,7 @@ class KeywordDataAccess:
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-        data = KeywordModel(0, "", "")
-
-        for row in rows:
-            data = KeywordModel(row[0], row[1], row[2])
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -172,12 +192,7 @@ class KeywordDataAccess:
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-        data = []
-
-        for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -207,28 +222,7 @@ class KeywordDataAccess:
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-        data = []
-
-        for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2]))
-
-        return data
-
-
-    @staticmethod
-    def save(db, model):
-        """
-        Saves keyword
-        :param db: database context
-        :param model: the KeywordModel
-        """
-        
-        if model.is_new():
-            model = KeywordDataAccess._insert(db, model)
-        else:
-            model = KeywordDataAccess._update(db, model)
-            
-        return model
+        return rows
 
 
     @staticmethod
@@ -245,17 +239,13 @@ class KeywordDataAccess:
 
         rows = []
         
-        rows = execHelper.execCRUDSql(db, 
+        rows, new_id = execHelper.execCRUDSql(db, 
             "INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(model.term), definition=sql_safe(model.definition))
             , result=rows
             , log_info=handle_log_info
         )
         
-        # TODO: implement execInsert and pass model
-        if len(rows) > 0:
-            model.id = rows[1]
-
-        return model
+        return rows, new_id
 
 
     @staticmethod
@@ -292,29 +282,3 @@ class KeywordDataAccess:
         str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
         return execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
 
-    
-    @staticmethod
-    def save_keywords_only(db, key_words):
-        """
-        Saves keywords not already in the database
-        :param db: database context
-        :param key_words: list of keywords to save
-        """
-        ' get all the keywords from the database '
-
-        raise DeprecationWarning("Confirmm usage")
-
-        existing_keywords = KeywordDataAccess.get_options(db)
-
-        new_id = 0
-        ' insert the keywords not already in the database '
-        for key_word in key_words:
-            ' trim white space '
-            key_word = key_word.lstrip(' ').rstrip(' ')
-            ' check if the keyword exists and insert as necessary  '
-            if key_word in existing_keywords or len(key_word) == 0:
-                pass
-            else:
-                new_id = _insert(db, KeywordModel(0, term=key_word, definition=""))
-
-        return new_id
