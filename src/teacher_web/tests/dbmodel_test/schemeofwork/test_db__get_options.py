@@ -3,7 +3,7 @@ import shared.models.cls_schemeofwork as test_context
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-SchemeOfWorkDataAccess = test_context.SchemeOfWorkDataAccess
+Model = test_context.SchemeOfWorkModel
 
 class test_db__get_options(TestCase):
     
@@ -25,7 +25,7 @@ class test_db__get_options(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                SchemeOfWorkDataAccess.get_options(self.fake_db)
+                Model.get_options(self.fake_db)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -35,11 +35,11 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
+            rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 0 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
             self.assertEqual(0, len(rows))
 
 
@@ -50,11 +50,11 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
+            rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 0 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
             self.assertEqual(1, len(rows))
             self.assertEqual(123, rows[0].id)
             self.assertEqual("Item 1", rows[0].name)
@@ -72,11 +72,11 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkDataAccess.get_options(self.fake_db)
+            rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 0 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
             self.assertEqual(3, len(rows))
 
             self.assertEqual(1, rows[0].id)

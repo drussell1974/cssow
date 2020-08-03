@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_solotaxonomy as test_context 
 
-get_options = test_context.SoloTaxonomyDataAccess.get_options
+get_options = test_context.SoloTaxonomyModel.get_options
 handle_log_info = test_context.handle_log_info
 
 

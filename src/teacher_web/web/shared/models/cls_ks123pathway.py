@@ -24,12 +24,21 @@ class KS123PathwayModel(BaseModel):
     
     @staticmethod
     def get_options(db, year_id, topic_id):
-        return KS123PathwayDataAccess.get_options(db, year_id, topic_id)
+        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id)
+        data = []
+        for row in rows:
+            model = KS123PathwayModel(row[0], row[1])
+            data.append(model)
+        return data
 
 
     @staticmethod
-    def get_(db, lesson_id):
-        return KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
+    def get_linked_pathway_ks123(db, lesson_id):
+        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
+        data = []
+        for row in rows:
+            data.append([int(row[0]), row[1]])
+        return data
 
 
 class KS123PathwayDataAccess:
@@ -44,14 +53,7 @@ class KS123PathwayDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            model = KS123PathwayModel(row[0], row[1])
-            data.append(model)
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -71,10 +73,4 @@ class KS123PathwayDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            data.append([int(row[0]), row[1]])
-
-        return data
+        return rows

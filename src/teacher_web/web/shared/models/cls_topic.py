@@ -28,7 +28,13 @@ class TopicModel(models.Model):
 
     @staticmethod
     def get_options(db, lvl, topic_id = 0):
-        return TopicDataAccess.get_options(db, lvl, topic_id)
+        rows = TopicDataAccess.get_options(db, lvl, topic_id)
+        data = []
+        for row in rows:
+            model = TopicModel(row[0], row[1], row[2], row[3])
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
+            data.append(model.__dict__)
+        return data
 
 
 class TopicDataAccess:
@@ -41,21 +47,10 @@ class TopicDataAccess:
         str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
         str_select = str_select.format(lvl=int(lvl), topic_id=int(topic_id))
 
-        data = []
-
         try:
-
             rows = []
             rows = execHelper.execSql(db, str_select, rows, handle_log_info)
-
-            for row in rows:
-                model = TopicModel(row[0], row[1], row[2], row[3])
-        
-                # TODO: remove __dict__ . The object should be serialised to json further up the stack
-                data.append(model.__dict__)
+            return rows
 
         except Exception as e:
             raise Exception("Error getting topics", e)
-
-            
-        return data

@@ -23,7 +23,12 @@ class ContentModel(BaseModel):
     
     @staticmethod
     def get_options(db, key_stage_id):
-        return ContentDataAccess.get_options(db, key_stage_id)
+        rows = ContentDataAccess.get_options(db, key_stage_id)
+        data = []
+        for row in rows:
+            model = ContentModel(row[0], row[1])
+            data.append(model)
+        return data
 
 
 class ContentDataAccess:
@@ -35,19 +40,13 @@ class ContentDataAccess:
 
         str_select = "SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
-        data = []
-
         try:
             rows = []
             rows = execHelper.execSql(db, str_select, rows, handle_log_info)
+            last_sql = (str_select, "SUCCESS")
+            return rows
 
-            for row in rows:
-                model = ContentModel(row[0], row[1])
-                data.append(model)
         except Exception as e:
             last_sql = (str_select, "FAILED")
             raise Exception("Error getting content", e)
-
-        last_sql = (str_select, "SUCCESS")
-
-        return data
+        

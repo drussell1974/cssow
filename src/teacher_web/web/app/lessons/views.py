@@ -4,17 +4,17 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
 from shared.models.core import validation_helper
 from shared.models.core.log import handle_log_warning, handle_log_info
-
 from shared.view_model import ViewModel
-
-# TODO: REMOVE. Use view models
-from shared.models.cls_lesson import LessonDataAccess
-
 # view models
 from shared.models.cls_lesson import LessonModel
+from shared.models.cls_topic import TopicModel
+from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_ks123pathway import KS123PathwayModel
+from shared.models.cls_year import YearModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
+
 from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel
 
 from datetime import datetime
@@ -25,9 +25,9 @@ def index(request, scheme_of_work_id):
     
     lessonIndexView = LessonIndexViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
-    scheme_of_work_name = LessonModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user=request.user.id)
+    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
 
-    schemeofwork_options = LessonModel.get_schemeofwork_options(db, auth_user=request.user.id)
+    schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=request.user.id)
     
     
     data = {
@@ -46,7 +46,7 @@ def index(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
-    scheme_of_work = LessonModel.get_schemeofwork_model(db, scheme_of_work_id, request.user.id)
+    scheme_of_work = SchemeOfWorkModel.get_by_id(db, scheme_of_work_id, request.user.id)
     
     if request.method == "GET":
         ## GET request from client ##
@@ -103,10 +103,10 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
             
     # render view
     
-    topic_options = LessonModel.get_topic_options(db, lvl=1)
-    key_words_options = LessonModel.get_keyword_options(db)
-    year_options = LessonModel.get_year_options(db, auth_user=request.user.id, key_stage_id=scheme_of_work.key_stage_id)
-    ks123_pathways = LessonModel.get_ks123pathway_options(db, model.year_id, model.topic_id)
+    topic_options = TopicModel.get_options(db, lvl=1)
+    key_words_options = KeywordModel.get_options(db)
+    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id)
+    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -191,7 +191,7 @@ def initialise_keywords(request, scheme_of_work_id):
     #for lesson in lessons.model:
     #    LessonModel._upsert_key_words(db, lesson.model)
 
-    scheme_of_work_name = LessonModel.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
     schemeofwork_options = LessonModel.get_options(db, scheme_of_work_id, auth_user=request.user.id)
     
     data = {

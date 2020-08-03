@@ -28,7 +28,12 @@ class SoloTaxonomyModel(BaseModel):
 
     @staticmethod
     def get_options(db):
-        return SoloTaxonomyDataAccess.get_options(db)
+        rows = SoloTaxonomyDataAccess.get_options(db)
+        data = []
+        for row in rows:
+            model = SoloTaxonomyModel(row[0], row[1], row[2])
+            data.append(model)
+        return data
 
 
 class SoloTaxonomyDataAccess:
@@ -40,11 +45,4 @@ class SoloTaxonomyDataAccess:
         
         rows = []
         rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            model = SoloTaxonomyModel(row[0], row[1], row[2])
-            data.append(model)
-
-        return data
+        return rows

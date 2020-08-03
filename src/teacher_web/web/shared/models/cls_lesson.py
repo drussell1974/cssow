@@ -7,9 +7,9 @@ from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveDataAccess
 from .cls_resource import ResourceDataAccess, ResourceModel
 from .cls_keyword import KeywordDataAccess, KeywordModel
-from .cls_topic import TopicDataAccess, TopicModel
-from .cls_year import YearDataAccess, YearModel
-from .cls_ks123pathway import KS123PathwayDataAccess, KS123PathwayModel
+from .cls_topic import TopicModel
+from .cls_year import YearModel
+from .cls_ks123pathway import KS123PathwayModel
 
 
 class LessonModel (BaseModel):
@@ -183,41 +183,6 @@ class LessonModel (BaseModel):
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
         return LessonDataAccess.get_options(db, scheme_of_work_id, auth_user)
-
-
-    @staticmethod
-    def get_schemeofwork_model(db, scheme_of_work_id, auth_user):
-        return SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, auth_user)
-
-
-    @staticmethod
-    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
-        return SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
-
-
-    @staticmethod
-    def get_schemeofwork_options(db, auth_user):
-        return SchemeOfWorkDataAccess.get_options(db, auth_user)
-
-
-    @staticmethod
-    def get_topic_options(db, lvl=1, topic_id=0):
-        return TopicDataAccess.get_options(db, lvl, topic_id)
-
-
-    @staticmethod
-    def get_keyword_options(db):
-        return KeywordDataAccess.get_options(db)
-
-
-    @staticmethod
-    def get_year_options(db, auth_user, key_stage_id):
-        return YearDataAccess.get_options(db, key_stage_id)
-
-
-    @staticmethod
-    def get_ks123pathway_options(db, year_id, topic_id):
-        return KS123PathwayDataAccess.get_options(db, year_id, topic_id)
 
 
     @staticmethod

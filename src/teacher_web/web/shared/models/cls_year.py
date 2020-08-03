@@ -21,6 +21,16 @@ class YearModel(models.Model):
             self.name = sql_safe(self.name)
 
 
+    @staticmethod
+    def get_options(db, key_stage_id):
+        rows = YearDataAccess.get_options(db, key_stage_id)
+        data = []
+        for row in rows:
+            model = YearModel(row[0], row[1])
+            data.append(model)
+        return data
+
+
 class YearDataAccess:
 
     @staticmethod
@@ -30,11 +40,4 @@ class YearDataAccess:
         str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
         rows = []
         rows = helper.execSql(db, str_select, rows)
-
-        data = []
-
-        for row in rows:
-            model = YearModel(row[0], row[1])
-            data.append(model)
-
-        return data
+        return rows

@@ -77,6 +77,18 @@ class SchemeOfWorkModel(BaseModel):
     def get_by_id(db, id, auth_user):
         return SchemeOfWorkDataAccess.get_model(db, id, auth_user)
 
+
+    @staticmethod
+    def get_options(db, auth_user):
+        rows = SchemeOfWorkDataAccess.get_options(db, auth_user)
+        data = []
+
+        for row in rows:
+            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
+            data.append(model)
+
+        return data
+
     @staticmethod
     def get_key_stage_id_only(db, scheme_of_work_id):
         return SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id)
@@ -101,6 +113,16 @@ class SchemeOfWorkModel(BaseModel):
     def get_latest_schemes_of_work(db, top, auth_user):
         return SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user)
 
+
+    @staticmethod
+    def get_schemeofwork_name_only(db, scheme_of_work_id):
+        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
+        scheme_of_work_name = ""
+        for row in rows:
+            scheme_of_work_name = row[0]
+
+        return scheme_of_work_name
+        
 
 class SchemeOfWorkDataAccess:
     
@@ -392,14 +414,7 @@ class SchemeOfWorkDataAccess:
         str_select = str_select.format(auth_user=to_db_null(auth_user))
         rows = []
         rows = execHelper.execSql(db, str_select, rows)
-
-        data = []
-
-        for row in rows:
-            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
-            data.append(model)
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -416,10 +431,5 @@ class SchemeOfWorkDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        scheme_of_work_name = ""
-        for row in rows:
-            scheme_of_work_name = row[0]
-
-        return scheme_of_work_name
+        return rows
 

@@ -1,5 +1,5 @@
 from ._unittest import TestCase, FakeDb
-from shared.models.cls_topic import TopicDataAccess, handle_log_info
+from shared.models.cls_topic import TopicModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
@@ -25,7 +25,7 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, "execSql", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                TopicDataAccess.get_options(self.fake_db, lvl = 1)
+                TopicModel.get_options(self.fake_db, lvl = 1)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -36,7 +36,7 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 1)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 1)
             
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 1;'
@@ -53,7 +53,7 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
             
             # act
-            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 2)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 2)
             
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 2;'
@@ -73,7 +73,7 @@ class test_db_topic__get_options__level_1(TestCase):
             
             # act
             
-            rows = TopicDataAccess.get_options(self.fake_db, lvl = 2, topic_id = 3)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 3)
             
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 3;'

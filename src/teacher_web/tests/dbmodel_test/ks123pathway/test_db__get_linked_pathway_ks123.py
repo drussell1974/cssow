@@ -1,9 +1,9 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_ks123pathway import KS123PathwayDataAccess, handle_log_info
+from shared.models.cls_ks123pathway import KS123PathwayModel, handle_log_info
 
-get_linked_pathway_ks123 = KS123PathwayDataAccess.get_linked_pathway_ks123
+get_linked_pathway_ks123 = KS123PathwayModel.get_linked_pathway_ks123
 
 
 class test_db__get_linked_pathway_ks123(TestCase):

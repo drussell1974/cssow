@@ -4,7 +4,7 @@ from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
 
-get_options = test_context.ContentDataAccess.get_options
+get_options = test_context.ContentModel.get_options
 
 
 class test_db_content__get_options(TestCase):
