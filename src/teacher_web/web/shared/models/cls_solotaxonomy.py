@@ -26,6 +26,11 @@ class SoloTaxonomyModel(BaseModel):
             self.lvl = sql_safe(self.lvl)
 
 
+    @staticmethod
+    def get_options(db):
+        return SoloTaxonomyDataAccess.get_options(db)
+
+
 class SoloTaxonomyDataAccess:
 
     @staticmethod

@@ -181,6 +181,11 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
+    def get_options(db, scheme_of_work_id, auth_user):
+        return LessonDataAccess.get_options(db, scheme_of_work_id, auth_user)
+
+
+    @staticmethod
     def get_schemeofwork_model(db, scheme_of_work_id, auth_user):
         return SchemeOfWorkDataAccess.get_model(db, scheme_of_work_id, auth_user)
 

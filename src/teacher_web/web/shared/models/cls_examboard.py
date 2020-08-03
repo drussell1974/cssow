@@ -21,6 +21,11 @@ class ExamBoardModel(BaseModel):
             self.name = sql_safe(self.name)
 
 
+    @staticmethod
+    def get_options(db):
+        return ExamBoardDataAccess.get_options(db)
+
+
 class ExamBoardDataAccess:
 
     @staticmethod

@@ -20,6 +20,11 @@ class ContentModel(BaseModel):
         if self.description is not None:
             self.description = sql_safe(self.description)
 
+    
+    @staticmethod
+    def get_options(db, key_stage_id):
+        return ContentDataAccess.get_options(db, key_stage_id)
+
 
 class ContentDataAccess:
 

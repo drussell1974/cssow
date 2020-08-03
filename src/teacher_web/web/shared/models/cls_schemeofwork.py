@@ -77,7 +77,11 @@ class SchemeOfWorkModel(BaseModel):
     def get_by_id(db, id, auth_user):
         return SchemeOfWorkDataAccess.get_model(db, id, auth_user)
 
-    
+    @staticmethod
+    def get_key_stage_id_only(db, scheme_of_work_id):
+        return SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id)
+
+
     @staticmethod
     def save(db, model, published=1):
         return SchemeOfWorkDataAccess.save(db, model, published)

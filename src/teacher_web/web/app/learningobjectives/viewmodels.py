@@ -6,7 +6,7 @@ from shared.models.cls_learningobjective import LearningObjectiveModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 
 
-class LearningObjectiveGetAllViewModel(BaseViewModel):
+class LearningObjectiveIndexViewModel(BaseViewModel):
     
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.model = []

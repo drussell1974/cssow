@@ -10,18 +10,18 @@ from shared.models.cls_learningobjective import LearningObjectiveModel
 
 from .viewmodels import LearningObjectiveSaveViewModel
 from .viewmodels import LearningObjectiveGetModelViewModel
-from .viewmodels import LearningObjectiveGetAllViewModel
+from .viewmodels import LearningObjectiveIndexViewModel
 from .viewmodels import LearningObjectiveDeleteUnpublishedViewModel
 from .viewmodels import LearningObjectivePublishModelViewModel
 
 #from app.lessons.viewmodels import LessonGetOptionsViewModel
 
-# TODO: use view models
-from shared.models.cls_lesson import LessonDataAccess
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
-from shared.models.cls_solotaxonomy import SoloTaxonomyDataAccess
-from shared.models.cls_content import ContentDataAccess
-from shared.models.cls_examboard import ExamBoardDataAccess
+# TODO: use in view models
+from shared.models.cls_lesson import LessonModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_solotaxonomy import SoloTaxonomyModel
+from shared.models.cls_content import ContentModel
+from shared.models.cls_examboard import ExamBoardModel
 
 from shared.models.core import validation_helper
 
@@ -35,9 +35,10 @@ def index(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    learningobjectives_view = LearningObjectiveGetAllViewModel(db, lesson_id, request.user.id)
+    #TODO: Rename ViewModel to LearningObjectiveIndexViewModel
+    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, request.user.id)
     
-    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  
+    lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -72,14 +73,14 @@ def new(request, scheme_of_work_id, lesson_id):
         # required for creating a new object
         get_lessonobjective_view.model.lesson_id = int(lesson_id)
 
-    key_stage_id = SchemeOfWorkDataAccess.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id))
 
     get_lessonobjective_view.model.lesson_id = lesson.id
     get_lessonobjective_view.model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = SoloTaxonomyDataAccess.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db)
 
-    content_options = ContentDataAccess.get_options(db, key_stage_id)
+    content_options = ContentModel.get_options(db, key_stage_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -119,14 +120,14 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         # required for creating a new object
         model.lesson_id = int(lesson_id)
     
-    key_stage_id = SchemeOfWorkDataAccess.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id))
 
     model.lesson_id = lesson.id
     model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = SoloTaxonomyDataAccess.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db)
 
-    content_options = ContentDataAccess.get_options(db, key_stage_id)
+    content_options = ContentModel.get_options(db, key_stage_id)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
