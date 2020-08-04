@@ -134,8 +134,8 @@ class LessonModel (BaseModel):
             self.is_valid = False
 
         # Validate year_id
-        if self.year_id is None or self.year_id < 1 or self.year_id > 13:
-            self.validation_errors["year_id"] = "{} is not a valid selection".format(self.key_stage_id)
+        if self.year_id is None or self.year_id < 1 or self.year_id > 1000:
+            self.validation_errors["year_id"] = "{} is not a valid selection".format(self.year_id)
             self.is_valid = False
 
         # Validate summary

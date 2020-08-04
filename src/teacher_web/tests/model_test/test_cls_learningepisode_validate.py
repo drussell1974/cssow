@@ -576,7 +576,7 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
-        test.year_id = 13
+        test.year_id = 1000
 
         # test
         test.validate()
@@ -590,7 +590,7 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.year_id = 14  # too far out of possible range
+        test.year_id = 1001  # too far out of possible range
 
         # test
         test.validate()
