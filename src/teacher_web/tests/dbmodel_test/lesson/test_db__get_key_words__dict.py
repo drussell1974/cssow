@@ -2,10 +2,8 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-import shared.models.cls_lesson as cls_lesson 
-
-handle_log_info = cls_lesson.handle_log_info
-get_key_words = cls_lesson.LessonDataAccess.get_key_words
+from shared.models.cls_lesson import LessonModel, handle_log_info
+get_key_words = LessonModel.get_key_words
 
 class test_db__get_key_words__dict(TestCase):
     
@@ -50,8 +48,8 @@ class test_db__get_key_words__dict(TestCase):
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-
-        with patch.object(ExecHelper, 'execSql', return_value=[("87","Fetch Decode Execute")]):
+        expected_result = [("87","Fetch Decode Execute")]
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
             actual_results = get_key_words(self.fake_db, 87)
@@ -70,8 +68,8 @@ class test_db__get_key_words__dict(TestCase):
 
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
-
-        with patch.object(ExecHelper, 'execSql', return_value=[("1034","DDR"),("1045","DIMM"),("12","DRAM") ]):
+        expected_result = [("1034","DDR"),("1045","DIMM"),("12","DRAM") ]
+        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
             actual_results = get_key_words(self.fake_db, 21)

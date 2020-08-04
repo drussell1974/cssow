@@ -6,7 +6,7 @@ import shared.models.cls_learningobjective as test_context
 
 # test context
 
-get_model = test_context.LearningObjectiveDataAccess.get_model
+get_model = test_context.LearningObjectiveModel.get_model
 handle_log_info = test_context.handle_log_info
 
 

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.default.viewmodels import SchemeOfWorkGetLatestViewModel as ViewModel
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as DataAccess, SchemeOfWorkModel as Model
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
 class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
@@ -23,7 +23,7 @@ class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(DataAccess, "get_latest_schemes_of_work", return_value=data_to_return):
+        with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -34,7 +34,7 @@ class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
             self.viewmodel = ViewModel(db, top=5, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_latest_schemes_of_work.assert_called()
+            Model.get_latest_schemes_of_work.assert_called()
             self.assertEqual(0, len(self.viewmodel.model))
 
 
@@ -44,7 +44,7 @@ class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
         
         data_to_return = [Model(56)]
         
-        with patch.object(DataAccess, "get_latest_schemes_of_work", return_value=data_to_return):
+        with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -55,7 +55,7 @@ class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
             self.viewmodel = ViewModel(db, top=5, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_latest_schemes_of_work.assert_called()
+            Model.get_latest_schemes_of_work.assert_called()
             self.assertEqual(1, len(self.viewmodel.model))
 
 
@@ -65,16 +65,14 @@ class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
         
         data_to_return = [Model(56),Model(57),Model(58)]
         
-        with patch.object(DataAccess, "get_latest_schemes_of_work", return_value=data_to_return):
+        with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
-
-            self.mock_model = Mock()
 
             # act
             self.viewmodel = ViewModel(db, top=5, auth_user=99)
 
             # assert functions was called
-            DataAccess.get_latest_schemes_of_work.assert_called()
+            Model.get_latest_schemes_of_work.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))

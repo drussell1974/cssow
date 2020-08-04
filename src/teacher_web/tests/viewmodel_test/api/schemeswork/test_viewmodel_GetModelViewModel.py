@@ -20,7 +20,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
     def test_init_called_fetch__with_exception(self):
         
         # arrange        
-        with patch.object(Model, "get_by_id", side_effect=KeyError):
+        with patch.object(Model, "get_model", side_effect=KeyError):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -37,7 +37,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         
         data_to_return = None
         
-        with patch.object(Model, "get_by_id", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -46,7 +46,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, 123, auth_user=99)
 
             # assert functions was called
-            Model.get_by_id.assert_called()
+            Model.get_model.assert_called()
             self.assertIsNone(self.viewmodel.model)
 
 
@@ -56,7 +56,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         
         data_to_return = Model(67, name="Integer ac ante")
         
-        with patch.object(Model, "get_by_id", return_value=data_to_return):
+        with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -67,7 +67,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.viewmodel = ViewModel(db, 456, auth_user=99)
 
             # assert functions was called
-            Model.get_by_id.assert_called()
+            Model.get_model.assert_called()
             self.assertEqual(67, self.viewmodel.model["id"])
             self.assertEqual("Integer ac ante", self.viewmodel.model["name"])
 

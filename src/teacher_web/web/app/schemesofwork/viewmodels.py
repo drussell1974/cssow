@@ -22,7 +22,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        data = Model.get_by_id(self.db, scheme_of_work_id, auth_user)
+        data = Model.get_model(self.db, scheme_of_work_id, auth_user)
         self.model = data
 
 

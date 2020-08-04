@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 
 import shared.models.cls_learningobjective as test_context 
 
-get_all = test_context.LearningObjectiveDataAccess.get_all
+get_all = test_context.LearningObjectiveModel.get_all
 handle_log_info = test_context.handle_log_info
 
 

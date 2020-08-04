@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, handle_log_info
 
-delete_unpublished = LearningObjectiveDataAccess.delete_unpublished
+delete_unpublished = Model.delete_unpublished
 
 
 class test_db__delete_unpublished(TestCase):
@@ -25,7 +25,7 @@ class test_db__delete_unpublished(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -39,16 +39,16 @@ class test_db__delete_unpublished(TestCase):
         
         expected_result = []
 
-        LearningObjectiveDataAccess._get_lesson_learning_objective_ids = Mock(return_value=[("5654"),("332"),("4545")])
-
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
+            
+            Model.get_lesson_learning_objective_ids = Mock(return_value=[("5654"),("332"),("4545")])
 
-            actual_result = delete_unpublished(self.fake_db, 19, auth_user_id=99)
+            actual_result = delete_unpublished(self.fake_db, 19, auth_user=99)
             
             # assert
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
                 'DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = 19 AND learning_objective_id=4;'
                 , log_info=handle_log_info)
 
-            LearningObjectiveDataAccess._get_lesson_learning_objective_ids.assert_called_with(self.fake_db, 19, 99)
+            Model.get_lesson_learning_objective_ids.assert_called_with(self.fake_db, 19, 99)

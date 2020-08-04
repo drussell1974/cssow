@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
-import shared.models.cls_resource as test_context
+from shared.models.cls_resource import ResourceModel, handle_log_info
 
 # test context
 
-get_model = test_context.ResourceDataAccess.get_model
-handle_log_info = test_context.handle_log_info
+get_model = ResourceModel.get_model
 
 class test_db__get_model(TestCase):
     

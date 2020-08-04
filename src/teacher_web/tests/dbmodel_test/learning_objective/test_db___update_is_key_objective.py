@@ -3,8 +3,6 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-update_is_key_objective = LearningObjectiveDataAccess.update_is_key_objective
-
 @skip("Deprecated. Not implemented.")
 class test_db__update_is_key_objective(TestCase):
     
@@ -27,7 +25,7 @@ class test_db__update_is_key_objective(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                update_is_key_objective(self.fake_db, [])
+                LearningObjectiveModel.update_is_key_objective(self.fake_db, [])
 
 
     def test__should_call_execSql(self):
@@ -38,7 +36,7 @@ class test_db__update_is_key_objective(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=[]):
             # act
 
-            actual_results = update_is_key_objective(self.fake_db, 34, 84, [])
+            actual_results = LearningObjectiveModel.update_is_key_objective(self.fake_db, 34, 84, [])
 
             # assert
 

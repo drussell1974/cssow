@@ -1,11 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_lessonplan import LessonPlanModel as Model, LessonPlanDataAccess, handle_log_info
+from shared.models.cls_lessonplan import LessonPlanModel as Model, LessonPlanModel, handle_log_info
 
 # create test context
 
-save = LessonPlanDataAccess.save
+save = LessonPlanModel.save
 
 @skip("Deprecated. No longer used.")
 class test_db__save(TestCase):

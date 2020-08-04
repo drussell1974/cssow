@@ -1,13 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-import shared.models.cls_resource as test_context
+from shared.models.cls_resource import ResourceModel, handle_log_info
 
 # Test Context
 
-Model = test_context.ResourceModel
-delete_unpublished = test_context.ResourceDataAccess.delete_unpublished
-handle_log_info = test_context.handle_log_info
+delete_unpublished = ResourceModel.delete_unpublished
 
 
 class test_db__delete_unpublished(TestCase):
@@ -43,7 +41,7 @@ class test_db__delete_unpublished(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_result = delete_unpublished(self.fake_db, 1, auth_user_id=99)
+            actual_result = delete_unpublished(self.fake_db, 1, auth_user=99)
             
             # assert
             ExecHelper.execSql.assert_called()

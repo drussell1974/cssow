@@ -1,7 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
+from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
 
 _copy_objective_ids = LessonDataAccess._copy_objective_ids
 
@@ -23,7 +23,7 @@ class test_db___upsert_related_topic_ids(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = LessonModel(0, "")
+        model = Model(0, "")
 
         with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
             
@@ -35,7 +35,7 @@ class test_db___upsert_related_topic_ids(TestCase):
 
     def test_should_not_call_execCRUDSql__delete_only__when__no_related_topic_ids(self):
          # arrange
-        model = LessonModel(101, "")
+        model = Model(101, "")
         model.copy()
 
         expected_result = []
@@ -62,7 +62,7 @@ class test_db___upsert_related_topic_ids(TestCase):
     
     def test_should_call_execCRUDSql__reinsert__related_topic_ids(self):
          # arrange
-        model = LessonModel(10, "")
+        model = Model(10, "")
         model.related_topic_ids = ["201","202"]
         expected_result = []
 

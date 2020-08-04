@@ -1,13 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_lesson import LessonModel, handle_log_info 
 
-#from shared.models.cls_lessom import LessonDataAccess as DataAccess, handle_log_info #  get_related_topic_ids
-import shared.models.cls_lesson as cls_lesson 
-
-handle_log_info = cls_lesson.handle_log_info
-
-get_related_topic_ids = cls_lesson.LessonDataAccess.get_related_topic_ids
+get_related_topic_ids = LessonModel.get_related_topic_ids
 
 
 class test_db__get_related_topics(TestCase):

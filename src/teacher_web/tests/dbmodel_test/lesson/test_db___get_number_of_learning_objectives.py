@@ -2,11 +2,10 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-import shared.models.cls_lesson as cls_lesson 
+from shared.models.cls_lesson import LessonModel, handle_log_info
 
-handle_log_info = cls_lesson.handle_log_info
 
-_get_number_of_learning_objectives = cls_lesson.LessonDataAccess._get_number_of_learning_objectives
+get_number_of_learning_objectives = LessonModel.get_number_of_learning_objectives
 
 
 class test_db__get_number_of_learning_objectives(TestCase):
@@ -29,7 +28,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                _get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
+                get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -39,7 +38,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_results = _get_number_of_learning_objectives(self.fake_db, 67, auth_user=99)
+            actual_results = get_number_of_learning_objectives(self.fake_db, 67, auth_user=99)
 
             
             # assert
@@ -59,7 +58,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = _get_number_of_learning_objectives(self.fake_db, 87, auth_user=99)
+            actual_results = get_number_of_learning_objectives(self.fake_db, 87, auth_user=99)
 
             
             # assert
@@ -80,7 +79,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = _get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
+            actual_results = get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
 
             
             # assert

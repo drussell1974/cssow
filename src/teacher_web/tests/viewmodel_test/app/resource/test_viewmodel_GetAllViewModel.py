@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.resources.viewmodels import ResourceGetAllViewModel as ViewModel
-from shared.models.cls_resource import ResourceDataAccess as Model, ResourceModel as Model
+from shared.models.cls_resource import ResourceModel as Model
 
 
 class test_viewmodel_GetAllViewModel(TestCase):

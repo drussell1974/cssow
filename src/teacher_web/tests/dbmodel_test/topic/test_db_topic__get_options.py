@@ -1,4 +1,4 @@
-from ._unittest import TestCase, FakeDb
+from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
@@ -9,7 +9,7 @@ class test_db_topic__get_options__level_1(TestCase):
 
     def setUp(self):
         ' pass function to this fake class to mock the web2py database functions '
-        self.fake_db = FakeDb()
+        self.fake_db = Mock()
         self.fake_db.connect()
         handle_log_info = MagicMock()
 

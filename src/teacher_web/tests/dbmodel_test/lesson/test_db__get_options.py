@@ -2,11 +2,8 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_lesson import LessonDataAccess
-import shared.models.cls_lesson as cls_lesson 
-
-handle_log_info = cls_lesson.handle_log_info
-get_options = LessonDataAccess.get_options
+from shared.models.cls_lesson import LessonModel, handle_log_info
+get_options = LessonModel.get_options
 
 
 class test_db__get_options(TestCase):

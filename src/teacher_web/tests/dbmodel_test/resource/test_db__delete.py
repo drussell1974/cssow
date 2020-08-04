@@ -3,13 +3,12 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 
-import shared.models.cls_resource as test_context 
+from shared.models.cls_resource import ResourceModel as Model, handle_log_info
 
 # create test context
 
-delete = test_context.ResourceDataAccess.delete
-handle_log_info = test_context.handle_log_info
-Model = test_context.ResourceModel
+delete = Model.delete
+
 
 class test_db__delete(TestCase):
 

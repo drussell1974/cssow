@@ -67,15 +67,46 @@ class SchemeOfWorkModel(BaseModel):
         if self.exam_board_name is not None:
             self.exam_board_name = sql_safe(self.exam_board_name)
 
-
+   
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
-        return SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
+        rows = SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
+        data = []
+        for row in rows:
+            model = SchemeOfWorkModel(id_=row[0],
+                                    name=row[1],
+                                    description=row[2],
+                                    exam_board_id=row[3],
+                                    exam_board_name=row[4],
+                                    key_stage_id=row[5],
+                                    key_stage_name=row[6],
+                                    created=row[7],
+                                    created_by_id=row[8],
+                                    created_by_name=row[9],
+                                    published=row[10])
+            model.set_is_recent()
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
+            data.append(model.__dict__)
+        return data
 
 
     @staticmethod
-    def get_by_id(db, id, auth_user):
-        return SchemeOfWorkDataAccess.get_model(db, id, auth_user)
+    def get_model(db, id, auth_user):
+        rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user)
+        model = SchemeOfWorkModel(0)
+        for row in rows:
+            model = SchemeOfWorkModel(id_=row[0],
+                                    name=row[1],
+                                    description=row[2],
+                                    exam_board_id=row[3],
+                                    exam_board_name=row[4],
+                                    key_stage_id=row[5],
+                                    key_stage_name=row[6],
+                                    created=row[7],
+                                    created_by_id=row[8],
+                                    created_by_name=row[9],
+                                    published=row[10])
+        return model
 
 
     @staticmethod
@@ -89,29 +120,25 @@ class SchemeOfWorkModel(BaseModel):
 
         return data
 
-    @staticmethod
-    def get_key_stage_id_only(db, scheme_of_work_id):
-        return SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id)
-
-
-    @staticmethod
-    def save(db, model, published=1):
-        return SchemeOfWorkDataAccess.save(db, model, published)
-
-
-    @staticmethod
-    def delete_unpublished(db, auth_user):
-        return SchemeOfWorkDataAccess.delete_unpublished(db, auth_user)
-
-
-    @staticmethod
-    def publish_by_id(db, id, auth_user):
-        return SchemeOfWorkDataAccess.publish(db, auth_user, id)        
-
 
     @staticmethod
     def get_latest_schemes_of_work(db, top, auth_user):
-        return SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user)
+        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user)
+        data = []
+        for row in rows:
+            model = SchemeOfWorkModel(id_=row[0],
+                                    name=row[1],
+                                    description=row[2],
+                                    exam_board_id=row[3],
+                                    exam_board_name=row[4],
+                                    key_stage_id=row[5],
+                                    key_stage_name=row[6],
+                                    created=row[7],
+                                    created_by_id=row[8],
+                                    created_by_name=row[9],
+                                    published=row[10])
+            data.append(model)
+        return data
 
 
     @staticmethod
@@ -122,15 +149,46 @@ class SchemeOfWorkModel(BaseModel):
             scheme_of_work_name = row[0]
 
         return scheme_of_work_name
-        
+
+
+    @staticmethod
+    def get_key_stage_id_only(db, scheme_of_work_id):
+        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id)
+        key_stage_id = 0
+        for row in rows:
+            key_stage_id = row[0]
+        return key_stage_id
+
+
+    @staticmethod
+    def save(db, model, published=1):
+        if try_int(published) == 2:
+            model = SchemeOfWorkDataAccess._delete(db, model)
+        else:
+            if model.is_new() == True:
+                model = SchemeOfWorkDataAccess._insert(db, model, published)
+            else:
+                model = SchemeOfWorkDataAccess._update(db, model, published)
+
+        return model
+
+
+    @staticmethod
+    def delete_unpublished(db, auth_user):
+        rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user)
+        return len(rows)
+
+
+    @staticmethod
+    def publish_by_id(db, id, auth_user):
+        return SchemeOfWorkDataAccess.publish(db, auth_user, id)        
+
 
 class SchemeOfWorkDataAccess:
     
     @staticmethod
     def get_model(db, id_, auth_user):
         execHelper = ExecHelper()
-        
-        model = SchemeOfWorkModel(0)
 
         select_sql = "SELECT "\
                     " sow.id as id, "\
@@ -154,21 +212,7 @@ class SchemeOfWorkDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        for row in rows:
-            model = SchemeOfWorkModel(id_=row[0],
-                                    name=row[1],
-                                    description=row[2],
-                                    exam_board_id=row[3],
-                                    exam_board_name=row[4],
-                                    key_stage_id=row[5],
-                                    key_stage_name=row[6],
-                                    created=row[7],
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10])
-
-        return model
+        return rows
 
 
     @staticmethod
@@ -198,29 +242,7 @@ class SchemeOfWorkDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        data = []
-
-        for row in rows:
-
-            model = SchemeOfWorkModel(id_=row[0],
-                                    name=row[1],
-                                    description=row[2],
-                                    exam_board_id=row[3],
-                                    exam_board_name=row[4],
-                                    key_stage_id=row[5],
-                                    key_stage_name=row[6],
-                                    created=row[7],
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10])
-
-            model.set_is_recent()
-
-            # TODO: remove __dict__ . The object should be serialised to json further up the stack
-            data.append(model.__dict__)
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -258,47 +280,8 @@ class SchemeOfWorkDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        data = []
-
-        for row in rows:
-
-            model = SchemeOfWorkModel(id_=row[0],
-                                    name=row[1],
-                                    description=row[2],
-                                    exam_board_id=row[3],
-                                    exam_board_name=row[4],
-                                    key_stage_id=row[5],
-                                    key_stage_name=row[6],
-                                    created=row[7],
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10])
-            data.append(model)
-
-        return data
-
-
-    @staticmethod
-    def save(db, model, published=1):
+        return rows
         
-        if try_int(published) == 2:
-            model = SchemeOfWorkDataAccess._delete(db, model)
-        else:
-            if model.is_new() == True:
-                model = SchemeOfWorkDataAccess._insert(db, model, published)
-            else:
-                model = SchemeOfWorkDataAccess._update(db, model, published)
-
-        return model
-
-
-    @staticmethod
-    def delete(db, auth_user_id, id_):
-        """ delete scheme of work """
-        model = SchemeOfWorkModel(id_)
-        return SchemeOfWorkDataAccess._delete(db, model)
-
 
     @staticmethod
     def _update(db, model, published):
@@ -368,12 +351,7 @@ class SchemeOfWorkDataAccess:
                     " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        key_stage_id = 0
-        for row in rows:
-            key_stage_id = row[0]
-
-        return key_stage_id
+        return rows
 
 
     @staticmethod

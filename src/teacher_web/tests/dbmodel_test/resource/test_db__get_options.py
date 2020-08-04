@@ -3,11 +3,8 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 # create test context
+from shared.models.cls_resource import handle_log_info 
 
-import shared.models.cls_resource as test_context 
-
-#get_options = test_context.get_options
-handle_log_info = test_context.handle_log_info
 
 @skip("cls_resource.get_options NOT USED")
 class test_db__get_options(TestCase):

@@ -4,10 +4,10 @@ from shared.models.core.db_helper import ExecHelper
 
 # create test context
 
-import shared.models.cls_resource as test_context 
+from shared.models.cls_resource import ResourceModel, handle_log_info
 
-get_resource_type_options = test_context.ResourceDataAccess.get_resource_type_options
-handle_log_info = test_context.handle_log_info
+get_resource_type_options = ResourceModel.get_resource_type_options
+
 
 class test_db__get_resource_type_options(TestCase):
     

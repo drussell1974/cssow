@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
 
-save = LessonDataAccess.save
+save = Model.save
 
 class test_db__save(TestCase):
 
@@ -67,7 +67,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = save(self.fake_db, model, auth_user=99, published = 1)
             
             # assert
             
@@ -94,7 +94,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = save(self.fake_db, model, auth_user=99, published = 1)
             
             # assert
             
@@ -120,7 +120,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = save(self.fake_db, model, auth_user=99, published=1)
             
             # assert
             
@@ -158,7 +158,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = save(self.fake_db, model, auth_user=99, published = 1)
             
             # assert
 

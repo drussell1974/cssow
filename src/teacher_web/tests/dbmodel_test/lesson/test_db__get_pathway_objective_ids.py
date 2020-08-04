@@ -2,10 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-import shared.models.cls_lesson as cls_lesson 
+from shared.models.cls_lesson import LessonModel, handle_log_info
 
-handle_log_info = cls_lesson.handle_log_info
-get_pathway_objective_ids = cls_lesson.LessonDataAccess.get_pathway_objective_ids
+get_pathway_objective_ids = LessonModel.get_pathway_objective_ids
 
 class test_db__get_pathway_objective_ids(TestCase):
     
@@ -13,7 +12,6 @@ class test_db__get_pathway_objective_ids(TestCase):
         ' fake database context '
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
-
 
     def tearDown(self):
         self.fake_db.close()
@@ -51,7 +49,7 @@ class test_db__get_pathway_objective_ids(TestCase):
     def test__should_call_execSql_return_single_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'execSql', return_value=[("87")]):
+        with patch.object(ExecHelper, 'execSql', return_value=[("87",)]):
             # act
 
             actual_results = get_pathway_objective_ids(self.fake_db, 87)
@@ -71,7 +69,7 @@ class test_db__get_pathway_objective_ids(TestCase):
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'execSql', return_value=[("1034"),("1045"),("12") ]):
+        with patch.object(ExecHelper, 'execSql', return_value=[("1034",),("1045",),("12",) ]):
             # act
 
             actual_results = get_pathway_objective_ids(self.fake_db, 21)

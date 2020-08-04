@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel as ViewModel
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess as Model, SchemeOfWorkModel as Model
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):

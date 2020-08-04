@@ -1,11 +1,10 @@
-from ._unittest import TestCase, FakeDb
 import shared.models.cls_examboard as test_context
 from unittest.mock import Mock, MagicMock, patch
-from unittest import skip
+from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 
-get_options = test_context.ExamBoardDataAccess.get_options
+get_options = test_context.ExamBoardModel.get_options
 
 
 class test_db_exam_board__get_options(TestCase):

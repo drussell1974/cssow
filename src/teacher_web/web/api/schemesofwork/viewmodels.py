@@ -19,7 +19,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        model = SchemeOfWorkModel.get_by_id(self.db, scheme_of_work_id, auth_user)
+        model = SchemeOfWorkModel.get_model(self.db, scheme_of_work_id, auth_user)
 
         if model is not None:
 

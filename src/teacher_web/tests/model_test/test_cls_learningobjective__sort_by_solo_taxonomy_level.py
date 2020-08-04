@@ -1,7 +1,6 @@
 from unittest import TestCase, skip
-from shared.models.cls_learningobjective import LearningObjectiveModel, LearningObjectiveDataAccess
+from shared.models.cls_learningobjective import LearningObjectiveModel
 
-sort_by_solo_taxonomy_level = LearningObjectiveDataAccess.sort_by_solo_taxonomy_level
 
 @skip("confirm usage")
 class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
@@ -18,7 +17,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         unsorted_list = []
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertEqual([], result)
@@ -31,7 +30,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 1)
@@ -45,7 +44,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 2)
@@ -60,7 +59,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 2)
@@ -76,7 +75,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 3)
@@ -93,7 +92,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 2)
@@ -110,7 +109,7 @@ class test__cls_learningobjective__sort_by_solo_taxonomy_level(TestCase):
         ]
 
         # test
-        result = sort_by_solo_taxonomy_level(unsorted_list)
+        result = LearningObjectiveModel.sort_by_solo_taxonomy_level(unsorted_list)
 
         # assert
         self.assertTrue(result[0].id == 2)

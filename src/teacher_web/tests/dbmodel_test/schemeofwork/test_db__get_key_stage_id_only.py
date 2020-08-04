@@ -2,9 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-get_key_stage_id_only = SchemeOfWorkDataAccess.get_key_stage_id_only
+get_key_stage_id_only = SchemeOfWorkModel.get_key_stage_id_only
 
 
 class test_db__get_key_stage_id_only(TestCase):

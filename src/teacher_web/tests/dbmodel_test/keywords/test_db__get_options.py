@@ -1,7 +1,6 @@
-from ._unittest import TestCase, FakeDb
-from shared.models.cls_keyword import KeywordDataAccess
+from shared.models.cls_keyword import KeywordModel
 from unittest.mock import Mock, MagicMock, patch
-from unittest import skip
+from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
 
 
@@ -11,7 +10,7 @@ class test_db_keyword__get_options(TestCase):
         ' fake database context '
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
-        KeywordDataAccess.handle_log_info = MagicMock()
+        KeywordModel.handle_log_info = MagicMock()
 
     def tearDown(self):
         self.fake_db.close()
@@ -25,7 +24,7 @@ class test_db_keyword__get_options(TestCase):
             
             # act and assert
             with self.assertRaises(Exception):
-                KeywordDataAccess.get_options(self.fake_db)
+                KeywordModel.get_options(self.fake_db)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -35,7 +34,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = KeywordDataAccess.get_options(self.fake_db)
+            rows = KeywordModel.get_options(self.fake_db)
             
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
@@ -49,7 +48,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = KeywordDataAccess.get_options(self.fake_db)
+            rows = KeywordModel.get_options(self.fake_db)
             
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
@@ -67,7 +66,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = KeywordDataAccess.get_options(self.fake_db)
+            rows = KeywordModel.get_options(self.fake_db)
             # assert
             ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;', [])
             self.assertEqual(3, len(rows))

@@ -2,12 +2,13 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_lesson import LessonDataAccess as test_context, KeywordModel, handle_log_info
-from shared.models.cls_learningobjective import LearningObjectiveDataAccess
-from shared.models.cls_resource import ResourceDataAccess
+from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.cls_learningobjective import LearningObjectiveModel
+from shared.models.cls_resource import ResourceModel
+from shared.models.cls_keyword import KeywordModel
 # test context
 
-get_model = test_context.get_model
+get_model = LessonModel.get_model
 #handle_log_info = shared.models.cls_lesson.handle_log_info
 
 
@@ -19,19 +20,25 @@ class test_db__get_model(TestCase):
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
 
-        test_context.get_all_keywords = Mock(return_value=[
+        LessonModel.get_all_keywords = Mock(return_value=[
             KeywordModel(32, 'Central Processing Unit (CPU)', ''),
             KeywordModel(17, 'Control Unit (CU)', ''),
             KeywordModel(7, 'Registers', '')
         ])
 
-        LearningObjectiveDataAccess.get_all = Mock(return_value=[1,2,3])
-        ResourceDataAccess.get_all = Mock(return_value=[])
-        test_context.get_pathway_objective_ids = Mock(return_value=[])
-        test_context.get_ks123_pathway_objective_ids = Mock(return_value=[])
+
+        LearningObjectiveModel.get_all = MagicMock(return_value=[1,2,3])
+        ResourceModel.get_all = MagicMock(return_value=[])
+        #LessonModel.get_pathway_objective_ids = MagicMock(return_value=[])
+        LessonModel.get_ks123_pathway_objective_ids = MagicMock(return_value=[])
 
 
     def tearDown(self):
+        
+        LearningObjectiveModel.get_all.reset_mock()
+        ResourceModel.get_all.reset_mock()
+        LessonModel.get_ks123_pathway_objective_ids.reset_mock()
+
         self.fake_db.close()
 
 
@@ -62,6 +69,10 @@ class test_db__get_model(TestCase):
                 , [])
 
 
+            LearningObjectiveModel.get_all.assert_not_called()
+            ResourceModel.get_all.assert_not_called()
+            LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
+
             self.assertEqual(99, actual_results.id)
             self.assertEqual("", actual_results.title),
             self.assertEqual(0, actual_results.topic_id),
@@ -81,7 +92,6 @@ class test_db__get_model(TestCase):
             1,"test_user",0,{32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'},4,"learning_objectives",23,343
         )]
         
-
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
@@ -93,8 +103,13 @@ class test_db__get_model(TestCase):
                 "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_lesson as le INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id INNER JOIN sow_topic as top ON top.id = le.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN auth_user as user ON user.id = sow.created_by WHERE le.id = 321 AND (le.published = 1 OR le.created_by = 99);"
                 , [])
             
-            test_context.get_all_keywords.assert_called_with(self.fake_db, lesson_id=321)
+            LessonModel.get_all_keywords.assert_called_with(self.fake_db, lesson_id=321)
+
             self.assertEqual(3, len(actual_results.key_words))
+            
+            LearningObjectiveModel.get_all.assert_called()
+            ResourceModel.get_all.assert_called()
+            LessonModel.get_ks123_pathway_objective_ids.assert_called()
 
             self.assertEqual(321, actual_results.id)
             self.assertEqual("Understanding numbering systems", actual_results.title),
@@ -106,13 +121,6 @@ class test_db__get_model(TestCase):
 
             self.assertNotIsInstance(actual_results, dict, "remove __dict__ from actual_results")
 
-            #self.assertEqual("", actual_results) #test_context.get_all_objectives = Mock(return_value=[1,2,3])
-            #test_context.get_all_objectives.assert_called()
-            #self.assertEqual("", actual_results) #test_context.get_all_resources = Mock(return_value=[])
-            #test_context.get_all_resources.assert_called()
-            #self.assertEqual("", actual_results) #test_context.get_pathway_objective_ids = Mock(return_value=[])
-            #test_context.get_pathway_objective_ids.assert_called()
-            #self.assertEqual("", actual_results) #test_context.get_ks123_pathway_objective_ids = Mock(return_value=[])
 
 
 

@@ -4,7 +4,7 @@ from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty
 from .core.log import handle_log_info, handle_log_error
 from .cls_schemeofwork import SchemeOfWorkDataAccess
-from .cls_learningobjective import LearningObjectiveDataAccess
+from .cls_learningobjective import LearningObjectiveModel
 from .cls_resource import ResourceDataAccess, ResourceModel
 from .cls_keyword import KeywordDataAccess, KeywordModel
 from .cls_topic import TopicModel
@@ -182,22 +182,151 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
-        return LessonDataAccess.get_options(db, scheme_of_work_id, auth_user)
+        rows = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user)
+        data = []
+        for row in rows:
+            model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
+            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id)
+            data.append(model)
+        return data
 
 
     @staticmethod
-    def get_model(db, lesson_id, auth_user, resource_type_id):
-        return LessonDataAccess.get_model(db, lesson_id, auth_user, resource_type_id)
+    def get_model(db, lesson_id, auth_user, resource_type_id=0):
+        rows = LessonDataAccess.get_model(db, lesson_id, auth_user, resource_type_id)
+        model = LessonModel(lesson_id, "")
+        for row in rows:
+            model = LessonModel(
+                id_=row[0],
+                title = row[1],
+                order_of_delivery_id=row[2],
+                scheme_of_work_id=row[3],
+                scheme_of_work_name=row[4],
+                topic_id=row[5],
+                topic_name=row[6],
+                parent_topic_id=row[7],
+                parent_topic_name=row[8],
+                key_stage_id=row[9],
+                year_id=row[10],
+                summary = row[11],
+                created=row[12],
+                created_by_id=row[13],
+                created_by_name=row[14])
+            model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
+            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, auth_user)
+            model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
+            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id)
+        return model
 
 
     @staticmethod
     def get_all(db, scheme_of_work_id, auth_user):
-        return LessonDataAccess.get_all(db, scheme_of_work_id, auth_user)
+        rows = LessonDataAccess.get_all(db, scheme_of_work_id, auth_user)
+        data = []
+        for row in rows:
+            model = LessonModel(
+                id_=row[0],
+                title = row[1],
+                order_of_delivery_id=row[2],
+                scheme_of_work_id=row[3],
+                scheme_of_work_name=row[4],
+                topic_id=row[5],
+                topic_name=row[6],
+                parent_topic_id=row[7],
+                parent_topic_name=row[8],
+                key_stage_id=row[9],
+                year_id=row[10],
+                year_name=row[11],
+                summary=row[12],
+                created=row[13],
+                created_by_id=row[14],
+                created_by_name=row[15],
+                published = row[16]
+            )
+            
+            ' get the key words from the learning objectives '
+            model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
+            ' get the number of learning objectives ' 
+            model.number_of_learning_objective = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
+            ' get learning objectives for this lesson '
+            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, auth_user)
+            ' get number of resources for this lesson '
+            model.number_of_resource = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            ' get related topics '
+            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id)
+            ' get ks123 pathways '
+            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id)
+            
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
+            data.append(model.__dict__)
+        return data
+
+
+    @staticmethod
+    def get_all_keywords(db, lesson_id):
+        rows = LessonDataAccess.get_all_keywords(db, lesson_id)
+        data = []
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+        return data
+
+
+    @staticmethod
+    def get_ks123_pathway_objective_ids(db, lesson_id):
+        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id)
+        data = []
+        for row in rows:
+            data.append(try_int(row[0]))
+        return data
+
+
+    @staticmethod
+    def get_key_words(db, lesson_id):
+        rows = LessonDataAccess.get_key_words(db, lesson_id)
+        to_dict = {}
+        for id, name in rows:
+            to_dict[id] = name
+        return to_dict
+
+
+    @staticmethod
+    def get_related_topic_ids(db, lesson_id, parent_topic_id):
+        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id)
+        serializable_list = []
+        for row in rows:
+            serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
+        return serializable_list
+
+
+    @staticmethod
+    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
+        rows = LessonDataAccess.get_number_of_learning_objectives(db, learning_epsiode_id, auth_user)
+        return try_int(rows)
+
+    
+    @staticmethod
+    def get_pathway_objective_ids(db, lesson_id):
+        rows = LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
+        data = []
+        for row in rows:
+            data.append(int(row[0]))
+        return data
 
 
     @staticmethod
     def save(db, model, auth_user, published):
-        return LessonDataAccess.save(db, model, auth_user, published)
+        """ Save Lesson """
+        try:     
+            if model.is_new() == True:
+                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user)
+            elif published == 2:
+                model = LessonDataAccess._delete(db, auth_user, model)
+            else:
+                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user)
+            return model
+        except:
+            handle_log_error(db, "error saving lesson")
+            raise
 
 
     @staticmethod
@@ -222,8 +351,6 @@ class LessonDataAccess:
     @staticmethod
     def get_model(db, id_, auth_user, resource_type_id = 0):
         execHelper = ExecHelper()
-
-        model = LessonModel(id_, "")
 
         select_sql = "SELECT "\
                     " le.id as id,"\
@@ -252,31 +379,7 @@ class LessonDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
-
-        for row in rows:
-            model = LessonModel(
-                id_=row[0],
-                title = row[1],
-                order_of_delivery_id=row[2],
-                scheme_of_work_id=row[3],
-                scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                summary = row[11],
-                created=row[12],
-                created_by_id=row[13],
-                created_by_name=row[14])
-
-            model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
-            model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
-            model.resources = ResourceDataAccess.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
-            model.pathway_ks123_ids = LessonDataAccess.get_ks123_pathway_objective_ids(db, model.id)
-            
-        return model
+        return rows
 
 
     @staticmethod
@@ -315,47 +418,7 @@ class LessonDataAccess:
         rows = []
 
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            model = LessonModel(
-                id_=row[0],
-                title = row[1],
-                order_of_delivery_id=row[2],
-                scheme_of_work_id=row[3],
-                scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                year_name=row[11],
-                summary=row[12],
-                created=row[13],
-                created_by_id=row[14],
-                created_by_name=row[15],
-                published = row[16]
-            )
-            
-            ' get the key words from the learning objectives '
-            model.key_words = LessonDataAccess.get_all_keywords(db, lesson_id = model.id)
-            ' get the number of learning objectives ' 
-            model.number_of_learning_objective = LessonDataAccess._get_number_of_learning_objectives(db, model.id, auth_user)
-            ' get learning objectives for this lesson '
-            model.learning_objectives = LearningObjectiveDataAccess.get_all(db, model.id, auth_user)
-            ' get number of resources for this lesson '
-            model.number_of_resource = ResourceDataAccess.get_number_of_resources(db, model.id, auth_user)
-            ' get related topics '
-            model.related_topic_ids = LessonDataAccess.get_related_topic_ids(db, model.id, model.topic_id)
-            ' get ks123 pathways '
-            model.pathway_ks123_ids = LessonDataAccess.get_ks123_pathway_objective_ids(db, model.id)
-            
-            # TODO: remove __dict__ . The object should be serialised to json further up the stack
-            data.append(model.__dict__)
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -366,23 +429,15 @@ class LessonDataAccess:
         :lesson_id: unique identifier for the lesson
         :return: list of terms and defintion
         """
-        
         execHelper = ExecHelper()
 
         select_sql =    "SELECT kw.id as id, name as term, definition as definition " \
                         "FROM sow_lesson__has__key_words lkw " \
                         "INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id " \
                         "WHERE lkw.lesson_id = {} AND published = 1;".format(lesson_id)
-
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -397,21 +452,13 @@ class LessonDataAccess:
 
         execHelper = ExecHelper()
         
-
         str_select = " SELECT kw.id as id, kw.name as name" \
                     " FROM sow_key_word as kw"\
                     " INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id" \
                     " WHERE lesson_id = {lesson_id};".format(lesson_id=lesson_id)
-        
-        to_dict = {}
-
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        for id, name in rows:
-            to_dict[id] = name
-        
-        return to_dict
+        return rows
 
 
     @staticmethod
@@ -419,7 +466,7 @@ class LessonDataAccess:
         
         raise DeprecationWarning("Not referenced. Confirm usage")
 
-        return LearningObjectiveDataAccess.get_all(db, lesson_id=id, auth_user=auth_user)
+        return LearningObjectiveModel.get_all(db, lesson_id=id, auth_user=auth_user)
     
     
     @staticmethod
@@ -442,13 +489,7 @@ class LessonDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            data.append(int(row))
-
-        return data
+        return rows
 
     
     @staticmethod
@@ -460,28 +501,20 @@ class LessonDataAccess:
         :return: serialized ks123 pathway ids
         """
         execHelper = ExecHelper()
-        
 
         str_select = " SELECT" \
                     " ks123_pathway_id"\
                     " FROM sow_lesson__has__ks123_pathway" \
                     " WHERE lesson_id = {lesson_id};"
-
         str_select = str_select.format(lesson_id=lesson_id)
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        data = []
-
-        for row in rows:
-            data.append(try_int(row[0]))
-
-        return data
+        return rows
 
     
     @staticmethod
-    def _get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
+    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
         """
         get the number of learning objective for the lessons
         :param db: database context
@@ -535,13 +568,7 @@ class LessonDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, handle_log_info)
-
-        serializable_list = []
-
-        for row in rows:
-            serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
-
-        return serializable_list
+        return rows
 
 
     @staticmethod
@@ -566,34 +593,8 @@ class LessonDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows)
-
-        data = []
-
-        for row in rows:
-            model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
-            ' get related topics '
-            model.related_topic_ids = LessonDataAccess.get_related_topic_ids(db, model.id, model.topic_id)
-
-            data.append(model)
-
-        return data
-
-
-    @staticmethod
-    def save(db, model, auth_user, published=1):
-        """ Save Lesson """
-        try:     
-            if model.is_new() == True:
-                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user)
-            elif published == 2:
-                model = LessonDataAccess._delete(db, auth_user, model)
-            else:
-                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user)
-
-            return model
-        except:
-            handle_log_error(db, "error saving lesson")
-            raise
+        
+        return rows
 
 
     @staticmethod

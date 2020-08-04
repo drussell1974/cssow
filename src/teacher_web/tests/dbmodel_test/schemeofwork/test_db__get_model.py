@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 
 class test_db__get_model(TestCase):
@@ -24,7 +24,7 @@ class test_db__get_model(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                SchemeOfWorkDataAccess.get_model(self.fake_db, 4)
+                SchemeOfWorkModel.get_model(self.fake_db, 4)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -34,7 +34,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            model = SchemeOfWorkDataAccess.get_model(self.fake_db, 99, auth_user=1)
+            model = SchemeOfWorkModel.get_model(self.fake_db, 99, auth_user=1)
             
             # assert
 
@@ -53,7 +53,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            model = SchemeOfWorkDataAccess.get_model(self.fake_db, 6, auth_user=1)
+            model = SchemeOfWorkModel.get_model(self.fake_db, 6, auth_user=1)
             
             # assert
 

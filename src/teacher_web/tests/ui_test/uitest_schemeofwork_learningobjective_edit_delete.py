@@ -33,7 +33,7 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         ' description '
 
         elem = self.test_context.find_element_by_id("ctl-description")
-        elem.send_keys("test_page__should_redirect_to_index_if_valid")
+        elem.send_keys("uitest_schemeofwork_learningobjective_edit_delete")
 
         ' ctl-content_id SELECT VALID '
 
@@ -81,8 +81,9 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
 
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        
         elem.click()
+        
+        self.wait()
 
         ' After opening edit Open Modal '
 

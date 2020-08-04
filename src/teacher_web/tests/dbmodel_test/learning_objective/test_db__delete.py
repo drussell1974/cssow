@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 import shared.models.cls_learningobjective as test_context
 
 Model = test_context.LearningObjectiveModel
-delete = test_context.LearningObjectiveDataAccess.delete
+delete = test_context.LearningObjectiveModel.delete
 handle_log_info = test_context.handle_log_info
 
 class test_db__delete(TestCase):

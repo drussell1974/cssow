@@ -1,11 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess, SchemeOfWorkModel as Model, handle_log_info
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, handle_log_info
 
 # create test context
 
-save = SchemeOfWorkDataAccess.save
+save = Model.save
 
 
 class test_db__save(TestCase):

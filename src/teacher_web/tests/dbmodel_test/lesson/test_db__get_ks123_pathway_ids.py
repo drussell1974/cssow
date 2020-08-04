@@ -2,10 +2,10 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_lesson import LessonDataAccess as DataAccess, handle_log_info 
+from shared.models.cls_lesson import LessonModel, handle_log_info 
 
 #handle_log_info = cls_lesson.handle_log_info
-get_ks123_pathway_objective_ids = DataAccess.get_ks123_pathway_objective_ids
+get_ks123_pathway_objective_ids = LessonModel.get_ks123_pathway_objective_ids
 
 
 class test_db__get_ks123_pathway_ids(TestCase):

@@ -4,7 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-save = LearningObjectiveDataAccess.save
+save = Model.save
 
 
 class test_db__save(TestCase):
@@ -31,7 +31,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                save(self.fake_db, model, 99),
+                save(self.fake_db, model, 99, published=1),
 
 
     def test_should_call_execCRUDSql__update_with_exception(self):
@@ -46,7 +46,7 @@ class test_db__save(TestCase):
             with self.assertRaises(KeyError):
                 # act 
                 
-                save(self.fake_db, model, 99)
+                save(self.fake_db, model, 99, published=1)
 
 
     def test_should_call_execCRUDSql__update_with__is_new__false(self):
@@ -63,7 +63,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, 99)
+            actual_result = save(self.fake_db, model, 99, published=1)
             
             # assert
             
@@ -91,7 +91,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, 99)
+            actual_result = save(self.fake_db, model, 99, published=1)
 
             # assert
 

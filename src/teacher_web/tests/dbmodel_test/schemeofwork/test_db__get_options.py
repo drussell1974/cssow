@@ -1,9 +1,9 @@
 from unittest import TestCase
-import shared.models.cls_schemeofwork as test_context
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-Model = test_context.SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, handle_log_info
+
 
 class test_db__get_options(TestCase):
     
@@ -11,7 +11,7 @@ class test_db__get_options(TestCase):
         ' fake database context '
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
-        test_context.handle_log_info = MagicMock()
+        handle_log_info = MagicMock()
 
     def tearDown(self):
         self.fake_db.close()

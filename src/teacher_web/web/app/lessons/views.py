@@ -46,7 +46,7 @@ def index(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
-    scheme_of_work = SchemeOfWorkModel.get_by_id(db, scheme_of_work_id, request.user.id)
+    scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, request.user.id)
     
     if request.method == "GET":
         ## GET request from client ##

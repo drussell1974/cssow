@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
 
-from shared.models.cls_schemeofwork import SchemeOfWorkDataAccess
 from shared.view_model import ViewModel
 from .viewmodels import SchemeOfWorkGetLatestViewModel
 

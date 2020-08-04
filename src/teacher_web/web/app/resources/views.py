@@ -9,8 +9,8 @@ from django.urls import reverse
 from shared.view_model import ViewModel
 
 # TODO: use view models
-from shared.models.cls_resource import ResourceModel, ResourceDataAccess, MARKDOWN_TYPE_ID
-from shared.models.cls_lesson import LessonDataAccess
+from shared.models.cls_resource import ResourceModel, MARKDOWN_TYPE_ID
+from shared.models.cls_lesson import LessonModel
 
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
@@ -26,14 +26,13 @@ from shared.filehandler import handle_uploaded_markdown
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
-    
     getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, request.user.id)
     resources = getall_resources_view.model
 
     get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
     lesson = get_lesson_view.model
 
-    lesson_options = LessonDataAccess.get_options(db, scheme_of_work_id, request.user.id)  
+    lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -61,7 +60,7 @@ def new(request, scheme_of_work_id, lesson_id):
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
     lesson = get_lesson_view.model
 
-    get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -94,7 +93,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
     lesson = get_lesson_view.model
 
-    get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -174,7 +173,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
         lesson = get_lesson_view.model
             
-        get_resource_type_options = ResourceDataAccess.get_resource_type_options(db, request.user.id)
+        get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
         data = {
             "scheme_of_work_id": scheme_of_work_id,
@@ -196,7 +195,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    ResourceDataAccess.delete(db, resource_id, request.user.id)
+    ResourceModel.delete(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -206,7 +205,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    ResourceDataAccess.delete_unpublished(db, lesson_id, request.user.id)
+    ResourceModel.delete_unpublished(db, lesson_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 

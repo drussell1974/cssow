@@ -2,9 +2,9 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
-from shared.models.cls_reference import ReferenceModel as Model, ReferenceDataAccess, handle_log_info
+from shared.models.cls_reference import ReferenceModel as Model, handle_log_info
 
-save = ReferenceDataAccess.save
+save = Model.save
 
 @skip("Deprecated. No longer used.")
 class test_db__save(TestCase):

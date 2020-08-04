@@ -112,17 +112,97 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_model(db, resource_id, scheme_of_work_id, auth_user):
-        return ResourceDataAccess.get_model(db, resource_id, scheme_of_work_id, auth_user)
+        rows = ResourceDataAccess.get_model(db, resource_id, scheme_of_work_id, auth_user)
+        data = None
+        for row in rows:
+            model = ResourceModel(
+                id_=row[0], 
+                title=row[1], 
+                publisher=row[2], 
+                type_id=row[3],
+                type_name=row[4],
+                type_icon=row[5],
+                md_document_name=to_empty(row[6]),
+                page_note=row[7], 
+                page_uri=row[8], 
+                lesson_id=row[9],
+                created = row[10],
+                created_by_id = row[11],
+                created_by_name = row[12], 
+                published = row[13], 
+                scheme_of_work_id=scheme_of_work_id)
+            data = model
+        return data
 
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
-        return ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id)
+        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id)
+        data = []
+        for row in rows:
+            model = ResourceModel(
+                id_=row[0], 
+                title=row[1], 
+                publisher=row[2], 
+                type_id=row[3],
+                type_name=row[4],
+                type_icon=row[5],
+                md_document_name=row[6], 
+                page_note=row[7], 
+                page_uri=row[8], 
+                lesson_id=row[9],
+                created = row[10],
+                created_by_id = row[11],
+                created_by_name = row[12],
+                published = row[13], 
+                scheme_of_work_id=scheme_of_work_id)
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
+            data.append(model.__dict__)
+        return data
 
 
     @staticmethod
-    def save(db, model, auth_user, published):
-        return ResourceDataAccess.save(db, model, auth_user, published)
+    def get_number_of_resources(db, lesson_id, auth_user):
+        rows = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user)
+        return len(rows)
+
+
+    @staticmethod
+    def get_resource_type_options(db, auth_user):
+        rows = ResourceDataAccess.get_resource_type_options(db, auth_user)
+        #TODO: Return object
+        return rows
+
+
+    @staticmethod
+    def save(db, model, auth_user, published = 1):
+        '''
+        Upsert the reference
+        :param db: database context
+        :param model: the ReferenceModel
+        :return: the updated ReferenceModel
+        '''
+        
+        if published == 2:
+            ResourceDataAccess._delete(db, model.id, auth_user)
+            model.published = 2
+        else:
+            if model.is_new() == True:
+                model = ResourceDataAccess._insert(db, model, auth_user)
+            else:
+                model = ResourceDataAccess._update(db, model, auth_user)
+
+        return model
+
+
+    @staticmethod
+    def delete(db, resource_id, auth_user):
+        return ResourceDataAccess.delete(db, resource_id, auth_user)
+
+
+    @staticmethod
+    def delete_unpublished(db, lesson_id, auth_user):
+        return ResourceDataAccess.delete_unpublished(db, lesson_id, auth_user)
 
 
 class ResourceDataAccess:
@@ -157,31 +237,7 @@ class ResourceDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        data = None
-        
-        for row in rows:
-            model = ResourceModel(
-                id_=row[0], 
-                title=row[1], 
-                publisher=row[2], 
-                type_id=row[3],
-                type_name=row[4],
-                type_icon=row[5],
-                md_document_name=to_empty(row[6]),
-                page_note=row[7], 
-                page_uri=row[8], 
-                lesson_id=row[9],
-                created = row[10],
-                created_by_id = row[11],
-                created_by_name = row[12], 
-                published = row[13], 
-                scheme_of_work_id=scheme_of_work_id)
-
-            data = model
-            
-
-        return data
+        return rows
 
 
     @staticmethod
@@ -214,52 +270,7 @@ class ResourceDataAccess:
 
         rows = []
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-        data = []
-        
-        for row in rows:
-            model = ResourceModel(
-                id_=row[0], 
-                title=row[1], 
-                publisher=row[2], 
-                type_id=row[3],
-                type_name=row[4],
-                type_icon=row[5],
-                md_document_name=row[6], 
-                page_note=row[7], 
-                page_uri=row[8], 
-                lesson_id=row[9],
-                created = row[10],
-                created_by_id = row[11],
-                created_by_name = row[12],
-                published = row[13], 
-                scheme_of_work_id=scheme_of_work_id)
-
-            # TODO: remove __dict__ . The object should be serialised to json further up the stack
-            data.append(model.__dict__)
-
-        return data
-
-
-    @staticmethod
-    def save(db, model, auth_user, published=1):
-        '''
-        Upsert the reference
-        :param db: database context
-        :param model: the ReferenceModel
-        :return: the updated ReferenceModel
-        '''
-        
-        if published == 2:
-            ResourceDataAccess._delete(db, model.id, auth_user)
-            model.published = 2
-        else:
-            if model.is_new() == True:
-                model = ResourceDataAccess._insert(db, model, auth_user)
-            else:
-                model = ResourceDataAccess._update(db, model, auth_user)
-
-        return model
+        return rows
 
 
     @staticmethod
@@ -345,7 +356,6 @@ class ResourceDataAccess:
         return rval
 
 
-
     @staticmethod
     def get_resource_type_options(db, auth_user):
         
@@ -392,7 +402,7 @@ class ResourceDataAccess:
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-        return len(rows)
+        return rows
 
 
     @staticmethod
