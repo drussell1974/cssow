@@ -90,7 +90,7 @@ class KeywordSaveViewModel(BaseViewModel):
         
         return self.model
 
-'''
+
     def _find_keyword_by_id(self, db, id, auth_user):
         """ Get the model by id """
         
@@ -119,4 +119,3 @@ class KeywordSaveViewModel(BaseViewModel):
             return KeywordModel(0, term, definition)
         else:
             return get_keyword.model[0]
-'''
