@@ -5,6 +5,7 @@ omit =
    web/manage.py
    web/web/*
    web/**/views.py
+   web/**/apps.py
    *cls_reference*
    *cls_lessonplan*
 
