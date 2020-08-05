@@ -73,6 +73,13 @@ h4, h5, h6 {
 .navbar-nav .nav-link:not(:nth-last-of-type(1)):after {
     text-decoration: solid;
 }
+@media (max-width: 576px) {
+    .form-group .btn {
+        width: 100%;
+        display: block;
+        margin-top: 10px;
+    }
+}
 
 /*.pagination div:after {
     content: ' | ';
