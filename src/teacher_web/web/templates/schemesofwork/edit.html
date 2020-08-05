@@ -46,7 +46,7 @@
         <div class="form-group controls">
             <label>{{_("Exam board")}}</label>
             <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
-                <option value="">- {{_("Select an option")}} {{_("(Optional)")}} -</option>
+                <option value="">- {{_("Select an option")}}</option>
                 {% for opt in content.data.examboard_options %}
                     {% if opt.id == content.data.scheme_of_work.exam_board_id %}
                         <option value="{{opt.id}}" selected>{{opt.name}}</option>

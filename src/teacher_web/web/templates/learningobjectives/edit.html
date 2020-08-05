@@ -55,7 +55,7 @@
     <div class="control-group">
         <div class="form-group controls">
         <label>{{_("Curriculum content")}}</label>
-        <select class="form-control" name="content_id" id="ctl-content_id" required>
+        <select class="form-control" name="content_id" id="ctl-content_id">
             <option value="">- {{_("Select an option")}} -</option>
             {% for opt in content.data.content_options %}
             <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>

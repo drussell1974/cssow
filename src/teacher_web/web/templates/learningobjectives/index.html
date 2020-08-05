@@ -95,9 +95,14 @@
 </nav>
 <!--// block contentheading END-->
 
-<h2 class="group-heading">{{_("Learning objectives")}} <span class="float-right"><a class="btn btn-warning" id="btn-new" href="{% url 'learningobjective.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("add")}}</a>
-</span></h2>
-
+<!-- Pager Header -->      
+{% if request.user.is_authenticated %}
+<span class="float-right">
+  <a class="btn btn-warning" id="btn-new" href="{% url 'learningobjective.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("add")}}</a>
+</span>
+{% endif %}
+<h2 class="group-heading">{{_("Learning objectives")}}</h2>
+<!-- Pager Header END -->
 
 {% if content.data.learning_objectives|length == 0 %}
 <div class="alert alert-info" role="alert">

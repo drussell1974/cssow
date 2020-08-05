@@ -43,7 +43,9 @@
   </ul>
 </div>
 {% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('New')}}</a>
+  <span class="float-right">
+    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
+  </span>
 {% endif %}
   <!-- Pager Header END -->
 <!-- Scheme of works -->

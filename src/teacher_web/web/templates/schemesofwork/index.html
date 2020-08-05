@@ -2,10 +2,12 @@
 
 
 {% block maincontent %}
-  
+
       <!-- Pager Header -->      
       {% if request.user.is_authenticated %}
-          <a class="navbar-brand btn btn-warning float-right" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('New')}}</a>
+      <span class="float-right">
+          <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('add')}}</a>
+      </span>
       {% endif %}
       <!-- Pager Header END -->
 

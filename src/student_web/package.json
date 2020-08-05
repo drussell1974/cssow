@@ -25,7 +25,9 @@
     "build": "env-cmd -f ../../dotenv/.env webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
     "test": "jest --coverage",
     "start:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && webpack-dev-server --mode development",
-    "start": "webpack --mode production && serve build -l 8001"
+    "start:local": "webpack --mode production && serve build -l 3001",
+    "start:stage": "webpack --mode production && serve build -l 8001",
+    "start": "webpack --mode production && serve build -l"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",

@@ -43,7 +43,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         elem = self.test_context.find_element_by_class_name('group-heading')
 
         # assert
-        self.assertEqual("Learning objectives\nADD", elem.text)
+        self.assertEqual("Learning objectives", elem.text)
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
