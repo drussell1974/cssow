@@ -49,35 +49,22 @@
   <div class="alert alert-info" role="alert">
       <span class="small">{{_('There is no curriculum content for this scheme of work.')}}</span>
   {% if request.user.is_authenticated %}
-      <br><a href="{% url 'content.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
+      <br><a href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
   {% endif %}
   </div>
 {% endif %}
 
-{% for row in content.data.curriculum_content %}
-  
-<div class="post-preview {{ row.published_state }}">
-  <a name="{{ row.id}}"></a>
-  
-  <h4 class="small">{{ row.topic_name }}</h4>
-  <a class="edit" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
-    <h2 class="post-title">
-      {{ row.letter_prefix }} - {{ row.description }}
-    </h2>
-  </a>
-  <p class="post-meta">{{_("Created by")}}
-    <a href="#">{{ row.created_by_name }}</a>
-    {% if row.created %}
-      on {{ row.created }}
-    {% endif %} 
-    </p>
+<div class="card">
+  <ul class="list-group list-group-flush">
+    {% for row in content.data.curriculum_content %}
+    <li class="list-group-item post-preview {{ row.published_state }}">
+      <a class="edit" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
+        <span class="post-title">{{ row.letter_prefix }} - {{ row.description }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
 </div>
-<hr>
-
-
-
-
-{% endfor %}
 <!-- Scheme of works END -->
 <hr />
 
