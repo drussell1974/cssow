@@ -53,8 +53,7 @@ class Log:
         execHelper = ExecHelper()
         
         str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
-        return
-
+        
         execHelper.execCRUDSql(self.db, str_insert)
 
 

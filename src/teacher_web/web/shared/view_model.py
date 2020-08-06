@@ -2,6 +2,7 @@ class ViewModel:
     active_model__id = 0
     active_model__display_name = ""
     active_model__validation_errors = {}
+    active_model__published_state = "unknown-state"
 
     def __init__(self, page_prefix, main_heading, sub_heading, data = None, active_model = None, alert_message = None):
         """ Create View Model """
@@ -11,6 +12,7 @@ class ViewModel:
             self.active_model__id = active_model.id
             self.active_model__display_name = active_model.display_name
             self.active_model__validation_errors = active_model.validation_errors
+            self.active_model__published_state = active_model.published_state
         
         self.content = {
             "page_title": "Dave Russell - Teach Computer Science", # TODO: "SoW Planner - {}".format(page_prefix),
@@ -21,7 +23,8 @@ class ViewModel:
                 "validation_errors": self.active_model__validation_errors,
                 "active_model": {
                     "id": self.active_model__id,
-                    "display_name": self.active_model__display_name
+                    "display_name": self.active_model__display_name,
+                    "published_state": self.active_model__published_state
                 },
             },
             "auth": {

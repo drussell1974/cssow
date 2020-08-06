@@ -39,7 +39,7 @@ class test_db_content__get_options(TestCase):
             rows = get_options(self.fake_db, key_stage_id=1)
 
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 1;'
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 1;'
             , []
             , test_context.handle_log_info)
             
@@ -48,7 +48,7 @@ class test_db_content__get_options(TestCase):
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-        expected_result = [(17, "Mauris augue est, malesuada eget libero nec.")]
+        expected_result = [(17, "Mauris augue est, malesuada eget libero nec.", "A")]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -56,7 +56,7 @@ class test_db_content__get_options(TestCase):
             rows = get_options(self.fake_db, key_stage_id=2)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 2;'
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 2;'
             , []
             , test_context.handle_log_info)
             
@@ -68,9 +68,9 @@ class test_db_content__get_options(TestCase):
     def test__should_call_execSql_return_multiple_items(self):
         # arrange
         expected_result = [
-            (29,"Sed turpis augue, tristique sed elit ac."),
-            (645,"Ut porta arcu a commodo viverra. Sed."),
-            (107,"Nulla sit amet aliquet enim, quis laoreet."),
+            (29,"Sed turpis augue, tristique sed elit ac.", "A"),
+            (645,"Ut porta arcu a commodo viverra. Sed.", "B"),
+            (107,"Nulla sit amet aliquet enim, quis laoreet.", "C"),
         ]
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -78,7 +78,7 @@ class test_db_content__get_options(TestCase):
             rows = get_options(self.fake_db, key_stage_id=3)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description FROM sow_content as cnt WHERE key_stage_id = 3;'
+            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 3;'
             , []
             , test_context.handle_log_info)
             

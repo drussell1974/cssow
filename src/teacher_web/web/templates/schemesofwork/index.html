@@ -32,8 +32,12 @@
         </a>
         <div class="card-body">
           <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark">
-              {{_("Lessons")}} <span class="badge badge-light"></span>
-            </a>
+            {{_("Lessons")}} <span class="badge badge-light"></span>
+          </a>
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark">
+            {{_("Curriculum/Course content")}} <span class="badge badge-light"></span>
+          </a>
+        
         </div>
 
           <p class="post-meta">{{_("Created by")}}

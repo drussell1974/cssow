@@ -33,6 +33,14 @@ x=$(($x+$?))
 ## end test
 
 ## start test
+echo yarn.test-ui--batch.sh: running... lessonuitest_schemeofwork_content_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+## start test
 echo yarn.test-ui--batch.sh: running... lessonuitest_schemeofwork_lesson_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 

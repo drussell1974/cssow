@@ -15,6 +15,7 @@ TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 class UITestCase(TestCase):
     root_uri = os.environ["TEST_URI"]
     test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
+    test_content_id = os.environ["TEST_CONTENT_ID"]
     test_lesson_id = os.environ["TEST_LESSON_ID"] 
     test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
     test_reference = os.environ["TEST_RESOURCE_ID"]
@@ -92,3 +93,31 @@ class UITestCase(TestCase):
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             print('try_login handled - already logged in (probably) - {}'.format(e.args))
             pass
+
+
+    def delete_unpublished_item(self, uri):
+
+        #delete
+
+        ' Open edit '
+        #231: find the unpublished learning objective in the index
+
+        elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
+
+        # Ensure element is visible
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        elem.click()
+        
+        self.wait()
+
+        ' After opening edit Open Modal '
+
+        #231: click the delete button
+        elem = self.test_context.find_element_by_id("deleteButton")
+        elem.click()
+
+        ' Delete Item from Modal '        
+        
+        #231: then click the continue button
+        elem = self.test_context.find_element_by_id("deleteModalContinueButton")
+        elem.click()

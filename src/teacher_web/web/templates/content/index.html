@@ -1,0 +1,84 @@
+{% extends 'default/__layout.twocolumn.html' %}
+{% block breadcrumb %}
+<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+  <div class="container">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+            {{_("Schemes of Work")}}
+          </a>
+        </li>
+      </ul>
+  </div>
+</nav>
+{% endblock %}
+
+
+{% block sidecontent %}
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("scheme of work")}} <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+      <ul class="navbar-nav flex-column fillspace">
+      {% for opt in content.data.schemeofwork_options %}
+          <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
+              <a class="nav-link" href="{% url 'lesson.index' opt.id %}">
+                {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
+              </a>
+          </li>
+      {% endfor %}
+      </ul>
+      <hr>
+  </div>
+</nav>
+{% endblock %}
+
+
+{% block maincontent %}
+<!-- Pager Header  -->
+{% if request.user.is_authenticated %}
+  <span class="float-right">
+    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
+  </span>
+{% endif %}
+  <!-- Pager Header END -->
+<!-- Scheme of works -->
+
+{% if content.data.curriculum_content|length == 0 %}
+  <div class="alert alert-info" role="alert">
+      <span class="small">{{_('There is no curriculum content for this scheme of work.')}}</span>
+  {% if request.user.is_authenticated %}
+      <br><a href="{% url 'content.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
+  {% endif %}
+  </div>
+{% endif %}
+
+{% for row in content.data.curriculum_content %}
+  
+<div class="post-preview {{ row.published_state }}">
+  <a name="{{ row.id}}"></a>
+  
+  <h4 class="small">{{ row.topic_name }}</h4>
+  <a class="edit" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
+    <h2 class="post-title">
+      {{ row.letter_prefix }} - {{ row.description }}
+    </h2>
+  </a>
+  <p class="post-meta">{{_("Created by")}}
+    <a href="#">{{ row.created_by_name }}</a>
+    {% if row.created %}
+      on {{ row.created }}
+    {% endif %} 
+    </p>
+</div>
+<hr>
+
+
+
+
+{% endfor %}
+<!-- Scheme of works END -->
+<hr />
+
+{% endblock %}

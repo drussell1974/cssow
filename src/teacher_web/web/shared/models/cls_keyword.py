@@ -227,13 +227,7 @@ class KeywordDataAccess:
 
     @staticmethod
     def _insert(db, model):
-        """
-        Inserts key word and definition
-        :param db: database context
-        :param key_word: key term
-        :param definition: key definition
-        :return:
-        """
+        """ Inserts key word and definition """
 
         execHelper = ExecHelper()
 
@@ -250,13 +244,7 @@ class KeywordDataAccess:
 
     @staticmethod
     def _update(db, model):
-        """
-        Inserts key word and definition
-        :param db: database context
-        :param key_word: key term
-        :param definition: key definition
-        :return:
-        """
+        """ Inserts key word and definition """
         
         execHelper = ExecHelper()
         
@@ -269,16 +257,10 @@ class KeywordDataAccess:
 
     @staticmethod
     def delete(db, id):
-        """
-        Delete the keyword by term
-        :param db: database context
-        :param id: identify of the key term
-        :return:
-        """
+        """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
-
         str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
-        return execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
-
+        rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
+        return rval

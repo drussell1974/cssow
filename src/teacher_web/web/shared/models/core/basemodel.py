@@ -27,11 +27,16 @@ class BaseModel(models.Model):
         self.published = published
         self.set_published_state()
 
-    #def from_dict(self, srl):
-    #    self.id = srl["id"]
-    #    self.term = srl["term"]
-    #    self.definition = srl["definition"]   
-        
+
+    def from_dict(self, dict_obj):
+        raise NotImplementedError("from_dict not implemented")        
+
+
+    def on__from_post(self, dict_obj):
+        if type(dict_obj) is not dict:
+            raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
+
+
     """
     State members
     """
@@ -56,7 +61,6 @@ class BaseModel(models.Model):
     """
     Friendly names
     """
-
 
     def get_ui_created(self, dt):
         return datetime.strftime(dt, "%d %B %Y")
@@ -174,6 +178,34 @@ class BaseModel(models.Model):
         warnings.warn(msg, DeprecationWarning)
 
 
+    @staticmethod
+    def upsert(db, model, auth_user, published, DataAccess):
+        """ Determine update, insert or delete 
+
+            :param db: the database
+
+            :param model: object instance
+
+            :param auth_user : the authorised user id
+
+            :param published: model state
+
+            :param DataAccess: the data access model with _insert, _update and _delete functions
+        
+            :return: the instance of the model being inserted/updated/deleted
+        """
+        model.published = int(published)
+        if model.published == 2:
+            DataAccess._delete(db, model, auth_user)
+            model.published = 2
+        else:
+            if model.is_new() == True:
+                rows, new_id = DataAccess._insert(db, model, auth_user)
+                model.id = new_id
+            else:
+                DataAccess._update(db, model, auth_user)
+        return model
+
 """
 formatting members
 """
@@ -186,4 +218,48 @@ def try_int(val, return_value=None):
         val = return_value
     return val
 
+from shared.models.core.db_helper import ExecHelper
+from shared.models.core.log import handle_log_info
 
+class BaseDataAccess:
+
+    @staticmethod
+    def _insert(db, insert_sql_statement, rows = []):
+        """ Insert into the database
+
+            :param db: database
+            
+            :param insert_sql_statement: the INSERT INTO sql statement
+            
+            :param rows: previous returned rows
+            
+            :return: updated_rows, last_inserted_id the updated rows and the last inserted id
+        """
+
+        execHelper = ExecHelper()
+
+        updated_rows = []
+    
+        rows, last_inserted_id = execHelper.execCRUDSql(db, insert_sql_statement, rows, handle_log_info)
+        
+        return updated_rows, last_inserted_id
+
+
+    @staticmethod
+    def _update(db, update_sql_statement):
+
+        execHelper = ExecHelper()
+
+        result = execHelper.execCRUDSql(db, update_sql_statement, handle_log_info)
+        
+        return result # updated rows
+
+
+    @staticmethod
+    def _delete(db, delete_sql_statement):
+        
+        execHelper = ExecHelper()
+
+        result = execHelper.execCRUDSql(db, delete_sql_statement, handle_log_info)
+
+        return result # delete rows

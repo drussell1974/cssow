@@ -27,20 +27,21 @@ class ExecHelper:
             #cursor.close()
             db.close()
 
-    def execCRUDSql(self, db, sql, result=[], log_info=None):
+    def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
         ''' run the sql statement without results '''
-
+        
         last_insert_id = 0
         if db != None:
 
             if log_info != None:
-                log_info(db, "executing:{}".format(sql))
+                log_info(db, "executing:{}".format(sql_statement))
 
-            cur = self._execSql(db, sql)
+            cur = self._execSql(db, sql_statement)
             for tup in cur:
                 result.append(tup)
-            
+
             cur_li = self._execSql(db, "SELECT LAST_INSERT_ID();")
+        
             last_insert_id = int(cur_li[0][0])
 
 
