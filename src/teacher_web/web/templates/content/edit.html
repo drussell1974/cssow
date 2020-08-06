@@ -48,8 +48,8 @@
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Description")}}</label>
-        <input type="text" name="description" class="form-control" placeholder="{{_('enter a description')}}" id="ctl-description" required
-               maxlength="500" value='{{content.data.model.description}}'>
+        <textarea type="text" name="description" class="form-control" placeholder="{{_('enter a description')}}" id="ctl-description" required
+               maxlength="500" rows="4">{{content.data.model.description}}</textarea>
         <div class="help-block text-danger invalid-feedback"></div>
       </div>
         <hr>
