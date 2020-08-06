@@ -59,7 +59,7 @@
     {% for row in content.data.curriculum_content %}
     <li class="list-group-item post-preview {{ row.published_state }}">
       <a class="edit" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
-        <span class="post-title">{{ row.letter_prefix }} - {{ row.description }}</span>
+        <span class="post-title post-title--long-text">{{ row.letter_prefix }} - {{ row.description }}</span>
       </a>
     </li>
     {% endfor %}

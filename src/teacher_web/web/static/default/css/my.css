@@ -19,6 +19,10 @@
     text-decoration: line-through;
 }
 
+.post-title--long-text {
+    font-size: 22px !important;
+}
+
 input:invalid {
     color:#dc3545 !important;
 }
@@ -73,6 +77,7 @@ h4, h5, h6 {
 .navbar-nav .nav-link:not(:nth-last-of-type(1)):after {
     text-decoration: solid;
 }
+
 @media (max-width: 576px) {
     .form-group .btn {
         width: 100%;
