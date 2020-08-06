@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.db_helper import sql_safe, execSql
+from shared.models.core.db_helper import ExecHelper, sql_safe
+from shared.models.core.basemodel import BaseModel
 
 
 class YearModel(models.Model):
-    def __init__(this, id_, name):
-        this.id = id_
-        this.name = name
+    def __init__(self, id_, name):
+        self.id = id_
+        self.name = name
 
 
     def _clean_up(self):
@@ -19,19 +20,24 @@ class YearModel(models.Model):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
-def get_options(db, key_stage_id):
 
-    str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
-    rows = []
-    execSql(db, str_select, rows)
+    @staticmethod
+    def get_options(db, key_stage_id):
+        rows = YearDataAccess.get_options(db, key_stage_id)
+        data = []
+        for row in rows:
+            model = YearModel(row[0], row[1])
+            data.append(model)
+        return data
 
-    data = []
 
-    for row in rows:
-        model = YearModel(row[0], row[1])
-        data.append(model)
+class YearDataAccess:
 
-    return data
+    @staticmethod
+    def get_options(db, key_stage_id):
+        helper = ExecHelper()
+
+        str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
+        rows = []
+        rows = helper.execSql(db, str_select, rows)
+        return rows

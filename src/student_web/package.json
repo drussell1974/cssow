@@ -2,6 +2,9 @@
   "name": "student-web",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "https://github.com/drussell1974/cssow",
+  "author": "drussell1974 <dave@jazzthecat.co.uk>",
+  "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "clean-dir": "^1.0.3",
@@ -16,13 +19,15 @@
     "react-router-dom": "^5.1.2"
   },
   "scripts": {
-    "test": "jest",
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
-    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start:stage",
+    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start",
     "build": "env-cmd -f ../../dotenv/.env webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
-    "start:dev": "webpack --mode development && webpack-dev-server --mode development",
-    "start:stage": "webpack --mode production && serve build -l 8001"
+    "test": "jest --coverage",
+    "start:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && webpack-dev-server --mode development",
+    "start:local": "webpack --mode production && serve build -l 3001",
+    "start:stage": "webpack --mode production && serve build -l 8001",
+    "start": "webpack --mode production && serve build -l"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",

@@ -3,25 +3,54 @@ from datetime import datetime
 import json
 import re
 from django.db import models
+import warnings
 
 class BaseModel(models.Model):
     id = 0
+    display_name = ""
     created = ""
     created_by_id = 0
     created_by_name = ""
     is_valid = False
+    # TODO: return dictionary with double quotes for json parsing
     validation_errors = {}
-  
-    def __init__(self, id_, created, created_by_id, created_by_name, published):
-        self.id = int(id_)
+    error_message = ""
+    published = 0
+
+
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published):
+        self.id = try_int(id_)
+        self.display_name = display_name
         self.created = created
-        self.created_by_id = created_by_id
+        self.created_by_id = try_int(created_by_id)
         self.created_by_name = created_by_name
-        self.published = True if published == 1 else 0
+        self.published = published
+        self.set_published_state()
+
+
+    def from_dict(self, dict_obj):
+        raise NotImplementedError("from_dict not implemented")        
+
+
+    def on__from_post(self, dict_obj):
+        if type(dict_obj) is not dict:
+            raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
+
 
     """
     State members
     """
+
+    def set_published_state(self):
+        if self.published == 0:
+            self.published_state = "unpublished"
+        elif self.published == 1:
+            self.published_state = "published"
+        elif self.published == 2:
+            self.published_state = "deleting"
+        else:
+            self.published_state = "unknown"    
+            
 
     def is_new(self):
         if self.id == 0:
@@ -33,9 +62,8 @@ class BaseModel(models.Model):
     Friendly names
     """
 
-
-    def get_ui_created(self):
-        return datetime.strftime(self.created, "%d %B %Y")
+    def get_ui_created(self, dt):
+        return datetime.strftime(dt, "%d %B %Y")
 
 
     def set_is_recent(self):
@@ -61,28 +89,31 @@ class BaseModel(models.Model):
         self.validation_errors.clear()
 
 
-    def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value):
+    def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value, match_regular_expression=(None,None)):
         if value_to_validate is None or len(value_to_validate) < min_value:
             self.validation_errors[name_of_property] = "required"
             self.is_valid = False
         elif len(value_to_validate) > max_value:
             self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
             self.is_valid = False
+        
 
-
-    def _validate_optional_string(self, name_of_property, value_to_validate, max_value):
+    def _validate_optional_string(self, name_of_property, value_to_validate, max_value, match_regular_expression=(None,None)):
         if value_to_validate is not None:
             if len(value_to_validate) > max_value:
-                self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(
-                    len(value_to_validate), max_value)
+                self.validation_errors[name_of_property] = "is {} characters (cannot exceed {} characters)".format(len(value_to_validate), max_value)
                 self.is_valid = False
 
 
     def _validate_optional_list(self, name_of_property, list_to_validate, sep, max_items):
         if list_to_validate is not None:
-            if len(list_to_validate.split(sep)) > max_items:
-                self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(
-                    len(list_to_validate.split(sep)), max_items)
+            test = list_to_validate
+            
+            if sep is not None:
+                test = list_to_validate.split(sep)
+            
+            if len(test) > max_items:
+                self.validation_errors[name_of_property] = "has {} items (number of items cannot exceed {})".format(len(test), max_items)
                 self.is_valid = False
 
 
@@ -110,6 +141,26 @@ class BaseModel(models.Model):
                     self.is_valid = False
 
 
+    def _validate_children(self, name_of_property, parent, children_to_validate):
+        if parent.is_valid and children_to_validate is not None:
+            all_errors = ""
+            for value in children_to_validate:
+                value.validate()
+                if value.is_valid == False:
+                    all_errors = all_errors + "|{}(id:{}):{}|".format(name_of_property, value.id, value.validation_errors)
+                    self.is_valid = False
+            # add errors to property only if there are errors
+            if len(all_errors) > 0:
+                self.validation_errors[name_of_property] = all_errors
+
+
+    def _validate_regular_expression(self, name_of_property, value_to_validate, pattern_to_match, friendly_message):
+        if value_to_validate is not None and len(value_to_validate) > 0:
+            if re.fullmatch(pattern_to_match, value_to_validate) is None:
+                self.validation_errors[name_of_property] = "{} is not valid. {}".format(value_to_validate, friendly_message)
+                self.is_valid = False
+
+
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
@@ -122,15 +173,93 @@ class BaseModel(models.Model):
         self._validate_optional_string(name_of_property, value_to_validate, max_value)
 
 
+    @staticmethod
+    def depreciation_notice(msg="Deprecated"):
+        warnings.warn(msg, DeprecationWarning)
+
+
+    @staticmethod
+    def upsert(db, model, auth_user, published, DataAccess):
+        """ Determine update, insert or delete 
+
+            :param db: the database
+
+            :param model: object instance
+
+            :param auth_user : the authorised user id
+
+            :param published: model state
+
+            :param DataAccess: the data access model with _insert, _update and _delete functions
+        
+            :return: the instance of the model being inserted/updated/deleted
+        """
+        model.published = int(published)
+        if model.published == 2:
+            DataAccess._delete(db, model, auth_user)
+            model.published = 2
+        else:
+            if model.is_new() == True:
+                rows, new_id = DataAccess._insert(db, model, auth_user)
+                model.id = new_id
+            else:
+                DataAccess._update(db, model, auth_user)
+        return model
+
 """
 formatting members
 """
 
-def try_int(val):
+def try_int(val, return_value=None):
     """ convert value to int or None """
     try:
         val = int(val)
     except:
-        val = None
+        val = return_value
     return val
 
+from shared.models.core.db_helper import ExecHelper
+from shared.models.core.log import handle_log_info
+
+class BaseDataAccess:
+
+    @staticmethod
+    def _insert(db, insert_sql_statement, rows = []):
+        """ Insert into the database
+
+            :param db: database
+            
+            :param insert_sql_statement: the INSERT INTO sql statement
+            
+            :param rows: previous returned rows
+            
+            :return: updated_rows, last_inserted_id the updated rows and the last inserted id
+        """
+
+        execHelper = ExecHelper()
+
+        updated_rows = []
+    
+        rows, last_inserted_id = execHelper.execCRUDSql(db, insert_sql_statement, rows, handle_log_info)
+        
+        return updated_rows, last_inserted_id
+
+
+    @staticmethod
+    def _update(db, update_sql_statement):
+
+        execHelper = ExecHelper()
+
+        result = execHelper.execCRUDSql(db, update_sql_statement, handle_log_info)
+        
+        return result # updated rows
+
+
+    @staticmethod
+    def _delete(db, delete_sql_statement):
+        
+        execHelper = ExecHelper()
+
+        result = execHelper.execCRUDSql(db, delete_sql_statement, handle_log_info)
+
+        return result # delete rows

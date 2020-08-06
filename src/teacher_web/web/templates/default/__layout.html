@@ -36,18 +36,18 @@
           {% if request.user.is_authenticated %}
               <a class="navbar-brand" href="{% url 'default' %}" id="btn-profile">{{request.user}}</a>
                 {% if 'change_password' not in auth.settings.actions_disabled %}
-                    <a class="navbar-brand" href="{% url 'default' %}">
-                        Change password
+                    <a class="navbar-brand" href="{% url 'password_change' %}" id="btn-password_change">
+                        {{_("Change password")}}
                     </a>
                 {% endif %}
-              <a class="navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+              <a class="navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">{{_("Logout")}}</a>
             {% else %}
-                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">{{_("Login")}}</a>
               {% if 'register' not in auth.settings.actions_disabled %}
-                <a class="navbar-brand" href="{% url 'default' %}">Sign up</a>
+                <a class="navbar-brand" href="{% url 'default' %}">{{_("Sign up")}}</a>
               {% endif %}
               {% if 'retrieve_password' not in auth.settings.actions_disabled %}
-                <a class="navbar-brand" href="{% url 'default' %}">Lost password</a>
+                <a class="navbar-brand" href="{% url 'default' %}">{{_("Lost password")}}</a>
               {% endif %}
           {% endif %}
 
@@ -114,8 +114,12 @@
         </div>
       </div>
       <!-- Breadcrumb START -->
-      {% block breadcrumb %}
-      {% endblock %}
+      <div class="row">
+        <div class="col-lg-12 col-md-14 breadcrumb-custom">
+          {% block breadcrumb %}
+          {% endblock %}
+        </div>
+      </div>
       <!-- Breadcrumb END -->
       <!-- Main Content START --> 
       <div class="row">
@@ -159,12 +163,17 @@
     <!-- The javascript =============================== -->
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <!-- Custom scripts for this template -->
     <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
 
+  <!-- Keep modal above page_js -->
   {% block page_js %}{% endblock %}
     {% if ga %}
     <!-- Analytics ==================================== -->
@@ -175,5 +184,8 @@
       });
     </script>
   {% endif %}
+
+  {% block modal %}{% endblock %}
+
   </body>
 </html>

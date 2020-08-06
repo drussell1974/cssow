@@ -1,4 +1,4 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from datetime import datetime
 from shared.models.cls_learningobjective import LearningObjectiveModel
 

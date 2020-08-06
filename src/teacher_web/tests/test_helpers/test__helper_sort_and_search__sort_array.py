@@ -1,9 +1,6 @@
 from unittest import TestCase
 
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
-from helper_sort_and_search import sort_array
+from shared.models.core.helper_sort_and_search import sort_array
 
 class test__helper_string__merge_stringlist(TestCase):
 

@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import sql_safe
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+from datetime import datetime
+from .core.db_helper import to_db_null, to_empty
+
 
 class LessonPlanModel (BaseModel):
 
     def __init__(self, id_, lesson_id, title, description, order_of_delivery_id = 0, duration = 0, task_icon = ""):
+        
+        raise DeprecationWarning("check usage")
+
         self.id = int(id_)
         self.lesson_id = lesson_id
         self.title = title
@@ -55,191 +62,205 @@ class LessonPlanModel (BaseModel):
             self.task_icon = sql_safe(self.task_icon)
 
 
-"""
-DAL
-"""
-from datetime import datetime
-from .core.db_helper import to_db_null, to_empty
+class LessonPlanDataAccess:
 
-def get_all(db, lesson_id, auth_user):
-    """
-    Get all the lesson plan for this lesson
-    :param db: database context
-    :param lesson_id: the lesson
-    :param auth_user: TODO: Use to only show the user who created the lesson plan the information
-    :return: the lesson plan_model
-    """
+    @staticmethod
+    def get_all(db, lesson_id, auth_user):
+        """
+        Get all the lesson plan for this lesson
+        :param db: database context
+        :param lesson_id: the lesson
+        :param auth_user: TODO: Use to only show the user who created the lesson plan the information
+        :return: the lesson plan_model
+        """
+        execHelper = ExecHelper()
 
-    str_select = "SELECT" \
-                 " pln.id as id," \
-                 " pln.title as title," \
-                 " pln.description as description," \
-                 " pln.duration_minutes as duration," \
-                 " pln.task_icon, " \
-                 " pln.order_of_delivery_id "\
-                 "FROM sow_lesson_plan as pln " \
-                 "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
-                 " WHERE le.id = {lesson_id}" \
-                 " ORDER BY pln.order_of_delivery_id;"
+        str_select = "SELECT" \
+                    " pln.id as id," \
+                    " pln.title as title," \
+                    " pln.description as description," \
+                    " pln.duration_minutes as duration," \
+                    " pln.task_icon, " \
+                    " pln.order_of_delivery_id "\
+                    "FROM sow_lesson_plan as pln " \
+                    "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
+                    " WHERE le.id = {lesson_id}" \
+                    " ORDER BY pln.order_of_delivery_id;"
 
-    str_select = str_select.format(lesson_id=int(lesson_id))
+        str_select = str_select.format(lesson_id=int(lesson_id))
 
-    rows = db.executesql(str_select)
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
-    lesson_duration = 0
-    data = []
-    for row in rows:
-        lesson_duration = lesson_duration + int(row[3])
-        data.append(LessonPlanModel(id_=row[0], lesson_id=lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5]))
+        lesson_duration = 0
+        data = []
+        for row in rows:
+            lesson_duration = lesson_duration + int(row[3])
+            data.append(LessonPlanModel(id_=row[0], lesson_id=lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5]))
 
-    lesson_duration_h = lesson_duration / 60
-    lesson_duration_m = lesson_duration % 60
+        lesson_duration_h = lesson_duration / 60
+        lesson_duration_m = lesson_duration % 60
 
-    return data, lesson_duration_h, lesson_duration_m
-
-
-def get_model(db, id_, lesson_id, auth_user):
-    model = LessonPlanModel(id_=id_, lesson_id=lesson_id, title="", description="")
-
-    str_select = "SELECT" \
-                 " pln.id as id," \
-                 " pln.title as title," \
-                 " pln.description as description," \
-                 " pln.duration_minutes as duration," \
-                 " pln.task_icon, " \
-                 " pln.order_of_delivery_id "\
-                 "FROM sow_lesson_plan as pln " \
-                 "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
-                 " WHERE pln.id = {id_} AND le.id = {lesson_id};"
-
-    str_select = str_select.format(id_=int(id_), lesson_id=int(lesson_id))
-
-    rows = db.executesql(str_select)
-
-    for row in rows:
-        model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
-
-    return model
+        return data, lesson_duration_h, lesson_duration_m
 
 
-def get_last_item(db, lesson_id):
-    model = LessonPlanModel(id_=0, lesson_id=lesson_id, title="", description="")
+    @staticmethod
+    def get_model(db, id_, lesson_id, auth_user):
+        execHelper = ExecHelper()
 
-    str_select = "SELECT" \
-                 " pln.id as id," \
-                 " pln.title as title," \
-                 " pln.description as description," \
-                 " pln.duration_minutes as duration," \
-                 " pln.task_icon, " \
-                 " pln.order_of_delivery_id "\
-                 "FROM sow_lesson_plan as pln " \
-                 "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
-                 " WHERE le.id = {lesson_id}" \
-                 " ORDER BY pln.order_of_delivery_id DESC " \
-                 " LIMIT 1;"
+        model = LessonPlanModel(id_=0, lesson_id=lesson_id, title="", description="")
 
-    str_select = str_select.format(lesson_id=int(lesson_id))
+        str_select = "SELECT" \
+                    " pln.id as id," \
+                    " pln.title as title," \
+                    " pln.description as description," \
+                    " pln.duration_minutes as duration," \
+                    " pln.task_icon, " \
+                    " pln.order_of_delivery_id "\
+                    "FROM sow_lesson_plan as pln " \
+                    "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
+                    " WHERE pln.id = {id_} AND le.id = {lesson_id};"
 
-    rows = db.executesql(str_select)
+        str_select = str_select.format(id_=int(id_), lesson_id=int(lesson_id))
 
-    for row in rows:
-        model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
-    return model
+        for row in rows:
+            model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
 
-def save(db, model):
-    """
-    Upsert the reference
-    :param db: database context
-    :param model: the LessonPlanModel
-    :return: the updated LessonPlanModel
-    """
-    if model.is_new() == True:
-        model.id = _insert(db, model)
-    else:
-        _update(db, model)
-
-    return model
+        return model
 
 
-def delete(db, id_):
-    """
+    @staticmethod
+    def get_last_item(db, lesson_id):
+        execHelper = ExecHelper()
 
-    :param db: the database context
-    :param id_: the id of the record to delete
-    :return: nothing
-    """
-    _delete(db, id_);
+        model = LessonPlanModel(id_=0, lesson_id=lesson_id, title="", description="")
 
-"""
-Private CRUD functions 
-"""
+        str_select = "SELECT" \
+                    " pln.id as id," \
+                    " pln.title as title," \
+                    " pln.description as description," \
+                    " pln.duration_minutes as duration," \
+                    " pln.task_icon, " \
+                    " pln.order_of_delivery_id "\
+                    "FROM sow_lesson_plan as pln " \
+                    "INNER JOIN sow_lesson as le ON le.id = pln.lesson_id" \
+                    " WHERE le.id = {lesson_id}" \
+                    " ORDER BY pln.order_of_delivery_id DESC " \
+                    " LIMIT 1;"
 
-def _update(db, model):
-    """ updates the sow_lesson_plan """
+        str_select = str_select.format(lesson_id=int(lesson_id))
+        rows = []
+        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
-    # Update the lesson plan step
+        for row in rows:
+            model = LessonPlanModel(id_=row[0], lesson_id = lesson_id, title=row[1], description=row[2], duration=row[3], task_icon=row[4], order_of_delivery_id=row[5])
 
-    str_update = "UPDATE sow_lesson_plan SET lesson_id = {lesson_id}, order_of_delivery_id = {order_of_delivery_id}, title = '{title}', description = '{description}', duration_minutes = {duration}, task_icon = '{task_icon}' WHERE id = {id};"
-    str_update = str_update.format(
-        id=model.id,
-        lesson_id=model.lesson_id,
-        order_of_delivery_id=model.order_of_delivery_id,
-        title=model.title,
-        description=model.description,
-        duration=model.duration,
-        task_icon=model.task_icon)
-
-    db.executesql(str_update)
-
-    return True
+        return model
 
 
-def _insert(db, model):
-    """ inserts the sow_reference and sow_scheme_of_work__has__reference """
+    @staticmethod
+    def save(db, model):
+        """
+        Upsert the reference
+        :param db: database context
+        :param model: the LessonPlanModel
+        :return: the updated LessonPlanModel
+        """
+        if model.is_new() == True:
+            model = LessonPlanDataAccess._insert(db, model)
+        else:
+            model = LessonPlanDataAccess._update(db, model)
 
-    ## 1. Insert the reference
-
-    str_insert = "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES ({lesson_id}, {order_of_delivery_id}, '{title}', '{description}', {duration_minutes}, '{task_icon}')"
-    str_insert = str_insert.format(
-        id=model.id,
-        lesson_id=model.lesson_id,
-        order_of_delivery_id=model.order_of_delivery_id,
-        title=model.title,
-        description=model.description,
-        duration_minutes=model.duration,
-        task_icon=model.task_icon)
-
-    db.executesql(str_insert)
-
-    rows = db.executesql("SELECT LAST_INSERT_ID();")
-
-    for row in rows:
-        model.id = int(row[0])
-
-    return model.id
+        return model
 
 
-def update_order_of_delivery(db, id_, lesson_id, order_of_delivery_id):
+    @staticmethod
+    def delete(db, id_):
+        """
 
-    """ updates the order of delivery for sow_lesson_plan """
-
-    # Update the lesson plan step
-
-    str_update = "UPDATE sow_lesson_plan SET order_of_delivery_id = {order_of_delivery_id} WHERE id = {id} AND lesson_id = {lesson_id};"
-    str_update = str_update.format(
-        id= id_,
-        order_of_delivery_id=order_of_delivery_id,
-        lesson_id=lesson_id
-    )
-
-    db.executesql(str_update)
+        :param db: the database context
+        :param id_: the id of the record to delete
+        :return: nothing
+        """
+        LessonPlanDataAccess._delete(db, id_);
 
 
-def _delete(db, id_):
-    str_delete = "DELETE FROM sow_lesson_plan WHERE id = {id_};"
-    str_delete = str_delete.format(id_=int(id_))
+    @staticmethod
+    def _update(db, model):
+        """ updates the sow_lesson_plan """
+        execHelper = ExecHelper()
 
-    rval = db.executesql(str_delete)
+        # Update the lesson plan step
 
-    return rval
+        str_update = "UPDATE sow_lesson_plan SET lesson_id = {lesson_id}, order_of_delivery_id = {order_of_delivery_id}, title = '{title}', description = '{description}', duration_minutes = {duration}, task_icon = '{task_icon}' WHERE id = {id};"
+        str_update = str_update.format(
+            id=model.id,
+            lesson_id=model.lesson_id,
+            order_of_delivery_id=model.order_of_delivery_id,
+            title=model.title,
+            description=model.description,
+            duration=model.duration,
+            task_icon=model.task_icon)
+
+        rval = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+
+        return model
+
+
+    @staticmethod
+    def _insert(db, model):
+        """ inserts the sow_reference and sow_scheme_of_work__has__reference """
+        execHelper = ExecHelper()
+
+        ## 1. Insert the reference
+
+        str_insert = "INSERT INTO sow_lesson_plan (lesson_id, order_of_delivery_id, title, description, duration_minutes, task_icon) VALUES ({lesson_id}, {order_of_delivery_id}, '{title}', '{description}', {duration_minutes}, '{task_icon}');"
+        str_insert = str_insert.format(
+            id=model.id,
+            lesson_id=model.lesson_id,
+            order_of_delivery_id=model.order_of_delivery_id,
+            title=model.title,
+            description=model.description,
+            duration_minutes=model.duration,
+            task_icon=model.task_icon)
+
+        execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
+        rows = []
+        
+        (results, last_id) = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows, log_info=handle_log_info)
+
+        model.id = last_id
+
+        return model
+
+
+    @staticmethod
+    def update_order_of_delivery(db, id_, lesson_id, order_of_delivery_id):
+        """ updates the order of delivery for sow_lesson_plan """
+        execHelper = ExecHelper()
+
+        # Update the lesson plan step
+
+        str_update = "UPDATE sow_lesson_plan SET order_of_delivery_id = {order_of_delivery_id} WHERE id = {id} AND lesson_id = {lesson_id};"
+        str_update = str_update.format(
+            id= id_,
+            order_of_delivery_id=order_of_delivery_id,
+            lesson_id=lesson_id
+        )
+
+        return execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+
+
+    @staticmethod
+    def _delete(db, id_):
+        execHelper = ExecHelper()
+
+        str_delete = "DELETE FROM sow_lesson_plan WHERE id = {id_};"
+        str_delete = str_delete.format(id_=int(id_))
+
+        rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
+
+        return rval

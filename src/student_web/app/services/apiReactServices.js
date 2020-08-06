@@ -63,6 +63,27 @@ const getLesson = (reactComponent, lesson_id) => {
     )
 }
 
+const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) => {
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}/resources/${resource_id}?format=json`)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Resource: data.resource, 
+                hasError: false,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Resource: {},
+                hasError: true,
+            });
+        }
+    )
+}
+
 const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, md_document_name) => {
     fetch(`${REACT_APP_STUDENT_WEB__MARKDOWN_SERVICE_URI}/${scheme_of_work_id}/${lesson_id}/${resource_id}/${md_document_name}?format=json`)
       .then(res => res.json())
@@ -113,4 +134,4 @@ const getSocialMediaLinks = () => {
 
 
 
-export { getSchemeOfWork, getLessons, getLesson, getSocialMediaLinks, getMarkdown };
+export { getSchemeOfWork, getLessons, getLesson, getResource, getSocialMediaLinks, getMarkdown };

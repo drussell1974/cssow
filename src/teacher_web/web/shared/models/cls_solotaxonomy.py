@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+
 
 class SoloTaxonomyModel(BaseModel):
     def __init__(self, id_, name, lvl):
@@ -23,31 +25,24 @@ class SoloTaxonomyModel(BaseModel):
         if self.lvl is not None:
             self.lvl = sql_safe(self.lvl)
 
-"""
-DAL
-"""
+
+    @staticmethod
+    def get_options(db):
+        rows = SoloTaxonomyDataAccess.get_options(db)
+        data = []
+        for row in rows:
+            model = SoloTaxonomyModel(row[0], row[1], row[2])
+            data.append(model)
+        return data
 
 
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
+class SoloTaxonomyDataAccess:
+
+    @staticmethod
+    def get_options(db):
     
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
-
-
-def get_options(db):
-
-    rows = []
-    execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, handle_log_info)
-
-    data = []
-
-    for row in rows:
-        model = SoloTaxonomyModel(row[0], row[1], row[2])
-        data.append(model)
-
-    return data
+        execHelper = ExecHelper()
+        
+        rows = []
+        rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
+        return rows

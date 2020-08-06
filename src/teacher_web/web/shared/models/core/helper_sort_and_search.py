@@ -19,7 +19,7 @@ def sort_array(data):
 
     return sorted_data
 
-
+'''
 def _sort_by_solo_and_group(data):
     sorted_data = data
 
@@ -56,3 +56,4 @@ def _sort_by_solo_and_group(data):
             break
 
     return sorted_data
+'''

@@ -1,7 +1,7 @@
 import React from 'react';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getMarkdown, getSchemeOfWork, getResource, getSocialMediaLinks } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class Activity extends React.Component {
@@ -10,13 +10,14 @@ class Activity extends React.Component {
         super(props);
         this.state = {
             SchemeOfWork: {},
-            Lesson: {},
+            Resource: {},
             hasError: false,
             markdown_html: {},
         }
     
         this.socialmediadata = [];
 
+        this.scheme_of_work_id = REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK;
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
         this.md_document_name = props.match.params.md_document_name;
@@ -28,9 +29,9 @@ class Activity extends React.Component {
         
         getSchemeOfWork(this);
 
-        getLesson(this, this.lesson_id);   
+        getResource(this, this.scheme_of_work_id, this.lesson_id, this.resource_id);
 
-        getMarkdown(this, REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK, this.lesson_id, this.resource_id, this.md_document_name);
+        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
     }
     
     static getDerivedStateFromError(error) {
@@ -48,11 +49,10 @@ class Activity extends React.Component {
       }
       
     render() {
-
         return (
             <React.Fragment>
                 <ActivityPageContainer 
-                    resource={this.state.Lesson}
+                    resource={this.state.Resource}
                     schemeofwork={this.state.SchemeOfWork}
                     markdown_html={this.state.markdown_html}
                     socialmediadata={this.socialmediadata}
@@ -63,11 +63,13 @@ class Activity extends React.Component {
 };
 
 export const ActivityPageContainer = ({resource, schemeofwork, markdown_html, socialmediadata}) => {
+    // CHECKING UNDEFINDED NOT NEEDED AS SHOULD BE HANDLED BY SUBCOMPONENTS
     if (resource === undefined || schemeofwork === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
+        
         return (
             <React.Fragment>
 

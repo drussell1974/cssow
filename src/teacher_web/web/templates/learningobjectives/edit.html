@@ -22,8 +22,10 @@
 </nav>
 {% endblock %}
 
+
 {% block maincontent %}
-<form name="edit-schemeofwork" id="form" method="post" action="{% url 'learningobjective.save' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
+<!-- #231: needs-validation class to select form in formValidation.js -->
+<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.save' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
     {% csrf_token %}
     <!-- Solo Taxonomy START -->
     <div class="control-group">
@@ -35,7 +37,7 @@
                 <option value={{opt.id}} {% if opt.id == content.data.learningobjective.solo_taxonomy_id %} selected {% endif %}>{{opt.name}}</option>
             {% endfor %}
         </select>
-        <p class="help-block text-danger"></p>
+        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
     <!-- Solo Taxonomy END -->
@@ -45,7 +47,7 @@
         <label>{{_("Description")}}</label>
         <input type="text" class="form-control" placeholder="{{_('Enter a description')}}" id="ctl-description" name="description" required
                 maxlength="1000" value='{{content.data.learningobjective.description}}'>
-        <p class="help-block text-danger"></p>
+        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
     <!-- Description END -->
@@ -59,7 +61,7 @@
             <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>
             {% endfor %}
         </select>
-        <p class="help-block text-danger"></p>
+        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
     <!-- Content END -->
@@ -69,7 +71,7 @@
         <label>{{_("Group name")}}</label>
         <input type="text" class="form-control" placeholder="{{_('Enter a group name (optional)')}}" id="ctl-group_name" name="group_name"
                 maxlength="15" value='{{content.data.learningobjective.group_name}}'>
-        <p class="help-block text-danger"></p>
+        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
     <!-- Group Name END -->
@@ -78,33 +80,25 @@
     <div class="control-group">
         <div class="form-group controls">
             <label>{{_("Notes")}}</label>
-            <textarea rows="5" class="form-control" name="notes" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500">
-                {{content.data.learningobjective.notes}}
-            </textarea>
-            <p class="help-block text-danger"></p>
+            <input type="text"  class="form-control" name="notes" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.learningobjective.notes}}" />
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
     <!-- Notes END -->
     <br>
     <div id="success"></div>
+    <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+    <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
+    <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+    <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
     <div class="form-group">
-        <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
-        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-        <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
-        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
-        <button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>
-        <button type="submit" name="published" value="0" class="btn btn-secondary" id="saveDraftButton">{{_("Draft")}}</button>
-        <button type="cancel" class="btn btn-primary" id="cancelButton" onclick="alert('are you sure you want to cancel?')">{{_("Cancel")}}</button>
+        {% include '_partials/form.buttons.validation.html' %}
     </div>
 </form>
 <hr>
 {% endblock %}
 
-
 {% block page_js %}
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <!-- Bootstrap tokenfield javascript -->
     
 {% endblock %}

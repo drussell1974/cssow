@@ -25,15 +25,8 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-        
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'New')
         
-        save = self.test_context.find_element_by_id('saveButton')
-        self.assertEqual("DRAFT", save.text)
-
-        saveandpublish = self.test_context.find_element_by_id('saveAndPublishButton')
-        self.assertEqual("SAVE AND PUBLISH", saveandpublish.text)
-
 
     def test_page__breadcrumb_navigate_to_lesson_index_not_visible_for_new_schemeofwork(self):
         # test and assert
@@ -72,6 +65,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -107,13 +101,15 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
+        ' name '
+        elem = self.test_context.find_element_by_id("ctl-description")
         ' description - Fill in field with some information '
         elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' select the submit button (to remove cursor from textarea '
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         
@@ -122,6 +118,9 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
         #delete
+        
+        # TODO: Edit and delete
+
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)

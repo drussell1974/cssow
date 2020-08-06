@@ -21,11 +21,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
-<<<<<<< HEAD:src/teacher_web/web/web/settings.py
         
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True,        
-DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],        
+DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
+
+# LOGGING_LEVEL: set the logging level as appropriate
+
+# Verbose = 8
+# Information = 4
+# Warning = 2
+# Error = 1
+LOGGING_LEVEL = 1
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",

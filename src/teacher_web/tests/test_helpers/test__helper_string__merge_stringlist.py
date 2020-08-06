@@ -1,9 +1,5 @@
 from unittest import TestCase
-
-# import test context
-import sys
-sys.path.insert(0, '../../schemeofwork/modules')
-from helper_string import merge_string_list
+from shared.models.core.helper_string import merge_string_list
 
 class test__helper_string__merge_stringlist(TestCase):
 

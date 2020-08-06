@@ -1,0 +1,15 @@
+[coverage:run]
+source = ./web
+omit =
+   */node_modules/*
+   web/manage.py
+   web/web/*
+   web/**/views.py
+   web/**/apps.py
+   *cls_reference*
+   *cls_lessonplan*
+
+[coverage:report]
+fail_under = 95
+show_missing = True
+skip_covered = False

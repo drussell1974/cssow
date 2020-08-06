@@ -35,7 +35,7 @@ class apitest_schemeofwork_lesson_get_all(APITestCase):
 
     def test__should_have_multiple_records(self):
         # assert
-        self.assertEqual(27, len(self.payload["lessons"]))
+        self.assertEqual(26, len(self.payload["lessons"]))
 
     
     def test__first__should_have_title(self):
@@ -50,7 +50,7 @@ class apitest_schemeofwork_lesson_get_all(APITestCase):
 
     def test__first__should_have_lesson_objectives(self):
         # assert
-        self.assertEqual(9, len(self.payload["lessons"][0]["learning_objectives"]))
+        self.assertEqual(8, len(self.payload["lessons"][0]["learning_objectives"]))
 
 
     def test__first__should_have_zero_resources(self):

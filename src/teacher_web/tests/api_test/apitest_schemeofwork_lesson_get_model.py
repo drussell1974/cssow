@@ -25,6 +25,11 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
         self.assertIsNotNone(self.payload)
         
     
+    def test__should_have_id(self):
+        # assert
+        self.assertEqual(220, self.payload["lesson"]["id"])
+
+
     def test__should_have_title(self):
         # assert
         self.assertEqual('Types of CPU architecture', self.payload["lesson"]["title"])
@@ -32,7 +37,7 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
         
     def test__should_have_summary(self):
         # assert
-        self.assertEqual('Von Neumann architecture and Harvard architecture\; CISC and RISC', self.payload["lesson"]["summary"])
+        self.assertEqual('Von Neumann architecture and Harvard architecture, and CISC and RISC', self.payload["lesson"]["summary"])
 
 
     def test__should_have_lesson_objectives(self):
@@ -42,5 +47,9 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
 
     def test__should_have_resources(self):
         # assert
-        self.assertEqual(3, len(self.payload["lesson"]["resources"]))
-        
+        self.assertEqual(4, len(self.payload["lesson"]["resources"]))
+
+
+    def test__should_have_key_words(self):
+        # assert
+        self.assertEqual(3, len(self.payload["lesson"]["key_words"]))

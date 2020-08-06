@@ -1,5 +1,7 @@
-# create db connection
+"""# create db connection
 import mysql.connector
+from .db_helper import sql_safe
+        
 class FakeDb:
 
     def connect(self):
@@ -22,3 +24,4 @@ def contains_learning_objective(rows, id):
         if item.id == id:
             return True
     return False
+"""

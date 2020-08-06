@@ -1,12 +1,12 @@
 import React from 'react';
 import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
+import { LessonKeywordsWidget } from '../widgets/LessonKeywordsWidget';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
-import { LessonActivityWidget } from '../widgets/LessonActivityWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 
-class Index extends React.Component {
+class LessonPage extends React.Component {
     
     constructor(props){
         super(props);
@@ -49,24 +49,47 @@ class Index extends React.Component {
       
     render() {
         return (
-            <React.Fragment>
-                
-                <BannerWidget heading={this.state.Lesson.title} description={this.state.Lesson.summary} />
-
-                <div id="main">
-                    <div className="inner">
-                        <LessonObjectivesWidget data={this.state.Lesson} />
-
-                        <LessonBoxMenuWidget data={this.state.Lesson} typeButtonText="View" />
-                        
-                    </div>
-                </div>
-                
-                <FooterWidget heading="Computer Science SOW" summary='' socialmedia={this.socialmediadata} />
-
-            </React.Fragment>
+            <LessonPageContainer 
+                lesson={this.state.Lesson}
+                schemeofwork={this.state.SchemeOfWork}
+                socialmediadata={this.socialmediadata}
+            />
         )
     }
 };
 
-export default Index;
+export const LessonPageContainer = ({schemeofwork, lesson, keywords, socialmediadata}) => {
+    // CHECKING UNDEFINDED NOT NEEDED AS SHOULD BE HANDLED BY SUBCOMPONENTS
+    if (lesson === undefined || schemeofwork === undefined || keywords === undefined) {
+        return ( 
+            <React.Fragment></React.Fragment>
+        )
+    } else {
+
+        return (
+            <React.Fragment>
+                
+                <BannerWidget heading={lesson.title} description={lesson.summary} />
+
+                <div id="main">
+                    <div className="inner">
+                        <section className="objectives">
+                            <LessonObjectivesWidget data={lesson} />
+                        </section>
+                        <section className="keywords">
+                            <LessonKeywordsWidget keywords={keywords} />
+                        </section>
+                        <section className="resources">
+                            <LessonBoxMenuWidget data={lesson} typeButtonText="View" />                        
+                        </section>
+                    </div>
+                </div>
+                
+                <FooterWidget heading={schemeofwork.name} summary={schemeofwork.description} socialmedia={socialmediadata} />
+
+            </React.Fragment>
+        )
+    }
+}
+
+export default LessonPage;

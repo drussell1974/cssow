@@ -15,54 +15,26 @@ describe("ActivityPageContainer", () =>{
         description: "CPU components: ALU, Control Unit, Registers and Buses",
     };
 
-    let lesson = 
+    let resource = 
     {
-        "id": 220,
-        "title": "Types of CPU architecture",
-        "order_of_delivery_id": 3,
+        "id": 119,
+        "title": "OCR AS and A Level Computer Science",
+        "publisher": "PM Heathcote and RSU Heathcote, PG Online, 2016",
+        "page_note": "The TCP/IP Protocol Stack - pages 122 - 123",
+        "page_uri": "",
+        "md_document_name": "The-TCP_IP-Protocol-Stack.md",
+        "type_id": 10,
+        "type_name": "Markdown",
+        "type_icon": "fa-book",
+        "lesson_id": 220,
         "scheme_of_work_id": 11,
-        "scheme_of_work_name": "A-Level Computer Science",
-        "topic_id": 1,
-        "topic_name": "Algorithms",
-        "parent_topic_id": 0,
-        "parent_topic_name": "Computing",
-        "related_topic_ids": "",
-        "key_stage_id": 5,
-        "key_stage_name": "",
-        "year_id": 12,
-        "year_name": "",
-        "key_words": {
-        "265": "Abstraction",
-        "335": "3D printer"
-        },
-        "summary": "Von Neumann architecture and Harvard architecture\\; CISC and RISC",
-        "pathway_objective_ids": [],
-        "pathway_ks123_ids": [],
-        "created": "2019-01-15T14:36:57",
+        "last_accessed": "",
+        "created": "2020-02-17T06:48:00",
         "created_by_id": 2,
         "created_by_name": " ",
         "published": 1,
-        "orig_id": 0,
-        "url": "/schemeofwork/11/lessons/220",
-        "resources": [{
-            "id": 119,
-            "title": "OCR AS and A Level Computer Science",
-            "publisher": "PM Heathcote and RSU Heathcote, PG Online, 2016",
-            "page_note": "The TCP/IP Protocol Stack - pages 122 - 123",
-            "page_uri": "",
-            "md_document_name": "The-TCP_IP-Protocol-Stack.md",
-            "type_id": 10,
-            "type_name": "Markdown",
-            "type_icon": "fa-book",
-            "lesson_id": 220,
-            "scheme_of_work_id": 11,
-            "last_accessed": "",
-            "created": "2020-02-17T06:48:00",
-            "created_by_id": 2,
-            "created_by_name": " ",
-            "published": 1,
-            "is_expired": false
-        }]
+        "is_expired": false
+    
     }
     
      
@@ -81,7 +53,7 @@ describe("ActivityPageContainer", () =>{
     describe('has a banner', () => {
         
         it('with heading', () => {
-            render(<ActivityPageContainer resource={lesson.resources[0]} schemeofwork socialmediadata />);
+            render(<ActivityPageContainer resource={resource} schemeofwork={schemesofwork} socialmediadata />);
 
             expect(
                 container.querySelector('section#banner .inner header h1').textContent
@@ -89,7 +61,7 @@ describe("ActivityPageContainer", () =>{
         })
 
         it('with description', () => {
-            render(<ActivityPageContainer resource={lesson.resources[0]} schemeofwork socialmediadata />);
+            render(<ActivityPageContainer resource={resource} schemeofwork={schemesofwork} socialmediadata />);
 
             expect(
                 container.querySelector('section#banner .inner header p').textContent
@@ -100,7 +72,7 @@ describe("ActivityPageContainer", () =>{
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={lesson.resources[0]} socialmediadata />);
+            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} socialmediadata />);
 
             expect(
                 container.querySelector('footer#footer h2').textContent
@@ -108,7 +80,7 @@ describe("ActivityPageContainer", () =>{
         })
 
         it('with scheme of work overview summary', () => {
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={lesson.resources[0]} socialmedia />);
+            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} socialmedia />);
 
             expect(
                 container.querySelector('footer#footer p').textContent
@@ -122,7 +94,7 @@ describe("ActivityPageContainer", () =>{
             
             const markdown_html = "<h1>Test ActivityPageContainer displays markdown widget</h1>";
 
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={lesson.resources[0]} markdown_html={markdown_html} socialmedia />);
+            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} markdown_html={markdown_html} socialmedia />);
 
             expect(
                 container.querySelector("#main .inner section.markdown h2").textContent
@@ -133,7 +105,7 @@ describe("ActivityPageContainer", () =>{
             
             const markdown_html = "<h1>Test ActivityPageContainer displays markdown widget</h1>";
 
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={lesson.resources[0]} markdown_html={markdown_html} socialmedia />);
+            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} markdown_html={markdown_html} socialmedia />);
 
             expect(
                 container.querySelector("#main .inner section.markdown div.markdown-body").textContent

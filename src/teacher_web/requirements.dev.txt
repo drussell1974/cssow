@@ -1,0 +1,11 @@
+django
+django-debug-toolbar
+django-cors-headers
+mysqlclient
+mysql-connector-python
+djangorestframework
+requests
+python-dotenv
+# development
+selenium
+coverage

@@ -17,5 +17,6 @@ class APITestCase(TestCase):
         time.sleep(s)
 
     def get(self, uri):
-        self.test_context = requests.get(self.root_uri + uri)
+        full_uri = self.root_uri + uri
+        self.test_context = requests.get(full_uri)
         self.payload = json.loads( self.test_context.content)

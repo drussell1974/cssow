@@ -1,11 +1,12 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from shared.models.cls_content import ContentModel
 
 class test_cls_content__clean_up(TestCase):
 
     def setUp(self):
-        self.test = ContentModel(1, "")
+        self.test = ContentModel(1, "", "")
 
+    # description
 
     def test_description__trim_whitespace(self):
 
@@ -38,3 +39,37 @@ class test_cls_content__clean_up(TestCase):
 
         # assert
         self.assertEqual('"x"', self.test.description)
+
+    # letter_prefix
+
+    def test_letter_prefix__trim_whitespace(self):
+
+        self.test.letter_prefix = " x "
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x", self.test.letter_prefix)
+
+
+    def test_letter_prefix__escape_sqlterminator(self):
+
+        self.test.letter_prefix = "x;"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x\;", self.test.letter_prefix)
+
+
+    def test_letter_prefix__escape_quote(self):
+
+        self.test.letter_prefix = "'x'"
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual('"x"', self.test.letter_prefix)

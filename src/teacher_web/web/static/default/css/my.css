@@ -1,6 +1,30 @@
 .error {
     color:#dc3545 !important;
-    font-size: small;
+}
+
+.unpublished h1, 
+.unpublished h2,
+.unpublished h3,
+.unpublished h4,
+.unpublished h5 {
+    opacity: 0.5;
+}
+
+.deleting h1, 
+.deleting h2,
+.deleting h3,
+.deleting h4,
+.deleting h5 {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.post-title--long-text {
+    font-size: 22px !important;
+}
+
+input:invalid {
+    color:#dc3545 !important;
 }
 
 h1, h2, h3 {
@@ -41,6 +65,25 @@ h4, h5, h6 {
 
 .nav-item.active {
     background-color: #e2e3e5;
+}
+
+/*.navbar-nav .nav-link:not(:last-child):after {*/
+
+.breadcrumb-custom .navbar-nav .nav-item:not(:nth-last-child(1)) .nav-link:after {
+    content:">";
+    padding-left: 10px;
+}
+
+.navbar-nav .nav-link:not(:nth-last-of-type(1)):after {
+    text-decoration: solid;
+}
+
+@media (max-width: 576px) {
+    .form-group .btn {
+        width: 100%;
+        display: block;
+        margin-top: 10px;
+    }
 }
 
 /*.pagination div:after {

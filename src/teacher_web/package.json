@@ -1,15 +1,31 @@
 {
+  "name": "teacher-web",
+  "version": "1.0.0",
+  "main": "manage.py",
+  "repository": "https://github.com/drussell1974/cssow",
+  "author": "drussell1974 <dave@jazzthecat.co.uk>",
+  "license": "MIT",
   "pre-commit": "test",
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "migrate": "python ./web/manage.py migrate",
+    "install:":"pip install -r requirements.txt && yarn build",
+    "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
+    "install:test":"pip install -r requirements.dev.txt && yarn build:test",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web requirements.txt",
-    "build:dev": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "build:test-ui": "pip install -r requirements.txt && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
-    "test": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py test --settings=web.settings.test-ui.settings",
-    "test-ui": "sh scripts/yarn.test-ui--batch.sh",
-    "test-ui--p": "sh scripts/yarn.test-ui--p.sh",
-    "test-api": "sh scripts/yarn.test-api.sh"
+    "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
+    "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "test:all": "yarn test:unit && yarn test-ui",
+    "test:unit":"yarn test-helpers && yarn test-dbmodels && yarn test-models && yarn test-viewmodels && yarn test-routes && yarn test-api ", 
+    "test:coverage":"coverage erase && yarn test:unit && coverage html && coverage report && echo '[1;30m Run **serve htmlcov** and open in browser \\e[0m'", 
+    "test-routes":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/route_test --settings=web.settings.test-ui.settings",
+    "test-viewmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/viewmodel_test --settings=web.settings.test-ui.settings",
+    "test-models":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/model_test --settings=web.settings.test-ui.settings",
+    "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
+    "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
+    "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
+    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_index.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

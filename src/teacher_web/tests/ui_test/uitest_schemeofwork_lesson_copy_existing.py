@@ -26,7 +26,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Copy: Types of CPU architecture', 'test@localhost')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New', 'test@localhost')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")
@@ -41,11 +41,11 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         
         ' title '
         elem = self.test_context.find_element_by_id("ctl-title")
-        self.assertEqual("Types of CPU architecture", elem.get_attribute("value"))
+        self.assertEqual("copy of Types of CPU architecture", elem.get_attribute("value"))
         
         ' summary ' 
         elem = self.test_context.find_element_by_id("ctl-summary")
-        self.assertEqual("Von Neumann architecture and Harvard architecture\; CISC and RISC", elem.get_attribute("value"))
+        self.assertEqual("Von Neumann architecture and Harvard architecture, and CISC and RISC", elem.get_attribute("value"))
 
         ' topic dropdown '
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-topic_id']/option")
@@ -55,12 +55,11 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         self.assertEqual("Algorithms", selected_option.text)
 
         ' keyword dropdown '
-        elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-key_words']/option")
-        self.assertEqual(366, len(elem))
-        elem = Select(self.test_context.find_element_by_id("ctl-key_words"))
-        selected_options = elem.all_selected_options
-        self.assertEqual("3D printer", selected_options[0].text)
-        self.assertEqual("Abstraction", selected_options[1].text)
+        elem = self.test_context.find_elements_by_css_selector("div.tokenfield div.token")
+        self.assertEqual(3, len(elem))
+        self.assertEqual("Central Processing Unit (CPU)×", elem[0].text)
+        self.assertEqual("Random Access Memory (RAM)×", elem[1].text)
+        self.assertEqual("Fetch Decode Execute (FDE)×", elem[2].text)
 
 
     """ Test edits """
@@ -78,12 +77,12 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("draftButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Copy: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New')
         
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -100,7 +99,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("draftButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         

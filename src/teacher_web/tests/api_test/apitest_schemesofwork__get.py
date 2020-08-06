@@ -26,13 +26,13 @@ class apitest_schemeofwork__get(APITestCase):
         self.assertIsNotNone(self.payload)
         self.assertIsNotNone(self.payload["schemesofwork"])
 
+
     def test__first_should_have_name(self):
         self.assertEqual('KS3 Computing', self.payload["schemesofwork"][0]["name"])
 
 
-
     def test__first_should_have_desription(self):
-        self.assertEqual('', self.payload["schemesofwork"][0]["description"].rstrip())
+        self.assertEqual('Lorem ipsum dolor sit amet.', self.payload["schemesofwork"][0]["description"].rstrip())
 
 
     def test__last_should_have_name(self):

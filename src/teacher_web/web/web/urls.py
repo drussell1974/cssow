@@ -21,14 +21,26 @@ from django.contrib.auth import views as auth_views
 from app.default import views
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('admin/', admin.site.urls),
+
+    
+    ### api ##
+    
+    # api resource
+    path('api/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/resources/', include('api.resources.urls')),
     # api lessons
     path('api/schemesofwork/<int:scheme_of_work_id>/lessons/', include('api.lessons.urls')),
     # api schemesofwork
     path('api/schemesofwork/', include('api.schemesofwork.urls')),
     # api default
     path('api/', include('api.default.urls')),
+    
+    ### app ###
+
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('admin/', admin.site.urls),
+
+    # app content
+    path('schemesofwork/<int:scheme_of_work_id>/curriculum-content/', include('app.content.urls')),
     # app lesson
     path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lessons.urls')),
     # app schemeofwork

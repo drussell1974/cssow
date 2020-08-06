@@ -4,9 +4,6 @@ django-cors-headers
 mysqlclient
 mysql-connector-python
 djangorestframework
-selenium
 requests
-
-# development
-
 python-dotenv
+

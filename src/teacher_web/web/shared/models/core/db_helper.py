@@ -4,60 +4,73 @@ helper routines for retrieving and saving values in the database
 """
 import mysql.connector
 
-last_sql = ()
-def _log_it(db, sql, enable_logging):
-    l = log.Log();
-    l.is_enabled = enable_logging
-    l.write(db, sql)
 
-def _execSql(db, sql):
+class ExecHelper:
+    #############################
+    # TODO: create as singleton #
+    #############################
+    last_sql = ()
+    def _log_it(self, db, sql, enable_logging):
+        l = log.Log();
+        l.is_enabled = enable_logging
+        l.write(db, sql)
 
-    with db.cursor() as cur:
-        cur.execute(sql)
-        result = cur.fetchall()
-    return result
+    def _execSql(self, db, sql):
+
+        with db.cursor() as cur:
+            cur.execute(sql)
+            result = cur.fetchall()
+        return result
 
 
-def _closeSqlConn(db, cursor):
-        #cursor.close()
-        db.close()
+    def _closeSqlConn(self, db, cursor):
+            #cursor.close()
+            db.close()
 
-def execCRUDSql(db, sql, result=[], log_info=None):
-    ''' run the sql statement without results '''
-    if db != None:
-
-        if log_info != None:
-            log_info(db, "executing:{}".format(sql))
-
-        cur = _execSql(db, sql)
-        for tup in cur:
-            result.append(tup)
+    def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
+        ''' run the sql statement without results '''
         
-        cur_li = _execSql(db, "SELECT LAST_INSERT_ID();")
-        for tup in cur_li:
-            result.append(tup)
+        last_insert_id = 0
+        if db != None:
 
-        db.commit()    
-        _closeSqlConn(db, None)
+            if log_info != None:
+                log_info(db, "executing:{}".format(sql_statement))
 
-        if log_info != None:
-            log_info(db, "result:{}".format(result))
+            cur = self._execSql(db, sql_statement)
+            for tup in cur:
+                result.append(tup)
 
-
-def execSql(db, sql, result, log_info=None):
-    ''' run the sql statement '''
-    if db != None:
-
-        if log_info != None:
-            log_info(db, "executing:{}".format(sql))
+            cur_li = self._execSql(db, "SELECT LAST_INSERT_ID();")
         
-        cur = _execSql(db, sql)
-        for tup in cur:
-            result.append(tup)
-        _closeSqlConn(db, None)
+            last_insert_id = int(cur_li[0][0])
 
-        if log_info != None:
-            log_info(db, "results:{}".format(result))
+
+            db.commit()    
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "result:{}".format(result))
+        
+        return (result, last_insert_id)
+
+
+    def execSql(self, db, sql, result, log_info=None):
+        ''' run the sql statement '''
+        if db != None:
+
+            if log_info != None:
+                log_info(db, "executing:{}".format(sql))
+            
+            cur = self._execSql(db, sql)
+            for tup in cur:
+                result.append(tup)
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "results:{}".format(result))
+
+        # returns appended result
+        return result
 
 
 def to_db_null(val, as_null = None):

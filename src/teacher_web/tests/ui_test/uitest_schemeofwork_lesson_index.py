@@ -73,6 +73,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         section = self.test_context.find_elements_by_class_name('post-preview')
         # assert
         result = len(section)
-        self.assertEqual(27, result, "number of elements not as expected")
+        self.assertEqual(26, result, "number of elements not as expected")
 
 

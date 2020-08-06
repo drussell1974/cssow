@@ -38,10 +38,10 @@ if [ $1 ] ;then
     echo -e "\nbuild.sh: \e[1;33m committing release tar file ...($BUILDNO) \e[0m"
 
     git add releases/release-$BUILDNO.tar.gz
-    git commit -m "build: release-$BUILDNO"
+    git commit --no-verify -m "build: release-$BUILDNO"
 
     git tag $BUILDNO
-    git push origin $BUILDNO
+    git push --no-verify origin $BUILDNO
 else
     echo -e "\nbuild.sh: \e[1;32m local build only $BUILDNO. Run 'cd build && sudo docker-compose up --build' \e[0m"
     echo -e "\nbuild.sh: \e[1;32m To create live build run build with suffix e.g. 'yarn build v1' \e[0m"

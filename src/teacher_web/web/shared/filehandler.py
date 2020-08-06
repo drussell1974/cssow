@@ -9,8 +9,6 @@ def handle_uploaded_markdown(f, model, on_success=None, on_error=None):
         resource=model.id, 
         filename=f)
 
-    print("filehandler.py handle_uploaded_markdown: path=", path)
-    
     try:
         # use django FileSystemStorage to upload to MARKDOWN_ROOT
         fs = FileSystemStorage(location=settings.MEDIA_ROOT)

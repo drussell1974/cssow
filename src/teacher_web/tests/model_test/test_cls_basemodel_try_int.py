@@ -1,5 +1,5 @@
 from datetime import datetime
-from tests.model_test._unittest import TestCase
+from unittest import TestCase
 from shared.models.core.basemodel import try_int
 
 

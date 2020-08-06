@@ -47,7 +47,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         
         ' summary ' 
         elem = self.test_context.find_element_by_id("ctl-summary")
-        self.assertEqual("Von Neumann architecture and Harvard architecture\; CISC and RISC", elem.get_attribute("value"))
+        self.assertEqual("Von Neumann architecture and Harvard architecture, and CISC and RISC", elem.get_attribute("value"))
 
         ' topic dropdown '
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-topic_id']/option")
@@ -57,12 +57,11 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         self.assertEqual("Algorithms", selected_option.text)
 
         ' keyword dropdown '
-        elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-key_words']/option")
-        self.assertEqual(366, len(elem))
-        elem = Select(self.test_context.find_element_by_id("ctl-key_words"))
-        selected_options = elem.all_selected_options
-        self.assertEqual("3D printer", selected_options[0].text)
-        self.assertEqual("Abstraction", selected_options[1].text)
+        elem = self.test_context.find_elements_by_css_selector("div.tokenfield div.token")
+        self.assertEqual(3, len(elem))
+        self.assertEqual("Central Processing Unit (CPU)×", elem[0].text)
+        self.assertEqual("Random Access Memory (RAM)×", elem[1].text)
+        self.assertEqual("Fetch Decode Execute (FDE)×", elem[2].text)
 
 
     """ Test edits """

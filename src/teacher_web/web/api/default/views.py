@@ -1,19 +1,25 @@
 from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
-from shared.models import cls_keyword, cls_topic
+
+# view models
+from api.default.viewmodels import KeywordGetOptionsListViewModel, TopicGetOptionsListViewModel
 
 
 class KeywordsListViewSet(APIView):
     ''' API endpoint for list of keywords '''
     def get (self, request):
-        key_words = cls_keyword.get_options(db)
-        return JsonResponse({"keywords": key_words})
+
+        keywords = KeywordGetOptionsListViewModel(db)
+        
+        return JsonResponse({"keywords": keywords.model }, safe = False)
 
 
 class RelatedTopicsListViewSet(APIView):
     ''' API endpoint for list of related topics '''
     def get (self, request, topic_id):
-        topics = cls_topic.get_options(db, topic_id=topic_id, lvl=2)
-        return JsonResponse({"related-topics": topics})
+
+        topics_view = TopicGetOptionsListViewModel(db, topic_id)
+
+        return JsonResponse({"related-topics": topics_view.model}, safe = False)
     

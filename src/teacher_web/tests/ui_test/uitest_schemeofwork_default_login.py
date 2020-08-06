@@ -1,4 +1,5 @@
 from ui_testcase import UITestCase, WebBrowserContext
+import unittest
 
 class uitest_schemeofwork_default_login(UITestCase):
 
@@ -19,7 +20,7 @@ class uitest_schemeofwork_default_login(UITestCase):
         # tear down
         cls.test_context.close()
 
-
+    
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         # setup
 
@@ -28,4 +29,4 @@ class uitest_schemeofwork_default_login(UITestCase):
         # assert
         # TODO: set title
         self.assertWebPageTitleAndHeadings('', 'Log In', 'Register to create schemes of work and lessons')
-
+        

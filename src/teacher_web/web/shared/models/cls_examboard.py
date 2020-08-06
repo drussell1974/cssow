@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
-from .core.db_helper import sql_safe, execSql
+from .core.db_helper import ExecHelper, sql_safe
+from .core.log import handle_log_info
+
 
 class ExamBoardModel(BaseModel):
     def __init__(self, id_, name):
@@ -18,31 +20,26 @@ class ExamBoardModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
-"""
-DAL
-"""
+
+    @staticmethod
+    def get_options(db):
+        return ExamBoardDataAccess.get_options(db)
 
 
-def log_info(db, msg, is_enabled = False):
-    from .core.log import Log
-    logger = Log()
-    logger.is_enabled = is_enabled
-    logger.write(db, msg)
-    
-    
-def handle_log_info(db, msg):
-    log_info(db, msg, is_enabled=False)
+class ExamBoardDataAccess:
 
+    @staticmethod
+    def get_options(db):
 
-def get_options(db):
+        execHelper = ExecHelper()
+        
+        rows = []
+        rows = execHelper.execSql(db, "SELECT id, name FROM sow_exam_board;", rows, handle_log_info)
 
-    rows = []
-    execSql(db, "SELECT id, name FROM sow_exam_board;", rows, handle_log_info)
+        data = []
 
-    data = []
+        for row in rows:
+            model = ExamBoardModel(row[0], row[1])
+            data.append(model)
 
-    for row in rows:
-        model = ExamBoardModel(row[0], row[1])
-        data.append(model)
-
-    return data
+        return data

@@ -1,6 +1,8 @@
-from tests.model_test._unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_lessonplan import LessonPlanModel
 
+
+@skip("Deprecated. No longer used")
 class test_cls_lesson_plan__clean_up(TestCase):
 
     def setUp(self):

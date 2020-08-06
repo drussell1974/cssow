@@ -7,7 +7,15 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.view_model import ViewModel
-from shared.models import cls_resource, cls_lesson, cls_schemeofwork
+
+# TODO: use view models
+from shared.models.cls_resource import ResourceModel, MARKDOWN_TYPE_ID
+from shared.models.cls_lesson import LessonModel
+
+# view models
+from ..lessons.viewmodels import LessonGetModelViewModel
+from ..resources.viewmodels import ResourceGetModelViewModel, ResourceGetAllViewModel, ResourceSaveViewModel
+
 from shared.models.core import validation_helper
 
 from django.contrib.auth.models import Permission
@@ -18,13 +26,14 @@ from shared.filehandler import handle_uploaded_markdown
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
-    cls_resource.enable_logging = True
-    resources = cls_resource.get(db, scheme_of_work_id, lesson_id, request.user.id)
+    getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, request.user.id)
+    resources = getall_resources_view.model
 
-    lesson = cls_lesson.get_model(db, lesson_id, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    lesson = get_lesson_view.model
+
+    lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
     
-    lesson_options = cls_lesson.get_options(db, scheme_of_work_id, request.user.id)  #TODO: create view_learningepisiode_options: remove this line
-
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
         "lesson_id":int(lesson_id),
@@ -33,24 +42,25 @@ def index(request, scheme_of_work_id, lesson_id):
         "lesson_options": lesson_options
     }
 
-    view_model = ViewModel("", lesson["title"], lesson["summary"], data=data)
+    view_model = ViewModel(lesson.title, lesson.title, lesson.summary, data=data, active_model=lesson)
     
     return render(request, "resources/index.html", view_model.content)
 
 
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
-    print('Creating a new resource...')
 
-    model = cls_resource.ResourceModel(
+    model = ResourceModel(
         id_=0,
         title="",
         publisher="",
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)
-    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    lesson = get_lesson_view.model
+
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -60,7 +70,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "New", data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "New", data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -68,11 +78,11 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
-    cls_resource.enable_logging = True
-    model = cls_resource.get_model(db, resource_id, scheme_of_work_id, request.user.id)
+    get_model_view = ResourceGetModelViewModel(db, resource_id, scheme_of_work_id, request.user.id)
+    model = get_model_view.model
 
     if model == None:
-        model = cls_resource.ResourceModel(
+        model = ResourceModel(
             id_=0,
             title="",
             publisher="",
@@ -80,8 +90,10 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
             lesson_id=lesson_id)
 
 
-    lesson = cls_lesson.get_model(db, int(lesson_id), request.user.id)    
-    get_resource_type_options = cls_resource.get_resource_type_options(db, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+    lesson = get_lesson_view.model
+
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -91,7 +103,8 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel("", lesson["title"], "Edit: {}".format(model.title), data=data, alert_message=request.session.get("alert_message", None))
+    #231: pass the active model to ViewModel
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -107,10 +120,8 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         model.md_document_name = f
         
     """ save_item non-view action """
-    print('saving resource... scheme_of_work_id:', scheme_of_work_id, ", lesson_id:", lesson_id)
     # create instance of model from request.vars
-    cls_resource.enable_logging = True
-    model = cls_resource.ResourceModel(
+    model = ResourceModel(
         id_=resource_id,
         lesson_id=lesson_id,
         scheme_of_work_id=scheme_of_work_id,
@@ -126,36 +137,55 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     )
 
     ' set property if Markdown document is being uploaded '
-    if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+    if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
         model.md_document_name = request.FILES['md_file']
     
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    model.validate()
-
-    print("saving resource - model.is_valid:", model.is_valid, ", model.validation_errors:", model.validation_errors)
+    save_resource_view = ResourceSaveViewModel(db, model, request.user.id)
     
+    save_resource_view.execute(int(request.POST["published"]))
+
+    model = save_resource_view.model
+ 
+
     if model.is_valid == True:
         ' save resource'
-        #cls_resource.enable_logging = True
-        model = cls_resource.save(db, model, int(request.POST["published"]))
 
         ' upload file if Markdown document '
-        if model.type_id == cls_resource.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+        if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
-
+            
         ' redirect as necessary '
         if request.POST["next"] != None and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
+            
         else:
             redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id, model.id))
     else:
         """ redirect back to page and show message """
 
-        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
+        #request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
         
-        redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
+        #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
+
+        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+        lesson = get_lesson_view.model
+            
+        get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
+
+        data = {
+            "scheme_of_work_id": scheme_of_work_id,
+            "lesson_id": lesson_id,
+            "resource_id": model.id,
+            "resource": model,
+            "get_resource_type_options": get_resource_type_options,
+            "validation_errors":model.validation_errors
+        }
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
+        
+        return render(request, "resources/edit.html", view_model.content)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -165,7 +195,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.delete(db, resource_id, request.user.id)
+    ResourceModel.delete(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -175,6 +205,16 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.delete_unpublished(db, lesson_id, request.user.id)
+    ResourceModel.delete_unpublished(db, lesson_id, request.user.id)
+
+    return HttpResponseRedirect(redirect_to_url)
+
+
+def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
+    ''' Publish the learningobjective '''
+    #231: published item     
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    cls_resource.publish_item(db, resource_id, request.user.id)
 
     return HttpResponseRedirect(redirect_to_url)
