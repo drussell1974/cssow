@@ -47,6 +47,8 @@
     <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
   </span>
 {% endif %}
+<h2 class="group-heading">{{_("Lessons")}}</h2>
+<hr />
   <!-- Pager Header END -->
 <!-- Scheme of works -->
 
@@ -64,13 +66,12 @@
 <div class="post-preview {{ row.published_state }}">
   <a name="{{ row.id}}"></a>
   
-  <h4 class="small">{{ row.topic_name }}</h4>
   <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">
-    <h2 class="post-title">
+    <h3 class="post-title">
       Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
-    </h2>
+    </h3>
     {% if row.summary != "" %}
-      <h3 class="post-subtitle">{{ row.summary }}</h3>
+      <h4 class="post-subtitle">{{ row.summary }}</h4>
     {% endif %}
   </a>
   <div class="links">
@@ -98,9 +99,6 @@
     </p>
 </div>
 <hr>
-
-
-
 
 {% endfor %}
 <!-- Pager Footer -->

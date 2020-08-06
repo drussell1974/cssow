@@ -23,7 +23,7 @@
       <ul class="navbar-nav flex-column fillspace">
       {% for opt in content.data.schemeofwork_options %}
           <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
-              <a class="nav-link" href="{% url 'lesson.index' opt.id %}">
+              <a class="nav-link" href="{% url 'content.index' opt.id %}">
                 {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
               </a>
           </li>
@@ -42,8 +42,10 @@
     <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
   </span>
 {% endif %}
+<h2 class="group-heading">{{_("Curriculum")}}</h2>
+<hr />
   <!-- Pager Header END -->
-<!-- Scheme of works -->
+<!-- Curriculum content -->
 
 {% if content.data.curriculum_content|length == 0 %}
   <div class="alert alert-info" role="alert">
@@ -65,7 +67,7 @@
     {% endfor %}
   </ul>
 </div>
-<!-- Scheme of works END -->
+<!-- Curriculum content END -->
 <hr />
 
 {% endblock %}

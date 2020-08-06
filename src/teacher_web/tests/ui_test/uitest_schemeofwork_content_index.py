@@ -26,7 +26,7 @@ class uitest_schemeofwork_content_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum/Course content')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):

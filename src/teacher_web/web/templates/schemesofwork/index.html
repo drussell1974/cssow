@@ -9,6 +9,8 @@
           <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('add')}}</a>
       </span>
       {% endif %}
+      <h2 class="group-heading">{{_("Schemes of work")}}</h2>
+      <hr />
       <!-- Pager Header END -->
 
       <!-- Scheme of works -->
@@ -35,7 +37,7 @@
             {{_("Lessons")}} <span class="badge badge-light"></span>
           </a>
           <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark">
-            {{_("Curriculum/Course content")}} <span class="badge badge-light"></span>
+            {{_("Curriculum")}} <span class="badge badge-light"></span>
           </a>
         
         </div>
