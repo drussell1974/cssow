@@ -62,7 +62,7 @@ class test_db__save(TestCase):
             
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
              "UPDATE sow_resource SET title = 'How to make unit tests', publisher = 'Unit test', type_id = 0, page_notes = '', url = '', md_document_name = '', is_expired = 0, lesson_id = 13, published = 1 WHERE id = 23;"
-             , log_info=handle_log_info)
+             , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
 
@@ -72,7 +72,7 @@ class test_db__save(TestCase):
 
         model = Model(0, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
 
-        expected_result = model.id
+        expected_result = ([], 102)
 
         with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
             # act
@@ -84,7 +84,7 @@ class test_db__save(TestCase):
             ExecHelper.execCRUDSql.assert_called_with(
                 self.fake_db, 
                 "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('How to make more unit tests', 'Unit test', 0, '', '', 'NULL', 0, 15, '', 0, 1);SELECT LAST_INSERT_ID();"
-                , result=[]
-                , log_info=handle_log_info)
+                , []
+                , handle_log_info)
 
-            self.assertEqual(expected_result, actual_result.id)
+            self.assertEqual(102, actual_result.id)

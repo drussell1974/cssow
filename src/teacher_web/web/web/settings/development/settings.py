@@ -169,3 +169,5 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MARKDOWN_STORAGE = os.path.join(SOLUTION_DIR, 'markdown-service', 'web', 'views')
