@@ -51,6 +51,7 @@ class LessonPage extends React.Component {
         return (
             <LessonPageContainer 
                 lesson={this.state.Lesson}
+                keywords={this.state.Lesson.keywords}
                 schemeofwork={this.state.SchemeOfWork}
                 socialmediadata={this.socialmediadata}
             />
@@ -58,9 +59,8 @@ class LessonPage extends React.Component {
     }
 };
 
-export const LessonPageContainer = ({schemeofwork, lesson, keywords, socialmediadata}) => {
-    // CHECKING UNDEFINDED NOT NEEDED AS SHOULD BE HANDLED BY SUBCOMPONENTS
-    if (lesson === undefined || schemeofwork === undefined || keywords === undefined) {
+export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata}) => {
+    if (lesson === undefined || schemeofwork === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
@@ -77,7 +77,7 @@ export const LessonPageContainer = ({schemeofwork, lesson, keywords, socialmedia
                             <LessonObjectivesWidget data={lesson} />
                         </section>
                         <section className="keywords">
-                            <LessonKeywordsWidget keywords={keywords} />
+                            <LessonKeywordsWidget keywords={lesson.key_words} />
                         </section>
                         <section className="resources">
                             <LessonBoxMenuWidget data={lesson} typeButtonText="View" />                        

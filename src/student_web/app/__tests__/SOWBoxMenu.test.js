@@ -116,7 +116,7 @@ describe('SOWBoxMenu', () => {
 
         expect(
             container.querySelectorAll('.box')
-        ).toHaveLength(4);
+        ).toHaveLength(5);
     })
 
     it('renders buttons with typeLabelText', () => {

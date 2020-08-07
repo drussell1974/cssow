@@ -27,37 +27,37 @@ class Log:
     def write(self, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
         if (self.logging_level % log_type) == 0:
-            if settings.LOG_TO_SQL == True:
-                # write to sql custom log table
-                self._write_to_sql(msg, details, category, subcategory)
-            if settings.LOG_TO_DJANGO_LOGS == True:
-                # write to the django log
-                self._write_to_django_log(msg, details)
-            if settings.LOG_TO_CONSOLE == True:
-                # write to console
-                if log_type == LOG_TYPE.Error:
-                    self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
-                if log_type == LOG_TYPE.Warning:
-                    self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
-                if log_type == LOG_TYPE.Information:
-                    self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
-                if log_type == LOG_TYPE.Verbose:
-                    self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
+            
+            # write to sql custom log table
+            
+            self._write_to_sql(msg, details, category, subcategory)
+            
+            # write to the django log
+            
+            self._write_to_django_log(msg, details)
+            
+            # write to console
+            if log_type == LOG_TYPE.Error:
+                self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
+            if log_type == LOG_TYPE.Warning:
+                self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
+            if log_type == LOG_TYPE.Information:
+                self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
+            if log_type == LOG_TYPE.Verbose:
+                self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
     def _write_to_sql(self, msg, details="", category = "", subcategory = ""):
         """ inserts the detail into the sow_logging table """
-        try:
-            if len(msg) > 200:
-                raise Exception("Cannot write message great than 200 characters - value: {}".format(msg))
-
-            execHelper = ExecHelper()
-            
-            str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
-            
-            execHelper.execCRUDSql(self.db, str_insert)
-        except:
-            raise
+        if settings.LOG_TO_SQL == True:
+            try:
+                execHelper = ExecHelper()
+                
+                str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
+                
+                execHelper.execCRUDSql(self.db, str_insert)
+            except:
+                pass # we'll swallow this up to prevent issues with normal operations
         
 
     def _write_to_django_log(self, msg, details=""):
@@ -65,8 +65,10 @@ class Log:
         Write to the django event log.
         View log when running django debug toolbar
         """
-        logger = logging.getLogger(__name__)
-        logger.info(details)
+        if settings.LOG_TO_DJANGO_LOGS == True:
+            # TODO: confirmation required whether this will show through debug panel
+            logger = logging.getLogger(__name__)
+            logger.info(details)
 
 
     def _write_to_console(self, msg, details="", style=CONSOLE_STYLE.OKBLUE):
@@ -74,7 +76,8 @@ class Log:
         Write to console using print.
         View log when running django debug toolbar
         """
-        print("\n{}message:'{}', details: {}{}".format(style, msg, details, CONSOLE_STYLE.ENDC))
+        if settings.LOG_TO_CONSOLE == True:
+            print("\n{}message:'{}', details: {}{}".format(style, msg, details, CONSOLE_STYLE.ENDC))
 
 
 def handle_log_verbose(db, msg, details = "", log_type = LOG_TYPE.Verbose):
