@@ -3,7 +3,7 @@
 helper routines for retrieving and saving values in the database
 """
 import mysql.connector
-
+from .log_type import LOG_TYPE
 
 class ExecHelper:
     #############################
@@ -34,7 +34,7 @@ class ExecHelper:
         if db != None:
 
             if log_info != None:
-                log_info(db, "executing:{}".format(sql_statement))
+                log_info(db, "execCRUDSql", "executing:{}".format(sql_statement), LOG_TYPE.Verbose)
 
             cur = self._execSql(db, sql_statement)
             for tup in cur:
@@ -49,7 +49,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "result:{}".format(result))
+                log_info(db, "execCRUDSql", "result:{}".format(result), LOG_TYPE.Verbose)
         
         return (result, last_insert_id)
 
@@ -59,7 +59,7 @@ class ExecHelper:
         if db != None:
 
             if log_info != None:
-                log_info(db, "executing:{}".format(sql))
+                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
             
             cur = self._execSql(db, sql)
             for tup in cur:
@@ -67,7 +67,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "results:{}".format(result))
+                log_info(db, "execSql", "results:{}".format(result), LOG_TYPE.Verbose)
 
         # returns appended result
         return result

@@ -32,7 +32,9 @@ DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 # Warning = 2
 # Error = 1
 LOGGING_LEVEL = 4
-
+LOG_TO_SQL = True
+LOG_TO_CONSOLE = True
+LOG_TO_DJANGO_LOGS = False
 
 ALLOWED_HOSTS = [
         "jtc10",

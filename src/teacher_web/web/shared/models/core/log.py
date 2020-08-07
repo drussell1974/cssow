@@ -3,13 +3,7 @@ from datetime import datetime
 from .db_helper import ExecHelper, sql_safe
 import logging # django logging
 from django.conf import settings
-
-class LOG_TYPE:
-    Verbose = 8
-    Information = 4
-    Warning = 2
-    Error = 1
-    NONE = 7
+from .log_type import LOG_TYPE
 
 class CONSOLE_STYLE:
     HEADER = '\033[95m'
@@ -32,30 +26,39 @@ class Log:
 
     def write(self, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
-        
         if (self.logging_level % log_type) == 0:
-            self._write_to_sql(msg, details, category, subcategory)
-            self._write_to_django_log(msg, details)
-            if log_type == LOG_TYPE.Error:
-                self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
-            if log_type == LOG_TYPE.Warning:
-                self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
-            if log_type == LOG_TYPE.Information:
-                self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
-            if log_type == LOG_TYPE.Verbose:
-                self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
+            if settings.LOG_TO_SQL == True:
+                # write to sql custom log table
+                self._write_to_sql(msg, details, category, subcategory)
+            if settings.LOG_TO_DJANGO_LOGS == True:
+                # write to the django log
+                self._write_to_django_log(msg, details)
+            if settings.LOG_TO_CONSOLE == True:
+                # write to console
+                if log_type == LOG_TYPE.Error:
+                    self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
+                if log_type == LOG_TYPE.Warning:
+                    self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
+                if log_type == LOG_TYPE.Information:
+                    self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
+                if log_type == LOG_TYPE.Verbose:
+                    self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
     def _write_to_sql(self, msg, details="", category = "", subcategory = ""):
         """ inserts the detail into the sow_logging table """
-    
+        try:
+            if len(msg) > 200:
+                raise Exception("Cannot write message great than 200 characters - value: {}".format(msg))
 
-        execHelper = ExecHelper()
+            execHelper = ExecHelper()
+            
+            str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
+            
+            execHelper.execCRUDSql(self.db, str_insert)
+        except:
+            raise
         
-        str_insert = "INSERT INTO sow_logging (message, details, category, subcategory, created) VALUES ('%s', '%s', '%s', '%s', '%s');" % (sql_safe(msg), sql_safe(details), sql_safe(category), sql_safe(subcategory), datetime.utcnow())
-        
-        execHelper.execCRUDSql(self.db, str_insert)
-
 
     def _write_to_django_log(self, msg, details=""):
         """ 
@@ -81,7 +84,7 @@ def handle_log_verbose(db, msg, details = "", log_type = LOG_TYPE.Verbose):
     
 def handle_log_info(db, msg, details = "", log_type = LOG_TYPE.Information):
     logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, details, log_type)
+    logger.write(msg=msg, details=details, log_type=log_type)
     
 
 def handle_log_warning(db, msg, details = "", log_type = LOG_TYPE.Warning):
@@ -95,6 +98,5 @@ def handle_log_error(db, msg, details = "", log_type = LOG_TYPE.Error):
 
 
 def handle_log_exception(db, msg, ex, log_type = LOG_TYPE.Error):
-    return
     logger = Log(db, settings.LOGGING_LEVEL)
     logger.write(msg, "{}".format(ex), log_type)
