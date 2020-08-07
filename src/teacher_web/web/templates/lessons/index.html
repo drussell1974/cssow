@@ -38,7 +38,7 @@
 {% block maincontent %}
 <!-- Pager Header  -->
 <div class="clearfix">
-  <ul class="pagination">
+  <ul class="pagination" style="display:none">
       =XML(pager_html)
   </ul>
 </div>
@@ -74,17 +74,19 @@
       <h4 class="post-subtitle">{{ row.summary }}</h4>
     {% endif %}
   </a>
-  <div class="links">
-    <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark">
-      {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objective}}</span>
-    </a>
-    <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark">
-      {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resource}}</span>
-    </a>
-  </div>
+  <div class="badge-group">
     {% for key_word in row.key_words %}
       <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
     {% endfor %}
+  </div>
+  <div class="links stackable-group-sm">
+    <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable">
+      {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objective}}</span>
+    </a>
+    <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark stackable">
+      {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resource}}</span>
+    </a>
+  </div>
   <p class="post-meta">{{_("Created by")}}
     <a href="#">{{ row.created_by_name }}</a>
     {% if row.created %}
@@ -103,10 +105,9 @@
 {% endfor %}
 <!-- Pager Footer -->
 <div class="clearfix">
-      <ul class="pagination">
-          =XML(pager_html)
-      </ul>
-
+  <ul class="pagination" style="display:none">
+      =XML(pager_html)
+  </ul>
 </div>
   <!-- Pager Footer END -->
 

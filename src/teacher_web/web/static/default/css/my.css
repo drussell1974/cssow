@@ -2,11 +2,7 @@
     color:#dc3545 !important;
 }
 
-.unpublished h1, 
-.unpublished h2,
-.unpublished h3,
-.unpublished h4,
-.unpublished h5 {
+.unpublished, .deleting {
     opacity: 0.5;
 }
 
@@ -15,12 +11,15 @@
 .deleting h3,
 .deleting h4,
 .deleting h5 {
-    opacity: 0.5;
-    text-decoration: line-through;
+    color: #dc3545;
 }
 
 .post-title--long-text {
     font-size: 22px !important;
+}
+
+.badge-group {
+    margin: 0 0 15px;
 }
 
 input:invalid {
@@ -79,7 +78,7 @@ h4, h5, h6 {
 }
 
 @media (max-width: 576px) {
-    .form-group .btn {
+    .stackable-group-sm .stackable {
         width: 100%;
         display: block;
         margin-top: 10px;

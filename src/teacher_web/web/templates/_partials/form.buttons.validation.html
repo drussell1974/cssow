@@ -12,11 +12,11 @@
 {% endif %}
 
 <!-- BUTTONS -->
-<button type="submit" name="published" value="1" class="btn btn-primary" id="saveButton">{{_("Save")}}</button>
-<button type="submit" name="published" value="0" class="btn btn-secondary" id="saveDraftButton">{{_("Draft")}}</button>
-<button type="cancel" class="btn btn-primary" id="cancelButton" >{{_("Cancel")}}</button>
+<button type="submit" name="published" value="1" class="btn btn-primary stackable" id="saveButton">{{_("Save")}}</button>
+<button type="submit" name="published" value="0" class="btn btn-secondary stackable" id="saveDraftButton">{{_("Draft")}}</button>
+<button type="cancel" class="btn btn-primary stackable" id="cancelButton" >{{_("Cancel")}}</button>
 {% if content.active_model.id > 0 %}
-    <button type="submit" name="published" value="2" class="btn btn-danger float-right" id="deleteButton">{{_("Delete")}}</button>
+    <button type="submit" name="published" value="2" class="btn btn-danger stackable float-right" id="deleteButton">{{_("Delete")}}</button>
 {% endif %}
 
 {% load static %}    
