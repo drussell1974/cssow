@@ -44,7 +44,7 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         ' ctl-md_document_name '
         elem = self.test_context.find_element_by_id("ctl-md_file")
         import os
-        test_file = "{}/README.md".format(os.getcwd())
+        test_file = "{}/TEST.md".format(os.getcwd())
         elem.send_keys(test_file)
 
         ' ctl-notes '

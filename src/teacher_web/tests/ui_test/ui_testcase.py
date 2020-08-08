@@ -95,12 +95,9 @@ class UITestCase(TestCase):
             pass
 
 
-    def delete_unpublished_item(self, uri):
 
-        #delete
-
-        ' Open edit '
-        #231: find the unpublished learning objective in the index
+    def open_unpublished_item(self):
+        #231: find the unpublished item in the index
 
         elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
 
@@ -108,6 +105,13 @@ class UITestCase(TestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.click()
         
+
+    def delete_unpublished_item(self):
+        """ open and delete unpublished item"""
+
+        ' Open to edit '
+        self.open_unpublished_item()
+
         self.wait()
 
         ' After opening edit Open Modal '

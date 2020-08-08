@@ -1,5 +1,6 @@
 from datetime import datetime
 from django import forms
+from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
@@ -101,6 +102,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
         "resource_id": model.id,
         "resource": model,
         "get_resource_type_options": get_resource_type_options,
+        "md_document_service_uri": settings.MARKDOWN_SERVICE_URI
     }
     
     #231: pass the active model to ViewModel

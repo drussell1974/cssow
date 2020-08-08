@@ -77,13 +77,26 @@ h4, h5, h6 {
     text-decoration: solid;
 }
 
+.markdown-body {
+    margin: 30px 0 0;
+    padding: 30px;
+    max-height: 400px;
+}
+
 @media (max-width: 576px) {
     .stackable-group-sm .stackable {
         width: 100%;
         display: block;
         margin-top: 10px;
     }
+
+    .markdown-body {
+        margin: 15px 0 0;
+        padding: 15px;
+        max-height: 200px;
+    }
 }
+
 
 /*.pagination div:after {
     content: ' | ';

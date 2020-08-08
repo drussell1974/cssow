@@ -81,9 +81,14 @@
         
         <!-- Preview -->
         <div class="form-group controls" id="md_document-preview--control">
-            <label class="small">{{_("Preview markdown:")}} {{content.data.resource.md_document_name}}</label>
-            <div class="markdown-body collapsable collapsed" ></div>
-
+            <button class="btn btn-outline-secondary small" type="button" id="btn-markdown_preview" data-toggle="collapse" data-target="#collapseMarkdown" aria-expanded="false" aria-controls="collapseMarkdown">
+                {{_("Preview markdown:")}} {{content.data.resource.md_document_name}}
+            </button>
+            <div class="collapse" id="collapseMarkdown">
+                <div class="markdown-body bg-light overflow-auto"> 
+                    preview will appear here
+                </div>
+            </div>
             <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
         </div>
     </div>
@@ -108,43 +113,15 @@
     <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
     <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
     <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+    <input type="hidden" name="md_document_service_uri" id="ctl-md_document_service_uri" value="{{content.data.md_document_service_uri}}" />
 </form>
 <hr>
 {% endblock %}
 
 
 {% block page_js %}
-    
-    <script>
-        const md_document_control_group = document.querySelector("#md_document--control-group");
-        const md_file_control = document.querySelector("#ctl-md_file");
-        const md_document_name_control = document.querySelector("#ctl-md_document_name");
-        const type_field = document.querySelector("#ctl-type_id");    
-        
-        function showHideMarkdownUpload(value) {
-            // get comparison value from settings
-            if (value != 10) {
-                md_document_control_group.style.display = "none";
-                md_file_control.required = false;
-                md_document_name_control.required = false;
-            } else if (md_document_name_control != null && md_document_name_control.value == "") {
-                md_document_control_group.style.display = "block";
-                md_file_control.required = true;
-                md_document_name_control.required = false;
-            } else {
-                md_document_control_group.style.display = "block";
-                md_file_control.required = false;
-                md_document_name_control.required = true;
-            }
-        }
-
-        type_field.addEventListener('change', (e) => {
-            showHideMarkdownUpload(e.target.value);
-        })
-
-        window.addEventListener('load', () => {
-            showHideMarkdownUpload(type_field.value);
-        })
-
-    </script>
+    {% load static %}
+    <script src="{% static 'default/js/github-markdown.js' %}"></script>
+    <script src="{% static 'default/js/md_document--upload.js' %}"></script>
+    <script src="{% static 'default/js/md_document--preview.js' %}"></script>
 {% endblock %}

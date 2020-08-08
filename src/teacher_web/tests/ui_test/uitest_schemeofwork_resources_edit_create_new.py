@@ -91,6 +91,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','New')
         
+        
 
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
@@ -123,8 +124,9 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         ' ctl-md_document_name '
         elem = self.test_context.find_element_by_id("ctl-md_file")
         import os
-        test_file = "{}/README.md".format(os.getcwd())
+        test_file = "{}/TEST.md".format(os.getcwd())
         elem.send_keys(test_file)
+
 
         ' ctl-notes '
         elem = self.test_context.find_element_by_id("ctl-notes")
@@ -140,6 +142,39 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
+        # open newly created resource to edit
+
+        self.open_unpublished_item()
+
+        # verify with preview that document is stored (required markdown-service running)
+
+        self.wait(s=2)
+
+        elem = self.test_context.find_element_by_css_selector("#md_document-preview--control > button#btn-markdown_preview")
+        elem.click()
+
+        self.assertEqual("PREVIEW MARKDOWN: TEST.MD", elem.text, "markdown document preview not found. Ensure service is running and available")
+
+
+        elem = self.test_context.find_element_by_css_selector("#md_document-preview--control > .collapse > .markdown-body > h1")
+        
+        # THIS IS THE HEADING FROM THE LOADED MARKDOWN (THIS SHOULD BE THE FIRST ELEMENT OR BE INCLUDED... format should be hash for h1 - e.g. '#Donec fermentum')
+
+        self.assertEqual("Donec fermentum", elem.text)
+
+
+        ' After opening edit Open Modal '
+
+        #231: click the delete button
+        elem = self.test_context.find_element_by_id("cancelButton")
+        elem.click()
+
+        ' Cancel from Modal '        
+        
+        #231: then click the continue button
+        elem = self.test_context.find_element_by_id("cancelModalContinueButton")
+        elem.click()
+
         # delete
 
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
@@ -148,6 +183,9 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         self.wait()
 
         elem.click()
+
+
+        
 
 
     def test_page__should_hide_upload_if_not_md_document_type(self):
