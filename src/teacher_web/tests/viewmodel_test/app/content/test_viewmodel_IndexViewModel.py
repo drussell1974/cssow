@@ -78,7 +78,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         data_to_return = []
         
         with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test")):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()
@@ -102,7 +102,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         data_to_return = [Model(56,"", "")]
 
         with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test")):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()
@@ -126,7 +126,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         data_to_return = [Model(56,"", ""),Model(57,"", ""),Model(58,"", "")]
  
         with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test")):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()

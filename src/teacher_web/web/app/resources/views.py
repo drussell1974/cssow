@@ -3,7 +3,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -30,7 +30,7 @@ def index(request, scheme_of_work_id, lesson_id):
     getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, request.user.id)
     resources = getall_resources_view.model
 
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
     lesson = get_lesson_view.model
 
     lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
@@ -58,7 +58,7 @@ def new(request, scheme_of_work_id, lesson_id):
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)
     lesson = get_lesson_view.model
 
     get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
@@ -79,7 +79,7 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
-    get_model_view = ResourceGetModelViewModel(db, resource_id, scheme_of_work_id, request.user.id)
+    get_model_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, request.user.id)
     model = get_model_view.model
 
     if model == None:
@@ -91,7 +91,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
             lesson_id=lesson_id)
 
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)    
     lesson = get_lesson_view.model
 
     get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
@@ -172,7 +172,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
-        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)    
+        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)    
         lesson = get_lesson_view.model
             
         get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)

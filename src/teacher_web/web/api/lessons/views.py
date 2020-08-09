@@ -22,7 +22,7 @@ class LessonViewSet(APIView):
         
         resource_type_id = request.GET.get("resource_type_id", 0)
 
-        get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id, resource_type_id)
+        get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id, resource_type_id)
         return JsonResponse({ "lesson": get_lesson_view.model })
     
     

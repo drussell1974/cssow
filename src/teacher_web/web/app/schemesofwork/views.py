@@ -1,5 +1,5 @@
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
@@ -40,7 +40,7 @@ def edit(request, scheme_of_work_id = 0):
     # initiate empty model 
     
     model = SchemeOfWorkModel(id_=scheme_of_work_id)
-
+    
     if request.method == "GET" and model.id > 0:
         ## GET request from client ##
 
@@ -60,7 +60,7 @@ def edit(request, scheme_of_work_id = 0):
             key_stage_id=request.POST.get("key_stage_id", 0),
             created=datetime.now(),
             created_by_id=request.user.id)
-
+    
         # validate the model and save if valid otherwise redirect to default invalid
 
         save_view = SchemeOfWorkEditViewModel(db, model, request.user.id)

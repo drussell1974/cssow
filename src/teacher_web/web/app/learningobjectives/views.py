@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -32,11 +32,10 @@ from app.lessons.viewmodels import LessonGetModelViewModel
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
     lesson = get_lesson_view.model
 
-    #TODO: Rename ViewModel to LearningObjectiveIndexViewModel
-    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, request.user.id)
+    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
     
     lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
     
@@ -59,10 +58,10 @@ def new(request, scheme_of_work_id, lesson_id):
 
     # check if an existing_learning_objective_id has been passed
      
-    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, request.user.id)
+    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, scheme_of_work_id, lesson_id, request.user.id)
     model = get_lessonobjective_view.model
     
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -100,7 +99,7 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Edit an existing learning objective '''
     
-    get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, request.user.id)
+    get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, lesson_id, scheme_of_work_id, request.user.id)
     model = get_model_viewmodel.model
 
     # redirect if not found
@@ -109,7 +108,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         return HttpResponseRedirect(redirect_to_url)
 
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:

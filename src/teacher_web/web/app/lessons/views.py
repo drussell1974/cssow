@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.core import serializers
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
@@ -25,21 +25,7 @@ def index(request, scheme_of_work_id):
     
     lessonIndexView = LessonIndexViewModel(db, scheme_of_work_id, auth_user=request.user.id)
 
-    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
-
-    schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=request.user.id)
-    
-    
-    data = {
-        "scheme_of_work_id":int(scheme_of_work_id),
-        "schemeofwork_options": schemeofwork_options,
-        "lessons": lessonIndexView.model,
-        "topic_name": "",
-    }
-
-    view_model = ViewModel(scheme_of_work_name, scheme_of_work_name, "Lessons", data=data)
-    
-    return render(request, "lessons/index.html", view_model.content)
+    return render(request, "lessons/index.html", lessonIndexView.view().content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -47,11 +33,11 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
     scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, request.user.id)
-    
+
     if request.method == "GET":
         ## GET request from client ##
         
-        get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+        get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
         model = get_lesson_view.model
     
         # handle copy
@@ -168,7 +154,7 @@ def lessonplan(request, scheme_of_work_id, lesson_id):
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
-    get_lesson_view =  LessonGetModelViewModel(db, lesson_id, request.user.id)
+    get_lesson_view =  LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
     model = get_lesson_view.model
 
     data = {

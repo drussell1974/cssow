@@ -22,7 +22,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
     def tearDownClass(cls):
         # tear down
         cls.test_context.close()
-
+        
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         

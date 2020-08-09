@@ -33,9 +33,9 @@ class ResourceModel (BaseModel):
     type_id = 0
     type_name = ""
 
-    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         
-        super().__init__( id_, title, created, created_by_id, created_by_name, published)
+        super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
@@ -111,8 +111,9 @@ class ResourceModel (BaseModel):
 
 
     @staticmethod
-    def get_model(db, resource_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, scheme_of_work_id, auth_user)
+    #248 Added parameters
+    def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -131,6 +132,7 @@ class ResourceModel (BaseModel):
                 created_by_name = row[12], 
                 published = row[13], 
                 scheme_of_work_id=scheme_of_work_id)
+            model.is_from_db = True
             data = model
         return data
 
@@ -170,7 +172,6 @@ class ResourceModel (BaseModel):
     @staticmethod
     def get_resource_type_options(db, auth_user):
         rows = ResourceDataAccess.get_resource_type_options(db, auth_user)
-        #TODO: Return object
         return rows
 
 
@@ -193,7 +194,8 @@ class ResourceModel (BaseModel):
 class ResourceDataAccess:
 
     @staticmethod
-    def get_model(db, id_, scheme_of_work_id, auth_user):
+    #248 Added parameters
+    def get_model(db, id_, lesson_id, scheme_of_work_id,auth_user):
         """ Get Resource """
         execHelper = ExecHelper()
         
@@ -213,9 +215,11 @@ class ResourceDataAccess:
                     " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
                     " res.published as published " \
                     "FROM sow_resource AS res " \
+                    " INNER JOIN sow_lesson as les ON les.id = res.lesson_id "\
+                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id "\
                     " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                     " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                    "WHERE res.id = {id} " \
+                    "WHERE res.id = {id} "\
                     " AND (res.published = 1 OR res.created_by = {auth_user});"
 
         str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))

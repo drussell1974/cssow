@@ -39,6 +39,12 @@ class UITestCase(TestCase):
             profile = self.test_context.find_element_by_id("btn-profile")
             self.assertEqual(username, profile.text)
 
+
+    def assertCustom404(self, info_message):
+        elem = self.test_context.find_element_by_css_selector('#info > p')
+        self.assertEqual(info_message, elem.text)
+
+
     def try_log_in(self, redirect_to_uri_on_login):
         """
         Makes an attempt to log in, if the page has been redirected.
@@ -71,12 +77,13 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
+        
         login_uri = self.root_uri + "/accounts/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
 
-
+        
         try:
             self.test_context.implicitly_wait(4)
 

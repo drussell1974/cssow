@@ -1,5 +1,6 @@
 import json
 from rest_framework import serializers, status
+from django.http.response import Http404
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
@@ -22,8 +23,10 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        data = Model.get_model(self.db, scheme_of_work_id, auth_user)
-        self.model = data
+        model = Model.get_model(self.db, scheme_of_work_id, auth_user)
+        if model is None or model.is_from_db == False:
+            self.on_not_found(model, scheme_of_work_id) 
+        self.model = model
 
 
 class SchemeOfWorkEditViewModel(BaseViewModel):

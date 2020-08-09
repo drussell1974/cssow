@@ -5,10 +5,10 @@ from shared.models.cls_resource import ResourceModel
 
 class ResourceGetModelViewModel(BaseViewModel):
 
-    def __init__(self, db, resource_id, scheme_of_work_id, auth_user):
+    def __init__(self, db, resource_id, lesson_id, scheme_of_work_id, auth_user):
         self.db = db
         # get model
-        model = ResourceModel.get_model(db, resource_id, scheme_of_work_id, auth_user)
+        model = ResourceModel.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         
         if model is not None:
             #model.key_words = list(map(lambda x: x.toJSON(), model.key_words))

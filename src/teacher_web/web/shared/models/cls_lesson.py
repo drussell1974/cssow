@@ -28,9 +28,9 @@ class LessonModel (BaseModel):
     learning_objectives = []
     number_of_resource = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
-        super().__init__(id_, title, created, created_by_id, created_by_name, published)
+        super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
@@ -192,8 +192,8 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_model(db, lesson_id, auth_user, resource_type_id=0):
-        rows = LessonDataAccess.get_model(db, lesson_id, auth_user, resource_type_id)
+    def get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id=0):
+        rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
         model = LessonModel(lesson_id, "")
         for row in rows:
             model = LessonModel(
@@ -213,9 +213,11 @@ class LessonModel (BaseModel):
                 created_by_id=row[13],
                 created_by_name=row[14])
             model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
-            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, auth_user)
+            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
             model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id)
+            #248 Mark instance from database
+            model.on_fetched_from_db()
         return model
 
 
@@ -249,7 +251,7 @@ class LessonModel (BaseModel):
             ' get the number of learning objectives ' 
             model.number_of_learning_objective = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
             ' get learning objectives for this lesson '
-            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, auth_user)
+            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             ' get number of resources for this lesson '
             model.number_of_resource = ResourceModel.get_number_of_resources(db, model.id, auth_user)
             ' get related topics '
@@ -349,7 +351,7 @@ class LessonModel (BaseModel):
 class LessonDataAccess:
 
     @staticmethod
-    def get_model(db, id_, auth_user, resource_type_id = 0):
+    def get_model(db, id_, scheme_of_work_id, auth_user, resource_type_id = 0):
         execHelper = ExecHelper()
 
         select_sql = "SELECT "\
@@ -374,8 +376,8 @@ class LessonDataAccess:
                     " INNER JOIN sow_topic as top ON top.id = le.topic_id"\
                     " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
                     " LEFT JOIN auth_user as user ON user.id = sow.created_by"\
-                    " WHERE le.id = {lesson_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-        select_sql = select_sql.format(lesson_id=int(id_), auth_user=to_db_null(auth_user))
+                    " WHERE le.id = {lesson_id} AND le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user});"
+        select_sql = select_sql.format(lesson_id=int(id_), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)

@@ -1,4 +1,5 @@
 import json
+from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
@@ -19,11 +20,15 @@ class ResourceGetAllViewModel(BaseViewModel):
 
 class ResourceGetModelViewModel(BaseViewModel):
     
-    def __init__(self, db, resource_id, scheme_of_work_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, resource_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
+        self.model = None
         self.db = db
+        
         # get model
-        data = Model.get_model(self.db, resource_id, scheme_of_work_id, auth_user)
-        self.model = data
+        model = Model.get_model(self.db, resource_id, lesson_id, scheme_of_work_id, auth_user)
+        if model is None or model.is_from_db == False: 
+            self.on_not_found(model, resource_id, lesson_id, scheme_of_work_id) 
+        self.model = model
 
 
 class ResourceSaveViewModel(BaseViewModel):

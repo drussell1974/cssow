@@ -11,6 +11,6 @@ class ResourceViewSet(APIView):
 
     def get(self, request, scheme_of_work_id, lesson_id, resource_id):
 
-        resource_view = ResourceGetModelViewModel(db, resource_id, scheme_of_work_id, request.user.id)
+        resource_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, request.user.id)
 
         return JsonResponse({"resource": resource_view.model})

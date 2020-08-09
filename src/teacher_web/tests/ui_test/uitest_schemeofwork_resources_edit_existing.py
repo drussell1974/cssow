@@ -25,7 +25,6 @@ class uitest_schemeofwork_resource_edit_existing(UITestCase):
 
     """ Test edit """
 
-
     def test_page__should_stay_on_same_page_if_invalid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")

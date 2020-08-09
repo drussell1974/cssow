@@ -44,6 +44,7 @@ class test_db__get_model(TestCase):
             self.assertEqual(0, model.id)
             self.assertEqual("", model.description)
             self.assertTrue(model.is_new())
+            self.assertFalse(model.is_from_db)
 
 
     def test__should_call_execSql_return_single_item(self):
@@ -63,6 +64,7 @@ class test_db__get_model(TestCase):
             self.assertEqual("Lorem", model.name)
             self.assertEqual("ipsum dolor sit amet.", model.description)
             self.assertFalse(model.is_new())
+            self.assertTrue(model.is_from_db)
 
 
 

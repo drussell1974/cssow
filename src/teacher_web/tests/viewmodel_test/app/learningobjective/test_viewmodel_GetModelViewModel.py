@@ -1,5 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
+from django.http import Http404
 
 # test context
 
@@ -21,21 +22,20 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         # arrange
         
-        data_to_return = []
+        data_to_return = None
         
         with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
 
-            self.mock_model = Mock()
-
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            with self.assertRaises(Http404):
+                self.viewmodel = ViewModel(db, 99, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
-            # assert functions was called
-            Model.get_model.assert_called()
-            self.assertEqual(0, len(self.viewmodel.model))
+                # assert functions was called
+                Model.get_model.assert_called()
+                self.assertEqual(0, len(self.viewmodel.model))
 
 
     def test_init_called_fetch__single_row(self):
@@ -43,19 +43,19 @@ class test_viewmodel_GetModelViewModel(TestCase):
         # arrange
         
         data_to_return = Model(56, "How to save the world in a day")
+        data_to_return.is_from_db = True
         
         with patch.object(Model, "get_model", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
 
-            self.mock_model = Mock()
-
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            self.viewmodel = ViewModel(db, 56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
 
             self.assertEqual(56, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.description)
+            self.assertTrue(self.viewmodel.model.is_from_db)

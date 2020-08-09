@@ -5,9 +5,9 @@ from .core.log import handle_log_info
 
 
 class ContentModel(BaseModel):
-    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
-        super().__init__(id_, description, created, created_by_id, created_by_name, published)
+        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.description = description
         self.letter_prefix = letter_prefix
@@ -64,11 +64,12 @@ class ContentModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, content_id, auth_user):
-        rows = ContentDataAccess.get_model(db, content_id, auth_user)
+    def get_model(db, content_id, scheme_of_work_id, auth_user):
+        rows = ContentDataAccess.get_model(db, content_id, scheme_of_work_id, auth_user)
         model = None
         for row in rows:
             model = ContentModel(row[0], row[1], row[2], published=row[3])
+            model.on_fetched_from_db()
         return model
 
 
@@ -115,11 +116,12 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def get_model(db, content_id, auth_user):
+    def get_model(db, content_id, scheme_of_work_id, auth_user):
         """
         Get a full list of terms and definitions
         :param db:
         :param id: content id
+        :param scheme_of_work_id: CURRENTLY NOT USED
         :return: content description and letter prefix
         """
         execHelper = ExecHelper()

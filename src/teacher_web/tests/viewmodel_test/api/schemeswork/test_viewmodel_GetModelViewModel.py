@@ -7,7 +7,7 @@ from api.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel as ViewMo
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
-class test_viewmodel_LessonGetModelViewModel(TestCase):
+class test_viewmodel_GetModelViewModel(TestCase):
 
     def setUp(self):        
         pass

@@ -22,7 +22,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 0,
+                        is_from_db = False)
 
         # test
         test.validate()
@@ -39,7 +40,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 0,
+                        is_from_db = False)
 
         # assert
         self.assertEqual(0, test.id)
@@ -57,7 +59,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 1)
+                        published = 1,
+                        is_from_db = False)
 
         # test
         test.validate()
@@ -78,7 +81,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 0,
+                        is_from_db = False)
 
         # assert
         self.assertEqual(0, test.id)
@@ -93,7 +97,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 0,
+                        is_from_db = False)
 
         # assert
         self.assertEqual(1, test.id)
@@ -109,7 +114,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0)
+                        published = 0,
+                        is_from_db = False)
 
         # assert
         self.assertEqual("unpublished", test.published_state)
@@ -123,7 +129,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 1)
+                        published = 1,
+                        is_from_db = False)
 
         # assert
         self.assertEqual("published", test.published_state)
@@ -137,7 +144,8 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 2)
+                        published = 2,
+                        is_from_db = False)
 
         # assert
         self.assertEqual("deleting", test.published_state)

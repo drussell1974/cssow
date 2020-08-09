@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.basemodel import BaseModel, try_int
+from .core.basemodel import BaseModel, BaseDataAccess, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_db_null
 from shared.models.core.log import handle_log_info
 
@@ -18,9 +18,9 @@ class SchemeOfWorkModel(BaseModel):
     name = ""
     description = ""
     
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
-        super().__init__(id_, name, created, created_by_id, created_by_name, published)
+        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.name = name
         self.description = description
         self.exam_board_id = try_int(exam_board_id)
@@ -106,6 +106,8 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
+            model.on_fetched_from_db()
+
         return model
 
 

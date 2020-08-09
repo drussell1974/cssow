@@ -16,9 +16,9 @@ class BaseModel(models.Model):
     validation_errors = {}
     error_message = ""
     published = 0
+    is_from_db = False
 
-
-    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published):
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db):
         self.id = try_int(id_)
         self.display_name = display_name
         self.created = created
@@ -26,6 +26,11 @@ class BaseModel(models.Model):
         self.created_by_name = created_by_name
         self.published = published
         self.set_published_state()
+        self.is_from_db = is_from_db
+
+
+    def __repr__(self):
+        return "{} (id={})".format(self.display_name, self.id)
 
 
     def from_dict(self, dict_obj):
@@ -57,6 +62,11 @@ class BaseModel(models.Model):
             return True
         else:
             return False
+
+
+    def on_fetched_from_db(self):
+        """ event to use when instances has been retreived from the data """
+        self.is_from_db = True
 
     """
     Friendly names
@@ -206,6 +216,7 @@ class BaseModel(models.Model):
                 DataAccess._update(db, model, auth_user)
         return model
 
+
 """
 formatting members
 """
@@ -217,6 +228,8 @@ def try_int(val, return_value=None):
     except:
         val = return_value
     return val
+
+
 
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info

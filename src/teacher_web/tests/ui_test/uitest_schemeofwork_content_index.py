@@ -10,7 +10,7 @@ class uitest_schemeofwork_content_index(UITestCase):
         
         #self.test_context.get(self.root_uri + self.test_path)
         #self.test_context.implicitly_wait(4)
-        
+
         self.do_log_in(self.root_uri + self.test_path)
 
 
@@ -75,6 +75,6 @@ class uitest_schemeofwork_content_index(UITestCase):
         section = self.test_context.find_elements_by_class_name('post-preview')
         # assert
         result = len(section)
-        self.assertEqual(9, result, "number of elements not as expected")
+        self.assertEqual(9, result, "number of curriculum-content elements not as expected")
 
 

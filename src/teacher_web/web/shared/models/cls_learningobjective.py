@@ -8,9 +8,9 @@ from .core.log import handle_log_info
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
-        super().__init__(id_, description, created, created_by_id, created_by_name, published)
+        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)
         
         self.id = int(id_)
         self.description = description
@@ -107,8 +107,9 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
-    def get_model(db, learning_objective_id, auth_user):
-        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, auth_user)
+    #248 Added parameters
+    def get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
+        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
         model = LearningObjectiveModel(0)
         for row in rows:
             model = LearningObjectiveModel(
@@ -129,11 +130,13 @@ class LearningObjectiveModel (BaseModel):
                 created_by_id = row[14],
                 created_by_name = row[15],
                 published = row[16])
+            model.on_fetched_from_db()
+
         return model
 
     @staticmethod
-    def get_all(db, lesson_id, auth_user):
-        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, auth_user)
+    def get_all(db, lesson_id, scheme_of_work_id, auth_user):
+        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user)
         data = []
         for row in rows:
             model = LearningObjectiveModel(
@@ -243,7 +246,8 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_model(db, id_, auth_user):
+    #248 Added parameters
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user):
 
         execHelper = ExecHelper()
         
@@ -275,7 +279,9 @@ class LearningObjectiveDataAccess:
                     " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
                     " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});"
 
-        select_sql = select_sql.format(learning_objective_id=int(id_), auth_user=to_db_null(auth_user))
+        select_sql = select_sql.format(
+            learning_objective_id=int(id_)
+            , auth_user=to_db_null(auth_user))
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
@@ -283,7 +289,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_all(db, lesson_id, auth_user):
+    def get_all(db, lesson_id, scheme_of_work_id, auth_user):
 
         execHelper = ExecHelper()
 
@@ -315,8 +321,10 @@ class LearningObjectiveDataAccess:
                     " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
                     " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
                     " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
-                    " WHERE le.id = {lesson_id} AND (le.published = 1 or le.created_by = {auth_user});"
-        select_sql = select_sql.format(lesson_id=int(lesson_id), auth_user=to_db_null(auth_user))
+                    " WHERE le.id = {lesson_id} "\
+                    " AND sow.id = {scheme_of_work_id}"\
+                    " AND (le.published = 1 or le.created_by = {auth_user});"
+        select_sql = select_sql.format(lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)

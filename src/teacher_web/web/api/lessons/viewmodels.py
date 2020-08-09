@@ -16,14 +16,14 @@ class LessonGetAllViewModel(BaseViewModel):
 
 class LessonGetModelViewModel(BaseViewModel):
 
-    def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
-        model = LessonModel.get_model(self.db, lesson_id, auth_user, resource_type_id)
-
-        if model is not None:
-            #model.key_words = list(map(lambda x: x.toJSON(), model.key_words))
-
+        model = LessonModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+        #248 check existing instance exists
+        if model is None or model.is_from_db == False:
+            self.on_not_found(model, lesson_id, scheme_of_work_id)
+        else:
             srl = LessonModelSerializer(model)
             self.model = srl.data
 
