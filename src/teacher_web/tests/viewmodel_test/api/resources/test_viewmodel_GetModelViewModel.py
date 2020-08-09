@@ -81,6 +81,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
         Model.MARKDOWN_TYPE_ID = 10
         
         data_to_return = Model(456, title="Cras eleifend pulvinar lacinia.", type_id=10, page_uri="override.me")
+        data_to_return.md_document_name = "TESTME.md"
         
         with patch.object(Model, "get_model", return_value=data_to_return):
 
@@ -95,9 +96,9 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             # assert functions was called
             Model.get_model.assert_called()
 
-            self.assertEqual("x", self.viewmodel.model["page_uri"])
+            self.assertEqual("/api/schemesofwork/90/lessons/18/resources/456/markdown/TESTME.md", self.viewmodel.model["page_uri"])
 
-
+    @skip("Not implemented")
     def test_init_called_fetch__return_page_uri_for_non_markdown_document(self):
         
         # arrange

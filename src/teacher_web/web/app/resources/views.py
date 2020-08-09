@@ -96,16 +96,12 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
     get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
-    # get uri for markdown, otherwise empty    
-    cssow_service_uri = reverse("api.resource.markdown", args=[scheme_of_work_id, lesson_id,  model.id, model.md_document_name]) if len(model.md_document_name) > 0 else ""
-    
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "resource_id": model.id,
         "resource": model,
         "get_resource_type_options": get_resource_type_options,
-        "cssow_service_uri": cssow_service_uri # settings.MARKDOWN_SERVICE_URI
     }
     
     #231: pass the active model to ViewModel

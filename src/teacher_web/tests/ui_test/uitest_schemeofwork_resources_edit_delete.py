@@ -25,31 +25,31 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
 
         ' Create valid information '
 
+        ' ctl-type_id '
+        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
+        elem.select_by_visible_text("Markdown")
+
         ' ctl-title '
         elem = self.test_context.find_element_by_id("ctl-title")
         elem.send_keys("test_page__should_redirect_to_index_if_valid")
 
-        ' ctl-uri '
-        elem = self.test_context.find_element_by_id("ctl-uri")
-        elem.send_keys("https://www.pgonline.co.uk/resources/computer-science/a-level-ocr/ocr-a-level-textbook/")
+        ' ctl-notes '
+        elem = self.test_context.find_element_by_id("ctl-notes")
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mollis ligula dui, quis feugiat elit hendrerit condimentum. Mauris dignissim ultrices.")
         
         ' ctl-publisher '
         elem = self.test_context.find_element_by_id("ctl-publisher")
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
-        ' ctl-type_id '
-        elem = Select(self.test_context.find_element_by_id("ctl-type_id"))
-        elem.select_by_visible_text("Markdown")
+        #' ctl-uri '
+        #elem = self.test_context.find_element_by_id("ctl-uri")
+        #elem.send_keys("https://www.pgonline.co.uk/resources/computer-science/a-level-ocr/ocr-a-level-textbook/")
 
         ' ctl-md_document_name '
         elem = self.test_context.find_element_by_id("ctl-md_file")
         import os
         test_file = "{}/{}".format(os.getcwd(), self.test_md_document_name)
         elem.send_keys(test_file)
-
-        ' ctl-notes '
-        elem = self.test_context.find_element_by_id("ctl-notes")
-        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mollis ligula dui, quis feugiat elit hendrerit condimentum. Mauris dignissim ultrices.")
 
         ' submit the form '
         #self.test_context.implicitly_wait(10)

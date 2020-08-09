@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import markdown
 from .core.basemodel import BaseModel, BaseDataAccess, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
@@ -103,6 +104,14 @@ class ResourceModel (BaseModel):
     def is_markdown(model):
         """ checks if the type_id is a markdown document """
         return model.type_id == ResourceModel.MARKDOWN_TYPE_ID
+
+
+    @staticmethod
+    def get_markdown_html(document_path):
+        with open( document_path, "r", encoding="utf-8") as input_file:
+            text = input_file.read()
+            html = markdown.markdown(text)
+            return html
 
 
     @staticmethod
