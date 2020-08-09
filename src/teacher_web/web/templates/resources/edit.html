@@ -113,7 +113,7 @@
     <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
     <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
     <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
-    <input type="hidden" name="md_document_service_uri" id="ctl-md_document_service_uri" value="{{content.data.md_document_service_uri}}" />
+    <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
 </form>
 <hr>
 {% endblock %}
@@ -121,7 +121,6 @@
 
 {% block page_js %}
     {% load static %}
-    <script src="{% static 'default/js/github-markdown.js' %}"></script>
     <script src="{% static 'default/js/md_document--upload.js' %}"></script>
     <script src="{% static 'default/js/md_document--preview.js' %}"></script>
 {% endblock %}

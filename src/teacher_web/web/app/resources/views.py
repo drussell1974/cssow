@@ -10,7 +10,7 @@ from django.urls import reverse
 from shared.view_model import ViewModel
 
 # TODO: use view models
-from shared.models.cls_resource import ResourceModel, MARKDOWN_TYPE_ID
+from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
 
 # view models
@@ -96,13 +96,16 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
     get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
 
+    # get uri for markdown, otherwise empty    
+    cssow_service_uri = reverse("api.resource.markdown", args=[scheme_of_work_id, lesson_id,  model.id, model.md_document_name]) if len(model.md_document_name) > 0 else ""
+    
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "resource_id": model.id,
         "resource": model,
         "get_resource_type_options": get_resource_type_options,
-        "md_document_service_uri": settings.MARKDOWN_SERVICE_URI
+        "cssow_service_uri": cssow_service_uri # settings.MARKDOWN_SERVICE_URI
     }
     
     #231: pass the active model to ViewModel
@@ -138,8 +141,10 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         published=request.POST.get("published", 0)
     )
 
+    ResourceModel.MARKDOWN_TYPE_ID = settings.MARKDOWN_TYPE_ID
+
     ' set property if Markdown document is being uploaded '
-    if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+    if model.type_id == settings.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
         model.md_document_name = request.FILES['md_file']
     
     # validate the model and save if valid otherwise redirect to default invalid
@@ -156,7 +161,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         ' save resource'
 
         ' upload file if Markdown document '
-        if model.type_id == MARKDOWN_TYPE_ID and "md_file" in request.FILES:
+        if model.type_id == settings.MARKDOWN_TYPE_ID and "md_file" in request.FILES:
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
             
         ' redirect as necessary '

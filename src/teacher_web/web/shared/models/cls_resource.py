@@ -6,14 +6,6 @@ from datetime import datetime
 from .core.db_helper import to_db_null, to_empty, to_db_bool
 
 
-# TODO: Get this from settings
-MARKDOWN_TYPE_ID = 10
-
-
-def check_type_id(model):
-    """ checks if the type_id is a markdown document """
-    return model.type_id == MARKDOWN_TYPE_ID
-
 
 class ResourceTypeModel:
     def __init__(self, id, name):
@@ -32,6 +24,8 @@ class ResourceModel (BaseModel):
     publisher = ""
     type_id = 0
     type_name = ""
+    # default Get this from settings
+    MARKDOWN_TYPE_ID = 10 # default
 
     def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         
@@ -47,12 +41,7 @@ class ResourceModel (BaseModel):
         self.lesson_id = lesson_id
         self.scheme_of_work_id = scheme_of_work_id
         self.last_accessed = last_accessed
-        #self.created = created
-        #self.created_by_id = try_int(created_by_id)
-        #self.created_by_name = created_by_name
-        #self.published = published
         self.is_expired = is_expired
-
         self.set_published_state()  
 
 
@@ -81,7 +70,7 @@ class ResourceModel (BaseModel):
         self._validate_optional_uri("page_uri", self.page_uri)
 
         # validate md_document_name
-        self._validate_required_string_if("md_document_name", self.md_document_name, 1, 200, check_type_id)
+        self._validate_required_string_if("md_document_name", self.md_document_name, 1, 200, ResourceModel.is_markdown)
 
 
     def _clean_up(self):
@@ -108,6 +97,12 @@ class ResourceModel (BaseModel):
         # trim md_document_name
         if self.md_document_name is not None:
             self.md_document_name = sql_safe(self.md_document_name)
+
+
+    @staticmethod
+    def is_markdown(model):
+        """ checks if the type_id is a markdown document """
+        return model.type_id == ResourceModel.MARKDOWN_TYPE_ID
 
 
     @staticmethod

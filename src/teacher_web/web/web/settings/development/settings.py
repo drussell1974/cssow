@@ -170,7 +170,13 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+
 # markdown service settings
 
+# TODO: #254 remove redunant
 MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
+# TODO: Change this to MEDIA_ROOT and test
 MARKDOWN_STORAGE = os.path.join(SOLUTION_DIR, 'markdown-service', 'web', 'views')
+# id of the row in the cssow_api.sow_resource_type table for markdown type
+MARKDOWN_TYPE_ID = 10

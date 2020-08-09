@@ -28,6 +28,7 @@ class ResourceGetModelViewModel(BaseViewModel):
         model = Model.get_model(self.db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         if model is None or model.is_from_db == False: 
             self.on_not_found(model, resource_id, lesson_id, scheme_of_work_id) 
+
         self.model = model
 
 
