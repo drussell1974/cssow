@@ -26,7 +26,7 @@
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_*.py"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"
