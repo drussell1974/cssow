@@ -54,7 +54,11 @@
     "rootDir": "app/",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "/services/",
+      "<rootDir>/services/",
+      "/pages/",
+      "<rootDir>/pages/"
     ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react"
