@@ -22,10 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
-
+        
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
-
 
 # LOGGING_LEVEL: set the logging level as appropriate
 
@@ -39,11 +38,11 @@ LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
 
 ALLOWED_HOSTS = [
-        "127.0.0.1",
-        "localhost",
-        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
-        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
-        ]
+    "127.0.0.1",
+    "localhost",
+    os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
+    os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
+]
 
 INTERNAL_IPS = [
     '127.0.0.1',
