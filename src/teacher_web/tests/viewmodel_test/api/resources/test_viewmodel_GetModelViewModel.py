@@ -28,7 +28,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.mock_model = Mock()
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, resource_id=999, scheme_of_work_id=90, auth_user=99)
+                self.viewmodel = ViewModel(db, resource_id=999, lesson_id=34, scheme_of_work_id=90, auth_user=99)
 
 
     def test_init_called_fetch__no_return_rows(self):
@@ -43,7 +43,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=123, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=123, lesson_id=74, scheme_of_work_id=90, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -64,9 +64,61 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=456, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
             self.assertEqual(456, self.viewmodel.model["id"])
             self.assertEqual("Cras eleifend pulvinar lacinia.", self.viewmodel.model["title"])
+            #self.assertEqual("", self.viewmodel.model["markdown"])
+
+
+    def test_init_called_fetch__return_overridden_page_uri_for_markdown_document(self):
+        
+        # arrange
+        
+        # both type_id of the instance and MARKDOWN_TYPE_ID are the same
+        Model.MARKDOWN_TYPE_ID = 10
+        
+        data_to_return = Model(456, title="Cras eleifend pulvinar lacinia.", type_id=10, page_uri="override.me")
+        data_to_return.md_document_name = "TESTME.md"
+        
+        with patch.object(Model, "get_model", return_value=data_to_return):
+
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            self.mock_model = Mock()
+
+            # act
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
+
+            # assert functions was called
+            Model.get_model.assert_called()
+
+            self.assertEqual("/api/schemesofwork/90/lessons/18/resources/456/markdown/TESTME.md", self.viewmodel.model["page_uri"])
+
+    @skip("Not implemented")
+    def test_init_called_fetch__return_page_uri_for_non_markdown_document(self):
+        
+        # arrange
+        
+        # both type_id of the instance and MARKDOWN_TYPE_ID are the different
+        Model.MARKDOWN_TYPE_ID = 10
+        
+        data_to_return = Model(456, title="Cras eleifend pulvinar lacinia.", type_id = 100, page_uri= "http://daverussell.co.uk")
+        
+        with patch.object(Model, "get_model", return_value=data_to_return):
+
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            self.mock_model = Mock()
+
+            # act
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
+
+            # assert functions was called
+            Model.get_model.assert_called()
+
+            self.assertEqual("http://daverussell.co.uk", self.viewmodel.model["page_uri"])

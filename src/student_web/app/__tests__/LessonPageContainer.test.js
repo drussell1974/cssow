@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { LessonPageContainer } from '../pages/Lesson';
+import { LessonPageContainer } from '../pages/LessonPage';
 
 describe("LessonPageContainer", () =>{
     let render, container;

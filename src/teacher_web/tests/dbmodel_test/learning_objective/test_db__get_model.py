@@ -31,7 +31,7 @@ class test_db__get_model(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_model(self.fake_db, 4)
+                actual_result = get_model(self.fake_db, 4)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -41,7 +41,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 99, auth_user=1)
+            actual_results = get_model(self.fake_db, 99, lesson_id=34, scheme_of_work_id=34, auth_user=1)
             
             # assert
 
@@ -51,6 +51,7 @@ class test_db__get_model(TestCase):
                 , log_info=handle_log_info)
 
             self.assertEqual(0, actual_results.id)
+            self.assertFalse(actual_results.is_from_db)
 
 
     def test__should_call_execSql_return_single_item(self):
@@ -67,7 +68,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 321, auth_user=1)
+            actual_results = get_model(self.fake_db, 321, lesson_id=77, scheme_of_work_id=89, auth_user=1)
 
             # assert
 
@@ -83,5 +84,6 @@ class test_db__get_model(TestCase):
             self.assertEqual("State the different numbering systems", actual_results.content_description)
             self.assertEqual("Binary,Denary,Hexadecimal", actual_results.key_words)
             self.assertEqual("Revise the names three different numbering systems", actual_results.notes)
+            self.assertTrue(actual_results.is_from_db)
 
 

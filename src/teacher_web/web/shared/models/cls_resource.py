@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
-from .core.basemodel import BaseModel, try_int
+import markdown
+from .core.basemodel import BaseModel, BaseDataAccess, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 from datetime import datetime
 from .core.db_helper import to_db_null, to_empty, to_db_bool
 
-
-# TODO: Get this from settings
-MARKDOWN_TYPE_ID = 10
-
-
-def check_type_id(model):
-    """ checks if the type_id is a markdown document """
-    return model.type_id == MARKDOWN_TYPE_ID
 
 
 class ResourceTypeModel:
@@ -32,10 +25,12 @@ class ResourceModel (BaseModel):
     publisher = ""
     type_id = 0
     type_name = ""
+    # default Get this from settings
+    MARKDOWN_TYPE_ID = 10 # default
 
-    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1):
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         
-        super().__init__( id_, title, created, created_by_id, created_by_name, published)
+        super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
@@ -47,12 +42,7 @@ class ResourceModel (BaseModel):
         self.lesson_id = lesson_id
         self.scheme_of_work_id = scheme_of_work_id
         self.last_accessed = last_accessed
-        #self.created = created
-        #self.created_by_id = try_int(created_by_id)
-        #self.created_by_name = created_by_name
-        #self.published = published
         self.is_expired = is_expired
-
         self.set_published_state()  
 
 
@@ -81,7 +71,7 @@ class ResourceModel (BaseModel):
         self._validate_optional_uri("page_uri", self.page_uri)
 
         # validate md_document_name
-        self._validate_required_string_if("md_document_name", self.md_document_name, 1, 200, check_type_id)
+        self._validate_required_string_if("md_document_name", self.md_document_name, 1, 200, ResourceModel.is_markdown)
 
 
     def _clean_up(self):
@@ -111,8 +101,23 @@ class ResourceModel (BaseModel):
 
 
     @staticmethod
-    def get_model(db, resource_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, scheme_of_work_id, auth_user)
+    def is_markdown(model):
+        """ checks if the type_id is a markdown document """
+        return model.type_id == ResourceModel.MARKDOWN_TYPE_ID
+
+
+    @staticmethod
+    def get_markdown_html(document_path):
+        with open( document_path, "r", encoding="utf-8") as input_file:
+            text = input_file.read()
+            html = markdown.markdown(text)
+            return html
+
+
+    @staticmethod
+    #248 Added parameters
+    def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -131,6 +136,7 @@ class ResourceModel (BaseModel):
                 created_by_name = row[12], 
                 published = row[13], 
                 scheme_of_work_id=scheme_of_work_id)
+            model.is_from_db = True
             data = model
         return data
 
@@ -170,30 +176,14 @@ class ResourceModel (BaseModel):
     @staticmethod
     def get_resource_type_options(db, auth_user):
         rows = ResourceDataAccess.get_resource_type_options(db, auth_user)
-        #TODO: Return object
         return rows
 
 
     @staticmethod
     def save(db, model, auth_user, published = 1):
-        '''
-        Upsert the reference
-        :param db: database context
-        :param model: the ReferenceModel
-        :return: the updated ReferenceModel
-        '''
-        
-        if published == 2:
-            ResourceDataAccess._delete(db, model.id, auth_user)
-            model.published = 2
-        else:
-            if model.is_new() == True:
-                model = ResourceDataAccess._insert(db, model, auth_user)
-            else:
-                model = ResourceDataAccess._update(db, model, auth_user)
-
+        ''' Upsert the resource (use BaseModel.upsert) '''
+        model = ResourceModel.upsert(db, model, auth_user, published, ResourceDataAccess)
         return model
-
 
     @staticmethod
     def delete(db, resource_id, auth_user):
@@ -208,7 +198,8 @@ class ResourceModel (BaseModel):
 class ResourceDataAccess:
 
     @staticmethod
-    def get_model(db, id_, scheme_of_work_id, auth_user):
+    #248 Added parameters
+    def get_model(db, id_, lesson_id, scheme_of_work_id,auth_user):
         """ Get Resource """
         execHelper = ExecHelper()
         
@@ -228,9 +219,11 @@ class ResourceDataAccess:
                     " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
                     " res.published as published " \
                     "FROM sow_resource AS res " \
+                    " INNER JOIN sow_lesson as les ON les.id = res.lesson_id "\
+                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id "\
                     " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
                     " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                    "WHERE res.id = {id} " \
+                    "WHERE res.id = {id} "\
                     " AND (res.published = 1 OR res.created_by = {auth_user});"
 
         str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
@@ -280,80 +273,60 @@ class ResourceDataAccess:
         :param id_: the id of the record to delete
         :return: nothing
         """
-        return ResourceDataAccess._delete(db, id_, auth_user);
+        model = ResourceModel(id_)
+        return ResourceDataAccess._delete(db, model, auth_user);
 
 
     @staticmethod
     def _insert(db, model, auth_user_id):
         """ inserts the sow_resource and sow_scheme_of_work__has__reference """
-        execHelper = ExecHelper()
+       
+        sql_insert_statement = "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_note}', '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"\
+                .format(
+                title=model.title,
+                publisher=model.publisher,
+                type_id=to_db_null(model.type_id, as_null=""),
+                page_note=to_db_null(model.page_note),
+                page_uri=to_db_null(model.page_uri),
+                md_document_name=to_db_null(model.md_document_name, as_null=""),
+                is_expired=to_db_bool(model.is_expired),
+                lesson_id = model.lesson_id,
+                created=model.created,
+                created_by=model.created_by_id,
+                published=model.published,
+                expired=model.is_expired)
 
-        ## 1. Insert the reference
-
-        str_insert = "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_note}', '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
-        str_insert = str_insert.format(
-            title=model.title,
-            publisher=model.publisher,
-            type_id=to_db_null(model.type_id, as_null=""),
-            page_note=to_db_null(model.page_note),
-            page_uri=to_db_null(model.page_uri),
-            md_document_name=to_db_null(model.md_document_name, as_null=""),
-            is_expired=to_db_bool(model.is_expired),
-            lesson_id = model.lesson_id,
-            created=model.created,
-            created_by=model.created_by_id,
-            published=model.published,
-            expired=model.is_expired)
-
-        rows = []
-
-        new_id = execHelper.execCRUDSql(db, str_insert, result=rows, log_info=handle_log_info)
-    
-        model.id = new_id
-
-        return model
+        rows, new_id = BaseDataAccess._insert(db, sql_insert_statement)
+        
+        return rows, new_id
 
 
     @staticmethod
     def _update(db, model, auth_user_id):
         """ updates the sow_lesson and sow_lesson__has__topics """
-        execHelper = ExecHelper()
-
-        # 1. Update the lesson
-
-        str_update = "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, page_notes = '{page_note}', url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"
-        str_update = str_update.format(
-            id=model.id,
-            title=model.title,
-            publisher=model.publisher,
-            type_id=to_db_null(model.type_id, as_null=""),
-            page_note=to_db_null(model.page_note),
-            page_uri=to_db_null(model.page_uri),
-            md_document_name=to_db_null(model.md_document_name),
-            is_expired=to_db_bool(model.is_expired),
-            lesson_id = model.lesson_id,
-            published=model.published)
-
-        execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
-
-        # 2. upsert related topics
-        #if scheme_of_work_id > 0:
-        #    _upsert_sow_scheme_of_work__has__reference(db, model, scheme_of_work_id)
-
+        return BaseDataAccess._update(db, 
+            "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, page_notes = '{page_note}', url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"\
+                .format(
+                    id=model.id,
+                    title=model.title,
+                    publisher=model.publisher,
+                    type_id=to_db_null(model.type_id, as_null=""),
+                    page_note=to_db_null(model.page_note),
+                    page_uri=to_db_null(model.page_uri),
+                    md_document_name=to_db_null(model.md_document_name),
+                    is_expired=to_db_bool(model.is_expired),
+                    lesson_id = model.lesson_id,
+                    published=model.published)
+        )
         return model
 
 
     @staticmethod
-    def _delete(db, id_, auth_user_id):
-        execHelper = ExecHelper()
-
-        str_delete = "DELETE FROM sow_resource WHERE id = {id_};"
-        str_delete = str_delete.format(id_=int(id_))
-
-        rval = []
-        rval = execHelper.execCRUDSql(db, str_delete, rval, handle_log_info)
-
-        return rval
+    def _delete(db, model, auth_user_id):
+        return BaseDataAccess._delete(db,
+            "DELETE FROM sow_resource WHERE id = {id_};"\
+                .format(id_=model.id)
+        )
 
 
     @staticmethod

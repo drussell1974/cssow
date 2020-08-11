@@ -21,38 +21,6 @@
 {% block maincontent %}
 <form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
-    <!-- Title START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Title")}}</label>
-            <input type="text" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" name="title" required
-                    maxlength="300" value='{{content.data.resource.title}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-        </div>
-    </div>
-    <!-- Title END -->
-
-    <!-- URI START -->
-    <div class="control-group">
-        <div class="form-group  controls">
-            <label>{{_("Url")}}</label>
-            <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
-                    maxlength="2083" value='{{content.data.resource.page_uri}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-        </div>
-    </div>
-    <!-- URI END -->
-
-    <!-- Publisher START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Publisher")}}</label>
-            <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
-                    maxlength="250" value='{{content.data.resource.publisher}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-        </div>
-    </div>
-    <!-- Publisher END -->
 
     <!-- Type START -->
     <div class="control-group">
@@ -69,6 +37,49 @@
     </div>
     <!-- Type END -->
 
+    <!-- Title START -->
+    <div class="control-group">
+        <div class="form-group controls">
+            <label>{{_("Title")}}</label>
+            <input type="text" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" name="title" required
+                    maxlength="300" value='{{content.data.resource.title}}'>
+            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        </div>
+    </div>
+    <!-- Title END -->
+
+    <!-- Notes START -->
+    <div class="control-group">
+        <div class="form-group controls">
+            <label>{{_("Summary")}}</label>
+            <input type="text" class="form-control" name="page_note" placeholder="{{_('notes')}}" id="ctl-notes" maxlength="2500" value="{{content.data.resource.page_note}}" required />        
+            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        </div>
+    </div>
+    <!-- Notes END -->
+
+    <!-- Publisher START -->
+    <div class="control-group">
+        <div class="form-group controls">
+            <label>{{_("Publisher")}}</label>
+            <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
+                    maxlength="250" value='{{content.data.resource.publisher}}'>
+            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        </div>
+    </div>
+    <!-- Publisher END -->
+
+    <!-- URI START -->
+    <div class="control-group" id="page_uri--control-group" style="display:none;">
+        <div class="form-group  controls">
+            <label><a href="{{content.data.resource.page_uri}}" target="_blank" >{{_("Url")}}</a></label>
+            <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
+                    maxlength="2083" value='{{content.data.resource.page_uri}}'>
+            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        </div>
+    </div>
+    <!-- URI END -->
+
     <!-- Upload File START -->
     <div class="control-group" id="md_document--control-group" style="display:none">
         <!-- Upload Control -->
@@ -81,26 +92,22 @@
         
         <!-- Preview -->
         <div class="form-group controls" id="md_document-preview--control">
-            <label class="small">{{_("Preview markdown:")}} {{content.data.resource.md_document_name}}</label>
-            <div class="markdown-body collapsable collapsed" ></div>
-
+            <button class="btn btn-outline-secondary small" type="button" id="btn-markdown_preview" data-toggle="collapse" data-target="#collapseMarkdown" aria-expanded="false" aria-controls="collapseMarkdown">
+                {{_("Preview markdown:")}} {{content.data.resource.md_document_name}}
+            </button>
+            <div class="collapse" id="collapseMarkdown">
+                <div class="markdown-body bg-light overflow-auto"> 
+                    preview will appear here
+                </div>
+            </div>
             <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
         </div>
     </div>
     <!-- Upload File END -->
 
-    <!-- Notes START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Summary")}}</label>
-            <input type="text" class="form-control" name="page_note" placeholder="{{_('notes')}}" id="ctl-notes" maxlength="2500" value="{{content.data.resource.page_note}}" required />        
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-        </div>
-    </div>
-    <!-- Notes END -->
     <br>
     <div id="success"></div>
-    <div class="form-group">
+    <div class="form-group stackable-group stackable-group-sm">
         {% include '_partials/form.buttons.validation.html' %}
     </div>
     
@@ -108,43 +115,14 @@
     <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
     <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
     <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+    <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
 </form>
 <hr>
 {% endblock %}
 
 
 {% block page_js %}
-    
-    <script>
-        const md_document_control_group = document.querySelector("#md_document--control-group");
-        const md_file_control = document.querySelector("#ctl-md_file");
-        const md_document_name_control = document.querySelector("#ctl-md_document_name");
-        const type_field = document.querySelector("#ctl-type_id");    
-        
-        function showHideMarkdownUpload(value) {
-            // get comparison value from settings
-            if (value != 10) {
-                md_document_control_group.style.display = "none";
-                md_file_control.required = false;
-                md_document_name_control.required = false;
-            } else if (md_document_name_control != null && md_document_name_control.value == "") {
-                md_document_control_group.style.display = "block";
-                md_file_control.required = true;
-                md_document_name_control.required = false;
-            } else {
-                md_document_control_group.style.display = "block";
-                md_file_control.required = false;
-                md_document_name_control.required = true;
-            }
-        }
-
-        type_field.addEventListener('change', (e) => {
-            showHideMarkdownUpload(e.target.value);
-        })
-
-        window.addEventListener('load', () => {
-            showHideMarkdownUpload(type_field.value);
-        })
-
-    </script>
+    {% load static %}
+    <script src="{% static 'default/js/md_document--upload.js' %}"></script>
+    <script src="{% static 'default/js/md_document--preview.js' %}"></script>
 {% endblock %}

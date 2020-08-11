@@ -11,7 +11,9 @@ class APITestCase(TestCase):
     test_lesson_id = os.environ["TEST_LESSON_ID"] 
     test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
     test_reference = os.environ["TEST_RESOURCE_ID"]
-
+    test_md_document_resource_id = os.environ["TEST_MD_DOCUMENT_RESOURCE_ID"]
+    test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
+    
     def wait(self, s = 5):
         import time
         time.sleep(s)

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
+from shared.models.core.django_helper import auth_user_id
 
 from shared.view_model import ViewModel
 from .viewmodels import SchemeOfWorkGetLatestViewModel
@@ -9,7 +10,8 @@ from .viewmodels import SchemeOfWorkGetLatestViewModel
 def index(request):
 
     # get the schemes of work
-    latest_schemes_of_work__view = SchemeOfWorkGetLatestViewModel(db, top = 5, auth_user=request.user.id)
+    #253 check user id
+    latest_schemes_of_work__view = SchemeOfWorkGetLatestViewModel(db, top = 5, auth_user=auth_user_id(request))
     
     data = {
         "latest_schemes_of_work":latest_schemes_of_work__view.model

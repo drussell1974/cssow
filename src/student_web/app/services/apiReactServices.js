@@ -1,6 +1,28 @@
 
-const getSchemeOfWork = (reactComponent) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}?format=json`)
+const getSchemesOfWork = (reactComponent) => {
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/?format=json`)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                SchemesOfWork: data.schemesofwork, 
+                hasError: false,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                SchemesOfWork: [],
+                hasError: true,
+            });
+        }
+    )
+}
+
+
+const getSchemeOfWork = (reactComponent, scheme_of_work_id) => {
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -21,8 +43,9 @@ const getSchemeOfWork = (reactComponent) => {
     )
 }
 
-const getLessons = (reactComponent) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/?format=json`)
+
+const getLessons = (reactComponent, scheme_of_work_id) => {
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -42,8 +65,9 @@ const getLessons = (reactComponent) => {
     )
 }
 
-const getLesson = (reactComponent, lesson_id) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${REACT_APP_STUDENT_WEB__DEFAULT_SCHEMEOFWORK}/lessons/${lesson_id}?format=json`)
+
+const getLesson = (reactComponent, scheme_of_work_id, lesson_id) => {
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}?format=json`)
         .then(res => { 
             return res.json();
         })
@@ -62,6 +86,7 @@ const getLesson = (reactComponent, lesson_id) => {
         }
     )
 }
+
 
 const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) => {
     fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}/resources/${resource_id}?format=json`)
@@ -83,6 +108,7 @@ const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) 
         }
     )
 }
+
 
 const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, md_document_name) => {
     fetch(`${REACT_APP_STUDENT_WEB__MARKDOWN_SERVICE_URI}/${scheme_of_work_id}/${lesson_id}/${resource_id}/${md_document_name}?format=json`)
@@ -106,6 +132,7 @@ const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, 
         }
       )
 } 
+
 
 const getSocialMediaLinks = () => {
     return [
@@ -133,5 +160,15 @@ const getSocialMediaLinks = () => {
 }
 
 
+const getSiteConfig = (reactComponent) => {
+    reactComponent.setState({
+        Site: {
+            name:"Dave Russell",
+            description:""
+        }, 
+        hasError: false,
+    });
+}
 
-export { getSchemeOfWork, getLessons, getLesson, getResource, getSocialMediaLinks, getMarkdown };
+
+export { getSchemesOfWork, getSchemeOfWork, getLessons, getLesson, getResource, getMarkdown, getSocialMediaLinks, getSiteConfig };

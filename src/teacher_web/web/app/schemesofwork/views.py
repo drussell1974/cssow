@@ -1,11 +1,12 @@
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.cls_schemeofwork import SchemeOfWorkModel 
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
+from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.models.core import validation_helper
 from datetime import datetime
@@ -22,7 +23,8 @@ from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 def index(request):
 
-    getall_view =  SchemeOfWorkIndexViewModel(db, auth_user=request.user.id)
+    #253 check user id
+    getall_view =  SchemeOfWorkIndexViewModel(db, auth_user=auth_user_id(request))
     
     data = {
         "schemes_of_work":getall_view.model
@@ -40,11 +42,12 @@ def edit(request, scheme_of_work_id = 0):
     # initiate empty model 
     
     model = SchemeOfWorkModel(id_=scheme_of_work_id)
-
+    
     if request.method == "GET" and model.id > 0:
         ## GET request from client ##
 
-        getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, request.user.id)
+        #253 check user id
+        getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
         model = getmodel_view.model
         
     elif request.method == "POST":
@@ -59,11 +62,13 @@ def edit(request, scheme_of_work_id = 0):
             exam_board_id=request.POST.get("exam_board_id", 0),
             key_stage_id=request.POST.get("key_stage_id", 0),
             created=datetime.now(),
-            created_by_id=request.user.id)
-
+            #253 check user id
+            created_by_id=auth_user_id(request))
+    
         # validate the model and save if valid otherwise redirect to default invalid
 
-        save_view = SchemeOfWorkEditViewModel(db, model, request.user.id)
+        #253 check user id
+        save_view = SchemeOfWorkEditViewModel(db, model, auth_user_id(request))
         save_view.execute(request.POST["published"])
         model = save_view.model
 
@@ -102,6 +107,7 @@ def delete_unpublished(request):
     redirect_to_url = request.META.get('HTTP_REFERER')
     # TODO: Use ViewModel
 
-    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=request.user.id)
+    #253 check user id
+    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)

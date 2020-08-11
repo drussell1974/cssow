@@ -19,7 +19,7 @@ class UITestCase(TestCase):
     test_lesson_id = os.environ["TEST_LESSON_ID"] 
     test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
     test_reference = os.environ["TEST_RESOURCE_ID"]
-
+    test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
 
     def wait(self, s = 5):
         import time
@@ -38,6 +38,12 @@ class UITestCase(TestCase):
         if username != None:
             profile = self.test_context.find_element_by_id("btn-profile")
             self.assertEqual(username, profile.text)
+
+
+    def assertCustom404(self, info_message):
+        elem = self.test_context.find_element_by_css_selector('#info > p')
+        self.assertEqual(info_message, elem.text)
+
 
     def try_log_in(self, redirect_to_uri_on_login):
         """
@@ -71,12 +77,13 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
+        
         login_uri = self.root_uri + "/accounts/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
 
-
+        
         try:
             self.test_context.implicitly_wait(4)
 
@@ -95,12 +102,9 @@ class UITestCase(TestCase):
             pass
 
 
-    def delete_unpublished_item(self, uri):
 
-        #delete
-
-        ' Open edit '
-        #231: find the unpublished learning objective in the index
+    def open_unpublished_item(self):
+        #231: find the unpublished item in the index
 
         elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
 
@@ -108,6 +112,13 @@ class UITestCase(TestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.click()
         
+
+    def delete_unpublished_item(self):
+        """ open and delete unpublished item"""
+
+        ' Open to edit '
+        self.open_unpublished_item()
+
         self.wait()
 
         ' After opening edit Open Modal '

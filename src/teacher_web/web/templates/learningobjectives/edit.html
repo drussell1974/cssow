@@ -54,7 +54,7 @@
     <!-- Content START -->
     <div class="control-group">
         <div class="form-group controls">
-        <label>{{_("Curriculum content")}}</label>
+        <label>{{_("Curriculum")}}</label>
         <select class="form-control" name="content_id" id="ctl-content_id" required>
             <option value="">- {{_("Select an option")}} -</option>
             {% for opt in content.data.content_options %}
@@ -92,7 +92,7 @@
     <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
     <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
     <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
-    <div class="form-group">
+    <div class="form-group stackable-group stackable-group-sm">
         {% include '_partials/form.buttons.validation.html' %}
     </div>
 </form>

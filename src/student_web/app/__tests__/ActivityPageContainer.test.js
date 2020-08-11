@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { ActivityPageContainer } from '../pages/Activity';
+import { ActivityPageContainer } from '../pages/ActivityPage';
 
 describe("ActivityPageContainer", () =>{
     let render, container;

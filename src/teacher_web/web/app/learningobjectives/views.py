@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -24,6 +24,7 @@ from shared.models.cls_content import ContentModel
 from shared.models.cls_examboard import ExamBoardModel
 
 from shared.models.core import validation_helper
+from shared.models.core.django_helper import auth_user_id
 
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel
@@ -32,13 +33,15 @@ from app.lessons.viewmodels import LessonGetModelViewModel
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, request.user.id)
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
     lesson = get_lesson_view.model
 
-    #TODO: Rename ViewModel to LearningObjectiveIndexViewModel
-    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, request.user.id)
+    #253 check user id
+    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
     
-    lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
+    #253 check user id
+    lesson_options = LessonModel.get_options(db, scheme_of_work_id, auth_user_id(request))  
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -59,10 +62,12 @@ def new(request, scheme_of_work_id, lesson_id):
 
     # check if an existing_learning_objective_id has been passed
      
-    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, request.user.id)
+    #253 check user id
+    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, scheme_of_work_id, lesson_id, auth_user_id(request))
     model = get_lessonobjective_view.model
     
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -100,7 +105,8 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Edit an existing learning objective '''
     
-    get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, request.user.id)
+    #253 check user id
+    get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id(request))
     model = get_model_viewmodel.model
 
     # redirect if not found
@@ -109,7 +115,8 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         return HttpResponseRedirect(redirect_to_url)
 
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), request.user.id)
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -160,13 +167,15 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         notes = request.POST.get("notes", ""),
         group_name = request.POST.get("group_name", ""),
         created=datetime.now(),
-        created_by_id=request.user.id
+        #253 check user id
+        created_by_id=auth_user_id(request)
     )
 
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    viewmodel = LearningObjectiveSaveViewModel(db, model, request.user.id)
+    #253 check user id
+    viewmodel = LearningObjectiveSaveViewModel(db, model, auth_user_id(request))
     
     model = viewmodel.model
 
@@ -198,7 +207,8 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    LearningObjectiveDeleteUnpublishedViewModel(db, lesson_id, request.user.id)
+    #253 check user id
+    LearningObjectiveDeleteUnpublishedViewModel(db, lesson_id, auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -209,7 +219,8 @@ def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     #231: published item     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    LearningObjectivePulishModelViewModel(db, learning_objective_id, request.user.id)
+    #253 check user id
+    LearningObjectivePulishModelViewModel(db, learning_objective_id, auth_user_id(request))
 
-    # TODO: redirect
+    # redirect
     return HttpResponseRedirect(redirect_to_url)

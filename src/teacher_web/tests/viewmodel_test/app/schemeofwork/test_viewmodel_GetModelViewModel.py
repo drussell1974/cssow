@@ -1,5 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
+from django.http import Http404
 
 # test context
 
@@ -45,11 +46,11 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 123, auth_user=99)
+            with self.assertRaises(Http404):
+                self.viewmodel = ViewModel(db, 123, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
-            self.assertIsNone(self.viewmodel.model)
 
 
     def test_init_called_fetch__return_item(self):
@@ -57,6 +58,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         # arrange
         
         data_to_return = Model(99, "Duis diam arcu, rhoncus ac")
+        data_to_return.is_from_db = True
 
         with patch.object(Model, "get_model", return_value=data_to_return):
 

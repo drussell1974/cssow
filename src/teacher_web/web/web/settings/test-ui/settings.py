@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -32,7 +33,9 @@ DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 # Warning = 2
 # Error = 1
 LOGGING_LEVEL = 1
-
+LOG_TO_SQL = False
+LOG_TO_CONSOLE = False
+LOG_TO_DJANGO_LOGS = False
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -166,3 +169,14 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+
+# markdown service settings
+
+#254 remove as redunant
+#MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
+#254 Change this to MEDIA_ROOT and test
+MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
+#254 get id of the row in the cssow_api.sow_resource_type table for markdown type
+MARKDOWN_TYPE_ID = 10

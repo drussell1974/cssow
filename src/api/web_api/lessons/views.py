@@ -13,7 +13,7 @@ class LessonsViewSet(APIView):
     ''' API endpoint for a lesson '''
 
     def get(self, request, scheme_of_work_id, lesson_id):
-        view_lesson = LessonGetModelViewModel(None, lesson_id, None)
+        view_lesson = LessonGetModelViewModel(None, lesson_id, scheme_of_work_id, None)
         lesson = view_lesson.model
         
         #lesson = get_model(None, lesson_id, None)

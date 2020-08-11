@@ -1,10 +1,13 @@
 import json
+from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
+from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
 
 
@@ -12,20 +15,44 @@ class LessonIndexViewModel(BaseViewModel):
     
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.model = []
-
         self.db = db
-        # get model
+        self.scheme_of_work_id = scheme_of_work_id
+        self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
+        # name to appear
+        if self.scheme_of_work_name is None or self.scheme_of_work_name == "":
+            self.on_not_found(self.scheme_of_work_name, scheme_of_work_id)
+        # side menu options
+        self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
+        # get list of lessons
         data = Model.get_all(self.db, scheme_of_work_id, auth_user)
         self.model = data
+        
+
+    def view(self):
+
+        data = {
+            "scheme_of_work_id":self.scheme_of_work_id,
+            "schemeofwork_options": self.schemeofwork_options,
+            "lessons": self.model,
+            "topic_name": "",
+        }
+
+        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", data=data)
 
 
 class LessonGetModelViewModel(BaseViewModel):
     
-    def __init__(self, db, lesson_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
-        data = Model.get_model(self.db, lesson_id, auth_user, resource_type_id)
-        self.model = data
+        model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+
+        #248 Http404
+        if lesson_id > 0:
+            if model is None or model.is_from_db == False:
+                self.on_not_found(model, lesson_id, scheme_of_work_id)
+
+        self.model = model
 
 
 class LessonEditViewModel(BaseViewModel):

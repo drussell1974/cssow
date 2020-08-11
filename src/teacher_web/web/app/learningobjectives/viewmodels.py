@@ -1,4 +1,5 @@
 import json
+from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
@@ -8,22 +9,27 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 
 class LearningObjectiveIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, scheme_of_work_id, auth_user):
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user):
         self.model = []
 
         self.db = db
         # get model
-        data = Model.get_all(self.db, scheme_of_work_id, auth_user)
+        data = Model.get_all(self.db, lesson_id, scheme_of_work_id, auth_user)
         self.model = data
 
 
 class LearningObjectiveGetModelViewModel(BaseViewModel):
-    
-    def __init__(self, db, learning_objective_id, auth_user, resource_type_id = 0):
+
+    #248 Add parameters
+    def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
-        data = Model.get_model(self.db, learning_objective_id, auth_user)
-        self.model = data
+        model = Model.get_model(self.db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
+
+        if learning_objective_id > 0:
+            if model is None or model.is_from_db == False:
+                self.on_not_found(model, learning_objective_id, lesson_id, scheme_of_work_id) 
+        self.model = model
 
 
 class LearningObjectiveSaveViewModel(BaseViewModel):

@@ -25,9 +25,9 @@ Install virtual environment
 
 Create a virtual environment
 
-> mkdir .venv
+> mkdir cssow-env
 
-> virtualenv -p [executable]
+> virtualenv -p [executable] cssow-env
 
 # Prerequisites
 
@@ -56,6 +56,13 @@ Use 'yarn build' from package.json to install the prerequisites, or directly fro
 Use 'yarn start' from package.json to start up the web server, or directly from the command line...
 
 > python ./web/manage.py runserver <IP_ADDRESS|HOST_NAME>:8002
+
+# Hosting
+
+
+https://help.pythonanywhere.com/pages/environment-variables-for-web-apps/
+
+https://help.pythonanywhere.com/pages/UsingMySQL/
 
 # Testing
 

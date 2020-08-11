@@ -6,4 +6,4 @@ mysql-connector-python
 djangorestframework
 requests
 python-dotenv
-
+markdown

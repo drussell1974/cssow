@@ -10,7 +10,8 @@ export const LessonKeywordsWidget = ({keywords}) => {
                 <h2>Keywords</h2>
                 <ul className="keywords">
                 {keywords.map(item => (
-                        <li key={item.id}>{item.term}</li>
+                        <li key={item.id}><b>{item.term}</b>
+                        <br/>{item.definition}</li>
                     ))}
                 </ul>
             </Fragment>

@@ -75,4 +75,4 @@ class uitest_schemeofwork_content_edit_create_new(UITestCase):
 
         # teardown
 
-        self.delete_unpublished_item("/schemesofwork/{}/curriculum-content/new".format(self.test_scheme_of_work_id))
+        self.delete_unpublished_item()

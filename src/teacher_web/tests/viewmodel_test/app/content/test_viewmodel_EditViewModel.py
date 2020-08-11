@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.http import Http404
 
 # test context
+from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_keystage import KeyStageModel
@@ -11,15 +12,7 @@ from app.content.viewmodels import ContentEditViewModel as ViewModel
 
 
 
-class test_viewmodel_EditViewModel(TestCase):
-
-    # TODO: use across differ testcases
-    def assertViewModelContent(self, viewmodel_content, exp_page_prefix, exp_main_heading, exp_subheading, exp_validationerrors):
-        self.assertEqual("", exp_page_prefix, "page_prefix not as expected")
-        self.assertEqual("", exp_main_heading, "main_heading not as expected")
-        self.assertEqual("", exp_subheading, "sub_heading not as expected")
-        self.assertEqual({}, exp_validationerrors, "validationerrors not as expected")
-
+class test_viewmodel_EditViewModel(ViewModelTestCase):
 
     def setUp(self):
         self.mock_db = MagicMock()
@@ -75,7 +68,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def test_init_on_GET__edit_new_model(self):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem."))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
 
 
         db = MagicMock()
@@ -104,8 +97,8 @@ class test_viewmodel_EditViewModel(TestCase):
     def test_init_on_GET__edit_existing_model(self):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem."))
-        Model.get_model = Mock(return_value=Model(101,"dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti", "Z"))    
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        Model.get_model = Mock(return_value=Model(101,"dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti", "Z", is_from_db=True))    
         
         db = MagicMock()
         db.cursor = MagicMock()
@@ -133,7 +126,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem."))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
         
         Model.get_model = Mock(return_value=None)    
         
@@ -144,16 +137,17 @@ class test_viewmodel_EditViewModel(TestCase):
             method = "GET"
         )
 
-        # act
-        viewmodel = ViewModel(self.mock_db, mock_request, scheme_of_work_id=234, content_id=67, auth_user=99)
         
-        # assert 
-        
-        # assert functions was to return data called
-        SchemeOfWorkModel.get_model.assert_called()
-
         # call view
         with self.assertRaises(Http404):
+            # act
+            viewmodel = ViewModel(self.mock_db, mock_request, scheme_of_work_id=234, content_id=67, auth_user=99)
+        
+            # assert 
+            
+            # assert functions was to return data called
+            SchemeOfWorkModel.get_model.assert_called()
+
             viewmodel.view()
             
 
@@ -161,7 +155,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def test_init_on_POST_valid_model__is_content_ready__true__and__save(self):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem."))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
 
         on_save__data_to_return = Model(92, "Quisque eu venenatis sem", "A")
         on_save__data_to_return.is_valid = True
@@ -189,7 +183,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def test_init_on_POST__invalid_model_is_content_ready__false(self):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem."))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
 
         on_save__data_to_return = Model(92, "Quisque eu venenatis sem", "aaa")
                 

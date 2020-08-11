@@ -47,7 +47,7 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
 
         # assert
         ' should still be on the same page '
-        #TODO: #231: assert we're still on the same page
+        #231: assert we're still on the same page
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
 
 

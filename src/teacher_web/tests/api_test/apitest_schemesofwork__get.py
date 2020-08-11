@@ -28,16 +28,16 @@ class apitest_schemeofwork__get(APITestCase):
 
 
     def test__first_should_have_name(self):
-        self.assertEqual('KS3 Computing', self.payload["schemesofwork"][0]["name"])
+        self.assertEqual('A-Level Computer Science', self.payload["schemesofwork"][0]["name"])
 
 
     def test__first_should_have_desription(self):
-        self.assertEqual('Lorem ipsum dolor sit amet.', self.payload["schemesofwork"][0]["description"].rstrip())
+        self.assertEqual('Computing curriculum for A-Level', self.payload["schemesofwork"][0]["description"].rstrip())
 
 
     def test__last_should_have_name(self):
-        self.assertEqual('A-Level Computer Science', self.payload["schemesofwork"][2]["name"])
+        self.assertEqual('GCSE Computer Science 9-1', self.payload["schemesofwork"][2]["name"])
 
 
     def test__last_should_have_desription(self):
-        self.assertEqual('Computing curriculum for A-Level', self.payload["schemesofwork"][2]["description"].rstrip())
+        self.assertEqual('', self.payload["schemesofwork"][2]["description"].rstrip())

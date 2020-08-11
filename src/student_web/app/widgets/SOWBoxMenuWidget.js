@@ -14,7 +14,7 @@ export const SOWBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
                     <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.title}</h3>
                     <p>{data.summary}</p>
-                    <Link to={`/Lesson/${data.id}`} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</Link>                </div>
+                    <Link to={`/Course/${data.scheme_of_work_id}/Lesson/${data.id}`} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</Link>                </div>
             </div>
         )
     }
@@ -28,7 +28,7 @@ export const SOWBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
             <Fragment>
                 <h2>Lessons</h2>
                 <div className="thumbnails lessons">
-                    {data.filter(item => item.number_of_learning_objective > 0 && item.number_of_resource > 0).map(item => (
+                    {data.filter(item => item.number_of_learning_objective > 0 || item.number_of_resource > 0).map(item => (
                         <SOWBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
                     ))}
                 </div>

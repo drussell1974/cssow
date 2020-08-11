@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
+from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -18,8 +19,8 @@ class ContentIndexViewModel(BaseViewModel):
         
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
 
-        if self.scheme_of_work is None:
-            raise Http404
+        if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+            self.on_not_found(self.scheme_of_work, scheme_of_work_id) 
 
         self.scheme_of_work_options = SchemeOfWorkModel.get_options(db, auth_user)
 
@@ -51,21 +52,26 @@ class ContentEditViewModel(BaseViewModel):
         self.auth_user = auth_user
 
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
-        if self.scheme_of_work is None:
-            raise Http404()
+        #248 check associated schemeofwork 
+        if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+            self.on_not_found(self.scheme_of_work, content_id, scheme_of_work_id)
 
         if request.method == "GET":
 
             if content_id > 0:
-                data = Model.get_model(self.db, content_id, self.auth_user)
-                self.model = data
+                model = Model.get_model(self.db, content_id, scheme_of_work_id, self.auth_user)
+                #248 check existing instance exists
+                if model is None or model.is_from_db == False: 
+                    self.on_not_found(self.scheme_of_work, content_id, scheme_of_work_id)
+                self.model = model
             else:
                 self.model = Model(
                     id_=0, 
                     description="", 
                     key_stage_id=self.scheme_of_work.key_stage_id,
                     created = datetime.now(),
-                    created_by_id = request.user.id)
+                    #253 check user id
+                    created_by_id = auth_user_id(request))
 
         elif request.method == "POST":
             
@@ -89,9 +95,8 @@ class ContentEditViewModel(BaseViewModel):
 
     def view(self):
         
-        if self.content_id > 0 and self.model is None:
-            raise Http404
-
+        #if self.content_id > 0 and self.model is None:            
+        #    self.on_not_found(self.model, self.content_id) 
 
         self.key_stage_options = KeyStageModel.get_options(self.db)
 

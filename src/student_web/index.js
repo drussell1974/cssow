@@ -7,8 +7,6 @@ require('dotenv').config()
 const {
     STUDENT_WEB__WEB_SERVER_PORT_INT = process.env.STUDENT_WEB__WEB_SERVER_PORT_INT,
     STUDENT_WEB__CSSOW_API_URI = process.env.STUDENT_WEB__CSSOW_API_URI,
-    STUDENT_WEB__DEFAULT_SCHEMEOFWORK = process.env.STUDENT_WEB__DEFAULT_SCHEMEOFWORK,
-    STUDENT_WEB__MARKDOWN_SERVICE_URI = process.env.STUDENT_WEB__MARKDOWN_SERVICE_URI
 } = process.env
 
 app.use(express.static(path.join(__dirname, 'build')));
@@ -18,7 +16,5 @@ app.get('/', function(req, res) {
 
 app.listen(STUDENT_WEB__WEB_SERVER_PORT_INT, function() {
     console.log(`index.js: STUDENT_WEB__CSSOW_API_URI=${STUDENT_WEB__CSSOW_API_URI}`);
-    console.log(`index.js: STUDENT_WEB__DEFAULT_SCHEMEOFWORK=${STUDENT_WEB__DEFAULT_SCHEMEOFWORK}`);
-    console.log(`index.js: STUDENT_WEB__MARKDOWN_SERVICE_URI=${STUDENT_WEB__MARKDOWN_SERVICE_URI}`);
     console.log(`index.js: listening on port ${STUDENT_WEB__WEB_SERVER_PORT_INT}...`);
 });

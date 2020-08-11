@@ -32,11 +32,11 @@
             {{ row.key_stage_name }} {{ row.description }}
           </h4>
         </a>
-        <div class="card-body">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark">
+        <div class="card-body stackable-group-sm">
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
             {{_("Lessons")}} <span class="badge badge-light"></span>
           </a>
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark">
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
             {{_("Curriculum")}} <span class="badge badge-light"></span>
           </a>
         
