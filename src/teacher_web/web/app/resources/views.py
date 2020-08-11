@@ -52,7 +52,7 @@ def index(request, scheme_of_work_id, lesson_id):
     return render(request, "resources/index.html", view_model.content)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.add_resource', login_url='/accounts/login/')
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
@@ -84,7 +84,7 @@ def new(request, scheme_of_work_id, lesson_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.change_resource', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
@@ -123,7 +123,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id, resource_id):
     
@@ -212,7 +212,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
 def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
     """ delete item and redirect back to referer """
@@ -225,7 +225,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
@@ -238,7 +238,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''

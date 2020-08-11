@@ -11,7 +11,7 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
         self.test_context.implicitly_wait(10)
         #231: TODO: open existing resource
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id))
-
+        self.wait(s=2)
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()

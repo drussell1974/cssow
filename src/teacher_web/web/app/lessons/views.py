@@ -161,7 +161,7 @@ def lessonplan(request, scheme_of_work_id, lesson_id):
 
 
 #TODO: #234 add permission
-@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')
+#@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
