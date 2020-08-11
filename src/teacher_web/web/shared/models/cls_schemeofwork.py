@@ -17,7 +17,8 @@ class SchemeOfWorkModel(BaseModel):
 
     name = ""
     description = ""
-    
+    number_of_lessons = 0
+
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
@@ -80,10 +81,11 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    created=row[7],
+                                    created=row[7],                                                                                                                                                                                                                         
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
+            model.number_of_lessons = row[11]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             model.set_is_recent()
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
@@ -106,7 +108,7 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
-            model.on_fetched_from_db()
+            model.on_fetched_from_db()                                                                                                  
 
         return model
 
@@ -222,26 +224,8 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "SELECT "\
-                    "  sow.id as id, "\
-                    "  sow.name as name, "\
-                    "  sow.description as description, "\
-                    "  sow.exam_board_id as exam_board_id, "\
-                    "  exam.name as exam_board_name, "\
-                    "  sow.key_stage_id as key_stage_id, "\
-                    "  kys.name as key_stage_name, "\
-                    "  sow.created as created, "\
-                    "  sow.created_by as created_by_id,"\
-                    "  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    "  sow.published as published"\
-                    " FROM sow_scheme_of_work as sow "\
-                    "  LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
-                    "  INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
-                    "  LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                    " WHERE (sow.key_stage_id = {key_stage_id} or {key_stage_id} = 0) AND (sow.published = 1 OR sow.created_by = {auth_user})" \
-                    " ORDER BY sow.key_stage_id;"
-        select_sql = select_sql.format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
-
+        select_sql = "CALL schemeofwork__get_all({key_stage_id}, {auth_user})"\
+            .format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows

@@ -5,4 +5,4 @@ from django.db import models
 class SchemeOfWorkModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchemeOfWorkModel
-        fields = ["id", "name", "description"]
+        fields = ["id", "name", "description", "number_of_lessons"]
