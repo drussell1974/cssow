@@ -1,6 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
+from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 
 # test context
 
@@ -10,7 +11,7 @@ from app.content.viewmodels import ContentIndexViewModel as ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-class test_viewmodel_IndexViewModel(TestCase):
+class test_viewmodel_IndexViewModel(ViewModelTestCase):
 
     def setUp(self):        
         pass
@@ -93,6 +94,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(0, len(self.viewmodel.model))
+                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                
 
 
     def test_init_called_fetch__single_row(self):
@@ -116,7 +118,8 @@ class test_viewmodel_IndexViewModel(TestCase):
                     SchemeOfWorkModel.get_options.assert_called()
                     SchemeOfWorkModel.get_model.assert_called()
                     
-                    self.assertEqual(1, len(self.viewmodel.model))
+                    self.assertEqual(1, len(self.viewmodel.model))                    
+                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                
 
 
     def test_init_called_fetch__multiple_rows(self):
@@ -141,3 +144,4 @@ class test_viewmodel_IndexViewModel(TestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(3, len(self.viewmodel.model))
+                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                

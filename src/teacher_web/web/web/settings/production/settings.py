@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True,        
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
 # LOGGING_LEVEL: set the logging level as appropriate
@@ -38,7 +37,6 @@ LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
 
 ALLOWED_HOSTS = [
-        "jtc10",
         "127.0.0.1",
         "localhost",
         os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
@@ -175,9 +173,9 @@ SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 
 # markdown service settings
 
-#TODO: #254 remove redunant
-MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
-#TODO: #254 Change this to MEDIA_ROOT and test
-MARKDOWN_STORAGE = os.path.join(SOLUTION_DIR, 'markdown-service', 'web', 'views')
-#TODO: #254 get id of the row in the cssow_api.sow_resource_type table for markdown type
+#254 remove as redunant
+#MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
+#254 Change this to MEDIA_ROOT and test
+MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
+#254 get id of the row in the cssow_api.sow_resource_type table for markdown type
 MARKDOWN_TYPE_ID = 10

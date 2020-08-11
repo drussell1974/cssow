@@ -13,7 +13,12 @@ from .cls_ks123pathway import KS123PathwayModel
 
 
 class LessonModel (BaseModel):
-    
+    class Meta:
+        permissions = [
+            ('view_whiteboard_lessonmodel', 'Can view whiteboard for this Lesson'),
+            ('view_lessonplan_lessonmodel', 'Can View lesson plan for this Lesson')
+        ]
+        
     title = ""
     summary = ""
     order_of_delivery_id = 0

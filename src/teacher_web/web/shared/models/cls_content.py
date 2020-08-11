@@ -5,6 +5,11 @@ from .core.log import handle_log_info
 
 
 class ContentModel(BaseModel):
+    
+    class Meta:
+        permissions = [('publish_contentmodel', 'Can pubish Curriculum Content')]
+
+
     def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)

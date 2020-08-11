@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.models.core.log import handle_log_warning
+from shared.models.core.django_helper import auth_user_id
 
 # TODO: remove after creating view model
 from shared.view_model import ViewModel
@@ -17,14 +18,19 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 def index(request, scheme_of_work_id):
 
-    view_model = ContentIndexViewModel(db, scheme_of_work_id, request.user.id)
+    #253 check user id
+    view_model = ContentIndexViewModel(db, scheme_of_work_id, auth_user_id(request))
     
     return render(request, "content/index.html", view_model.view().content)
 
 
+#TODO: #234 add permission
+@permission_required('models.change_contentmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, content_id=0):
+    """ edit curriculum content """
 
-    view_model = ContentEditViewModel(db, request, scheme_of_work_id, content_id, request.user.id)
+    #253 check user id
+    view_model = ContentEditViewModel(db, request, scheme_of_work_id, content_id, auth_user_id(request))
 
     if view_model.is_content_ready:
         

@@ -8,7 +8,8 @@
   "pre-commit": "test",
   "scripts": {
     "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
-    "migrate": "python ./web/manage.py migrate",
+    "make-migrations": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py makemigrations models --settings=web.settings.development.settings",
+    "migrate": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py migrate --settings=web.settings.development.settings",
     "install:":"pip install -r requirements.txt && yarn build",
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip install -r requirements.dev.txt && yarn build:test",
@@ -26,7 +27,7 @@
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index.py"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_*.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

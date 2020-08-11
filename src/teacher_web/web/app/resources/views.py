@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
+from shared.models.core.django_helper import auth_user_id
 from shared.view_model import ViewModel
 
 # TODO: use view models
@@ -27,13 +28,16 @@ from shared.filehandler import handle_uploaded_markdown
 
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
-    getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, request.user.id)
+    #253 check user id
+    getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, auth_user_id(request))
     resources = getall_resources_view.model
 
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, request.user.id)
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
     lesson = get_lesson_view.model
 
-    lesson_options = LessonModel.get_options(db, scheme_of_work_id, request.user.id)  
+    #253 check user id
+    lesson_options = LessonModel.get_options(db, scheme_of_work_id, auth_user_id(request))  
     
     data = {
         "scheme_of_work_id":int(scheme_of_work_id),
@@ -48,6 +52,8 @@ def index(request, scheme_of_work_id, lesson_id):
     return render(request, "resources/index.html", view_model.content)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.add_resource', login_url='/accounts/login/')
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
@@ -58,10 +64,12 @@ def new(request, scheme_of_work_id, lesson_id):
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
     lesson = get_lesson_view.model
 
-    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
+    #253 check user id
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -76,10 +84,13 @@ def new(request, scheme_of_work_id, lesson_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.change_resource', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
-    get_model_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, request.user.id)
+    #253 check user id
+    get_model_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id(request))
     model = get_model_view.model
 
     if model == None:
@@ -91,10 +102,12 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
             lesson_id=lesson_id)
 
 
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)    
+    #253 check user id
+    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
     lesson = get_lesson_view.model
 
-    get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
+    #253 check user id
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -110,6 +123,8 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     return render(request, "resources/edit.html", view_model.content)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.publish_resource', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, lesson_id, resource_id):
     
     def upload_error_handler(e, msg):
@@ -133,7 +148,8 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         page_uri=request.POST.get("page_uri", ""),
         type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
-        created_by_id=request.user.id,
+        #253 check user id
+        created_by_id=auth_user_id(request),
         published=request.POST.get("published", 0)
     )
 
@@ -146,7 +162,8 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    save_resource_view = ResourceSaveViewModel(db, model, request.user.id)
+    #253 check user id
+    save_resource_view = ResourceSaveViewModel(db, model, auth_user_id(request))
     
     save_resource_view.execute(int(request.POST["published"]))
 
@@ -173,10 +190,12 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
-        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, request.user.id)    
+        #253 check user id
+        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
         lesson = get_lesson_view.model
             
-        get_resource_type_options = ResourceModel.get_resource_type_options(db, request.user.id)
+        #253 check user id
+        get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
 
         data = {
             "scheme_of_work_id": scheme_of_work_id,
@@ -193,31 +212,40 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.delete_resource', login_url='/accounts/login/')
 def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    ResourceModel.delete(db, resource_id, request.user.id)
+    #253 check user id
+    ResourceModel.delete(db, resource_id, auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.delete_resource', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    ResourceModel.delete_unpublished(db, lesson_id, request.user.id)
+    #253 check user id
+    ResourceModel.delete_unpublished(db, lesson_id, auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
+#TODO: #234 add permission
+@permission_required('cssow.publish_resource', login_url='/accounts/login/')
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
     #231: published item     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    cls_resource.publish_item(db, resource_id, request.user.id)
+    #253 check user id
+    cls_resource.publish_item(db, resource_id, auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
