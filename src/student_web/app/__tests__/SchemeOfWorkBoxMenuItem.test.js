@@ -9,6 +9,7 @@ let schemeofwork = {
     id: 76,
     name: "KS3 Computing",
     description: "Lorem ipsum dolor sit amet.",
+    number_of_lessons: 67,
     image_url: "images/pic03.jpg",
     url: "https://youtu.be/s6zR2er9vn2a",
 }
@@ -81,7 +82,11 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a view button', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem data={schemeofwork} typeButtonText='View'/>
+            <SchemeOfWorkBoxMenuItem 
+                data={schemeofwork} 
+                uri='/Course/'
+                typeButtonText='View'
+                typeButtonClass='button fit' />
             </MemoryRouter>
             );
 
@@ -92,6 +97,29 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
         ).toMatch('/Course');
+    })
+
+    it('has a disabled view button', () => {
+        // arrange zero lessons for this test
+        schemeofwork.number_of_lessons = 0;
+
+        render(
+            <MemoryRouter>
+            <SchemeOfWorkBoxMenuItem 
+                data={schemeofwork} 
+                uri='#'
+                typeButtonText='Coming soon' 
+                typeButtonClass='button fit disabled'/>
+            </MemoryRouter>
+            );
+
+        expect(
+            container.querySelector('div.inner a.button').textContent
+        ).toMatch('Coming soon');
+
+        expect(
+            container.querySelector('div.inner a.button').getAttribute('href')
+        ).toEqual('/');
     })
 
     it('has type label heading', () => {
