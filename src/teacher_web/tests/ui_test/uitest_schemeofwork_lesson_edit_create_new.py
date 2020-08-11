@@ -27,7 +27,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
     def test_page__should_has_correct_element(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New', 'test@localhost')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New', 'TEST@LOCALHOST')
     
         ' ensure secondary heading appears '
         elem = self.test_context.find_element_by_class_name("secondary-heading")

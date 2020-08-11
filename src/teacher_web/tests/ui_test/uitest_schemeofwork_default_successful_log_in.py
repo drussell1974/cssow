@@ -32,10 +32,10 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
         elem = self.test_context.find_element_by_id("btn-profile")
-        self.assertEqual("test@localhost", elem.text)
+        self.assertEqual("TEST@LOCALHOST", elem.text)
 
         elem = self.test_context.find_element_by_id("btn-logout")
-        self.assertEqual("Logout", elem.text)
+        self.assertEqual("LOGOUT", elem.text)
 
 
     def test_page_navigate_to_default_index_after_log_out(self):

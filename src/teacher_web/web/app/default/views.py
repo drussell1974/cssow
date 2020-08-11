@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
@@ -16,7 +17,7 @@ def index(request):
     data = {
         "latest_schemes_of_work":latest_schemes_of_work__view.model
     }
-
-    view_model = ViewModel("", "Teach Computer Science", "Computing Schemes of Work across all key stages", data=data)
+    
+    view_model = ViewModel("", os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"], data=data)
 
     return render(request, "default/index.html", view_model.content)

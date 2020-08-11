@@ -24,7 +24,7 @@ def index(request, scheme_of_work_id):
     return render(request, "content/index.html", view_model.view().content)
 
 
-#TODO: #234 add permission
+#234 add permission
 @permission_required('models.change_contentmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
