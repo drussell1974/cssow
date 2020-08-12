@@ -175,7 +175,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # markdown service settings
 
 #254 remove as redunant
-#MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
 #254 Change this to MEDIA_ROOT and test
 MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
 #254 get id of the row in the cssow_api.sow_resource_type table for markdown type

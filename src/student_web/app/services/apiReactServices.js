@@ -111,7 +111,7 @@ const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) 
 
 
 const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, md_document_name) => {
-    fetch(`${REACT_APP_STUDENT_WEB__MARKDOWN_SERVICE_URI}/${scheme_of_work_id}/${lesson_id}/${resource_id}/${md_document_name}?format=json`)
+    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`)
       .then(res => res.json())
       .then(
         (result) => {
