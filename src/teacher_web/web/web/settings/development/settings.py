@@ -106,13 +106,16 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+from shared.decrypt import decrypt
+db_password = os.environ['CSSOW_DB__PASSWORD_KEY']
+PASSWORD_FILEPATH = os.path.join(BASE_DIR, os.environ['CSSOW_DB__PASSWORD_FILE'])
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ['CSSOW_DB__DATABASE'],
         'USER': os.environ['CSSOW_DB__USER'],
-        'PASSWORD': os.environ['CSSOW_DB__PASSWORD'],
+        'PASSWORD': decrypt(db_password, PASSWORD_FILEPATH),
         'HOST': os.environ['CSSOW_DB__HOST_INT'],
         'PORT': os.environ['CSSOW_DB__PORT_INT'],
     }
@@ -174,8 +177,6 @@ SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 
 # markdown service settings
 
-#254 remove as redunant
-#MARKDOWN_SERVICE_URI = os.environ["STUDENT_WEB__MARKDOWN_SERVICE_URI"]
 #254 Change this to MEDIA_ROOT and test
 MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
 #254 get id of the row in the cssow_api.sow_resource_type table for markdown type
