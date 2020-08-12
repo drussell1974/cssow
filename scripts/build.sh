@@ -34,9 +34,19 @@ if [ $1 ] ;then
     cp dotenv/.env build/.env
     tar -czvf releases/release-$BUILDNO.tar.gz ./build 
 
+    cp build/teacher-web/teacher-web.build.tar.gz releases/teacher-web.$BUILDNO.tar.gz
+    cp build/teacher-web/teacher-web.build.tar.gz releases/teacher-web.latest.tar.gz
+    cp build/student-web/student-web.build.tar.gz releases/student-web.$BUILDNO.tar.gz
+    cp build/student-web/student-web.build.tar.gz releases/student-web.latest.tar.gz
+
     echo -e "\nbuild.sh: \e[1;33m committing release tar file ...($BUILDNO) \e[0m"
 
     git add releases/release-$BUILDNO.tar.gz
+    git add releases/teacher-web.$BUILDNO.tar.gz
+    git add releases/teacher-web.latest.tar.gz
+    git add releases/student-web.$BUILDNO.tar.gz
+    git add releases/student-web.latest.tar.gz
+
     git commit --no-verify -m "build: release-$BUILDNO"
 
     git tag $BUILDNO

@@ -106,13 +106,16 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+from shared.decrypt import decrypt
+db_password = os.environ['CSSOW_DB__PASSWORD_KEY']
+PASSWORD_FILEPATH = os.path.join(BASE_DIR, os.environ['CSSOW_DB__PASSWORD_FILE'])
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ['CSSOW_DB__DATABASE'],
         'USER': os.environ['CSSOW_DB__USER'],
-        'PASSWORD': os.environ['CSSOW_DB__PASSWORD'],
+        'PASSWORD': decrypt(db_password, PASSWORD_FILEPATH),
         'HOST': os.environ['CSSOW_DB__HOST_INT'],
         'PORT': os.environ['CSSOW_DB__PORT_INT'],
     }

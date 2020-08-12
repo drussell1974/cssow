@@ -1,0 +1,1 @@
+python src/teacher_web/web/shared/encrypt.py

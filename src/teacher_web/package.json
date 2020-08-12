@@ -13,7 +13,7 @@
     "install:":"pip install -r requirements.txt && yarn build",
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip install -r requirements.dev.txt && yarn build:test",
-    "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=media web dbschema requirements.txt && yarn build:venv",
+    "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=*.bin --exclude=media web dbschema requirements.txt && yarn build:venv",
     "build:venv": "tar -czf ../../build/teacher-web/teacher-web.venv.tar.gz cssow-env",
     "build:dev": "env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002 & yarn --cwd ../student_web/ build:dev",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002 & yarn --cwd ../student_web/ build:test",

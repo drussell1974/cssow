@@ -117,7 +117,7 @@ const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, 
         (result) => {
             reactComponent.setState({
             isLoaded: true,
-            markdown_html: result
+            markdown_html: result.markdown
           });
         },
         // Note: it's important to handle errors here
