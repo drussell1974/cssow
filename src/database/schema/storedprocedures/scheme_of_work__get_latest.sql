@@ -25,7 +25,10 @@ BEGIN
     LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
     LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
     LEFT JOIN auth_user as user ON user.id = sow.created_by 
-    WHERE sow.published = 1 OR is_sow_teacher(sow.id, auth_user) > 0
+    WHERE sow.published = 1 
+        or auth_user IN (SELECT auth_user_id 
+                            FROM sow_teacher 
+                            WHERE auth_user_id = auth_user_id AND scheme_of_work_id = sow.id)
     ORDER BY sow.created DESC LIMIT top_n;
 END;
 //

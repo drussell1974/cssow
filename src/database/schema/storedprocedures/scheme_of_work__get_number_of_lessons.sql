@@ -7,8 +7,13 @@ CREATE PROCEDURE scheme_of_work__get_number_of_lessons (
   IN auth_user INT)
 BEGIN
     SELECT count(les.id)
-    FROM sow_lesson as les
-    WHERE les.scheme_of_work_id = scheme_of_work_id AND (les.published = 1 or is_sow_teacher(les.scheme_of_work_id, auth_user) > 0);
+    FROM sow_lesson as les 
+    WHERE les.scheme_of_work_id = scheme_of_work_id 
+      AND (les.published = 1 
+            or auth_user IN (SELECT auth_user_id 
+                           FROM sow_teacher 
+                           WHERE scheme_of_work_id = les.scheme_of_work_id)
+      );
 END;
 
 //

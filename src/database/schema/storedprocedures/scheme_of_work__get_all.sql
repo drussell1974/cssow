@@ -6,7 +6,7 @@ CREATE PROCEDURE scheme_of_work__get_all (
   IN key_stage_id INT,
   IN auth_user INT)
 BEGIN
-    SELECT
+    SELECT DISTINCT 
         sow.id as id,
         sow.name as name,
         sow.description as description,
@@ -21,8 +21,13 @@ BEGIN
     FROM sow_scheme_of_work as sow
         LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id
         INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id
-        LEFT JOIN auth_user as user ON user.id = sow.created_by
-    WHERE (sow.key_stage_id = key_stage_id or key_stage_id = 0) AND (sow.published = 1 or is_sow_teacher(sow.id, auth_user) > 0)
+        INNER JOIN auth_user as user ON user.id = sow.created_by
+    WHERE (sow.key_stage_id = key_stage_id or key_stage_id = 0) -- AND (sow.published = 1 or user.id = auth_user)
+        AND (sow.published = 1 
+                or auth_user IN (SELECT auth_user_id 
+                            FROM sow_teacher 
+                            WHERE auth_user_id = auth_user_id AND scheme_of_work_id = sow.id)
+        )
     ORDER BY sow.key_stage_id;
 END;
 //
