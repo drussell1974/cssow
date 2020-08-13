@@ -85,7 +85,10 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
-            model.number_of_lessons = row[11]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+            number_of_rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, model.id, auth_user)
+            for r in number_of_rows:
+                model.number_of_lessons = r[0]   
             model.set_is_recent()
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
@@ -108,6 +111,9 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
+
+            model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
+
             model.on_fetched_from_db()                                                                                                  
 
         return model
@@ -146,8 +152,8 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def get_schemeofwork_name_only(db, scheme_of_work_id):
-        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id)
+    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
+        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
         scheme_of_work_name = ""
         for row in rows:
             scheme_of_work_name = row[0]
@@ -156,12 +162,21 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def get_key_stage_id_only(db, scheme_of_work_id):
-        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id)
+    def get_key_stage_id_only(db, scheme_of_work_id, auth_user):
+        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id, auth_user)
         key_stage_id = 0
         for row in rows:
             key_stage_id = row[0]
         return key_stage_id
+
+
+    @staticmethod
+    def get_number_of_lessons(db, scheme_of_work_id, auth_user):
+        number_of_lessons = 0
+        rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, scheme_of_work_id, auth_user)
+        for row in rows:
+            number_of_lessons = row[0]   
+        return number_of_lessons
 
 
     @staticmethod
@@ -171,6 +186,7 @@ class SchemeOfWorkModel(BaseModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, model.created_by_id)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published)
 
@@ -192,27 +208,11 @@ class SchemeOfWorkDataAccess:
     
     @staticmethod
     def get_model(db, id_, auth_user):
+
         execHelper = ExecHelper()
 
-        select_sql = "SELECT "\
-                    " sow.id as id, "\
-                    " sow.name as name, "\
-                    " sow.description as description, "\
-                    " sow.exam_board_id as exam_board_id, "\
-                    " exam.name as exam_board_name, "\
-                    " sow.key_stage_id as key_stage_id, "\
-                    " kys.name as key_stage_name, "\
-                    " sow.created as created, "\
-                    " sow.created_by as created_by_id, "\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    " sow.published as published"\
-                    " FROM sow_scheme_of_work as sow "\
-                    " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id "\
-                    " INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
-                    " INNER JOIN auth_user as user ON user.id = sow.created_by "\
-                    "  WHERE sow.id = {scheme_of_work_id} AND (sow.published = 1 OR sow.created_by = {auth_user});"
-
-        select_sql = select_sql.format(scheme_of_work_id=id_, auth_user=to_db_null(auth_user))
+        select_sql = "CALL scheme_of_work__get({scheme_of_work_id}, {auth_user})"\
+            .format(scheme_of_work_id=id_, auth_user=to_db_null(auth_user))
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
@@ -224,7 +224,7 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "CALL schemeofwork__get_all({key_stage_id}, {auth_user})"\
+        select_sql = "CALL scheme_of_work__get_all({key_stage_id}, {auth_user})"\
             .format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
@@ -239,31 +239,11 @@ class SchemeOfWorkDataAccess:
         :param top: number of records to return
         :return: list of schemes of work models
         """
-        
         execHelper = ExecHelper()
         
-        select_sql = "SELECT DISTINCT "\
-                    " sow.id as id," \
-                    " sow.name as name," \
-                    " sow.description as description," \
-                    " sow.exam_board_id as exam_board_id," \
-                    " exam.name as exam_board_name," \
-                    " sow.key_stage_id as key_stage_id," \
-                    " kys.name as key_stage_name," \
-                    " sow.created as created," \
-                    " sow.created_by as created_by_id," \
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
-                    " sow.published as published"\
-                    " FROM sow_scheme_of_work as sow" \
-                    " LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id"\
-                    " LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id"\
-                    " LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id" \
-                    " LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id "\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by" \
-                    " WHERE sow.published = 1 OR sow.created_by = {auth_user}"\
-                    " ORDER BY sow.created DESC LIMIT {top};"
-        select_sql = select_sql.format(auth_user=to_db_null(auth_user), top=top)
-
+        select_sql = "CALL scheme_of_work__get_latest({top_n}, {auth_user})"\
+            .format(auth_user=to_db_null(auth_user), top_n=top)
+        
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
@@ -312,6 +292,16 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
+    def _insert_as__teacher(db, model, auth_user):
+        execHelper = ExecHelper()
+        
+        str_insert = "CALL scheme_of_work__has__teacher__insert({scheme_of_work_id}, {auth_user_id});"\
+            .format(scheme_of_work_id=model.id, auth_user_id=auth_user)
+        
+        execHelper.execCRUDSql(db, str_insert, handle_log_info)
+        
+
+    @staticmethod
     def _delete(db, model):
         
         execHelper = ExecHelper()
@@ -326,15 +316,13 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_key_stage_id_only(db, scheme_of_work_id):
+    def get_key_stage_id_only(db, scheme_of_work_id, auth_user):
 
         execHelper = ExecHelper()
         
-        select_sql = ("SELECT "\
-                    "  sow.key_stage_id as key_stage_id "\
-                    " FROM sow_scheme_of_work as sow "\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                    " WHERE sow.id = {scheme_of_work_id};".format(scheme_of_work_id=scheme_of_work_id))
+        select_sql = "CALL scheme_of_work__get_key_stage_id_only({scheme_of_work_id}, {auth_user})"\
+            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
@@ -353,6 +341,7 @@ class SchemeOfWorkDataAccess:
         rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
         return rows
 
+
     @staticmethod
     def publish(db, auth_user_id, id_):
         
@@ -369,31 +358,40 @@ class SchemeOfWorkDataAccess:
 
         return rval
 
+
     @staticmethod
     def get_options(db, auth_user = 0):
 
         execHelper = ExecHelper()
         
-        str_select = "SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = {auth_user} ORDER BY sow.key_stage_id;"
-        str_select = str_select.format(auth_user=to_db_null(auth_user))
+        str_select = "CALL scheme_of_work__get_options({auth_user})"\
+            .format(auth_user=to_db_null(auth_user))
+        
         rows = []
         rows = execHelper.execSql(db, str_select, rows)
         return rows
 
 
     @staticmethod
-    def get_schemeofwork_name_only(db, scheme_of_work_id):
+    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
         
         execHelper = ExecHelper()
         
-        select_sql = "SELECT "\
-                    "  sow.name as name "\
-                    " FROM sow_scheme_of_work as sow "\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                    " WHERE sow.id = {scheme_of_work_id};"
-        select_sql = select_sql.format(scheme_of_work_id=scheme_of_work_id)
+        select_sql = "CALL scheme_of_work__get_schemeofwork_name_only({scheme_of_work_id}, {auth_user});"\
+            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
 
+
+    @staticmethod
+    def get_number_of_lessons(db, scheme_of_work_id, auth_user):
+        execHelper = ExecHelper()
+        
+        select_sql = "CALL scheme_of_work__get_number_of_lessons({scheme_of_work_id},{auth_user});"\
+            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+        return rows

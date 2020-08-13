@@ -7,3 +7,4 @@ djangorestframework
 requests
 python-dotenv
 markdown
+cryptography

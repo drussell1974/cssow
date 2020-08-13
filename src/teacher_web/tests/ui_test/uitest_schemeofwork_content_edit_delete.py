@@ -55,27 +55,7 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        #231: find the unpublished learning objective in the index
-
-        elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
-
-        # Ensure element is visible
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        elem.click()
-        
-        self.wait()
-
-        ' After opening edit Open Modal '
-
-        #231: click the delete button
-        elem = self.test_context.find_element_by_id("deleteButton")
-        elem.click()
-
-        ' Delete Item from Modal '        
-        
-        #231: then click the continue button
-        elem = self.test_context.find_element_by_id("deleteModalContinueButton")
-        elem.click()
+        self.delete_unpublished_item()
         
         self.wait(s=2)
 
@@ -85,5 +65,5 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         
         #231: items after should be less than before
-        self.wait(s=10)
+        self.wait(s=2)
         self.assertEqual(9, len(items_after))

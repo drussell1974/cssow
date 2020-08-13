@@ -26,7 +26,7 @@ class test_db__get_key_stage_id_only(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_key_stage_id_only(self.fake_db, 101)
+                get_key_stage_id_only(self.fake_db, 999, 99)
 
 
     def test__should_call_execSql_return_no_items(self):
@@ -36,12 +36,12 @@ class test_db__get_key_stage_id_only(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_result = get_key_stage_id_only(self.fake_db, 99)
+            actual_result = get_key_stage_id_only(self.fake_db, 101, 99)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT   sow.key_stage_id as key_stage_id  FROM sow_scheme_of_work as sow  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE sow.id = 99;"
+                "CALL scheme_of_work__get_key_stage_id_only(101, 99)"
                 , [])
             self.assertEqual(0, actual_result)
 
@@ -53,13 +53,13 @@ class test_db__get_key_stage_id_only(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_result = get_key_stage_id_only(self.fake_db, 6)
+            actual_result = get_key_stage_id_only(self.fake_db, 6, 99)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT   sow.key_stage_id as key_stage_id  FROM sow_scheme_of_work as sow  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE sow.id = 6;"
-            , [])
+                "CALL scheme_of_work__get_key_stage_id_only(6, 99)"
+                , [])
             self.assertEqual(3, actual_result)
 
 

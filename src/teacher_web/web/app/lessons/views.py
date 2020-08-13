@@ -190,7 +190,7 @@ def initialise_keywords(request, scheme_of_work_id):
     #for lesson in lessons.model:
     #    LessonModel._upsert_key_words(db, lesson.model)
 
-    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
+    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id(request))
     #253 check user id
     schemeofwork_options = LessonModel.get_options(db, scheme_of_work_id, auth_user=auth_user_id(request))
     
