@@ -39,7 +39,10 @@ class test_db__get_options(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(
+                self.fake_db,
+                "CALL scheme_of_work__get_options(99)"
+                , [])
             self.assertEqual(0, len(rows))
 
 
@@ -54,7 +57,10 @@ class test_db__get_options(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(self.fake_db,
+                "CALL scheme_of_work__get_options(99)"
+                , [])
+            
             self.assertEqual(1, len(rows))
             self.assertEqual(123, rows[0].id)
             self.assertEqual("Item 1", rows[0].name)
@@ -76,7 +82,11 @@ class test_db__get_options(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT sow.id, sow.name, ks.name as key_stage_name FROM sow_scheme_of_work as sow LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id WHERE sow.published = 1 OR sow.created_by = 99 ORDER BY sow.key_stage_id;', [])
+            ExecHelper.execSql.assert_called_with(
+                self.fake_db,
+                "CALL scheme_of_work__get_options(99)"
+                , [])
+
             self.assertEqual(3, len(rows))
 
             self.assertEqual(1, rows[0].id)

@@ -78,7 +78,7 @@ def new(request, scheme_of_work_id, lesson_id):
         # required for creating a new object
         get_lessonobjective_view.model.lesson_id = int(lesson_id)
 
-    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id), auth_user_id(request))
 
     get_lessonobjective_view.model.lesson_id = lesson.id
     get_lessonobjective_view.model.key_stage_id = key_stage_id
@@ -127,7 +127,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id):
         # required for creating a new object
         model.lesson_id = int(lesson_id)
     
-    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id))
+    key_stage_id = SchemeOfWorkModel.get_key_stage_id_only(db, int(scheme_of_work_id), auth_user_id(request))
 
     model.lesson_id = lesson.id
     model.key_stage_id = key_stage_id

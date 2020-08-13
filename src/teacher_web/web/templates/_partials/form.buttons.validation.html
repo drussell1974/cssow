@@ -55,14 +55,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>'{{ content.active_model.display_name }}' ({{ content.active_model.id }}) will be deleted!</p>
-                <p class="alert alert-danger"><strong>{{_("You will not be able to recover your data")}}</strong></p>
-            </div>
+                {% if content.alert_message is not None %}
+                    <p>{{content.alert_message}}</p>
+                {% else %}
+                    <p>'{{ content.active_model.display_name }}' ({{ content.active_model.id }}) will be deleted!</p>
+                {% endif %}
+                <p class="alert alert-danger"><strong>{{_("You will not be able to recover your data")}}</strong><br>
+                <input type="checkbox" id="deleteModalIAgree" data-target="#deleteModalContinueButton" /> {{_("I understand")}}</p>
+            </div>  
             <div class="modal-footer">
                 
                 <!-- get href through partial view parameters -->
 
-                <button type="submit" name="published" value="2" class="btn btn-danger" id="deleteModalContinueButton">{{_("Yes, delete")}}</button>
+                <button type="submit" name="published" disabled value="2" class="btn btn-danger" id="deleteModalContinueButton">{{_("Yes, delete")}}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalStayButton" >{{_("No, go back")}}</button>
             </div>
         </div>

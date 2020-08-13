@@ -26,6 +26,7 @@ class ViewModel:
                     "display_name": self.active_model__display_name,
                     "published_state": self.active_model__published_state
                 },
+                "alert_message": alert_message
             },
             "auth": {
                 "user":False,

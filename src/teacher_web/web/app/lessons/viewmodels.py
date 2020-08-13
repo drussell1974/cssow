@@ -17,7 +17,7 @@ class LessonIndexViewModel(BaseViewModel):
         self.model = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
-        self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id)
+        self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
         # name to appear
         if self.scheme_of_work_name is None or self.scheme_of_work_name == "":
             self.on_not_found(self.scheme_of_work_name, scheme_of_work_id)

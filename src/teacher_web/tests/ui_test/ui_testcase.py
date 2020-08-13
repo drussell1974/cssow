@@ -128,7 +128,11 @@ class UITestCase(TestCase):
         elem.click()
 
         ' Delete Item from Modal '        
-        
+
+        #238: agree to delete item
+        elem = self.test_context.find_element_by_id("deleteModalIAgree")
+        elem.click()
+
         #231: then click the continue button
         elem = self.test_context.find_element_by_id("deleteModalContinueButton")
         elem.click()

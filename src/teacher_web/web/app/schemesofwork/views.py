@@ -94,8 +94,14 @@ def edit(request, scheme_of_work_id = 0):
         "examboard_options": examboard_options,
         "keystage_options": keystage_options,
     }
+    
+    # build alert message to be displayed
+    alert_message = "'{display_name}' ({id}) ".format(display_name=model.name, id=model.id)
+    if model.number_of_lessons > 0:
+        alert_message = alert_message + "and {number_of_lessons} lesson(s) ".format(number_of_lessons=model.number_of_lessons)
+    alert_message = alert_message + "will be deleted "
 
-    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model)
+    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model, alert_message=alert_message)
 
     return render(request, "schemesofwork/edit.html", view_model.content)
 

@@ -36,12 +36,12 @@ class test_db__get_schemeofwork_name_only(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            actual_result = get_schemeofwork_name_only(self.fake_db, 99)
+            actual_result = get_schemeofwork_name_only(self.fake_db, 101, 99)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT   sow.name as name  FROM sow_scheme_of_work as sow  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE sow.id = 99;"
+                "CALL scheme_of_work__get_schemeofwork_name_only(101, 99);"
                 , [])
             self.assertEqual("", actual_result)
 
@@ -53,12 +53,12 @@ class test_db__get_schemeofwork_name_only(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
 
-            actual_result = get_schemeofwork_name_only(self.fake_db, 6)
+            actual_result = get_schemeofwork_name_only(self.fake_db, 6, 99)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT   sow.name as name  FROM sow_scheme_of_work as sow  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE sow.id = 6;"
+                "CALL scheme_of_work__get_schemeofwork_name_only(6, 99);"
             , [])
             self.assertEqual("ipsum dolor sit amet.", actual_result)
 

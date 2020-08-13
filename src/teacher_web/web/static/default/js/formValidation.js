@@ -32,9 +32,19 @@
       // contains href button
 
       $("#deleteModal").modal("show");
-
-      $("#deleteModalContinueButton").click(function() {
-        form.submit();
+      
+      var i_agree = $("#deleteModalIAgree");
+      
+      i_agree.on("change", function(e) {
+        // toggle
+        var deleteButton = document.querySelector(e.currentTarget.dataset.target);  
+        
+        if (e.currentTarget.checked === true) {
+          deleteButton.removeAttribute("disabled");
+        } else {
+          deleteButton.setAttribute("disabled", true);
+        }
+        console.log(deleteButton);
       })
     }
 
