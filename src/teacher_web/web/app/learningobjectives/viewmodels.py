@@ -63,6 +63,6 @@ class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
 
 class LearningObjectivePublishModelViewModel(BaseViewModel):
 
-    def __init__(self, db, learning_objective_id, auth_user):
-        data = Model.publish_item(db, learning_objective_id, auth_user)
+    def __init__(self, db, learning_objective_id, scheme_of_work_id, auth_user):
+        data = Model.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
         self.model = data

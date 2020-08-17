@@ -222,8 +222,8 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
-    def publish_item(db, learning_objective_id, auth_user):
-        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, auth_user)
+    def publish_item(db, learning_objective_id, scheme_of_work_id, auth_user):
+        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
 
 
     @staticmethod
@@ -234,8 +234,8 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
-    def publish(db, model):
-        return LearningObjectiveDataAccess._publish(db, model)
+    def publish(db, model, scheme_of_work_id, auth_user):
+        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user)
 
 
     @staticmethod
@@ -319,11 +319,11 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def publish_item(db, id_, auth_user_id):
-        # TODO: #231: publish item
+    def publish_item(db, id_, scheme_of_work_id, auth_user):
+        #231: publish item
         model = LearningObjectiveModel(id_=id_)
         model.publish = True
-        return _publish(db, model)
+        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user)
 
 
     @staticmethod
@@ -403,17 +403,17 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def _publish(db, model):
-
+    def _publish(db, model, scheme_of_work_id, auth_user):
+    
         execHelper = ExecHelper()
 
-        #TODO: #269 create lesson_learning_objective__publish stored procedure
+        #269 create lesson_learning_objective__publish stored procedure
 
-        str_publish = "UPDATE sow_learning_objective__has__lesson SET published = {published} WHERE lesson_id = {lesson_id} AND learning_objective_id = {learning_objective_id};"
-        str_publish = str_publish.format(published=1 if model.published else 0, lesson_id=model.lesson_id, learning_objective_id=model.id)
-        
+        str_publish = "lesson_learning_objective__publish_item"
+        params = (model.id, model.lesson_id, scheme_of_work_id, 1 if model.published else 0, auth_user)
+
         rval = []
-        rval = execHelper.execSql(db, str_publish, rval)
+        rval = execHelper.update(db, str_publish, params)
 
         return rval
 

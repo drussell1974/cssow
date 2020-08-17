@@ -31,7 +31,7 @@ class test_viewmodel_PublishModelViewModel(TestCase):
             self.mock_model = Model(56)
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_model, auth_user=99)
+            self.viewmodel = ViewModel(db, self.mock_model.id, 101, auth_user=99)
 
             # assert functions was called
             Model.publish_item.assert_called()

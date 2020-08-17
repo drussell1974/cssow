@@ -79,7 +79,7 @@ class ExecHelper:
         if db != None:
 
             if log_info != None:
-                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
             
             with db.cursor() as cur:
                 cur.callproc(sql, params)
@@ -88,7 +88,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "execSql", "results:{}".format(result), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "results:{}".format(result), LOG_TYPE.Verbose)
 
         # returns appended result
         return result
@@ -102,7 +102,7 @@ class ExecHelper:
         if db != None:
 
             if log_info != None:
-                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
             
             with db.cursor() as cur:
                 cur.callproc(sql, params)
@@ -111,7 +111,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
         
         return result
 
@@ -122,9 +122,9 @@ class ExecHelper:
         result = []
 
         if db != None:
-
+            
             if log_info != None:
-                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
             
             with db.cursor() as cur:
                 cur.callproc(sql, params)
@@ -133,7 +133,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
         
         return result
 
@@ -146,7 +146,7 @@ class ExecHelper:
         if db != None:
 
             if log_info != None:
-                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
             
             with db.cursor() as cur:
                 cur.callproc(sql, params)
@@ -155,7 +155,7 @@ class ExecHelper:
             self._closeSqlConn(db, None)
 
             if log_info != None:
-                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
         
         return result
 
