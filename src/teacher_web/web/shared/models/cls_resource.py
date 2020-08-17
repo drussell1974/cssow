@@ -185,6 +185,12 @@ class ResourceModel (BaseModel):
         model = ResourceModel.upsert(db, model, auth_user, published, ResourceDataAccess)
         return model
 
+
+    @staticmethod
+    def publish_item(db, resource_id, scheme_of_work_id, auth_user):
+        return ResourceDataAccess.publish_item(db, resource_id, scheme_of_work_id, auth_user)
+
+
     @staticmethod
     def delete(db, resource_id, auth_user):
         return ResourceDataAccess.delete(db, resource_id, auth_user)
@@ -392,14 +398,13 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def publish_item(db, id_, auth_user_id):
+    def publish_item(db, model, scheme_of_work_id, auth_user):
         
         execHelper = ExecHelper()
 
-        str_publish = "UPDATE sow_resource SET published = {published} WHERE id = {resource_id};"
-        str_publish = str_publish.format(published=1 if model.published else 0, resource_id=model.id)
+        str_publish = "lesson_resource__publish_item"
+        params = (model.id, scheme_of_work_id, model.published, auth_user)
         
-        rval = []
-        rval = execHelper.execSql(db, str_publish, rval)
+        rval = execHelper.update(db, str_publish, params)
 
         return rval

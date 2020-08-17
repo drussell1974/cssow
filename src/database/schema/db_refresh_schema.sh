@@ -42,6 +42,12 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__insert.s
 echo lesson_learning_objective__update
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__update.sql
 
+echo lesson_learning_objective__publish_item
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__publish_item.sql
+
+echo lesson_resource__publish_item
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__publish_item.sql
+
 echo scheme_of_work__get
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get.sql
 
