@@ -410,11 +410,11 @@ class SchemeOfWorkDataAccess:
     def get_number_of_lessons(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_number_of_lessons({scheme_of_work_id},{auth_user});"\
-            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+        select_sql = "scheme_of_work__get_number_of_lessons"
+        params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
         return rows
 
 
@@ -422,11 +422,11 @@ class SchemeOfWorkDataAccess:
     def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_number_of_learning_objectives({scheme_of_work_id},{auth_user});"\
-            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+        select_sql = "scheme_of_work__get_number_of_learning_objectives"
+        params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
         return rows
 
 
@@ -434,9 +434,9 @@ class SchemeOfWorkDataAccess:
     def get_number_of_reources(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_number_of_resources({scheme_of_work_id},{auth_user});"\
-            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+        select_sql = "scheme_of_work__get_number_of_resources"
+        params = (scheme_of_work_id,auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
         return rows

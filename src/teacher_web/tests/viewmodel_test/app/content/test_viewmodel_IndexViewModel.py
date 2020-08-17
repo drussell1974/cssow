@@ -94,7 +94,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(0, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                
+                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
 
 
     def test_init_called_fetch__single_row(self):
@@ -119,7 +119,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
                     
                     self.assertEqual(1, len(self.viewmodel.model))                    
-                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                
+                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
 
 
     def test_init_called_fetch__multiple_rows(self):
@@ -144,4 +144,4 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(3, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "", "", {})                
+                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
