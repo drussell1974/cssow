@@ -33,7 +33,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
     def test__should_call_execSql_return_no_items(self):
         # arrange
-        expected_result = []
+        expected_result = [(0,)]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -44,7 +44,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  id FROM sow_learning_objective__has__lesson WHERE lesson_id = 67;"
+                "CALL lesson__get_number_of_learning_objectives(67,99);"
                 , []
                 , log_info=handle_log_info)
 
@@ -53,7 +53,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-        expected_result = [("87",)]
+        expected_result = [(1,)]
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -64,7 +64,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  id FROM sow_learning_objective__has__lesson WHERE lesson_id = 87;"
+                "CALL lesson__get_number_of_learning_objectives(87,99);"
             , []
             , log_info=handle_log_info)
 
@@ -73,7 +73,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
-        expected_result = [("1034",),("1045",),("12",)]
+        expected_result = [(3,)]
 
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
@@ -85,7 +85,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  id FROM sow_learning_objective__has__lesson WHERE lesson_id = 21;"
+                "CALL lesson__get_number_of_learning_objectives(21,99);"
                 , []
                 , log_info=handle_log_info)
             

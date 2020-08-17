@@ -32,7 +32,7 @@ class LearningObjectiveGetModelViewModel(BaseViewModel):
         self.model = model
 
 
-class LearningObjectiveSaveViewModel(BaseViewModel):
+class LearningObjectiveEditViewModel(BaseViewModel):
 
     def __init__(self, db, data, auth_user):
 

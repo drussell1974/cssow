@@ -5,10 +5,14 @@ from .core.log import handle_log_info
 
 
 class SoloTaxonomyModel(BaseModel):
+
+    learning_objectives = []
+
     def __init__(self, id_, name, lvl):
         self.id = id_
         self.name = name
         self.lvl = lvl
+        self.learning_objectives = []
 
 
     def _clean_up(self):

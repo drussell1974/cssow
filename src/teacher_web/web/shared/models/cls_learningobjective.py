@@ -164,9 +164,9 @@ class LearningObjectiveModel (BaseModel):
         return data
 
 
-    @staticmethod
-    def get_lesson_learning_objective_ids(db, lesson_id, auth_user):
-        return LearningObjectiveDataAccess.get_lesson_learning_objective_ids(db, lesson_id, auth_user)
+    #@staticmethod
+    #def get_lesson_learning_objective_ids(db, lesson_id, auth_user):
+    #    return LearningObjectiveDataAccess.get_lesson_learning_objective_ids(db, lesson_id, auth_user)
 
 
     @staticmethod
@@ -207,16 +207,17 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def save(db, model, auth_user, published):
+
         if published == 2:
-            LearningObjectiveDataAccess._delete(db, model)
+            LearningObjectiveDataAccess._delete(db, model, auth_user)
         else:
             model.validate()
 
             if model.is_valid == True:
                 if model.is_new() == True:
-                    model = LearningObjectiveDataAccess._insert(db, model, published)
+                    model = LearningObjectiveDataAccess._insert(db, model, published, auth_user)
                 else:
-                    LearningObjectiveDataAccess._update(db, model, published)
+                    LearningObjectiveDataAccess._update(db, model, published, auth_user)
         return model
 
 
@@ -226,9 +227,9 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
-    def delete(db, model, auth_user_id):
+    def delete(db, model, auth_user):
         """ Delete learning objective """
-        model = LearningObjectiveDataAccess._delete(db, model)
+        model = LearningObjectiveDataAccess._delete(db, model, auth_user)
         return model
 
 
@@ -251,37 +252,13 @@ class LearningObjectiveDataAccess:
 
         execHelper = ExecHelper()
         
-        select_sql = "SELECT"\
-                    " lob.id as id,"\
-                    " lob.description as description,"\
-                    " solo.id as solo_id,"\
-                    " solo.name as solo_taxonomy_name,"\
-                    " solo.lvl as solo_taxonomy_level,"\
-                    " cnt.id as content_id,"\
-                    " cnt.description as content_description,"\
-                    " le.id as lesson_id,"\
-                    " sow.key_stage_id as key_stage_id,"\
-                    " ks.name as key_stage_name,"\
-                    " lob.key_words as key_words,"\
-                    " lob.notes as notes,"\
-                    " lob.group_name as group_name,"\
-                    " lob.created as created,"\
-                    " lob.created_by as created_by_id,"\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    " lob.published as published "\
-                    " FROM sow_scheme_of_work as sow"\
-                    " INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id"\
-                    " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id"\
-                    " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id"\
-                    " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id"\
-                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id"\
-                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id"\
-                    " LEFT JOIN auth_user as user ON user.id = lob.created_by"\
-                    " WHERE lob.id = {learning_objective_id} AND (lob.published = 1 or lob.created_by = {auth_user});"
+        #269 create lesson_learning_objective__get stored procedure
 
-        select_sql = select_sql.format(
-            learning_objective_id=int(id_)
-            , auth_user=to_db_null(auth_user))
+        select_sql = "CALL lesson_learning_objective__get({learning_objective_id},{auth_user})"\
+            .format(
+                learning_objective_id=int(id_)
+                , auth_user=to_db_null(auth_user)
+            )
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
@@ -293,64 +270,21 @@ class LearningObjectiveDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "SELECT "\
-                    " lob.id as id, "\
-                    " lob.description as description, "\
-                    " solo.id as solo_id, "\
-                    " solo.name as solo_taxonomy_name, "\
-                    " solo.lvl as solo_taxonomy_level, "\
-                    " cnt.id as content_id, "\
-                    " cnt.description as content_description, "\
-                    " sow.key_stage_id as key_stage_id, "\
-                    " ks.name as key_stage_name, "\
-                    " le.id as lesson_id, "\
-                    " le.order_of_delivery_id as lesson_name, "\
-                    " lob.key_words as key_words,"\
-                    " lob.notes as notes,"\
-                    " lob.group_name as group_name," \
-                    " le_lo.is_key_objective as is_key_objective,"\
-                    " lob.created as created, "\
-                    " lob.created_by as created_by_id, "\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    " lob.published as published "\
-                    " FROM sow_scheme_of_work as sow "\
-                    " INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id "\
-                    " INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id "\
-                    " INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id "\
-                    " LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id "\
-                    " LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id "\
-                    " LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id "\
-                    " LEFT JOIN auth_user as user ON user.id = lob.created_by "\
-                    " WHERE le.id = {lesson_id} "\
-                    " AND sow.id = {scheme_of_work_id}"\
-                    " AND (le.published = 1 or le.created_by = {auth_user});"
-        select_sql = select_sql.format(lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
+        #269 create lesson_learning_objective__get_all stored procedure
+
+        select_sql = "CALL lesson_learning_objective__get_all({lesson_id},{scheme_of_work_id},{auth_user});"\
+            .format(lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
 
-
-    @staticmethod
-    def get_lesson_learning_objective_ids(db, lesson_id, auth_user_id):
-
-        execHelper = ExecHelper()
-
-        rows = []
-        
-        str_select = "SELECT lol.learning_objective_id "\
-            "FROM sow_learning_objective__has__lesson AS lol "\
-            "INNER JOIN sow_lesson AS l ON l.id = lol.lesson_id "\
-            "INNER JOIN sow_learning_objective AS lo ON lo.id = lol.learning_objective_id "\
-            "WHERE lo.published = 0 AND l.id={lesson_id} AND l.created_by = {auth_user_id};".format(lesson_id=lesson_id, auth_user_id=auth_user_id)
-        
-        return execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-
-
     @staticmethod
     def get_all_pathway_objectives(db, key_stage_id, key_words):
 
         execHelper = ExecHelper()
+
+        #TODO: #269 create learning_objective__get_all_pathway_objectives stored procedure
 
         select_sql = "SELECT"\
                     " lob.id as id,"\
@@ -393,12 +327,15 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def _delete(db, model):
+    def _delete(db, model, auth_user):
 
         execHelper = ExecHelper()
 
-        str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE learning_objective_id = {learning_objective_id};"
-        str_delete = str_delete.format(learning_objective_id=model.id)
+        #269 create lesson_learning_objective__delete stored procedure
+
+
+        str_delete = "CALL lesson_learning_objective__delete({learning_objective_id},{auth_user});"\
+            .format(learning_objective_id=model.id, auth_user=auth_user)
 
         rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
 
@@ -406,66 +343,62 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, lesson_id, auth_user_id):
+    def delete_unpublished(db, lesson_id, auth_user):
         """ Delete all unpublished learning objectives """
 
         execHelper = ExecHelper()
 
-        rows = LearningObjectiveModel.get_lesson_learning_objective_ids(db, lesson_id, auth_user_id)
-
-        for row in rows:
-            _id = row[0]
-            str_delete = "DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = {lesson_id} AND learning_objective_id={_id};".format(lesson_id=lesson_id,_id=_id)
-            execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
-        
-        return rows
+        str_delete = "CALL lesson_learning_objective__delete_unpublished({lesson_id},{auth_user});"\
+            .format(lesson_id=lesson_id,auth_user=auth_user)
+            
+        execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)        
         
 
     @staticmethod
-    def _update(db, model, published):
+    def _update(db, model, published, auth_user):
         execHelper = ExecHelper()
         rows = []
         
         # build update statement
-
-        str_update = "UPDATE sow_learning_objective SET description = '{description}', group_name = '{group_name}', notes = '{notes}', key_words = '{key_words}', solo_taxonomy_id = {solo_taxonomy_id}, content_id = {content_id}, parent_id = {parent_id}, published = {published} WHERE id = {learning_objective_id};"
-        str_update = str_update.format(description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, content_id=to_db_null(model.content_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), learning_objective_id=model.id)
-
+        #269 create learning_objective__update stored procedure
+        str_update = "CALL lesson_learning_objective__update({learning_objective_id},{lesson_id},'{description}', '{group_name}','{notes}','{key_words}',{solo_taxonomy_id},{content_id},{parent_id},{published},{auth_user});"\
+            .format(learning_objective_id=model.id, lesson_id=model.lesson_id, description=model.description, group_name=to_db_null(model.group_name), notes=to_db_null(model.notes), key_words=to_db_null(model.key_words), solo_taxonomy_id=model.solo_taxonomy_id, content_id=to_db_null(model.content_id), parent_id=to_db_null(model.parent_id), published=to_db_null(published), auth_user =auth_user)
         rows = execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
-
-        rows = LearningObjectiveDataAccess._update_lesson_lessonobjectives(db, model, rows)
+    
+        #rows = LearningObjectiveDataAccess._update_lesson_lessonobjectives(db, model, rows)
 
         return rows
 
 
     @staticmethod
-    def _insert(db, model, published):
-        
+    def _insert(db, model, published, auth_user):
         execHelper = ExecHelper()
-
-        str_insert = "INSERT INTO sow_learning_objective (description, group_name, notes, key_words, solo_taxonomy_id, content_id, parent_id, created, created_by, published)"
-        str_insert = str_insert + " VALUES ('{description}', '{group_name}', '{notes}', '{key_words}', {solo_taxonomy_id}, {content_id}, {parent_id}, '{created}', {created_by}, {published});"
-        str_insert = str_insert.format(
-            description=model.description,
-            group_name=model.group_name,
-            solo_taxonomy_id=model.solo_taxonomy_id,
-            content_id=to_db_null(model.content_id),
-            parent_id=to_db_null(model.parent_id),
-            key_words=to_db_null(model.key_words),
-            notes=to_db_null(model.notes),
-            created=model.created,
-            created_by=model.created_by_id,
-            published=published)
-        str_insert = str_insert + "SELECT LAST_INSERT_ID();"
-
-        rows = []
-
-        result, new_id = execHelper.execCRUDSql(db, str_insert, result=rows, log_info=handle_log_info)
-    
-        model.id = new_id
-
-        rows = LearningObjectiveDataAccess._insert_lesson_lessonobjectives(db, model, rows)
         
+        #TODO: #269 create learning_objective__insert stored procedure (1 of 2 insert sow_learning_objective)
+
+        str_insert = "lesson_learning_objective__insert"
+        
+        params = (
+            model.id,
+            model.lesson_id,
+            model.description,
+            model.group_name,
+            model.notes,
+            model.key_words,
+            model.solo_taxonomy_id,
+            model.content_id,
+            model.parent_id,
+            model.created,
+            model.created_by_id,
+            published,
+            auth_user
+        )
+        
+        results = execHelper.insert(db, str_insert, params, log_info=handle_log_info)
+    
+        for res in results:
+            model.id = res
+
         return model
 
 
@@ -474,19 +407,22 @@ class LearningObjectiveDataAccess:
 
         execHelper = ExecHelper()
 
-        str_publish = "UPDATE sow_learning_objective SET published = {published} WHERE id = {learning_objective_id};"
-        str_publish = str_publish.format(published=1 if model.published else 0, learning_objective_id=model.id)
+        #TODO: #269 create lesson_learning_objective__publish stored procedure
+
+        str_publish = "UPDATE sow_learning_objective__has__lesson SET published = {published} WHERE lesson_id = {lesson_id} AND learning_objective_id = {learning_objective_id};"
+        str_publish = str_publish.format(published=1 if model.published else 0, lesson_id=model.lesson_id, learning_objective_id=model.id)
         
         rval = []
         rval = execHelper.execSql(db, str_publish, rval)
 
         return rval
 
-
+    '''
     @staticmethod
     def _insert_lesson_lessonobjectives(db, model, results):
         """ insert into linking table between objective and lesson """
         
+        #TODO: #269 create lesson_learning_objective__insert stored procedure
 
         execHelper = ExecHelper()
 
@@ -497,10 +433,11 @@ class LearningObjectiveDataAccess:
 
         return results
 
-
     @staticmethod
     def _update_lesson_lessonobjectives(db, model, results):
         """ insert if entry in sow_learning_objective__has__lesson doesn't already map sow learning_objective and sow_lesson """
+
+        #TODO: #269 create lesson_learning_objective__update stored procedure
 
         execHelper = ExecHelper()
 
@@ -516,6 +453,7 @@ class LearningObjectiveDataAccess:
             results = execHelper.execCRUDSql(db, str_insert2, log_info=handle_log_info)
         
         return results
+    '''
 
     @staticmethod
     def get_linked_pathway_objectives(db, lesson_id):

@@ -58,15 +58,16 @@ class test_db__get_all(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             rows = get_all(self.fake_db, 5, auth_user=1)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, yr.name as year_name, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, le.published as published FROM sow_lesson as le  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id LEFT JOIN sow_topic as top ON top.id = le.topic_id  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE le.scheme_of_work_id = 5 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_all'
+                , (5, 1)
                 , []
                 , log_info=handle_log_info)
                 
@@ -81,6 +82,8 @@ class test_db__get_all(TestCase):
             1,
             5,
             "Computer Science",
+            34,
+            "Unistructural",
             2,
             "Denary",
             3,
@@ -100,15 +103,16 @@ class test_db__get_all(TestCase):
             343
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_results = get_all(self.fake_db, 3, auth_user=1)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, yr.name as year_name, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, le.published as published FROM sow_lesson as le  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id LEFT JOIN sow_topic as top ON top.id = le.topic_id  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE le.scheme_of_work_id = 3 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_all'
+                , (3, 1)
                 , []
                 , log_info=handle_log_info)
 
@@ -134,33 +138,43 @@ class test_db__get_all(TestCase):
     def test__should_call_execSql_return_multiple_item(self):
         # arrange
         expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Binary",3,"Data representation",38,
+            35, "Multistructural",
+            2,"Binary",
+            3,"Data representation",
+            38,
             10,"Yr10","Understand binary representation in computer systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal,Number Systems",
             4,"learning_objectives",23,343
         ),
         (322, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Denary",3,"Data representation",38,
+            35, "Multistructural",
+            2,"Denary",
+            3,"Data representation",
+            38,
             10,"Yr10","Understand common numbering systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
             4,"learning_objectives",23,343
         ),
-        (323, "Understanding numbering systems",1,5,"Computer Science",
-            2,"Hexadecimal",3,"Data representation",38,
+        (323, "Understanding numbering systems",1,5,"Computer Science", 
+            34, "Unistructural",
+            2,"Hexadecimal",
+            3,"Data representation",
+            38,
             10,"Yr10","Understand hexadecimal representation in computer systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
             4,"learning_objectives",23,343
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_results = get_all(self.fake_db, 3, auth_user=1)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                 "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, yr.name as year_name, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, le.published as published FROM sow_lesson as le  INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id LEFT JOIN sow_topic as top ON top.id = le.topic_id  LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id  LEFT JOIN auth_user as user ON user.id = sow.created_by  WHERE le.scheme_of_work_id = 3 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                 'lesson__get_all'
+                 , (3, 1)
                  , []
                  , log_info=handle_log_info)
 

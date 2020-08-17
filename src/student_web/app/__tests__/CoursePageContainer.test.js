@@ -28,7 +28,7 @@ describe("CoursePageContainer", () =>{
         image_url: "images/pic01.jpg",
         url: "https://youtu.be/s6zR2T9vn2a",
         number_of_learning_objective: 7,
-        number_of_resource: 1,
+        number_of_resources: 1,
     },{
         id: 2,
         title: "Sed a ante placerat, porta.",
@@ -36,15 +36,15 @@ describe("CoursePageContainer", () =>{
         image_url: "images/pic02.jpg",
         url: "https://youtu.be/s6zR2T9vn2b",
         number_of_learning_objective: 3,
-        number_of_resource: 2,
+        number_of_resources: 2,
     },{
         id: 3,
         title: "Nullam bibendum hendrerit dolor, in.",
         summary: "Integer felis nunc, venenatis et hendrerit a, maximus nec orci. In hendrerit velit sem, id congue ante cursus id. Cras.",
         image_url: "images/pic03.jpg",
         url: "https://youtu.be/s6zR2T9vn2c",
-        number_of_learning_objective: 4,
-        number_of_resource: 0,
+        number_of_learning_objectives: 4,
+        number_of_resources: 0,
     },{
         id: 4,
         title: "Donec pellentesque sit amet lorem",
@@ -52,23 +52,23 @@ describe("CoursePageContainer", () =>{
         image_url: "images/pic04.jpg",
         url: "https://youtu.be/s6zR2T9vn2d",
         number_of_learning_objective: 0,
-        number_of_resource: 0,
+        number_of_resources: 0,
     },{
         id: 5,
         title: "Nullam a ultrices mi. Suspendisse",
         summary: "Nam at malesuada mi. Cras non consectetur sapien. Etiam eget justo egestas, sagittis mauris a, luctus quam. Quisque vitae sapien.",
         image_url: "images/pic05.jpg",
         url: "https://youtu.be/s6zR2T9vn2e",
-        number_of_learning_objective: 2,
-        number_of_resource: 3,
+        number_of_learning_objectives: 2,
+        number_of_resources: 3,
     },{
         id: 6,
         title: "Donec sit amet felis id",
         summary: "Integer feugiat eget libero eu eleifend. Pellentesque molestie pellentesque urna non malesuada. Mauris blandit accumsan est, at aliquam mauris tempus.",
         image_url: "images/pic06.jpg",
         url: "https://youtu.be/s6zR2T9vn2f",
-        number_of_learning_objective: 7,
-        number_of_resource: 1,
+        number_of_learning_objectives: 7,
+        number_of_resources: 1,
     }]
     beforeEach(() => {
         (

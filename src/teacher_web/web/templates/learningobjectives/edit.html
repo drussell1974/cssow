@@ -25,22 +25,9 @@
 
 {% block maincontent %}
 <!-- #231: needs-validation class to select form in formValidation.js -->
-<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.save' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
+<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
     {% csrf_token %}
-    <!-- Solo Taxonomy START -->
-    <div class="control-group">
-        <div class="form-group controls">
-        <label>{{_("Solo taxonomy")}}</label>
-        <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
-            <option value="">- {{_("Select an option")}} -</option>
-            {% for opt in content.data.solo_taxonomy_options %}
-                <option value={{opt.id}} {% if opt.id == content.data.learningobjective.solo_taxonomy_id %} selected {% endif %}>{{opt.name}}</option>
-            {% endfor %}
-        </select>
-        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
-        </div>
-    </div>
-    <!-- Solo Taxonomy END -->
+    
     <!-- Description START -->
     <div class="control-group">
         <div class="form-group controls">
@@ -51,20 +38,6 @@
         </div>
     </div>
     <!-- Description END -->
-    <!-- Content START -->
-    <div class="control-group">
-        <div class="form-group controls">
-        <label>{{_("Curriculum")}}</label>
-        <select class="form-control" name="content_id" id="ctl-content_id" required>
-            <option value="">- {{_("Select an option")}} -</option>
-            {% for opt in content.data.content_options %}
-            <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>
-            {% endfor %}
-        </select>
-        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
-        </div>
-    </div>
-    <!-- Content END -->
     <!-- Group Name START -->
     <div class="control-group">
         <div class="form-group controls">
@@ -84,7 +57,38 @@
             <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
         </div>
     </div>
+    <hr>
     <!-- Notes END -->
+    <div class="card-body alert-secondary">
+        <!-- Content START -->
+        <div class="control-group">
+            <div class="form-group controls">
+            <label>{{_("Curriculum")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-content_id" ></i> </label>
+            <select class="form-control" name="content_id" id="ctl-content_id" required>
+                <option value="">- {{_("Select an option")}} -</option>
+                {% for opt in content.data.content_options %}
+                <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>
+                {% endfor %}
+            </select>
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
+        </div>
+        <!-- Content END -->
+        <!-- Solo Taxonomy START -->
+        <div class="control-group">
+            <div class="form-group controls">
+            <label>{{_("Solo taxonomy")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-solo_taxonomy_id" ></i> </label>
+            <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
+                <option value="">- {{_("Select an option")}} -</option>
+                {% for opt in content.data.solo_taxonomy_options %}
+                    <option value={{opt.id}} {% if opt.id == content.data.learningobjective.solo_taxonomy_id %} selected {% endif %}>{{opt.name}}</option>
+                {% endfor %}
+            </select>
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
+        </div>
+    <!-- Solo Taxonomy END -->
+    </div>
     <br>
     <div id="success"></div>
     <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">

@@ -47,7 +47,9 @@ class test_db__get_all(TestCase):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
 
-        SchemeOfWorkDataAccess.get_number_of_lessons = Mock(return_value=[(66,)])
+        SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
+        SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
+        SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -59,7 +61,9 @@ class test_db__get_all(TestCase):
                 "CALL scheme_of_work__get_all(3, 99)"
                 , [])
 
-            SchemeOfWorkDataAccess.get_number_of_lessons.assert_called()
+            SchemeOfWorkModel.get_number_of_lessons.assert_called()
+            SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()
+            SchemeOfWorkModel.get_number_of_resources.assert_called()
 
             self.assertEqual(1, len(rows))
             self.assertEqual(6, rows[0]["id"])
@@ -76,7 +80,9 @@ class test_db__get_all(TestCase):
             (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 20),
             (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 34)]
 
-        SchemeOfWorkDataAccess.get_number_of_lessons = Mock(return_value=[(66,)])
+        SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
+        SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
+        SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
 
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
@@ -90,7 +96,9 @@ class test_db__get_all(TestCase):
                 "CALL scheme_of_work__get_all(3, 99)",
                  [])
 
-            SchemeOfWorkDataAccess.get_number_of_lessons.assert_called()
+            SchemeOfWorkModel.get_number_of_lessons.assert_called()
+            SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()
+            SchemeOfWorkModel.get_number_of_resources.assert_called()
 
             self.assertEqual(3, len(rows))
 

@@ -79,8 +79,8 @@ class ContentModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db, key_stage_id):
-        rows = ContentDataAccess.get_options(db, key_stage_id)
+    def get_options(db, key_stage_id, scheme_of_work_id = 0):
+        rows = ContentDataAccess.get_options(db, key_stage_id, scheme_of_work_id)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2])
@@ -108,10 +108,12 @@ class ContentModel(BaseModel):
 class ContentDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_options(db, key_stage_id):
+    def get_options(db, key_stage_id, scheme_of_work_id = 0):
 
         execHelper = ExecHelper()
 
+        #TODO: #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
+    
         str_select = "SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
         rows = []

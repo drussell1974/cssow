@@ -44,7 +44,6 @@
         } else {
           deleteButton.setAttribute("disabled", true);
         }
-        console.log(deleteButton);
       })
     }
 
@@ -67,6 +66,44 @@
         })
       });
     }
+
+    // unlock any locked controls
+    var locked_controls = document.getElementsByClassName('form-control--lock');
+    
+    console.log(locked_controls[0])
+    console.log(locked_controls[1])
+
+    Array.prototype.filter.call(locked_controls, function(lock) {  
+      // disable locked_controls with values
+      // initialise
+      var control = document.querySelector(lock.dataset.target);
+      
+      if (control.value == 0) {
+        control.removeAttribute("readonly");
+        control.removeAttribute("onmousedown");
+        lock.className = "fa fa-unlock form-control--lock";
+      } else {
+        control.setAttribute("readonly", true);
+        control.setAttribute("onmousedown", "return false;");
+        lock.className = "fa fa-lock form-control--lock";
+      }
+      
+      // when clicked
+      lock.addEventListener("click", function(e) {
+        // toggle
+        var control = document.querySelector(e.currentTarget.dataset.target);
+        
+        if (control.getAttribute("readonly") == "true") {
+          control.removeAttribute("readonly");
+          control.removeAttribute("onmousedown");
+          e.currentTarget.className = "fa fa-unlock form-control--lock";
+        } else {
+          control.setAttribute("readonly", true);
+          control.setAttribute("onmousedown", "return false;");
+          e.currentTarget.className = "fa fa-lock form-control--lock";
+        }
+      })
+    })
 
     // Get validation errors from hidden field
     function showValidationErrors() {

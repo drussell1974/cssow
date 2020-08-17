@@ -96,10 +96,14 @@ def edit(request, scheme_of_work_id = 0):
     }
     
     # build alert message to be displayed
-    alert_message = "'{display_name}' ({id}) ".format(display_name=model.name, id=model.id)
+    alert_message = "<p>'{display_name}' ({id}) will be deleted!<ul>".format(display_name=model.name, id=model.id)
     if model.number_of_lessons > 0:
-        alert_message = alert_message + "and {number_of_lessons} lesson(s) ".format(number_of_lessons=model.number_of_lessons)
-    alert_message = alert_message + "will be deleted "
+        alert_message = alert_message + "<li>{number_of_lessons} lesson(s)</li>".format(number_of_lessons=model.number_of_lessons)
+    if model.number_of_learning_objectives > 0:
+        alert_message = alert_message + "<li>{number_of_learning_objectives} learning objective(s)</li>".format(number_of_learning_objectives=model.number_of_learning_objectives)
+    if model.number_of_resources > 0:
+        alert_message = alert_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=model.number_of_resources)
+    alert_message = alert_message + "</ul>"
 
     view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model, alert_message=alert_message)
 

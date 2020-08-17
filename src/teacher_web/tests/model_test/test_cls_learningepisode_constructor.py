@@ -61,6 +61,7 @@ class Test_Lesson_Constructor(TestCase):
                                  title="Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
+                                 content_id=10,
                                  topic_id=4,
                                  #key_words='unit,test',
                                  summary='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.',
@@ -76,6 +77,7 @@ class Test_Lesson_Constructor(TestCase):
         self.assertEqual("Data Representation: Images", test.title)
         self.assertEqual(2, test.order_of_delivery_id)
         self.assertEqual(3, test.scheme_of_work_id)
+        self.assertEqual(10, test.content_id)
         self.assertEqual(4, test.topic_id)
         #self.assertEqual('unit,test', test.key_words)
         self.assertEqual('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.', test.summary)

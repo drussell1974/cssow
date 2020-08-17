@@ -23,6 +23,8 @@ class LessonModel (BaseModel):
     summary = ""
     order_of_delivery_id = 0
     scheme_of_work_id = 0
+    content_id = 0
+    content_description = ""
     topic_id = None
     year_id = None
     key_stage_id = None
@@ -31,15 +33,18 @@ class LessonModel (BaseModel):
     key_words_str = []  
     resources = []
     learning_objectives = []
-    number_of_resource = 0
+    number_of_resources = 0
+    number_of_learning_objectives = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
         self.scheme_of_work_name = scheme_of_work_name
+        self.content_id = int(content_id)
+        self.content_description = content_description
         self.topic_id = try_int(topic_id, return_value=0)
         self.topic_name = topic_name
         self.parent_topic_id = None if parent_topic_id is None else int(parent_topic_id)
@@ -78,6 +83,7 @@ class LessonModel (BaseModel):
             self.summary = keypairs["summary"]
             self.order_of_delivery_id = int(keypairs["order_of_delivery_id"])
             self.scheme_of_work_id = int(keypairs["scheme_of_work_id"])
+            self.content_id = int(keypairs["content_id"])
             self.topic_id = int(keypairs["topic_id"])
             self.key_stage_id = int(keypairs["key_stage_id"])
             self.year_id = int(keypairs["year_id"])
@@ -125,12 +131,17 @@ class LessonModel (BaseModel):
 
         # Validate scheme_of_work_id
         if self.scheme_of_work_id is None or self.scheme_of_work_id < 1 or self.scheme_of_work_id > 9999:
-            self.validation_errors["scheme_of_work_id"] = "{} is not a valid selection for scheme of work".format(self.order_of_delivery_id)
+            self.validation_errors["scheme_of_work_id"] = "{} is not a valid selection for lesson".format(self.scheme_of_work_id)
+            self.is_valid = False
+
+        # Validate content_id
+        if self.content_id is None or self.content_id < 1 or self.content_id > 99999:
+            self.validation_errors["content_id"] = "{} is not a valid selection for lesson".format(self.content_id)
             self.is_valid = False
 
         # Validate topic_id
         if self.topic_id is None or self.topic_id < 1 or self.topic_id > 9999:
-            self.validation_errors["topic_id"] = "{} is not a valid selection for scheme of work".format(self.order_of_delivery_id)
+            self.validation_errors["topic_id"] = "{} is not a valid selection for lesson".format(self.topic_id)
             self.is_valid = False
 
         # Validate key_stage_id
@@ -207,16 +218,19 @@ class LessonModel (BaseModel):
                 order_of_delivery_id=row[2],
                 scheme_of_work_id=row[3],
                 scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                summary = row[11],
-                created=row[12],
-                created_by_id=row[13],
-                created_by_name=row[14])
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                summary = row[13],
+                created=row[14],
+                created_by_id=row[15],
+                created_by_name=row[16],
+                published=row[17])
             model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
@@ -237,28 +251,30 @@ class LessonModel (BaseModel):
                 order_of_delivery_id=row[2],
                 scheme_of_work_id=row[3],
                 scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                year_name=row[11],
-                summary=row[12],
-                created=row[13],
-                created_by_id=row[14],
-                created_by_name=row[15],
-                published = row[16]
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                year_name=row[13],
+                summary=row[14],
+                created=row[15],
+                created_by_id=row[16],
+                created_by_name=row[17],
+                published = row[18]
             )
             
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
             ' get the number of learning objectives ' 
-            model.number_of_learning_objective = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
-            ' get learning objectives for this lesson '
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+            ' get number of learning objectives for this lesson '
+            model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
             ' get number of resources for this lesson '
-            model.number_of_resource = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
             ' get related topics '
             model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id)
             ' get ks123 pathways '
@@ -306,9 +322,10 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
-        rows = LessonDataAccess.get_number_of_learning_objectives(db, learning_epsiode_id, auth_user)
-        return try_int(rows)
+    def get_number_of_learning_objectives(db, lesson_id, auth_user):
+        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user)
+        
+        return rows[0][0]
 
     
     @staticmethod
@@ -358,32 +375,8 @@ class LessonDataAccess:
     @staticmethod
     def get_model(db, id_, scheme_of_work_id, auth_user, resource_type_id = 0):
         execHelper = ExecHelper()
-
-        select_sql = "SELECT "\
-                    " le.id as id,"\
-                    " le.title as title," \
-                    " le.order_of_delivery_id as order_of_delivery_id,"\
-                    " le.scheme_of_work_id as scheme_of_work_id,"\
-                    " sow.name as scheme_of_work_name,"\
-                    " top.id as topic_id,"\
-                    " top.name as topic_name,"\
-                    " pnt_top.id as parent_topic_id,"\
-                    " pnt_top.name as parent_topic_name,"\
-                    " sow.key_stage_id as key_stage_id,"\
-                    " yr.id as year_id,"\
-                    " le.summary as summary,"\
-                    " le.created as created,"\
-                    " le.created_by as created_by_id,"\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
-                    " FROM sow_lesson as le"\
-                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
-                    " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
-                    " INNER JOIN sow_topic as top ON top.id = le.topic_id"\
-                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by"\
-                    " WHERE le.id = {lesson_id} AND le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-        select_sql = select_sql.format(lesson_id=int(id_), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
-
+        select_sql = "CALL lesson__get({lesson_id},{scheme_of_work_id},{auth_user});"\
+            .format(lesson_id=int(id_), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
         rows = []
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
@@ -393,38 +386,13 @@ class LessonDataAccess:
     def get_all(db, scheme_of_work_id, auth_user):
 
         execHelper = ExecHelper()
-            
-        select_sql = "SELECT "\
-                    " le.id as id," \
-                    " le.title as title,"\
-                    " le.order_of_delivery_id as order_of_delivery_id,"\
-                    " le.scheme_of_work_id as scheme_of_work_id,"\
-                    " sow.name as scheme_of_work_name,"\
-                    " top.id as topic_id," \
-                    " top.name as topic_name," \
-                    " pnt_top.id as parent_topic_id,"\
-                    " pnt_top.name as parent_topic_name,"\
-                    " sow.key_stage_id as key_stage_id," \
-                    " yr.id as year_id," \
-                    " yr.name as year_name,"\
-                    " le.summary as summary,"\
-                    " le.created as created,"\
-                    " le.created_by as created_by_id,"\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
-                    " le.published as published"\
-                    " FROM sow_lesson as le "\
-                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
-                    " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
-                    " LEFT JOIN sow_topic as top ON top.id = le.topic_id "\
-                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                    " WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user})" \
-                    " ORDER BY le.year_id, le.order_of_delivery_id;"
-        select_sql = select_sql.format(scheme_of_work_id=int(scheme_of_work_id), auth_user=to_db_null(auth_user))
 
-        rows = []
+        select_sql = "lesson__get_all"
+        params = (scheme_of_work_id, auth_user); 
 
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        rows = []    
+        rows = execHelper.select(db, select_sql, params, rows, log_info=handle_log_info)
+        
         return rows
 
 
@@ -521,28 +489,24 @@ class LessonDataAccess:
 
     
     @staticmethod
-    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
+    def get_number_of_learning_objectives(db, lesson_id, auth_user):
         """
         get the number of learning objective for the lessons
         :param db: database context
-        :param learning_epsiode_id:
+        :param lesson_id:
         :param auth_user:
         :return:
         """
         execHelper = ExecHelper()
+
+        select_sql = "CALL lesson__get_number_of_learning_objectives({lesson_id},{auth_user});"\
+            .format(lesson_id=lesson_id, auth_user=to_db_null(auth_user))
         
-
-        select_sql = "SELECT "\
-                    " id"\
-                    " FROM sow_learning_objective__has__lesson"\
-                    " WHERE lesson_id = {lesson_id};"
-
-        select_sql = select_sql.format(lesson_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
-
+        
         rows = []
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
-        return len(rows)
+        return rows
 
 
     @staticmethod
@@ -611,20 +575,22 @@ class LessonDataAccess:
         execHelper = ExecHelper()
         
         # 1. Update the lesson
+        str_update = "lesson__update"
+        params = (
+            model.id,
+            model.title,
+            model.summary,
+            model.order_of_delivery_id,
+            model.scheme_of_work_id,
+            model.content_id,
+            model.topic_id,
+            model.year_id,
+            published,
+            auth_user_id
+        )
 
-        str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
-        str_update = str_update.format(
-            title = model.title,
-            order_of_delivery_id=model.order_of_delivery_id,
-            year_id=model.year_id,
-            scheme_of_work_id=model.scheme_of_work_id,
-            topic_id=model.topic_id,
-            summary=to_db_null(model.summary),
-            published=published,
-            lesson_id=model.id)
-        
         rows = []
-        rows = execHelper.execCRUDSql(db, str_update, rows, log_info=handle_log_info)
+        rows = execHelper.update(db, str_update, params, log_info=handle_log_info)
 
         # 2. upsert related topics
         
@@ -653,25 +619,26 @@ class LessonDataAccess:
 
         # 1. Insert the lesson
 
-        str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
-        str_insert = str_insert.format(
-            title = model.title,
-            order_of_delivery_id=model.order_of_delivery_id,
-            year_id=model.year_id,
-            scheme_of_work_id=model.scheme_of_work_id,
-            topic_id=model.topic_id,
-            summary=to_db_null(model.summary),
-            created=model.created,
-            created_by=model.created_by_id,
-            published=published)
-        
-        rows = []
-        result = execHelper.execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
-        
-        model.id = result[1]
+        str_insert = "lesson__insert"
+        params = (
+            model.id,
+            model.title,
+            model.summary,
+            model.order_of_delivery_id,
+            model.scheme_of_work_id,
+            model.content_id,
+            model.topic_id,
+            model.year_id,
+            published,
+            model.created_by_id,
+            model.created,
+        )
+    
 
-        #for row in rows:
-        #    model.id = int(row[0])
+        rows = []
+        result = execHelper.insert(db, str_insert, params, log_info=handle_log_info)
+    
+        model.id = result[0]
 
         # 2. insert related topics
 
@@ -701,11 +668,10 @@ class LessonDataAccess:
         """ Delete Lesson """
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id} AND published IN (0,2);"
-        str_delete = str_delete.format(lesson_id=model.id)
+        str_delete = "lesson__delete"
+        params = (model.id, auth_user_id)
 
-        rval = []
-        rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
+        rval = execHelper.delete(db, str_delete, params, log_info=handle_log_info)
 
         return model
 

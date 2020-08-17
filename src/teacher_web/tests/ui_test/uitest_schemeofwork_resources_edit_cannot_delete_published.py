@@ -2,7 +2,7 @@ from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-class uitest_schemeofwork_resources_edit_delete__cancel(UITestCase):
+class uitest_schemeofwork_resources__cannot_delete_published(UITestCase):
 
     test_context = WebBrowserContext()
     
@@ -38,16 +38,18 @@ class uitest_schemeofwork_resources_edit_delete__cancel(UITestCase):
         elem.click()
 
         ' Open Modal '
-        #231: click the delete button
-        elem = self.test_context.find_element_by_id("deleteButton")
-        elem.click()
-
-        ' Delete Item from Modal '        
-        #231: then click the stay button
-
-        elem = self.test_context.find_element_by_id("deleteModalStayButton")
-        elem.click()
         
+        #231: click the delete button
+
+        elem = self.test_context.find_element_by_id("deleteButton")
+        attr = elem.get_attribute("disabled")
+        self.assertTrue(attr)
+
+        #231: stay on page
+
+        # check this does nothing
+        elem.click()
+
         #231: assert we're still on the stay on page
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: OCR AS and A Level Computer Science')

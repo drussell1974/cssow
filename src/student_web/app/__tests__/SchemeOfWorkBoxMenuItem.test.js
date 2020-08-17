@@ -10,6 +10,8 @@ let schemeofwork = {
     name: "KS3 Computing",
     description: "Lorem ipsum dolor sit amet.",
     number_of_lessons: 67,
+    number_of_learning_objectives: 285,
+    number_of_resources: 132,
     image_url: "images/pic03.jpg",
     url: "https://youtu.be/s6zR2er9vn2a",
 }
@@ -107,19 +109,16 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
             <MemoryRouter>
             <SchemeOfWorkBoxMenuItem 
                 data={schemeofwork} 
-                uri='#'
-                typeButtonText='Coming soon' 
-                typeButtonClass='button fit disabled'/>
+                typeButtonText='View' 
+                typeButtonClass='button fit'
+                typeDisabledButtonText='Coming soon' 
+                typeDisabledButtonClass='button fit disabled'/>
             </MemoryRouter>
             );
 
         expect(
-            container.querySelector('div.inner a.button').textContent
+            container.querySelector('div.inner button.button').textContent
         ).toMatch('Coming soon');
-
-        expect(
-            container.querySelector('div.inner a.button').getAttribute('href')
-        ).toEqual('/');
     })
 
     it('has type label heading', () => {

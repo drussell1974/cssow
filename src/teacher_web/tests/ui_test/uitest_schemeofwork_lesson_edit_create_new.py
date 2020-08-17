@@ -104,6 +104,14 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.clear()
         elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.")
 
+        ' ctl-content_id - select following and writing algorithms '
+        elem = self.test_context.find_element_by_id("ctl-content_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "following and writing algorithms":
+                 opt.click()
+        elem.send_keys(Keys.TAB)
+
         ' ctl-topic_id - select KS4 '
         elem = self.test_context.find_element_by_id("ctl-topic_id")
         all_options = elem.find_elements_by_tag_name('option')

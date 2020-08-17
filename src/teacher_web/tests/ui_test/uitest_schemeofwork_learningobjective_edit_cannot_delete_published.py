@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_schemeofwork_learningobjective_edit_delete__cancel(UITestCase):
+class uitest_schemeofwork_learningobjective_edit_cannot_delete_published(UITestCase):
 
     test_context = WebBrowserContext()
     
@@ -43,15 +43,13 @@ class uitest_schemeofwork_learningobjective_edit_delete__cancel(UITestCase):
         #231: click the delete button
 
         elem = self.test_context.find_element_by_id("deleteButton")
-        elem.click()
+        attr = elem.get_attribute("disabled")
+        self.assertTrue(attr)
 
-        ' Delete Item from Modal '        
-        #231: then click the stay button
-
-        elem = self.test_context.find_element_by_id("deleteModalStayButton")
-        elem.click()
-        
         #231: stay on page
+
+        # check this does nothing
+        elem.click()
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
         

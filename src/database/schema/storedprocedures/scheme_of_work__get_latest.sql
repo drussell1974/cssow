@@ -3,8 +3,8 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS scheme_of_work__get_latest;
 
 CREATE PROCEDURE scheme_of_work__get_latest (
-  IN top_n INT,
-  IN auth_user INT)
+ IN p_top_n INT,
+ IN p_auth_user INT)
 BEGIN
     SELECT DISTINCT
       sow.id as id, 
@@ -26,10 +26,10 @@ BEGIN
     LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
     LEFT JOIN auth_user as user ON user.id = sow.created_by 
     WHERE sow.published = 1 
-        or auth_user IN (SELECT auth_user_id 
+        or p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 
-                            WHERE auth_user_id = auth_user_id AND scheme_of_work_id = sow.id)
-    ORDER BY sow.created DESC LIMIT top_n;
+                            WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
+    ORDER BY sow.created DESC LIMIT p_top_n;
 END;
 //
 

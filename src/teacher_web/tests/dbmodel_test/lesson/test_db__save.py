@@ -62,9 +62,9 @@ class test_db__save(TestCase):
         LessonDataAccess._upsert_key_words = MagicMock()
         LessonDataAccess._copy_objective_ids = Mock()
 
-        expected_result = ([], 341)
+        expected_result = (341,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99, published = 1)
@@ -72,7 +72,7 @@ class test_db__save(TestCase):
             # assert
             
             LessonDataAccess._copy_objective_ids.assert_called()
-
+            print(actual_result.id)
             self.assertEqual(341, actual_result.id)
 
 
@@ -89,9 +89,9 @@ class test_db__save(TestCase):
         LessonDataAccess._upsert_key_words = Mock()
         LessonDataAccess._copy_objective_ids = MagicMock()
 
-        expected_result = ([], 454)
+        expected_result = (454,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99, published = 1)
@@ -100,7 +100,7 @@ class test_db__save(TestCase):
             
             LessonDataAccess._copy_objective_ids.assert_not_called()
 
-            self.assertEqual(expected_result[1], actual_result.id)
+            self.assertEqual(454, actual_result.id)
 
 
     def test_should_call_execCRUDSql__update_with__is_new__false(self):
@@ -117,17 +117,18 @@ class test_db__save(TestCase):
 
         expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99, published=1)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                "UPDATE sow_lesson SET title = 'CPU and RAM', order_of_delivery_id = 1, year_id = 0, scheme_of_work_id = 0, topic_id = 0, summary = '', published = 1 WHERE id =  1;"
-                , []
-                , log_info=handle_log_info)
+            ExecHelper.update.assert_called_with(
+                self.fake_db, 
+                'lesson__update'
+                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, 99)
+                ,log_info=handle_log_info)
 
             # check subsequent functions where called
             
@@ -153,19 +154,19 @@ class test_db__save(TestCase):
         LessonDataAccess._copy_objective_ids = MagicMock()
         LessonDataAccess._copy_objective_ids.assert_not_called()
 
-        expected_result = ("100", 876)
+        expected_result = (876,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99, published = 1)
             
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
+            ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('', 1, 0, 0, 0, '', '', 0, 1);SELECT LAST_INSERT_ID();"
-                , []
+                'lesson__insert'
+                , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '')
                 , log_info=handle_log_info)
 
             # check subsequent functions where called
@@ -176,7 +177,7 @@ class test_db__save(TestCase):
             LessonDataAccess._upsert_key_words.assert_called()
             LessonDataAccess._copy_objective_ids.assert_not_called()
 
-            self.assertEqual(expected_result[1], actual_result.id)
+            self.assertEqual(876, actual_result.id)
 
 
     def test_should_call_execCRUDSql__delete__when__is_new__false__and__published_is_2(self):
@@ -193,17 +194,17 @@ class test_db__save(TestCase):
 
         expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99, published=2)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
+            ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                "DELETE FROM sow_lesson WHERE id = 23 AND published IN (0,2);"
-                , []
+                'lesson__delete'
+                , (23, 99)
                 , log_info=handle_log_info)
 
             # check subsequent functions where called

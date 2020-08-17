@@ -36,7 +36,7 @@ class test_db__publish(TestCase):
 
     def test_should_call_execCRUDSql(self):
          # arrange
-        model = Model(123, "CPU, RAM and ")
+        model = Model(123, "CPU, RAM and ", lesson_id = 101)
         
         expected_result = []
 
@@ -48,7 +48,7 @@ class test_db__publish(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db, 
-                "UPDATE sow_learning_objective SET published = 1 WHERE id = 123;"
+                "UPDATE sow_learning_objective__has__lesson SET published = 1 WHERE lesson_id = 101 AND learning_objective_id = 123;"
             , []
             )
             

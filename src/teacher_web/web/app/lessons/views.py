@@ -10,6 +10,7 @@ from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel
+from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
@@ -63,6 +64,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
             title = request.POST["title"],
             order_of_delivery_id = request.POST["order_of_delivery_id"],
             scheme_of_work_id = request.POST["scheme_of_work_id"],
+            content_id = request.POST["content_id"],
             topic_id = request.POST["topic_id"],
             related_topic_ids = request.POST["related_topic_ids"],
             key_stage_id= scheme_of_work.key_stage_id,
@@ -83,18 +85,19 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         
         if model.is_valid == True:
             ' save the lesson '            
-            redirect_to_url = ""
-
+            redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
+            
             if request.POST["next"] != "None"  and request.POST["next"] != "":
                 redirect_to_url = request.POST["next"]
-                            
-            redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
+            
             return HttpResponseRedirect(redirect_to_url)
         else:
             handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
             
     # render view
     
+    #270 get ContentModel.get_options by scheme_of_work and key_stage_id
+    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, scheme_of_work.id)
     topic_options = TopicModel.get_options(db, lvl=1)
     key_words_options = KeywordModel.get_options(db)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id)
@@ -105,6 +108,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "lesson_id": lesson_id,
         "is_copy": is_copy,
         "key_stage_id": scheme_of_work.key_stage_id,
+        "content_options": content_options,
         "topic_options": topic_options,
         "selected_topic_id": model.topic_id, 
         "year_options": year_options,

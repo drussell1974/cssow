@@ -43,7 +43,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 5  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
+                "CALL lesson_learning_objective__get_all(5,30,1);"
                 , [])
                 
             self.assertEqual(0, len(rows))
@@ -67,9 +67,10 @@ class test_db__get_all(TestCase):
             actual_results = get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=1)
             
             # assert
-
+            
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 3  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
+                #TODO #269 user lesson_learning_objectives_get_all stored procedure
+                "CALL lesson_learning_objective__get_all(3,30,1);"
                 , [])
                 
 
@@ -120,7 +121,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                 "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 20  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
+                 "CALL lesson_learning_objective__get_all(20,30,1);"
                  , [])
 
             self.assertEqual(3, len(actual_results))

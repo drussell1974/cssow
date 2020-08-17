@@ -15,10 +15,10 @@ class ExecHelper:
         l.is_enabled = enable_logging
         l.write(db, sql)
 
-    def _execSql(self, db, sql):
+    def _execSql(self, db, sql, params=None):
 
         with db.cursor() as cur:
-            cur.execute(sql)
+            cur.execute(sql, params)
             result = cur.fetchall()
         return result
 
@@ -26,6 +26,7 @@ class ExecHelper:
     def _closeSqlConn(self, db, cursor):
             #cursor.close()
             db.close()
+
 
     def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
         ''' run the sql statement without results '''
@@ -70,6 +71,92 @@ class ExecHelper:
                 log_info(db, "execSql", "results:{}".format(result), LOG_TYPE.Verbose)
 
         # returns appended result
+        return result
+
+
+    def select(self, db, sql, params, result, log_info=None):
+        ''' run the sql statement '''
+        if db != None:
+
+            if log_info != None:
+                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+            
+            with db.cursor() as cur:
+                cur.callproc(sql, params)
+                result = cur.fetchall()
+
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "execSql", "results:{}".format(result), LOG_TYPE.Verbose)
+
+        # returns appended result
+        return result
+
+
+    def insert(self, db, sql, params, log_info=None):
+        ''' run the sql statement '''
+
+        result = []
+
+        if db != None:
+
+            if log_info != None:
+                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+            
+            with db.cursor() as cur:
+                cur.callproc(sql, params)
+                result = cur.fetchone()
+            
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+        
+        return result
+
+
+    def update(self, db, sql, params, log_info=None):
+        ''' run the sql statement '''
+
+        result = []
+
+        if db != None:
+
+            if log_info != None:
+                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+            
+            with db.cursor() as cur:
+                cur.callproc(sql, params)
+                result = cur.fetchone()
+            
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+        
+        return result
+
+
+    def delete(self, db, sql, params, log_info=None):
+        ''' run the sql statement '''
+
+        result = []
+
+        if db != None:
+
+            if log_info != None:
+                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+            
+            with db.cursor() as cur:
+                cur.callproc(sql, params)
+                result = cur.fetchone()
+            
+            self._closeSqlConn(db, None)
+
+            if log_info != None:
+                log_info(db, "execSql", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
+        
         return result
 
 

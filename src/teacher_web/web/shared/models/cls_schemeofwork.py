@@ -18,7 +18,9 @@ class SchemeOfWorkModel(BaseModel):
     name = ""
     description = ""
     number_of_lessons = 0
-
+    number_of_learning_objectives = 0
+    number_of_resources = 0
+    
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
@@ -86,10 +88,10 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_name=row[9],
                                     published=row[10])
 
-            number_of_rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, model.id, auth_user)
-            for r in number_of_rows:
-                model.number_of_lessons = r[0]   
-            model.set_is_recent()
+            model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
+            model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
+            model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
+
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
         return data
@@ -113,6 +115,8 @@ class SchemeOfWorkModel(BaseModel):
                                     published=row[10])
 
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
+            model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
+            model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
 
             model.on_fetched_from_db()                                                                                                  
 
@@ -180,6 +184,24 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
+    def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
+        number_of_lessons = 0
+        rows = SchemeOfWorkDataAccess.get_number_of_learning_objectives(db, scheme_of_work_id, auth_user)
+        for row in rows:
+            number_of_lessons = row[0]   
+        return number_of_lessons
+
+
+    @staticmethod
+    def get_number_of_resources(db, scheme_of_work_id, auth_user):
+        number_of_lessons = 0
+        rows = SchemeOfWorkDataAccess.get_number_of_reources(db, scheme_of_work_id, auth_user)
+        for row in rows:
+            number_of_lessons = row[0]   
+        return number_of_lessons
+
+
+    @staticmethod
     def save(db, model, published=1):
         if try_int(published) == 2:
             model = SchemeOfWorkDataAccess._delete(db, model)
@@ -211,11 +233,11 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "CALL scheme_of_work__get({scheme_of_work_id}, {auth_user})"\
-            .format(scheme_of_work_id=id_, auth_user=to_db_null(auth_user))
+        select_sql = "scheme_of_work__get"
+        params = (id_, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
         return rows
 
 
@@ -303,7 +325,6 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def _delete(db, model):
-        
         execHelper = ExecHelper()
         rval = []
         str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id} and published NOT IN (1);"
@@ -390,6 +411,30 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "CALL scheme_of_work__get_number_of_lessons({scheme_of_work_id},{auth_user});"\
+            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+        return rows
+
+
+    @staticmethod
+    def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
+        execHelper = ExecHelper()
+        
+        select_sql = "CALL scheme_of_work__get_number_of_learning_objectives({scheme_of_work_id},{auth_user});"\
+            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+
+        rows = []
+        rows = execHelper.execSql(db, select_sql, rows)
+        return rows
+
+
+    @staticmethod
+    def get_number_of_reources(db, scheme_of_work_id, auth_user):
+        execHelper = ExecHelper()
+        
+        select_sql = "CALL scheme_of_work__get_number_of_resources({scheme_of_work_id},{auth_user});"\
             .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
 
         rows = []

@@ -49,7 +49,7 @@ class test_db__delete(TestCase):
             ExecHelper.execCRUDSql.assert_called()
 
             ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_learning_objective__has__lesson WHERE learning_objective_id = 101;"
+             "CALL lesson_learning_objective__delete(101,99);"
              , log_info=handle_log_info)
             
             self.assertEqual(expected_result, actual_result)

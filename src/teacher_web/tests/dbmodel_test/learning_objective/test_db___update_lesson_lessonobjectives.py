@@ -4,9 +4,9 @@ from shared.models.core.db_helper import ExecHelper
 
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
 
-_update_lesson_lessonobjectives = LearningObjectiveDataAccess._update_lesson_lessonobjectives
+#_update_lesson_lessonobjectives = LearningObjectiveDataAccess._update_lesson_lessonobjectives
 
-
+@skip("verify usage")
 class test_db___update_lesson_lessonobjectives(TestCase):
     
 

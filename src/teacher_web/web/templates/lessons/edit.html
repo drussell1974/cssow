@@ -84,10 +84,24 @@
       </div>
         <hr>
     </div>
+    <!-- Content START -->
+    <div class="control-group">
+      <div class="form-group controls">
+      <label>{{_("Curriculum")}}</label>
+      <select class="form-control" name="content_id" id="ctl-content_id" required>
+          <option value="">- {{_("Select an option")}} -</option>
+          {% for opt in content.data.content_options %}
+          <option value="{{opt.id}}" {% if opt.id == content.data.lesson.content_id %} selected {% endif %}>{{opt.description}}</option>
+          {% endfor %}
+      </select>
+      <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+      </div>
+  </div>
+  <!-- Content END -->
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Topic")}}</label>
-        <select class="form-control" name="topic_id" id="ctl-topic_id">
+        <select class="form-control" name="topic_id" id="ctl-topic_id" required>
             <option value="" {% if has_objectives == True %} disabled {% endif %}>- {{_("Select an option")}} -</option>
             {% for opt in content.data.topic_options %}
             <option value="{{opt.id}}" {% if opt.id == content.data.lesson.topic_id %} selected {% elif has_objectives == True %} disabled {% endif %}>{{opt.name}}</option>

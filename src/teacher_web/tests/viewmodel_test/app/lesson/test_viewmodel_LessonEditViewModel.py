@@ -41,6 +41,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 # act
                 mock_model = Model(0, "Proin id massa metus. Aliqua tincidunt.")
                 mock_model.scheme_of_work_id = 12
+                mock_model.content_id = 10
                 mock_model.topic_id = 12
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
@@ -72,6 +73,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 # act
                 mock_model = Model(99, "")                
                 mock_model.scheme_of_work_id = 12
+                mock_model.content_id = 10
                 mock_model.topic_id = 12
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
@@ -95,6 +97,7 @@ class test_viewmodel_EditViewModel(TestCase):
         # arrange
         mock_model = Model(99, "Quisque eu venenatis sem")
         mock_model.scheme_of_work_id = 11
+        mock_model.content_id = 10
         mock_model.topic_id = 101
         mock_model.year_id = 10
         mock_model.key_stage_id = 4
