@@ -10,23 +10,60 @@ mysql -u $1 -p$2 -h $3 $4 < views/sow_teacher.sql
 
 ## sow_lesson
 
+echo lesson__copy_learning_objectives
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__copy_learning_objectives.sql
+
+echo lesson__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete.sql
+
+echo lesson__delete_unpublished
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete_unpublished.sql
+
 echo lesson__get
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get.sql
 
 echo lesson__get_all
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_all.sql
 
-echo lesson__update
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__update.sql
+echo lesson__get_all_keywords
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_all_keywords.sql
+
+echo lesson__get_ks123_pathway_objective_ids
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_ks123_pathway_objective_ids.sql
+
+echo lesson__get_number_of_learning_objectives
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_number_of_learning_objectives.sql
+
+echo lesson__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_options.sql
+
+echo lesson__get_pathway_objective_ids
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_pathway_objective_ids.sql
+
+echo lesson__get_related_topic_ids
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_related_topic_ids.sql
 
 echo lesson__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__insert.sql
 
-echo lesson__delete
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete.sql
+echo lesson__insert_keywords
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__insert_keywords.sql
 
-echo lesson__get_number_of_learning_objectives
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_number_of_learning_objectives.sql
+echo lesson__insert_ks123pathway
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__insert_ks123_pathway.sql
+
+echo lesson__insert_pathway
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__insert_pathway.sql
+
+echo lesson__insert_related_topic
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__insert_related_topic.sql
+
+echo lesson__publish
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__publish.sql
+
+echo lesson__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__update.sql
+
 
 ## sow_learning_objectives
 

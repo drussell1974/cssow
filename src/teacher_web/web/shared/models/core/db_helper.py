@@ -78,8 +78,6 @@ class ExecHelper:
         ''' run the sql statement '''
         if db != None:
             try:
-                if log_info != None:
-                    log_info(db, "select using callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
                 
                 cur = db.cursor()
                 cur.callproc(sql, params)
@@ -89,11 +87,12 @@ class ExecHelper:
 
                 self._closeSqlConn(db, None)
 
-                if log_info != None:
-                    log_info(db, "select using callproc", "fetchall returned :{}".format(result), LOG_TYPE.Verbose)
+                if log_info is not None:
+                    log_info(db, "update", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
             
             except Exception as e:
-                log_info(db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                if log_info is not None:
+                    log_info(db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
                 raise e
             
         return result
@@ -105,9 +104,6 @@ class ExecHelper:
         result = []
         try:
             if db != None:
-
-                if log_info is not None:
-                    log_info(db, "insert using callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
                 
                 cur = db.cursor()
                 cur.callproc(sql, params)
@@ -118,7 +114,7 @@ class ExecHelper:
                 self._closeSqlConn(db, None)
 
                 if log_info is not None:
-                    log_info(db, "insert using callproc", "new_id = {}".format(result), LOG_TYPE.Verbose)
+                    log_info(db, "update", "executed:{}, with results: new id = {}".format(sql, result), LOG_TYPE.Verbose)
 
         except Exception as e:
             if log_info is not None:
@@ -143,11 +139,12 @@ class ExecHelper:
             
                 self._closeSqlConn(db, None)
 
-                if log_info != None:
+                if log_info is not None:
                     log_info(db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
 
         except Exception as e:
-            log_info(db, "ExecHelper.update", "An error occurred updating data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            if log_info is not None:
+                log_info(db, "ExecHelper.update", "An error occurred updating data '%s'" % sql, log_type=LOG_TYPE.Error)    
             raise e
 
         return result
@@ -159,9 +156,6 @@ class ExecHelper:
         result = []
         try:
             if db != None:
-
-                if log_info != None:
-                    log_info(db, "delete", "executing:{}".format(sql), LOG_TYPE.Verbose)
                 
                 cur = db.cursor()
                 cur.callproc(sql, params)
@@ -174,8 +168,12 @@ class ExecHelper:
                 if log_info != None:
                     log_info(db, "delete", "results: number of records affected = {}".format(result), LOG_TYPE.Verbose)
                     
+                if log_info is not None:
+                    log_info(db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+
         except Exception as e:
-            log_info(db, "ExecHelper.delete", "An error occurred deleting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            if log_info is not None:
+                log_info(db, "ExecHelper.delete", "An error occurred deleting data '%s'" % sql, log_type=LOG_TYPE.Error)    
             raise e
 
         return result

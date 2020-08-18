@@ -22,7 +22,7 @@ class test_db__get_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -33,15 +33,16 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, 21, auth_user=1)
+            rows = get_options(self.fake_db, 21, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                'SELECT le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name, yr.id as year_id, yr.name as year_name FROM sow_lesson as le INNER JOIN sow_topic as top ON top.id = le.topic_id INNER JOIN sow_year as yr ON yr.id = le.year_id  WHERE le.scheme_of_work_id = 21 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;'
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_options'
+                , (21, 6079)
                 , [])
             self.assertEqual(0, len(rows))
 
@@ -50,15 +51,16 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = [(87, "Praesent tempus facilisis pharetra. Pellentesque.", 1, 92, "Garden Peas", 10,"Yr10")]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 12, auth_user=1)
+            rows = get_options(self.fake_db, 12, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name, yr.id as year_id, yr.name as year_name FROM sow_lesson as le INNER JOIN sow_topic as top ON top.id = le.topic_id INNER JOIN sow_year as yr ON yr.id = le.year_id  WHERE le.scheme_of_work_id = 12 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_options'
+                , (12, 6079)
                 , [])
 
             self.assertEqual(1, len(rows))
@@ -80,16 +82,15 @@ class test_db__get_options(TestCase):
         ]
 
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 21, auth_user=1)
+            rows = get_options(self.fake_db, 214, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, top.id as topic_id, top.name as name, yr.id as year_id, yr.name as year_name FROM sow_lesson as le INNER JOIN sow_topic as top ON top.id = le.topic_id INNER JOIN sow_year as yr ON yr.id = le.year_id  WHERE le.scheme_of_work_id = 21 AND (le.published = 1 OR le.created_by = 1) ORDER BY le.year_id, le.order_of_delivery_id;"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_options', (214, 6079), [])
             
             self.assertEqual(834, rows[0].id)
             self.assertEqual("Vivamus sodales enim cursus ex.", rows[0].title)

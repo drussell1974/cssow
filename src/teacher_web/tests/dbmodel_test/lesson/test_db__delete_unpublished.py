@@ -27,7 +27,7 @@ class test_db__delete_unpublished(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -41,17 +41,17 @@ class test_db__delete_unpublished(TestCase):
         
         expected_result = 5
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
             actual_result = delete_unpublished(self.fake_db, 12, auth_user=99)
             
             # assert
-            ExecHelper.execSql.assert_called()
+            ExecHelper.delete.assert_called()
 
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                'DELETE FROM sow_lesson WHERE scheme_of_work_id = 12 AND published IN (0,2);'
-                , []
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                'lesson__delete_unpublished'
+                , (12, 99)
                 , handle_log_info)
 
             self.assertEqual(expected_result, actual_result)

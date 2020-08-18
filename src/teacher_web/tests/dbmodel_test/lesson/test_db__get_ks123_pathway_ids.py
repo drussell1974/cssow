@@ -24,7 +24,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,17 +35,19 @@ class test_db__get_ks123_pathway_ids(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_ks123_pathway_objective_ids(self.fake_db, 67)
+            rows = get_ks123_pathway_objective_ids(self.fake_db, 67, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 67;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_ks123_pathway_objective_ids'
+                , (67, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
+
             self.assertEqual(0, len(rows))
 
 
@@ -53,17 +55,18 @@ class test_db__get_ks123_pathway_ids(TestCase):
         # arrange
         expected_result = [("87",)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 87)
+            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 87, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 87;"
-            , []
-            , log_info=handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_ks123_pathway_objective_ids'
+                , (87, 6079)
+                , []
+                , handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 
@@ -75,17 +78,18 @@ class test_db__get_ks123_pathway_ids(TestCase):
         expected_result = [("1034",),("1045",),("12",)]
 
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 21)
+            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 21, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                " SELECT ks123_pathway_id FROM sow_lesson__has__ks123_pathway WHERE lesson_id = 21;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_ks123_pathway_objective_ids'
+                , (21, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1034, actual_results[0])
             self.assertEqual(12, actual_results[2])

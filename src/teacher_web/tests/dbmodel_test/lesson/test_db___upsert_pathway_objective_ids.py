@@ -25,34 +25,12 @@ class test_db__upsert_pathway_objective_ids(TestCase):
 
         model = LessonModel(0, "")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
                 _upsert_pathway_objective_ids(self.fake_db, model)
-
-
-    def test_should_call_execCRUDSql__delete_only__when__no__pathway_objective_ids(self):
-         # arrange
-        model = LessonModel(101, "")
-        
-        expected_result = 1
-
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
-            # act
-
-            actual_result = _upsert_pathway_objective_ids(self.fake_db, model, [], auth_user_id=99)
-            
-            # assert
-            ExecHelper.execCRUDSql.assert_called()
-
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson__has__pathway WHERE lesson_id = 101;"
-             , []
-             , log_info=handle_log_info)
-            
-        self.assertEqual(expected_result, actual_result)
 
 
     def test_should_call_execCRUDSql__reinsert__pathway_objective_ids(self):
@@ -61,17 +39,17 @@ class test_db__upsert_pathway_objective_ids(TestCase):
         model.pathway_objective_ids = ["12","13","14"]
         expected_result = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = _upsert_pathway_objective_ids(self.fake_db, model, [], auth_user_id=99)
+            actual_result = _upsert_pathway_objective_ids(self.fake_db, model, [], auth_user=6079)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
+            ExecHelper.insert.assert_called()
 
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "INSERT INTO sow_lesson__has__pathway (lesson_id, learning_objective_id) VALUES(1043, 12),(1043, 13),(1043, 14);"
-             , []
-             , log_info=handle_log_info)
+            ExecHelper.insert.assert_called_with(self.fake_db, 
+             'lesson__insert_pathway'
+             , (1043, '14',6079)
+             , handle_log_info)
             
         self.assertEqual(expected_result, actual_result)

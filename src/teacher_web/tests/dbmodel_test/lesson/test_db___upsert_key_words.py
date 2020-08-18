@@ -26,34 +26,12 @@ class test_db___upsert_key_words(TestCase):
 
         model = LessonModel(0, "")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
                 _upsert_key_words(self.fake_db, model, auth_user_id=99)
-
-
-    def test_should_call_execCRUDSql__delete_only__when__no__key_words(self):
-         # arrange
-        model = LessonModel(101, "")
-        
-        expected_result = 1
-
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
-            # act
-
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user_id=99)
-            
-            # assert
-            ExecHelper.execCRUDSql.assert_called()
-
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = 101;"
-             , []
-             , log_info=handle_log_info)
-
-        self.assertEqual(actual_result, expected_result)
     
     
     def test_should_call_execCRUDSql__reinsert__key_words(self):
@@ -67,20 +45,18 @@ class test_db___upsert_key_words(TestCase):
         
         expected_rows = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_rows):
+        with patch.object(ExecHelper, 'insert', return_value=expected_rows):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user_id=99)
+            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=99)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
+            ExecHelper.insert.assert_called()
 
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = 10;" \
-                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (10, 12);" \
-                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (10, 13);"
-             , []
-             , log_info=handle_log_info)
+            ExecHelper.insert.assert_called_with(self.fake_db, 
+             'lesson__insert_keywords'
+             , (10, 13)
+             , handle_log_info)
 
         self.assertEqual([], actual_result)
 
@@ -93,19 +69,18 @@ class test_db___upsert_key_words(TestCase):
         
         expected_result = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=[]):
+        with patch.object(ExecHelper, 'insert', return_value=[]):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user_id=99)
+            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=99)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
+            ExecHelper.insert.assert_called()
 
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = 79;" \
-                "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES (79, 12);"
-             , []
-             , log_info=handle_log_info)
+            ExecHelper.insert.assert_called_with(self.fake_db, 
+             'lesson__insert_keywords'
+             , (79, 12)
+             , handle_log_info)
 
         self.assertEqual(actual_result, expected_result)
     

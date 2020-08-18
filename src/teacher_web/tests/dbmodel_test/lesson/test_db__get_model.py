@@ -46,7 +46,7 @@ class test_db__get_model(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -57,16 +57,17 @@ class test_db__get_model(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
          
             actual_results = get_model(self.fake_db, 101, scheme_of_work_id=34, auth_user=99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson__get(101,34,99);"
-            , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get"
+                , (101,34,99)
+                , [])
 
 
             LearningObjectiveModel.get_all.assert_not_called()
@@ -92,18 +93,19 @@ class test_db__get_model(TestCase):
             1,"test_user",0,{32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'},4,"learning_objectives",23,343
         )]
         
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 321, scheme_of_work_id=909, auth_user=99)
+            actual_results = get_model(self.fake_db, 321, scheme_of_work_id=909, auth_user=6079)
 
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson__get(321,909,99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get"
+                , (321,909,6079)
                 , [])
             
-            LessonModel.get_all_keywords.assert_called_with(self.fake_db, lesson_id=321)
+            LessonModel.get_all_keywords.assert_called_with(self.fake_db, 321, 6079)
 
             self.assertEqual(3, len(actual_results.key_words))
             

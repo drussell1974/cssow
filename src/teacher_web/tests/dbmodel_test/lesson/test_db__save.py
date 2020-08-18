@@ -33,13 +33,13 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, 99)
 
 
-    def test_should_call_execCRUDSql__update_with_exception(self):
+    def test_should_call_update_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
         model = Model(1, "")
     
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):

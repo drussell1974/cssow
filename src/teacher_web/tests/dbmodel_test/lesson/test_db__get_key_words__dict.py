@@ -1,10 +1,11 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 from shared.models.cls_lesson import LessonModel, handle_log_info
-get_key_words = LessonModel.get_key_words
+#get_key_words = LessonModel.get_key_words
 
+@skip
 class test_db__get_key_words__dict(TestCase):
     
     def setUp(self):

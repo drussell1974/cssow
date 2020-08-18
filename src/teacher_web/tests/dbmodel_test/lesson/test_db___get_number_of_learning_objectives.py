@@ -24,7 +24,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,7 +35,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         # arrange
         expected_result = [(0,)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             actual_results = get_number_of_learning_objectives(self.fake_db, 67, auth_user=99)
@@ -43,10 +43,11 @@ class test_db__get_number_of_learning_objectives(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson__get_number_of_learning_objectives(67,99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get_number_of_learning_objectives"
+                , (67,99)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, actual_results)
 
@@ -55,7 +56,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         # arrange
         expected_result = [(1,)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_results = get_number_of_learning_objectives(self.fake_db, 87, auth_user=99)
@@ -63,10 +64,11 @@ class test_db__get_number_of_learning_objectives(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson__get_number_of_learning_objectives(87,99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+            "lesson__get_number_of_learning_objectives"
+            , (87,99)
             , []
-            , log_info=handle_log_info)
+            , handle_log_info)
 
             self.assertEqual(1, actual_results)
 
@@ -76,7 +78,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         expected_result = [(3,)]
 
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_results = get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
@@ -84,9 +86,10 @@ class test_db__get_number_of_learning_objectives(TestCase):
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson__get_number_of_learning_objectives(21,99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get_number_of_learning_objectives"
+                , (21,99)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(3, actual_results)
