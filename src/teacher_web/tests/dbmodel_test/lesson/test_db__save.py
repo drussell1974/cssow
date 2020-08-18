@@ -72,7 +72,7 @@ class test_db__save(TestCase):
             # assert
             
             LessonDataAccess._copy_objective_ids.assert_called()
-            print(actual_result.id)
+            
             self.assertEqual(341, actual_result.id)
 
 
