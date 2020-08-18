@@ -54,6 +54,7 @@ class test_db__get_model(TestCase):
 
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
+        SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(40,)])
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act

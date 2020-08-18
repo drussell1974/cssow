@@ -9,11 +9,11 @@ class ExecHelper:
     #############################
     # TODO: create as singleton #
     #############################
-    last_sql = ()
-    def _log_it(self, db, sql, enable_logging):
-        l = log.Log();
-        l.is_enabled = enable_logging
-        l.write(db, sql)
+    #last_sql = ()
+    #def _log_it(self, db, sql, enable_logging):
+    #    l = log.Log();
+    #    l.is_enabled = enable_logging
+    #   l.write(db, sql)
 
     def _execSql(self, db, sql, params=None):
 
@@ -24,7 +24,6 @@ class ExecHelper:
 
 
     def _closeSqlConn(self, db, cursor):
-            #cursor.close()
             db.close()
 
 
@@ -75,22 +74,28 @@ class ExecHelper:
 
 
     def select(self, db, sql, params, result, log_info=None):
+    
         ''' run the sql statement '''
         if db != None:
-
-            if log_info != None:
-                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
-            
-            with db.cursor() as cur:
+            try:
+                if log_info != None:
+                    log_info(db, "select using callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                
+                cur = db.cursor()
                 cur.callproc(sql, params)
                 result = cur.fetchall()
 
-            self._closeSqlConn(db, None)
+                cur.close()
 
-            if log_info != None:
-                log_info(db, "callproc", "results:{}".format(result), LOG_TYPE.Verbose)
+                self._closeSqlConn(db, None)
 
-        # returns appended result
+                if log_info != None:
+                    log_info(db, "select using callproc", "fetchall returned :{}".format(result), LOG_TYPE.Verbose)
+            
+            except Exception as e:
+                log_info(db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                raise e
+            
         return result
 
 
@@ -98,43 +103,53 @@ class ExecHelper:
         ''' run the sql statement '''
 
         result = []
+        try:
+            if db != None:
 
-        if db != None:
-
-            if log_info != None:
-                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
-            
-            with db.cursor() as cur:
+                if log_info is not None:
+                    log_info(db, "insert using callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                
+                cur = db.cursor()
                 cur.callproc(sql, params)
                 result = cur.fetchone()
             
-            self._closeSqlConn(db, None)
+                cur.close()
+            
+                self._closeSqlConn(db, None)
 
-            if log_info != None:
-                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
-        
+                if log_info is not None:
+                    log_info(db, "insert using callproc", "new_id = {}".format(result), LOG_TYPE.Verbose)
+
+        except Exception as e:
+            if log_info is not None:
+                log_info(db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
+            raise e
+
         return result
 
 
     def update(self, db, sql, params, log_info=None):
         ''' run the sql statement '''
-
         result = []
 
-        if db != None:
-            
-            if log_info != None:
-                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
-            
-            with db.cursor() as cur:
+        try:
+            if db != None:
+                
+                cur = db.cursor()
                 cur.callproc(sql, params)
-                result = cur.fetchone()
+                result = cur.rowcount
             
-            self._closeSqlConn(db, None)
+                cur.close()
+            
+                self._closeSqlConn(db, None)
 
-            if log_info != None:
-                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
-        
+                if log_info != None:
+                    log_info(db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+
+        except Exception as e:
+            log_info(db, "ExecHelper.update", "An error occurred updating data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            raise e
+
         return result
 
 
@@ -142,21 +157,27 @@ class ExecHelper:
         ''' run the sql statement '''
 
         result = []
+        try:
+            if db != None:
 
-        if db != None:
-
-            if log_info != None:
-                log_info(db, "callproc", "executing:{}".format(sql), LOG_TYPE.Verbose)
-            
-            with db.cursor() as cur:
+                if log_info != None:
+                    log_info(db, "delete", "executing:{}".format(sql), LOG_TYPE.Verbose)
+                
+                cur = db.cursor()
                 cur.callproc(sql, params)
-                result = cur.fetchone()
-            
-            self._closeSqlConn(db, None)
+                result = cur.rowcount
 
-            if log_info != None:
-                log_info(db, "callproc", "results: number of records = {}".format(result), LOG_TYPE.Verbose)
-        
+                cur.close()
+
+                self._closeSqlConn(db, None)
+
+                if log_info != None:
+                    log_info(db, "delete", "results: number of records affected = {}".format(result), LOG_TYPE.Verbose)
+                    
+        except Exception as e:
+            log_info(db, "ExecHelper.delete", "An error occurred deleting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            raise e
+
         return result
 
 

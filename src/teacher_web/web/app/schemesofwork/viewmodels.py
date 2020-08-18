@@ -45,7 +45,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         self.model.validate()
         
         if self.model.is_valid == True:
-            data = Model.save(self.db, self.model, published)
+            data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
             #    raise Exception("Scheme of work is not valid! {}".format(self.model.validation_errors))

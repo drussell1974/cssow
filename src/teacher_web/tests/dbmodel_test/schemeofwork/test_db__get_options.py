@@ -32,16 +32,17 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
             self.assertEqual(0, len(rows))
 
@@ -50,15 +51,16 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = [(123, "Item 1", "Praesent tempus facilisis pharetra. Pellentesque.", 20)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
             
             self.assertEqual(1, len(rows))
@@ -75,16 +77,17 @@ class test_db__get_options(TestCase):
             (2,"Item 2","Nulla porttitor quis tortor ac.",8),
             (3, "Item 3","Sed vehicula, quam nec sodales.",97)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
 
             self.assertEqual(3, len(rows))

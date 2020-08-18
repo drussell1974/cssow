@@ -79,7 +79,7 @@
       <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
     {% endfor %}
   </div>
-  <div class="links stackable-group-sm">
+  <div class="links card-body stackable-group-sm">
     <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable">
       {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
     </a>

@@ -6,6 +6,10 @@ mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
 # views
 mysql -u $1 -p$2 -h $3 $4 < views/sow_teacher.sql
 
+# stored procedures
+
+## sow_lesson
+
 echo lesson__get
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get.sql
 
@@ -23,6 +27,8 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete.sql
 
 echo lesson__get_number_of_learning_objectives
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_number_of_learning_objectives.sql
+
+## sow_learning_objectives
 
 echo lesson_learning_objective__delete
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__delete.sql
@@ -45,8 +51,18 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__update.s
 echo lesson_learning_objective__publish_item
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__publish_item.sql
 
+## sow_resource
+
 echo lesson_resource__publish_item
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__publish_item.sql
+
+## sow_scheme_of_work
+
+echo scheme_of_work__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__delete.sql
+
+echo scheme_of_work__delete_unpublished
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__delete_unpublished.sql
 
 echo scheme_of_work__get
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get.sql
@@ -74,6 +90,15 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_options.sql
 
 echo scheme_of_work__get_schemeofwork_name_only
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_schemeofwork_name_only.sql
+
+echo scheme_of_work__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__insert.sql
+
+echo scheme_of_work__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__update.sql
+
+echo scheme_of_work__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__delete.sql
 
 echo scheme_of_work__has__teacher__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__has__teacher__insert.sql

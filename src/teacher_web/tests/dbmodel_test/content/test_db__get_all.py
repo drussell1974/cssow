@@ -36,12 +36,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'execSql', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, key_stage_id=7, auth_user=99)
+            rows = get_all(self.fake_db, key_stage_id=7, auth_user=6079)
             
             # assert
 
             ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, description as description, letter as letter_prefix, published as published FROM sow_content WHERE key_stage_id = 7 AND (published = 1 or created_by = 99) ORDER BY letter ASC;"
+                "SELECT id as id, description as description, letter as letter_prefix, published as published FROM sow_content WHERE key_stage_id = 7 AND (published = 1 or created_by = 6079) ORDER BY letter ASC;"
                 , []
                 , log_info=handle_log_info)
                 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, handle_log_info
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 
 # create test context
 
@@ -40,7 +40,7 @@ class test_db__save(TestCase):
 
         model = Model(1)
     
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -52,19 +52,18 @@ class test_db__save(TestCase):
     def test_should_call_execCRUDSql__update_with__is_new__false(self):
          # arrange
         model = Model(89)
-        
+        model.is_new = Mock(return_value=False)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=model):
+        with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
-            actual_result = save(self.fake_db, model)
+            actual_result = save(self.fake_db, model, 6079)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
-
-            #ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-            # "UPDATE sow_scheme_of_work SET name = '', description = '', exam_board_id = 0, key_stage_id = 0, published = 1 WHERE id =  1;", 
-            # log_info=handle_log_info)
+            ExecHelper.update.assert_called_with(self.fake_db,
+                'scheme_of_work__update'
+                , (89, '', '', 0, 0, 1, 6079)
+                , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
 
@@ -74,19 +73,21 @@ class test_db__save(TestCase):
 
         model = Model(0)
 
+        DataAccess._insert_as__teacher = Mock(return_value=1)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=([], 101)):
+        with patch.object(ExecHelper, 'insert', return_value=(101)):
             # act
 
-            actual_result = save(self.fake_db, model)
+            actual_result = save(self.fake_db, model, 6079)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called()
-            #ExecHelper.execCRUDSql.assert_called_with(
-            #    self.fake_db, 
-            #    "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('', '', 0, 0, '', 0, 1);SELECT LAST_INSERT_ID();", [], 
-            #    log_info=handle_log_info)
+            ExecHelper.insert.assert_called_with(self.fake_db,
+                 'scheme_of_work__insert'
+                 , (0, '', '', 0, 0, '', 0, 1, 6079)
+                 , handle_log_info)
+                 
+            DataAccess._insert_as__teacher.assert_called()
 
             self.assertEqual(101, actual_result.id)
 
@@ -97,14 +98,16 @@ class test_db__save(TestCase):
         model = Model(99)
 
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=([], 101)):
+        with patch.object(ExecHelper, 'delete', return_value=([], 101)):
             # act
 
-            actual_result = save(self.fake_db, model, published=2)
+            actual_result = save(self.fake_db, model, auth_user=6079, published=2)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called()
-
+            ExecHelper.delete.assert_called_with(self.fake_db,
+            'scheme_of_work__delete'
+            , (99, 6079)
+            , handle_log_info)
 
             self.assertEqual(99, actual_result.id)

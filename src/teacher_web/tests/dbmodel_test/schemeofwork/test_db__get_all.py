@@ -19,7 +19,7 @@ class test_db__get_all(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -30,15 +30,16 @@ class test_db__get_all(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=5)
             
             # assert
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_all(5, 99)"
+                'scheme_of_work__get_all'
+                , (5, 99)
                 , [])
             self.assertEqual(0, len(rows))
 
@@ -51,14 +52,15 @@ class test_db__get_all(TestCase):
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=3)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_all(3, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'scheme_of_work__get_all'
+                , (3, 99)
                 , [])
 
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
@@ -84,17 +86,18 @@ class test_db__get_all(TestCase):
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=3)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_all(3, 99)",
-                 [])
+                'scheme_of_work__get_all'
+                , (3, 99)
+                , [])
 
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
             SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()

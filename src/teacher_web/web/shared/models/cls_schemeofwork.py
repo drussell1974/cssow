@@ -202,15 +202,17 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, published=1):
+    def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
-            model = SchemeOfWorkDataAccess._delete(db, model)
+            rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
+            #TODO: check row count before updating
+            model.published = 2
         else:
             if model.is_new() == True:
-                model = SchemeOfWorkDataAccess._insert(db, model, published)
+                model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
                 SchemeOfWorkDataAccess._insert_as__teacher(db, model, model.created_by_id)
             else:
-                model = SchemeOfWorkDataAccess._update(db, model, published)
+                model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
 
         return model
 
@@ -246,10 +248,11 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "CALL scheme_of_work__get_all({key_stage_id}, {auth_user})"\
-            .format(key_stage_id=int(key_stage_id), auth_user=to_db_null(auth_user))
+        select_sql = "scheme_of_work__get_all" 
+        params = (key_stage_id, auth_user)
+
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
         return rows
 
 
@@ -263,52 +266,53 @@ class SchemeOfWorkDataAccess:
         """
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_latest({top_n}, {auth_user})"\
-            .format(auth_user=to_db_null(auth_user), top_n=top)
+        select_sql = "scheme_of_work__get_latest"
+        params = (top, auth_user)
         
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
+ 
         return rows
         
 
     @staticmethod
-    def _update(db, model, published):
+    def _update(db, model, published, auth_user):
         execHelper = ExecHelper()
 
-        str_update = "UPDATE sow_scheme_of_work SET name = '{name}', description = '{description}', exam_board_id = {exam_board_id}, key_stage_id = {key_stage_id}, published = {published} WHERE id =  {scheme_of_work_id};"
-        str_update = str_update.format(
-            name=to_db_null(model.name),
-            description = to_db_null(model.description),
-            exam_board_id = to_db_null(model.exam_board_id),
-            key_stage_id=to_db_null(model.key_stage_id),
-            scheme_of_work_id = to_db_null(model.id),
-            published=published)
+        str_update = "scheme_of_work__update"
+        params = (
+            model.id,
+            model.name, 
+            model.description,
+            model.exam_board_id,
+            model.key_stage_id,
+            published,
+            auth_user)
 
-        execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+        execHelper.update(db, str_update, params, handle_log_info)
 
         return model
 
 
     @staticmethod
-    def _insert(db, model, published):
+    def _insert(db, model, published, auth_user):
         execHelper = ExecHelper()
-        
-        str_insert = "INSERT INTO sow_scheme_of_work (name, description, exam_board_id, key_stage_id, created, created_by, published) VALUES ('{name}', '{description}', {exam_board_id}, {key_stage_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
-        str_insert = str_insert.format(
-            name=to_db_null(model.name),
-            description=to_db_null(model.description),
-            exam_board_id=to_db_null(model.exam_board_id),
-            key_stage_id=to_db_null(model.key_stage_id),
-            created=to_db_null(model.created),
-            created_by=to_db_null(model.created_by_id),
-            published=published)
 
-        # get last inserted row id
-        rows = []
+        str_insert = "scheme_of_work__insert"      
+        params = (
+            model.id,
+            model.name,
+            model.description,
+            model.exam_board_id,
+            model.key_stage_id,
+            model.created,model.
+            created_by_id,
+            published,
+            auth_user)
+    
+        results = execHelper.insert(db, str_insert, params, handle_log_info)
         
-        (result, new_id) = execHelper.execCRUDSql(db, str_insert, rows, handle_log_info)
-        
-        model.id = new_id
+        model.id = results
 
         return model
 
@@ -317,23 +321,22 @@ class SchemeOfWorkDataAccess:
     def _insert_as__teacher(db, model, auth_user):
         execHelper = ExecHelper()
         
-        str_insert = "CALL scheme_of_work__has__teacher__insert({scheme_of_work_id}, {auth_user_id});"\
-            .format(scheme_of_work_id=model.id, auth_user_id=auth_user)
+        str_insert = "scheme_of_work__has__teacher__insert"
+        params = (model.id, auth_user)
         
-        execHelper.execCRUDSql(db, str_insert, handle_log_info)
+        execHelper.insert(db, str_insert, params, handle_log_info)
         
 
     @staticmethod
-    def _delete(db, model):
+    def _delete(db, model, auth_user):
         execHelper = ExecHelper()
-        rval = []
-        str_delete = "DELETE FROM sow_scheme_of_work WHERE id = {scheme_of_work_id} and published NOT IN (1);"
-        str_delete = str_delete.format(scheme_of_work_id=model.id)
         
-        rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
+        str_delete = "scheme_of_work__delete"
+        params = (model.id, auth_user)
+        
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
-        model.published = 2        
-        return model
+        return rval
 
 
     @staticmethod
@@ -341,11 +344,13 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_key_stage_id_only({scheme_of_work_id}, {auth_user})"\
-            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+        #271 Create StoredProcedure
+        select_sql = "scheme_of_work__get_key_stage_id_only"
+        params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
+
         return rows
 
 
@@ -356,26 +361,27 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         """ Delete all unpublished learning objectives """
-        str_delete = "DELETE FROM sow_scheme_of_work WHERE published IN (0,2);"
+        #271 Create StoredProcedure
+        str_delete = "scheme_of_work__delete_unpublished"
+        params = (0,2)
             
-        rows = []
-        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
-        return rows
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval
 
 
     @staticmethod
-    def publish(db, auth_user_id, id_):
+    def publish(db, auth_user, id_):
         
         model = SchemeOfWorkModel(id_)
         model.publish = True
 
         execHelper = ExecHelper()
-        
-        str_update = "UPDATE sow_scheme_of_work SET published = {published} WHERE id = {scheme_of_work_id};"
-        str_update = str_update.format(published=1 if model.published else 0, scheme_of_work_id=model.id)
+        #271 Create StoredProcedure
+        str_update = "scheme_of_work__publish"
+        params = (model.id, model.published, auth_user)
 
         rval = []
-        execHelper.execCRUDSql(db, str_update, rval, handle_log_info)
+        rval = execHelper.update(db, str_update, params, handle_log_info)
 
         return rval
 
@@ -385,11 +391,12 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
         
-        str_select = "CALL scheme_of_work__get_options({auth_user})"\
-            .format(auth_user=to_db_null(auth_user))
+        str_select = "scheme_of_work__get_options"
+        params = (auth_user,)
         
         rows = []
-        rows = execHelper.execSql(db, str_select, rows)
+        rows = execHelper.select(db, str_select, params, rows)
+
         return rows
 
 
@@ -398,11 +405,12 @@ class SchemeOfWorkDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "CALL scheme_of_work__get_schemeofwork_name_only({scheme_of_work_id}, {auth_user});"\
-            .format(scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
-
+        select_sql = "scheme_of_work__get_schemeofwork_name_only"
+        params = (scheme_of_work_id, auth_user)
+        
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
+
         return rows
 
 

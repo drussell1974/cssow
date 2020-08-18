@@ -21,7 +21,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -32,15 +32,16 @@ class test_db__get_latest_schemes_of_work(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             rows = get_latest_schemes_of_work(self.fake_db, 4, auth_user=99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_latest(4, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_latest"
+                , (4, 99)
                 , [])
             self.assertEqual(0, len(rows))
 
@@ -49,16 +50,18 @@ class test_db__get_latest_schemes_of_work(TestCase):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = get_latest_schemes_of_work(self.fake_db, 3, auth_user=99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_latest(3, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_latest"
+                , (3, 99)
                 , [])
+                
             self.assertEqual(1, len(rows))
             self.assertEqual(6, rows[0].id)
             self.assertEqual("Lorem", rows[0].name)
@@ -74,15 +77,16 @@ class test_db__get_latest_schemes_of_work(TestCase):
             (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1),
             (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = get_latest_schemes_of_work(self.fake_db, 3, auth_user=99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_latest(3, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_latest"
+                , (3, 99)
                 , [])
             self.assertEqual(3, len(rows))
 

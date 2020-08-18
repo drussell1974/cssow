@@ -22,7 +22,7 @@ class test_db__get_key_stage_id_only(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -33,15 +33,16 @@ class test_db__get_key_stage_id_only(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             actual_result = get_key_stage_id_only(self.fake_db, 101, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_key_stage_id_only(101, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_key_stage_id_only"
+                , (101, 99)
                 , [])
             self.assertEqual(0, actual_result)
 
@@ -50,15 +51,16 @@ class test_db__get_key_stage_id_only(TestCase):
         # arrange
         expected_result = [[3]]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_result = get_key_stage_id_only(self.fake_db, 6, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_key_stage_id_only(6, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_key_stage_id_only"
+                , (6, 99)
                 , [])
             self.assertEqual(3, actual_result)
 
