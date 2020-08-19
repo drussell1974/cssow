@@ -113,10 +113,10 @@ class ContentDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
 
         #TODO: #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
-    
         str_select = "SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = {};".format(int(key_stage_id))
 
         rows = []
+        #TODO: #271 Stored procedure (get_options)
         rows = execHelper.execSql(db, str_select, rows, handle_log_info)
         return rows
 
@@ -137,6 +137,7 @@ class ContentDataAccess(BaseDataAccess):
             "FROM sow_content WHERE id = {id} AND (published = 1 or created_by = {auth_user});".format(id=sql_safe(content_id), auth_user=sql_safe(auth_user))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows
@@ -155,6 +156,7 @@ class ContentDataAccess(BaseDataAccess):
             "FROM sow_content WHERE key_stage_id = {key_stage_id} AND (published = 1 or created_by = {auth_user}) ORDER BY letter ASC;".format(key_stage_id=sql_safe(key_stage_id), auth_user=sql_safe(auth_user))
             
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows

@@ -44,6 +44,11 @@
 
 <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}">
     {% csrf_token %}
+
+    <!-- show error_message -->
+    {% include '_partials/form.viewmodel.alert_message.html' %}
+    <!-- show error_message END -->
+    
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Year group")}}</label>
@@ -151,7 +156,7 @@
         <div class="small">{{_("Click token to to enter definition")}}</div>
         <div class="invalid-feedback">{{_("one or more invalid keywords")}}</div>
       </div>
-        <hr>
+      <hr>
     </div>
       <!-- Pathway Objectives START -->
       <div class="control-group">

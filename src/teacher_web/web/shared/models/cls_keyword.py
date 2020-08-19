@@ -144,6 +144,7 @@ class KeywordDataAccess:
         select_sql = "SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
 
         rows = []
+        #TODO: #271 Stored procedure (get_options)
         rows = execHelper.execSql(db, select_sql, rows)
         
         data = []
@@ -168,6 +169,7 @@ class KeywordDataAccess:
         select_sql = select_sql.format(id=int(id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows
@@ -190,6 +192,7 @@ class KeywordDataAccess:
         select_sql = select_sql + " ORDER BY name;"
         
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows
@@ -220,6 +223,7 @@ class KeywordDataAccess:
         select_sql = select_sql + " ORDER BY name;"
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows

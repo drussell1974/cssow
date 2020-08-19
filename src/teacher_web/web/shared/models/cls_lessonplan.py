@@ -90,6 +90,7 @@ class LessonPlanDataAccess:
         str_select = str_select.format(lesson_id=int(lesson_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         lesson_duration = 0
@@ -124,6 +125,7 @@ class LessonPlanDataAccess:
         str_select = str_select.format(id_=int(id_), lesson_id=int(lesson_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         for row in rows:
@@ -153,6 +155,7 @@ class LessonPlanDataAccess:
 
         str_select = str_select.format(lesson_id=int(lesson_id))
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         for row in rows:
@@ -230,6 +233,7 @@ class LessonPlanDataAccess:
         execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
         rows = []
         
+        #TODO: #271 Stored procedure
         (results, last_id) = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows, log_info=handle_log_info)
 
         model.id = last_id

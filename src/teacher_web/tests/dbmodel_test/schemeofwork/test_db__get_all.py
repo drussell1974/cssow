@@ -9,7 +9,9 @@ class test_db__get_all(TestCase):
     def setUp(self):
         ' fake database context '
         self.fake_db = Mock()
-        self.fake_db.cursor = MagicMock()
+        self.fake_db.close = Mock()
+        self.fake_db.cursor = Mock()
+        self.fake_db.cursor.close = Mock()
 
     def tearDown(self):
         self.fake_db.close()

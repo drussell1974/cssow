@@ -3,8 +3,8 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS lesson__insert_keywords;
 
 CREATE PROCEDURE lesson__insert_keywords (
- IN p_lesson_id INT,
  IN p_keyword_id INT,
+ IN p_lesson_id INT,
  IN p_auth_user INT)
 BEGIN
     DECLARE record_exists INT DEFAULT 0;

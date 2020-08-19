@@ -261,6 +261,7 @@ class LearningObjectiveDataAccess:
             )
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
         return rows
 
@@ -276,6 +277,7 @@ class LearningObjectiveDataAccess:
             .format(lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
 
@@ -314,6 +316,7 @@ class LearningObjectiveDataAccess:
         select_sql = select_sql.format(key_stage_id=int(key_stage_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows)
         return rows
 
@@ -487,6 +490,7 @@ class LearningObjectiveDataAccess:
         select_sql = select_sql.format(lesson_id=int(lesson_id))
         
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows)
 
         data = []

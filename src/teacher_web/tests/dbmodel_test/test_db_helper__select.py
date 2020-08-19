@@ -25,6 +25,7 @@ class test_db_helper__select(TestCase):
         # act and assert
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         with self.assertRaises(Exception):
             execHelper.select(self.fake_db, "a_stored_procedure_that_select_data", (1, "A", 2, "B", 3, "C"), [], self.handle_log_info__mock)
@@ -44,6 +45,7 @@ class test_db_helper__select(TestCase):
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.select(fake_db, "a_fake_stored_procedure_will_returns_no_rows", ("var1","var2","var3"), [])
 
@@ -69,6 +71,7 @@ class test_db_helper__select(TestCase):
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.select(fake_db, "a_fake_stored_procedure_will_returns_one_row", ("var1","var2","var3"), [], self.handle_log_info__mock)
 
@@ -96,6 +99,7 @@ class test_db_helper__select(TestCase):
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.select(fake_db, "a_fake_stored_procedure_will_returns_three_rows", ("var1","var2","var3"), [])
 

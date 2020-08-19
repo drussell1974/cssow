@@ -44,7 +44,8 @@ class test_db_helper__insert(TestCase):
         # act      
 
         execHelper = ExecHelper()
-
+        execHelper.begin(fake_db)
+        
         result = execHelper.insert(fake_db, "a_fake_stored_procedure_will_insert_data", ("var1","var2","var3"))
 
         # assert
@@ -64,11 +65,13 @@ class test_db_helper__insert(TestCase):
         cur.fetchone = Mock(return_value = [(645,)])
 
         fake_db = Mock()
+        fake_db.autocommit = True
         fake_db.cursor = MagicMock(return_value = cur)
 
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.insert(fake_db, "a_fake_stored_procedure_will_insert_data", ("var1","var2","var3"))
 

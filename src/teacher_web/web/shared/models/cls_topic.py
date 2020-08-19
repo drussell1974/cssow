@@ -49,6 +49,7 @@ class TopicDataAccess:
 
         try:
             rows = []
+            #TODO: #271 Stored procedure (get_options)
             rows = execHelper.execSql(db, str_select, rows, handle_log_info)
             return rows
 

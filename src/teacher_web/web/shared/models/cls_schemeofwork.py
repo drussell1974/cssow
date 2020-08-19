@@ -232,8 +232,17 @@ class SchemeOfWorkDataAccess:
     
     @staticmethod
     def get_model(db, id_, auth_user):
+        """
+        get scheme of work
+
+        :param db: database context
+        :param id_: scheme of work identifier
+        :param auth_user: the user executing the command
+        """
 
         execHelper = ExecHelper()
+
+        execHelper.begin(db)
 
         select_sql = "scheme_of_work__get"
         params = (id_, auth_user)
@@ -245,14 +254,18 @@ class SchemeOfWorkDataAccess:
 
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
-
+        """
+        get all scheme of work
+        """
+    
         execHelper = ExecHelper()
-
+        
         select_sql = "scheme_of_work__get_all" 
         params = (key_stage_id, auth_user)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows)
+
         return rows
 
 
@@ -417,24 +430,30 @@ class SchemeOfWorkDataAccess:
     @staticmethod
     def get_number_of_lessons(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
+        execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_lessons"
         params = (scheme_of_work_id, auth_user)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows)
+        
+        execHelper.end()
+
         return rows
 
 
     @staticmethod
     def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
+        execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_learning_objectives"
         params = (scheme_of_work_id, auth_user)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows)
+        
         return rows
 
 

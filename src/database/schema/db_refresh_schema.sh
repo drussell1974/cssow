@@ -16,6 +16,9 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__copy_learning_objectives.sq
 echo lesson__delete
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete.sql
 
+echo lesson__delete_keywords
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete_keywords.sql
+
 echo lesson__delete_unpublished
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__delete_unpublished.sql
 

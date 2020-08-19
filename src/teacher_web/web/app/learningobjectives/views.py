@@ -219,7 +219,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         "content_options": content_options,
     }
     #231: pass the active model to ViewModel
-    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "New", data=data, active_model=model, alert_message=request.session.get("alert_message"))
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "New", data=data, active_model=model, alert_message="")
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 

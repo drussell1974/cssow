@@ -40,7 +40,8 @@ def edit(request, scheme_of_work_id = 0):
     """ edit action """
     # TODO: Use ViewModel
     # initiate empty model 
-    
+    error_message = ""
+
     model = SchemeOfWorkModel(id_=scheme_of_work_id)
     
     if request.method == "GET" and model.id > 0:
@@ -66,22 +67,25 @@ def edit(request, scheme_of_work_id = 0):
             created_by_id=auth_user_id(request))
     
         # validate the model and save if valid otherwise redirect to default invalid
+        try:
+            #253 check user id
+            save_view = SchemeOfWorkEditViewModel(db, model, auth_user_id(request))
+            save_view.execute(request.POST["published"])
+            model = save_view.model
 
-        #253 check user id
-        save_view = SchemeOfWorkEditViewModel(db, model, auth_user_id(request))
-        save_view.execute(request.POST["published"])
-        model = save_view.model
+            if model.is_valid == True:
+                ' save the lesson '
 
-        if model.is_valid == True:
-            ' save the lesson '
-
-            if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
-                redirect_to_url = request.POST.get("next", None)
+                if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
+                    redirect_to_url = request.POST.get("next", None)
+                else:
+                    redirect_to_url = reverse('schemesofwork.edit', args=[model.id])
+                return HttpResponseRedirect(redirect_to_url)
             else:
-                redirect_to_url = reverse('schemesofwork.edit', args=[model.id])
-            return HttpResponseRedirect(redirect_to_url)
-        else:
-            handle_log_warning(db, "scheme of work {} (id:{}) is invalid posting back to client - {}".format(model.name, model.id, model.validation_errors))
+                handle_log_warning(db, "scheme of work {} (id:{}) is invalid posting back to client - {}".format(model.name, model.id, model.validation_errors))
+        
+        except Exception as e:
+            error_message = e
 
     # get options
     examboard_options = ExamBoardModel.get_options(db)
@@ -96,16 +100,16 @@ def edit(request, scheme_of_work_id = 0):
     }
     
     # build alert message to be displayed
-    alert_message = "<p>'{display_name}' ({id}) will be deleted!<ul>".format(display_name=model.name, id=model.id)
+    delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>".format(display_name=model.name, id=model.id)
     if model.number_of_lessons > 0:
-        alert_message = alert_message + "<li>{number_of_lessons} lesson(s)</li>".format(number_of_lessons=model.number_of_lessons)
+        delete_message = delete_message + "<li>{number_of_lessons} lesson(s)</li>".format(number_of_lessons=model.number_of_lessons)
     if model.number_of_learning_objectives > 0:
-        alert_message = alert_message + "<li>{number_of_learning_objectives} learning objective(s)</li>".format(number_of_learning_objectives=model.number_of_learning_objectives)
+        delete_message = delete_message + "<li>{number_of_learning_objectives} learning objective(s)</li>".format(number_of_learning_objectives=model.number_of_learning_objectives)
     if model.number_of_resources > 0:
-        alert_message = alert_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=model.number_of_resources)
-    alert_message = alert_message + "</ul>"
+        delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=model.number_of_resources)
+    delete_message = delete_message + "</ul>"
 
-    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model, alert_message=alert_message)
+    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model, error_message=error_message, alert_message="", delete_dialog_message=delete_message)
 
     return render(request, "schemesofwork/edit.html", view_model.content)
 

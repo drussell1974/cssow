@@ -118,7 +118,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     }
     
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message="")
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -135,6 +135,8 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         # set markdown document name with file name after saving
         model.md_document_name = f
         
+    error_message = ""
+
     """ save_item non-view action """
     # create instance of model from request.vars
     model = ResourceModel(
@@ -205,7 +207,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
             "get_resource_type_options": get_resource_type_options,
             "validation_errors":model.validation_errors
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message=request.session.get("alert_message"))
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message="", error_message=error_message)
         
         return render(request, "resources/edit.html", view_model.content)
 

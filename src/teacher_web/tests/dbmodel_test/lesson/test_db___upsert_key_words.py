@@ -13,6 +13,7 @@ class test_db___upsert_key_words(TestCase):
     def setUp(self):
         ' fake database context '
         self.fake_db = Mock()
+        self.fake_db.autocommit = True
         self.fake_db.cursor = MagicMock()
         
 
@@ -48,14 +49,14 @@ class test_db___upsert_key_words(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_rows):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=99)
+            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=6079)
             
             # assert
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (10, 13)
+             , (13, 10, 6079)
              , handle_log_info)
 
         self.assertEqual([], actual_result)
@@ -72,14 +73,14 @@ class test_db___upsert_key_words(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[]):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=99)
+            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=6079)
             
             # assert
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (79, 12)
+             , (12, 79, 6079)
              , handle_log_info)
 
         self.assertEqual(actual_result, expected_result)

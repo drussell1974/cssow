@@ -102,30 +102,29 @@
 <hr />
 <!-- Pager Header END -->
 
-{% if content.data.learning_objectives|length == 0 %}
-<div class="alert alert-info" role="alert">
-    <span class="small">{{_('There are no learning objectives for this lesson.')}}</span>
-</div>
-{% else %}
   {% for key, value  in content.data.learning_objectives_by_solo_group.items %}
 
   <div class="group">
     <span class="float-right">
       <a class="btn btn-warning" id="btn-new" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id 0 %}?solo={{value.id}}">{{_("add")}}</a>
     </span>    
-    <h2 class="group-subheading">{{value.name}}</h2>
+    <h2 class="group-subheading">
+    {% if value.lvl == "A" %}
+      <i class="far fa-thumbs-up"></i>
+    {% elif value.lvl == "B" %}
+      <i class="far fa-star"></i>
+    {% elif value.lvl == "C" %}
+      <i class="fas fa-star"></i>
+    {% elif value.lvl == "D" %}
+      <i class="fas fa-trophy"></i>
+    {% endif %}
+      {{value.name}}
+    </h2>
     {% for row in value.learning_objectives %}    
       <div class="post-preview {{ row.published_state }}">
         <a name="{{ row.id }}"></a>
         <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
           <h3 class="post-title">
-            {% if row.solo_taxonomy_level == "B" %}
-              <i class="far fa-star"></i>
-            {% elif row.solo_taxonomy_level == "C" %}
-              <i class="fas fa-star"></i>
-            {% elif row.solo_taxonomy_level == "D" %}
-              <i class="fas fa-trophy"></i>
-            {% endif %}
             {{ row.description}}
           </h3>
           {% if request.user.is_authenticated and 1 == 2%}
@@ -146,8 +145,6 @@
   
   {% if request.user.is_authenticated %}
     <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'learningobjective.delete_unpublished' content.data.scheme_of_work_id content.data.lesson_id %}">{{_('Clean')}}</a>
-  {% endif %}
-
   {% endif %}
 
 {% endblock %}

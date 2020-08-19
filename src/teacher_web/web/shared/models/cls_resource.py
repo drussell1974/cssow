@@ -235,6 +235,7 @@ class ResourceDataAccess:
         str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
         return rows
 
@@ -268,6 +269,7 @@ class ResourceDataAccess:
         str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id), resource_type_id=int(resource_type_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
         return rows
 
@@ -351,6 +353,7 @@ class ResourceDataAccess:
         data = []
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         for row in rows:
@@ -379,6 +382,7 @@ class ResourceDataAccess:
         select_sql = select_sql.format(lesson_id=lesson_id)
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return rows
@@ -393,6 +397,7 @@ class ResourceDataAccess:
         str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
             
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
         return rows
 

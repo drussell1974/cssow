@@ -52,6 +52,7 @@ class KS123PathwayDataAccess:
             .format(year_id=year_id, topic_id=topic_id)
 
         rows = []
+        #TODO: #271 Stored procedure (get_options)
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
         return rows
 
@@ -72,5 +73,6 @@ class KS123PathwayDataAccess:
         select_sql = select_sql.format(lesson_id=int(lesson_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
         return rows

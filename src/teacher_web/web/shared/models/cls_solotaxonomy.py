@@ -48,5 +48,6 @@ class SoloTaxonomyDataAccess:
         execHelper = ExecHelper()
         
         rows = []
+        #TODO: #271 Stored procedure (get_options)
         rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
         return rows

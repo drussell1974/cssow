@@ -3,11 +3,11 @@
 
 {% if content.validation_errors %}
     <ul class="list-group alaert alert-danger">
-    {% for key, value in content.validation_errors.items %}
-        <li class="list-group-item strong"> 
-            <small>{{ key }}: {{ value }}</small>
-        </li>
-    {% endfor %}
+        {% for key, value in content.validation_errors.items %}
+            <li class="list-group-item strong"> 
+                <small>{{ key }}: {{ value }}</small>
+            </li>
+        {% endfor %}
     </ul>
 {% endif %}
 
@@ -34,7 +34,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <p>{{_("Your changes will be lost!")}}</p>
+            <p>{{_("Your changes have not been changed!")}}</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="cancelModalContinueButton">{{_("Yes, cancel")}}</button>
@@ -55,9 +55,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% if content.alert_message is not None %}
-                    {{ content.alert_message | safe }}
-                {% else %}
+                {% if content.alert_message.dialog_delete_message is not None %}
+                    {{ content.alert_message.dialog_delete_message | safe }}
+                {% endif %}
+                {% if content.alert_message.dialog_delete_message is None %}
                     <p>'{{ content.active_model.display_name }}' ({{ content.active_model.id }}) and related data will be deleted!</p>
                 {% endif %}
                 <p class="alert alert-danger"><strong>{{_("You may not be able to recover your data.<br><br>Ensure you are deleting the correct item before you continue.")|safe}}</strong><br><br>

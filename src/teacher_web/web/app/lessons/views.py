@@ -35,6 +35,8 @@ def index(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
+    error_message = ""
+    
     #253 check user id
     scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_id(request))
 
@@ -78,22 +80,26 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        viewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
-
-        viewmodel.execute(published)
-        model = viewmodel.model
+        modelviewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
+        try:
+            modelviewmodel.execute(published)
+            model = modelviewmodel.model
         
-        if model.is_valid == True:
-            ' save the lesson '            
-            redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
-            
-            if request.POST["next"] != "None"  and request.POST["next"] != "":
-                redirect_to_url = request.POST["next"]
-            
-            return HttpResponseRedirect(redirect_to_url)
-        else:
-            handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
-            
+
+            if model.is_valid == True:
+                ' save the lesson '            
+                redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
+                
+                if request.POST["next"] != "None"  and request.POST["next"] != "":
+                    redirect_to_url = request.POST["next"]
+                
+                return HttpResponseRedirect(redirect_to_url)
+            else:
+                handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
+        
+        except Exception as e:
+            error_message = e
+    
     # render view
     
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
@@ -119,7 +125,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model, alert_message="", error_message=error_message)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -147,7 +153,7 @@ def delete(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    viewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
+    modelviewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     

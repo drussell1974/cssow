@@ -104,6 +104,7 @@ class ReferenceDataAccess:
         str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         data = []
@@ -140,6 +141,7 @@ class ReferenceDataAccess:
         str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db,str_select, rows)
 
         data = []
@@ -183,6 +185,7 @@ class ReferenceDataAccess:
         str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         data = []
@@ -224,6 +227,7 @@ class ReferenceDataAccess:
         str_select = str_select.format(id_=int(id_), auth_user=to_db_null(auth_user))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
 
         for row in rows:
@@ -253,6 +257,7 @@ class ReferenceDataAccess:
         select_sql = select_sql.format(lesson_id=lesson_id, auth_user=to_db_null(auth_user))
 
         rows = []
+        #TODO: #271 Stored procedure
         rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
 
         return len(rows)
@@ -341,6 +346,7 @@ class ReferenceDataAccess:
         execHelper.execCRUDSql(db, str_insert, log_info=handle_log_info)
 
         rows = []
+        #TODO: #271 Stored procedure (remove)
         rows = execHelper.execSql(db, "SELECT LAST_INSERT_ID();", rows)
 
         for row in rows:

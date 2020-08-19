@@ -5,69 +5,147 @@ helper routines for retrieving and saving values in the database
 import mysql.connector
 from .log_type import LOG_TYPE
 
+class TRANSACTION_STATE:
+    NONE = None
+    OPEN = 1
+    DONE = 2
+
+
 class ExecHelper:
     #############################
     # TODO: create as singleton #
     #############################
-    #last_sql = ()
-    #def _log_it(self, db, sql, enable_logging):
-    #    l = log.Log();
-    #    l.is_enabled = enable_logging
-    #   l.write(db, sql)
+
+    db = None
+    cur = None
+    transaction_state = None
+
+    def begin(self, db, transaction_state=TRANSACTION_STATE.NONE):
+        """
+        set start cursor (set autocommit to false if specified)
+
+        :param db: the database context
+        :param auto (default=True): whether to automatically commit or rollback
+        """
+
+        self.db = db
+        if self.transaction_state is TRANSACTION_STATE.NONE:
+            self.transaction_state = transaction_state
+            #print("execHelper: begin {} transaction...".format(self.transaction_state))
+            self.cur = self.db.cursor()
+        
+        if self.transaction_state == TRANSACTION_STATE.OPEN:
+            #print("autocommit false...")
+            self.db.autocommit = False
+
+
+    def end_transaction(self):
+        self.transaction_state = TRANSACTION_STATE.DONE
+
+
+    def end(self):
+        """ 
+        close the cursor and connection if not set to automatically close
+        """
+        # only close if transaction is end_transaction has been called
+        if self.transaction_state == TRANSACTION_STATE.NONE or self.transaction_state == TRANSACTION_STATE.DONE:
+            #print("execHelper: closing...")
+            self.cur.close()
+            self.db.close()
+            # reset
+            self.transaction_state = TRANSACTION_STATE.NONE
+
+
+    def commit(self):
+        """
+        Manually commit the transaction
+        """
+        # only call if end_transaction has been called
+        if self.transaction_state == TRANSACTION_STATE.DONE:
+            #print("execHelper: committing... {}".format(self.db.autocommit))
+            self.db.commit()
+
+
+    def rollback(self):
+        """
+        Manually rollback the transaction
+        """
+        #print("execHelper: rolling back... {}".format(self.transaction_state))
+        
+        if self.transaction_state == TRANSACTION_STATE.OPEN:
+            self.db.rollback()
+            #print("execHelper: rolled back!")
+        
+        # end_transaction has been called
+        self.end_transaction()
+
 
     def _execSql(self, db, sql, params=None):
+        if self.db is None:
+            self.db = db
 
-        with db.cursor() as cur:
-            cur.execute(sql, params)
-            result = cur.fetchall()
+        self.cur.execute(sql, params)
+        result = self.cur.fetchall()
+            
         return result
-
-
-    def _closeSqlConn(self, db, cursor):
-            db.close()
 
 
     def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
         ''' run the sql statement without results '''
         
         last_insert_id = 0
-        if db != None:
 
-            if log_info != None:
-                log_info(db, "execCRUDSql", "executing:{}".format(sql_statement), LOG_TYPE.Verbose)
-
-            cur = self._execSql(db, sql_statement)
-            for tup in cur:
+        self.begin(db)
+        
+        try:
+    
+            res = self._execSql(self.db, sql_statement)
+            for tup in res:
                 result.append(tup)
 
-            cur_li = self._execSql(db, "SELECT LAST_INSERT_ID();")
+            last = self._execSql(self.db, "SELECT LAST_INSERT_ID();")
         
-            last_insert_id = int(cur_li[0][0])
+            last_insert_id = int(last[0][0])
 
+            if log_info is not None:
+                log_info(self.db, "execCRUDSql", "executed:{}, with results: {}".format(sql_statement, result), LOG_TYPE.Verbose)    
 
-            db.commit()    
-            self._closeSqlConn(db, None)
+            self.commit()
 
-            if log_info != None:
-                log_info(db, "execCRUDSql", "result:{}".format(result), LOG_TYPE.Verbose)
-        
+        except:
+            self.rollback()
+    
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.execCRUDSql", "An error occurred selecting data '%s'" % sql_statement, log_type=LOG_TYPE.Error)   
+        finally:
+            self.end()
+    
         return (result, last_insert_id)
 
 
     def execSql(self, db, sql, result, log_info=None):
         ''' run the sql statement '''
-        if db != None:
+        
+        self.begin(db)
 
-            if log_info != None:
-                log_info(db, "execSql", "executing:{}".format(sql), LOG_TYPE.Verbose)
+        try:
             
-            cur = self._execSql(db, sql)
-            for tup in cur:
+            res = self._execSql(self.db, sql)
+            for tup in res:
                 result.append(tup)
-            self._closeSqlConn(db, None)
+            
+            if log_info is not None:
+                log_info(self.db, "execSql", "executed:{}, with results: {}".format(sql, result), LOG_TYPE.Verbose)    
 
-            if log_info != None:
-                log_info(db, "execSql", "results:{}".format(result), LOG_TYPE.Verbose)
+            self.commit()
+
+        except:
+            self.rollback()
+    
+            if log_info is not None:
+                log_info(self.db, "ExecHelper._execSql", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)   
+        finally:
+            self.end()
 
         # returns appended result
         return result
@@ -76,25 +154,29 @@ class ExecHelper:
     def select(self, db, sql, params, result, log_info=None):
     
         ''' run the sql statement '''
-        if db != None:
-            try:
-                
-                cur = db.cursor()
-                cur.callproc(sql, params)
-                result = cur.fetchall()
+        self.begin(db)
+    
+        try:
 
-                cur.close()
+            # DO THE WORK
+            self.cur.callproc(sql, params)
+            result = self.cur.fetchall()
 
-                self._closeSqlConn(db, None)
-
-                if log_info is not None:
-                    log_info(db, "update", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
+            if log_info is not None:
+                log_info(self.db, "update", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
             
-            except Exception as e:
-                if log_info is not None:
-                    log_info(db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
-                raise e
+            self.commit()
+
+        except Exception as e:
+
+            self.rollback()
             
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            raise e
+        finally:
+            self.end()
+
         return result
 
 
@@ -102,24 +184,31 @@ class ExecHelper:
         ''' run the sql statement '''
 
         result = []
-        try:
-            if db != None:
-                
-                cur = db.cursor()
-                cur.callproc(sql, params)
-                result = cur.fetchone()
-            
-                cur.close()
-            
-                self._closeSqlConn(db, None)
 
-                if log_info is not None:
-                    log_info(db, "update", "executed:{}, with results: new id = {}".format(sql, result), LOG_TYPE.Verbose)
+        self.begin(db)
+
+        try:
+
+            # DO THE WORK
+            
+            self.cur.callproc(sql, params)                
+            result = self.cur.fetchone()
+
+
+            if log_info is not None:
+                log_info(self.db, "update", "executed:{}, with results: new id = {}".format(sql, result), LOG_TYPE.Verbose)
+            
+            self.commit()
 
         except Exception as e:
+
+            self.rollback()
+
             if log_info is not None:
-                log_info(db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
+                log_info(self.db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
             raise e
+        finally:
+            self.end()
 
         return result
 
@@ -128,24 +217,28 @@ class ExecHelper:
         ''' run the sql statement '''
         result = []
 
-        try:
-            if db != None:
-                
-                cur = db.cursor()
-                cur.callproc(sql, params)
-                result = cur.rowcount
-            
-                cur.close()
-            
-                self._closeSqlConn(db, None)
+        self.begin(db)
 
-                if log_info is not None:
-                    log_info(db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+        try:
+
+            self.cur.callproc(sql, params)
+            
+            result = self.cur.rowcount
+        
+            if log_info is not None:
+                log_info(self.db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+
+            self.commit()
 
         except Exception as e:
+
+            self.rollback()
+
             if log_info is not None:
-                log_info(db, "ExecHelper.update", "An error occurred updating data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                log_info(self.db, "ExecHelper.update", "An error occurred updating data '%s'" % sql, log_type=LOG_TYPE.Error)    
             raise e
+        finally:
+            self.end()
 
         return result
 
@@ -154,27 +247,32 @@ class ExecHelper:
         ''' run the sql statement '''
 
         result = []
+
+        self.begin(db)
+
         try:
-            if db != None:
+
+            self.cur.callproc(sql, params)
+            
+            result = self.cur.rowcount
+
+            if log_info != None:
+                log_info(self.db, "delete", "results: number of records affected = {}".format(result), LOG_TYPE.Verbose)
                 
-                cur = db.cursor()
-                cur.callproc(sql, params)
-                result = cur.rowcount
-
-                cur.close()
-
-                self._closeSqlConn(db, None)
-
-                if log_info != None:
-                    log_info(db, "delete", "results: number of records affected = {}".format(result), LOG_TYPE.Verbose)
-                    
-                if log_info is not None:
-                    log_info(db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
-
-        except Exception as e:
             if log_info is not None:
-                log_info(db, "ExecHelper.delete", "An error occurred deleting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                log_info(self.db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+            
+            self.commit()
+        
+        except Exception as e:
+        
+            self.rollback()
+
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.delete", "An error occurred deleting data '%s'" % sql, log_type=LOG_TYPE.Error)    
             raise e
+        finally:
+            self.end()
 
         return result
 

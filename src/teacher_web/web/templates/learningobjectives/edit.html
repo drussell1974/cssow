@@ -28,6 +28,10 @@
 <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
     {% csrf_token %}
     
+    <!-- show error_message -->
+    {% include '_partials/form.viewmodel.alert_message.html' %}
+    <!-- show error_message END -->
+    
     <!-- Description START -->
     <div class="control-group">
         <div class="form-group controls">

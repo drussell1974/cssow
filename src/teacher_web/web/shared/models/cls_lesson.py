@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty
+from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty, TRANSACTION_STATE
 from .core.log import handle_log_info, handle_log_error
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -374,6 +374,16 @@ class LessonDataAccess:
 
     @staticmethod
     def get_model(db, id_, scheme_of_work_id, auth_user, resource_type_id = 0):
+        """
+        get lesson for scheme of work
+
+        :param db:database context
+        :param id_: the lesson identifier
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the lesson
+        """
+        
         execHelper = ExecHelper()
         select_sql = "lesson__get"
         params = (id_,scheme_of_work_id,auth_user)
@@ -386,6 +396,13 @@ class LessonDataAccess:
 
     @staticmethod
     def get_all(db, scheme_of_work_id, auth_user):
+        """
+        get lessons for the scheme of work
+
+        :param db:database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :return: list of lessons for the scheme of work
+        """
 
         execHelper = ExecHelper()
 
@@ -402,10 +419,12 @@ class LessonDataAccess:
     def get_all_keywords(db, lesson_id, auth_user):
         """
         Get a full list of terms and definitions
+
         :param db: database context
-        :lesson_id: unique identifier for the lesson
+        :lesson_id: the lesson identifier
         :return: list of terms and defintion
         """
+
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_all_keywords"
@@ -416,36 +435,17 @@ class LessonDataAccess:
         
         return rows
 
-    '''
-    @staticmethod
-    def get_key_words(db, lesson_id):
-        """
-        Get the keywords for the lesson
-        :param db: database context
-        :param lesson_id:
-        :return: serialized keywords
-        """
-        BaseModel.depreciation_notice()
-
-        execHelper = ExecHelper()
-        
-        str_select = " SELECT kw.id as id, kw.name as name" \
-                    " FROM sow_key_word as kw"\
-                    " INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id" \
-                    " WHERE lesson_id = {lesson_id};".format(lesson_id=lesson_id)
-        rows = []
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
-        return rows
-    '''
     
     @staticmethod
     def get_pathway_objective_ids(db, lesson_id, auth_user):
         """
         Get the learning objectives ids for the lesson
-        :param db: database context
-        :param lesson_id:
+
+        :param db: the database context
+        :param lesson_id: the lesson identifier
         :return: serialized learning objective ids
         """
+
         execHelper = ExecHelper()
         
 
@@ -462,10 +462,12 @@ class LessonDataAccess:
     def get_ks123_pathway_objective_ids(db, lesson_id, auth_user):
         """
         Get the ks123 pathways for the lesson
-        :param db: database context
+
+        :param db: the database context
         :param lesson_id:
         :return: serialized ks123 pathway ids
         """
+
         execHelper = ExecHelper()
         
 
@@ -482,11 +484,13 @@ class LessonDataAccess:
     def get_number_of_learning_objectives(db, lesson_id, auth_user):
         """
         get the number of learning objective for the lessons
-        :param db: database context
-        :param lesson_id:
-        :param auth_user:
-        :return:
+
+        :param db: the database context
+        :param lesson_id: the lesson identifier
+        :param auth_user: the user executing the command
+        :return: the number of learning objectives for the lesson
         """
+
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_number_of_learning_objectives"
@@ -502,12 +506,16 @@ class LessonDataAccess:
     def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
         """
         gets the related topic ids for the lesson and whether they are selected or should be disabled
+
         :param db: the database context
-        :param lesson_id:
-        :param parent_topic_id:
-        :return: all topics and linked
+        :param lesson_id: the lesson identifier
+        :param parent_topic_id: the top level topic identifier
+        :param auth_user: the user executing the command
+        :return: all topics and child topics
         """
+
         execHelper = ExecHelper()
+        
         str_select = "lesson__get_related_topic_ids"
         params = (lesson_id, parent_topic_id, auth_user)
 
@@ -519,7 +527,14 @@ class LessonDataAccess:
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
+        """
+        get a list lessons
 
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: light-weight list of lessons for the scheme of work
+        """
         execHelper = ExecHelper()
         
         str_select = "lesson__get_options"
@@ -534,7 +549,15 @@ class LessonDataAccess:
 
     @staticmethod
     def _update(db, model, published, auth_user):
-        """ updates the sow_lesson and sow_lesson__has__topics """
+        """ 
+        updates the sow_lesson and related data
+
+        :param db: the database context
+        :param model: the lesson model
+        :param published: the published status id
+        :param auth_user: the user executing the command
+        :return: the updated model
+        """
 
         execHelper = ExecHelper()
         
@@ -577,7 +600,15 @@ class LessonDataAccess:
 
     @staticmethod
     def _insert(db, model, published, auth_user):
-        """ inserts the sow_lesson and sow_lesson__has__topics """
+        """ 
+        inserts the sow_lesson and related data 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param published: the published status id
+        :param auth_user: the user executing the command
+        :return: the model with new identifier
+        """
 
         execHelper = ExecHelper()
 
@@ -629,7 +660,15 @@ class LessonDataAccess:
 
     @staticmethod
     def _delete(db, auth_user, model):
-        """ Delete Lesson """
+        """ 
+        Delete Lesson 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param auth_user: the user executing the command
+        :return: the deleted model
+        """
+        
         execHelper = ExecHelper()
         
         str_delete = "lesson__delete"
@@ -642,7 +681,14 @@ class LessonDataAccess:
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        """ Delete all unpublished lessons """
+        """ 
+        Delete all unpublished lessons 
+
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the rows
+        """
 
         execHelper = ExecHelper()
         
@@ -657,7 +703,15 @@ class LessonDataAccess:
 
     @staticmethod
     def _upsert_related_topic_ids(db, model, results, auth_user):
-        """ inserts sow_lesson__has__topics if topic_id does not exist in table """
+        """ 
+        inserts sow_lesson__has__topics if topic_id does not exist in table 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
 
@@ -673,7 +727,15 @@ class LessonDataAccess:
 
     @staticmethod
     def _upsert_pathway_objective_ids(db, model, results, auth_user):
-        """ inserts sow_lesson__has__pathway if learing_objective_id does not exist in table"""
+        """ 
+        inserts sow_lesson__has__pathway if learing_objective_id does not exist in table
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
         
@@ -691,6 +753,12 @@ class LessonDataAccess:
     def _copy_objective_ids(db, model, results, auth_user):
         """ 
         inserts copy of sow_learning_objective__has__lesson from existing lesson 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
         """
 
         execHelper = ExecHelper()
@@ -726,22 +794,57 @@ class LessonDataAccess:
     def _upsert_key_words(db, model, results, auth_user):
         """ 
         inserts sow_lesson__has__keywords if key_word_id does not exist in table
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
         """
 
         execHelper = ExecHelper()
-        
-        str_insert = "lesson__insert_keywords"
+        execHelper.begin(db, TRANSACTION_STATE.OPEN)
 
-        for key_word in model.key_words:
-            params = (model.id, key_word.id, auth_user)
-            results = execHelper.insert(db, str_insert, params, handle_log_info)
-        
+        try:
+            str_delete = "lesson__delete_keywords"
+            params = (model.id, auth_user)
+
+            #print("LessonDataAccess: deleting keywords...")
+            results = execHelper.delete(db, str_delete, params, handle_log_info)
+            
+
+            for key_word in model.key_words:
+                str_insert = "lesson__insert_keywords"
+                
+                params = (key_word.id, model.id, auth_user)
+                #print("LessonDataAccess: insert keyword {} {}".format(str_insert,params))
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
+                
+            #print("execHelper: raise exception")
+            
+            execHelper.end_transaction()
+            execHelper.commit()
+            
+        except:
+            #("execHelper: catch exception!")
+            execHelper.rollback()
+            raise
+        finally:
+            execHelper.end()
+            
         return results
 
 
     @staticmethod
     def publish(db, id_, auth_user):
+        """ 
+        set the lesson to published state
 
+        :param db: the database context
+        :param id_: the lesson identifier
+        :param auth_user: the user executing the command
+        :return: updated rows
+        """
         execHelper = ExecHelper()
 
         str_publish = "lesson__publish"

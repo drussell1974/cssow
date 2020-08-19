@@ -22,6 +22,10 @@
 <form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
     {% csrf_token %}
 
+    <!-- show error_message -->
+    {% include '_partials/form.viewmodel.alert_message.html' %}
+    <!-- show error_message END -->
+    
     <!-- Type START -->
     <div class="control-group">
         <div class="form-group  controls">

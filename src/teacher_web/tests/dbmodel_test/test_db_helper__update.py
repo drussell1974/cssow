@@ -39,11 +39,13 @@ class test_db_helper__update(TestCase):
         cur.rowcount = 0
 
         fake_db = Mock()
+        fake_db.autocommit = False
         fake_db.cursor = MagicMock(return_value = cur)
 
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.update(fake_db, "a_fake_stored_procedure_will_update_data_and_return_row_count", ("var1","var2","var3"))
 
@@ -68,6 +70,7 @@ class test_db_helper__update(TestCase):
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin(fake_db)
 
         result = execHelper.update(fake_db, "a_fake_stored_procedure_will_update_data_and_return_row_count", ("var1","var2","var3"))
 
@@ -92,6 +95,7 @@ class test_db_helper__update(TestCase):
         # act      
 
         execHelper = ExecHelper()
+        execHelper.begin
 
         result = execHelper.update(fake_db, "a_fake_stored_procedure_will_update_data_and_return_row_count", ("var1","var2","var3"))
 

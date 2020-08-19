@@ -34,6 +34,7 @@ class ExamBoardDataAccess:
         execHelper = ExecHelper()
         
         rows = []
+        #TODO: #271 Stored procedure (get_options)
         rows = execHelper.execSql(db, "SELECT id, name FROM sow_exam_board;", rows, handle_log_info)
 
         data = []
