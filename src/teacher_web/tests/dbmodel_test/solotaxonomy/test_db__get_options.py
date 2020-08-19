@@ -24,7 +24,7 @@ class test_db__get_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,17 +35,18 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
@@ -56,17 +57,18 @@ class test_db__get_options(TestCase):
             (34, "Extended Abstract", 4)
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
 
@@ -85,17 +87,18 @@ class test_db__get_options(TestCase):
             (999, "Extended Abstract", 5)
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(5, len(rows))
 

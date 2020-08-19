@@ -30,7 +30,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            actual_result = ViewModel(db)
+            actual_result = ViewModel(db, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
@@ -70,7 +70,7 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            actual_result = ViewModel(db)
+            actual_result = ViewModel(db, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()

@@ -24,7 +24,7 @@ class test_db__get_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,15 +35,16 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name FROM sow_key_stage;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keystage__get_options'
+                , (6079,)
                 , []
                 , log_info=handle_log_info)
 
@@ -56,15 +57,16 @@ class test_db__get_options(TestCase):
             (4, "KS4")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name FROM sow_key_stage;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keystage__get_options'
+                , (6079,)
                 , []
                 , log_info=handle_log_info)
             
@@ -82,15 +84,16 @@ class test_db__get_options(TestCase):
             (5, "KS5")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name FROM sow_key_stage;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keystage__get_options'
+                , (6079,)
                 , []
                 , log_info=handle_log_info)
             

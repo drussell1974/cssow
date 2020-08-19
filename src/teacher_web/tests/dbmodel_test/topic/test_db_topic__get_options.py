@@ -22,7 +22,7 @@ class test_db_topic__get_options__level_1(TestCase):
         # arrange
         expected_result = Exception('Bang')
         
-        with patch.object(ExecHelper, "execSql", side_effect=expected_result):
+        with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
                 TopicModel.get_options(self.fake_db, lvl = 1)
@@ -33,15 +33,17 @@ class test_db_topic__get_options__level_1(TestCase):
 
         expected_result = []
         
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 1)
+            rows = Model.get_options(self.fake_db, lvl = 2, auth_user=6079, topic_id = 1)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 1;'
-            , []
-            , handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'topic__get_options'
+                , (1, 2, 6079)
+                , []
+                , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
@@ -50,15 +52,17 @@ class test_db_topic__get_options__level_1(TestCase):
 
         expected_result = [(1,"Operators","X","X")]
 
-        with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
+        with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
             # act
-            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 2)
+            rows = Model.get_options(self.fake_db, lvl = 2, auth_user=6079, topic_id = 2)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 2;'
-            , []
-            , handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'topic__get_options'
+                , (2, 2, 6079)
+                , []
+                , handle_log_info)
             self.assertEqual(1, len(rows))
             self.assertEqual("Operators", rows[0]["name"], "First item not as expected")
         
@@ -69,16 +73,18 @@ class test_db_topic__get_options__level_1(TestCase):
         
         expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
 
-        with patch.object(ExecHelper, 'execSql',  return_value=expected_result):
+        with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
             # act
             
-            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 3)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 3, auth_user=6079)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 'SELECT id, name, created, created_by FROM sow_topic WHERE lvl = 2 and parent_id = 3;'
-            , []
-            , handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'topic__get_options'
+                , (3, 2, 6079)
+                , []
+                , handle_log_info)
             self.assertEqual(3, len(rows))
             self.assertEqual("Binary", rows[0]["name"], "First item not as expected")
             self.assertEqual("Data compression", rows[len(rows)-1]["name"], "Last item not as expected")

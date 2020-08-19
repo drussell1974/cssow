@@ -342,19 +342,14 @@ class ResourceDataAccess:
         
         execHelper = ExecHelper()
 
-        str_select = "SELECT" \
-                    " type.id as id," \
-                    " type.name as name " \
-                    "FROM sow_resource_type as type "\
-                    "WHERE type.published = 1 OR type.created_by = {auth_user};"
-
-        str_select = str_select.format(auth_user=to_db_null(auth_user))
+        str_select = "resource_type__get_options"
+        params = (auth_user,)
 
         data = []
 
         rows = []
-        #TODO: #271 Stored procedure
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        #271 Stored procedure
+        rows = execHelper.select(db, str_select, params, rows, log_info=handle_log_info)
 
         for row in rows:
             data.append(ResourceTypeModel(id=row[0], name=row[1]))

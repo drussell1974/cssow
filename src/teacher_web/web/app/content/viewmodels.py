@@ -16,6 +16,7 @@ class ContentIndexViewModel(BaseViewModel):
     
     def __init__(self, db, scheme_of_work_id, auth_user):
         """ determine and action request """
+        self.auth_user = auth_user
         
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
 
@@ -98,7 +99,7 @@ class ContentEditViewModel(BaseViewModel):
         #if self.content_id > 0 and self.model is None:            
         #    self.on_not_found(self.model, self.content_id) 
 
-        self.key_stage_options = KeyStageModel.get_options(self.db)
+        self.key_stage_options = KeyStageModel.get_options(self.db, self.auth_user)
 
         data = {
             "scheme_of_work_id":self.scheme_of_work.id,

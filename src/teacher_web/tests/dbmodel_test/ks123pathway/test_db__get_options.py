@@ -23,7 +23,7 @@ class test_db__get_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -34,13 +34,14 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, year_id = 1, topic_id = 2)
+            rows = get_options(self.fake_db, year_id = 1, topic_id = 2, auth_user=6079)
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                'SELECT id, objective FROM sow_ks123_pathway WHERE year_id = 1 and topic_id = 2;'
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_options'
+                , (1, 2, 6079)
                 , []
                 , log_info=handle_log_info)
 
@@ -51,15 +52,16 @@ class test_db__get_options(TestCase):
         # arrange
         expected_result = [(1,"Recognises that digital content can be represented in many forms. (AB) (GE)")]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, year_id = 1, topic_id = 3)
+            rows = get_options(self.fake_db, year_id = 1, topic_id = 3, auth_user=6079)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                'SELECT id, objective FROM sow_ks123_pathway WHERE year_id = 1 and topic_id = 3;'
-                , []
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_options'
+                , (1, 3, 6079)
+                ,  []
                 , log_info=handle_log_info)
 
             self.assertEqual(1, len(rows))
@@ -74,14 +76,15 @@ class test_db__get_options(TestCase):
             (99,"Uses logical reasoning to predict outputs, showing an awareness of inputs. (AL)")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
-            rows = get_options(self.fake_db, year_id = 1, topic_id = 4)
+            rows = get_options(self.fake_db, year_id = 1, topic_id = 4, auth_user=6079)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                 'SELECT id, objective FROM sow_ks123_pathway WHERE year_id = 1 and topic_id = 4;'
-                 , []
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_options'
+                , (1, 4, 6079)
+                , []
                 , log_info=handle_log_info)
 
             self.assertEqual(3, len(rows))

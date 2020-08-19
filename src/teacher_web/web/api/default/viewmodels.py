@@ -11,15 +11,15 @@ from shared.serializers.srl_topic import TopicModelSerializer
 
 class TopicGetOptionsListViewModel(BaseViewModel):
 
-    def __init__(self, db, topic_id, lvl=2):
-        data = TopicModel.get_options(db, topic_id=topic_id, lvl=lvl)
+    def __init__(self, db, topic_id, auth_user, lvl=2):
+        data = TopicModel.get_options(db, topic_id=topic_id, auth_user=auth_user, lvl=lvl)
         self.model = list(map(lambda m: TopicModelSerializer(m).data,data))
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
 
-    def __init__(self, db):
+    def __init__(self, db, auth_user):
 
-        data = KeywordModel.get_options(db)
+        data = KeywordModel.get_options(db, auth_user)
 
         self.model = list(map(lambda m: KeywordModelSerializer(m).data, data))

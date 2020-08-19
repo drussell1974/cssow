@@ -45,7 +45,7 @@ def index(request, scheme_of_work_id, lesson_id):
     #253 check user id
     lesson_options = LessonModel.get_options(db, scheme_of_work_id, auth_user_id(request))  
     
-    solo_taxonomy_options = SoloTaxonomyModel.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_user_id(request))
 
     # group objectives by solo taxonomy    
     learning_objectives_by_solo_group = {}
@@ -109,9 +109,9 @@ def new(request, scheme_of_work_id, lesson_id):
     get_lessonobjective_view.model.lesson_id = lesson.id
     get_lessonobjective_view.model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = SoloTaxonomyModel.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_user_id(request))
 
-    content_options = ContentModel.get_options(db, key_stage_id)
+    content_options = ContentModel.get_options(db, key_stage_id, auth_user_id(request))
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -206,9 +206,9 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
     model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = SoloTaxonomyModel.get_options(db)
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_user_id(request))
 
-    content_options = ContentModel.get_options(db, key_stage_id)
+    content_options = ContentModel.get_options(db, key_stage_id, auth_user_id(request))
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,

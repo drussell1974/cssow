@@ -9,7 +9,6 @@ def get_options(db):
     raise DeprecationWarning("No longer used.")
 
     rows = []
-    #TODO: #271 Stored procedure (get_options)
     rows = execHelper.execSql(db, "SELECT id, name FROM sow_reference_type;", rows)
 
     data = []

@@ -10,6 +10,21 @@ mysql -u $1 -p$2 -h $3 $4 < views/sow_teacher.sql
 
 ## sow_lesson
 
+echo content__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__get_options.sql
+
+echo examboard__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/examboard__get_options.sql
+
+echo keystage__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keystage__get_options.sql
+
+echo keyword__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get_options.sql
+
+echo ks123_pathway__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/ks123_pathway__get_options.sql
+
 echo lesson__copy_learning_objectives
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__copy_learning_objectives.sql
 
@@ -96,6 +111,11 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__publish_
 echo lesson_resource__publish_item
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__publish_item.sql
 
+## reference
+
+echo resource_type__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/resource_type__get_options.sql
+
 ## sow_scheme_of_work
 
 echo scheme_of_work__delete
@@ -131,14 +151,17 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_options.sql
 echo scheme_of_work__get_schemeofwork_name_only
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_schemeofwork_name_only.sql
 
+echo scheme_of_work__has__teacher__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__has__teacher__insert.sql
+
 echo scheme_of_work__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__insert.sql
 
 echo scheme_of_work__update
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__update.sql
 
-echo scheme_of_work__delete
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__delete.sql
+echo solotaxonomy__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/solotaxonomy__get_options.sql
 
-echo scheme_of_work__has__teacher__insert
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__has__teacher__insert.sql
+echo topic__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/topic__get_options.sql

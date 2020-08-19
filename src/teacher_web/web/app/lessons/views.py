@@ -103,11 +103,11 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     # render view
     
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
-    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, scheme_of_work.id)
-    topic_options = TopicModel.get_options(db, lvl=1)
-    key_words_options = KeywordModel.get_options(db)
+    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_id(request), scheme_of_work.id)
+    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_id(request))
+    key_words_options = KeywordModel.get_options(db, request.user.id)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id)
-    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id)
+    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_id(request))
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,

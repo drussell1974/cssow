@@ -23,8 +23,8 @@ class KS123PathwayModel(BaseModel):
     
     
     @staticmethod
-    def get_options(db, year_id, topic_id):
-        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id)
+    def get_options(db, year_id, topic_id, auth_user):
+        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1])
@@ -44,16 +44,18 @@ class KS123PathwayModel(BaseModel):
 class KS123PathwayDataAccess:
 
     @staticmethod
-    def get_options(db, year_id, topic_id):
+    def get_options(db, year_id, topic_id, auth_user):
 
         execHelper = ExecHelper()
 
-        str_select = "SELECT id, objective FROM sow_ks123_pathway WHERE year_id = {year_id} and topic_id = {topic_id};"\
-            .format(year_id=year_id, topic_id=topic_id)
+        str_select = "ks123_pathway__get_options"
+        params = (year_id, topic_id, auth_user)
 
         rows = []
-        #TODO: #271 Stored procedure (get_options)
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+        #271 Stored procedure (get_options)
+        rows = execHelper.select(db, str_select, params, rows, log_info=handle_log_info)
+
         return rows
 
 

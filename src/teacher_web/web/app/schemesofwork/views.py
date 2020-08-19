@@ -88,8 +88,8 @@ def edit(request, scheme_of_work_id = 0):
             error_message = e
 
     # get options
-    examboard_options = ExamBoardModel.get_options(db)
-    keystage_options = KeyStageModel.get_options(db)
+    examboard_options = ExamBoardModel.get_options(db, auth_user_id(request))
+    keystage_options = KeyStageModel.get_options(db, auth_user_id(request))
 
     # view data
     data = {

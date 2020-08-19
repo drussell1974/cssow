@@ -92,8 +92,8 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db):
-        return KeywordDataAccess.get_options(db)
+    def get_options(db, auth_user):
+        return KeywordDataAccess.get_options(db, auth_user)
 
 
     @staticmethod
@@ -138,14 +138,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_options(db):
+    def get_options(db, auth_user):
         execHelper = ExecHelper()
 
-        select_sql = "SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
-
+        select_sql = "keyword__get_options"
+        params = (auth_user,)
         rows = []
-        #TODO: #271 Stored procedure (get_options)
-        rows = execHelper.execSql(db, select_sql, rows)
+        #271 Stored procedure (get_options)
+        rows = execHelper.select(db, select_sql, params, rows)
         
         data = []
         for row in rows:

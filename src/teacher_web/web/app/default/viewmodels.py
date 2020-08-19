@@ -24,14 +24,14 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
 class TopicGetOptionsListViewModel(BaseViewModel):
     #TODO: #235 Rename to {ViewName}ViewModel
-    def __init__(self, db, topic_id, lvl=2):
-        self.model = TopicModel.get_options(db, topic_id=topic_id, lvl=lvl)
+    def __init__(self, db, topic_id, auth_user, lvl=2):
+        self.model = TopicModel.get_options(db, topic_id=topic_id, auth_user=auth_user, lvl=lvl)
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
     # TODO: #235 Depracate not a matching View
-    def __init__(self, db):
-        self.model = KeywordModel.get_options(db)
+    def __init__(self, db, auth_user):
+        self.model = KeywordModel.get_options(db, auth_user)
 
 
 class KeywordGetAllListViewModel(BaseViewModel):

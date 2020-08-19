@@ -25,7 +25,7 @@ class test_db__get_resource_type_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -36,15 +36,15 @@ class test_db__get_resource_type_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options', (6079,)
                 , []
                 , log_info=handle_log_info)
 
@@ -57,15 +57,16 @@ class test_db__get_resource_type_options(TestCase):
             (4345, "Markdown")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options'
+                , (6079,)
                 , []
                 , log_info=handle_log_info)
             
@@ -83,15 +84,16 @@ class test_db__get_resource_type_options(TestCase):
             (37, "Video")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options' 
+                , (6079,)
                 , []
                 , log_info=handle_log_info)
             

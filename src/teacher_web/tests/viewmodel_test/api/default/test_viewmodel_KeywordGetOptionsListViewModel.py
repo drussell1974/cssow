@@ -32,7 +32,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db)
+            self.viewmodel = ViewModel(db, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
@@ -53,7 +53,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db)
+            self.viewmodel = ViewModel(db, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
@@ -74,7 +74,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db)
+            self.viewmodel = ViewModel(db, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
