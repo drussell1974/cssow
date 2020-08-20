@@ -210,7 +210,7 @@ class SchemeOfWorkModel(BaseModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, model.created_by_id)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
 

@@ -216,7 +216,7 @@ class ExecHelper:
 
             if log_info is not None:
                 log_info(self.db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
-            raise e
+            raise
         finally:
             self.end()
 

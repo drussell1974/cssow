@@ -12,6 +12,6 @@ omit =
    *cls_lessonplan*
 
 [coverage:report]
-fail_under = 95
+fail_under = 92
 show_missing = True
 skip_covered = False

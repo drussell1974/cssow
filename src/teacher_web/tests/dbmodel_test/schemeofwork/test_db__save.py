@@ -68,7 +68,7 @@ class test_db__save(TestCase):
             self.assertEqual(89, actual_result.id)
 
 
-    def test_should_call_execCRUDSql__insert__when__is_new__true(self):
+    def test_should_call__scheme_of_work__insert__when__is_new__true(self):
         # arrange
 
         model = Model(0)
@@ -88,6 +88,27 @@ class test_db__save(TestCase):
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
+
+            self.assertEqual(101, actual_result.id)
+
+
+    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self):
+        # arrange
+
+        model = Model(0)
+
+        with patch.object(ExecHelper, 'insert', return_value=(101)):
+            # act
+
+            actual_result = save(self.fake_db, model, 6079)
+
+            # assert
+
+            ExecHelper.insert.assert_called_with(self.fake_db,
+                 'scheme_of_work__has__teacher__insert'
+                 , (101, 6079)
+                 , handle_log_info)
+                 
 
             self.assertEqual(101, actual_result.id)
 

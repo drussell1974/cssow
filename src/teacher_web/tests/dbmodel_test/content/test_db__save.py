@@ -114,4 +114,5 @@ class test_db__save(TestCase):
 
             # check subsequent functions where called
 
-            self.assertEqual(expected_result, actual_result.id)
+            self.assertEqual(23, actual_result.id)
+            self.assertEqual(2, actual_result.published)

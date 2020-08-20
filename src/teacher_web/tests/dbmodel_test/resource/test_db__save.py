@@ -89,3 +89,25 @@ class test_db__save(TestCase):
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)
+
+
+    def test_should_call_execCRUDSql__delete(self):
+         # arrange
+        model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
+        
+
+        with patch.object(ExecHelper, 'delete', return_value=model):
+            # act
+
+            actual_result = save(self.fake_db, model, auth_user=6079, published=2)
+            
+            # assert
+            
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+             'lesson_resource__delete'
+             , (23, 6079)
+             , handle_log_info)
+            
+            self.assertEqual(23, actual_result.id)
+            self.assertEqual(2, actual_result.published)
+
