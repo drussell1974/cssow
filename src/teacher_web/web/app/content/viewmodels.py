@@ -26,7 +26,7 @@ class ContentIndexViewModel(BaseViewModel):
         self.scheme_of_work_options = SchemeOfWorkModel.get_options(db, auth_user)
 
         # get model
-        self.model = Model.get_all(db, self.scheme_of_work.key_stage_id, auth_user)
+        self.model = Model.get_all(db, self.scheme_of_work.id, self.scheme_of_work.key_stage_id, auth_user)
         
 
     def view(self):
@@ -44,6 +44,7 @@ class ContentIndexViewModel(BaseViewModel):
 class ContentEditViewModel(BaseViewModel):
     
     is_content_ready = False
+    error_message = ""
 
     def __init__(self, db, request, scheme_of_work_id, content_id, auth_user):
         
@@ -51,7 +52,7 @@ class ContentEditViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.content_id = content_id
         self.auth_user = auth_user
-
+        
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
         #248 check associated schemeofwork 
         if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
@@ -84,12 +85,15 @@ class ContentEditViewModel(BaseViewModel):
             
             if self.model.is_valid == True or published == 2:
                 # save to database
+                try:
+                        
+                    data = Model.save(self.db, self.model, self.auth_user, published)
+                    self.model = data
 
-                data = Model.save(self.db, self.model, self.auth_user, published)
-                self.model = data
-
-                self.is_content_ready = True   
-
+                    self.is_content_ready = True   
+                except Exception as e:
+                    #TODO: show error message for custom exception
+                    self.error_message = e
             else:
                 handle_log_warning(self.db, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
@@ -108,4 +112,4 @@ class ContentEditViewModel(BaseViewModel):
             "model":self.model
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "New", data=data, active_model=self.model)
+        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "New", data=data, active_model=self.model, error_message=self.error_message)

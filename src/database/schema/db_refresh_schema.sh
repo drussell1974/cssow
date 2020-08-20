@@ -1,5 +1,7 @@
 # tables
 mysql -u $1 -p$2 -h $3 $4 < tables/sow_scheme_of_work__has__teacher.sql
+
+mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_content.sql
 mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_learning_objective__has__lesson.sql
 mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
 
@@ -8,10 +10,27 @@ mysql -u $1 -p$2 -h $3 $4 < views/sow_teacher.sql
 
 # stored procedures
 
-## sow_lesson
+## content
+
+echo content__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__delete.sql
+
+echo content__get
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__get.sql
+
+echo content__get_all
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__get_all.sql
 
 echo content__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__get_options.sql
+
+echo content__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__insert.sql
+
+echo content__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/content__update.sql
+
+## OTHERS
 
 echo examboard__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/examboard__get_options.sql
@@ -24,6 +43,8 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get_options.sql
 
 echo ks123_pathway__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/ks123_pathway__get_options.sql
+
+## sow_lesson
 
 echo lesson__copy_learning_objectives
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__copy_learning_objectives.sql
@@ -51,6 +72,9 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_ks123_pathway_objective
 
 echo lesson__get_number_of_learning_objectives
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_number_of_learning_objectives.sql
+
+echo lesson__get_number_of_resources
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_number_of_resources.sql
 
 echo lesson__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_options.sql
@@ -100,16 +124,34 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__get_all.
 echo lesson_learning_objective__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__insert.sql
 
-echo lesson_learning_objective__update
-mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__update.sql
-
 echo lesson_learning_objective__publish_item
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__publish_item.sql
 
+echo lesson_learning_objective__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__update.sql
+
 ## sow_resource
+
+echo lesson_resource_delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__delete.sql
+
+echo lesson_resource__delete_unpublished
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__delete_unpublished.sql
+
+echo lesson_resource__get
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__get.sql
+
+echo lesson_resource__get_all
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__get_all.sql
+
+echo lesson_resource__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__insert.sql
 
 echo lesson_resource__publish_item
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__publish_item.sql
+
+echo lesson_resource__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__update.sql
 
 ## reference
 

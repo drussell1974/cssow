@@ -25,7 +25,7 @@ class test_db__save(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -54,18 +54,19 @@ class test_db__save(TestCase):
 
         expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99, published=1)
+            actual_result = save(self.fake_db, model, auth_user=6079, published=1)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                "UPDATE sow_content SET description = 'CPU and RAM', letter = '', published = 1 WHERE id = 1;"
+            ExecHelper.update.assert_called_with(self.fake_db, 
+                 'content__update'
+                , (1, 'CPU and RAM', '', 0, None, 1, 6079)
                 , handle_log_info)
 
-            self.assertEqual(expected_result, actual_result.id)
+            self.assertEqual(1, actual_result)
 
 
     def test_should_call_execCRUDSql__insert__when__is_new__true(self):
@@ -73,22 +74,22 @@ class test_db__save(TestCase):
 
         model = Model(0, description="", key_stage_id=20)
 
-        expected_result = ("100", 876)
+        expected_result = (876,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99, published = 1)
+            actual_result = save(self.fake_db, model, auth_user=6079, published = 1)
             
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
-                self.fake_db, 
-                "INSERT INTO sow_content (description, letter, key_stage_id, created_by, published) VALUES ('', '', 20, 99, 1);"
-                , []
+            ExecHelper.insert.assert_called_with(
+                self.fake_db,
+                'content__insert'
+                , (0, '', '', 20, None, 1, 6079)
                 , handle_log_info)
             
-            self.assertEqual(expected_result[1], actual_result.id)
+            self.assertEqual(876, actual_result[0])
 
 
     def test_should_call_execCRUDSql__delete__when__is_new__false__and__published_is_2(self):
@@ -98,16 +99,17 @@ class test_db__save(TestCase):
         
         expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99, published=2)
+            actual_result = save(self.fake_db, model, auth_user=6079, published=2)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
+            ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                "DELETE FROM sow_content WHERE id = 23 AND published IN (0,2);"
+                "content__delete"
+                , (23, None, 6079)
                 , handle_log_info)
 
             # check subsequent functions where called

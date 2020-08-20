@@ -46,7 +46,7 @@ class test_db__get_resource_type_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'resource_type__get_options', (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
@@ -68,7 +68,7 @@ class test_db__get_resource_type_options(TestCase):
                 'resource_type__get_options'
                 , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
 
@@ -95,7 +95,7 @@ class test_db__get_resource_type_options(TestCase):
                 'resource_type__get_options' 
                 , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(3, len(rows))
 

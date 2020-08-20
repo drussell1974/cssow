@@ -180,9 +180,18 @@ class ResourceModel (BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published = 1):
-        ''' Upsert the resource (use BaseModel.upsert) '''
-        model = ResourceModel.upsert(db, model, auth_user, published, ResourceDataAccess)
+    def save(db, model, auth_user, published=1):
+        if try_int(published) == 2:
+            rval = ResourceDataAccess._delete(db, model, auth_user)
+            #TODO: check row count before updating
+            model.published = 2
+        else:
+            if model.is_new() == True:
+                new_id = ResourceDataAccess._insert(db, model, published, auth_user)
+                model.id = new_id[0]
+            else:
+                rows = ResourceDataAccess._update(db, model, published, auth_user)
+
         return model
 
 
@@ -205,72 +214,32 @@ class ResourceDataAccess:
 
     @staticmethod
     #248 Added parameters
-    def get_model(db, id_, lesson_id, scheme_of_work_id,auth_user):
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user):
         """ Get Resource """
+
         execHelper = ExecHelper()
         
-        str_select = "SELECT" \
-                    " res.id as id," \
-                    " res.title as title," \
-                    " res.publisher as publisher," \
-                    " res.type_id as type_id,"\
-                    " res_typ.name as resource_type_name,"\
-                    " res_typ.task_icon as task_icon,"\
-                    " res.md_document_name as md_document_name, "\
-                    " res.page_notes as page_notes, "\
-                    " res.url as page_uri, " \
-                    " res.lesson_id as lesson_id, "\
-                    " res.created as created, "\
-                    " res.created_by as created_by_id, "\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    " res.published as published " \
-                    "FROM sow_resource AS res " \
-                    " INNER JOIN sow_lesson as les ON les.id = res.lesson_id "\
-                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id "\
-                    " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
-                    " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                    "WHERE res.id = {id} "\
-                    " AND (res.published = 1 OR res.created_by = {auth_user});"
-
-        str_select = str_select.format(id=(id_), auth_user=to_db_null(auth_user))
+        str_select = "lesson_resource__get"
+        params = (id_, auth_user)
 
         rows = []
-        #TODO: #271 Stored procedure
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        #271 Stored procedure
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         return rows
 
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
         """ Get resources for lesson """
+
         execHelper = ExecHelper()
 
-        str_select = "SELECT" \
-                    " res.id as id," \
-                    " res.title as title," \
-                    " res.publisher as publisher," \
-                    " res.type_id as type_id,"\
-                    " res_typ.name as resource_type_name,"\
-                    " res_typ.task_icon as task_icon,"\
-                    " res.md_document_name as md_document_name,"\
-                    " res.page_notes as page_notes, "\
-                    " res.url as page_uri, " \
-                    " res.lesson_id as lesson_id, "\
-                    " res.created as created, "\
-                    " res.created_by as created_by_id, "\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, "\
-                    " res.published as published "\
-                    "FROM sow_resource AS res " \
-                    " LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id " \
-                    " LEFT JOIN auth_user AS user ON user.id = res.created_by "\
-                    "WHERE res.lesson_id = {lesson_id} AND (res.type_id = {resource_type_id} or {resource_type_id} = 0)" \
-                    " AND (res.published = 1 OR res.created_by = {auth_user});"
-                    
-        str_select = str_select.format(auth_user=to_db_null(auth_user), scheme_of_work_id=int(scheme_of_work_id), lesson_id=int(lesson_id), resource_type_id=int(resource_type_id))
+        str_select = "lesson_resource__get_all"
+        params = (lesson_id, resource_type_id, auth_user)
 
         rows = []
         #TODO: #271 Stored procedure
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         return rows
 
 
@@ -281,60 +250,77 @@ class ResourceDataAccess:
         :param id_: the id of the record to delete
         :return: nothing
         """
+
         model = ResourceModel(id_)
+        
         return ResourceDataAccess._delete(db, model, auth_user);
 
 
     @staticmethod
-    def _insert(db, model, auth_user_id):
+    def _insert(db, model, published, auth_user):
         """ inserts the sow_resource and sow_scheme_of_work__has__reference """
-       
-        sql_insert_statement = "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('{title}', '{publisher}', {type_id}, '{page_note}', '{page_uri}', '{md_document_name}', {is_expired}, {lesson_id}, '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"\
-                .format(
-                title=model.title,
-                publisher=model.publisher,
-                type_id=to_db_null(model.type_id, as_null=""),
-                page_note=to_db_null(model.page_note),
-                page_uri=to_db_null(model.page_uri),
-                md_document_name=to_db_null(model.md_document_name, as_null=""),
-                is_expired=to_db_bool(model.is_expired),
-                lesson_id = model.lesson_id,
-                created=model.created,
-                created_by=model.created_by_id,
-                published=model.published,
-                expired=model.is_expired)
+        execHelper = ExecHelper()
 
-        rows, new_id = BaseDataAccess._insert(db, sql_insert_statement)
-        
-        return rows, new_id
+        sql_insert_statement = "lesson_resource__insert"
+        params = (
+            model.id,
+            model.title,
+            model.publisher,
+            model.type_id,
+            model.page_note,
+            model.page_uri,
+            model.md_document_name,
+            model.is_expired,
+            model.lesson_id,
+            model.created,
+            model.created_by_id,
+            published,
+            auth_user
+        )
+               
+        result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
+
+        return result
 
 
     @staticmethod
-    def _update(db, model, auth_user_id):
+    def _update(db, model, published, auth_user):
         """ updates the sow_lesson and sow_lesson__has__topics """
-        return BaseDataAccess._update(db, 
-            "UPDATE sow_resource SET title = '{title}', publisher = '{publisher}', type_id = {type_id}, page_notes = '{page_note}', url = '{page_uri}', md_document_name = '{md_document_name}', is_expired = {is_expired}, lesson_id = {lesson_id}, published = {published} WHERE id = {id};"\
-                .format(
-                    id=model.id,
-                    title=model.title,
-                    publisher=model.publisher,
-                    type_id=to_db_null(model.type_id, as_null=""),
-                    page_note=to_db_null(model.page_note),
-                    page_uri=to_db_null(model.page_uri),
-                    md_document_name=to_db_null(model.md_document_name),
-                    is_expired=to_db_bool(model.is_expired),
-                    lesson_id = model.lesson_id,
-                    published=model.published)
+        
+        execHelper = ExecHelper()
+        
+        str_update = "lesson_resource__update"
+        params = (
+            model.id,
+            model.title,
+            model.publisher,
+            model.type_id,
+            model.page_note,
+            model.page_uri,
+            model.md_document_name,
+            model.is_expired, ## to_db_bool(model.is_expired)
+            model.lesson_id,
+            published,
+            auth_user
         )
-        return model
+        
+        result = execHelper.update(db, str_update, params, handle_log_info)
+
+        return result
 
 
     @staticmethod
-    def _delete(db, model, auth_user_id):
-        return BaseDataAccess._delete(db,
-            "DELETE FROM sow_resource WHERE id = {id_};"\
-                .format(id_=model.id)
-        )
+    def _delete(db, model, auth_user):
+
+        execHelper = ExecHelper()
+
+        sql = "lesson_resource__delete"
+        params = (model.id, auth_user)
+    
+        #271 Stored procedure
+        rows = execHelper.delete(db, sql, params, handle_log_info)
+        
+        return rows
 
 
     @staticmethod
@@ -349,7 +335,7 @@ class ResourceDataAccess:
 
         rows = []
         #271 Stored procedure
-        rows = execHelper.select(db, str_select, params, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
 
         for row in rows:
             data.append(ResourceTypeModel(id=row[0], name=row[1]))
@@ -369,31 +355,30 @@ class ResourceDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "SELECT " \
-                    " lesson_id " \
-                    "FROM sow_resource "\
-                    "WHERE lesson_id = {lesson_id};"
+        select_sql = "lesson__get_number_of_resources"
 
-        select_sql = select_sql.format(lesson_id=lesson_id)
+        params = (lesson_id, 1, auth_user)
 
         rows = []
-        #TODO: #271 Stored procedure
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        #271 Stored procedure
+ 
+        rows = execHelper.select(db, select_sql, params, rows, log_info=handle_log_info)
 
         return rows
 
 
     @staticmethod
-    def delete_unpublished(db, lesson_id, auth_user_id):
+    def delete_unpublished(db, lesson_id, auth_user):
         """ Delete all unpublished resources """
         
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_resource WHERE lesson_id = {} AND published = 0;".format(lesson_id)
-            
+        str_delete = "lesson_resource__delete_unpublished"
+        params = (lesson_id, auth_user)
         rows = []
-        #TODO: #271 Stored procedure
-        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+        #271 Stored procedure
+
+        rows = execHelper.delete(db, str_delete, params, handle_log_info)
         return rows
 
 

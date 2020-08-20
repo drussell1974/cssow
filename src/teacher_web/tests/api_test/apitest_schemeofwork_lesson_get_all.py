@@ -55,7 +55,7 @@ class apitest_schemeofwork_lesson_get_all(APITestCase):
 
     def test__first__should_have_zero_resources(self):
         # assert
-        self.assertEqual(0, self.payload["lessons"][0]["number_of_resources"])
+        self.assertEqual(1, self.payload["lessons"][0]["number_of_resources"])
         
         
     def test__last__should_have_title(self):
@@ -75,4 +75,4 @@ class apitest_schemeofwork_lesson_get_all(APITestCase):
 
     def test__last__should_have_resources(self):
         # assert
-        self.assertEqual(2, self.payload["lessons"][self.last_item_index]["number_of_resources"])
+        self.assertEqual(1, self.payload["lessons"][self.last_item_index]["number_of_resources"])

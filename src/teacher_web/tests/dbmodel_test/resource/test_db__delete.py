@@ -27,7 +27,7 @@ class test_db__delete(TestCase):
 
         model = Model(1, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(KeyError):
@@ -41,15 +41,16 @@ class test_db__delete(TestCase):
 
         expected_result = [(1)]
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = delete(self.fake_db, 1, model.id)
+            actual_result = delete(self.fake_db, model.id, 6079)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
 
-            #ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-            # "UPDATE sow_scheme_of_work SET name = '', description = '', exam_board_id = 0, key_stage_id = 0, published = 1 WHERE id =  1;", 
-            # loghandler)
-            self.assertEqual(expected_result, actual_result)
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                'lesson_resource__delete'
+                , (1, 6079)
+                , handle_log_info)
+
+            self.assertEqual(1, actual_result[0])

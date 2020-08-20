@@ -180,6 +180,16 @@ class ExecHelper:
         return result
 
 
+    def scalar(self, db, sql, params, result, log_info=None):
+        """ for sql queries returning a single value e.g row count """
+        value = 1
+
+        # TODO: implement callproc(sql, params)
+        raise NotImplementedError("implement callproc(sql, params) to return a single value")
+
+        return value
+        
+
     def insert(self, db, sql, params, log_info=None):
         ''' run the sql statement '''
 

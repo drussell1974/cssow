@@ -24,7 +24,7 @@ class test_db__get_resource_type_options(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,15 +35,16 @@ class test_db__get_resource_type_options(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_number_of_resources(self.fake_db, 677, auth_user=99)
+            actual_results = get_number_of_resources(self.fake_db, 677, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lesson_id FROM sow_resource WHERE lesson_id = 677;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_number_of_resources'
+                , (677,1,6079)
                 , []
                 , log_info=handle_log_info)
 
@@ -56,15 +57,16 @@ class test_db__get_resource_type_options(TestCase):
             (4345, "Markdown")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_number_of_resources(self.fake_db, 12, auth_user=99)
+            actual_results = get_number_of_resources(self.fake_db, 12, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lesson_id FROM sow_resource WHERE lesson_id = 12;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get_number_of_resources"
+                , (12,1,6079)
                 , []
                 , log_info=handle_log_info)
             
@@ -79,15 +81,16 @@ class test_db__get_resource_type_options(TestCase):
             (37, "Video")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_number_of_resources(self.fake_db, 22, auth_user=1)
+            actual_results = get_number_of_resources(self.fake_db, 22, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lesson_id FROM sow_resource WHERE lesson_id = 22;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get_number_of_resources"
+                , (22, 1, 6079)
                 , []
                 , log_info=handle_log_info)
             

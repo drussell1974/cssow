@@ -26,7 +26,7 @@ class test_db__save(TestCase):
 
         model = Model(0, title="How to test an exception", publisher="Unit test",  lesson_id=11, scheme_of_work_id=114)
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -40,7 +40,7 @@ class test_db__save(TestCase):
 
         model = Model(1, title="How to test an exception", publisher="Unit test",  lesson_id=12, scheme_of_work_id=114)
     
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(KeyError):
@@ -53,15 +53,16 @@ class test_db__save(TestCase):
         model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
         
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=model):
+        with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "UPDATE sow_resource SET title = 'How to make unit tests', publisher = 'Unit test', type_id = 0, page_notes = '', url = '', md_document_name = '', is_expired = 0, lesson_id = 13, published = 1 WHERE id = 23;"
+            ExecHelper.update.assert_called_with(self.fake_db, 
+             'lesson_resource__update'
+             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, 99)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
@@ -72,19 +73,19 @@ class test_db__save(TestCase):
 
         model = Model(0, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
 
-        expected_result = ([], 102)
+        expected_result = (102,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, auth_user=99)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
+            ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                "INSERT INTO sow_resource (title, publisher, type_id, page_notes, url, md_document_name, is_expired, lesson_id, created, created_by, published) VALUES ('How to make more unit tests', 'Unit test', 0, '', '', 'NULL', 0, 15, '', 0, 1);SELECT LAST_INSERT_ID();"
-                , []
+                'lesson_resource__insert'
+                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '', 0, 1, 99)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)

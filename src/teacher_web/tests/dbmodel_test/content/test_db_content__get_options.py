@@ -41,7 +41,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (1, 6079)
+            , (0, 1, 6079)
             , []
             , test_context.handle_log_info)
             
@@ -60,7 +60,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (2, 6079)
+            , (0, 2, 6079)
             , []
             , test_context.handle_log_info)
             
@@ -79,12 +79,12 @@ class test_db_content__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, key_stage_id=3, auth_user=6079)
+            rows = get_options(self.fake_db, key_stage_id=3, auth_user=6079, scheme_of_work_id=563)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (3, 6079)
+            , (563, 3, 6079)
             , []
             , test_context.handle_log_info)
             
