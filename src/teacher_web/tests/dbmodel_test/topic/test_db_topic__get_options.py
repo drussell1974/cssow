@@ -18,7 +18,7 @@ class test_db_topic__get_options__level_1(TestCase):
         self.fake_db.close()
 
     
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_result = Exception('Bang')
         
@@ -28,7 +28,7 @@ class test_db_topic__get_options__level_1(TestCase):
                 TopicModel.get_options(self.fake_db, lvl = 1)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
 
         expected_result = []
@@ -47,7 +47,7 @@ class test_db_topic__get_options__level_1(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_items(self):
+    def test__should_call__select__return_single_items(self):
         # arrange
 
         expected_result = [(1,"Operators","X","X")]
@@ -68,7 +68,7 @@ class test_db_topic__get_options__level_1(TestCase):
         
 
 
-    def test__should_call_execSql_return_multiple_items(self):
+    def test__should_call__select__return_multiple_items(self):
         # arrange
         
         expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]

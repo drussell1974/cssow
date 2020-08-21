@@ -20,36 +20,38 @@ class test_db__get_all_pathway_objectives(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(KeyError):
-                get_all_pathway_objectives(self.fake_db, key_stage_id=4, key_words="")
+                get_all_pathway_objectives(self.fake_db, key_stage_id=4, key_words="", auth_user = 6079)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all_pathway_objectives(self.fake_db, key_stage_id=5, key_words="")
+            rows = get_all_pathway_objectives(self.fake_db, key_stage_id=5, key_words="", auth_user = 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, ks.id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_learning_objective as lob LEFT JOIN sow_topic as top ON top.id = lob.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE ks.id < 5 ORDER BY ks.name DESC, solo.lvl;"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson_learning_objective__get_all_pathway_objectives'
+                , (5, 6079)
+                , []
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         
         expected_result = [(
@@ -69,16 +71,18 @@ class test_db__get_all_pathway_objectives(TestCase):
             "test_user" # 13
         )]
     
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=3, key_words="CPU")
+            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=3, key_words="CPU", auth_user = 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, ks.id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_learning_objective as lob LEFT JOIN sow_topic as top ON top.id = lob.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE ks.id < 3 ORDER BY ks.name DESC, solo.lvl;"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                 'lesson_learning_objective__get_all_pathway_objectives'
+                 , (3, 6079)
+                 , []
+                 , handle_log_info)
                 
             self.assertEqual(1, len(actual_results))
 
@@ -88,7 +92,7 @@ class test_db__get_all_pathway_objectives(TestCase):
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
 
         expected_result = [(
@@ -126,16 +130,18 @@ class test_db__get_all_pathway_objectives(TestCase):
             "2020-07-17 16:24:04", 99, "test_user"
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=20, key_words="congue")
+            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=20, key_words="congue", auth_user = 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                 "SELECT lob.id as id, lob.description as description, solo.id as solo_id, solo.name as solo_taxonomy_name, solo.lvl as solo_taxonomy_level, cnt.id as content_id, cnt.description as content_description, ks.id as key_stage_id, ks.name as key_stage_name, lob.key_words as key_words, lob.group_name as group_name, lob.created as created, lob.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_learning_objective as lob LEFT JOIN sow_topic as top ON top.id = lob.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id LEFT JOIN sow_key_stage as ks ON ks.id = cnt.key_stage_id LEFT JOIN auth_user as user ON user.id = lob.created_by WHERE ks.id < 20 ORDER BY ks.name DESC, solo.lvl;"
-                 , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                 'lesson_learning_objective__get_all_pathway_objectives'
+                 , (20, 6079)
+                 , []
+                 , handle_log_info)
 
 
             # found 2 or 3

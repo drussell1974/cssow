@@ -30,7 +30,7 @@ class test_db__delete(TestCase):
                 delete(self.fake_db, 99, lesson_id=456)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
 
         with patch.object(ExecHelper, 'delete', return_value=Model(102)):

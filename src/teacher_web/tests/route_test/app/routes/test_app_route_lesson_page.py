@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lessons.views import index, edit, publish, delete, lessonplan, whiteboard, initialise_keywords, delete_unpublished
+from app.lessons.views import index, edit, publish, delete, whiteboard, initialise_keywords, delete_unpublished
 
 # Create your tests here.
 class test_app_route_lesson_page(TestCase):
@@ -71,17 +71,6 @@ class test_app_route_lesson_page(TestCase):
         self.assertEqual("/schemesofwork/127/lessons/13/publish", url)
 
 
-    def test__lesson_lessonplan__url_resolves_to_lessonplan(self):
-        url = resolve("/schemesofwork/127/lessons/13/lessonplan")
-        self.assertEqual("lesson.lessonplan", url.url_name)
-        self.assertEqual(url.func, lessonplan)
-
-
-    def test__lesson_lessonplan__url_resolves_to_lessonplan_reverse(self):
-        url = reverse("lesson.lessonplan", args=[127, 13])
-        self.assertEqual("/schemesofwork/127/lessons/13/lessonplan", url)
-
-
     def test__lesson_whiteboard__url_resolves_to_whitebaord(self):
         url = resolve("/schemesofwork/11/lessons/44/whiteboard")
         self.assertEqual("lesson.whiteboard_view", url.url_name)
@@ -92,17 +81,6 @@ class test_app_route_lesson_page(TestCase):
         url = reverse("lesson.whiteboard_view", args=[11, 44])
         self.assertEqual("/schemesofwork/11/lessons/44/whiteboard", url)
 
-    '''
-    def test__lesson_save_item__url_resolves_to_save_item(self):
-        url = resolve("/schemesofwork/11/lessons/78/save")
-        self.assertEqual("lesson.save", url.url_name)
-        self.assertEqual(url.func, save)
-
-
-    def test__lesson_save_item__url_resolves_to_save_item__reverse(self):
-        url = reverse("lesson.save", args=[11, 78])
-        self.assertEqual("/schemesofwork/11/lessons/78/save", url)
-    '''
 
     def test__lesson_whiteboard__url_resolves_to_whitebaord(self):
         url = resolve("/schemesofwork/11/lessons/initialise_keywords")

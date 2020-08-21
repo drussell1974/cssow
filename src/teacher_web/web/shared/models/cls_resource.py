@@ -238,7 +238,7 @@ class ResourceDataAccess:
         params = (lesson_id, resource_type_id, auth_user)
 
         rows = []
-        #TODO: #271 Stored procedure
+        #271 Stored procedure
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         return rows
 

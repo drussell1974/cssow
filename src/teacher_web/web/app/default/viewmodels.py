@@ -81,7 +81,7 @@ class KeywordSaveViewModel(BaseViewModel):
             self.model.validate()
 
             if self.model.is_valid == True:
-                data = KeywordModel.save(self.db, self.model)
+                data = KeywordModel.save(self.db, self.model, published, auth_user)
                 self.model = data
             else:
                 handle_log_warning(self.db, "saving keyword", "keywordnot valid (keyword id:{}, term:'{}', definition:'{}')".format(self.model.id, self.model.term, self.model.definition))

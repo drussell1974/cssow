@@ -9,7 +9,7 @@ CREATE PROCEDURE lesson__insert_ks123_pathway (
 BEGIN
     DECLARE record_exists INT DEFAULT 0;
 
-    SET record_exists = (SELECT count(*) FROM sow_lesson__has__pathway WHERE lesson_id = p_lesson_id AND ks123_pathway_id = p_ks123_pathway_id);
+    SET record_exists = (SELECT count(*) FROM sow_lesson__has__pathway WHERE lesson_id = p_lesson_id AND id = p_ks123_pathway_id);
 
     IF record_exists = 0 THEN
         INSERT INTO sow_lesson__has__ks123_pathway

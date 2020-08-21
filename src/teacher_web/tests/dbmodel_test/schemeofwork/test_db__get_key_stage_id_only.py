@@ -18,7 +18,7 @@ class test_db__get_key_stage_id_only(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,7 +29,7 @@ class test_db__get_key_stage_id_only(TestCase):
                 get_key_stage_id_only(self.fake_db, 999, 99)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -47,7 +47,7 @@ class test_db__get_key_stage_id_only(TestCase):
             self.assertEqual(0, actual_result)
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [[3]]
 

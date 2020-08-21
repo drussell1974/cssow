@@ -13,7 +13,8 @@ BEGIN
       FROM sow_lesson__has__key_words as lkw 
             INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id 
       WHERE 
-            lkw.lesson_id = p_lesson_id AND published = 1;
+            lkw.lesson_id = p_lesson_id;
+             -- AND published = 1;
 END;
 
 //

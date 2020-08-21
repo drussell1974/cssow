@@ -33,13 +33,13 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, 99)
 
 
-    def test_should_call_execCRUDSql__update_with_exception(self):
+    def test_should_call__update_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
         model = Model(1, "")
     
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -48,7 +48,7 @@ class test_db__save(TestCase):
                 save(self.fake_db, model)
 
 
-    def test_should_call_execCRUDSql__update_with__is_new__false(self):
+    def test_should_call__update_with__is_new__false(self):
          # arrange
         model = Model(1, "CPU and RAM")
 
@@ -69,7 +69,7 @@ class test_db__save(TestCase):
             self.assertEqual(1, actual_result)
 
 
-    def test_should_call_execCRUDSql__insert__when__is_new__true(self):
+    def test_should_call__insert_insert__when__is_new__true(self):
         # arrange
 
         model = Model(0, description="", key_stage_id=20)
@@ -92,7 +92,7 @@ class test_db__save(TestCase):
             self.assertEqual(876, actual_result[0])
 
 
-    def test_should_call_execCRUDSql__delete__when__is_new__false__and__published_is_2(self):
+    def test_should_call__delete__when__is_new__false__and__published_is_2(self):
         # arrange
 
         model = Model(23, "")

@@ -106,7 +106,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_id(request), scheme_of_work.id)
     topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_id(request))
     key_words_options = KeywordModel.get_options(db, request.user.id)
-    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id)
+    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user = auth_user_id(request))
     ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_id(request))
     
     data = {
@@ -157,18 +157,6 @@ def delete(request, scheme_of_work_id, lesson_id):
 
     return HttpResponseRedirect(redirect_to_url)
     
-#TODO: #234 add permission
-@permission_required('cssow.view_lessonplan_lessonmodel', login_url='/accounts/login/')
-def lessonplan(request, scheme_of_work_id, lesson_id):
-    ''' Display the lesson plan '''
-
-    scheme_of_work_name = "" # TODO: get scheme of work name
-    lesson_name = "" # TODO: get lesson name
-
-    view_model = ViewModel(scheme_of_work_name, lesson_name, "lesson plan")
-    
-    return render(request, "lessons/lessonplan.html", view_model.content)
-
 
 #TODO: #234 add permission
 #@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')

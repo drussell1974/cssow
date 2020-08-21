@@ -17,7 +17,7 @@ class test_db__get_all_keywords(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,7 +28,7 @@ class test_db__get_all_keywords(TestCase):
                 get_all_keywords(self.fake_db, 21, 6079)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -47,7 +47,7 @@ class test_db__get_all_keywords(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[(87,"Fetch Decode Execute", "The process carried out by the CPU")]):
@@ -70,7 +70,7 @@ class test_db__get_all_keywords(TestCase):
             self.assertEqual("The process carried out by the CPU", actual_results[0].definition)
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[(1034,"DDR",""),(1045,"DIMM",""),(12,"DRAM","") ]):

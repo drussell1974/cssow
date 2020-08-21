@@ -20,36 +20,38 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(KeyError):
                 get_all(self.fake_db, 4, scheme_of_work_id=30, auth_user=99)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=1)
+            rows = get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL lesson_learning_objective__get_all(5,30,1);"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson_learning_objective__get_all"
+                , (5,30,6079)
+                , []
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(
             934, "Sed at arcu in leo vestibulum dapibus. Suspendisse",
@@ -61,17 +63,18 @@ class test_db__get_all(TestCase):
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 1
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=1)
+            actual_results = get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=6079)
             
             # assert
             
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                #TODO #269 user lesson_learning_objectives_get_all stored procedure
-                "CALL lesson_learning_objective__get_all(3,30,1);"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson_learning_objective__get_all"
+                , (3,30,6079)
+                , []
+                , handle_log_info)
                 
 
             self.assertEqual(1, len(actual_results))
@@ -82,7 +85,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [(
             934, "Etiam eu efficitur ante. Nunc justo turpis, finibus.",
@@ -113,16 +116,18 @@ class test_db__get_all(TestCase):
         )]
 
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=1)
+            actual_results = get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                 "CALL lesson_learning_objective__get_all(20,30,1);"
-                 , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                 "lesson_learning_objective__get_all"
+                 , (20,30,6079)
+                 , []
+                 , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 

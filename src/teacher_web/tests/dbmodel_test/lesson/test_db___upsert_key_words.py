@@ -35,7 +35,7 @@ class test_db___upsert_key_words(TestCase):
                 _upsert_key_words(self.fake_db, model, auth_user_id=99)
     
     
-    def test_should_call_execCRUDSql__reinsert__key_words(self):
+    def test_should_call__reinsert__key_words(self):
          # arrange
         model = LessonModel(10, "")
         
@@ -63,7 +63,7 @@ class test_db___upsert_key_words(TestCase):
 
     
     
-    def test_should_call_execCRUDSql__reinsert__key_words__insert_new(self):
+    def test_should_call__reinsert__key_words__insert_new(self):
          # arrange
         model = LessonModel(79, "")
         model.key_words = [KeywordModel(id_ = 12, term="CPU", definition="")]

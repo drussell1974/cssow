@@ -237,7 +237,7 @@ from shared.models.core.log import handle_log_info
 class BaseDataAccess:
 
     @staticmethod
-    def _insert(db, insert_sql_statement, rows = []):
+    def _insert(db, insert_sql_statement, params, rows = []):
         """ Insert into the database
 
             :param db: database
@@ -253,26 +253,26 @@ class BaseDataAccess:
 
         updated_rows = []
     
-        rows, last_inserted_id = execHelper.execCRUDSql(db, insert_sql_statement, rows, handle_log_info)
+        rows, last_inserted_id = execHelper.insert(db, insert_sql_statement, params, handle_log_info)
         
         return updated_rows, last_inserted_id
 
 
     @staticmethod
-    def _update(db, update_sql_statement):
+    def _update(db, update_sql_statement, params):
 
         execHelper = ExecHelper()
 
-        result = execHelper.execCRUDSql(db, update_sql_statement, handle_log_info)
+        result = execHelper.update(db, update_sql_statement, params, handle_log_info)
         
         return result # updated rows
 
 
     @staticmethod
-    def _delete(db, delete_sql_statement):
+    def _delete(db, delete_sql_statement, params):
         
         execHelper = ExecHelper()
 
-        result = execHelper.execCRUDSql(db, delete_sql_statement, handle_log_info)
+        result = execHelper.delete(db, delete_sql_statement, params, handle_log_info)
 
         return result # delete rows

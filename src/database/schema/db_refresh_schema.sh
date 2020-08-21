@@ -38,11 +38,37 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/examboard__get_options.sql
 echo keystage__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keystage__get_options.sql
 
+
+## sow_keyword
+
+echo keyword__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__delete.sql
+
+echo keyword__get
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get.sql
+
+echo keyword__get_all
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get_all.sql
+
+echo keyword__get_by_term
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get_by_term.sql
+
 echo keyword__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__get_options.sql
 
+echo keyword__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__insert.sql
+
+echo keyword__update
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/keyword__update.sql
+
+## sow_ks123_pathway
+
 echo ks123_pathway__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/ks123_pathway__get_options.sql
+
+echo ks123_pathway__get_linked_pathway
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/ks123_pathway__get_linked_pathway.sql
 
 ## sow_lesson
 
@@ -121,6 +147,12 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__get.sql
 echo lesson_learning_objective__get_all
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__get_all.sql
 
+echo lesson_learning_objective__get_all_pathway_objectives
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__get_all_pathway_objectives.sql
+
+echo lesson_learning_objective__get_linked_pathway_objectives
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__get_linked_pathway_objectives.sql
+
 echo lesson_learning_objective__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_learning_objective__insert.sql
 
@@ -152,6 +184,11 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__publish_item.sql
 
 echo lesson_resource__update
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__update.sql
+
+## logging
+
+echo logging__insert
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__insert.sql
 
 ## reference
 
@@ -207,3 +244,6 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/solotaxonomy__get_options.sql
 
 echo topic__get_options
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/topic__get_options.sql
+
+echo year__get_options
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/year__get_options.sql

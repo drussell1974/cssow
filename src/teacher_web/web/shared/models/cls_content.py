@@ -149,7 +149,7 @@ class ContentDataAccess(BaseDataAccess):
         params = (content_id, scheme_of_work_id, auth_user)
 
         rows = []
-        #TODO: #271 Stored procedure
+        #271 Stored procedure
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
@@ -168,7 +168,7 @@ class ContentDataAccess(BaseDataAccess):
         params = (scheme_of_work_id, key_stage_id, auth_user)
             
         rows = []
-        #TODO: #271 Stored procedure
+        #271 Stored procedure
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows

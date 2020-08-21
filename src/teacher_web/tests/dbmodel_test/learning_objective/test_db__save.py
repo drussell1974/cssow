@@ -26,7 +26,7 @@ class test_db__save(TestCase):
 
         model = Model(1, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
         
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(KeyError):
@@ -34,13 +34,13 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, 99, published=1),
 
 
-    def test_should_call_execCRUDSql__update_with_exception(self):
+    def test_should_call__update_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
         model = Model(1, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
         
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(KeyError):
@@ -49,7 +49,7 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, 99, published=1)
 
 
-    def test_should_call_execCRUDSql__update_with__is_new__false(self):
+    def test_should_call__update_with__is_new__false(self):
          # arrange
         model = Model(1, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
         
@@ -58,30 +58,29 @@ class test_db__save(TestCase):
 
         expected_result = model.id
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, 99, published=1)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                "CALL lesson_learning_objective__update(1,12,'Mauris ac velit ultricies, vestibulum.', '','','',1,NULL,NULL,1,99);"
-                , log_info=handle_log_info)
+            ExecHelper.update.assert_called_with(self.fake_db, 
+                "lesson_learning_objective__update"
+                , (1,12,'Mauris ac velit ultricies, vestibulum.', '','','',1,None,None,1,99)
+                , handle_log_info)
 
 
             self.assertEqual(expected_result, actual_result.id)
 
 
-    def test_should_call_execCRUDSql__insert__when__is_new__true(self):
+    def test_should_call__insert__when__is_new__true(self):
         # arrange
 
         model = Model(0, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
         
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
-
-        LearningObjectiveDataAccess._insert_lesson_lessonobjectives = Mock()
         
         expected_result = ("100",23)
 
@@ -101,7 +100,7 @@ class test_db__save(TestCase):
             self.assertEqual(23, actual_result.id)
 
 
-    def test_should_call_execCRUDSql__delete__when__published_state_is_delete__true(self):
+    def test_should_call__delete__when__published_state_is_delete__true(self):
         # arrange
 
         model = Model(909, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
@@ -109,21 +108,20 @@ class test_db__save(TestCase):
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
 
-        LearningObjectiveDataAccess._insert_lesson_lessonobjectives = Mock()
-        
-        expected_result = ("100",23)
+        expected_result = (23,)
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
             actual_result = save(self.fake_db, model, 99, published=2)
 
             # assert
 
-            ExecHelper.execCRUDSql.assert_called_with(
+            ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                "CALL lesson_learning_objective__delete(909,99);"
-                , log_info=handle_log_info)
+                "lesson_learning_objective__delete"
+                , (909,99)
+                , handle_log_info)
                 
             self.assertEqual(909, actual_result.id)
 

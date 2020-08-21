@@ -48,7 +48,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
-             'lesson__insert_ks123pathway'
+             'lesson__insert_ks123_pathway'
              , (10, '202', 6079)
              , handle_log_info)
 

@@ -33,7 +33,7 @@ class test_db__delete_unpublished(TestCase):
                 delete_unpublished(self.fake_db, 1, auth_user=99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call_delete(self):
          # arrange
         
         expected_result = 5

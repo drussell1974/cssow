@@ -18,18 +18,18 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_all(self.fake_db)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select_return_no_items(self):
         # arrange
         expected_result = []
 
@@ -49,7 +49,7 @@ class test_db__get_all(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select_return_single_item(self):
         # arrange
         expected_result = [
             (702, "purus lacus, ut volutpat nibh euismod.", "A",0)
@@ -76,7 +76,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("A", actual_results[0].letter_prefix),
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select_return_multiple_item(self):
         # arrange
         expected_result = [
             (1021, "nec arcu nec dolor vehicula ornare non.", "X", 0),

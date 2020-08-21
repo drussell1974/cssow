@@ -15,8 +15,7 @@ from .cls_ks123pathway import KS123PathwayModel
 class LessonModel (BaseModel):
     class Meta:
         permissions = [
-            ('view_whiteboard_lessonmodel', 'Can view whiteboard for this Lesson'),
-            ('view_lessonplan_lessonmodel', 'Can View lesson plan for this Lesson')
+            ('view_whiteboard_lessonmodel', 'Can view whiteboard for this Lesson')
         ]
         
     title = ""
@@ -780,7 +779,7 @@ class LessonDataAccess:
 
         execHelper = ExecHelper()
         
-        str_insert = "lesson__insert_ks123pathway"
+        str_insert = "lesson__insert_ks123_pathway"
 
         for pathway_id in model.pathway_ks123_ids:
             if pathway_id.isdigit():

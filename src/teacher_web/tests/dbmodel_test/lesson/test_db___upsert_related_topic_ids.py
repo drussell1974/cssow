@@ -34,7 +34,7 @@ class test_db___upsert_related_topic_ids(TestCase):
 
 
     
-    def test_should_call_execCRUDSql__reinsert__related_topic_ids(self):
+    def test_should_call__reinsert__related_topic_ids(self):
          # arrange
         model = LessonModel(10, "")
         model.related_topic_ids = ["201","202"]

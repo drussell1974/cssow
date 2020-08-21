@@ -26,7 +26,7 @@ class test_db__publish_item(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -34,7 +34,7 @@ class test_db__publish_item(TestCase):
                 publish_item(self.fake_db, 999, 99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__update(self):
          # arrange
         model = Model(123, "CPU, RAM and ")
         model.lesson_id = 101

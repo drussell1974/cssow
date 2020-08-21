@@ -35,7 +35,7 @@ class test_db__delete(TestCase):
                 delete(self.fake_db, 1, model.id)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
         model = Model(1, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
 

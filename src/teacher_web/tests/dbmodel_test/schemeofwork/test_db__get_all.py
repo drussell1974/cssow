@@ -17,7 +17,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,7 +28,7 @@ class test_db__get_all(TestCase):
                 SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=4)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -46,7 +46,7 @@ class test_db__get_all(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
 
@@ -76,7 +76,7 @@ class test_db__get_all(TestCase):
 
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self):
         # arrange
 
         expected_result = [

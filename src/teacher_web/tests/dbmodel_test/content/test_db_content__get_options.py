@@ -19,7 +19,7 @@ class test_db_content__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,7 +29,7 @@ class test_db_content__get_options(TestCase):
                 get_options(self.fake_db, key_stage_id=0)
             
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -48,7 +48,7 @@ class test_db_content__get_options(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(17, "Mauris augue est, malesuada eget libero nec.", "A")]
 
@@ -69,7 +69,7 @@ class test_db_content__get_options(TestCase):
             self.assertEqual("Mauris augue est, malesuada eget libero nec.", rows[0].description)
             
 
-    def test__should_call_execSql_return_multiple_items(self):
+    def test__should_call_select__return_multiple_items(self):
         # arrange
         expected_result = [
             (29,"Sed turpis augue, tristique sed elit ac.", "A"),

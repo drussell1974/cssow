@@ -9,7 +9,6 @@ omit =
    web/**/views.py
    web/**/apps.py
    *cls_reference*
-   *cls_lessonplan*
 
 [coverage:report]
 fail_under = 92

@@ -34,7 +34,7 @@ class test_db__deleteunpublished(TestCase):
                 delete_unpublished(self.fake_db, 1)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
 
         with patch.object(ExecHelper, 'delete', return_value=[("5")]):

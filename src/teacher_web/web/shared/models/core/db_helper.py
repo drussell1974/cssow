@@ -81,6 +81,9 @@ class ExecHelper:
 
 
     def _execSql(self, db, sql, params=None):
+        
+        raise DeprecationWarning("execSql not longer supported use select to call stored prcoedure")
+        
         if self.db is None:
             self.db = db
 
@@ -92,6 +95,7 @@ class ExecHelper:
 
     def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
         ''' run the sql statement without results '''
+        raise DeprecationWarning("execCRUDSql not longer supported use insert, update or delete to call stored prcoedure")
         
         last_insert_id = 0
 
@@ -108,7 +112,7 @@ class ExecHelper:
             last_insert_id = int(last[0][0])
 
             if log_info is not None:
-                log_info(self.db, "execCRUDSql", "executed:{}, with results: {}".format(sql_statement, result), LOG_TYPE.Verbose)    
+                log_info(self.db, "sql", "executed:{}, with results: {}".format(sql_statement, result), LOG_TYPE.Verbose)    
 
             self.commit()
 
@@ -116,7 +120,7 @@ class ExecHelper:
             self.rollback()
     
             if log_info is not None:
-                log_info(self.db, "ExecHelper.execCRUDSql", "An error occurred selecting data '%s'" % sql_statement, log_type=LOG_TYPE.Error)   
+                log_info(self.db, "sql", "An error occurred selecting data '%s'" % sql_statement, log_type=LOG_TYPE.Error)   
         finally:
             self.end()
     
@@ -125,6 +129,7 @@ class ExecHelper:
 
     def execSql(self, db, sql, result, log_info=None):
         ''' run the sql statement '''
+        raise DeprecationWarning("execSql not longer supported use select to call stored prcoedure")
         
         self.begin(db)
 
@@ -135,7 +140,7 @@ class ExecHelper:
                 result.append(tup)
             
             if log_info is not None:
-                log_info(self.db, "execSql", "executed:{}, with results: {}".format(sql, result), LOG_TYPE.Verbose)    
+                log_info(self.db, "sql", "executed:{}, with results: {}".format(sql, result), LOG_TYPE.Verbose)    
 
             self.commit()
 
@@ -143,7 +148,7 @@ class ExecHelper:
             self.rollback()
     
             if log_info is not None:
-                log_info(self.db, "ExecHelper._execSql", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)   
+                log_info(self.db, "sql", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)   
         finally:
             self.end()
 
@@ -217,6 +222,7 @@ class ExecHelper:
             if log_info is not None:
                 log_info(self.db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
             raise
+
         finally:
             self.end()
 

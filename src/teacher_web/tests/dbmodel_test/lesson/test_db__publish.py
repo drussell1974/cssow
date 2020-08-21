@@ -34,7 +34,7 @@ class test_db__publish(TestCase):
                 publish(self.fake_db, 1, 123, 99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__update(self):
          # arrange
         model = LessonModel(123, "CPU, RAM and ")
         
