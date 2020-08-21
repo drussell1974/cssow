@@ -11,6 +11,7 @@ class Lesson_TestCase(TestCase):
                                  title = "Data Representation: Images",
                                  order_of_delivery_id=2,
                                  scheme_of_work_id=3,
+                                 content_id=10,
                                  topic_id=4,
                                  parent_topic_id=5,
                                  key_stage_id=6,

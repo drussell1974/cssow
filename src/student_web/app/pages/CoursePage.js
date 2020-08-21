@@ -72,7 +72,12 @@ export const CoursePageContainer = ({lessons, schemeofwork, site, socialmediadat
                 <BannerWidget heading={schemeofwork.name} description={schemeofwork.description} />
                     <div id="main">
                         <div className="inner">
-                            <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" typeButtonText="View Lesson" />
+                            <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" 
+                                typeButtonText="View Lesson" 
+                                typeButtonClass="button style2 fit"
+                                typeDisabledButtonText="Coming soon"
+                                typeDisabledButtonClass="button style2 fit disabled"
+                            />
                         </div>
                     </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />

@@ -19,44 +19,48 @@ class test_db_content__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
             with self.assertRaises(Exception):
                 get_options(self.fake_db, key_stage_id=0)
             
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, key_stage_id=1)
+            rows = get_options(self.fake_db, key_stage_id=1, auth_user=6079)
 
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 1;'
+            ExecHelper.select.assert_called_with(self.fake_db,
+            'content__get_options'
+            , (0, 1, 6079)
             , []
             , test_context.handle_log_info)
             
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(17, "Mauris augue est, malesuada eget libero nec.", "A")]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, key_stage_id=2)
+            rows = get_options(self.fake_db, key_stage_id=2, auth_user=6079)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 2;'
+            ExecHelper.select.assert_called_with(self.fake_db,
+            'content__get_options'
+            , (0, 2, 6079)
             , []
             , test_context.handle_log_info)
             
@@ -65,20 +69,22 @@ class test_db_content__get_options(TestCase):
             self.assertEqual("Mauris augue est, malesuada eget libero nec.", rows[0].description)
             
 
-    def test__should_call_execSql_return_multiple_items(self):
+    def test__should_call_select__return_multiple_items(self):
         # arrange
         expected_result = [
             (29,"Sed turpis augue, tristique sed elit ac.", "A"),
             (645,"Ut porta arcu a commodo viverra. Sed.", "B"),
             (107,"Nulla sit amet aliquet enim, quis laoreet.", "C"),
         ]
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, key_stage_id=3)
+            rows = get_options(self.fake_db, key_stage_id=3, auth_user=6079, scheme_of_work_id=563)
             
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db,'SELECT cnt.id as id, cnt.description as description, cnt.letter as letter_prefix FROM sow_content as cnt WHERE key_stage_id = 3;'
+            ExecHelper.select.assert_called_with(self.fake_db,
+            'content__get_options'
+            , (563, 3, 6079)
             , []
             , test_context.handle_log_info)
             

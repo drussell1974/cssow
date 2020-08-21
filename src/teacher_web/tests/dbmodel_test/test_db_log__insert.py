@@ -22,7 +22,7 @@ class test_db_keyword__get_options(TestCase):
     def test_should_call_insert_with_exception(self):# arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -41,14 +41,14 @@ class test_db_keyword__get_options(TestCase):
     
         log = test_context.Log(self.fake_db, test_context.LOG_TYPE.Verbose)
         
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
         
             log.write("something happened", "", test_context.LOG_TYPE.Verbose)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_called()
+            ExecHelper.insert.assert_called()
 
 
     def test_should_call_insert_with_new_id__when_logging_is_enabled__false(self):
@@ -58,14 +58,14 @@ class test_db_keyword__get_options(TestCase):
         log = test_context.Log(self.fake_db, test_context.LOG_TYPE.NONE)
 
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
         
             log.write("something happened", "", test_context.LOG_TYPE.Verbose)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_not_called()
+            ExecHelper.insert.assert_not_called()
    
 
     def test_should_call_insert_with_new_id__when_logging_is_enabled__default(self):
@@ -80,12 +80,12 @@ class test_db_keyword__get_options(TestCase):
         #########################
         #log.is_enabled = False
         
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
         
             log.write("something happened", "", test_context.LOG_TYPE.Verbose)
             
             # assert
             
-            ExecHelper.execCRUDSql.assert_not_called()
+            ExecHelper.insert.assert_not_called()
    

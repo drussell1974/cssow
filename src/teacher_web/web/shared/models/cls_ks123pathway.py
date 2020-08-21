@@ -23,8 +23,8 @@ class KS123PathwayModel(BaseModel):
     
     
     @staticmethod
-    def get_options(db, year_id, topic_id):
-        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id)
+    def get_options(db, year_id, topic_id, auth_user):
+        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1])
@@ -33,8 +33,8 @@ class KS123PathwayModel(BaseModel):
 
 
     @staticmethod
-    def get_linked_pathway_ks123(db, lesson_id):
-        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id)
+    def get_linked_pathway_ks123(db, lesson_id, auth_user):
+        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id, auth_user)
         data = []
         for row in rows:
             data.append([int(row[0]), row[1]])
@@ -44,33 +44,32 @@ class KS123PathwayModel(BaseModel):
 class KS123PathwayDataAccess:
 
     @staticmethod
-    def get_options(db, year_id, topic_id):
+    def get_options(db, year_id, topic_id, auth_user):
 
         execHelper = ExecHelper()
 
-        str_select = "SELECT id, objective FROM sow_ks123_pathway WHERE year_id = {year_id} and topic_id = {topic_id};"\
-            .format(year_id=year_id, topic_id=topic_id)
+        str_select = "ks123_pathway__get_options"
+        params = (year_id, topic_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+
+        #271 Stored procedure (get_options)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+
         return rows
 
 
     @staticmethod
-    def get_linked_pathway_ks123(db, lesson_id):
+    def get_linked_pathway_ks123(db, lesson_id, auth_user):
 
         execHelper = ExecHelper()
         
 
-        select_sql = "SELECT"\
-                    " pw.id as id,"\
-                    " pw.objective as objective "\
-                    "FROM sow_lesson__has__ks123_pathway as le_pw" \
-                    " INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id"\
-                    " WHERE le_pw.lesson_id = {lesson_id};"
+        select_sql = "ks123_pathway__get_linked_pathway"
 
-        select_sql = select_sql.format(lesson_id=int(lesson_id))
+        params = (lesson_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        #271 Stored procedure
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         return rows

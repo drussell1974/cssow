@@ -28,7 +28,7 @@ export const SOWBoxMenuWidget = ({data, typeLabelText, typeButtonText}) => {
             <Fragment>
                 <h2>Lessons</h2>
                 <div className="thumbnails lessons">
-                    {data.filter(item => item.number_of_learning_objective > 0 || item.number_of_resource > 0).map(item => (
+                    {data.filter(item => item.number_of_learning_objectives > 0 || item.number_of_resources > 0).map(item => (
                         <SOWBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText} typeButtonText={typeButtonText} />
                     ))}
                 </div>

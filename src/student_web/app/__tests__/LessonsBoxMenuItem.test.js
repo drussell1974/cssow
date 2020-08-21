@@ -11,6 +11,8 @@ let lesson = {
     summary: "In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus",
     image_url: "images/pic01.jpg",
     url: "https://youtu.be/s6zR2T9vn2a",
+    number_of_learning_objectives:5,
+    number_of_resources:2
 }
 
 describe ('LessonsBoxMenuItem', () => {
@@ -81,7 +83,7 @@ describe ('LessonsBoxMenuItem', () => {
     it('has a view button', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem data={lesson} typeButtonText='View'/>
+            <LessonsBoxMenuItem data={lesson} typeButtonText='View' typeButtonClass="button style2 fit" />
             </MemoryRouter>
             );
 

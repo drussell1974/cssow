@@ -45,7 +45,7 @@ class LessonPathwayObjectivesViewSet(APIView):
         raise DeprecationWarning("verify usage")
     
         ''' get the pathway objectives '''
-        pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words)
+        pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words, auth_user = auth_user_id(request))
         should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id)
 
         return JsonResponse({
@@ -59,8 +59,8 @@ class LessonPathwayKs123ViewSet(APIView):
 
         raise DeprecationWarning("Not referenced. Confirm usage")
 
-        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id)
-        should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id)
+        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id, auth_user=auth_user_id(request))
+        should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id, auth_user=auth_user_id(request))
 
         ks123pathway = []
         for item in data:

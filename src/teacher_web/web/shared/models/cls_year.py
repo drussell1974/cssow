@@ -22,8 +22,8 @@ class YearModel(models.Model):
 
 
     @staticmethod
-    def get_options(db, key_stage_id):
-        rows = YearDataAccess.get_options(db, key_stage_id)
+    def get_options(db, key_stage_id, auth_user):
+        rows = YearDataAccess.get_options(db, key_stage_id, auth_user)
         data = []
         for row in rows:
             model = YearModel(row[0], row[1])
@@ -34,10 +34,13 @@ class YearModel(models.Model):
 class YearDataAccess:
 
     @staticmethod
-    def get_options(db, key_stage_id):
+    def get_options(db, key_stage_id, auth_user):
         helper = ExecHelper()
 
-        str_select = "SELECT id, name FROM sow_year WHERE key_stage_id = {key_stage_id};".format(key_stage_id=int(key_stage_id))
+        str_select = "year__get_options"
+        params = (key_stage_id, auth_user)
+
         rows = []
-        rows = helper.execSql(db, str_select, rows)
+        rows = helper.select(db, str_select, params, rows)
+
         return rows

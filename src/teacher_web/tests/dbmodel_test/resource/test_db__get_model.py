@@ -20,37 +20,38 @@ class test_db__get_model(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_model(self.fake_db, 4)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 99, lesson_id=34, scheme_of_work_id=874, auth_user=1)
+            actual_results = get_model(self.fake_db, 99, lesson_id=34, scheme_of_work_id=874, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT res.id as id, res.title as title, res.publisher as publisher, res.type_id as type_id, res_typ.name as resource_type_name, res_typ.task_icon as task_icon, res.md_document_name as md_document_name,  res.page_notes as page_notes,  res.url as page_uri,  res.lesson_id as lesson_id,  res.created as created,  res.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  res.published as published FROM sow_resource AS res  INNER JOIN sow_lesson as les ON les.id = res.lesson_id  INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id  LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id  LEFT JOIN auth_user AS user ON user.id = res.created_by WHERE res.id = 99  AND (res.published = 1 OR res.created_by = 1);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson_resource__get'
+                , (99, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertIsNone(actual_results)
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         """expected_result = [(
             321,"Understanding numbering systems",1,5,"Computer Science",
@@ -74,17 +75,18 @@ class test_db__get_model(TestCase):
             1
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 321, lesson_id=34, scheme_of_work_id=874, auth_user=1)
+            actual_results = get_model(self.fake_db, 321, lesson_id=34, scheme_of_work_id=874, auth_user=6079)
 
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT res.id as id, res.title as title, res.publisher as publisher, res.type_id as type_id, res_typ.name as resource_type_name, res_typ.task_icon as task_icon, res.md_document_name as md_document_name,  res.page_notes as page_notes,  res.url as page_uri,  res.lesson_id as lesson_id,  res.created as created,  res.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  res.published as published FROM sow_resource AS res  INNER JOIN sow_lesson as les ON les.id = res.lesson_id  INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id  LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id  LEFT JOIN auth_user AS user ON user.id = res.created_by WHERE res.id = 321  AND (res.published = 1 OR res.created_by = 1);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson_resource__get"
+                , (321, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
 
             self.assertEqual(321, actual_results.id)

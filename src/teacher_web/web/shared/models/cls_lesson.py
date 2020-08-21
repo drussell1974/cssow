@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty
+from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from .core.log import handle_log_info, handle_log_error
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -15,14 +15,15 @@ from .cls_ks123pathway import KS123PathwayModel
 class LessonModel (BaseModel):
     class Meta:
         permissions = [
-            ('view_whiteboard_lessonmodel', 'Can view whiteboard for this Lesson'),
-            ('view_lessonplan_lessonmodel', 'Can View lesson plan for this Lesson')
+            ('view_whiteboard_lessonmodel', 'Can view whiteboard for this Lesson')
         ]
         
     title = ""
     summary = ""
     order_of_delivery_id = 0
     scheme_of_work_id = 0
+    content_id = 0
+    content_description = ""
     topic_id = None
     year_id = None
     key_stage_id = None
@@ -31,15 +32,18 @@ class LessonModel (BaseModel):
     key_words_str = []  
     resources = []
     learning_objectives = []
-    number_of_resource = 0
+    number_of_resources = 0
+    number_of_learning_objectives = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
         self.scheme_of_work_name = scheme_of_work_name
+        self.content_id = int(content_id)
+        self.content_description = content_description
         self.topic_id = try_int(topic_id, return_value=0)
         self.topic_name = topic_name
         self.parent_topic_id = None if parent_topic_id is None else int(parent_topic_id)
@@ -78,6 +82,7 @@ class LessonModel (BaseModel):
             self.summary = keypairs["summary"]
             self.order_of_delivery_id = int(keypairs["order_of_delivery_id"])
             self.scheme_of_work_id = int(keypairs["scheme_of_work_id"])
+            self.content_id = int(keypairs["content_id"])
             self.topic_id = int(keypairs["topic_id"])
             self.key_stage_id = int(keypairs["key_stage_id"])
             self.year_id = int(keypairs["year_id"])
@@ -125,12 +130,17 @@ class LessonModel (BaseModel):
 
         # Validate scheme_of_work_id
         if self.scheme_of_work_id is None or self.scheme_of_work_id < 1 or self.scheme_of_work_id > 9999:
-            self.validation_errors["scheme_of_work_id"] = "{} is not a valid selection for scheme of work".format(self.order_of_delivery_id)
+            self.validation_errors["scheme_of_work_id"] = "{} is not a valid selection for lesson".format(self.scheme_of_work_id)
+            self.is_valid = False
+
+        # Validate content_id
+        if self.content_id is None or self.content_id < 1 or self.content_id > 99999:
+            self.validation_errors["content_id"] = "{} is not a valid selection for lesson".format(self.content_id)
             self.is_valid = False
 
         # Validate topic_id
         if self.topic_id is None or self.topic_id < 1 or self.topic_id > 9999:
-            self.validation_errors["topic_id"] = "{} is not a valid selection for scheme of work".format(self.order_of_delivery_id)
+            self.validation_errors["topic_id"] = "{} is not a valid selection for lesson".format(self.topic_id)
             self.is_valid = False
 
         # Validate key_stage_id
@@ -191,7 +201,7 @@ class LessonModel (BaseModel):
         data = []
         for row in rows:
             model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
-            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id)
+            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
             data.append(model)
         return data
 
@@ -207,20 +217,23 @@ class LessonModel (BaseModel):
                 order_of_delivery_id=row[2],
                 scheme_of_work_id=row[3],
                 scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                summary = row[11],
-                created=row[12],
-                created_by_id=row[13],
-                created_by_name=row[14])
-            model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                summary = row[13],
+                created=row[14],
+                created_by_id=row[15],
+                created_by_name=row[16],
+                published=row[17])
+            model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
-            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id)
+            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id, auth_user)
             #248 Mark instance from database
             model.on_fetched_from_db()
         return model
@@ -237,32 +250,34 @@ class LessonModel (BaseModel):
                 order_of_delivery_id=row[2],
                 scheme_of_work_id=row[3],
                 scheme_of_work_name=row[4],
-                topic_id=row[5],
-                topic_name=row[6],
-                parent_topic_id=row[7],
-                parent_topic_name=row[8],
-                key_stage_id=row[9],
-                year_id=row[10],
-                year_name=row[11],
-                summary=row[12],
-                created=row[13],
-                created_by_id=row[14],
-                created_by_name=row[15],
-                published = row[16]
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                year_name=row[13],
+                summary=row[14],
+                created=row[15],
+                created_by_id=row[16],
+                created_by_name=row[17],
+                published = row[18]
             )
             
             ' get the key words from the learning objectives '
-            model.key_words = LessonModel.get_all_keywords(db, lesson_id = model.id)
+            model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
-            model.number_of_learning_objective = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
-            ' get learning objectives for this lesson '
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+            ' get number of learning objectives for this lesson '
+            model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
             ' get number of resources for this lesson '
-            model.number_of_resource = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
             ' get related topics '
-            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id)
+            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
             ' get ks123 pathways '
-            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id)
+            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id, auth_user)
             
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
@@ -270,8 +285,8 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_all_keywords(db, lesson_id):
-        rows = LessonDataAccess.get_all_keywords(db, lesson_id)
+    def get_all_keywords(db, lesson_id, auth_user):
+        rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
@@ -279,14 +294,14 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_ks123_pathway_objective_ids(db, lesson_id):
-        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id)
+    def get_ks123_pathway_objective_ids(db, lesson_id, auth_user):
+        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id, auth_user)
         data = []
         for row in rows:
             data.append(try_int(row[0]))
         return data
 
-
+    '''
     @staticmethod
     def get_key_words(db, lesson_id):
         rows = LessonDataAccess.get_key_words(db, lesson_id)
@@ -294,11 +309,11 @@ class LessonModel (BaseModel):
         for id, name in rows:
             to_dict[id] = name
         return to_dict
-
+    '''
 
     @staticmethod
-    def get_related_topic_ids(db, lesson_id, parent_topic_id):
-        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id)
+    def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
+        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user)
         serializable_list = []
         for row in rows:
             serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
@@ -306,14 +321,15 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
-        rows = LessonDataAccess.get_number_of_learning_objectives(db, learning_epsiode_id, auth_user)
-        return try_int(rows)
+    def get_number_of_learning_objectives(db, lesson_id, auth_user):
+        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user)
+        
+        return rows[0][0]
 
     
     @staticmethod
-    def get_pathway_objective_ids(db, lesson_id):
-        rows = LessonDataAccess.get_pathway_objective_ids(db, lesson_id)
+    def get_pathway_objective_ids(db, lesson_id, auth_user):
+        rows = LessonDataAccess.get_pathway_objective_ids(db, lesson_id, auth_user)
         data = []
         for row in rows:
             data.append(int(row[0]))
@@ -325,11 +341,11 @@ class LessonModel (BaseModel):
         """ Save Lesson """
         try:     
             if model.is_new() == True:
-                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user)
+                model = LessonDataAccess._insert(db, model, published, auth_user=auth_user)
             elif published == 2:
                 model = LessonDataAccess._delete(db, auth_user, model)
             else:
-                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user)
+                model = LessonDataAccess._update(db, model, published, auth_user=auth_user)
             return model
         except:
             handle_log_error(db, "error saving lesson")
@@ -357,518 +373,484 @@ class LessonDataAccess:
 
     @staticmethod
     def get_model(db, id_, scheme_of_work_id, auth_user, resource_type_id = 0):
+        """
+        get lesson for scheme of work
+
+        :param db:database context
+        :param id_: the lesson identifier
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the lesson
+        """
+        
         execHelper = ExecHelper()
-
-        select_sql = "SELECT "\
-                    " le.id as id,"\
-                    " le.title as title," \
-                    " le.order_of_delivery_id as order_of_delivery_id,"\
-                    " le.scheme_of_work_id as scheme_of_work_id,"\
-                    " sow.name as scheme_of_work_name,"\
-                    " top.id as topic_id,"\
-                    " top.name as topic_name,"\
-                    " pnt_top.id as parent_topic_id,"\
-                    " pnt_top.name as parent_topic_name,"\
-                    " sow.key_stage_id as key_stage_id,"\
-                    " yr.id as year_id,"\
-                    " le.summary as summary,"\
-                    " le.created as created,"\
-                    " le.created_by as created_by_id,"\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name"\
-                    " FROM sow_lesson as le"\
-                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
-                    " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
-                    " INNER JOIN sow_topic as top ON top.id = le.topic_id"\
-                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id"\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by"\
-                    " WHERE le.id = {lesson_id} AND le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user});"
-        select_sql = select_sql.format(lesson_id=int(id_), scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
-
+        select_sql = "lesson__get"
+        params = (id_,scheme_of_work_id,auth_user)
+        
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        rows = execHelper.select(db, select_sql, params, rows)
+        
         return rows
 
 
     @staticmethod
     def get_all(db, scheme_of_work_id, auth_user):
+        """
+        get lessons for the scheme of work
+
+        :param db:database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :return: list of lessons for the scheme of work
+        """
 
         execHelper = ExecHelper()
-            
-        select_sql = "SELECT "\
-                    " le.id as id," \
-                    " le.title as title,"\
-                    " le.order_of_delivery_id as order_of_delivery_id,"\
-                    " le.scheme_of_work_id as scheme_of_work_id,"\
-                    " sow.name as scheme_of_work_name,"\
-                    " top.id as topic_id," \
-                    " top.name as topic_name," \
-                    " pnt_top.id as parent_topic_id,"\
-                    " pnt_top.name as parent_topic_name,"\
-                    " sow.key_stage_id as key_stage_id," \
-                    " yr.id as year_id," \
-                    " yr.name as year_name,"\
-                    " le.summary as summary,"\
-                    " le.created as created,"\
-                    " le.created_by as created_by_id,"\
-                    " CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name," \
-                    " le.published as published"\
-                    " FROM sow_lesson as le "\
-                    " INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id" \
-                    " INNER JOIN sow_year as yr ON yr.id = le.year_id"\
-                    " LEFT JOIN sow_topic as top ON top.id = le.topic_id "\
-                    " LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id "\
-                    " LEFT JOIN auth_user as user ON user.id = sow.created_by "\
-                    " WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user})" \
-                    " ORDER BY le.year_id, le.order_of_delivery_id;"
-        select_sql = select_sql.format(scheme_of_work_id=int(scheme_of_work_id), auth_user=to_db_null(auth_user))
 
-        rows = []
+        select_sql = "lesson__get_all"
+        params = (scheme_of_work_id, auth_user); 
 
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        rows = []    
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
         return rows
 
 
     @staticmethod
-    def get_all_keywords(db, lesson_id):
+    def get_all_keywords(db, lesson_id, auth_user):
         """
         Get a full list of terms and definitions
+
         :param db: database context
-        :lesson_id: unique identifier for the lesson
+        :lesson_id: the lesson identifier
         :return: list of terms and defintion
         """
-        execHelper = ExecHelper()
-
-        select_sql =    "SELECT kw.id as id, name as term, definition as definition " \
-                        "FROM sow_lesson__has__key_words lkw " \
-                        "INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id " \
-                        "WHERE lkw.lesson_id = {} AND published = 1;".format(lesson_id)
-        rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
-        return rows
-
-
-    @staticmethod
-    def get_key_words(db, lesson_id):
-        """
-        Get the keywords for the lesson
-        :param db: database context
-        :param lesson_id:
-        :return: serialized keywords
-        """
-        BaseModel.depreciation_notice()
 
         execHelper = ExecHelper()
-        
-        str_select = " SELECT kw.id as id, kw.name as name" \
-                    " FROM sow_key_word as kw"\
-                    " INNER JOIN sow_lesson__has__key_words as lkw ON kw.id = lkw.key_word_id" \
-                    " WHERE lesson_id = {lesson_id};".format(lesson_id=lesson_id)
+
+        select_sql = "lesson__get_all_keywords"
+        params = (lesson_id, auth_user)
+
         rows = []
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
         return rows
 
-
-    @staticmethod
-    def get_all_objectives(db, id, auth_user):
-        
-        raise DeprecationWarning("Not referenced. Confirm usage")
-
-        return LearningObjectiveModel.get_all(db, lesson_id=id, auth_user=auth_user)
-    
     
     @staticmethod
-    def get_pathway_objective_ids(db, lesson_id):
+    def get_pathway_objective_ids(db, lesson_id, auth_user):
         """
         Get the learning objectives ids for the lesson
-        :param db: database context
-        :param lesson_id:
+
+        :param db: the database context
+        :param lesson_id: the lesson identifier
         :return: serialized learning objective ids
         """
+
         execHelper = ExecHelper()
         
 
-        str_select = " SELECT" \
-                    " learning_objective_id"\
-                    " FROM sow_lesson__has__pathway" \
-                    " WHERE lesson_id = {lesson_id};"
-
-        str_select = str_select.format(lesson_id=lesson_id)
+        str_select = "lesson__get_pathway_objective_ids"
+        params = (lesson_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+
         return rows
 
     
     @staticmethod
-    def get_ks123_pathway_objective_ids(db, lesson_id):
+    def get_ks123_pathway_objective_ids(db, lesson_id, auth_user):
         """
         Get the ks123 pathways for the lesson
-        :param db: database context
+
+        :param db: the database context
         :param lesson_id:
         :return: serialized ks123 pathway ids
         """
-        execHelper = ExecHelper()
 
-        str_select = " SELECT" \
-                    " ks123_pathway_id"\
-                    " FROM sow_lesson__has__ks123_pathway" \
-                    " WHERE lesson_id = {lesson_id};"
-        str_select = str_select.format(lesson_id=lesson_id)
+        execHelper = ExecHelper()
+        
+
+        str_select = "lesson__get_ks123_pathway_objective_ids"
+        params = (lesson_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, str_select, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+
         return rows
 
     
     @staticmethod
-    def get_number_of_learning_objectives(db, learning_epsiode_id, auth_user):
+    def get_number_of_learning_objectives(db, lesson_id, auth_user):
         """
         get the number of learning objective for the lessons
-        :param db: database context
-        :param learning_epsiode_id:
-        :param auth_user:
-        :return:
+
+        :param db: the database context
+        :param lesson_id: the lesson identifier
+        :param auth_user: the user executing the command
+        :return: the number of learning objectives for the lesson
         """
+
         execHelper = ExecHelper()
+
+        select_sql = "lesson__get_number_of_learning_objectives"
+        params = (lesson_id, auth_user)
         
-
-        select_sql = "SELECT "\
-                    " id"\
-                    " FROM sow_learning_objective__has__lesson"\
-                    " WHERE lesson_id = {lesson_id};"
-
-        select_sql = select_sql.format(lesson_id=learning_epsiode_id, auth_user=to_db_null(auth_user))
-
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
-        return len(rows)
+        return rows
 
 
     @staticmethod
-    def get_related_topic_ids(db, lesson_id, parent_topic_id):
+    def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
         """
         gets the related topic ids for the lesson and whether they are selected or should be disabled
+
         :param db: the database context
-        :param lesson_id:
-        :param parent_topic_id:
-        :return: all topics and linked
+        :param lesson_id: the lesson identifier
+        :param parent_topic_id: the top level topic identifier
+        :param auth_user: the user executing the command
+        :return: all topics and child topics
         """
+
         execHelper = ExecHelper()
-
-        str_select = " SELECT" \
-                    " top.id as id," \
-                    " top.name as name," \
-                    " letop.topic_id as checked," \
-                    " (SELECT count(topic_id)" \
-                        " FROM sow_learning_objective AS lob" \
-                        " LEFT JOIN" \
-                        " sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id" \
-                        " WHERE" \
-                        " lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled" \
-                    " FROM sow_topic AS top" \
-                    " LEFT JOIN" \
-                    " sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = {lesson_id}" \
-                    " WHERE top.parent_id = {parent_topic_id};"
-
-        str_select = str_select.format(lesson_id=lesson_id, parent_topic_id=parent_topic_id)
+        
+        str_select = "lesson__get_related_topic_ids"
+        params = (lesson_id, parent_topic_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, str_select, rows, handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+        
         return rows
 
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
+        """
+        get a list lessons
 
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: light-weight list of lessons for the scheme of work
+        """
         execHelper = ExecHelper()
         
-        str_select = "SELECT le.id as id," \
-                    " le.title as title," \
-                    " le.order_of_delivery_id as order_of_delivery_id," \
-                    " top.id as topic_id," \
-                    " top.name as name," \
-                    " yr.id as year_id," \
-                    " yr.name as year_name " \
-                    "FROM sow_lesson as le" \
-                    " INNER JOIN sow_topic as top ON top.id = le.topic_id" \
-                    " INNER JOIN sow_year as yr ON yr.id = le.year_id  " \
-                    "WHERE le.scheme_of_work_id = {scheme_of_work_id} AND (le.published = 1 OR le.created_by = {auth_user}) ORDER BY le.year_id, le.order_of_delivery_id;"
-    
+        str_select = "lesson__get_options"
 
-        str_select = str_select.format(scheme_of_work_id=scheme_of_work_id, auth_user=to_db_null(auth_user))
+        params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, str_select, rows)
+        rows = execHelper.select(db, str_select, params, rows)
         
         return rows
 
 
     @staticmethod
-    def _update(db, model, published, auth_user_id):
-        """ updates the sow_lesson and sow_lesson__has__topics """
+    def _update(db, model, published, auth_user):
+        """ 
+        updates the sow_lesson and related data
+
+        :param db: the database context
+        :param model: the lesson model
+        :param published: the published status id
+        :param auth_user: the user executing the command
+        :return: the updated model
+        """
 
         execHelper = ExecHelper()
         
         # 1. Update the lesson
+        str_update = "lesson__update"
+        params = (
+            model.id,
+            model.title,
+            model.summary,
+            model.order_of_delivery_id,
+            model.scheme_of_work_id,
+            model.content_id,
+            model.topic_id,
+            model.year_id,
+            published,
+            auth_user
+        )
 
-        str_update = "UPDATE sow_lesson SET title = '{title}', order_of_delivery_id = {order_of_delivery_id}, year_id = {year_id}, scheme_of_work_id = {scheme_of_work_id}, topic_id = {topic_id}, summary = '{summary}', published = {published} WHERE id =  {lesson_id};"
-        str_update = str_update.format(
-            title = model.title,
-            order_of_delivery_id=model.order_of_delivery_id,
-            year_id=model.year_id,
-            scheme_of_work_id=model.scheme_of_work_id,
-            topic_id=model.topic_id,
-            summary=to_db_null(model.summary),
-            published=published,
-            lesson_id=model.id)
-        
         rows = []
-        rows = execHelper.execCRUDSql(db, str_update, rows, log_info=handle_log_info)
+        rows = execHelper.update(db, str_update, params, handle_log_info)
 
         # 2. upsert related topics
         
-        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user_id=auth_user_id)
+        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user=auth_user)
 
         # 3. insert pathway objectives
 
-        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id=auth_user_id)
+        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user=auth_user)
 
         # 4. insert pathway ks123
 
-        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id=auth_user_id)
+        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user=auth_user)
 
         # 5. insert key words
 
-        LessonDataAccess._upsert_key_words(db, model, rows, auth_user_id=auth_user_id)
+        LessonDataAccess._upsert_key_words(db, model, rows, auth_user=auth_user)
 
         return model
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user_id):
-        """ inserts the sow_lesson and sow_lesson__has__topics """
+    def _insert(db, model, published, auth_user):
+        """ 
+        inserts the sow_lesson and related data 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param published: the published status id
+        :param auth_user: the user executing the command
+        :return: the model with new identifier
+        """
 
         execHelper = ExecHelper()
 
         # 1. Insert the lesson
 
-        str_insert = "INSERT INTO sow_lesson (title, order_of_delivery_id, year_id, scheme_of_work_id, topic_id, summary, created, created_by, published) VALUES ('{title}', {order_of_delivery_id}, {year_id}, {scheme_of_work_id}, {topic_id}, '{summary}', '{created}', {created_by}, {published});SELECT LAST_INSERT_ID();"
-        str_insert = str_insert.format(
-            title = model.title,
-            order_of_delivery_id=model.order_of_delivery_id,
-            year_id=model.year_id,
-            scheme_of_work_id=model.scheme_of_work_id,
-            topic_id=model.topic_id,
-            summary=to_db_null(model.summary),
-            created=model.created,
-            created_by=model.created_by_id,
-            published=published)
-        
-        rows = []
-        result = execHelper.execCRUDSql(db, str_insert, rows, log_info=handle_log_info)
-        
-        model.id = result[1]
+        str_insert = "lesson__insert"
+        params = (
+            model.id,
+            model.title,
+            model.summary,
+            model.order_of_delivery_id,
+            model.scheme_of_work_id,
+            model.content_id,
+            model.topic_id,
+            model.year_id,
+            published,
+            model.created_by_id,
+            model.created,
+        )
+    
 
-        #for row in rows:
-        #    model.id = int(row[0])
+        rows = []
+        result = execHelper.insert(db, str_insert, params, handle_log_info)
+    
+        model.id = result[0]
 
         # 2. insert related topics
 
-        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user_id)
+        LessonDataAccess._upsert_related_topic_ids(db, model, rows, auth_user)
 
         # 3. insert pathway objectives
 
-        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id)
+        LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user)
 
         # 4. insert pathway ks123
 
-        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id)
+        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user)
 
         # 5. insert key words
 
-        LessonDataAccess._upsert_key_words(db, model, rows, auth_user_id)
+        LessonDataAccess._upsert_key_words(db, model, rows, auth_user)
 
         # 6. insert objectives
         if model.is_copy():
-            LessonDataAccess._copy_objective_ids(db, model, rows, auth_user_id)
+            LessonDataAccess._copy_objective_ids(db, model, rows, auth_user)
 
         return model
 
 
     @staticmethod
-    def _delete(db, auth_user_id, model):
-        """ Delete Lesson """
+    def _delete(db, auth_user, model):
+        """ 
+        Delete Lesson 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param auth_user: the user executing the command
+        :return: the deleted model
+        """
+        
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_lesson WHERE id = {lesson_id} AND published IN (0,2);"
-        str_delete = str_delete.format(lesson_id=model.id)
+        str_delete = "lesson__delete"
+        params = (model.id, auth_user)
 
-        rval = []
-        rval = execHelper.execCRUDSql(db, str_delete, rval, log_info=handle_log_info)
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
         return model
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
-        """ Delete all unpublished lessons """
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        """ 
+        Delete all unpublished lessons 
+
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the rows
+        """
 
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_lesson WHERE scheme_of_work_id = {} AND published IN (0,2);".format(scheme_of_work_id)
-            
+        str_delete = "lesson__delete_unpublished"
+        params = (scheme_of_work_id,auth_user)
+        
         rows = []
-        rows = execHelper.execSql(db, str_delete, rows, handle_log_info)
+        rows = execHelper.delete(db, str_delete, params, handle_log_info)
+        
         return rows
 
 
     @staticmethod
-    def _upsert_related_topic_ids(db, model, results, auth_user_id):
-        """ deletes and reinserts sow_lesson__has__topics """
+    def _upsert_related_topic_ids(db, model, results, auth_user):
+        """ 
+        inserts sow_lesson__has__topics if topic_id does not exist in table 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
 
-        # delete existing
-        str_delete = "DELETE FROM sow_lesson__has__topics WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+        str_insert = "lesson__insert_related_topic"
 
-        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-        
-        if len(model.related_topic_ids) > 0:
-            # reinsert
-            str_insert = "INSERT INTO sow_lesson__has__topics (lesson_id, topic_id) VALUES"
-
-            for topic_id in model.related_topic_ids:
-                if topic_id.isdigit():
-                    str_insert = str_insert + "({lesson_id}, {topic_id}),".format(lesson_id=model.id, topic_id=topic_id)
-
-            ' Ensure insert values have been appended before inserting'
-            if str_insert.endswith("VALUES") == False:
-                str_insert = str_insert.rstrip(",") + ";"
-
-                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        for topic_id in model.related_topic_ids:
+            if topic_id.isdigit():
+                params = (model.id, topic_id, auth_user)
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
         
         return results
 
 
     @staticmethod
-    def _upsert_pathway_objective_ids(db, model, results, auth_user_id):
-        """ deletes and reinserts sow_lesson__has__topics """
+    def _upsert_pathway_objective_ids(db, model, results, auth_user):
+        """ 
+        inserts sow_lesson__has__pathway if learing_objective_id does not exist in table
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
+        
+        str_insert = "lesson__insert_pathway"
 
-        # delete existing
-        str_delete = "DELETE FROM sow_lesson__has__pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
-
-        if model.pathway_objective_ids is not None:
-            # reinsert
-            str_insert = "INSERT INTO sow_lesson__has__pathway (lesson_id, learning_objective_id) VALUES"
-
-            for objective_id in model.pathway_objective_ids:
-                if objective_id.isdigit():
-                    str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id)
-
-            ' Ensure insert values have been appended before inserting'
-            if str_insert.endswith("VALUES") == False:
-                str_insert = str_insert.rstrip(",") + ";"
-
-                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        for learning_objective_id in model.pathway_objective_ids:
+            if learning_objective_id.isdigit():
+                params = (model.id, learning_objective_id, auth_user)
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
         
         return results
 
 
     @staticmethod
-    def _copy_objective_ids(db, model, results, auth_user_id):
-        """ inserts sow_learning_objective__has__lesson """
+    def _copy_objective_ids(db, model, results, auth_user):
+        """ 
+        inserts copy of sow_learning_objective__has__lesson from existing lesson 
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
         
 
-        # delete existing
-        str_select = "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = {id};".format(id=model.orig_id)
+        str_insert = "lesson__copy_learning_objectives"
+        params = ( model.id, model.orig_id, auth_user)
 
-        objective_ids = []
-        objective_ids = execHelper.execSql(db, str_select, objective_ids, log_info=handle_log_info)
-
-        if len(objective_ids) > 0:
-            # reinsert
-            str_insert = "INSERT INTO sow_learning_objective__has__lesson (lesson_id, learning_objective_id) VALUES"
-
-            for objective_id in objective_ids:
-                str_insert = str_insert + "({lesson_id}, {learning_objective_id}),".format(lesson_id=model.id, learning_objective_id=objective_id[0])
-
-            ' Ensure insert values have been appended before inserting'
-            if str_insert.endswith("VALUES") == False:
-                str_insert = str_insert.rstrip(",") + ";"
-
-                execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
+        execHelper.insert(db, str_insert, params, handle_log_info)
         
         return results
 
 
     @staticmethod
-    def _upsert_pathway_ks123_ids(db, model, results, auth_user_id):
-        """ deletes and reinserts sow_lesson__has__topics """
+    def _upsert_pathway_ks123_ids(db, model, results, auth_user):
+        """ 
+        inserts sow_lesson__has__ks123pathway if ks123_pathway_id does not exist in table
+        """
 
         execHelper = ExecHelper()
-
-        # delete existing
-        str_delete = "DELETE FROM sow_lesson__has__ks123_pathway WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
-
-        results = execHelper.execCRUDSql(db, str_delete, results, log_info=handle_log_info)
         
-        if len(model.pathway_ks123_ids) > 0:
-            # reinsert
-            str_insert = "INSERT INTO sow_lesson__has__ks123_pathway (lesson_id, ks123_pathway_id) VALUES"
+        str_insert = "lesson__insert_ks123_pathway"
 
-            for objective_id in model.pathway_ks123_ids:
-                if objective_id.isdigit():
-                    str_insert = str_insert + "({lesson_id}, {ks123_pathway_id}),".format(lesson_id=model.id, ks123_pathway_id=objective_id)
-
-            ' Ensure insert values have been appended before inserting'
-            if str_insert.endswith("VALUES") == False:
-                str_insert = str_insert.rstrip(",") + ";"
-                
-                results = execHelper.execCRUDSql(db, str_insert, results, log_info=handle_log_info)
-
+        for pathway_id in model.pathway_ks123_ids:
+            if pathway_id.isdigit():
+                params = (model.id, pathway_id, auth_user)
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
+        
         return results
 
 
     @staticmethod
-    def _upsert_key_words(db, model, results, auth_user_id):
-        """ deletes and reinserts sow_lesson__has__keywords """
+    def _upsert_key_words(db, model, results, auth_user):
+        """ 
+        inserts sow_lesson__has__keywords if key_word_id does not exist in table
+
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
 
         execHelper = ExecHelper()
-        
-        # statement to delete existing
-        str_sqlmulti = "DELETE FROM sow_lesson__has__key_words WHERE lesson_id = {lesson_id};".format(lesson_id=model.id)
+        execHelper.begin(db, TRANSACTION_STATE.OPEN)
 
-        if model.key_words is not None:
-            # statements to insert new
-            str_insert = ""
+        try:
+            str_delete = "lesson__delete_keywords"
+            params = (model.id, auth_user)
+
+            #print("LessonDataAccess: deleting keywords...")
+            results = execHelper.delete(db, str_delete, params, handle_log_info)
+            
+
             for key_word in model.key_words:
-                str_insert = str_insert + "INSERT INTO sow_lesson__has__key_words (lesson_id, key_word_id) VALUES ({lesson_id}, {key_word_id});".format(lesson_id=model.id, key_word_id=key_word.id)        
-
-            str_sqlmulti = str_sqlmulti + str_insert
-
-        # execute as a transaction
-        results = execHelper.execCRUDSql(db, str_sqlmulti, results, log_info=handle_log_info)
-        
+                str_insert = "lesson__insert_keywords"
+                
+                params = (key_word.id, model.id, auth_user)
+                #print("LessonDataAccess: insert keyword {} {}".format(str_insert,params))
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
+                
+            #print("execHelper: raise exception")
+            
+            execHelper.end_transaction()
+            execHelper.commit()
+            
+        except:
+            #("execHelper: catch exception!")
+            execHelper.rollback()
+            raise
+        finally:
+            execHelper.end()
+            
         return results
 
 
     @staticmethod
-    def publish(db, auth_user_id, id_):
+    def publish(db, id_, auth_user):
+        """ 
+        set the lesson to published state
 
+        :param db: the database context
+        :param id_: the lesson identifier
+        :param auth_user: the user executing the command
+        :return: updated rows
+        """
         execHelper = ExecHelper()
 
-        str_publish = "UPDATE sow_lesson SET published = {published} WHERE id = {lesson_id};"
-        str_publish = str_publish.format(published=1, lesson_id=id_)
+        str_publish = "lesson__publish"
+        params = (id_, 1, auth_user)
         
         rval = []
-        rval = execHelper.execSql(db, str_publish, rval)
+        rval = execHelper.update(db, str_publish, params, rval)
 
         return rval
 

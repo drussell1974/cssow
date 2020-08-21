@@ -38,6 +38,8 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
 
+        self.wait(s=2)
+        
         ' click no '        
         
         #231: then click the stay button

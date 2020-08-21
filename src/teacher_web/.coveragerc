@@ -3,13 +3,14 @@ source = ./web
 omit =
    */node_modules/*
    web/manage.py
+   web/shared/encrypt.py
+   web/shared/filehandler.py 
    web/web/*
    web/**/views.py
    web/**/apps.py
    *cls_reference*
-   *cls_lessonplan*
 
 [coverage:report]
-fail_under = 95
+fail_under = 92
 show_missing = True
 skip_covered = False

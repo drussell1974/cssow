@@ -35,6 +35,10 @@
 <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
     {% csrf_token %}
    
+    <!-- show error_message -->
+    {% include '_partials/form.viewmodel.alert_message.html' %}
+    <!-- show error_message END -->
+    
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Alphabetic prefix (enter a letter A-Z)")}}</label>

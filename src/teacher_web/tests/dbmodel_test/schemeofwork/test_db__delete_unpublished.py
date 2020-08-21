@@ -26,7 +26,7 @@ class test_db__deleteunpublished(TestCase):
 
         model = SchemeOfWorkModel(0)
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -34,19 +34,17 @@ class test_db__deleteunpublished(TestCase):
                 delete_unpublished(self.fake_db, 1)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
 
-        with patch.object(ExecHelper, 'execSql', return_value=[("5")]):
+        with patch.object(ExecHelper, 'delete', return_value=[("5")]):
             # act
 
             actual_result = delete_unpublished(self.fake_db, auth_user=99)
             
             # assert
-            ExecHelper.execSql.assert_called()
-
-            #ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-            # "UPDATE sow_scheme_of_work SET name = '', description = '', exam_board_id = 0, key_stage_id = 0, published = 1 WHERE id =  1;", 
-            # loghandler)
+            ExecHelper.delete.assert_called_with(self.fake_db,
+                'scheme_of_work__delete_unpublished', (0, 2)
+                , handle_log_info)
 
             self.assertEqual(1, actual_result)

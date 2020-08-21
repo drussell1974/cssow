@@ -18,53 +18,55 @@ class test_db__get_linked_pathway_ks123(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_linked_pathway_ks123(self.fake_db, 87)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_linked_pathway_ks123(self.fake_db, 67)
+            rows = get_linked_pathway_ks123(self.fake_db, 67, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT pw.id as id, pw.objective as objective FROM sow_lesson__has__ks123_pathway as le_pw INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id WHERE le_pw.lesson_id = 67;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_linked_pathway'
+                , (67, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [
             [34, "Morbi sit amet mauris ut ante porttitor interdum."]
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_linked_pathway_ks123(self.fake_db, 236)
+            rows = get_linked_pathway_ks123(self.fake_db, 236, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT pw.id as id, pw.objective as objective FROM sow_lesson__has__ks123_pathway as le_pw INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id WHERE le_pw.lesson_id = 236;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_linked_pathway'
+                , (236, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
 
@@ -72,7 +74,7 @@ class test_db__get_linked_pathway_ks123(TestCase):
             self.assertEqual("Morbi sit amet mauris ut ante porttitor interdum.", rows[0][1])
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [
             [356, "Morbi sit amet mauris ut ante porttitor interdum."],
@@ -80,17 +82,18 @@ class test_db__get_linked_pathway_ks123(TestCase):
             [777, "Sed blandit fringilla dui et vehicula. Donec sagittis."]
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_linked_pathway_ks123(self.fake_db, 403)
+            rows = get_linked_pathway_ks123(self.fake_db, 403, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT pw.id as id, pw.objective as objective FROM sow_lesson__has__ks123_pathway as le_pw INNER JOIN sow_ks123_pathway AS pw ON pw.id = le_pw.ks123_pathway_id WHERE le_pw.lesson_id = 403;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'ks123_pathway__get_linked_pathway'
+                , (403, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(3, len(rows))
 

@@ -10,6 +10,7 @@ from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel
+from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
@@ -34,6 +35,8 @@ def index(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
+    error_message = ""
+    
     #253 check user id
     scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_id(request))
 
@@ -63,6 +66,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
             title = request.POST["title"],
             order_of_delivery_id = request.POST["order_of_delivery_id"],
             scheme_of_work_id = request.POST["scheme_of_work_id"],
+            content_id = request.POST["content_id"],
             topic_id = request.POST["topic_id"],
             related_topic_ids = request.POST["related_topic_ids"],
             key_stage_id= scheme_of_work.key_stage_id,
@@ -76,35 +80,41 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        viewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
-
-        viewmodel.execute(published)
-        model = viewmodel.model
+        modelviewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
+        try:
+            modelviewmodel.execute(published)
+            model = modelviewmodel.model
         
-        if model.is_valid == True:
-            ' save the lesson '            
-            redirect_to_url = ""
 
-            if request.POST["next"] != "None"  and request.POST["next"] != "":
-                redirect_to_url = request.POST["next"]
-                            
-            redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
-            return HttpResponseRedirect(redirect_to_url)
-        else:
-            handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
-            
+            if model.is_valid == True:
+                ' save the lesson '            
+                redirect_to_url = reverse('lesson.index', args=[model.scheme_of_work_id])
+                
+                if request.POST["next"] != "None"  and request.POST["next"] != "":
+                    redirect_to_url = request.POST["next"]
+                
+                return HttpResponseRedirect(redirect_to_url)
+            else:
+                handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
+        
+        except Exception as e:
+            error_message = e
+    
     # render view
     
-    topic_options = TopicModel.get_options(db, lvl=1)
-    key_words_options = KeywordModel.get_options(db)
-    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id)
-    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id)
+    #270 get ContentModel.get_options by scheme_of_work and key_stage_id
+    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_id(request), scheme_of_work.id)
+    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_id(request))
+    key_words_options = KeywordModel.get_options(db, request.user.id)
+    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user = auth_user_id(request))
+    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_id(request))
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
         "is_copy": is_copy,
         "key_stage_id": scheme_of_work.key_stage_id,
+        "content_options": content_options,
         "topic_options": topic_options,
         "selected_topic_id": model.topic_id, 
         "year_options": year_options,
@@ -115,7 +125,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model, alert_message="", error_message=error_message)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -143,22 +153,10 @@ def delete(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    viewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
+    modelviewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
-#TODO: #234 add permission
-@permission_required('cssow.view_lessonplan_lessonmodel', login_url='/accounts/login/')
-def lessonplan(request, scheme_of_work_id, lesson_id):
-    ''' Display the lesson plan '''
-
-    scheme_of_work_name = "" # TODO: get scheme of work name
-    lesson_name = "" # TODO: get lesson name
-
-    view_model = ViewModel(scheme_of_work_name, lesson_name, "lesson plan")
-    
-    return render(request, "lessons/lessonplan.html", view_model.content)
-
 
 #TODO: #234 add permission
 #@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')

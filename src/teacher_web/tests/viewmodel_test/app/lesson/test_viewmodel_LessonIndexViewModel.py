@@ -65,11 +65,10 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     Model.get_all.assert_called()
                     self.assertEqual(0, len(self.viewmodel.model))
 
-                    ui_view = self.viewmodel.view().content
-                    self.assertViewModelContent(ui_view
+                    self.assertViewModelContent(self.viewmodel
                         , ""
-                        , ""
-                        , ""
+                        , "Varum dosctes"
+                        , "Lessons"
                         , {}
                     )
 
@@ -95,11 +94,10 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             Model.get_all.assert_called()
             self.assertEqual(1, len(self.viewmodel.model))
 
-            ui_view = self.viewmodel.view().content
-            self.assertViewModelContent(ui_view
+            self.assertViewModelContent(self.viewmodel
                 , ""
-                , ""
-                , ""
+                , "Varum dosctes"
+                , "Lessons"
                 , {}
             )
 
@@ -126,10 +124,9 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             Model.get_all.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))
 
-            ui_view = self.viewmodel.view().content
-            self.assertViewModelContent(ui_view
+            self.assertViewModelContent(self.viewmodel
                 , ""
-                , ""
-                , ""
+                , "Varum dosctes"
+                , "Lessons"
                 , {}
             )

@@ -20,53 +20,55 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_options(self.fake_db)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [
             (34, "Extended Abstract", 4)
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
 
@@ -75,7 +77,7 @@ class test_db__get_options(TestCase):
             self.assertEqual(4, rows[0].lvl)
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self):
         # arrange
         expected_result = [
             (45, "Prestructural", 1),
@@ -85,17 +87,18 @@ class test_db__get_options(TestCase):
             (999, "Extended Abstract", 5)
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db)
+            rows = get_options(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id, name, lvl FROM sow_solo_taxonomy;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "solotaxonomy__get_options"
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(5, len(rows))
 

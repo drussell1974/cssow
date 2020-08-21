@@ -17,48 +17,50 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 Model.get_options(self.fake_db)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [(123, "Item 1", "Praesent tempus facilisis pharetra. Pellentesque.", 20)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
             
             self.assertEqual(1, len(rows))
@@ -68,23 +70,24 @@ class test_db__get_options(TestCase):
 
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self):
         # arrange
         expected_result = [
             (1, "Item 1","Lorem ipsum dolor sit amet.",5),
             (2,"Item 2","Nulla porttitor quis tortor ac.",8),
             (3, "Item 3","Sed vehicula, quam nec sodales.",97)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             rows = Model.get_options(self.fake_db, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(
+            ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "CALL scheme_of_work__get_options(99)"
+                "scheme_of_work__get_options"
+                , (99,)
                 , [])
 
             self.assertEqual(3, len(rows))

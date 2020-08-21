@@ -17,7 +17,7 @@ class test_cls_lesson__from_json(TestCase):
         self.test = LessonModel()
 
         # act
-        self.test.from_json('{"id": 220,"title": "Types of CPU architecture","summary": "","order_of_delivery_id": 3,"scheme_of_work_id": 11,"topic_id": 1,"year_id": 12,"key_stage_id": 5,"published": 1}')
+        self.test.from_json('{"id": 220,"title": "Types of CPU architecture","summary": "","order_of_delivery_id": 3,"scheme_of_work_id": 11, "content_id":10, "topic_id": 1,"year_id": 12,"key_stage_id": 5,"published": 1}')
 
         # assert
         
@@ -33,7 +33,7 @@ class test_cls_lesson__from_json(TestCase):
         self.test = LessonModel()
 
         # act
-        self.test.from_json('{"id": 220,"title": "","summary": "abcd","order_of_delivery_id": 3,"scheme_of_work_id": 11,"topic_id": 1,"year_id": 12,"key_stage_id": 5,"published": 1}')
+        self.test.from_json('{"id": 220,"title": "","summary": "abcd","order_of_delivery_id": 3,"scheme_of_work_id": 11, "content_id":10, "topic_id": 1,"year_id": 12,"key_stage_id": 5,"published": 1}')
 
         # assert
         self.assertFalse(self.test.is_valid)

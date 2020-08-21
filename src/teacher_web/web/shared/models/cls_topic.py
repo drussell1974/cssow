@@ -27,9 +27,10 @@ class TopicModel(models.Model):
             self.name = sql_safe(self.name)
 
     @staticmethod
-    def get_options(db, lvl, topic_id = 0):
-        rows = TopicDataAccess.get_options(db, lvl, topic_id)
+    def get_options(db, lvl, auth_user, topic_id = 0):
+        rows = TopicDataAccess.get_options(db, lvl, auth_user, topic_id)
         data = []
+        
         for row in rows:
             model = TopicModel(row[0], row[1], row[2], row[3])
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
@@ -40,16 +41,18 @@ class TopicModel(models.Model):
 class TopicDataAccess:
     
     @staticmethod
-    def get_options(db, lvl, topic_id = 0):
+    def get_options(db, lvl, user_auth, topic_id = 0):
         
         execHelper = ExecHelper()
 
-        str_select = "SELECT id, name, created, created_by FROM sow_topic WHERE lvl = {lvl} and parent_id = {topic_id};"
-        str_select = str_select.format(lvl=int(lvl), topic_id=int(topic_id))
+        str_select = "topic__get_options"
+        params = (topic_id, lvl, user_auth)
 
         try:
             rows = []
-            rows = execHelper.execSql(db, str_select, rows, handle_log_info)
+            #271 Stored procedure (get_options)
+            rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+            
             return rows
 
         except Exception as e:

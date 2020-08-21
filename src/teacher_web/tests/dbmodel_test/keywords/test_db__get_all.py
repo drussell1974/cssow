@@ -19,53 +19,55 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_all(self.fake_db)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db)
+            rows = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,) 
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")
             ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db)
+            actual_results = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,) 
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
 
             self.assertEqual(1, len(actual_results))
@@ -75,7 +77,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].definition)
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [
             (1021, "Vestibulum", "nec arcu nec dolor vehicula ornare non."),
@@ -83,17 +85,18 @@ class test_db__get_all(TestCase):
             (1023, "Phasellus", "rutrum lorem a arcu ultrices, id mollis")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, "a")
+            actual_results = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 AND name LIKE '%a%' ORDER BY name;"
-                 , []
-                 , log_info=handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,)
+                , []
+                , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 
@@ -107,23 +110,24 @@ class test_db__get_all(TestCase):
             self.assertEqual("rutrum lorem a arcu ultrices, id mollis", actual_results[2].definition)
 
 
-    def test__should_call_execSql_with_empty_search_term(self):
+    def test__should_call_select__with_empty_search_term(self):
         # arrange
         expected_result = [
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")
             ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, search_term="")
+            actual_results = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 
@@ -132,7 +136,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].definition)
 
 
-    def test__should_call_execSql_with_default_search_term(self):
+    def test__should_call_select__with_default_search_term(self):
         # arrange
         expected_result = [
             (21, "Phasellus", "rutrum lorem a arcu ultrices, id mollis"),
@@ -140,17 +144,18 @@ class test_db__get_all(TestCase):
             (23, "Vestibulum", "nec arcu nec dolor vehicula ornare non.")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db)
+            actual_results = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 
@@ -164,23 +169,24 @@ class test_db__get_all(TestCase):
 
 
 
-    def test__should_call_execSql_with_entered_search_term(self):
+    def test__should_call_select__with_entered_search_term(self):
         # arrange
         expected_result = [
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")
             ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, search_term="Fringilla")
+            actual_results = get_all(self.fake_db, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1 AND name LIKE '%Fringilla%' ORDER BY name;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get_all'
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 

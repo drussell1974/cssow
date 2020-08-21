@@ -17,25 +17,3 @@ class test_cls_keystage__clean_up(TestCase):
 
         # assert
         self.assertEqual("x", self.test.name)
-
-
-    def test_name__escape_sqlterminator(self):
-
-        self.test.name = "x;"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual("x\;", self.test.name)
-
-
-    def test_name__escape_quote(self):
-
-        self.test.name = "'x'"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual('"x"', self.test.name)

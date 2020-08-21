@@ -22,7 +22,7 @@ class test_db__delete(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -30,20 +30,20 @@ class test_db__delete(TestCase):
                 delete(self.fake_db, 99, lesson_id=456)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=Model(102)):
+        with patch.object(ExecHelper, 'delete', return_value=Model(102)):
             # act
 
             actual_result = delete(self.fake_db, 99, lesson_id=102)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
+            ExecHelper.delete.assert_called()
 
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_lesson WHERE id = 102 AND published IN (0,2);"
-             , []
-             , log_info=handle_log_info)
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                'lesson__delete'
+                , (102, 99)
+                , handle_log_info)
             
             self.assertEqual(102, actual_result.id)

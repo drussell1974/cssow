@@ -24,7 +24,7 @@ class test_db__get_model(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -35,17 +35,18 @@ class test_db__get_model(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 22, auth_user=99)
+            actual_results = get_model(self.fake_db, 22, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = 22 AND published = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'keyword__get'
+                , (22, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(0, actual_results.id)
 
@@ -56,17 +57,18 @@ class test_db__get_model(TestCase):
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")
             ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 702, auth_user=99)
+            actual_results = get_model(self.fake_db, 702, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = 702 AND published = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "keyword__get"
+                , (702, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(702, actual_results.id)
             self.assertEqual("Fringilla", actual_results.term),

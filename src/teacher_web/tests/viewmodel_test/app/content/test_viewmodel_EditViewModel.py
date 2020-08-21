@@ -86,10 +86,10 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # assert functions was to return data called
         SchemeOfWorkModel.get_model.assert_called()
 
-        self.assertViewModelContent(viewmodel.view()
+        self.assertViewModelContent(viewmodel
             , ""
-            , ""
-            , ""
+            , "Vivamus venenatis interdum sem."
+            , "New"
             , {}
         )
 
@@ -115,10 +115,10 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # assert functions was to return data called
         Model.get_model.assert_called()
 
-        self.assertViewModelContent(viewmodel.view()
+        self.assertViewModelContent(viewmodel
             , ""
-            , ""
-            , ""
+            , "Vivamus venenatis interdum sem."
+            , "Edit: dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti"
             , {}
         )
 
@@ -208,16 +208,16 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             # assert functions was called
             Model.save.assert_not_called()
     
-            ui_view = viewmodel.view().content
-            self.assertViewModelContent(ui_view
+            self.assertViewModelContent(viewmodel
                 , ""
-                , ""
-                , ""
+                , "Vivamus venenatis interdum sem."
+                , "Edit: Vivamus venenatis interdum sem."
                 , {}
             )
 
             # return invalid model with validation
-            
+            ui_view = viewmodel.view().content
+
             self.assertEqual(23, ui_view["content"]["data"]["scheme_of_work_id"])
             self.assertEqual(67, ui_view["content"]["data"]["content_id"])
             self.assertEqual({'display_name': '', 'id': 12, 'published_state': 'published'}, ui_view["content"]["active_model"])

@@ -21,53 +21,54 @@ class test_db__get_resource_type_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_resource_type_options(self.fake_db, auth_user=1)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options', (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [
             (4345, "Markdown")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options'
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
 
@@ -75,7 +76,7 @@ class test_db__get_resource_type_options(TestCase):
             self.assertEqual("Markdown", rows[0].name)
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self):
         # arrange
         expected_result = [
             (934, "Book"),
@@ -83,17 +84,18 @@ class test_db__get_resource_type_options(TestCase):
             (37, "Video")
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=1)
+            rows = get_resource_type_options(self.fake_db, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT type.id as id, type.name as name FROM sow_resource_type as type WHERE type.published = 1 OR type.created_by = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'resource_type__get_options' 
+                , (6079,)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(3, len(rows))
 

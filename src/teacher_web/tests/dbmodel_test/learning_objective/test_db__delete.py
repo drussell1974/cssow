@@ -26,30 +26,29 @@ class test_db__delete(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
-            # act and assert
+            # act and assert    
             with self.assertRaises(Exception):
                 # act 
                 delete(self.fake_db, 1, model.id)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
         model = Model(101, "")
         
         expected_result = 1
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
             actual_result = delete(self.fake_db, model, 99)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
-
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-             "DELETE FROM sow_learning_objective__has__lesson WHERE learning_objective_id = 101;"
-             , log_info=handle_log_info)
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                "lesson_learning_objective__delete"
+                , (101,99)
+                , handle_log_info)
             
             self.assertEqual(expected_result, actual_result)

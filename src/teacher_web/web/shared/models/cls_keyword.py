@@ -57,7 +57,7 @@ class KeywordModel(BaseModel):
 
         # validate title
         self._validate_required_string("term", self.term, 1, 100)
-        self._validate_regular_expression("term", self.term, r"[^0-9,!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
+        self._validate_regular_expression("term", self.term, r"[^0-9,;!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
 
         # validate page_uri
         self._validate_optional_string("definition", self.definition, 250)
@@ -92,13 +92,13 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db):
-        return KeywordDataAccess.get_options(db)
+    def get_options(db, auth_user):
+        return KeywordDataAccess.get_options(db, auth_user)
 
 
     @staticmethod
-    def get_all(db, search_term = ""):
-        rows = KeywordDataAccess.get_all(db, search_term)
+    def get_all(db, auth_user):
+        rows = KeywordDataAccess.get_all(db, auth_user)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
@@ -118,33 +118,34 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model):
+    def save(db, model, published, auth_user):
         if model.is_new():
-            data = KeywordDataAccess._insert(db, model)
-            model.id = data[1]            
+            data = KeywordDataAccess._insert(db, model, published, auth_user)
+            model.id = data[0]            
             model.published = 2
         else:
-            data = KeywordDataAccess._update(db, model)
+            data = KeywordDataAccess._update(db, model, published, auth_user)
 
         return model
 
 
     @staticmethod
-    def delete(db, id):
-        return KeywordDataAccess.delete(db, id)
+    def delete(db, id, auth_user):
+        return KeywordDataAccess.delete(db, id, auth_user)
 
 
 class KeywordDataAccess:
 
 
     @staticmethod
-    def get_options(db):
+    def get_options(db, auth_user):
         execHelper = ExecHelper()
 
-        select_sql = "SELECT id, name, definition FROM sow_key_word kw WHERE published = 1 ORDER BY name;"
-
+        select_sql = "keyword__get_options"
+        params = (auth_user,)
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows)
+        #271 Stored procedure (get_options)
+        rows = execHelper.select(db, select_sql, params, rows)
         
         data = []
         for row in rows:
@@ -164,17 +165,20 @@ class KeywordDataAccess:
         """
         execHelper = ExecHelper()
 
-        select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE id = {id} AND published = 1;"
-        select_sql = select_sql.format(id=int(id))
+        select_sql = "keyword__get"
+    
+        params = (id, auth_user)
 
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+
+        #271 Stored procedure
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
 
     @staticmethod
-    def get_all(db, search_term = ""):
+    def get_all(db, auth_user):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -182,15 +186,14 @@ class KeywordDataAccess:
         """
         execHelper = ExecHelper()
 
-        select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw WHERE published = 1"
+        select_sql = "keyword__get_all"
 
-        if len(search_term) > 0:
-            select_sql = select_sql + " AND name LIKE '%{search_term}%'".format(search_term=sql_safe(search_term))
-
-        select_sql = select_sql + " ORDER BY name;"
+        params = (auth_user,)
         
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        
+        #TODO: 271 Stored procedure
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
@@ -209,58 +212,66 @@ class KeywordDataAccess:
             return []
     
 
-        select_sql = "SELECT id as id, name as term, definition as definition FROM sow_key_word kw"
+        select_sql = "keyword__get_by_term"
+        params = ("", auth_user)
 
-        ' remove whitespace and use upper'
+        ' remove whitespace and use lower'
         key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
         if len(key_words_list) > 0:
-            select_sql = select_sql + " WHERE LOWER(name) IN ('{key_words}') AND published = 1".format(key_words="','".join(sql_safe(key_words_list).split(',')))
-
-        select_sql = select_sql + " ORDER BY name;"
-
+            params = ("','".join(sql_safe(key_words_list).split(',')), auth_user)
+    
+    
         rows = []
-        rows = execHelper.execSql(db, select_sql, rows, log_info=handle_log_info)
+        #271 Stored procedure
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
 
     @staticmethod
-    def _insert(db, model):
+    def _insert(db, model, published, auth_user):
         """ Inserts key word and definition """
 
         execHelper = ExecHelper()
 
-        rows = []
-        
-        rows, new_id = execHelper.execCRUDSql(db, 
-            "INSERT INTO sow_key_word (name, definition) VALUES ('{key_word}', '{definition}');".format(key_word=sql_safe(model.term), definition=sql_safe(model.definition))
-            , result=rows
-            , log_info=handle_log_info
+        stored_procedure = "keyword__insert"
+
+        params = (model.id, model.term, model.definition, auth_user, published)    
+    
+        new_id = execHelper.insert(db,
+            stored_procedure
+            , params
+            , handle_log_info
         )
         
-        return rows, new_id
+        return new_id
 
 
     @staticmethod
-    def _update(db, model):
+    def _update(db, model, published, auth_user):
         """ Inserts key word and definition """
         
         execHelper = ExecHelper()
         
-        str_update = "UPDATE sow_key_word SET name = '{name}', definition = '{definition}' WHERE id = {id};".format(name=model.term, definition=model.definition, id=model.id)
-
-        execHelper.execCRUDSql(db, str_update, log_info=handle_log_info)
+        str_update = "keyword__update"
+        
+        params = (model.id, model.term, model.definition, model.published, auth_user)
+   
+        execHelper.update(db, str_update, params, handle_log_info)
 
         return model
  
 
     @staticmethod
-    def delete(db, id):
+    def delete(db, id, auth_user):
         """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
-        str_delete = "DELETE FROM sow_key_word WHERE id = '{id}'".format(id=int(id))
-        rval = execHelper.execCRUDSql(db, str_delete, log_info=handle_log_info)
+        str_delete = "keyword__delete"
+            
+        params = (id, auth_user)
+
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

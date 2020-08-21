@@ -26,30 +26,31 @@ class test_db__publish(TestCase):
 
         model = LessonModel(0, "")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                publish(self.fake_db, 1, 123)
+                publish(self.fake_db, 1, 123, 99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__update(self):
          # arrange
         model = LessonModel(123, "CPU, RAM and ")
         
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = publish(self.fake_db, 1, 56)
+            actual_result = publish(self.fake_db, 56, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                "UPDATE sow_lesson SET published = 1 WHERE id = 56;"
-            , []
+            ExecHelper.update.assert_called_with(self.fake_db, 
+               'lesson__publish'
+               , (56, 1, 99)
+               , []
             )
             
             self.assertEqual(len(expected_result), len(actual_result))

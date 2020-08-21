@@ -7,7 +7,7 @@ CREATE TABLE sow_scheme_of_work__has__teacher
     FOREIGN KEY (scheme_of_work_id) REFERENCES sow_scheme_of_work (id) ON DELETE CASCADE,
     FOREIGN KEY (auth_user_id) REFERENCES auth_user (id) ON DELETE CASCADE
 );
-
+    
 -- add all users as teachers
 
 INSERT INTO sow_scheme_of_work__has__teacher (scheme_of_work_id, auth_user_id)

@@ -11,6 +11,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         self.test_path = '/schemesofwork/{}/lessons/{}/copy'.format(self.test_scheme_of_work_id, self.test_lesson_id)
         self.do_log_in(self.root_uri + self.test_path)
 
+        self.wait(s=2)
 
     def tearDown(self):
         # tear down

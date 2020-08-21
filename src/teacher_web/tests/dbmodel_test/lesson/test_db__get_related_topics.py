@@ -22,7 +22,7 @@ class test_db__get_related_topics(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -33,14 +33,15 @@ class test_db__get_related_topics(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, "execSql", return_value=expected_result):
+        with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
 
-            rows = get_related_topic_ids(self.fake_db, 0, 2)
+            rows = get_related_topic_ids(self.fake_db, 0, 2, 6079)
 
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                ' SELECT top.id as id, top.name as name, letop.topic_id as checked, (SELECT count(topic_id) FROM sow_learning_objective AS lob LEFT JOIN sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id WHERE lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled FROM sow_topic AS top LEFT JOIN sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = 0 WHERE top.parent_id = 2;'
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'lesson__get_related_topic_ids'
+                , (0, 2, 6079)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -50,16 +51,17 @@ class test_db__get_related_topics(TestCase):
         # arrange
         expected_result = [(2,"Image","x",13)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
-            rows = get_related_topic_ids(self.fake_db, 0, 3)
+            rows = get_related_topic_ids(self.fake_db, 0, 3, 6079)
 
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                ' SELECT top.id as id, top.name as name, letop.topic_id as checked, (SELECT count(topic_id) FROM sow_learning_objective AS lob LEFT JOIN sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id WHERE lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled FROM sow_topic AS top LEFT JOIN sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = 0 WHERE top.parent_id = 3;'
-            , []
-            , handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'lesson__get_related_topic_ids'
+                , (0, 3, 6079)
+                , []
+                , handle_log_info)
 
             self.assertEqual(1, len(rows), "number of rows not as expected")
             ' first item '
@@ -71,13 +73,15 @@ class test_db__get_related_topics(TestCase):
         # arrange
         expected_result = [(58,"Binary","x",24),(2,"Image","x",13),(64,"Sound","x",17)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
-            rows = get_related_topic_ids(self.fake_db, 0, 3)
+            rows = get_related_topic_ids(self.fake_db, 0, 3, 6079)
+
             # assert
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                ' SELECT top.id as id, top.name as name, letop.topic_id as checked, (SELECT count(topic_id) FROM sow_learning_objective AS lob LEFT JOIN sow_learning_objective__has__lesson AS lole ON lole.learning_objective_id = lob.id WHERE lole.lesson_id = letop.lesson_id and lob.topic_id = top.id) as disabled FROM sow_topic AS top LEFT JOIN sow_lesson__has__topics AS letop ON top.id = letop.topic_id and letop.lesson_id = 0 WHERE top.parent_id = 3;'
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'lesson__get_related_topic_ids'
+                , (0, 3, 6079)
                 , []
                 , handle_log_info)
 

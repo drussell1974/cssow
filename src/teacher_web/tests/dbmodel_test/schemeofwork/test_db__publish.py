@@ -24,9 +24,7 @@ class test_db__publish_by_id(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = SchemeOfWorkModel(0)
-
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -34,23 +32,21 @@ class test_db__publish_by_id(TestCase):
                 publish_by_id(self.fake_db, 1, 123)
 
 
-    def test_should_call_execCRUDSql(self):
-         # arrange
-        model = SchemeOfWorkModel(123)
+    def test_should_call_update(self):
+        # arrange
         
-        expected_result = []
+        expected_result = [(1,)]
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
             actual_result = publish_by_id(self.fake_db, 1, 123)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called()
-
-            #ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-            # "UPDATE sow_scheme_of_work SET name = '', description = '', exam_board_id = 0, key_stage_id = 0, publish_by_ided = 1 WHERE id =  1;", 
-            # loghandler)
+            ExecHelper.update.assert_called_with(self.fake_db,
+                "scheme_of_work__publish"
+                , (1, 1, 123)
+                , handle_log_info)
             
-            self.assertEqual(len(expected_result), len(actual_result))
+            self.assertEqual(1, len(actual_result))
 

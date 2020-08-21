@@ -17,49 +17,51 @@ class test_db__get_all_keywords(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_all_keywords(self.fake_db, 21)
+                get_all_keywords(self.fake_db, 21, 6079)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all_keywords(self.fake_db, 67)
+            rows = get_all_keywords(self.fake_db, 67, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT kw.id as id, name as term, definition as definition FROM sow_lesson__has__key_words lkw INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id WHERE lkw.lesson_id = 67 AND published = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_all_keywords'
+                , (67, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'execSql', return_value=[(87,"Fetch Decode Execute", "The process carried out by the CPU")]):
+        with patch.object(ExecHelper, 'select', return_value=[(87,"Fetch Decode Execute", "The process carried out by the CPU")]):
             # act
 
-            actual_results = get_all_keywords(self.fake_db, 87)
+            actual_results = get_all_keywords(self.fake_db, 87, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT kw.id as id, name as term, definition as definition FROM sow_lesson__has__key_words lkw INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id WHERE lkw.lesson_id = 87 AND published = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_all_keywords'
+                , (87, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 
@@ -68,20 +70,21 @@ class test_db__get_all_keywords(TestCase):
             self.assertEqual("The process carried out by the CPU", actual_results[0].definition)
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'execSql', return_value=[(1034,"DDR",""),(1045,"DIMM",""),(12,"DRAM","") ]):
+        with patch.object(ExecHelper, 'select', return_value=[(1034,"DDR",""),(1045,"DIMM",""),(12,"DRAM","") ]):
             # act
 
-            actual_results = get_all_keywords(self.fake_db, 21)
+            actual_results = get_all_keywords(self.fake_db, 21, 6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT kw.id as id, name as term, definition as definition FROM sow_lesson__has__key_words lkw INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id WHERE lkw.lesson_id = 21 AND published = 1;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson__get_all_keywords'
+                , (21, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual("DDR", actual_results[0].term)
             self.assertEqual("DRAM", actual_results[2].term)

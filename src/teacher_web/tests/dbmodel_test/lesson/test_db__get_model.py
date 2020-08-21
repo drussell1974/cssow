@@ -42,30 +42,31 @@ class test_db__get_model(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_model(self.fake_db, 4)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
          
-            actual_results = get_model(self.fake_db, 99, scheme_of_work_id=99, auth_user=1)
+            actual_results = get_model(self.fake_db, 101, scheme_of_work_id=34, auth_user=99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_lesson as le INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id INNER JOIN sow_topic as top ON top.id = le.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN auth_user as user ON user.id = sow.created_by WHERE le.id = 99 AND le.scheme_of_work_id = 99 AND (le.published = 1 OR le.created_by = 1);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get"
+                , (101,34,99)
                 , [])
 
 
@@ -73,7 +74,7 @@ class test_db__get_model(TestCase):
             ResourceModel.get_all.assert_not_called()
             LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
 
-            self.assertEqual(99, actual_results.id)
+            self.assertEqual(101, actual_results.id)
             self.assertEqual("", actual_results.title),
             self.assertEqual(0, actual_results.topic_id),
             self.assertEqual("", actual_results.topic_name),
@@ -84,26 +85,27 @@ class test_db__get_model(TestCase):
             self.assertFalse(actual_results.is_from_db)
         
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(
-            321,"Understanding numbering systems",1,5,"Computer Science",
+            321,"Understanding numbering systems",1,5,"Computer Science", 13, "Abstract",
             2,"Denary",3,"Data representation",38,11,"Understand common numbering systems","2020-07-16 01:04:59",
             1,"test_user",0,{32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'},4,"learning_objectives",23,343
         )]
         
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 321, scheme_of_work_id=99, auth_user=99)
+            actual_results = get_model(self.fake_db, 321, scheme_of_work_id=909, auth_user=6079)
 
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  le.id as id, le.title as title, le.order_of_delivery_id as order_of_delivery_id, le.scheme_of_work_id as scheme_of_work_id, sow.name as scheme_of_work_name, top.id as topic_id, top.name as topic_name, pnt_top.id as parent_topic_id, pnt_top.name as parent_topic_name, sow.key_stage_id as key_stage_id, yr.id as year_id, le.summary as summary, le.created as created, le.created_by as created_by_id, CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name FROM sow_lesson as le INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id INNER JOIN sow_year as yr ON yr.id = le.year_id INNER JOIN sow_topic as top ON top.id = le.topic_id LEFT JOIN sow_topic as pnt_top ON pnt_top.id = top.parent_id LEFT JOIN auth_user as user ON user.id = sow.created_by WHERE le.id = 321 AND le.scheme_of_work_id = 99 AND (le.published = 1 OR le.created_by = 99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson__get"
+                , (321,909,6079)
                 , [])
             
-            LessonModel.get_all_keywords.assert_called_with(self.fake_db, lesson_id=321)
+            LessonModel.get_all_keywords.assert_called_with(self.fake_db, 321, 6079)
 
             self.assertEqual(3, len(actual_results.key_words))
             

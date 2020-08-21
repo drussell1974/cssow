@@ -3,8 +3,8 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS scheme_of_work__get;
 
 CREATE PROCEDURE scheme_of_work__get (
-  IN scheme_of_work_id INT,
-  IN auth_user INT)
+ IN p_scheme_of_work_id INT,
+ IN p_auth_user INT)
 BEGIN
     SELECT
         sow.id as id,
@@ -22,11 +22,11 @@ BEGIN
         LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id
         INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id
         INNER JOIN auth_user as user ON user.id = sow.created_by   
-    WHERE sow.id = scheme_of_work_id 
+    WHERE sow.id = p_scheme_of_work_id 
         AND (sow.published = 1 
-                or auth_user IN (SELECT auth_user_id 
+                or p_auth_user IN (SELECT auth_user_id 
                                 FROM sow_teacher 
-                                WHERE auth_user_id = auth_user_id AND scheme_of_work_id = sow.id)
+                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
         );
 END;
 //

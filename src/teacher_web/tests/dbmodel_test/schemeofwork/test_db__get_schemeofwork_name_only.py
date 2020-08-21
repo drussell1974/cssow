@@ -22,7 +22,7 @@ class test_db__get_schemeofwork_name_only(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
@@ -33,33 +33,36 @@ class test_db__get_schemeofwork_name_only(TestCase):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             actual_result = get_schemeofwork_name_only(self.fake_db, 101, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_schemeofwork_name_only(101, 99);"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_schemeofwork_name_only"
+                , (101, 99)
                 , [])
+
             self.assertEqual("", actual_result)
 
 
     def test__should_call_execSql_return_single_item(self):
         # arrange
-        expected_result = [["ipsum dolor sit amet."]]
+        expected_result = [("ipsum dolor sit amet.",)]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_result = get_schemeofwork_name_only(self.fake_db, 6, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_schemeofwork_name_only(6, 99);"
-            , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_schemeofwork_name_only"
+                , (6, 99)
+                , [])
             self.assertEqual("ipsum dolor sit amet.", actual_result)
 
 

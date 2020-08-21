@@ -18,53 +18,55 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_all(self.fake_db)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select_return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, key_stage_id=7, auth_user=99)
+            rows = get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, description as description, letter as letter_prefix, published as published FROM sow_content WHERE key_stage_id = 7 AND (published = 1 or created_by = 99) ORDER BY letter ASC;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'content__get_all'
+                , (34, 7, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select_return_single_item(self):
         # arrange
         expected_result = [
             (702, "purus lacus, ut volutpat nibh euismod.", "A",0)
             ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, key_stage_id=5, auth_user=99)
+            actual_results = get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, description as description, letter as letter_prefix, published as published FROM sow_content WHERE key_stage_id = 5 AND (published = 1 or created_by = 99) ORDER BY letter ASC;"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'content__get_all'
+                , (34, 5, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
 
             self.assertEqual(1, len(actual_results))
@@ -74,7 +76,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("A", actual_results[0].letter_prefix),
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select_return_multiple_item(self):
         # arrange
         expected_result = [
             (1021, "nec arcu nec dolor vehicula ornare non.", "X", 0),
@@ -82,17 +84,18 @@ class test_db__get_all(TestCase):
             (1023, "rutrum lorem a arcu ultrices, id mollis", "Z", 0)
         ]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, key_stage_id=5, auth_user=99)
+            actual_results = get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT id as id, description as description, letter as letter_prefix, published as published FROM sow_content WHERE key_stage_id = 5 AND (published = 1 or created_by = 99) ORDER BY letter ASC;"
-                 , []
-                 , log_info=handle_log_info)
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'content__get_all'
+                , (34, 5, 6079)
+                , []
+                , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 

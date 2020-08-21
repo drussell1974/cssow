@@ -25,7 +25,7 @@ class test_db__delete_unpublished(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execCRUDSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -33,22 +33,19 @@ class test_db__delete_unpublished(TestCase):
                 delete_unpublished(self.fake_db, 1, auth_user=99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call__delete(self):
          # arrange
         model = Model(1, "")
         
         expected_result = []
 
-        with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
             
-            Model.get_lesson_learning_objective_ids = Mock(return_value=[("5654"),("332"),("4545")])
-
             actual_result = delete_unpublished(self.fake_db, 19, auth_user=99)
             
             # assert
-            ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                'DELETE FROM sow_learning_objective__has__lesson WHERE lesson_id = 19 AND learning_objective_id=4;'
-                , log_info=handle_log_info)
-
-            Model.get_lesson_learning_objective_ids.assert_called_with(self.fake_db, 19, 99)
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                "lesson_learning_objective__delete_unpublished"
+                , (19,99)
+                , handle_log_info)

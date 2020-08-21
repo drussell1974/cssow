@@ -20,36 +20,38 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(KeyError):
                 get_all(self.fake_db, 4, scheme_of_work_id=30, auth_user=99)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=1)
+            rows = get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 5  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
-                , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson_learning_objective__get_all"
+                , (5,30,6079)
+                , []
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(
             934, "Sed at arcu in leo vestibulum dapibus. Suspendisse",
@@ -61,16 +63,18 @@ class test_db__get_all(TestCase):
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 1
         )]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=1)
+            actual_results = get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=6079)
             
             # assert
-
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 3  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
-                , [])
+            
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "lesson_learning_objective__get_all"
+                , (3,30,6079)
+                , []
+                , handle_log_info)
                 
 
             self.assertEqual(1, len(actual_results))
@@ -81,7 +85,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [(
             934, "Etiam eu efficitur ante. Nunc justo turpis, finibus.",
@@ -112,16 +116,18 @@ class test_db__get_all(TestCase):
         )]
 
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=1)
+            actual_results = get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=6079)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                 "SELECT  lob.id as id,  lob.description as description,  solo.id as solo_id,  solo.name as solo_taxonomy_name,  solo.lvl as solo_taxonomy_level,  cnt.id as content_id,  cnt.description as content_description,  sow.key_stage_id as key_stage_id,  ks.name as key_stage_name,  le.id as lesson_id,  le.order_of_delivery_id as lesson_name,  lob.key_words as key_words, lob.notes as notes, lob.group_name as group_name, le_lo.is_key_objective as is_key_objective, lob.created as created,  lob.created_by as created_by_id,  CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,  lob.published as published  FROM sow_scheme_of_work as sow  INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id  INNER JOIN sow_learning_objective__has__lesson as le_lo ON le_lo.lesson_id = le.id  INNER JOIN sow_learning_objective as lob ON lob.id = le_lo.learning_objective_id  LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id  LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id  LEFT JOIN sow_content as cnt ON cnt.id = lob.content_id  LEFT JOIN auth_user as user ON user.id = lob.created_by  WHERE le.id = 20  AND sow.id = 30 AND (le.published = 1 or le.created_by = 1);"
-                 , [])
+            ExecHelper.select.assert_called_with(self.fake_db,
+                 "lesson_learning_objective__get_all"
+                 , (20,30,6079)
+                 , []
+                 , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 

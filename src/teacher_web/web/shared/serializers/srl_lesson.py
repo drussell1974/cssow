@@ -21,5 +21,6 @@ class LessonModelSerializer(serializers.ModelSerializer):
             "resources",
             "learning_objectives",
             "key_words",
-            "number_of_resource"
+            "number_of_resources",
+            "number_of_learning_objectives"
         ]

@@ -5,10 +5,14 @@ from .core.log import handle_log_info
 
 
 class SoloTaxonomyModel(BaseModel):
+
+    learning_objectives = []
+
     def __init__(self, id_, name, lvl):
         self.id = id_
         self.name = name
         self.lvl = lvl
+        self.learning_objectives = []
 
 
     def _clean_up(self):
@@ -27,8 +31,8 @@ class SoloTaxonomyModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db):
-        rows = SoloTaxonomyDataAccess.get_options(db)
+    def get_options(db, auth_user):
+        rows = SoloTaxonomyDataAccess.get_options(db, auth_user)
         data = []
         for row in rows:
             model = SoloTaxonomyModel(row[0], row[1], row[2])
@@ -39,10 +43,11 @@ class SoloTaxonomyModel(BaseModel):
 class SoloTaxonomyDataAccess:
 
     @staticmethod
-    def get_options(db):
+    def get_options(db, auth_user):
     
         execHelper = ExecHelper()
         
         rows = []
-        rows = execHelper.execSql(db, "SELECT id, name, lvl FROM sow_solo_taxonomy;", rows, log_info=handle_log_info)
+        #271 Stored procedure (get_options)
+        rows = execHelper.select(db, "solotaxonomy__get_options", (auth_user,), rows, handle_log_info)
         return rows

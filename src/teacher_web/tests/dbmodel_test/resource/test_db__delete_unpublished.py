@@ -25,7 +25,7 @@ class test_db__delete_unpublished(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
@@ -33,22 +33,21 @@ class test_db__delete_unpublished(TestCase):
                 delete_unpublished(self.fake_db, 1, auth_user=99)
 
 
-    def test_should_call_execCRUDSql(self):
+    def test_should_call_delete(self):
          # arrange
         
         expected_result = 5
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = delete_unpublished(self.fake_db, 1, auth_user=99)
+            actual_result = delete_unpublished(self.fake_db, 1, auth_user=6079)
             
             # assert
-            ExecHelper.execSql.assert_called()
 
-            ExecHelper.execSql.assert_called_with(self.fake_db, 
-                "DELETE FROM sow_resource WHERE lesson_id = 1 AND published = 0;"
-                , []
+            ExecHelper.delete.assert_called_with(self.fake_db, 
+                "lesson_resource__delete_unpublished"
+                , (1, 6079)
                 , handle_log_info)
 
             self.assertEqual(expected_result, actual_result)

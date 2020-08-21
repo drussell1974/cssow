@@ -25,63 +25,32 @@ class test_db___upsert_related_topic_ids(TestCase):
 
         model = Model(0, "")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                _copy_objective_ids(self.fake_db, model, auth_user_id=99)
+                _copy_objective_ids(self.fake_db, model, auth_user=6079)
 
-
-    def test_should_not_call_execCRUDSql__delete_only__when__no_related_topic_ids(self):
-         # arrange
-        model = Model(101, "")
-        model.copy()
-
-        expected_result = []
-
-        objectives_to_copy = []
-
-        # preselect
-        with patch.object(ExecHelper, 'execSql', return_value=objectives_to_copy):
-            # insert
-            with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
-                # act
-
-                actual_result = _copy_objective_ids(self.fake_db, model, [], auth_user_id=99)
-                
-                # assert
-
-                ExecHelper.execSql.assert_called_with(self.fake_db, 
-                "SELECT learning_objective_id FROM sow_learning_objective__has__lesson WHERE lesson_id = 101;"
-                , []
-                , log_info=handle_log_info)
-
-            self.assertEqual(actual_result, expected_result)
     
     
-    def test_should_call_execCRUDSql__reinsert__related_topic_ids(self):
+    def test_should_call_insert__to_copy_objectives_ids(self):
          # arrange
         model = Model(10, "")
-        model.related_topic_ids = ["201","202"]
         expected_result = []
 
-        objectives_to_copy = [("1"),("2"),("99"),("100")]
+        # insert
+        with patch.object(ExecHelper, 'insert', return_value=expected_result):
+            # act
 
-        # preselect
-        with patch.object(ExecHelper, 'execSql', return_value=objectives_to_copy):
-            # insert
-            with patch.object(ExecHelper, 'execCRUDSql', return_value=expected_result):
-                # act
+            actual_result = _copy_objective_ids(self.fake_db, model, [], auth_user=6079)
+            
+            # assert
 
-                actual_result = _copy_objective_ids(self.fake_db, model, [], auth_user_id=99)
-                
-                # assert
+            ExecHelper.insert.assert_called_with(self.fake_db, 
+            'lesson__copy_learning_objectives'
+            , (10, 0, 6079)
+            , handle_log_info)
 
-                ExecHelper.execCRUDSql.assert_called_with(self.fake_db, 
-                "INSERT INTO sow_learning_objective__has__lesson (lesson_id, learning_objective_id) VALUES(10, 1),(10, 2),(10, 9),(10, 1);"
-                , []
-                , log_info=handle_log_info)
-
-            self.assertEqual(actual_result, expected_result)
+        self.assertEqual(actual_result, expected_result)
     

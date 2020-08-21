@@ -18,47 +18,49 @@ class test_db__get_key_stage_id_only(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        with patch.object(ExecHelper, 'execSql', side_effect=expected_exception):
+        with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
                 get_key_stage_id_only(self.fake_db, 999, 99)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
             actual_result = get_key_stage_id_only(self.fake_db, 101, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_key_stage_id_only(101, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_key_stage_id_only"
+                , (101, 99)
                 , [])
             self.assertEqual(0, actual_result)
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [[3]]
 
-        with patch.object(ExecHelper, 'execSql', return_value=expected_result):
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
             actual_result = get_key_stage_id_only(self.fake_db, 6, 99)
             
             # assert
 
-            ExecHelper.execSql.assert_called_with(self.fake_db,
-                "CALL scheme_of_work__get_key_stage_id_only(6, 99)"
+            ExecHelper.select.assert_called_with(self.fake_db,
+                "scheme_of_work__get_key_stage_id_only"
+                , (6, 99)
                 , [])
             self.assertEqual(3, actual_result)
 
