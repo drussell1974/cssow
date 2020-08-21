@@ -20,7 +20,7 @@ class test_db__get_model(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,7 +31,7 @@ class test_db__get_model(TestCase):
                 get_model(self.fake_db, 4)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -51,7 +51,7 @@ class test_db__get_model(TestCase):
             self.assertEqual(0, actual_results.id)
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")

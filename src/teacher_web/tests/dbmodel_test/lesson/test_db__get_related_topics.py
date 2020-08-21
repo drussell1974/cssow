@@ -18,7 +18,7 @@ class test_db__get_related_topics(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call_select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,7 +29,7 @@ class test_db__get_related_topics(TestCase):
                 get_related_topic_ids(self.fake_db, 0, 1)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -47,7 +47,7 @@ class test_db__get_related_topics(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [(2,"Image","x",13)]
 
@@ -69,7 +69,7 @@ class test_db__get_related_topics(TestCase):
             self.assertEqual("Image", rows[0]["name"])
 
 
-    def test__should_call_execSql_return_multiple_items(self):
+    def test__should_call_select__return_multiple_items(self):
         # arrange
         expected_result = [(58,"Binary","x",24),(2,"Image","x",13),(64,"Sound","x",17)]
 

@@ -17,7 +17,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_execSql_with_exception(self):
+    def test__should_call__select__with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,7 +28,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
                 get_latest_schemes_of_work(self.fake_db, 4, auth_user=99)
 
 
-    def test__should_call_execSql_return_no_items(self):
+    def test__should_call__select__return_no_items(self):
         # arrange
         expected_result = []
 
@@ -46,7 +46,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_execSql_return_single_item(self):
+    def test__should_call__select__return_single_item(self):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
 
@@ -69,7 +69,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
 
 
-    def test__should_call_execSql_return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self):
         # arrange
 
         expected_result = [
