@@ -19,27 +19,6 @@ class test_cls_content__clean_up(TestCase):
         self.assertEqual("x", self.test.description)
 
 
-    def test_description__escape_sqlterminator(self):
-
-        self.test.description = "x;"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual("x\;", self.test.description)
-
-
-    def test_description__escape_quote(self):
-
-        self.test.description = "'x'"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual('"x"', self.test.description)
-
     # letter_prefix
 
     def test_letter_prefix__trim_whitespace(self):
@@ -51,25 +30,3 @@ class test_cls_content__clean_up(TestCase):
 
         # assert
         self.assertEqual("x", self.test.letter_prefix)
-
-
-    def test_letter_prefix__escape_sqlterminator(self):
-
-        self.test.letter_prefix = "x;"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual("x\;", self.test.letter_prefix)
-
-
-    def test_letter_prefix__escape_quote(self):
-
-        self.test.letter_prefix = "'x'"
-
-        # test
-        self.test._clean_up()
-
-        # assert
-        self.assertEqual('"x"', self.test.letter_prefix)

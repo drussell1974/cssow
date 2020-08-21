@@ -69,7 +69,7 @@ class test_db__get_all(TestCase):
                 'lesson__get_all'
                 , (5, 1)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
@@ -114,7 +114,7 @@ class test_db__get_all(TestCase):
                 'lesson__get_all'
                 , (3, 1)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(1, len(actual_results))
 
@@ -176,7 +176,7 @@ class test_db__get_all(TestCase):
                  'lesson__get_all'
                  , (3, 1)
                  , []
-                 , log_info=handle_log_info)
+                 , handle_log_info)
 
 
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from .core.db_helper import to_db_null, to_empty, sql_safe, to_db_bool
+from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, sql_safe, from_db_bool
+from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 
 
@@ -30,8 +30,8 @@ class LearningObjectiveModel (BaseModel):
         self.parent_id = try_int(parent_id)
         self.key_words = key_words
         self.group_name = group_name
-        self.is_key_objective = from_db_bool(is_key_objective)
-    
+        self.is_key_objective = True #TODO: calculate based on whether objective is a top level course objective
+
         self.set_published_state()  
             
 
@@ -305,7 +305,7 @@ class LearningObjectiveDataAccess:
     def get_linked_pathway_objectives(db, lesson_id, auth_user):
 
         execHelper = ExecHelper()
-
+    
         select_sql = "lesson_learning_objective__get_linked_pathway_objectives"
             
         params = (lesson_id, auth_user)
@@ -420,7 +420,7 @@ class LearningObjectiveDataAccess:
             auth_user
         )
         
-        results = execHelper.insert(db, str_insert, params, log_info=handle_log_info)
+        results = execHelper.insert(db, str_insert, params, handle_log_info)
     
         for res in results:
             model.id = res

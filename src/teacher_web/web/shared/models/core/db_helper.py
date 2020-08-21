@@ -78,83 +78,7 @@ class ExecHelper:
         
         # end_transaction has been called
         self.end_transaction()
-
-
-    def _execSql(self, db, sql, params=None):
         
-        raise DeprecationWarning("execSql not longer supported use select to call stored prcoedure")
-        
-        if self.db is None:
-            self.db = db
-
-        self.cur.execute(sql, params)
-        result = self.cur.fetchall()
-            
-        return result
-
-
-    def execCRUDSql(self, db, sql_statement, result=[], log_info=None):
-        ''' run the sql statement without results '''
-        raise DeprecationWarning("execCRUDSql not longer supported use insert, update or delete to call stored prcoedure")
-        
-        last_insert_id = 0
-
-        self.begin(db)
-        
-        try:
-    
-            res = self._execSql(self.db, sql_statement)
-            for tup in res:
-                result.append(tup)
-
-            last = self._execSql(self.db, "SELECT LAST_INSERT_ID();")
-        
-            last_insert_id = int(last[0][0])
-
-            if log_info is not None:
-                log_info(self.db, "sql", "executed:{}, with results: {}".format(sql_statement, result), LOG_TYPE.Verbose)    
-
-            self.commit()
-
-        except:
-            self.rollback()
-    
-            if log_info is not None:
-                log_info(self.db, "sql", "An error occurred selecting data '%s'" % sql_statement, log_type=LOG_TYPE.Error)   
-        finally:
-            self.end()
-    
-        return (result, last_insert_id)
-
-
-    def execSql(self, db, sql, result, log_info=None):
-        ''' run the sql statement '''
-        raise DeprecationWarning("execSql not longer supported use select to call stored prcoedure")
-        
-        self.begin(db)
-
-        try:
-            
-            res = self._execSql(self.db, sql)
-            for tup in res:
-                result.append(tup)
-            
-            if log_info is not None:
-                log_info(self.db, "sql", "executed:{}, with results: {}".format(sql, result), LOG_TYPE.Verbose)    
-
-            self.commit()
-
-        except:
-            self.rollback()
-    
-            if log_info is not None:
-                log_info(self.db, "sql", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)   
-        finally:
-            self.end()
-
-        # returns appended result
-        return result
-
 
     def select(self, db, sql, params, result, log_info=None):
     
@@ -293,24 +217,9 @@ class ExecHelper:
         return result
 
 
-def to_db_null(val, as_null = None):
-    return "NULL" if val is None or val is as_null else sql_safe(val)
-
-
 def to_empty(val):
     return "" if val is None else val
 
 
-def to_db_bool(val):
-    return 1 if val == True else 0
-
-
-def from_db_bool(val):
-    return True if val == 1 else False
-
-
 def sql_safe(string):
-    return str(string)\
-        .strip(' ')\
-        .replace("'", "\"")\
-        .replace(";", "\;")
+    return str(string).strip(' ')

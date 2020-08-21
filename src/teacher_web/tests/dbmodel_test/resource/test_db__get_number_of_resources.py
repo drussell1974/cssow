@@ -46,7 +46,7 @@ class test_db__get_resource_type_options(TestCase):
                 'lesson__get_number_of_resources'
                 , (677,1,6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, actual_results)
 
@@ -68,7 +68,7 @@ class test_db__get_resource_type_options(TestCase):
                 "lesson__get_number_of_resources"
                 , (12,1,6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(1, actual_results)
 
@@ -92,6 +92,6 @@ class test_db__get_resource_type_options(TestCase):
                 "lesson__get_number_of_resources"
                 , (22, 1, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
             
             self.assertEqual(3, actual_results)

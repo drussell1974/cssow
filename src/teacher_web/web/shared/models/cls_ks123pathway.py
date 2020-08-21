@@ -54,7 +54,7 @@ class KS123PathwayDataAccess:
         rows = []
 
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, str_select, params, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
 
         return rows
 

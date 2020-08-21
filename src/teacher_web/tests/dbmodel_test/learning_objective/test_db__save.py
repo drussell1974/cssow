@@ -95,7 +95,7 @@ class test_db__save(TestCase):
                 self.fake_db, 
                 "lesson_learning_objective__insert"
                 , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '', 0, 1, 99)
-                , log_info=handle_log_info)
+                , handle_log_info)
                 
             self.assertEqual(23, actual_result.id)
 

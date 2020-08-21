@@ -4,7 +4,7 @@ from .core.basemodel import BaseModel, BaseDataAccess, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 from datetime import datetime
-from .core.db_helper import to_db_null, to_empty, to_db_bool
+from .core.db_helper import to_empty
 
 
 
@@ -298,7 +298,7 @@ class ResourceDataAccess:
             model.page_note,
             model.page_uri,
             model.md_document_name,
-            model.is_expired, ## to_db_bool(model.is_expired)
+            model.is_expired,
             model.lesson_id,
             published,
             auth_user
@@ -362,7 +362,7 @@ class ResourceDataAccess:
         rows = []
         #271 Stored procedure
  
-        rows = execHelper.select(db, select_sql, params, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 

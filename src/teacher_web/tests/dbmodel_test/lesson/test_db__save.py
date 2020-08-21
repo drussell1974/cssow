@@ -128,7 +128,7 @@ class test_db__save(TestCase):
                 self.fake_db, 
                 'lesson__update'
                 , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, 99)
-                ,log_info=handle_log_info)
+                ,handle_log_info)
 
             # check subsequent functions where called
             
@@ -167,7 +167,7 @@ class test_db__save(TestCase):
                 self.fake_db, 
                 'lesson__insert'
                 , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '')
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             # check subsequent functions where called
             
@@ -205,7 +205,7 @@ class test_db__save(TestCase):
                 self.fake_db, 
                 'lesson__delete'
                 , (23, 99)
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             # check subsequent functions where called
             

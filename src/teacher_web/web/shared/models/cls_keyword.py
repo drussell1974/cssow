@@ -57,7 +57,7 @@ class KeywordModel(BaseModel):
 
         # validate title
         self._validate_required_string("term", self.term, 1, 100)
-        self._validate_regular_expression("term", self.term, r"[^0-9,!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
+        self._validate_regular_expression("term", self.term, r"[^0-9,;!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
 
         # validate page_uri
         self._validate_optional_string("definition", self.definition, 250)

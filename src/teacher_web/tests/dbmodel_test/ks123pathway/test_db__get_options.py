@@ -43,7 +43,7 @@ class test_db__get_options(TestCase):
                 'ks123_pathway__get_options'
                 , (1, 2, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
@@ -62,7 +62,7 @@ class test_db__get_options(TestCase):
                 'ks123_pathway__get_options'
                 , (1, 3, 6079)
                 ,  []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(1, len(rows))
             self.assertEqual("Recognises that digital content can be represented in many forms. (AB) (GE)", rows[0].objective, "First item not as expected")
@@ -85,7 +85,7 @@ class test_db__get_options(TestCase):
                 'ks123_pathway__get_options'
                 , (1, 4, 6079)
                 , []
-                , log_info=handle_log_info)
+                , handle_log_info)
 
             self.assertEqual(3, len(rows))
 

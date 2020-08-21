@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, to_db_null, sql_safe, to_empty, TRANSACTION_STATE
+from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from .core.log import handle_log_info, handle_log_error
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -409,7 +409,7 @@ class LessonDataAccess:
         params = (scheme_of_work_id, auth_user); 
 
         rows = []    
-        rows = execHelper.select(db, select_sql, params, rows, log_info=handle_log_info)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         return rows
 
@@ -576,7 +576,7 @@ class LessonDataAccess:
         )
 
         rows = []
-        rows = execHelper.update(db, str_update, params, log_info=handle_log_info)
+        rows = execHelper.update(db, str_update, params, handle_log_info)
 
         # 2. upsert related topics
         
@@ -630,7 +630,7 @@ class LessonDataAccess:
     
 
         rows = []
-        result = execHelper.insert(db, str_insert, params, log_info=handle_log_info)
+        result = execHelper.insert(db, str_insert, params, handle_log_info)
     
         model.id = result[0]
 
@@ -673,7 +673,7 @@ class LessonDataAccess:
         str_delete = "lesson__delete"
         params = (model.id, auth_user)
 
-        rval = execHelper.delete(db, str_delete, params, log_info=handle_log_info)
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
         return model
 

@@ -43,5 +43,5 @@ class KeyStageDataAccess:
 
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "keystage__get_options", (auth_user,), rows, log_info=handle_log_info)
+        rows = execHelper.select(db, "keystage__get_options", (auth_user,), rows, handle_log_info)
         return rows

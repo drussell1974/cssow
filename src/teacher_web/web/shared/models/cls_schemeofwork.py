@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe, to_db_null
+from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log import handle_log_info
 
 
