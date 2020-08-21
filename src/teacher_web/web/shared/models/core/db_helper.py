@@ -78,10 +78,9 @@ class ExecHelper:
         
         # end_transaction has been called
         self.end_transaction()
-        
+
 
     def select(self, db, sql, params, result, log_info=None):
-    
         ''' run the sql statement '''
         self.begin(db)
     
@@ -110,14 +109,32 @@ class ExecHelper:
 
 
     def scalar(self, db, sql, params, result, log_info=None):
-        """ for sql queries returning a single value e.g row count """
-        value = 1
-
-        # TODO: implement callproc(sql, params)
-        raise NotImplementedError("implement callproc(sql, params) to return a single value")
-
-        return value
         
+        ''' run the sql statement '''
+        self.begin(db)
+    
+        try:
+
+            # DO THE WORK
+            self.cur.callproc(sql, params)
+            result = self.cur.fetchone()
+
+            if log_info is not None:
+                log_info(self.db, "scalar", "executed:{}, with results: scalar value = {}".format(sql, result), LOG_TYPE.Verbose)
+            
+            self.commit()
+
+        except Exception as e:
+
+            self.rollback()
+            
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+            raise e
+        finally:
+            self.end()
+
+        return result
 
     def insert(self, db, sql, params, log_info=None):
         ''' run the sql statement '''

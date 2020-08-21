@@ -169,9 +169,8 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_number_of_resources(db, lesson_id, auth_user):
-        rows = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user)
-        return len(rows)
-
+        value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user)
+        return value
 
     @staticmethod
     def get_resource_type_options(db, auth_user):
@@ -362,9 +361,9 @@ class ResourceDataAccess:
         rows = []
         #271 Stored procedure
  
-        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        rows = execHelper.scalar(db, select_sql, params, rows, handle_log_info)
 
-        return rows
+        return rows[0]
 
 
     @staticmethod
