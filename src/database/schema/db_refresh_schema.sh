@@ -1,11 +1,12 @@
 # tables
-mysql -u $1 -p$2 -h $3 $4 < tables/sow_scheme_of_work__has__teacher.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/sow_scheme_of_work__has__teacher.sql
 
-mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_content.sql
-mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_learning_objective__has__lesson.sql
-mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_content.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_learning_objective__has__lesson.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
 
 # views
+
 mysql -u $1 -p$2 -h $3 $4 < views/sow_teacher.sql
 
 # stored procedures
