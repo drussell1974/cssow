@@ -220,7 +220,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def delete_unpublished(db, auth_user):
         rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user)
-        return len(rows)
+        return rows
 
 
     @staticmethod
@@ -373,10 +373,9 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
         
-        """ Delete all unpublished learning objectives """
         #271 Create StoredProcedure
         str_delete = "scheme_of_work__delete_unpublished"
-        params = (0,2)
+        params = (0,auth_user_id)
             
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

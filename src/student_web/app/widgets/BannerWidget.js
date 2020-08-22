@@ -5,7 +5,7 @@ const BannerWidget = ({heading, description}) => {
         return <React.Fragment></React.Fragment>;
     } else {
         return (
-            <section id="banner" data-video="images/banner">
+            <section id="banner" data-video="assets/images/banner">
                 <div className="inner">
                     <header>
                         <h1 className="h1">{heading}</h1>

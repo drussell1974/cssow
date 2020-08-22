@@ -21,14 +21,13 @@
   "scripts": {
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
-    "build:test": "env-cmd -f ../../dotenv/.env.test-ui yarn start:test",
-    "build:stage": "env-cmd -f ../../dotenv/.env.staging yarn start",
-    "build": "env-cmd -f ../../dotenv/.env.production webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz build",
+    "build:test": "env-cmd -f ../../dotenv/.env.test-ui yarn start:test1",
+    "build": "env-cmd -f ../../dotenv/.env.production webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz entrypoint.py build",
     "test": "jest --coverage",
-    "start:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && webpack-dev-server --mode development",
+    "start:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && flask run -p 3001",
     "start:test": "webpack --mode production && serve build -l 3001",
-    "start:stage": "webpack --mode production && serve build -l 8001",
-    "start": "webpack --mode production && serve build -l"
+    "start:test1": "webpack --mode production && export FLASK_APP=entrypoint.py && flask run -p 3001",
+    "start": "webpack --mode production && serve build -l 3001"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",

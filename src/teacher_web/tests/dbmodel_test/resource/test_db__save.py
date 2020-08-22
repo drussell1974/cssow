@@ -34,7 +34,7 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, auth_user=99)
 
 
-    def test_should_call_execCRUDSql__update_with_exception(self):
+    def test_should_call__update_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -48,7 +48,7 @@ class test_db__save(TestCase):
                 save(self.fake_db, model, auth_user=99)
 
 
-    def test_should_call_execCRUDSql__update_with__is_new__false(self):
+    def test_should_call__update_with__is_new__false(self):
          # arrange
         model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
         
@@ -68,7 +68,7 @@ class test_db__save(TestCase):
             self.assertEqual(23, actual_result.id)
 
 
-    def test_should_call_execCRUDSql__insert__when__is_new__true(self):
+    def test_should_call__insert__when__is_new__true(self):
         # arrange
 
         model = Model(0, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
@@ -91,7 +91,7 @@ class test_db__save(TestCase):
             self.assertEqual(102, actual_result.id)
 
 
-    def test_should_call_execCRUDSql__delete(self):
+    def test_should_call__delete(self):
          # arrange
         model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
         

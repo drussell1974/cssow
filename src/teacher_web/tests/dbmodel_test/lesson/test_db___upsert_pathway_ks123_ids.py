@@ -33,7 +33,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
                 _upsert_pathway_ks123_ids(self.fake_db, model, auth_user_id=99)
     
     
-    def test_should_call_execCRUDSql__reinsert__pathway_ks123_ids(self):
+    def test_should_call__reinsert__pathway_ks123_ids(self):
          # arrange
         model = LessonModel(10, "")
         model.pathway_ks123_ids = ["201","202"]
