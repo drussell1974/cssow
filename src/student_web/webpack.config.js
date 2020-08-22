@@ -18,7 +18,7 @@ module.exports = {
    output: {
       path: path.join(__dirname, '/build/'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: 'assets/bundle.js'
    },
    node: {
       fs: 'empty'
@@ -48,23 +48,38 @@ module.exports = {
          },
          {
             test:/\.eot$/,
-            use:'file-loader',
+            loader:'file-loader',
+            options:{
+               outputPath:'assets',
+            }
          },
          {
             test:/\.jpg(2*)$/,
-            use:'file-loader',
+            loader:'file-loader',
+            options:{
+               outputPath:'assets',
+            }
          },
          {
             test:/\.svg$/,
-            use:'file-loader',
+            loader:'file-loader',
+            options:{
+               outputPath:'assets',
+            }
          },
          {
             test:/\.ttf$/,
-            use:'file-loader',
+            loader:'file-loader',
+            options:{
+               outputPath:'assets',
+            }
          },
          {
             test:/\.woff(2*)$/,
-            use:'file-loader',
+            loader:'file-loader',
+            options:{
+               outputPath:'assets',
+            }
          }
       ]
    },

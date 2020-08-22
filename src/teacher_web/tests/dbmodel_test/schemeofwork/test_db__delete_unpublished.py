@@ -37,14 +37,15 @@ class test_db__deleteunpublished(TestCase):
     def test_should_call__delete(self):
          # arrange
 
-        with patch.object(ExecHelper, 'delete', return_value=[("5")]):
+        with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = delete_unpublished(self.fake_db, auth_user=99)
+            actual_result = delete_unpublished(self.fake_db, auth_user=6079)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
-                'scheme_of_work__delete_unpublished', (0, 2)
+                'scheme_of_work__delete_unpublished'
+                , (0, 6079)
                 , handle_log_info)
 
-            self.assertEqual(1, actual_result)
+            self.assertEqual(5, actual_result)

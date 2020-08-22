@@ -25,27 +25,19 @@ Install virtual environment
 
 Create a virtual environment
 
-> mkdir cssow-env
+> cd .venv
 
-> virtualenv -p [executable] cssow-env
+> mkdir django
+
+> virtualenv -p [executable] django
+
+> source .venv/django/bin/activate
 
 # Prerequisites
 
 Use 'yarn build' from package.json to install the prerequisites, or directly from the command line...
 
-> pip install django
-
-> pip install django-debug-toolbar
-
-> pip install django-cors-headers
-
-> pip install mysqlclient
-
-> pip install mysql-connector-python
-
-> pip install djangorestframework
-
-> pip install selenium'''
+> pip install -r requirements.txt
 
 - Install CSSOW models - see documentation for building whl file from setup.py
 
