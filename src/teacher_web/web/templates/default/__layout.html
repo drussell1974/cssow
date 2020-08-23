@@ -45,6 +45,7 @@
             {% if request.user.is_superuser %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
+                <a class="dropdown-item" href="/event-log"><i class="fa fa-book"></i> {{_("event log")}}</a>
             {% endif %}
           </div>
           <!-- Dropdown END -->

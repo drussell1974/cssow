@@ -188,6 +188,12 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__update.sql
 
 ## logging
 
+echo logging__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__delete.sql
+
+echo logging__get_all
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__get_all.sql
+
 echo logging__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__insert.sql
 
