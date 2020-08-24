@@ -74,7 +74,7 @@ class test_db__get_all(TestCase):
             self.assertEqual(1, len(actual_results))
 
             self.assertEqual(1029, actual_results[0].id)
-            self.assertEqual(LOG_TYPE.Error, actual_results[0].event_type),
+            self.assertEqual(LOG_TYPE.parse(LOG_TYPE.Error), actual_results[0].event_type),
             self.assertEqual("2020-08-23 03:49:56", actual_results[0].created),
             self.assertEqual("An error occured doing some stuff", actual_results[0].message)
             self.assertEqual("nec arcu nec dolor vehicula ornare non.", actual_results[0].details)
@@ -109,7 +109,7 @@ class test_db__get_all(TestCase):
 
 
             self.assertEqual(1021, actual_results[0].id)
-            self.assertEqual(LOG_TYPE.Error, actual_results[0].event_type),
+            self.assertEqual(LOG_TYPE.parse(LOG_TYPE.Error), actual_results[0].event_type),
             self.assertEqual("2020-07-27 15:48:40", actual_results[0].created),
             self.assertEqual("An error occured doing stuff", actual_results[0].message)
             self.assertEqual("nec arcu nec dolor vehicula ornare non.", actual_results[0].details)
@@ -118,7 +118,7 @@ class test_db__get_all(TestCase):
             
 
             self.assertEqual(1023, actual_results[2].id)
-            self.assertEqual(LOG_TYPE.Warning, actual_results[2].event_type),
+            self.assertEqual(LOG_TYPE.parse(LOG_TYPE.Warning), actual_results[2].event_type),
             self.assertEqual("2020-08-23 03:48:01", actual_results[2].created),
             self.assertEqual("Validation errors", actual_results[2].message)
             self.assertEqual("rutrum lorem a arcu ultrices, id mollis", actual_results[2].details)
