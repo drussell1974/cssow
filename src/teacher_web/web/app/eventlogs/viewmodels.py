@@ -28,18 +28,6 @@ class EventLogIndexViewModel(BaseViewModel):
                 search_criteria.category = request.POST["category"]
                 search_criteria.subcategory = request.POST["subcategory"]
 
-                if request.POST.get("submit", 0) == 2:
-                    try:
-                        older_than_n_days = try_int(request.POST["days"], return_value=0)
-                        
-                        if older_than_n_days < settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS:
-                            raise Exception("Logs older than %s days cannot be deleted" % settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
-
-                        self.model = EventLogModel.delete(db, older_than_n_days, auth_user)
-
-                    except Exception as e:
-                        handle_log_exception(db, "Error deleting old event logs", e)
-                        self.error_message = e
 
             self.db = db
             self.auth_user = auth_user

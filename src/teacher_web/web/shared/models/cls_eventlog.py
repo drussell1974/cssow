@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from django.conf import settings
 from .core.log import handle_log_info
-from shared.models.core.db_helper import ExecHelper
 from shared.models.core.basemodel import BaseModel, BaseDataAccess
+from shared.models.core.log_type import LOG_TYPE
+from shared.models.core.db_helper import ExecHelper
 
 
 class EventLogFilter:
@@ -56,7 +57,8 @@ class EventLogModel(BaseModel):
         rows = EventLogDataAccess.get_all(db, search_criteria.date_from, search_criteria.date_to, search_criteria.event_type, auth_user)
         data = []
         for row in rows:
-            event = EventLogModel(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+            event = EventLogModel(row[0], row[1], LOG_TYPE.parse(row[2]), row[3], row[4], row[5], row[6])
+            
             data.append(event)
 
         return data
