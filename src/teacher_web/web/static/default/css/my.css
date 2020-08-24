@@ -23,6 +23,11 @@
     font-size: 22px !important;
 }
 
+.setting-value {
+    padding: 6px 12px;
+    min-height: 32px;
+}
+
 .badge-group {
     margin: 0 0 15px;
 }

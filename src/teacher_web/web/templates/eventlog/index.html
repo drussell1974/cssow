@@ -88,8 +88,8 @@
   <section class="row float-right">
     <form action="{% url 'eventlog.delete' %}" method="POST" class="needs-validation">
       {% csrf_token %}
-      <div class="control-group ">
-        <div class="form-group controls row">
+      <div class="form-group ">
+        <div class="control-group controls row">
           <div class="control-group col-5">
             <label>{{_("Delete logs older than:")}}</label>
           </div>
@@ -120,48 +120,48 @@
 
     <div class="form-group controls row">
 
-      <div class="control-group col-6">
+      <div class="form-group col-6">
         <strong>NUMBER_OF_DAYS_TO_KEEP_LOGS</strong>
         <hr>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
+            <label class="setting-value">{{ content.data.settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS")}}</label>
           <div class="control alert-secondary">
-            <label class="">{{ content.data.settings.MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
+            <label class="setting-value">{{ content.data.settings.MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
           </div>
         </div>
       </div>
       
-      <div class="control-group col-6">
+      <div class="f-group col-6">
         <strong>LOG</strong>
         <hr>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("LOGGING_LEVEL")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.LOGGING_LEVEL }}</label>
+            <label class="setting-value">{{ content.data.settings.LOGGING_LEVEL }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("LOG_TO_SQL")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.LOG_TO_SQL }}</label>
+            <label class="setting-value">{{ content.data.settings.LOG_TO_SQL }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("LOG_TO_CONSOLE")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.LOG_TO_CONSOLE }}</label>
+            <label class="setting-value">{{ content.data.settings.LOG_TO_CONSOLE }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("LOG_TO_DJANGO_LOGS (feature no ready)")}}</label>
           <div class="control alert-secondary"> 
-            <label class="display-value">{{ content.data.settings.LOG_TO_DJANGO_LOGS }}</label>
+            <label class="setting-value">{{ content.data.settings.LOG_TO_DJANGO_LOGS }}</label>
           </div>
         </div>
       </div>
@@ -173,16 +173,16 @@
       <div class="control-group col-6">
         <strong>Database settings</strong>
         <hr>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("DATABASES.default.HOST")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.DATABASES.default.HOST }}</label>
+            <label class="setting-value">{{ content.data.settings.DATABASES.default.HOST }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("DATABASES.default.NAME")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.DATABASES.default.NAME }}</label>
+            <label class="setting-value">{{ content.data.settings.DATABASES.default.NAME }}</label>
           </div>
         </div>
       </div>
@@ -190,28 +190,28 @@
       <div class="control-group col-6">
         <strong>Storage settings</strong>
         <hr>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("SOLUTION_DIR")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.SOLUTION_DIR }}</label>
+            <label class="setting-value">{{ content.data.settings.SOLUTION_DIR }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("MEDIA_ROOT")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.MEDIA_ROOT }}</label>
+            <label class="setting-value">{{ content.data.settings.MEDIA_ROOT }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("MARKDOWN_STORAGE")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.MARKDOWN_STORAGE }}</label>
+            <label class="setting-value">{{ content.data.settings.MARKDOWN_STORAGE }}</label>
           </div>
         </div>
-        <div class="form-group">
+        <div class="control-group">
           <label>{{_("MARKDOWN_TYPE_ID")}}</label>
           <div class="control alert-secondary">
-            <label class="display-value">{{ content.data.settings.MARKDOWN_TYPE_ID }}</label>
+            <label class="setting-value">{{ content.data.settings.MARKDOWN_TYPE_ID }}</label>
           </div>
         </div>
       </div>
