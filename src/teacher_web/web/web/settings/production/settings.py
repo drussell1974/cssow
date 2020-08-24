@@ -36,6 +36,15 @@ LOG_TO_SQL = True
 LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
 
+# number of days to keep log
+MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
+MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
+
+# DATEFORMAT
+ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
+
+
+
 ALLOWED_HOSTS = [
         "127.0.0.1",
         "localhost",

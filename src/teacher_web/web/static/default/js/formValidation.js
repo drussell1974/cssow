@@ -70,9 +70,6 @@
     // unlock any locked controls
     var locked_controls = document.getElementsByClassName('form-control--lock');
     
-    console.log(locked_controls[0])
-    console.log(locked_controls[1])
-
     Array.prototype.filter.call(locked_controls, function(lock) {  
       // disable locked_controls with values
       // initialise

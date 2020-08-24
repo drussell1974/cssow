@@ -2,7 +2,6 @@
 (function() { 
   'use strict';
   window.addEventListener('load', function() {
-    
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.getElementsByClassName('needs-validation');
 
@@ -14,10 +13,8 @@
       var string_errors = document.getElementById("hdn-validation_errors") || "{}";
       if (string_errors.value.length > 2) {
         var dict_errors = JSON.parse(string_errors.value.replace(new RegExp("'","g"),"\""));
-        console.log(dict_errors)
-        console.log(typeof dict_errors)
         for (var key in dict_errors) {
-          var inputElem = document.querySelector(`input[name='${key}'], select[name='${key}']`);
+           var inputElem = document.querySelector(`input[name='${key}'], select[name='${key}']`);
           if (inputElem != null) {   
             var dangerElem = inputElem.parentNode.getElementsByClassName(dangerClassName);
             if (dangerElem != null) {
@@ -37,8 +34,9 @@
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {
-    
-    
+        
+        alert(form.checkValidity());
+        
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();

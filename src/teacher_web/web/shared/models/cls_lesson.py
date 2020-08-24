@@ -808,7 +808,6 @@ class LessonDataAccess:
             str_delete = "lesson__delete_keywords"
             params = (model.id, auth_user)
 
-            #print("LessonDataAccess: deleting keywords...")
             results = execHelper.delete(db, str_delete, params, handle_log_info)
             
 
@@ -816,11 +815,8 @@ class LessonDataAccess:
                 str_insert = "lesson__insert_keywords"
                 
                 params = (key_word.id, model.id, auth_user)
-                #print("LessonDataAccess: insert keyword {} {}".format(str_insert,params))
                 results = execHelper.insert(db, str_insert, params, handle_log_info)
                 
-            #print("execHelper: raise exception")
-            
             execHelper.end_transaction()
             execHelper.commit()
             

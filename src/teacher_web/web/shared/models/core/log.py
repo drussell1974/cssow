@@ -26,11 +26,12 @@ class Log:
 
     def write(self, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
+        
         if (self.logging_level % log_type) == 0:
             
             # write to sql custom log table
             
-            self._write_to_sql(msg, details, category, subcategory)
+            self._write_to_sql(msg, log_type, details, category, subcategory)
             
             # write to the django log
             
@@ -47,7 +48,7 @@ class Log:
                 self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
-    def _write_to_sql(self, msg, details="", category = "", subcategory = ""):
+    def _write_to_sql(self, msg, event_type, details="", category = "", subcategory = ""):
         """ inserts the detail into the sow_logging table """
         if settings.LOG_TO_SQL == True:
             try:
@@ -57,11 +58,13 @@ class Log:
 
                 # NOTE: limit values to prevent stored proecudure failing
 
-                params =  (msg[0:199], details, category[0:49], subcategory[0:49])
+                params =  (msg[0:199], details, event_type, category[0:49], subcategory[0:49])
                 
                 execHelper.insert(self.db, str_insert, params)
-            
-            except:
+
+            except Exception as e:
+                print("***Error writing to sql event log - exception:'{}'......***".format(e))
+                print(".... '{}' to sql event log - message:'{}' was not written to event logs".format(event_type, msg))
                 pass # we'll swallow this up to prevent issues with normal operations
         
 

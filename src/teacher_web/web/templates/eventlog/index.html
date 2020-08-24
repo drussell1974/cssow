@@ -1,5 +1,5 @@
 {% extends 'default/__layout.onecolumn.html' %}
-
+{% load static %}    
 
 {% block maincontent %}
 
@@ -9,11 +9,7 @@
   <!-- Pager Header END -->
 
   <!-- Event logs -->
-    {% if content.data.event_logs|length == 0 %}
-      <div class="alert alert-info" role="alert">
-        <span class="small">{{_("There are no event logs that meet that search criteria") }}</span>
-      </div>
-    {% endif %}
+    
     <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' %}">
       {% csrf_token %}
 
@@ -21,28 +17,46 @@
       {% include '_partials/form.viewmodel.alert_message.html' %}
       <!-- show error_message END -->
       <div class="form-group controls row stackable-group stackable-group-sm">
-        <div class="control-group col-5">
-          <input class="form-control stackable" type="datetime-local" name="date_from" value="{{content.data.search_criteria.date_from}}" id="example-datetime-local-input">
+        <div class="control-group col-4">
+          <input class="form-control stackable" type="datetime-local" name="date_from" value="{{content.data.search_criteria.date_from}}" id="ctl-date_from-datetime-local-input">
           <div class="help-block text-danger invalid-feedback"></div>
         </div>
-        <div class="control-group col-5">
-          <input class="form-control stackable" type="datetime-local" name="date_to" value="{{content.data.search_criteria.date_to}}" id="example-datetime-local-input">
+        <div class="control-group col-4">
+          <input class="form-control stackable" type="datetime-local" name="date_to" value="{{content.data.search_criteria.date_to}}" id="ctl-date_to-datetime-local-input">
           <div class="help-block text-danger invalid-feedback"></div>
+        </div>
+      </div>
+      <div class="form-group controls row stackable-group stackable-group-sm">
+        <div class="control-group col-4">
+          <select class="form-control stackable" name="event_type" id="ctl-event_type">
+            {% for option in content.data.event_type_options %}
+              {% if option.value == content.data.search_criteria.event_type %}
+              <option value="{{option.value}}" selected>{{option.key}}</option>
+              {% else %}
+              <option value="{{option.value}}">{{option.key}}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <div class="help-block text-danger invalid-feedback"></div>
+        </div>
+        <div class="control-group col-2">
+          <input type="submit" class="btn btn-primary stackable" />
         </div>
       </div>
       <div class="form-group">
         <input type="hidden" name="type" />
         <input type="hidden" name="category" />
         <input type="hidden" name="subcategory" />
-        <input type="hidden" name="validation_errors" id="hdn-validation_errors" value="{{content.validation_errors}}" />
-      </div>
-      <div class="form-group stackable-group stackable-group-sm">
-        <input type="submit" class="btn btn-primary stackable" />
-        {% load static %}    
-        <script type="text/javascript" src="{% static 'default/js/formSearchValidation.js' %}"></script>
+        <input type="hidden" name="validation_errors" id="hdn-validation_errors" value="{{content.data.search_criteria.validation_errors}}" />
       </div>
     </form>
-  <p id="search">{{ content.data.search_criteria.date_from }}</p>
+    
+  {% if content.data.event_logs|length == 0 %}
+    <div class="alert alert-info" role="alert">
+      <span class="small">{{_("There are no event logs that meet that search criteria") }}</span>
+    </div>
+  {% endif %}
+
   <table class="table" id="eventlog">
     <thead>
       <tr>
@@ -54,26 +68,161 @@
   
       {% for row in content.data.event_logs %}
           <tr>
-            <th scope="row">1</th>
-            <td>23-08-2020 02:31:23</td>
+            <th scope="row">{{row.id}}</th>
+            <td>{{ row.created }}</td>
           </tr>
           <tr>
-            <td></td>
+            <td>{{ row.event_type }}</td>
             <td>
-              <i class="small float-right">Category sub-category</i>
-              <strong>Mauris dignissim mi at lorem varius condimentum.</strong>
-              <br>Mauris dignissim mi at lorem varius condimentum. Quisque ut magna eleifend, blandit lorem vitae, molestie magna. Maecenas suscipit, leo vitae pretium lobortis, felis augue euismod ex, nec maximus ex orci eu libero. Nullam fringilla mauris tellus, at consectetur est convallis nec. Curabitur in massa sed nisi egestas efficitur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent nibh eros, imperdiet vel pharetra id, finibus id diam. Sed nibh libero, faucibus eget tristique ac, sollicitudin a ante. Mauris nulla felis, cursus eu nibh et, lobortis imperdiet leo. Morbi eu justo et turpis elementum mattis. Cras et magna sit amet leo vehicula posuere tempor eget ante. Phasellus in dui sed lectus consectetur tempor.
+              <i class="small float-right">{{ row.category }} {{ row.subcategory }}</i>
+              <strong>{{ row.summary }}</strong>
+              <br>{{ row.details }}
             </td>
           </tr>
       {% endfor %}
 
     </tbody>
   </table>
+  <hr>
+  {% if request.user.is_superuser %}
+  <section class="row float-right">
+    <form action="{% url 'eventlog.delete' %}" method="POST" class="needs-validation">
+      {% csrf_token %}
+      <div class="control-group ">
+        <div class="form-group controls row">
+          <div class="control-group col-5">
+            <label>{{_("Delete logs older than:")}}</label>
+          </div>
+          <div class="control-group col-5">
+            <select name="days" class="form-control" required>
+              <option value="">{{_("Select an option")}}</option>
+              <option value="28">{{_("28 days")}}</option>
+              <option value="14">{{_("fortnight")}}</option>
+              <option value="7">{{_("1 week")}}</option>
+            </select>
+          </div>
+          <div class="control-group col-2">
+            <input type="submit" class="navbar-brand btn btn-danger btn-sm" id="btn-delete" value="{{_('Clear')}}" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
 
   <!-- Event logs END -->
 
-  {% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-danger float-right" id="btn-delete" href="{% url 'eventlog.delete' %}">{{_('Clear')}}</a>
+  <div class="clearfix"></div>
+
+  <!-- Application Settings -->
+  <section class="application-settings">
+    <h2 class="group-heading">{{_("Application settings")}}</h2>
+    <hr />
+
+    <div class="form-group controls row">
+
+      <div class="control-group col-6">
+        <strong>NUMBER_OF_DAYS_TO_KEEP_LOGS</strong>
+        <hr>
+        <div class="form-group">
+          <label>{{_("MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS")}}</label>
+          <div class="control alert-secondary">
+            <label class="">{{ content.data.settings.MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS }}</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group col-6">
+        <strong>LOG</strong>
+        <hr>
+        <div class="form-group">
+          <label>{{_("LOGGING_LEVEL")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.LOGGING_LEVEL }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("LOG_TO_SQL")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.LOG_TO_SQL }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("LOG_TO_CONSOLE")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.LOG_TO_CONSOLE }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("LOG_TO_DJANGO_LOGS (feature no ready)")}}</label>
+          <div class="control alert-secondary"> 
+            <label class="display-value">{{ content.data.settings.LOG_TO_DJANGO_LOGS }}</label>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    
+    <div class="form-group controls row">
+
+      <div class="control-group col-6">
+        <strong>Database settings</strong>
+        <hr>
+        <div class="form-group">
+          <label>{{_("DATABASES.default.HOST")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.DATABASES.default.HOST }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("DATABASES.default.NAME")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.DATABASES.default.NAME }}</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group col-6">
+        <strong>Storage settings</strong>
+        <hr>
+        <div class="form-group">
+          <label>{{_("SOLUTION_DIR")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.SOLUTION_DIR }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("MEDIA_ROOT")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.MEDIA_ROOT }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("MARKDOWN_STORAGE")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.MARKDOWN_STORAGE }}</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>{{_("MARKDOWN_TYPE_ID")}}</label>
+          <div class="control alert-secondary">
+            <label class="display-value">{{ content.data.settings.MARKDOWN_TYPE_ID }}</label>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    
+    
+  </section>
+  <!-- Application Settings END -->
+  
+  <script type="text/javascript" src="{% static 'default/js/formSearchValidation.js' %}"></script>
   {% endif %}
 
 {% endblock %}
