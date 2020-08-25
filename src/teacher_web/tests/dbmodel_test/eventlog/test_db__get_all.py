@@ -3,7 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 from shared.models.core.log_type import LOG_TYPE
-from shared.models.cls_eventlog import EventLogModel, EventLogFilter
+from shared.models.cls_eventlog import EventLogModel, EventLogFilter, handle_log_info
 
 get_all = EventLogModel.get_all
 
@@ -34,7 +34,7 @@ class test_db__get_all(TestCase):
         # arrange
         expected_result = []
 
-        search_criteria = EventLogFilter(date_from="", date_to="")
+        search_criteria = EventLogFilter(2, 100, date_from="2020-08-23 00:00:00", date_to="2020-08-23 00:00:01", category="volutpat", subcategory="dolor")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -45,8 +45,9 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , ("", "", 1, 6079)
-                , [])
+                , (1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", 6079)
+                , []
+                , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
@@ -57,19 +58,20 @@ class test_db__get_all(TestCase):
             (1029, "2020-08-23 03:49:56", LOG_TYPE.Error, "An error occured doing some stuff", "nec arcu nec dolor vehicula ornare non.", "A", "B"),
             ]
 
-        search_criteria = EventLogFilter(date_from="", date_to="", event_type=2)
+        search_criteria = EventLogFilter(page=0, pagesize=0, date_from="25-07-2020T06:30", date_to="25-08-2020T06:30", event_type=2, category="nec", subcategory="")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, search_criteria,  auth_user=6079)
+            actual_results = get_all(self.fake_db, search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , ("", "", 2, 6079)
-                , [])                
+                , (-1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", 6079)
+                , []
+                , handle_log_info)                
 
             self.assertEqual(1, len(actual_results))
 
@@ -91,7 +93,7 @@ class test_db__get_all(TestCase):
             (1023, "2020-08-23 03:48:01", LOG_TYPE.Warning, "Validation errors", "rutrum lorem a arcu ultrices, id mollis", "Z", "A")
         ]
 
-        search_criteria = EventLogFilter(date_from="", date_to="", event_type=1)
+        search_criteria = EventLogFilter(page=1, pagesize=20, date_from="04-07-2020T16:13", date_to="21-07-2020T00:00", event_type=1, category="nec", subcategory="volutpat")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -102,8 +104,9 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , ("", "", 1, 6079)
-                , [])
+                , (0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", 6079)
+                , []
+                , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 

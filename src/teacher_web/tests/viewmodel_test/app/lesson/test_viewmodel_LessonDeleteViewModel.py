@@ -27,9 +27,15 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
             db.cursor = MagicMock()
 
             self.mock_model = Mock()
+            
             with self.assertRaises(KeyError):
                 # act
                 self.viewmodel = ViewModel(db, auth_user=99, lesson_id=999)
+            #TODO: #233 remove self.assertRaises
+             
+            # assert
+            #TODO: #233 assert error_message
+            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
     def test_init_called_delete__no_return_rows(self):

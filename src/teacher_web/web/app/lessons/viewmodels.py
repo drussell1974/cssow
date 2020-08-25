@@ -96,7 +96,6 @@ class LessonEditViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            #    raise Exception("Lesson is not valid! {}".format(self.model.validation_errors))
             handle_log_warning(self.db, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
 
         return self.model

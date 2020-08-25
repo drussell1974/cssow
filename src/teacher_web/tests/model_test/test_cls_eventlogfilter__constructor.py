@@ -15,7 +15,7 @@ class test_cls_eventlogfilter__constructor(TestCase):
     def test_constructor_default(self):
 
         # self.test
-        self.test = EventLogFilter()
+        self.test = EventLogFilter(1, 20)
         self.test.date_from = datetime(2020, 7, 23, 7, 9, 20)
         self.test.date_to = datetime(2020, 8, 23, 7, 9, 20)
         
@@ -34,6 +34,8 @@ class test_cls_eventlogfilter__constructor(TestCase):
 
         # self.test
         self.test = EventLogFilter( 
+            page=0,
+            pagesize=0,
             date_from="23-07-2020 02:31:23",
             date_to="23-08-2020 02:31:23",
             event_type="NONE",
@@ -54,7 +56,9 @@ class test_cls_eventlogfilter__constructor(TestCase):
     def test_constructor_date_range_invalid(self):
 
         # self.test
-        self.test = EventLogFilter( 
+        self.test = EventLogFilter(  
+            page=99,
+            pagesize=100,
             date_from="23-08-2020 02:31:24",
             date_to="23-08-2020 02:31:23",
             event_type="NONE",

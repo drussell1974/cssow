@@ -10,7 +10,12 @@ from shared.models.cls_eventlog import EventLogModel as Model, EventLogFilter
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
     MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
-
+    PAGER = {
+        "default":{
+            "page": 1,
+            "pagesize": 20 
+        }
+    }
 
 class test_viewmodel_IndexViewModel(TestCase):
 
@@ -28,7 +33,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         # arrange
         mock_request = Mock()
         mock_request.method = "GET"
-
+        mock_request.GET = { "page": 1, "pagesize":20 }
 
         on_get_all__data_to_return = [
             Model(101, 
@@ -96,6 +101,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             "event_type":"8",
             "category":"",
             "subcategory":"",
+            "page":"1",
+            "pagesize":"20",
+            "page_direction":"1"
         }
 
         on_get_all__data_to_return = [
@@ -164,6 +172,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             "event_type":"",
             "category":"",
             "subcategory":"",
+            "page":"3",
+            "pagesize":"20",
+            "page_direction":"-1"
         }
 
         on_get_all__data_to_return = []
@@ -197,6 +208,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             "event_type":"",
             "category":"",
             "subcategory":"",
+            "page":"2",
+            "pagesize":"25",
+            "direction":"prev"
         }
 
         on_get_all__data_to_return = []

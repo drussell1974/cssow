@@ -26,6 +26,7 @@ class test_viewmodel_ResourceGetMarkdownViewModel(TestCase):
             # act and assert
             markdown_viewmodel = ViewModel("/path/to/folder/", resource_id=9999, lesson_id=34, scheme_of_work_id=90, document_name="README.md", auth_user=99)
             self.assertEqual("Document could not be retrieved at this time. Try refreshing the page..", markdown_viewmodel.model)
+        
 
     def test_init_called_fetch__no_return_rows(self):
         

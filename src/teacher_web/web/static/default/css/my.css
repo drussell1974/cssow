@@ -28,6 +28,14 @@
     min-height: 32px;
 }
 
+.log_typeerror .message {
+    color: red;
+}
+
+.log_typewarning .message {
+    color: orangered;
+}
+
 .badge-group {
     margin: 0 0 15px;
 }

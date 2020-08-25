@@ -117,7 +117,13 @@
       </div>
       <!-- Breadcrumb END -->
       <!-- Main Content START --> 
+
+      <!-- show error_message -->
+      {% include '_partials/form.viewmodel.alert_message.html' %}
+      <!-- show error_message END -->
+      
       <div class="row">
+
         {% block content %}
         {% endblock %}
       </div>

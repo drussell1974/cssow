@@ -29,6 +29,11 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             with self.assertRaises(KeyError):
                 # act and assert
                 ViewModel(db, 22, allow_all=True, auth_user=99)
+            #TODO: #233 remove self.assertRaises
+             
+            # assert
+            #TODO: #233 assert error_message
+            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
 

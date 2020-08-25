@@ -13,9 +13,6 @@
     <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' %}">
       {% csrf_token %}
 
-      <!-- show error_message -->
-      {% include '_partials/form.viewmodel.alert_message.html' %}
-      <!-- show error_message END -->
       <div class="form-group controls row stackable-group stackable-group-sm">
         <div class="control-group col-4">
           <input class="form-control stackable" type="datetime-local" name="date_from" value="{{content.data.search_criteria.date_from}}" id="ctl-date_from-datetime-local-input">
@@ -25,8 +22,6 @@
           <input class="form-control stackable" type="datetime-local" name="date_to" value="{{content.data.search_criteria.date_to}}" id="ctl-date_to-datetime-local-input">
           <div class="help-block text-danger invalid-feedback"></div>
         </div>
-      </div>
-      <div class="form-group controls row stackable-group stackable-group-sm">
         <div class="control-group col-4">
           <select class="form-control stackable" name="event_type" id="ctl-event_type">
             {% for option in content.data.event_type_options %}
@@ -39,14 +34,38 @@
           </select>
           <div class="help-block text-danger invalid-feedback"></div>
         </div>
-        <div class="control-group col-2">
-          <input type="submit" class="btn btn-primary stackable" />
+      </div>
+      <div class="form-group controls row stackable-group stackable-group-sm">
+        <div class="control-group col-4">
+          <input class="form-control stackable" type="text" name="category" placeholder="category" value="{{content.data.search_criteria.category}}" maxlength="70" id="ctl-category">
+          <div class="help-block text-danger invalid-feedback"></div>
+        </div><div class="control-group col-4">
+          <input class="form-control stackable" type="text" name="subcategory" placeholder="sub-category" value="{{content.data.search_criteria.subcategory}}" maxlength="70" id="ctl-subcategory">
+          <div class="help-block text-danger invalid-feedback"></div>
         </div>
+      </div>
+      <div class="form-group stackable-group stackable-group-sm">
+        <div class="control-group">
+          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="0">{{_("Search")}}</button>
+          <label class="stackable btn">{{_("page size")}}</label>        
+          <select class="btn btn-outline-secondary stackable" name="pagesize" >
+            {% for pagesize in content.data.settings.PAGER.default.pagesize_options %}
+            {% if content.data.search_criteria.pagesize == pagesize %}
+            <option class="" value="{{ pagesize }}" selected>{{ pagesize }}</option>
+            {% else %}
+            <option class="" value="{{ pagesize }}">{{ pagesize }}</option>
+            {% endif %}}
+          {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="-1">&lt;</button>
+          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="1">&gt;</button>
+       </div>
       </div>
       <div class="form-group">
         <input type="hidden" name="type" />
         <input type="hidden" name="category" />
         <input type="hidden" name="subcategory" />
+        <input type="hidden" name="page" value="{{ content.data.search_criteria.page }}" />
         <input type="hidden" name="validation_errors" id="hdn-validation_errors" value="{{content.data.search_criteria.validation_errors}}" />
       </div>
     </form>
@@ -56,6 +75,8 @@
       <span class="small">{{_("There are no event logs that meet that search criteria") }}</span>
     </div>
   {% endif %}
+
+  <label class="stackable btn">{{_("page")}}  {{ content.data.search_criteria.page }}</label>
 
   <table class="table" id="eventlog">
     <thead>
@@ -69,14 +90,14 @@
       {% for row in content.data.event_logs %}
           <tr>
             <th scope="row">{{row.id}}</th>
-            <td>{{ row.created }}</td>
+            <td class="datetime">{{ row.created }}</td>
           </tr>
-          <tr>
-            <td>{{ row.event_type }}</td>
+          <tr class="{{ row.event_type|slugify}}">
+            <td class="event_type">{{ row.event_type }}</td>
             <td>
-              <i class="small float-right">{{ row.category }} {{ row.subcategory }}</i>
-              <strong>{{ row.summary }}</strong>
-              <br>{{ row.details }}
+              <i class="small float-right category">{{ row.category }} {{ row.subcategory }}</i>
+              <p class="message"><strong>{{ row.message }}</strong></p>
+              <p class="details">{{ row.details }}</p>
             </td>
           </tr>
       {% endfor %}
@@ -218,6 +239,25 @@
     
     </div>
     
+    <div class="form-group controls row">
+
+      <div class="control-group col-6">
+        <strong>Pager settings</strong>
+        <hr>
+        <div class="control-group">
+          <label>{{_("PAGER.default.page")}}</label>
+          <div class="control alert-secondary">
+            <label class="setting-value">{{ content.data.settings.PAGER.default.page }}</label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label>{{_("PAGER.default.pagesize")}}</label>
+          <div class="control alert-secondary">
+            <label class="setting-value">{{ content.data.settings.PAGER.default.pagesize }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
     
   </section>
   <!-- Application Settings END -->

@@ -388,7 +388,7 @@ class LessonDataAccess:
         params = (id_,scheme_of_work_id,auth_user)
         
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         return rows
 
@@ -541,7 +541,7 @@ class LessonDataAccess:
         params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.select(db, str_select, params, rows)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         
         return rows
 

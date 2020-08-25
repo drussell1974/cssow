@@ -67,7 +67,8 @@ class test_db__get_model(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
                 , (101,34,99)
-                , [])
+                , []
+                , handle_log_info)
 
 
             LearningObjectiveModel.get_all.assert_not_called()
@@ -103,7 +104,8 @@ class test_db__get_model(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
                 , (321,909,6079)
-                , [])
+                , []
+                , handle_log_info)
             
             LessonModel.get_all_keywords.assert_called_with(self.fake_db, 321, 6079)
 

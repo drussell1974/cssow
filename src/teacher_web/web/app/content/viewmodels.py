@@ -93,7 +93,7 @@ class ContentEditViewModel(BaseViewModel):
                     self.is_content_ready = True   
                 except Exception as e:
                     #TODO: show error message for custom exception
-                    self.error_message = e
+                    self.error_message = repr(e)
             else:
                 handle_log_warning(self.db, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 

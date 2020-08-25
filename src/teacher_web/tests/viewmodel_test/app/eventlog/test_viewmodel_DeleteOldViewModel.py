@@ -24,10 +24,10 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
         pass
 
 
-    def test_init_called_delete__with_exception(self):
+    def test_init_called_delete__with_exceptioin__should_show_error_message(self):
         
         # arrange        
-        with patch.object(Model, "delete", side_effect=KeyError):
+        with patch.object(Model, "delete", side_effect=KeyError("There was an error executing the stored procedure")):
 
             db = MagicMock()
             db.cursor = MagicMock()
@@ -38,9 +38,11 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
 
             self.mock_model = Mock()
 
-            with self.assertRaises(KeyError):
+            #with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+
+            self.assertEqual("'There was an error executing the stored procedure'", self.viewmodel.error_message)
 
 
     def test_init_called_delete__should_not_call_delete_when_GET_request(self):
@@ -75,9 +77,9 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             mock_request.POST = { "days": 6 }
             
             
-            with self.assertRaises(Exception):
+            #with self.assertRaises(Exception):
                 # act
-                self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
 
             # assert
             Model.delete.assert_not_called()
@@ -106,7 +108,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             # assert functions was called
             Model.delete.assert_called_with(db, 7, 6079)
 
-            self.assertIsNone(self.viewmodel.model)
+            self.assertEqual([], self.viewmodel.model)
 
 
     def test_init_called_delete__return_item(self):
@@ -120,7 +122,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
 
             mock_request = Mock()
             mock_request.method = "POST"
-            mock_request.POST = { "days": 14 }
+            mock_request.POST = { "days": 14, "page": 1, "pagesize":20 }
             
             self.mock_model = Mock()
 
@@ -129,7 +131,8 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
 
             # assert functions was called
             Model.delete.assert_called_with(db, 14, 6079)
-            self.assertEqual(1, self.viewmodel.model)
+            self.assertEqual("1 event logs deleted", self.viewmodel.alert_message)
+            self.assertEqual([], self.viewmodel.model)
 
 
     def test_init_called_delete__return_items(self):
@@ -152,4 +155,5 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
 
             # assert functions was called
             Model.delete.assert_called_with(db, 28, 6079)
-            self.assertEqual(3, self.viewmodel.model)
+            self.assertEqual("3 event logs deleted", self.viewmodel.alert_message)
+            self.assertEqual([], self.viewmodel.model)

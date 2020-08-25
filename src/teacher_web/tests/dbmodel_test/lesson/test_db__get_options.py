@@ -43,7 +43,9 @@ class test_db__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
                 , (21, 6079)
-                , [])
+                , []
+                , handle_log_info)
+
             self.assertEqual(0, len(rows))
 
 
@@ -61,7 +63,8 @@ class test_db__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
                 , (12, 6079)
-                , [])
+                , []
+                , handle_log_info)
 
             self.assertEqual(1, len(rows))
 
@@ -90,7 +93,10 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson__get_options', (214, 6079), [])
+                'lesson__get_options'
+                , (214, 6079)
+                , []
+                , handle_log_info)
             
             self.assertEqual(834, rows[0].id)
             self.assertEqual("Vivamus sodales enim cursus ex.", rows[0].title)

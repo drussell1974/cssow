@@ -57,8 +57,8 @@ class Log:
                 str_insert = "logging__insert"
 
                 # NOTE: limit values to prevent stored proecudure failing
-
-                params =  (msg[0:199], details, event_type, category[0:49], subcategory[0:49])
+                
+                params =  (msg[0:199], details, int(event_type), category[0:69], subcategory[0:69])
                 
                 execHelper.insert(self.db, str_insert, params)
 
@@ -66,7 +66,7 @@ class Log:
                 print("***Error writing to sql event log - exception:'{}'......***".format(e))
                 print(".... '{}' to sql event log - message:'{}' was not written to event logs".format(event_type, msg))
                 pass # we'll swallow this up to prevent issues with normal operations
-        
+
 
     def _write_to_django_log(self, msg, details=""):
         """ 
@@ -95,7 +95,7 @@ def handle_log_verbose(db, msg, details = "", log_type = LOG_TYPE.Verbose):
     
 def handle_log_info(db, msg, details = "", log_type = LOG_TYPE.Information):
     logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg=msg, details=details, log_type=log_type)
+    logger.write(msg, details, log_type)
     
 
 def handle_log_warning(db, msg, details = "", log_type = LOG_TYPE.Warning):

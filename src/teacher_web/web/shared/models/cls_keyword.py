@@ -145,7 +145,7 @@ class KeywordDataAccess:
         params = (auth_user,)
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         data = []
         for row in rows:

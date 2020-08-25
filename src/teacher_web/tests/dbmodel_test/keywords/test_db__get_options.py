@@ -1,4 +1,4 @@
-from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_keyword import KeywordModel, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
@@ -40,7 +40,9 @@ class test_db_keyword__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
                 , (6079,)
-                , [])
+                , []
+                , handle_log_info)
+
             self.assertEqual(0, len(rows))
 
 
@@ -57,7 +59,9 @@ class test_db_keyword__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
                 , (6079,)
-                , [])
+                , []
+                , handle_log_info)
+                
             self.assertEqual(1, len(rows))
             self.assertEqual("Binary", rows[0].term)
 
@@ -77,7 +81,8 @@ class test_db_keyword__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
                 , (6079,)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(3, len(rows))
 
             self.assertEqual("Binary", rows[0].term)

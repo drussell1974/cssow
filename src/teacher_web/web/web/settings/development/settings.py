@@ -26,24 +26,6 @@ SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 #DEBUG = True,        
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
 
-# LOGGING_LEVEL: set the logging level as appropriate
-# Verbose = 8
-# Information = 4
-# Warning = 2
-# Error = 1
-LOGGING_LEVEL = 4
-LOG_TO_SQL = True
-LOG_TO_CONSOLE = True
-LOG_TO_DJANGO_LOGS = False
-
-# number of days to keep log
-MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
-MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
-
-# DATEFORMAT
-ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
-
-
 ALLOWED_HOSTS = [
         "jtc10",
         "127.0.0.1",
@@ -189,3 +171,30 @@ SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
 #254 get id of the row in the cssow_api.sow_resource_type table for markdown type
 MARKDOWN_TYPE_ID = 10
+
+# LOGGING_LEVEL: set the logging level as appropriate
+# Verbose = 8
+# Information = 4
+# Warning = 2
+# Error = 1
+LOGGING_LEVEL = 8
+LOG_TO_SQL = True
+LOG_TO_CONSOLE = True
+LOG_TO_DJANGO_LOGS = False
+
+# number of days to keep log
+MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
+MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
+
+# DATEFORMAT
+ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
+
+# Paging default settings
+
+PAGER = {
+    "default":{
+        "page": 1,
+        "pagesize": 5,
+        "pagesize_options": [ 3, 5, 10, 25, 50, 100 ]
+    }
+}

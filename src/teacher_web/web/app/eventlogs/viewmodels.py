@@ -14,31 +14,35 @@ class EventLogIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, settings, auth_user):
 
-        self.model = []
-        self.error_message = ""
+        self.db = db
         self.settings = settings
+        self.auth_user = auth_user
+
+        self.model = []
 
         try:
-            search_criteria = EventLogFilter()
+            page = settings.PAGER["default"]["page"]
+            pagesize = settings.PAGER["default"]["pagesize"]
+            page_direction = 0
+            
+            self.search_criteria = EventLogFilter(page, pagesize, page_direction)
             
             if request.method == "POST":
-                search_criteria.date_from = request.POST["date_from"]
-                search_criteria.date_to = request.POST["date_to"]
-                search_criteria.type = request.POST["event_type"]
-                search_criteria.category = request.POST["category"]
-                search_criteria.subcategory = request.POST["subcategory"]
-
-
-            self.db = db
-            self.auth_user = auth_user
-            self.search_criteria = search_criteria
+                self.search_criteria.date_from = request.POST["date_from"]
+                self.search_criteria.date_to = request.POST["date_to"]
+                self.search_criteria.type = request.POST["event_type"]
+                self.search_criteria.category = request.POST["category"]
+                self.search_criteria.subcategory = request.POST["subcategory"]
+                self.search_criteria.pager(request.POST["page"], request.POST["page_direction"])
+                self.search_criteria.pagesize = try_int(request.POST["pagesize"], return_value=pagesize)
 
             self.search_criteria.validate()
             
-            if search_criteria.is_valid == True:
+            if self.search_criteria.is_valid == True:
                 self.model = EventLogModel.get_all(self.db, self.search_criteria, self.auth_user)
+
         except Exception as e:
-            self.error_message = e
+            self.error_message = str(e)
 
 
     def view(self):
@@ -58,22 +62,44 @@ class EventLogIndexViewModel(BaseViewModel):
         return ViewModel("", "Event Log", "view event logs", data=data, error_message=self.error_message)
 
 
-class EventLogDeleteOldViewModel:
+class EventLogDeleteOldViewModel(BaseViewModel):
     
     def __init__(self, db, request, settings, auth_user):
         """ delete event log on POST """
         
-        self.model = 0
+        self.model = []
+        self.settings = settings
+
+        self.search_criteria = EventLogFilter()
 
         if request.method == "POST":
             try:
                 older_than_n_days = try_int(request.POST["days"], return_value=0)
                 
                 if older_than_n_days < settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS:
-                    raise Exception("Logs older than %s days cannot be deleted" % settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
+                    raise Exception("events in the last %s days cannot be deleted" % settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
 
-                self.model = EventLogModel.delete(db, older_than_n_days, auth_user)
+                rows_affected = EventLogModel.delete(db, older_than_n_days, auth_user)
+
+                self.alert_message = "%s event logs deleted" % rows_affected
 
             except Exception as e:
                 handle_log_exception(db, "Error deleting old event logs", e)
-                raise
+                self.error_message = str(e)
+
+
+    def view(self):
+
+        data = { 
+            "event_type_options": [
+                {"key": "Error", "value": LOG_TYPE.Error },
+                {"key": "Warning", "value": LOG_TYPE.Warning },
+                {"key": "Information", "value": LOG_TYPE.Information },
+                {"key": "Verbose", "value": LOG_TYPE.Verbose },
+            ],
+            "search_criteria": self.search_criteria,
+            "event_logs": [],
+            "settings": self.settings
+        } 
+        
+        return ViewModel("", "Event Log", "view event logs", data=data, error_message=self.error_message, alert_message=self.alert_message)

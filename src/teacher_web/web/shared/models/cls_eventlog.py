@@ -2,19 +2,22 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from .core.log import handle_log_info
 from shared.models.core.basemodel import BaseModel, BaseDataAccess
+from shared.models.utils.pager import Pager
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.db_helper import ExecHelper
 
 
-class EventLogFilter:
+class EventLogFilter(Pager):
 
     is_valid = False
     validation_errors = {}
     date_from = None
     date_to = None
 
-    def __init__(self, date_from = None, date_to = None, event_type = 1, message="", details="", category = "", subcategory = ""):
-        
+    def __init__(self, page = 1, pagesize = 20, page_direction = 0, date_from = None, date_to = None, event_type = 1, message="", details="", category = "", subcategory = ""):
+        # base
+        super().__init__(page, pagesize, page_direction)
+
         default_to_datetime = datetime.now()
         default_from_datetime = datetime.now() - timedelta(5)
 
@@ -49,12 +52,21 @@ class EventLogModel(BaseModel):
         self.details=details
         self.category=category
         self.subcategory=subcategory
-    
+
 
     @staticmethod
     def get_all(db, search_criteria, auth_user):
 
-        rows = EventLogDataAccess.get_all(db, search_criteria.date_from, search_criteria.date_to, search_criteria.event_type, auth_user)
+        rows = EventLogDataAccess.get_all(db, 
+            search_criteria.page, 
+            search_criteria.pagesize,
+            search_criteria.date_from, 
+            search_criteria.date_to, 
+            search_criteria.event_type,  
+            search_criteria.category,  
+            search_criteria.subcategory,  
+            auth_user)
+        
         data = []
         for row in rows:
             event = EventLogModel(row[0], row[1], LOG_TYPE.parse(row[2]), row[3], row[4], row[5], row[6])
@@ -73,15 +85,15 @@ class EventLogModel(BaseModel):
 class EventLogDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_all(db, date_from, date_to, event_type, auth_user):
+    def get_all(db, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
-        params = (date_from, date_to, event_type, auth_user)
-
+        params = (page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
+        
         rows = []
-        rows = execHelper.select(db, stored_procedure, params, rows)
+        rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
     
         return rows
 

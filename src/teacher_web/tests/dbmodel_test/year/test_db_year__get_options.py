@@ -1,5 +1,5 @@
 from unittest import TestCase
-from shared.models.cls_year import YearModel as Model
+from shared.models.cls_year import YearModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
@@ -41,7 +41,8 @@ class test_YearDataAccess__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'year__get_options'
                 , (1, 6079)
-                , [])
+                , []
+                , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
@@ -61,7 +62,8 @@ class test_YearDataAccess__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'year__get_options'
                 , (2, 6079)
-                , [])
+                , []
+                , handle_log_info)
 
             self.assertEqual(1, len(rows))
             self.assertEqual("Yr4", rows[0].name, "First item not as expected")
@@ -80,7 +82,8 @@ class test_YearDataAccess__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'year__get_options'
                 , (3, 6079)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(3, len(rows))
             self.assertEqual("Yr7", rows[0].name, "First item not as expected")
             self.assertEqual("Yr9", rows[len(rows)-1].name, "Last item not as expected")

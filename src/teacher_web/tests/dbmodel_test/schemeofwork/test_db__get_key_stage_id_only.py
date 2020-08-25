@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
 
 get_key_stage_id_only = SchemeOfWorkModel.get_key_stage_id_only
 
@@ -43,7 +43,8 @@ class test_db__get_key_stage_id_only(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_key_stage_id_only"
                 , (101, 99)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, actual_result)
 
 
@@ -61,7 +62,8 @@ class test_db__get_key_stage_id_only(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_key_stage_id_only"
                 , (6, 99)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(3, actual_result)
 
 

@@ -9,17 +9,29 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
-
+from shared.view_model import ViewModel
 
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
     # TODO: #235 Rename to {ViewName}ViewModel
     def __init__(self, db, top, auth_user):
         self.model = []
-
         self.db = db
-        # get model
-        data = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
-        self.model = data
+
+        try:
+            # get model
+            data = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
+            self.model = data
+        except Exception as e:
+            self.error_message = repr(e)
+
+
+    def view(self, main_heading, sub_heading):
+
+        data = {
+            "latest_schemes_of_work":self.model
+        }
+        
+        return ViewModel("", main_heading, sub_heading, data=data, error_message=self.error_message)
 
 
 class TopicGetOptionsListViewModel(BaseViewModel):

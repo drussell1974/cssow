@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess, handle_log_info
 
 class test_db__get_all(TestCase):
     
@@ -42,7 +42,8 @@ class test_db__get_all(TestCase):
                 self.fake_db,
                 'scheme_of_work__get_all'
                 , (5, 99)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
@@ -63,7 +64,8 @@ class test_db__get_all(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all'
                 , (3, 99)
-                , [])
+                , []
+                , handle_log_info)
 
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
             SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()
@@ -99,7 +101,8 @@ class test_db__get_all(TestCase):
                 self.fake_db,
                 'scheme_of_work__get_all'
                 , (3, 99)
-                , [])
+                , []
+                , handle_log_info)
 
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
             SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()

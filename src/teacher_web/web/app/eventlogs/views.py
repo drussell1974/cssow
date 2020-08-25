@@ -21,10 +21,9 @@ def index(request):
     return render(request, "eventlog/index.html", modelview.view().content)
 
 
+@permission_required('cssow.delete_eventlogs', login_url='/accounts/login/')
 def delete(request, rows = 0):
     """ delete old logs """
     modelview = EventLogDeleteOldViewModel(db, request, settings, auth_user_id(request))
 
-    url = "%s?rows=%s" % (reverse("eventlog.index"), modelview.model)
-    
-    return HttpResponseRedirect(url)
+    return render(request, "eventlog/index.html", modelview.view().content)
