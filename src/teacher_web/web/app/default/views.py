@@ -12,12 +12,8 @@ def index(request):
 
     # get the schemes of work
     #253 check user id
-    latest_schemes_of_work__view = SchemeOfWorkGetLatestViewModel(db, top = 5, auth_user=auth_user_id(request))
+    modelview = SchemeOfWorkGetLatestViewModel(db, top = 5, auth_user=auth_user_id(request))
     
-    data = {
-        "latest_schemes_of_work":latest_schemes_of_work__view.model
-    }
-    
-    view_model = ViewModel("", os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"], data=data)
+    view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 
     return render(request, "default/index.html", view_model.content)

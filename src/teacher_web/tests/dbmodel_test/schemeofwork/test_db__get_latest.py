@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
 
 get_latest_schemes_of_work = SchemeOfWorkModel.get_latest_schemes_of_work
 
@@ -42,7 +42,8 @@ class test_db__get_latest_schemes_of_work(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
                 , (4, 99)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
@@ -60,7 +61,8 @@ class test_db__get_latest_schemes_of_work(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
                 , (3, 99)
-                , [])
+                , []
+                , handle_log_info)
                 
             self.assertEqual(1, len(rows))
             self.assertEqual(6, rows[0].id)
@@ -87,7 +89,9 @@ class test_db__get_latest_schemes_of_work(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
                 , (3, 99)
-                , [])
+                , []
+                , handle_log_info)
+                
             self.assertEqual(3, len(rows))
 
             self.assertEqual(6, rows[0].id)

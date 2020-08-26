@@ -26,9 +26,15 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             self.mock_model = Mock()
+            
             with self.assertRaises(KeyError):
                 # act
                 self.viewmodel = ViewModel(db, resource_id=999, lesson_id=34, scheme_of_work_id=90, auth_user=99)
+            #TODO: #233 remove self.assertRaises
+             
+            # assert
+            #TODO: #233 assert error_message
+            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
     def test_init_called_fetch__no_return_rows(self):

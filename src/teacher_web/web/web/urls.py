@@ -38,7 +38,8 @@ urlpatterns = [
 
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-
+    # app event-log
+    path('event-log/', include('app.eventlogs.urls')),
     # app content
     path('schemesofwork/<int:scheme_of_work_id>/curriculum-content/', include('app.content.urls')),
     # app lesson

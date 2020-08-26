@@ -14,7 +14,7 @@ BEGIN
     FROM 
         sow_key_word kw 
     WHERE 
-        name LIKE (p_search) AND kw.published = 1
+        name LIKE CONCAT('%', p_search, '%') AND kw.published = 1
     ORDER BY name;
 END;
 //

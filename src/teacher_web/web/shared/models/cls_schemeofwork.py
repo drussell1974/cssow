@@ -248,7 +248,7 @@ class SchemeOfWorkDataAccess:
         params = (id_, auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         return rows
 
 
@@ -264,7 +264,7 @@ class SchemeOfWorkDataAccess:
         params = (key_stage_id, auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
@@ -281,9 +281,9 @@ class SchemeOfWorkDataAccess:
         
         select_sql = "scheme_of_work__get_latest"
         params = (top, auth_user)
-        
+
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
  
         return rows
         
@@ -362,7 +362,7 @@ class SchemeOfWorkDataAccess:
         params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
@@ -407,7 +407,7 @@ class SchemeOfWorkDataAccess:
         params = (auth_user,)
         
         rows = []
-        rows = execHelper.select(db, str_select, params, rows)
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
 
         return rows
 
@@ -421,7 +421,7 @@ class SchemeOfWorkDataAccess:
         params = (scheme_of_work_id, auth_user)
         
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
 
@@ -435,7 +435,7 @@ class SchemeOfWorkDataAccess:
         params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         execHelper.end()
 
@@ -451,7 +451,7 @@ class SchemeOfWorkDataAccess:
         params = (scheme_of_work_id, auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         return rows
 
@@ -464,5 +464,5 @@ class SchemeOfWorkDataAccess:
         params = (scheme_of_work_id,auth_user)
 
         rows = []
-        rows = execHelper.select(db, select_sql, params, rows)
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         return rows

@@ -43,7 +43,8 @@ class test_db__get_options(TestCase):
                 self.fake_db,
                 "scheme_of_work__get_options"
                 , (99,)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
@@ -61,7 +62,8 @@ class test_db__get_options(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_options"
                 , (99,)
-                , [])
+                , []
+                , handle_log_info)
             
             self.assertEqual(1, len(rows))
             self.assertEqual(123, rows[0].id)
@@ -88,7 +90,8 @@ class test_db__get_options(TestCase):
                 self.fake_db,
                 "scheme_of_work__get_options"
                 , (99,)
-                , [])
+                , []
+                , handle_log_info)
 
             self.assertEqual(3, len(rows))
 

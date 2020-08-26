@@ -31,7 +31,7 @@ class ExecHelper:
         self.db = db
         if self.transaction_state is TRANSACTION_STATE.NONE:
             self.transaction_state = transaction_state
-            #print("execHelper: begin {} transaction...".format(self.transaction_state))
+            #Helper: begin {} transaction...".format(self.transaction_state))
             self.cur = self.db.cursor()
         
         if self.transaction_state == TRANSACTION_STATE.OPEN:
@@ -90,9 +90,6 @@ class ExecHelper:
             self.cur.callproc(sql, params)
             result = self.cur.fetchall()
 
-            if log_info is not None:
-                log_info(self.db, "update", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
-            
             self.commit()
 
         except Exception as e:
@@ -105,6 +102,9 @@ class ExecHelper:
         finally:
             self.end()
 
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.select", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
+                
         return result
 
 
@@ -118,9 +118,6 @@ class ExecHelper:
             # DO THE WORK
             self.cur.callproc(sql, params)
             result = self.cur.fetchone()
-
-            if log_info is not None:
-                log_info(self.db, "scalar", "executed:{}, with results: scalar value = {}".format(sql, result), LOG_TYPE.Verbose)
             
             self.commit()
 
@@ -134,7 +131,11 @@ class ExecHelper:
         finally:
             self.end()
 
+            if log_info is not None:
+                log_info(self.db, "scalar", "executed:{}, with results: scalar value = {}".format(sql, result), LOG_TYPE.Verbose)
+
         return result
+
 
     def insert(self, db, sql, params, log_info=None):
         ''' run the sql statement '''
@@ -149,10 +150,6 @@ class ExecHelper:
             
             self.cur.callproc(sql, params)                
             result = self.cur.fetchone()
-
-
-            if log_info is not None:
-                log_info(self.db, "update", "executed:{}, with results: new id = {}".format(sql, result), LOG_TYPE.Verbose)
             
             self.commit()
 
@@ -166,6 +163,9 @@ class ExecHelper:
 
         finally:
             self.end()
+            
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.insert", "executed:{}, with results: new id = {}".format(sql, result), LOG_TYPE.Verbose)
 
         return result
 
@@ -181,9 +181,6 @@ class ExecHelper:
             self.cur.callproc(sql, params)
             
             result = self.cur.rowcount
-        
-            if log_info is not None:
-                log_info(self.db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
 
             self.commit()
 
@@ -196,6 +193,9 @@ class ExecHelper:
             raise e
         finally:
             self.end()
+        
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
 
         return result
 
@@ -212,12 +212,6 @@ class ExecHelper:
             self.cur.callproc(sql, params)
             
             result = self.cur.rowcount
-
-            if log_info != None:
-                log_info(self.db, "delete", "results: number of records affected = {}".format(result), LOG_TYPE.Verbose)
-                
-            if log_info is not None:
-                log_info(self.db, "update", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
             
             self.commit()
         
@@ -230,6 +224,9 @@ class ExecHelper:
             raise e
         finally:
             self.end()
+    
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.delete", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
 
         return result
 

@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
 
 get_number_of_lessons = SchemeOfWorkModel.get_number_of_lessons
 
@@ -43,7 +43,8 @@ class test_db__get_number_of_lessons(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_number_of_lessons'
                 , (101, 99)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, actual_result)
 
 
@@ -59,9 +60,10 @@ class test_db__get_number_of_lessons(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-            'scheme_of_work__get_number_of_lessons'
-            , (6, 99)
-            , [])
+                'scheme_of_work__get_number_of_lessons'
+                , (6, 99)
+                , []
+                , handle_log_info)
             self.assertEqual(1, actual_result)
 
 

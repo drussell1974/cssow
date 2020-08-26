@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
 
 
 class test_db__get_model(TestCase):
@@ -41,7 +41,8 @@ class test_db__get_model(TestCase):
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
                 , (99, 999)
-                , [])
+                , []
+                , handle_log_info)
             self.assertEqual(0, model.id)
             self.assertEqual("", model.description)
             self.assertTrue(model.is_new())
@@ -64,9 +65,10 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                 "scheme_of_work__get"
-                 , (6, 1)
-                 , [])
+                "scheme_of_work__get"
+                , (6, 1)
+                , []
+                , handle_log_info)
                  
             self.assertEqual(6, model.id)
             self.assertEqual("Lorem", model.name)

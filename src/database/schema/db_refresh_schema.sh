@@ -4,6 +4,7 @@
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_content.sql
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_learning_objective__has__lesson.sql
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
+mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_logging.sql
 
 # views
 
@@ -187,6 +188,12 @@ echo lesson_resource__update
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson_resource__update.sql
 
 ## logging
+
+echo logging__delete
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__delete.sql
+
+echo logging__get_all
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__get_all.sql
 
 echo logging__insert
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/logging__insert.sql
