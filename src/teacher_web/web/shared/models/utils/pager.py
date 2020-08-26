@@ -19,5 +19,5 @@ class Pager:
         
         self.page = page if page > 1 else 1
         self.page_direction = page_direction
-        
+        self.page_direction_reset = -self.page
         return self.page
