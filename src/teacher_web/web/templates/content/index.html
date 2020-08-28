@@ -21,7 +21,34 @@
 <section class="card widget widget--sidebar">
   <div class="card-body">
     <div class="card-header widget-header d-none d-lg-block">
-      <h5 class="card-title">{{_("Scheme of work")}}</h5>
+      <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
+    </div>
+    <div class="card-text widget-main">
+      <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+        <div class="collapse navbar-collapse" id="sidebarResponsive">
+            <ul class="navbar-nav flex-column fillspace">
+              <ul class="navbar-nav flex-column fillspace">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+                    {{_("Lessons")}} <div class="small"></div>
+                  </a>
+              </li>
+              <li class="nav-item bg-light">
+                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
+                    {{_("Content")}} <div class="small"></div>
+                  </a>
+              </li>
+            </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<section class="card widget widget--sidebar">
+  <div class="card-body">
+    <div class="card-header widget-header d-none d-lg-block">
+      <h5 class="card-title">{{_("Other schemes of work")}}</h5>
     </div>
     <div class="card-text">
       <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
@@ -31,7 +58,7 @@
         <div class="collapse navbar-collapse" id="sidebarResponsive">
             <ul class="navbar-nav flex-column fillspace">
             {% for opt in content.data.schemeofwork_options %}
-                <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
+                <li class="nav-item {% if opt.id == scheme_of_work_id %}bg-light{% endif %}">
                     <a class="nav-link" href="{% url 'content.index' opt.id %}">
                       {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
                     </a>
@@ -44,6 +71,7 @@
     </div>
   </div>
 </section>
+
 {% endblock %}
 
 

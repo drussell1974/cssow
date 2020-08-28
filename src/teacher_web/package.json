@@ -14,7 +14,7 @@
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip install -r requirements.dev.txt && yarn build:test",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=*.bin --exclude=media web ../database/schema requirements.txt && yarn build:venv",
-    "build:dev": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:300
+    "build:dev": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "test:all": "yarn test:unit && yarn test-ui",
     "test:unit":"yarn test-helpers && yarn test-dbmodels && yarn test-models && yarn test-viewmodels && yarn test-routes && yarn test-api ", 

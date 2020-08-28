@@ -80,6 +80,10 @@ h4, h5, h6 {
     width: 100%;
 }
 
+.sidecontent .widget {
+    margin-bottom: 15px;
+}
+
 .nav-item.active {
     background-color: #e2e3e5;
 }
