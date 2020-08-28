@@ -4,6 +4,7 @@ from django.http import Http404
 # test context
 
 from app.resources.viewmodels import ResourceGetModelViewModel as ViewModel
+from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
 
 
@@ -45,22 +46,26 @@ class test_viewmodel_GetModelViewModel(TestCase):
         data_to_return.is_from_db = True
         
 
-        with patch.object(Model, "get_model", return_value=data_to_return):
+        lesson = LessonModel(12)
+        lesson.is_from_db = True
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        with patch.object(LessonModel, 'get_model', return_value=lesson):
+            with patch.object(Model, "get_model", return_value=data_to_return):
 
-            self.mock_model = Mock()
+                db = MagicMock()
+                db.cursor = MagicMock()
 
-            # act
-            self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
-        
-            # assert functions was called
-            Model.get_model.assert_called()
+                self.mock_model = Mock()
 
-            self.assertEqual(34, self.viewmodel.model.id)
-            self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
-            self.assertEqual("http://bbc.co.uk/xxou343hhYY", self.viewmodel.model.page_uri)
+                # act
+                self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
+            
+                # assert functions was called
+                Model.get_model.assert_called()
+
+                self.assertEqual(34, self.viewmodel.model.id)
+                self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
+                self.assertEqual("http://bbc.co.uk/xxou343hhYY", self.viewmodel.model.page_uri)
 
     
     def test_init_called_override_return_url(self):
@@ -72,19 +77,23 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         data_to_return.is_from_db = True
         
-        with patch.object(Model, "get_model", return_value=data_to_return):
+        lesson = LessonModel(12)
+        lesson.is_from_db = True
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        with patch.object(LessonModel, 'get_model', return_value=lesson):
+            with patch.object(Model, "get_model", return_value=data_to_return):
 
-            self.mock_model = Mock()
+                db = MagicMock()
+                db.cursor = MagicMock()
 
-            # act
-            self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
+                self.mock_model = Mock()
 
-            # assert functions was called
-            Model.get_model.assert_called()
+                # act
+                self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
+                
+                # assert functions was called
+                Model.get_model.assert_called()
 
-            self.assertEqual(34, self.viewmodel.model.id)
-            self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
-            self.assertEqual("/api/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)
+                self.assertEqual(34, self.viewmodel.model.id)
+                self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
+                self.assertEqual("/api/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)

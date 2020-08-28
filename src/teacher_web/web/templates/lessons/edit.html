@@ -37,8 +37,11 @@
 
 {% block maincontent %}
 {% if content.data.is_copy %}
-<div class="alert alert-warning">
+<div class="alert alert-warning" role="alert">
   <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 {% endif %}
 

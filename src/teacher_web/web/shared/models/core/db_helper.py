@@ -89,7 +89,7 @@ class ExecHelper:
             # DO THE WORK
             self.cur.callproc(sql, params)
             result = self.cur.fetchall()
-
+        
             self.commit()
 
         except Exception as e:
@@ -104,7 +104,7 @@ class ExecHelper:
 
             if log_info is not None:
                 log_info(self.db, "ExecHelper.select", "executed:{}, with results: fetchall returned = {}".format(sql, result), LOG_TYPE.Verbose)
-                
+        
         return result
 
 

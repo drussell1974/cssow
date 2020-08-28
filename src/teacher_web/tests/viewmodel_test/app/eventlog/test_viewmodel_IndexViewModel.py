@@ -13,7 +13,8 @@ class fake_settings:
     PAGER = {
         "default":{
             "page": 1,
-            "pagesize": 20 
+            "pagesize": 20,
+            "pagesize_options": [5,10,25,50,100]
         }
     }
 
@@ -210,7 +211,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             "subcategory":"",
             "page":"2",
             "pagesize":"25",
-            "direction":"prev"
+            "page_direction":"-1"
         }
 
         on_get_all__data_to_return = []

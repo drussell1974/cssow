@@ -70,9 +70,21 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def test_page__show_published_only(self):
         # arrange
-        section = self.test_context.find_elements_by_class_name('post-preview')
-        # assert
-        result = len(section)
-        self.assertEqual(26, result, "number of elements not as expected")
+
+        # array of expected items per pages
+
+        expected_item_per_page = [10,10,6,0]
+
+        for expected_elems in expected_item_per_page: # cycle pages
+            """ cycle each page """
+
+            section = self.test_context.find_elements_by_class_name('post-preview')
+            # assert
+            result = len(section)
+            self.assertEqual(expected_elems, result, "number of elements not as expected")
+
+            elem_next = self.test_context.find_element_by_id("btn-pager--next")
+            elem_next.click()
+            self.wait()
 
 

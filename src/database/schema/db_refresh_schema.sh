@@ -92,6 +92,9 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get.sql
 echo lesson__get_all
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_all.sql
 
+echo lesson__get_filtered
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_filtered.sql
+
 echo lesson__get_all_keywords
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/lesson__get_all_keywords.sql
 

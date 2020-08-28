@@ -110,7 +110,9 @@ class LearningObjectiveModel (BaseModel):
     #248 Added parameters
     def get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
         rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
+        #TODO: return None
         model = LearningObjectiveModel(0)
+        
         for row in rows:
             model = LearningObjectiveModel(
                 id_ = row[0],

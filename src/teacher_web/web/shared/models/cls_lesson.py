@@ -3,6 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from .core.log import handle_log_info, handle_log_error
+from .utils.pager import Pager
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
 from .cls_resource import ResourceDataAccess, ResourceModel
@@ -10,6 +11,16 @@ from .cls_keyword import KeywordDataAccess, KeywordModel
 from .cls_topic import TopicModel
 from .cls_year import YearModel
 from .cls_ks123pathway import KS123PathwayModel
+
+class LessonFilter(Pager):
+
+    def __init__(self, pagesize_options, page = 1, pagesize = 20, page_direction = 0):
+        # base
+        super().__init__(pagesize_options, page, pagesize, page_direction)
+
+
+    def valiidate(self):
+        super().validate()
 
 
 class LessonModel (BaseModel):
@@ -203,13 +214,14 @@ class LessonModel (BaseModel):
             model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
             model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
             data.append(model)
+        
         return data
 
 
     @staticmethod
     def get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id=0):
         rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-        model = LessonModel(lesson_id, "")
+        model = None
         for row in rows:
             model = LessonModel(
                 id_=row[0],
@@ -241,7 +253,59 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, auth_user):
-        rows = LessonDataAccess.get_all(db, scheme_of_work_id, auth_user)
+        rows = LessonDataAccess.get_all(db, 
+            scheme_of_work_id, 
+            auth_user)
+
+        data = []
+        for row in rows:
+            model = LessonModel(
+                id_=row[0],
+                title = row[1],
+                order_of_delivery_id=row[2],
+                scheme_of_work_id=row[3],
+                scheme_of_work_name=row[4],
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                year_name=row[13],
+                summary=row[14],
+                created=row[15],
+                created_by_id=row[16],
+                created_by_name=row[17],
+                published = row[18]
+            )
+            
+            ' get the key words from the learning objectives '
+            model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
+            ' get the number of learning objectives ' 
+            model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+            ' get number of learning objectives for this lesson '
+            model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
+            ' get number of resources for this lesson '
+            model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            ' get related topics '
+            model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
+            ' get ks123 pathways '
+            model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id, auth_user)
+            
+            # TODO: remove __dict__ . The object should be serialised to json further up the stack
+            data.append(model.__dict__)
+        return data
+
+    @staticmethod
+    def get_filtered(db, scheme_of_work_id, search_criteria, auth_user):
+        rows = LessonDataAccess.get_filtered(db, 
+            scheme_of_work_id, 
+            search_criteria.page,
+            search_criteria.pagesize,
+            auth_user)
+
         data = []
         for row in rows:
             model = LessonModel(
@@ -301,15 +365,6 @@ class LessonModel (BaseModel):
             data.append(try_int(row[0]))
         return data
 
-    '''
-    @staticmethod
-    def get_key_words(db, lesson_id):
-        rows = LessonDataAccess.get_key_words(db, lesson_id)
-        to_dict = {}
-        for id, name in rows:
-            to_dict[id] = name
-        return to_dict
-    '''
 
     @staticmethod
     def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
@@ -407,6 +462,27 @@ class LessonDataAccess:
 
         select_sql = "lesson__get_all"
         params = (scheme_of_work_id, auth_user); 
+
+        rows = []    
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
+        return rows
+
+
+    @staticmethod
+    def get_filtered(db, scheme_of_work_id, page, pagesize, auth_user):
+        """
+        get lessons for the scheme of work
+
+        :param db:database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :return: list of lessons for the scheme of work
+        """
+        
+        execHelper = ExecHelper()
+
+        select_sql = "lesson__get_filtered"
+        params = (scheme_of_work_id, page - 1, pagesize, auth_user); 
 
         rows = []    
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -539,7 +615,7 @@ class LessonDataAccess:
         str_select = "lesson__get_options"
 
         params = (scheme_of_work_id, auth_user)
-
+        
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         

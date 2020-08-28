@@ -75,16 +75,8 @@ class test_db__get_model(TestCase):
             ResourceModel.get_all.assert_not_called()
             LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
 
-            self.assertEqual(101, actual_results.id)
-            self.assertEqual("", actual_results.title),
-            self.assertEqual(0, actual_results.topic_id),
-            self.assertEqual("", actual_results.topic_name),
-            self.assertEqual(0, actual_results.parent_topic_id),
-            self.assertEqual("", actual_results.parent_topic_name),
-            self.assertEqual("", actual_results.summary)
-            self.assertEqual([], actual_results.key_words)
-            self.assertFalse(actual_results.is_from_db)
-        
+            self.assertIsNone(actual_results)        
+
 
     def test__should_call_select__return_single_item(self):
         # arrange

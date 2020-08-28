@@ -7,6 +7,7 @@ from shared.models.cls_eventlog import EventLogModel, EventLogFilter, handle_log
 
 get_all = EventLogModel.get_all
 
+
 class test_db__get_all(TestCase):
 
 
@@ -34,7 +35,7 @@ class test_db__get_all(TestCase):
         # arrange
         expected_result = []
 
-        search_criteria = EventLogFilter(2, 100, date_from="2020-08-23 00:00:00", date_to="2020-08-23 00:00:01", category="volutpat", subcategory="dolor")
+        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100, date_from="2020-08-23 00:00:00", date_to="2020-08-23 00:00:01", category="volutpat", subcategory="dolor")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -58,7 +59,7 @@ class test_db__get_all(TestCase):
             (1029, "2020-08-23 03:49:56", LOG_TYPE.Error, "An error occured doing some stuff", "nec arcu nec dolor vehicula ornare non.", "A", "B"),
             ]
 
-        search_criteria = EventLogFilter(page=0, pagesize=0, date_from="25-07-2020T06:30", date_to="25-08-2020T06:30", event_type=2, category="nec", subcategory="")
+        search_criteria = EventLogFilter([5,10,25,50,100], page=0, pagesize=0, date_from="25-07-2020T06:30", date_to="25-08-2020T06:30", event_type=2, category="nec", subcategory="")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -93,7 +94,7 @@ class test_db__get_all(TestCase):
             (1023, "2020-08-23 03:48:01", LOG_TYPE.Warning, "Validation errors", "rutrum lorem a arcu ultrices, id mollis", "Z", "A")
         ]
 
-        search_criteria = EventLogFilter(page=1, pagesize=20, date_from="04-07-2020T16:13", date_to="21-07-2020T00:00", event_type=1, category="nec", subcategory="volutpat")
+        search_criteria = EventLogFilter([5,10,25,50,100], page=1, pagesize=20, date_from="04-07-2020T16:13", date_to="21-07-2020T00:00", event_type=1, category="nec", subcategory="volutpat")
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act

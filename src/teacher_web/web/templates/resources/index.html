@@ -19,32 +19,44 @@
 
 {% block sidecontent %}
 <!-- Blackboard display button START -->
-<section class="alert alert-secondary">
-  <a href="{% url 'lesson.whiteboard_view' content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
-    {{_("Blackboard display")}}
-  </a>
+<section class="card widget widget-button widget-button--blackboard">
+  <div class="alert alert-secondary">
+    <a href="{% url 'lesson.whiteboard_view' content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+      {{_("Blackboard display")}}
+    </a>
+  </div>
 </section>
 <!-- Blackboard display button END -->
-<!-- SIDE MENU START -->
-<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("Show lessons")}}
-      <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="sidebarResponsive">
-    <ul class="navbar-nav flex-column fillspace">
-      {% for opt in content.data.lesson_options %}
-      <li class="nav-item {% if opt.id == content.data.lesson_id %}mark{% endif %}">
-          <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
-            {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
-          </a>
-      </li>
-    {% endfor %}
-    </ul>
-  </div><!-- class="collapse navbar-collapse" id="sidebarResponsive" -->
-</nav><!-- class="navbar navbar-expand-lg navbar-light" id="sidebarNav" -->
 
+<!-- SIDE MENU START -->
+<section class="card widget widget-sidenav">
+  <div class="card-body">
+    <div class="card-header widget-heading">
+      <h5 class="card-title">{{_("Lessons")}}</h5>
+    </div>
+    <div class="card-text">
+      <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+        <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+            {{_("Show lessons")}}
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="sidebarResponsive">
+          <ul class="navbar-nav flex-column fillspace">
+            {% for opt in content.data.lesson_options %}
+            <li class="nav-item {% if opt.id == content.data.lesson_id %}mark{% endif %}">
+                <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
+                  {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
+                </a>
+            </li>
+          {% endfor %}
+          </ul>
+        </div><!-- class="collapse navbar-collapse" id="sidebarResponsive" -->
+      </nav><!-- class="navbar navbar-expand-lg navbar-light" id="sidebarNav" -->
+    </div>
+  </div>
+</section>
 <!-- SIDE MENU END -->
+
 {% endblock %}
 
 
@@ -86,7 +98,7 @@
         <a class="btn btn-outline-dark nav-link" id="btn-edit" href="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}?next={{ request.url }}">{{_("edit")}}</a> 
       </li>
       <li class="nav-item">
-        <a class="btn btn-outline-dark nav-link" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("copy")}}</a>
+        <a class="btn btn-outline-dark nav-link" href="{% url 'lesson.copy' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("copy")}}</a>
       </li>
     </ul>
   </div>
@@ -96,7 +108,7 @@
 <!-- Pager Header -->      
 {% if request.user.is_authenticated %}
   <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'resource.new' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("add")}}</a>
+    <a class="btn btn-warning" id="btn-new" href="{% url 'resource.new' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Resources")}}</h2>
@@ -104,8 +116,11 @@
 <!-- Pager Header END -->      
 
 {% if content.data.resources|length == 0 %}
-<div class="alert alert-info" role="alert">
+<div class="alert alert-warning" role="alert">
     <span class="large">{{_('There are no resources for this lesson.')}}</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 {% else %}
   {% for row in content.data.resources %}

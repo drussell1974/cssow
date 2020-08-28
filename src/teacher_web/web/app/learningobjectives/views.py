@@ -36,42 +36,9 @@ def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
-    lesson = get_lesson_view.model
-
-    #253 check user id
-    learningobjectives_view = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+    learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
     
-    #253 check user id
-    lesson_options = LessonModel.get_options(db, scheme_of_work_id, auth_user_id(request))  
-    
-    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_user_id(request))
-
-    # group objectives by solo taxonomy    
-    learning_objectives_by_solo_group = {}
-
-    for solo in solo_taxonomy_options:
-        """ create dictionary item for each group """
-        
-        learning_objectives_by_solo_group[solo.id] = solo
-
-
-    for learning_objective in learningobjectives_view.model:
-        """ add the learning objective to it's respective group """
-        learning_objectives_by_solo_group[learning_objective["solo_taxonomy_id"]].learning_objectives.append(learning_objective)
-    
-    data = {
-        "scheme_of_work_id":int(scheme_of_work_id),
-        "lesson_id":int(lesson_id),
-        "lesson": lesson,
-        "learning_objectives": learningobjectives_view.model,
-        "learning_objectives_by_solo_group": learning_objectives_by_solo_group,
-        "lesson_options": lesson_options,
-    }
-
-    view_model = ViewModel("", lesson.title, lesson.summary, data=data)
-    
-    return render(request, "learningobjectives/index.html", view_model.content)
+    return render(request, "learningobjectives/index.html", learningobjectivesviewmodel.view().content)
 
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')

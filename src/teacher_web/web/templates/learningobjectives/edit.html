@@ -24,87 +24,89 @@
 
 
 {% block maincontent %}
-<!-- #231: needs-validation class to select form in formValidation.js -->
-<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
-    {% csrf_token %}
-    
-    <!-- show error_message -->
-    {% include '_partials/form.viewmodel.alert_message.html' %}
-    <!-- show error_message END -->
-    
-    <!-- Description START -->
-    <div class="control-group">
-        <div class="form-group controls">
-        <label>{{_("Description")}}</label>
-        <input type="text" class="form-control" placeholder="{{_('Enter a description')}}" id="ctl-description" name="description" required
-                maxlength="1000" value='{{content.data.learningobjective.description}}'>
-        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+<article class="widget widget-form widget-learningobjective-form">
+    <!-- #231: needs-validation class to select form in formValidation.js -->
+    <form name="edit-learningobjective" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
+        {% csrf_token %}
+        
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        
+        <!-- Description START -->
+        <div class="control-group">
+            <div class="form-group controls">
+            <label>{{_("Description")}}</label>
+            <input type="text" class="form-control" placeholder="{{_('Enter a description')}}" id="ctl-description" name="description" required
+                    maxlength="1000" value='{{content.data.learningobjective.description}}'>
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
         </div>
-    </div>
-    <!-- Description END -->
-    <!-- Group Name START -->
-    <div class="control-group">
-        <div class="form-group controls">
-        <label>{{_("Group name")}}</label>
-        <input type="text" class="form-control" placeholder="{{_('Enter a group name (optional)')}}" id="ctl-group_name" name="group_name"
-                maxlength="15" value='{{content.data.learningobjective.group_name}}'>
-        <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+        <!-- Description END -->
+        <!-- Group Name START -->
+        <div class="control-group">
+            <div class="form-group controls">
+            <label>{{_("Group name")}}</label>
+            <input type="text" class="form-control" placeholder="{{_('Enter a group name (optional)')}}" id="ctl-group_name" name="group_name"
+                    maxlength="15" value='{{content.data.learningobjective.group_name}}'>
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
         </div>
-    </div>
-    <!-- Group Name END -->
+        <!-- Group Name END -->
 
-    <!-- Notes START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Notes")}}</label>
-            <input type="text"  class="form-control" name="notes" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.learningobjective.notes}}" />
-            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+        <!-- Notes START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Notes")}}</label>
+                <input type="text"  class="form-control" name="notes" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.learningobjective.notes}}" />
+                <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
         </div>
-    </div>
+        <hr>
+        <!-- Notes END -->
+        <div class="card-body alert-secondary">
+            <!-- Content START -->
+            <div class="control-group">
+                <div class="form-group controls">
+                <label>{{_("Curriculum")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-content_id" ></i> </label>
+                <select class="form-control" name="content_id" id="ctl-content_id" required>
+                    <option value="">- {{_("Select an option")}} -</option>
+                    {% for opt in content.data.content_options %}
+                    <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>
+                    {% endfor %}
+                </select>
+                <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+                </div>
+            </div>
+            <!-- Content END -->
+            <!-- Solo Taxonomy START -->
+            <div class="control-group">
+                <div class="form-group controls">
+                <label>{{_("Solo taxonomy")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-solo_taxonomy_id" ></i> </label>
+                <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
+                    <option value="">- {{_("Select an option")}} -</option>
+                    {% for opt in content.data.solo_taxonomy_options %}
+                        <option value={{opt.id}} {% if opt.id == content.data.learningobjective.solo_taxonomy_id %} selected {% endif %}>{{opt.name}}</option>
+                    {% endfor %}
+                </select>
+                <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+                </div>
+            </div>
+        <!-- Solo Taxonomy END -->
+        </div>
+        <br>
+        <div id="success"></div>
+        <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
+        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+        <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
+        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+        <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
+        <div class="form-group stackable-group stackable-group-sm">
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+    </form>
     <hr>
-    <!-- Notes END -->
-    <div class="card-body alert-secondary">
-        <!-- Content START -->
-        <div class="control-group">
-            <div class="form-group controls">
-            <label>{{_("Curriculum")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-content_id" ></i> </label>
-            <select class="form-control" name="content_id" id="ctl-content_id" required>
-                <option value="">- {{_("Select an option")}} -</option>
-                {% for opt in content.data.content_options %}
-                <option value="{{opt.id}}" {% if opt.id == content.data.learningobjective.content_id %} selected {% endif %}>{{opt.description}}</option>
-                {% endfor %}
-            </select>
-            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
-            </div>
-        </div>
-        <!-- Content END -->
-        <!-- Solo Taxonomy START -->
-        <div class="control-group">
-            <div class="form-group controls">
-            <label>{{_("Solo taxonomy")}} <i class="fa fa-lock form-control--lock" data-target="#ctl-solo_taxonomy_id" ></i> </label>
-            <select class="form-control" name="solo_taxonomy_id" id="ctl-solo_taxonomy_id" required>
-                <option value="">- {{_("Select an option")}} -</option>
-                {% for opt in content.data.solo_taxonomy_options %}
-                    <option value={{opt.id}} {% if opt.id == content.data.learningobjective.solo_taxonomy_id %} selected {% endif %}>{{opt.name}}</option>
-                {% endfor %}
-            </select>
-            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
-            </div>
-        </div>
-    <!-- Solo Taxonomy END -->
-    </div>
-    <br>
-    <div id="success"></div>
-    <input type="hidden" name="id" value="{{content.data.learningobjective.id}}">
-    <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-    <input type="hidden" name="key_stage_id" value="{{content.data.learningobjective.key_stage_id}}">
-    <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-    <input type="hidden" name="next" value="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}" > 
-    <div class="form-group stackable-group stackable-group-sm">
-        {% include '_partials/form.buttons.validation.html' %}
-    </div>
-</form>
-<hr>
+</article>
 {% endblock %}
 
 {% block page_js %}

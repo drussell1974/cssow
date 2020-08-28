@@ -1,26 +1,21 @@
-<!-- REQUIRES: content.data.search_criteria.pagesize -->
-<!-- REQUIRES: content.data.search_criteria.page -->
-<!-- REQUIRES: content.data.search_criteria.page_direction -->
-<!-- REQUIRES: content.data.search_criteria.page_direction_reset -->
-<!-- USE: shared.models.utils.Pager -->
-<!-- REQUIRES: content.data.settings.PAGER.default.pagesize_options -->
+<!-- search_criteria -->
 <div class="form-group stackable-group stackable-group-sm">
     <div class="control-group">
-      <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="{{ content.data.search_criteria.page_direction_reset }}">{{_("Search")}}</button>
-      <label class="stackable btn">{{_("page size")}}</label>        
-      <select class="btn btn-outline-secondary stackable" name="pagesize" >
-        {% for pagesize in content.data.settings.PAGER.default.pagesize_options %}
+      <button type="submit" class="btn btn-primary stackable" name="page_direction" value="{{ content.data.search_criteria.page_direction_reset }}">{{_("Search")}}</button>
+      <select class="btn btn-outline-secondary stackable" name="pagesize">
+        {% for pagesize in content.data.search_criteria.pagesize_options %}
         {% if content.data.search_criteria.pagesize == pagesize %}
         <option class="" value="{{ pagesize }}" selected>{{ pagesize }}</option>
         {% else %}
         <option class="" value="{{ pagesize }}">{{ pagesize }}</option>
         {% endif %}}
       {% endfor %}
-      </select>
-      <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="-1">&lt;</button>
-      <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="1">&gt;</button>
-      <input type="hidden" name="page" value="{{ content.data.search_criteria.page }}" />
-      <label class="stackable btn">{{_("page")}}  {{ content.data.search_criteria.page }}</label>
-    </div>
+    </select>
+    <label class="stackable btn">{{_("page size")}}</label>        
+    <button type="submit" class="btn btn-outline-secondary stackable" name="page_direction" value="-1" id="btn-pager--prev">&lt;</button>
+    <button type="submit" class="btn btn-outline-secondary stackable" name="page_direction" value="1" id="btn-pager--next">&gt;</button>
+    <input type="hidden" name="page" value="{{ content.data.search_criteria.page }}" />
+    <label class="stackable btn">{{_("page")}}  {{ content.data.search_criteria.page }}</label>
   </div>
-
+</div>
+<!-- search_criteria // END-->

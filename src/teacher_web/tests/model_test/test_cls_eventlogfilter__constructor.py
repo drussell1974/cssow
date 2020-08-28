@@ -3,9 +3,21 @@ from unittest import TestCase
 from shared.models.cls_eventlog import EventLogFilter
 
 
+class fake_settings:
+    PAGER = {
+        "default":{
+            "page": 1,
+            "pagesize": 20,
+            "pagesize_options": [ 3, 5, 10, 25, 50, 100 ]
+        }
+    },
+    ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
+
+
 class test_cls_eventlogfilter__constructor(TestCase):
 
     def setUp(self):
+        self.fake_settings = fake_settings()
         pass
 
     def tearDown(self):
@@ -15,7 +27,7 @@ class test_cls_eventlogfilter__constructor(TestCase):
     def test_constructor_default(self):
 
         # self.test
-        self.test = EventLogFilter(1, 20)
+        self.test = EventLogFilter(self.fake_settings, 1, 20)
         self.test.date_from = datetime(2020, 7, 23, 7, 9, 20)
         self.test.date_to = datetime(2020, 8, 23, 7, 9, 20)
         
@@ -34,6 +46,7 @@ class test_cls_eventlogfilter__constructor(TestCase):
 
         # self.test
         self.test = EventLogFilter( 
+            self.fake_settings,
             page=0,
             pagesize=0,
             date_from="23-07-2020 02:31:23",
@@ -56,7 +69,8 @@ class test_cls_eventlogfilter__constructor(TestCase):
     def test_constructor_date_range_invalid(self):
 
         # self.test
-        self.test = EventLogFilter(  
+        self.test = EventLogFilter(
+            self.fake_settings.PAGER,
             page=99,
             pagesize=100,
             date_from="23-08-2020 02:31:24",

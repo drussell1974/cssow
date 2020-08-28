@@ -32,7 +32,7 @@
 
 {% block maincontent %}
 
-<form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
+<form name="edit-content" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
     {% csrf_token %}
    
     <!-- show error_message -->
