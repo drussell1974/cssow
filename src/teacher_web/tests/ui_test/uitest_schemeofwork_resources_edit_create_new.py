@@ -46,7 +46,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','Create new resource for Types of CPU architecture')
 
 
     def test_page__markdownfile_type_stay_on_same_page_if_invalid(self):
@@ -56,7 +56,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
+        self.wait(s=2)
         # test
 
         ' Create valid information '
@@ -85,7 +85,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','Create new resource for Types of CPU architecture')
         
         
 

@@ -1,0 +1,28 @@
+{% extends '_partials/__layout.html' %}
+
+{% block contentheading %}
+<section class="widget widget-content-header">
+  <div class="p-3 mb-2 bg-info text-white">
+    <h5 class="secondary-heading">{{ content.main_heading }}</h5>
+    {% if content.strap_line is not None %}
+      <p class="lead">{{ content.strap_line }}</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+
+{% block content %}
+  <div class="col-xl-4 col-lg-4 col-md-10 mx-auto">
+    <!-- sidecontent START-->
+    {% block sidecontent %}
+    {% endblock %} 
+    <!-- sidecontent END -->
+  </div>
+  <div class="col-xl-8 col-lg-8 col-md-10 mx-auto">
+    <!-- maincontent START -->
+    {% block maincontent %}
+    {% endblock %}
+    <!-- maincontent END -->
+  </div>
+{% endblock %}

@@ -1,12 +1,13 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-      <div class="container">
-        <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
+<section class="widget widget-breadcrumb widget-breadcrumb--schemeofwork-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
                 </li>
                 <!-- SHOULD ONLY DISPLAY IF EXISTING -->
                 {% if content.data.scheme_of_work.id > 0 %}
@@ -15,18 +16,9 @@
                     </li>
                 {% endif %}
             </ul>
-    </div>
-</nav>
-{% endblock %}
-
-
-{% block contentheading %}
-  <div class="alert alert-secondary">
-    <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
-    {% if content.strap_line is not None %}
-      <p class="lead">{{ content.strap_line }}</p>
-    {% endif %}
-  </div>
+        </div>
+    </nav>
+</section>
 {% endblock %}
 
 

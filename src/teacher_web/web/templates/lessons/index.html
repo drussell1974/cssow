@@ -1,24 +1,26 @@
-{% extends 'default/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-  <div class="container">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
-            {{_("Schemes of Work")}}
-          </a>
-        </li>
-      </ul>
-  </div>
-</nav>
+<section class="widget widget-breadcrumb widget-breadcrumb--lessons-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+              {{_("Schemes of Work")}}
+            </a>
+          </li>
+        </ul>
+    </div>
+  </nav>
+</section>
 {% endblock %}
 
 
 {% block sidecontent %}
 <section class="card widget widget--sidebar">
   <div class="card-body">
-    <div class="card-header widget-header">
-      <h5 class="card-headig">{{_("Scheme of work")}}</h5>
+    <div class="card-header widget-header d-none d-lg-block">
+      <h5 class="card-heading">{{_("Scheme of work")}}</h5>
     </div>
     <div class="card-text widget-main">
       <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
@@ -76,15 +78,19 @@
     </div>
   {% endif %}
 
-  {% for row in content.data.lessons %}
-
+  {% for row in content.data.lessons %} 
   <div class="post-preview {{ row.published_state }}">
     <a name="{{row.id}}"></a>
-    
-    <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">
+    <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
+      <div class="float-right card">
+        <div class="card-body">
+        <h5 class="small text-muted">Lesson {{ row.order_of_delivery_id }}</h5>  
+        <h6 class="small text-muted">{{ row.year_name }}</h6>  
+      </div>
+      </div>
       <h3 class="post-title">
-        Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
-      </h3>
+        {{ row.title }}
+      </h3>   
       {% if row.summary != "" %}
         <h4 class="post-subtitle">{{ row.summary }}</h4>
       {% endif %}

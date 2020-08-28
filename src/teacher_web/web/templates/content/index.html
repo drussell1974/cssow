@@ -1,5 +1,6 @@
-{% extends 'default/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
 {% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--content-index">
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
   <div class="container">
       <ul class="navbar-nav ml-auto">
@@ -11,6 +12,7 @@
       </ul>
   </div>
 </nav>
+</section>
 {% endblock %}
 
 
@@ -18,7 +20,7 @@
 
 <section class="card widget widget--sidebar">
   <div class="card-body">
-    <div class="card-header widget-heading">
+    <div class="card-header widget-header d-none d-lg-block">
       <h5 class="card-title">{{_("Scheme of work")}}</h5>
     </div>
     <div class="card-text">

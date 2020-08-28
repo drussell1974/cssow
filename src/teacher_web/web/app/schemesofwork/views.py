@@ -109,7 +109,7 @@ def edit(request, scheme_of_work_id = 0):
         delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=model.number_of_resources)
     delete_message = delete_message + "</ul>"
 
-    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "New", data=data, active_model=model, error_message=error_message, alert_message="", delete_dialog_message=delete_message)
+    view_model = ViewModel("", "Schemes of Work", model.name if len(model.name) != 0 else "Create new scheme of work", data=data, active_model=model, error_message=error_message, alert_message="", delete_dialog_message=delete_message)
 
     return render(request, "schemesofwork/edit.html", view_model.content)
 

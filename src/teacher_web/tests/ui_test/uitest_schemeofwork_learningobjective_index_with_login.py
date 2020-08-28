@@ -26,5 +26,5 @@ class test_schemeofwork_learningobjective_index_with_login(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
 

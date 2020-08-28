@@ -1,51 +1,45 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-  <div class="container">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
-            {{_("Schemes of Work")}}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
-            {{_("Lessons")}}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
-            {{_("Objectives")}}
-          </a>
-        </li>
-      </ul>
-  </div>
-</nav>
-{% endblock %}
-
-
-{% block contentheading %}
-  <div class="alert alert-secondary">
-    <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
-    {% if content.strap_line is not None %}
-      <p class="lead">{{ content.strap_line }}</p>
-    {% endif %}
-  </div>
+<section class="widget widget-breadcrumb widget-breadcrumb--lesson-edit">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+              {{_("Schemes of Work")}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+              {{_("Lessons")}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+              {{_("Objectives")}}
+            </a>
+          </li>
+        </ul>
+    </div>
+  </nav>
+</section>
 {% endblock %}
 
 
 {% block maincontent %}
-{% if content.data.is_copy %}
-<div class="alert alert-warning" role="alert">
-  <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endif %}
 
-<form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}">
+<article class="widget widget-form widget-lesson-form">
+  {% if content.data.is_copy %}
+  <div class="alert alert-warning" role="alert">
+    <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}">
     {% csrf_token %}
 
     <!-- show error_message -->
@@ -185,7 +179,8 @@
     <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
     <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
     <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
-  </form><!-- form#form -->
+  </form>
+</article>
 {% endblock %}
 
 {% block head_css %} 

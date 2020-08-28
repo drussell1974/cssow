@@ -136,7 +136,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model, alert_message="", error_message=error_message)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, data=data, active_model=model, alert_message="", error_message=error_message)
     
     return render(request, "lessons/edit.html", view_model.content)
 

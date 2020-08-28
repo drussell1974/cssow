@@ -45,7 +45,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.wait()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new lesson for A-Level Computer Science')
 
 
     def test_page__should_have_sidenav(self):

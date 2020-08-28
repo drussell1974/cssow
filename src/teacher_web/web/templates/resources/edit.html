@@ -1,127 +1,132 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-      <div class="container">
-          <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link parent" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="btn-bc-resources" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Resources")}}</a>
-                </li>
-            </ul>
-    </div>
-</nav>
+<section class="widget widget-breadcrumb widget-breadcrumb--resources-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="btn-bc-resources" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Resources")}}</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+</section>
 {% endblock %}
 
 {% block maincontent %}
-<form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
-    {% csrf_token %}
 
-    <!-- show error_message -->
-    {% include '_partials/form.viewmodel.alert_message.html' %}
-    <!-- show error_message END -->
-    
-    <!-- Type START -->
-    <div class="control-group">
-        <div class="form-group  controls">
-            <label>{{_("Type")}}</label>
-            <select class="form-control" name="type_id" id="ctl-type_id" required>
-                <option value="">- {{_("Select an option")}} -</option>
-                {% for opt in content.data.get_resource_type_options %}
-                <option value="{{opt.id}}" {% if opt.id == content.data.resource.type_id %} selected {% endif %}>{{opt.name}}</option>
-                {% endfor %}
-            </select>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+<article class="widget widget-form widget-resource-form">
+    <form name="edit-resource" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'resource.save' content.data.scheme_of_work_id content.data.lesson_id content.data.resource.id %}">
+        {% csrf_token %}
+
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        
+        <!-- Type START -->
+        <div class="control-group">
+            <div class="form-group  controls">
+                <label>{{_("Type")}}</label>
+                <select class="form-control" name="type_id" id="ctl-type_id" required>
+                    <option value="">- {{_("Select an option")}} -</option>
+                    {% for opt in content.data.get_resource_type_options %}
+                    <option value="{{opt.id}}" {% if opt.id == content.data.resource.type_id %} selected {% endif %}>{{opt.name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
         </div>
-    </div>
-    <!-- Type END -->
+        <!-- Type END -->
 
-    <!-- Title START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Title")}}</label>
-            <input type="text" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" name="title" required
-                    maxlength="300" value='{{content.data.resource.title}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        <!-- Title START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Title")}}</label>
+                <input type="text" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-title" name="title" required
+                        maxlength="300" value='{{content.data.resource.title}}'>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
         </div>
-    </div>
-    <!-- Title END -->
+        <!-- Title END -->
 
-    <!-- Notes START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Summary")}}</label>
-            <input type="text" class="form-control" name="page_note" placeholder="{{_('notes')}}" id="ctl-notes" maxlength="2500" value="{{content.data.resource.page_note}}" required />        
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        <!-- Notes START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Summary")}}</label>
+                <input type="text" class="form-control" name="page_note" placeholder="{{_('notes')}}" id="ctl-notes" maxlength="2500" value="{{content.data.resource.page_note}}" required />        
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
         </div>
-    </div>
-    <!-- Notes END -->
+        <!-- Notes END -->
 
-    <!-- Publisher START -->
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Publisher")}}</label>
-            <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
-                    maxlength="250" value='{{content.data.resource.publisher}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        <!-- Publisher START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Publisher")}}</label>
+                <input type="text" class="form-control" placeholder="{{_('Enter Publisher')}}" id="ctl-publisher" name="publisher" required 
+                        maxlength="250" value='{{content.data.resource.publisher}}'>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
         </div>
-    </div>
-    <!-- Publisher END -->
+        <!-- Publisher END -->
 
-    <!-- URI START -->
-    <div class="control-group" id="page_uri--control-group" style="display:none;">
-        <div class="form-group  controls">
-            <label><a href="{{content.data.resource.page_uri}}" target="_blank" >{{_("Url")}}</a></label>
-            <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
-                    maxlength="2083" value='{{content.data.resource.page_uri}}'>
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        <!-- URI START -->
+        <div class="control-group" id="page_uri--control-group" style="display:none;">
+            <div class="form-group  controls">
+                <label><a href="{{content.data.resource.page_uri}}" target="_blank" >{{_("Url")}}</a></label>
+                <input type="text" name="page_uri" class="form-control" placeholder="{{_('Enter a link, starting http or https (optional)')}}" id="ctl-uri"
+                        maxlength="2083" value='{{content.data.resource.page_uri}}'>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
         </div>
-    </div>
-    <!-- URI END -->
+        <!-- URI END -->
 
-    <!-- Upload File START -->
-    <div class="control-group" id="md_document--control-group" style="display:none">
-        <!-- Upload Control -->
-        <div class="form-group controls" id="md_document-upload--control">
-            <label>{{_("Upload markdown document")}}</label>
-            <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" name="md_file"  
-                    maxlength="200" accept="text/markdown" id="ctl-md_file" >
-            <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+        <!-- Upload File START -->
+        <div class="control-group" id="md_document--control-group" style="display:none">
+            <!-- Upload Control -->
+            <div class="form-group controls" id="md_document-upload--control">
+                <label>{{_("Upload markdown document")}}</label>
+                <input type="file" class="form-control" placeholder="{{_('Upload markdown document')}}" name="md_file"  
+                        maxlength="200" accept="text/markdown" id="ctl-md_file" >
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+            
+            <!-- Preview -->
+            <div class="form-group controls" id="md_document-preview--control">
+                <button class="btn btn-outline-secondary small" type="button" id="btn-markdown_preview" data-toggle="collapse" data-target="#collapseMarkdown" aria-expanded="false" aria-controls="collapseMarkdown">
+                    {{_("Preview markdown:")}} {{content.data.resource.md_document_name}}
+                </button>
+                <div class="collapse" id="collapseMarkdown">
+                    <div class="markdown-body bg-light overflow-auto"> 
+                        preview will appear here
+                    </div>
+                </div>
+                <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
+            </div>
+        </div>
+        <!-- Upload File END -->
+
+        <br>
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            {% include '_partials/form.buttons.validation.html' %}
         </div>
         
-        <!-- Preview -->
-        <div class="form-group controls" id="md_document-preview--control">
-            <button class="btn btn-outline-secondary small" type="button" id="btn-markdown_preview" data-toggle="collapse" data-target="#collapseMarkdown" aria-expanded="false" aria-controls="collapseMarkdown">
-                {{_("Preview markdown:")}} {{content.data.resource.md_document_name}}
-            </button>
-            <div class="collapse" id="collapseMarkdown">
-                <div class="markdown-body bg-light overflow-auto"> 
-                    preview will appear here
-                </div>
-            </div>
-            <input type="hidden" name="md_document_name" id="ctl-md_document_name" value="{{content.data.resource.md_document_name}}" />
-        </div>
-    </div>
-    <!-- Upload File END -->
-
-    <br>
-    <div id="success"></div>
-    <div class="form-group stackable-group stackable-group-sm">
-        {% include '_partials/form.buttons.validation.html' %}
-    </div>
-    
-    <input type="hidden" name="id" value="{{content.data.resource.id}}">
-    <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-    <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-    <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
-    <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
-</form>
+        <input type="hidden" name="id" value="{{content.data.resource.id}}">
+        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+        <input type="hidden" name="next" value="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+        <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
+    </form>
 <hr>
+</article>
 {% endblock %}
 
 

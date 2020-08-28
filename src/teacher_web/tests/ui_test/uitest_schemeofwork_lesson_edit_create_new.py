@@ -27,11 +27,11 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
     def test_page__should_has_correct_element(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New', 'TEST@LOCALHOST')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST@LOCALHOST')
     
         ' ensure secondary heading appears '
         elem = self.test_context.find_element_by_class_name("secondary-heading")
-        self.assertEqual("A-Level Computer Science New", elem.text)
+        self.assertEqual("Create new lesson for A-Level Computer Science", elem.text)
 
         ' topic dropdown '
         elems = self.test_context.find_elements_by_xpath(".//*[@id='ctl-topic_id']/option")
@@ -66,7 +66,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science')
         
 
     def test_page__should_redirect_to_index_if_valid(self):

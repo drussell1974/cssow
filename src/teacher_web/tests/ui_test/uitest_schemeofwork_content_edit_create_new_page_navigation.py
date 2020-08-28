@@ -25,7 +25,7 @@ class uitest_schemeofwork_content_edit_create_new_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
 
 
     """ Breadcrumb """
