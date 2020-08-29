@@ -27,7 +27,7 @@ class test_cls_eventlogfilter__constructor(TestCase):
     def test_constructor_default(self):
 
         # self.test
-        self.test = EventLogFilter(self.fake_settings, 1, 20)
+        self.test = EventLogFilter([ 3, 5, 10, 25, 50, 100 ], 1, 20)
         self.test.date_from = datetime(2020, 7, 23, 7, 9, 20)
         self.test.date_to = datetime(2020, 8, 23, 7, 9, 20)
         

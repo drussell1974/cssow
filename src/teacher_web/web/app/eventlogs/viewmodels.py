@@ -44,7 +44,7 @@ class EventLogIndexViewModel(BaseViewModel):
 
         except Exception as e:
             self.error_message = str(e)
-            raise
+            #raise
 
     def view(self):
         
