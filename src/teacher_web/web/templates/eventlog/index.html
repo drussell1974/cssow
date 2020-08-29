@@ -1,16 +1,19 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.html' %}
 {% load static %}    
 
 {% block maincontent %}
 
+  <!-- Event logs --> 
+  <article class="widget widget--eventlog-listing">
+
   <!-- Pager Header -->      
-  <h2 class="group-heading">{{_("Event log")}}</h2>
-  <hr />
+  <header class="widget widget--articleheader">
+    <h2 class="group-heading">{{_("Event log")}}</h2>
+    <hr />
+  </header>
   <!-- Pager Header END -->
 
-  <!-- Event logs -->
-    
-    <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' %}">
+    <form id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' %}#main">
       {% csrf_token %}
 
       <div class="form-group controls row stackable-group stackable-group-sm">
@@ -39,106 +42,103 @@
         <div class="control-group col-4">
           <input class="form-control stackable" type="text" name="category" placeholder="category" value="{{content.data.search_criteria.category}}" maxlength="70" id="ctl-category">
           <div class="help-block text-danger invalid-feedback"></div>
-        </div><div class="control-group col-4">
+        </div>
+        <div class="control-group col-4">
           <input class="form-control stackable" type="text" name="subcategory" placeholder="sub-category" value="{{content.data.search_criteria.subcategory}}" maxlength="70" id="ctl-subcategory">
           <div class="help-block text-danger invalid-feedback"></div>
         </div>
       </div>
-      <div class="form-group stackable-group stackable-group-sm">
-        <div class="control-group">
-          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="0">{{_("Search")}}</button>
-          <label class="stackable btn">{{_("page size")}}</label>        
-          <select class="btn btn-outline-secondary stackable" name="pagesize" >
-            {% for pagesize in content.data.settings.PAGER.default.pagesize_options %}
-            {% if content.data.search_criteria.pagesize == pagesize %}
-            <option class="" value="{{ pagesize }}" selected>{{ pagesize }}</option>
-            {% else %}
-            <option class="" value="{{ pagesize }}">{{ pagesize }}</option>
-            {% endif %}}
-          {% endfor %}
-          </select>
-          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="-1">&lt;</button>
-          <button type="submit" class="btn btn-secondary stackable" name="page_direction" value="1">&gt;</button>
-       </div>
-      </div>
+      <!-- Pager -->
+      <!-- #274: use form.pager.html partial -->
+      {% include '_partials/form.pager.search.html' %}
+      <!-- Pager // END -->
       <div class="form-group">
         <input type="hidden" name="type" />
         <input type="hidden" name="category" />
         <input type="hidden" name="subcategory" />
-        <input type="hidden" name="page" value="{{ content.data.search_criteria.page }}" />
         <input type="hidden" name="validation_errors" id="hdn-validation_errors" value="{{content.data.search_criteria.validation_errors}}" />
       </div>
     </form>
     
-  {% if content.data.event_logs|length == 0 %}
-    <div class="alert alert-info" role="alert">
-      <span class="small">{{_("There are no event logs that meet that search criteria") }}</span>
-    </div>
-  {% endif %}
-
-  <label class="stackable btn">{{_("page")}}  {{ content.data.search_criteria.page }}</label>
-
-  <table class="table" id="eventlog">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Details</th>
-      </tr>
-    </thead>
-    <tbody>
-  
-      {% for row in content.data.event_logs %}
-          <tr>
-            <th scope="row">{{row.id}}</th>
-            <td class="datetime">{{ row.created }}</td>
-          </tr>
-          <tr class="{{ row.event_type|slugify}}">
-            <td class="event_type">{{ row.event_type }}</td>
-            <td>
-              <i class="small float-right category">{{ row.category }} {{ row.subcategory }}</i>
-              <p class="message"><strong>{{ row.message }}</strong></p>
-              <p class="details">{{ row.details }}</p>
-            </td>
-          </tr>
-      {% endfor %}
-
-    </tbody>
-  </table>
-  <hr>
-  {% if request.user.is_superuser %}
-  <section class="row float-right">
-    <form action="{% url 'eventlog.delete' %}" method="POST" class="needs-validation">
-      {% csrf_token %}
-      <div class="form-group ">
-        <div class="control-group controls row">
-          <div class="control-group col-5">
-            <label>{{_("Delete logs older than:")}}</label>
-          </div>
-          <div class="control-group col-5">
-            <select name="days" class="form-control" required>
-              <option value="">{{_("Select an option")}}</option>
-              <option value="28">{{_("28 days")}}</option>
-              <option value="14">{{_("fortnight")}}</option>
-              <option value="7">{{_("1 week")}}</option>
-            </select>
-          </div>
-          <div class="control-group col-2">
-            <input type="submit" class="navbar-brand btn btn-danger btn-sm" id="btn-delete" value="{{_('Clear')}}" />
-          </div>
-        </div>
+    {% if content.data.event_logs|length == 0 %}
+      <div class="alert alert-warning" role="alert">
+        <span class="large">{{_("There are no event logs that meet that search criteria") }}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </form>
-  </section>
+    {% endif %}
 
+    <table class="table" id="eventlog">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+        {% for row in content.data.event_logs %}
+            <tr>
+              <th scope="row">{{row.id}}</th>
+              <td class="datetime">{{ row.created }}</td>
+            </tr>
+            <tr class="{{ row.event_type|slugify}}">
+              <td class="event_type">{{ row.event_type }}</td>
+              <td>
+                <i class="small float-right category">{{ row.category }} {{ row.subcategory }}</i>
+                <p class="message"><strong>{{ row.message }}</strong></p>
+                <p class="details">{{ row.details }}</p>
+              </td>
+            </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+
+    <footer class="widget widget--articlefooter">
+      {% if request.user.is_superuser %}
+      <div class="row float-right">
+        <form action="{% url 'eventlog.delete' %}" method="POST" class="needs-validation">
+          {% csrf_token %}
+          <div class="form-group ">
+            <div class="control-group controls row">
+              <div class="control-group col-5">
+                <label>{{_("Delete logs older than:")}}</label>
+              </div>
+              <div class="control-group col-5">
+                <select name="days" class="form-control" required>
+                  <option value="">{{_("Select an option")}}</option>
+                  <option value="28">{{_("28 days")}}</option>
+                  <option value="14">{{_("fortnight")}}</option>
+                  <option value="7">{{_("1 week")}}</option>
+                </select>
+              </div>
+              <div class="control-group col-2">
+                <input type="submit" class="navbar-brand btn btn-danger btn-sm" id="btn-delete" value="{{_('Clear')}}" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+    </footer>
+    <hr>
+    <script type="text/javascript" src="{% static 'default/js/formSearchValidation.js' %}"></script>
+  </article>
   <!-- Event logs END -->
 
   <div class="clearfix"></div>
 
+  {% if request.user.is_superuser %}
   <!-- Application Settings -->
-  <section class="application-settings">
-    <h2 class="group-heading">{{_("Application settings")}}</h2>
-    <hr />
-
+  <article class="widget widget--application-settings">
+    <header class="widget widget--articleheader">
+      <h2 class="group-heading">{{_("Application settings")}}</h2>
+      <hr />
+    </header>
+  
     <div class="form-group controls row">
 
       <div class="form-group col-6">
@@ -258,11 +258,9 @@
         </div>
       </div>
     </div>
-    
-  </section>
+
+  </article>
   <!-- Application Settings END -->
-  
-  <script type="text/javascript" src="{% static 'default/js/formSearchValidation.js' %}"></script>
   {% endif %}
 
 {% endblock %}

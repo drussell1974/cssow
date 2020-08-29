@@ -89,7 +89,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         self.assertViewModelContent(viewmodel
             , ""
             , "Vivamus venenatis interdum sem."
-            , "New"
+            , "Create new content for Vivamus venenatis interdum sem."
             , {}
         )
 

@@ -25,7 +25,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Create new scheme of work')
         
 
     def test_page__breadcrumb_navigate_to_lesson_index_not_visible_for_new_schemeofwork(self):
@@ -70,7 +70,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Create new scheme of work')
 
 
     def test_page__should_redirect_to_index_if_valid(self):

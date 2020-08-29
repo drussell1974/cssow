@@ -87,8 +87,19 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         #231: items after should be less than before
         
-        items_before = self.test_context.find_elements_by_class_name("post-preview")
-        self.assertEqual(27, len(items_before))
+        expected_item_per_page = [10,10,7,0]
+
+        for expected_elems in expected_item_per_page: # cycle pages
+            """ cycle each page """
+
+            section = self.test_context.find_elements_by_class_name('post-preview')
+            # assert
+            result = len(section)
+            self.assertEqual(expected_elems, result, "number of elements not as expected")
+
+            elem_next = self.test_context.find_element_by_id("btn-pager--next")
+            elem_next.click()
+            self.wait()
 
 
     def tearDown(self):
@@ -107,8 +118,8 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         #delete
 
-        ' Open edit '
-        self.delete_unpublished_item()
+        ' Open edit - go to page 1 '
+        self.delete_unpublished_item("/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
         
         self.wait(s=2)
 
@@ -117,6 +128,17 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
         
         #231: items after should be less than before
-        
-        items_after = self.test_context.find_elements_by_class_name("post-preview")
-        self.assertEqual(26, len(items_after))
+
+        expected_item_per_page = [10,10,6,0]
+
+        for expected_elems in expected_item_per_page: # cycle pages
+            """ cycle each page """
+
+            section = self.test_context.find_elements_by_class_name('post-preview')
+            # assert
+            result = len(section)
+            self.assertEqual(expected_elems, result, "number of elements not as expected")
+
+            elem_next = self.test_context.find_element_by_id("btn-pager--next")
+            elem_next.click()
+            self.wait()

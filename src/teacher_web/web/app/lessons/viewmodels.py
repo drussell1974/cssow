@@ -1,10 +1,10 @@
 import json
 from django.http import Http404
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
+from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.models.cls_lesson import LessonModel as Model
+from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -13,20 +13,45 @@ from app.default.viewmodels import KeywordGetModelByTermsViewModel, KeywordSaveV
 
 class LessonIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, scheme_of_work_id, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user):
+        
+        data = []
+
         self.model = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
-        self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
-        # name to appear
-        if self.scheme_of_work_name is None or self.scheme_of_work_name == "":
-            self.on_not_found(self.scheme_of_work_name, scheme_of_work_id)
-        # side menu options
-        self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
-        # get list of lessons
-        data = Model.get_all(self.db, scheme_of_work_id, auth_user)
-        self.model = data
         
+    
+        try:
+            # name to appear
+            self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
+            if self.scheme_of_work_name is None or self.scheme_of_work_name == "":
+                self.on_not_found(self.scheme_of_work_name, scheme_of_work_id)
+
+            # side menu options
+            self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
+            self.model = data
+
+            page_direction = 0
+            
+            # create pager
+            self.search_criteria = LessonFilter(pagesize_options, page, pagesize, page_direction)
+            
+            # get pager from POST 
+
+            if request.method == "POST":
+                self.search_criteria.pager(request.POST["page"], request.POST["page_direction"])
+                self.search_criteria.pagesize = try_int(request.POST["pagesize"], return_value=pagesize)
+                
+            # get list of lessons
+            self.model = Model.get_filtered(self.db, scheme_of_work_id, self.search_criteria, auth_user)
+
+        except Http404 as notfound:
+            raise notfound        
+        except Exception as e:
+            self.error_message = repr(e)
+            handle_log_exception(db, "Error initialising LessonIndexViewModel", e)
+            
 
     def view(self):
 
@@ -35,9 +60,10 @@ class LessonIndexViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options,
             "lessons": self.model,
             "topic_name": "",
+            "search_criteria": self.search_criteria,
         }
 
-        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", data=data)
+        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", data=data, error_message=self.error_message)
 
 
 class LessonGetModelViewModel(BaseViewModel):

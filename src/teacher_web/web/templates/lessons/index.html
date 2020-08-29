@@ -1,121 +1,167 @@
-{% extends 'default/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-  <div class="container">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
-            {{_("Schemes of Work")}}
-          </a>
-        </li>
-      </ul>
-  </div>
-</nav>
+<section class="widget widget-breadcrumb widget-breadcrumb--lessons-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+              {{_("Schemes of Work")}}
+            </a>
+          </li>
+        </ul>
+    </div>
+  </nav>
+</section>
 {% endblock %}
 
 
 {% block sidecontent %}
 <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
   <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("scheme of work")}} <i class="fas fa-bars"></i>
+      {{_("Menu")}} <i class="fas fa-bars"></i>
   </button>
   <div class="collapse navbar-collapse" id="sidebarResponsive">
-      <ul class="navbar-nav flex-column fillspace">
-      {% for opt in content.data.schemeofwork_options %}
-          <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
-              <a class="nav-link" href="{% url 'lesson.index' opt.id %}">
-                {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
-              </a>
-          </li>
-      {% endfor %}
-      </ul>
-      <hr>
+    <div class="list-group">
+                  
+      <section class="card widget widget--sidebar">
+        <div class="card-body">
+          <div class="card-header widget-header">
+            <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
+          </div>
+          <div class="card-text widget-main">
+            <ul class="navbar-nav flex-column fillspace">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+                    {{_("Lessons")}} <div class="small"></div>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
+                    {{_("Content")}} <div class="small"></div>
+                  </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card widget widget--sidebar d-none d-lg-block">
+        <div class="card-body">
+          <div class="card-header widget-header">
+            <h5 class="card-heading">{{_("Other schemes of work")}}</h5>
+          </div>
+          <div class="card-text widget-main">
+            <ul class="navbar-nav flex-column fillspace">
+              {% for opt in content.data.schemeofwork_options %}
+                <li class="nav-item {% if opt.id == scheme_of_work_id %}bg-light{% endif %}">
+                    <a class="nav-link" href="{% url 'lesson.index' opt.id %}">
+                      {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
+                    </a>
+                </li>
+              {% endfor %}
+            </ul>
+            <hr>
+          </div>
+        </div>
+      </section>
+      
+    </div>
   </div>
 </nav>
 {% endblock %}
 
 
 {% block maincontent %}
-<!-- Pager Header  -->
-<div class="clearfix">
-  <ul class="pagination" style="display:none">
-      =XML(pager_html)
-  </ul>
-</div>
-{% if request.user.is_authenticated %}
-  <span class="float-right">
-    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
-  </span>
-{% endif %}
-<h2 class="group-heading">{{_("Lessons")}}</h2>
-<hr />
+
+  <!-- Pager Header  -->
+  <header class="widget widget--pageheader">
+    {% if request.user.is_authenticated %}
+      <span class="float-right">
+        <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
+      </span>
+    {% endif %}
+    <h2 class="group-heading">{{_("Lessons")}}</h2>
+    <hr />
+  </header> 
   <!-- Pager Header END -->
 <!-- Scheme of works -->
-
-{% if content.data.lessons|length == 0 %}
-  <div class="alert alert-info" role="alert">
-      <span class="small">{{_('There are no lessons for this scheme of work.')}}</span>
-  {% if request.user.is_authenticated %}
-      <br><a href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
+<article class="widget widget-lessons-list">
+  <form id="form" method="post" class="needs-validation" action="{% url 'lesson.index' content.data.scheme_of_work_id %}#main">
+    {% csrf_token %}
+    <!-- Pager -->
+    <!-- #274: use form.pager.html partial -->
+    {% include '_partials/form.pager.search.html' %}
+    <!-- Pager // END -->
+    <hr>
+  </form>
+  {% if content.data.lessons|length == 0 %}
+    <div class="alert alert-warning" role="alert">
+      <span class="large">{{_('There are no lessons for this scheme of work.')}}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
   {% endif %}
-  </div>
-{% endif %}
 
-{% for row in content.data.lessons %}
-  
-<div class="post-preview {{ row.published_state }}">
-  <a name="{{ row.id}}"></a>
-  
-  <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">
-    <h3 class="post-title">
-      Lesson {{ row.order_of_delivery_id }} - {{ row.title }}
-    </h3>
-    {% if row.summary != "" %}
-      <h4 class="post-subtitle">{{ row.summary }}</h4>
-    {% endif %}
-  </a>
-  <div class="badge-group">
-    {% for key_word in row.key_words %}
-      <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
-    {% endfor %}
-  </div>
-  <div class="links card-body stackable-group-sm">
-    <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable">
-      {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
+  {% for row in content.data.lessons %} 
+  <div class="post-preview {{ row.published_state }}">
+    <a name="{{row.id}}"></a>
+    <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
+      <div class="float-right card">
+        <div class="card-body">
+        <h5 class="small text-muted">Lesson {{ row.order_of_delivery_id }}</h5>  
+        <h6 class="small text-muted">{{ row.year_name }}</h6>  
+      </div>
+      </div>
+      <h3 class="post-title">
+        {{ row.title }}
+      </h3>   
+      {% if row.summary != "" %}
+        <h4 class="post-subtitle">{{ row.summary }}</h4>
+      {% endif %}
     </a>
-    <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark stackable">
-      {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
-    </a>
+    <div class="badge-group">
+      {% for key_word in row.key_words %}
+        <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
+      {% endfor %}
+    </div>
+    <div class="links card-body stackable-group-sm">
+      <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable">
+        {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
+      </a>
+      <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark stackable">
+        {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
+      </a>
+    </div>
+    <p class="post-meta">{{_("Created by")}}
+      <a href="#">{{ row.created_by_name }}</a>
+      {% if row.created %}
+        on {{ row.created }}
+      {% endif %}
+      {% if request.user.is_authenticated %}
+          {% if row.published == False %} 
+            <a href="{% url 'lesson.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
+          {% endif %}
+          <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
+      {% endif %} 
+      </p>
   </div>
-  <p class="post-meta">{{_("Created by")}}
-    <a href="#">{{ row.created_by_name }}</a>
-    {% if row.created %}
-      on {{ row.created }}
-    {% endif %}
+  <hr>
+
+  {% endfor %}
+
+  <!-- Pager Footer -->
+  <footer class="widget widget--article-footer">
     {% if request.user.is_authenticated %}
-        {% if row.published == False %} 
-          <a href="{% url 'lesson.publish_item' content.data.scheme_of_work_id row.id %}?return={{request.url}}" class="small badge badge-danger">{{_("not published")}}</a>
-        {% endif %}
-        <a href="{% url 'lesson.copy' row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
-    {% endif %} 
-    </p>
-</div>
-<hr>
-
-{% endfor %}
-<!-- Pager Footer -->
-<div class="clearfix">
-  <ul class="pagination" style="display:none">
-      =XML(pager_html)
-  </ul>
-</div>
+    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson.delete_unpublished' content.data.scheme_of_work_id %}">{{_('Clean')}}</a>
+    {% endif %}
+  </footer>
   <!-- Pager Footer END -->
 
-<!-- Scheme of works END -->
-<hr />
+  <!-- Lessons END -->
 
-{% if request.user.is_authenticated %}
-<a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson.delete_unpublished' content.data.scheme_of_work_id %}">{{_('Clean')}}</a>
-{% endif %}
+  <hr />
+</article>
 
 {% endblock %}

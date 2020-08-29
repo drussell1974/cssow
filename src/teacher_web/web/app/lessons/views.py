@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import permission_required
 from django.core import serializers
+from django.conf import settings
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
@@ -9,7 +10,7 @@ from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.view_model import ViewModel
 # view models
-from shared.models.cls_lesson import LessonModel
+from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
@@ -25,8 +26,17 @@ from datetime import datetime
 def index(request, scheme_of_work_id):
     """ Get lessons for scheme of work """
     
+    # default pager settings
+    page = try_int(request.GET.get("page", 0))
+
+    if page == 0:
+        page = settings.PAGER["default"]["page"]
+    
+    pagesize = settings.PAGER["default"]["pagesize"]
+    pagesize_options = settings.PAGER["default"]["pagesize_options"]
+    
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db, scheme_of_work_id, auth_user=auth_user_id(request))
+    lessonIndexView = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user=auth_user_id(request))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 
@@ -43,9 +53,10 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     if request.method == "GET":
         ## GET request from client ##
         
-        #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
-        model = get_lesson_view.model
+        if lesson_id > 0:
+            #253 check user id
+            get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+            model = get_lesson_view.model
     
         # handle copy
 
@@ -125,7 +136,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "New", data=data, active_model=model, alert_message="", error_message=error_message)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, data=data, active_model=model, alert_message="", error_message=error_message)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -182,8 +193,15 @@ def initialise_keywords(request, scheme_of_work_id):
     
     raise DeprecationWarning("Not longer used.")
 
+    # default pager settings
+    
+    if page == 0:
+        page = settings.PAGER["default"]["page"]
+    pagesize = settings.PAGER["default"]["pagesize"]
+    pagesize_options = settings.PAGER["default"]["pagesize_options"]
+
     #253 check user id
-    lessons = LessonIndexViewModel(db, scheme_of_work_id, auth_user=auth_user_id(request))
+    lessons = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user=auth_user_id(request))
 
     #for lesson in lessons.model:
     #    LessonModel._upsert_key_words(db, lesson.model)

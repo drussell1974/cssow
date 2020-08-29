@@ -10,6 +10,11 @@ from shared.models.cls_eventlog import EventLogModel as Model
 
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
+    PAGER = { 
+        "default": {
+             "page": 2, "pagesize": 10, "pagesize_options": [5,10,25,50,100]
+        }
+    }
     
 class test_viewmodel_DeleteOldViewModel(TestCase):
 

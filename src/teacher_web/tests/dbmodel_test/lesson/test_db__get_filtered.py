@@ -6,9 +6,9 @@ from shared.models.cls_lesson import LessonModel, LessonFilter,  handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 
-get_all = LessonModel.get_all
+get_filtered = LessonModel.get_filtered
 
-class test_db__get_all(TestCase):
+class test_db__get_filtered(TestCase):
 
 
     def setUp(self):
@@ -36,8 +36,6 @@ class test_db__get_all(TestCase):
 
         LessonModel.get_number_of_learning_objectives = Mock(return_value=3)
 
-        self.search_criteria = LessonFilter([5, 10, 25, 50, 2])
-
 
     def tearDown(self):
 
@@ -53,23 +51,25 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_all(self.fake_db, 4)
+                get_filtered(self.fake_db, 4)
 
 
     def test__should_call_select__return_no_items(self):
         # arrange
         expected_result = []
 
+        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 1, 20)
+
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, 5, auth_user=6079)
+            rows = get_filtered(self.fake_db, 5, fake_search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson__get_all'
-                , (5, 6079)
+                'lesson__get_filtered'
+                , (5, 0, 20, 6079)
                 , []
                 , handle_log_info)
                 
@@ -105,16 +105,18 @@ class test_db__get_all(TestCase):
             343
         )]
 
+        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 1, 20)
+
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 3, auth_user=6079)
+            actual_results = get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson__get_all'
-                , (3, 6079)
+                'lesson__get_filtered'
+                , (3, 0, 20, 6079)
                 , []
                 , handle_log_info)
 
@@ -167,16 +169,18 @@ class test_db__get_all(TestCase):
             4,"learning_objectives",23,343
         )]
 
+        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 2, 10)
+
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 3, auth_user=6079)
+            actual_results = get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                 'lesson__get_all'
-                 , (3, 6079)
+                 'lesson__get_filtered'
+                 , (3, 1, 10, 6079)
                  , []
                  , handle_log_info)
 

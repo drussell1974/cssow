@@ -9,14 +9,12 @@ from shared.models.core.db_helper import ExecHelper
 
 class EventLogFilter(Pager):
 
-    is_valid = False
-    validation_errors = {}
     date_from = None
     date_to = None
 
-    def __init__(self, page = 1, pagesize = 20, page_direction = 0, date_from = None, date_to = None, event_type = 1, message="", details="", category = "", subcategory = ""):
+    def __init__(self, pagesize_options, page = 1, pagesize = 20, page_direction = 0, date_from = None, date_to = None, event_type = 1, message="", details="", category = "", subcategory = ""):
         # base
-        super().__init__(page, pagesize, page_direction)
+        super().__init__(pagesize_options, page, pagesize, page_direction)
 
         default_to_datetime = datetime.now()
         default_from_datetime = datetime.now() - timedelta(5)
@@ -33,7 +31,7 @@ class EventLogFilter(Pager):
 
 
     def validate(self):
-        self.validation_errors.clear()
+        super().validate()
 
         if self.date_from > self.date_to:
             self.is_valid = False

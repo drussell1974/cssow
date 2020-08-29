@@ -23,9 +23,10 @@ class EventLogIndexViewModel(BaseViewModel):
         try:
             page = settings.PAGER["default"]["page"]
             pagesize = settings.PAGER["default"]["pagesize"]
+            pagesize_options = settings.PAGER["default"]["pagesize_options"]
             page_direction = 0
             
-            self.search_criteria = EventLogFilter(page, pagesize, page_direction)
+            self.search_criteria = EventLogFilter(pagesize_options, page, pagesize, page_direction)
             
             if request.method == "POST":
                 self.search_criteria.date_from = request.POST["date_from"]
@@ -43,7 +44,7 @@ class EventLogIndexViewModel(BaseViewModel):
 
         except Exception as e:
             self.error_message = str(e)
-
+            #raise
 
     def view(self):
         
@@ -70,7 +71,7 @@ class EventLogDeleteOldViewModel(BaseViewModel):
         self.model = []
         self.settings = settings
 
-        self.search_criteria = EventLogFilter()
+        self.search_criteria = EventLogFilter(settings.PAGER["default"]["pagesize_options"])
 
         if request.method == "POST":
             try:

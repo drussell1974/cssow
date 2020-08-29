@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.resources.viewmodels import ResourceGetAllViewModel as ViewModel
+from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
 
 
@@ -23,19 +24,24 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        lesson = LessonModel(12)
+        lesson.is_from_db = True
 
-            self.mock_model = Mock()
+        with patch.object(LessonModel, 'get_model', return_value=lesson):
+            with patch.object(Model, "get_all", return_value=data_to_return):
 
-            # act
-            self.viewmodel = ViewModel(db, lesson_id=99, scheme_of_work_id=12, auth_user=99)
+                db = MagicMock()
+                db.cursor = MagicMock()
 
-            # assert functions was called
-            Model.get_all.assert_called()
-            self.assertEqual(0, len(self.viewmodel.model))
+                mock_request = Mock()
+
+                # act
+                self.viewmodel = ViewModel(db, mock_request, lesson_id=99, scheme_of_work_id=12, auth_user=99)
+
+                # assert functions was called
+                Model.get_all.assert_called()
+                self.assertEqual(0, len(self.viewmodel.model))
 
 
     def test_init_called_fetch__single_row(self):
@@ -44,19 +50,24 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = [Model(56)]
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        lesson = LessonModel(12)
+        lesson.is_from_db = True
 
-            self.mock_model = Mock()
+        with patch.object(LessonModel, 'get_model', return_value=lesson):
+            with patch.object(Model, "get_all", return_value=data_to_return):
 
-            # act
-            self.viewmodel = ViewModel(db, lesson_id=92, scheme_of_work_id=12, auth_user=99)
+                db = MagicMock()
+                db.cursor = MagicMock()
 
-            # assert functions was called
-            Model.get_all.assert_called()
-            self.assertEqual(1, len(self.viewmodel.model))
+                mock_request = Mock()
+
+                # act
+                self.viewmodel = ViewModel(db, mock_request, lesson_id=92, scheme_of_work_id=12, auth_user=99)
+
+                # assert functions was called
+                Model.get_all.assert_called()
+                self.assertEqual(1, len(self.viewmodel.model))
 
 
     def test_init_called_fetch__multiple_rows(self):
@@ -65,16 +76,20 @@ class test_viewmodel_GetAllViewModel(TestCase):
         
         data_to_return = [Model(56),Model(57),Model(58)]
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
+        lesson = LessonModel(12)
+        lesson.is_from_db = True
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        with patch.object(LessonModel, 'get_model', return_value=lesson):
+            with patch.object(Model, "get_all", return_value=data_to_return):
 
-            self.mock_model = Mock()
+                db = MagicMock()
+                db.cursor = MagicMock()
 
-            # act
-            self.viewmodel = ViewModel(db,  lesson_id=20, scheme_of_work_id=100, auth_user=99)
+                mock_request = Mock()
 
-            # assert functions was called
-            Model.get_all.assert_called()
-            self.assertEqual(3, len(self.viewmodel.model))
+                # act
+                self.viewmodel = ViewModel(db, mock_request, lesson_id=20, scheme_of_work_id=100, auth_user=99)
+
+                # assert functions was called
+                Model.get_all.assert_called()
+                self.assertEqual(3, len(self.viewmodel.model))

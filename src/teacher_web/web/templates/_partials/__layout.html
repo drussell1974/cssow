@@ -99,7 +99,8 @@
     <!-- Main ========================================= -->
     <!-- Begin page content -->
     <div class="container-fluid main-container">
-      
+      <div class="container">
+      <a name="main"></a>
       <div class="row">
         <div class="col-lg-12 col-md-14 content-heading">
             <!-- Content Heading START -->
@@ -121,11 +122,10 @@
       <!-- show error_message -->
       {% include '_partials/form.viewmodel.alert_message.html' %}
       <!-- show error_message END -->
-      
-      <div class="row">
-
-        {% block content %}
-        {% endblock %}
+        <div class="row">
+          {% block content %}
+          {% endblock %}
+        </div>
       </div>
       <!-- Main Content END -->
     </div>

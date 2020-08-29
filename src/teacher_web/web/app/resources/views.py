@@ -29,27 +29,9 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id
-    getall_resources_view = ResourceGetAllViewModel(db, scheme_of_work_id, lesson_id, auth_user_id(request))
-    resources = getall_resources_view.model
-
-    #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
-    lesson = get_lesson_view.model
-
-    #253 check user id
-    lesson_options = LessonModel.get_options(db, scheme_of_work_id, auth_user_id(request))  
-    
-    data = {
-        "scheme_of_work_id":int(scheme_of_work_id),
-        "lesson_id":int(lesson_id),
-        "lesson": lesson,
-        "resources": resources,
-        "lesson_options": lesson_options
-    }
-
-    view_model = ViewModel(lesson.title, lesson.title, lesson.summary, data=data, active_model=lesson)
-    
-    return render(request, "resources/index.html", view_model.content)
+    getall_resources = ResourceGetAllViewModel(db, request, lesson_id, scheme_of_work_id, auth_user_id(request))  
+        
+    return render(request, "resources/index.html", getall_resources.view().content)
 
 
 #234 add permission
@@ -79,7 +61,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "New", data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 

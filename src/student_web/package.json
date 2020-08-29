@@ -21,12 +21,12 @@
   "scripts": {
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
     "build:dev": "env-cmd -f ../../dotenv/.env.development yarn start:dev",
-    "build:test": "env-cmd -f ../../dotenv/.env.test-ui yarn start:test1",
+    "build:test": "env-cmd -f ../../dotenv/.env.test-ui yarn start:test--flask",
     "build": "env-cmd -f ../../dotenv/.env.production webpack --mode production && tar -czf ../../build/student-web/student-web.build.tar.gz entrypoint.py build",
     "test": "jest --coverage",
     "start:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && flask run -p 3001",
     "start:test": "webpack --mode production && serve build -l 3001",
-    "start:test1": "webpack --mode production && export FLASK_APP=entrypoint.py && flask run -p 3001",
+    "start:test--flask": "webpack --mode production && export FLASK_APP=entrypoint.py && flask run -p 3001",
     "start": "webpack --mode production && serve build -l 3001"
   },
   "devDependencies": {

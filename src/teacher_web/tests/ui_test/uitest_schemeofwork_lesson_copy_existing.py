@@ -27,7 +27,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New', 'TEST@LOCALHOST')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST@LOCALHOST')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")
@@ -83,7 +83,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science')
         
 
     def test_page__should_redirect_to_index_if_valid(self):

@@ -25,7 +25,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new_page_navigation(UITe
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
 
 
     """ Breadcrumb """

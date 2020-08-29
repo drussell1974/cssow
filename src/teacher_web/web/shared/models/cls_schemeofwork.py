@@ -100,6 +100,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_model(db, id, auth_user):
         rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user)
+        #TODO: start as none None
         model = SchemeOfWorkModel(0)
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],

@@ -28,7 +28,7 @@ class uitest_schemeofwork_learningobjective_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(999999, self.test_lesson_id, self.test_learning_objective_id))
 
         # assert
-        self.assertCustom404("(id=220) (220, 999999) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustom404("item (220, 999999) does not exist, is currrently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
@@ -36,7 +36,7 @@ class uitest_schemeofwork_learningobjective_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, 999999, self.test_learning_objective_id))
 
         # assert
-        self.assertCustom404("(id=999999) (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustom404("item (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_resource_id__does_not_exist(self):

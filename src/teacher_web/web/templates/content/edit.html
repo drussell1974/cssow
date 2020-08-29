@@ -1,6 +1,7 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 {% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--content-edit">
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
   <div class="container">
       <ul class="navbar-nav ml-auto">
@@ -17,22 +18,13 @@
       </ul>
   </div>
 </nav>
-{% endblock %}
-
-
-{% block contentheading %}
-  <div class="alert alert-secondary">
-    <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
-    {% if content.strap_line is not None %}
-      <p class="lead">{{ content.strap_line }}</p>
-    {% endif %}
-  </div>
+</section>
 {% endblock %}
 
 
 {% block maincontent %}
 
-<form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
+<form name="edit-content" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
     {% csrf_token %}
    
     <!-- show error_message -->

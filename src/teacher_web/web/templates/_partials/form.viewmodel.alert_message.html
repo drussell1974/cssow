@@ -8,7 +8,7 @@
 {% endif %}
 
 {% if content.alert_message.alert_message is not None %}
-<div class="alert alert-warning">
+<div class="alert alert-warning" role="alert">
     <i class="fa fa-exclamation-triangle"></i> {{ content.alert_message.alert_message }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>

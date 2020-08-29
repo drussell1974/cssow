@@ -1,12 +1,13 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 
 {% block breadcrumb %}
-<nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-      <div class="container">
-        <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
+<section class="widget widget-breadcrumb widget-breadcrumb--schemeofwork-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
                 </li>
                 <!-- SHOULD ONLY DISPLAY IF EXISTING -->
                 {% if content.data.scheme_of_work.id > 0 %}
@@ -15,85 +16,77 @@
                     </li>
                 {% endif %}
             </ul>
-    </div>
-</nav>
-{% endblock %}
-
-
-{% block contentheading %}
-  <div class="alert alert-secondary">
-    <h5 class="secondary-heading">{{ content.main_heading }} {{ content.sub_heading }}</h5>
-    {% if content.strap_line is not None %}
-      <p class="lead">{{ content.strap_line }}</p>
-    {% endif %}
-  </div>
+        </div>
+    </nav>
+</section>
 {% endblock %}
 
 
 {% block maincontent %}
+<article class="widget widget-form widget-schemeofwork-form">
+    <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.data.scheme_of_work_id %}">
+        {% csrf_token %}
 
-<form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.data.scheme_of_work_id %}">
-    {% csrf_token %}
-
-    <!-- show error_message -->
-    {% include '_partials/form.viewmodel.alert_message.html' %}
-    <!-- show error_message END -->
-    
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Title")}}</label>
-            <input type="text" name="name" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-name" name="name" required
-                    maxlength="40" value='{{content.data.scheme_of_work.name}}'>
-            <div class="help-block text-danger invalid-feedback"></div>
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Title")}}</label>
+                <input type="text" name="name" class="form-control" placeholder="{{_('Enter a title')}}" id="ctl-name" name="name" required
+                        maxlength="40" value='{{content.data.scheme_of_work.name}}'>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Exam board")}}</label>
-            <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
-                <option value="">- {{_("Select an option")}}</option>
-                {% for opt in content.data.examboard_options %}
-                    {% if opt.id == content.data.scheme_of_work.exam_board_id %}
-                        <option value="{{opt.id}}" selected>{{opt.name}}</option>
-                    {% else %}
-                        <option value="{{opt.id}}">{{opt.name}}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <div class="help-block text-danger invalid-feedback"></div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Exam board")}}</label>
+                <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
+                    <option value="">- {{_("Select an option")}}</option>
+                    {% for opt in content.data.examboard_options %}
+                        {% if opt.id == content.data.scheme_of_work.exam_board_id %}
+                            <option value="{{opt.id}}" selected>{{opt.name}}</option>
+                        {% else %}
+                            <option value="{{opt.id}}">{{opt.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Key stage")}}</label>
-            <select class="form-control" name="key_stage_id" id="ctl-key_stage_id" required>
-                <option value="">- {{_("Select an option")}} -</option>
-                {% for opt in content.data.keystage_options %}
-                    {% if opt.id == content.data.scheme_of_work.key_stage_id %}                
-                        <option value="{{opt.id}}" selected>{{opt.name}}</option>
-                    {% else %}
-                        <option value="{{opt.id}}">{{opt.name}}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <div class="help-block text-danger invalid-feedback"></div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Key stage")}}</label>
+                <select class="form-control" name="key_stage_id" id="ctl-key_stage_id" required>
+                    <option value="">- {{_("Select an option")}} -</option>
+                    {% for opt in content.data.keystage_options %}
+                        {% if opt.id == content.data.scheme_of_work.key_stage_id %}                
+                            <option value="{{opt.id}}" selected>{{opt.name}}</option>
+                        {% else %}
+                            <option value="{{opt.id}}">{{opt.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
         </div>
-    </div>
-    <div class="control-group">
-        <div class="form-group controls">
-            <label>{{_("Description")}}</label>
-            <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" value="{{content.data.scheme_of_work.description}}" />
-            <div class="help-block text-danger invalid-feedback"></div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Description")}}</label>
+                <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" value="{{content.data.scheme_of_work.description}}" />
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
         </div>
-    </div>
-    <br>
-    <div id="success"></div>
-    
-    <div class="form-group stackable-group stackable-group-sm">
-        <!-- #TODO: #231: use form.buttons.validition partial -->
-        {% include '_partials/form.buttons.validation.html' %}
-    </div>
-    <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
-    <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
-</form>
+        <br>
+        <div id="success"></div>
+        
+        <div class="form-group stackable-group stackable-group-sm">
+            <!-- #TODO: #231: use form.buttons.validition partial -->
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
+        <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
+    </form>
+</article>
 {% endblock %}

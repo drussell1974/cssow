@@ -1,5 +1,6 @@
-{% extends 'default/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
 {% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--content-index">
 <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
   <div class="container">
       <ul class="navbar-nav ml-auto">
@@ -11,48 +12,83 @@
       </ul>
   </div>
 </nav>
+</section>
 {% endblock %}
 
 
 {% block sidecontent %}
 <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
   <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("scheme of work")}} <i class="fas fa-bars"></i>
+      {{_("Menu")}} <i class="fas fa-bars"></i>
   </button>
   <div class="collapse navbar-collapse" id="sidebarResponsive">
-      <ul class="navbar-nav flex-column fillspace">
-      {% for opt in content.data.schemeofwork_options %}
-          <li class="nav-item {% if opt.id == scheme_of_work_id %}mark{% endif %}">
-              <a class="nav-link" href="{% url 'content.index' opt.id %}">
-                {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
-              </a>
-          </li>
-      {% endfor %}
-      </ul>
-      <hr>
+      <div class="list-group">
+      
+        <section class="card widget widget--sidebar widget--sidebar---this-scheme-of-work">
+          <div class="card-body">
+            <div class="card-header widget-header">
+              <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
+            </div>
+            <div class="card-text widget-main">
+              <ul class="navbar-nav flex-column fillspace">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+                    {{_("Lessons")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item bg-light">
+                    <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
+                      {{_("Content")}} <div class="small"></div>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="card widget widget--sidebar d-none d-lg-block">
+          <div class="card-body">
+            <div class="card-header widget-header">
+              <h5 class="card-title">{{_("Other schemes of work")}}</h5>
+            </div>
+            <div class="card-text">
+              <ul class="navbar-nav flex-column fillspace">
+              {% for opt in content.data.schemeofwork_options %}
+                  <li class="nav-item {% if opt.id == scheme_of_work_id %}bg-light{% endif %}">
+                      <a class="nav-link" href="{% url 'content.index' opt.id %}">
+                        {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
+                      </a>
+                  </li>
+              {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+      
+      </div>
   </div>
 </nav>
 {% endblock %}
 
 
 {% block maincontent %}
+<article class="widget widget-curriculum-listing">
 <!-- Pager Header  -->
+<header class="widget widget-artilceheader">
 {% if request.user.is_authenticated %}
   <span class="float-right">
-    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.data.scheme_of_work_id %}">{{_('add')}}</a>
+    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Curriculum")}}</h2>
 <hr />
-  <!-- Pager Header END -->
-<!-- Curriculum -->
+</header>
+<!-- Pager Header END -->
 
+<!-- Curriculum  list -->
 {% if content.data.curriculum_content|length == 0 %}
   <div class="alert alert-info" role="alert">
       <span class="small">{{_('There is no curriculum content for this scheme of work.')}}</span>
-  {% if request.user.is_authenticated %}
-      <br><a href="{% url 'lesson.new' content.data.scheme_of_work_id %}">{{_('Click here to get started.')}}</a>
-  {% endif %}
   </div>
 {% endif %}
 
@@ -67,7 +103,10 @@
     {% endfor %}
   </ul>
 </div>
-<!-- Curriculum END -->
+<!-- Curriculum list END -->
 <hr />
+
+
+</article>
 
 {% endblock %}

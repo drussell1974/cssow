@@ -1,65 +1,71 @@
-{% extends 'default/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.html' %}
 
 
 {% block maincontent %}
 
+    <article class="widget widget--schemeofwork--listing">
       <!-- Pager Header -->      
-      {% if request.user.is_authenticated %}
-      <span class="float-right">
-          <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' %}">{{_('add')}}</a>
-      </span>
-      {% endif %}
-      <h2 class="group-heading">{{_("Schemes of work")}}</h2>
-      <hr />
+      <header class="widget widget--articleheader">
+        {% if request.user.is_authenticated %}
+        <span class="float-right">
+            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' %}#main">{{_('add')}}</a>
+        </span>
+        {% endif %}
+        <h2 class="group-heading">{{_("Schemes of work")}}</h2>
+        <hr />
+      </header>
       <!-- Pager Header END -->
 
       <!-- Scheme of works -->
+      
         {% if content.data.schemes_of_work|length == 0 %}
-          <div class="alert alert-info" role="alert">
-            <span class="small">{{_("There are no schemes of work for ")}} {{ key_stage_name }}</span>
-            {% if request.user.is_authenticated %}
-                <br><a href="{% url 'schemesofwork.new' %}">{{_('Click here to get started')}}</a>
-            {% endif %}
+          <div class="alert alert-warning" role="alert">
+            <span class="large">{{_("There are no schemes of work for ")}} {{ key_stage_name }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
         {% endif %}
-      {% for row in content.data.schemes_of_work %}
-      <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
-        <a class="edit" href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}">
-          <h3 class="post-title">
-              {{ row.name }}
-          </h3>
-          <h4 class="post-subtitle">
-            {{ row.key_stage_name }} {{ row.description }}
-          </h4>
-        </a>
-        <div class="card-body stackable-group-sm">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
-            {{_("Lessons")}} <span class="badge badge-light">{{row.number_of_lessons}}</span>
-          </a>
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
-            {{_("Curriculum")}} <span class="badge badge-light"></span>
-          </a>
-        
-        </div>
 
-          <p class="post-meta">{{_("Created by")}}
-            <a href="#">{{ row.created_by_name }}</a>
-            {% if row.created == True %}
-              on {{ row.get_ui_created }}
-            {% endif %}
-            
-            {% if request.user.is_authenticated %}
-              {% if row.published == False %}
-              <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+        {% for row in content.data.schemes_of_work %}
+        <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
+          <a class="edit" href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}">
+            <h3 class="post-title">
+                {{ row.name }}
+            </h3>
+            <h4 class="post-subtitle">
+              {{ row.key_stage_name }} {{ row.description }}
+            </h4>
+          </a>
+          <div class="card-body stackable-group-sm">
+            <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
+              {{_("Lessons")}} <span class="badge badge-light">{{row.number_of_lessons}}</span>
+            </a>
+            <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
+              {{_("Curriculum")}} <span class="badge badge-light"></span>
+            </a>
+          
+          </div>
+
+            <p class="post-meta">{{_("Created by")}}
+              <a href="#">{{ row.created_by_name }}</a>
+              {% if row.created == True %}
+                on {{ row.get_ui_created }}
               {% endif %}
-            {% endif %}</p>
-      </div>
-      <hr>
+              
+              {% if request.user.is_authenticated %}
+                {% if row.published == False %}
+                <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+                {% endif %}
+              {% endif %}</p>
+        </div>
+        <hr>
         {% endfor %}
       <!-- Scheme of works END -->
 
       {% if request.user.is_authenticated %}
         <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' %}">{{_('Clean')}}</a>
       {% endif %}
+    </article>
 
 {% endblock %}

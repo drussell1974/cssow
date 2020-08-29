@@ -61,7 +61,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'New')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
         
 
     def test_page__should_redirect_to_index_if_valid(self):

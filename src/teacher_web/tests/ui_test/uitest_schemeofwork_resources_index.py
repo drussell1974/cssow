@@ -88,3 +88,18 @@ class uitest_schemeofwork_resource_index(UITestCase):
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
         self.assertEqual(4, result, "number of elements not as expected")
+
+
+    def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This lesson", expected_no_of_items=2)
+
+
+    def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=2, expected_title="This scheme of work", expected_no_of_items=2)
+
+
+    def test_page__should_have_sidenav__showing_other_lessons(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Other lessons", expected_no_of_items=26)
