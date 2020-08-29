@@ -7,7 +7,6 @@ from shared.models.cls_eventlog import EventLogModel, EventLogFilter, handle_log
 
 get_all = EventLogModel.get_all
 
-
 class test_db__get_all(TestCase):
 
 
