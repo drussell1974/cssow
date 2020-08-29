@@ -141,3 +141,17 @@ class UITestCase(TestCase):
         #231: then click the continue button
         elem = self.test_context.find_element_by_id("deleteModalContinueButton")
         elem.click()
+
+
+
+    def assertSidebarResponsiveMenu(self, section_no, expected_title, expected_no_of_items):
+        
+        # title
+        title_elem = self.test_context.find_element_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[1]/h5'.format(section_no))
+
+        # list lists
+        list_item_elems = self.test_context.find_elements_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[2]/ul/li'.format(section_no)) 
+
+        # assert
+        self.assertEqual(expected_title, title_elem.text)
+        self.assertEqual(expected_no_of_items, len(list_item_elems), "number of items not as expected")

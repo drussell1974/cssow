@@ -58,16 +58,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.assertIsNotNone(elem)
 
 
-    def test_page__should_have_sidenav_with_three_items(self):
-        # arrange
-        elems = self.test_context.find_elements_by_xpath('//*[@id="sidebarResponsive"]/ul/li') 
-
-        # act
-
-        # assert
-        self.assertEqual(3, len(elems))
-
-
     def test_page__show_published_only(self):
         # arrange
 
@@ -86,5 +76,15 @@ class uitest_schemeofwork_lesson_index(UITestCase):
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
             self.wait()
+
+
+    def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=2)
+
+
+    def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
 
 
