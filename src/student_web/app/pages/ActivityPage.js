@@ -3,7 +3,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig } from '../services/apiReactServices';
+import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class ActivityPage extends React.Component {
@@ -31,13 +31,15 @@ class ActivityPage extends React.Component {
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 5;
+        this.NO_OF_COMPONENTS_TO_LOAD = 6;
 
         getSiteConfig(this);
 
         getSchemeOfWork(this, this.scheme_of_work_id);
 
         getLesson(this, this.scheme_of_work_id, this.lesson_id);
+
+        getResource(this, this.scheme_of_work_id, this.lesson_id, this.resource_id)
 
         getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
 
@@ -64,7 +66,7 @@ class ActivityPage extends React.Component {
         return (
             <React.Fragment>
                 <ActivityPageContainer 
-                    resource={this.state.Lesson}
+                    resource={this.state.Resource}
                     schemeofwork={this.state.SchemeOfWork}
                     lesson={this.state.Lesson}
                     markdown_html={this.state.markdown_html}
