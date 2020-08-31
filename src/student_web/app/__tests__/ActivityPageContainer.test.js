@@ -130,6 +130,7 @@ describe("ActivityPageContainer", () =>{
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
             ).toEqual('/course/1/lesson/1');
+
         })
 
         it('with current page text only', () => {

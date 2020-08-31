@@ -89,6 +89,7 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
             {text:"Home", url:"/"}, 
             {text:schemeofwork.name, url:`/course/${schemeofwork.id}`},
             {text:lesson.title, url:`/course/${schemeofwork.id}/lesson/${lesson.id}`}
+
         ]
 
         return (
