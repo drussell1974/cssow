@@ -1,0 +1,10 @@
+.content {
+    visibility: hidden;
+    animation-name: show_content;
+    animation-delay: 2s;
+    animation-duration: 4s;
+}
+
+@keyframes show_content {
+    100% {visibility: visible;}
+}
