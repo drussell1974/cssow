@@ -1,10 +1,14 @@
 .content {
     visibility: hidden;
-    animation-name: show_content;
-    animation-delay: 2s;
-    animation-duration: 4s;
+    animation: 3s fadeIn;
+    animation-fill-mode: forwards;
 }
 
-@keyframes show_content {
-    100% {visibility: visible;}
-}
+@keyframes fadeIn {
+    99% {
+      visibility: hidden;
+    }
+    100% {
+      visibility: visible;
+    }
+  }
