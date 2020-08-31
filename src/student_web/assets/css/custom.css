@@ -35,16 +35,30 @@
 }
 
 div.progress {
+    float: left;
     width: 0%;
     height: 20px;
     background-color: #49B39D;
+}
+
+div.progress--fill {
+    float: left;
+    width: 0%;
+    height: 20px;
+    background-color: #49B39D;
+    animation: example 5s linear 1s;
 }
 
 @keyframes example {
     0%   { width: 10% }
     20%  { width: 20% }
     30%  { width: 30% }
-    40%  { width: 35% }
-    60%  { width: 55% }
+    40%  { width: 40% }
+    60%  { width: 60% }
     80%  { width: 80% }
+    100%  { width: 90% }
+}
+
+.clearfix {
+    overflow: auto;
 }

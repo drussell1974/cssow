@@ -85,7 +85,7 @@ export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, load
                 <BannerWidget heading={lesson.title} description={lesson.summary} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={lesson.title} />
                         <section className="objectives">
                             <LessonObjectivesWidget data={lesson} />

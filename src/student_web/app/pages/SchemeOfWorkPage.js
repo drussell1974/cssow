@@ -71,7 +71,7 @@ export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata,
                 <BannerWidget heading={site.name} description={site.description} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
                         <BreadcrumbWidget activePageName={"Home"} />    
                         <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="Course" typeButtonText="View Course" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                     </div>

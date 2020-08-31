@@ -61,8 +61,12 @@ describe('SpinnerWidget', () => {
         render(<SpinnerWidget loading={status} />);
 
         expect(
-            container.textContent
-        ).toEqual("70%");
+            container.querySelector("div.progress").getAttribute("style")
+        ).toEqual("width: 70%;");
+
+        expect(
+            container.querySelector("div.progress--fill").getAttribute("style")
+        ).toEqual("width: 0%;");
     })
 
 })

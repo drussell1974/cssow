@@ -97,7 +97,7 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
                 <BannerWidget heading={resource.title} description={resource.page_note} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={resource.title} />                
                         <MarkdownWidget markdown_html={markdown_html} />    
                     </div>

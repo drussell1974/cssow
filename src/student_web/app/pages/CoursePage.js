@@ -80,7 +80,7 @@ export const CoursePageContainer = ({lessons, schemeofwork, site, socialmediadat
                 <BannerWidget heading={schemeofwork.name} description={schemeofwork.description} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={[{text:"Home", url:"/"}]} activePageName={schemeofwork.name} />
                         <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" 
                             typeButtonText="View Lesson" 
