@@ -78,18 +78,18 @@ export const CoursePageContainer = ({lessons, schemeofwork, site, socialmediadat
             <React.Fragment>
                  
                 <BannerWidget heading={schemeofwork.name} description={schemeofwork.description} />
-                    <div id="main">
-                        <div className="inner">
-                            <SpinnerWidget loading={loading} />
-                            <BreadcrumbWidget breadcrumbItems={[{text:"Home", url:"/"}]} activePageName={schemeofwork.name} />
-                            <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" 
-                                typeButtonText="View Lesson" 
-                                typeButtonClass="button style2 fit"
-                                typeDisabledButtonText="Coming soon"
-                                typeDisabledButtonClass="button style2 fit disabled"
-                            />
-                        </div>
+                <SpinnerWidget loading={loading} />
+                <div id="main">
+                    <div className="inner">
+                        <BreadcrumbWidget breadcrumbItems={[{text:"Home", url:"/"}]} activePageName={schemeofwork.name} />
+                        <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" 
+                            typeButtonText="View Lesson" 
+                            typeButtonClass="button style2 fit"
+                            typeDisabledButtonText="Coming soon"
+                            typeDisabledButtonClass="button style2 fit disabled"
+                        />
                     </div>
+                </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
 
             </React.Fragment>

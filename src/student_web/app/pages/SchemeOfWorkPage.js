@@ -69,13 +69,13 @@ export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata,
             <React.Fragment>
                     
                 <BannerWidget heading={site.name} description={site.description} />
-                    <div id="main">
-                        <div className="inner">
-                            <SpinnerWidget loading={loading} />
-                            <BreadcrumbWidget activePageName={"Home"} />    
-                            <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="Course" typeButtonText="View Course" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
-                        </div>
+                <SpinnerWidget loading={loading} />
+                <div id="main">
+                    <div className="inner">
+                        <BreadcrumbWidget activePageName={"Home"} />    
+                        <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="Course" typeButtonText="View Course" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                     </div>
+                </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
 
             </React.Fragment>

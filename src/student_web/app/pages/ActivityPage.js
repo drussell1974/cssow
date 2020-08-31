@@ -95,11 +95,10 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
             <React.Fragment>
 
                 <BannerWidget heading={resource.title} description={resource.page_note} />
-
+                <SpinnerWidget loading={loading} />
                 <div id="main">
                     <div className="inner">
-                        <SpinnerWidget loading={loading} />
-                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={resource.title} />
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={resource.title} />                
                         <MarkdownWidget markdown_html={markdown_html} />    
                     </div>
                 </div>

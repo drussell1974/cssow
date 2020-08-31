@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 export const SpinnerWidget = ({loading}) => {
     if(loading === undefined || loading == 0 || loading == 100) {
-        return <Fragment></Fragment>;
+        return <div className="progress"></div>;
     } else {     
         let percentage = `${loading}%`;
         return (
