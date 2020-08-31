@@ -1,21 +1,27 @@
 import React from 'react';
 import BannerWidget from '../widgets/BannerWidget';
+import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig } from '../services/apiReactServices';
+import { SpinnerWidget } from '../widgets/SpinnerWidget';
+import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class ActivityPage extends React.Component {
     
+    onProgress() {
+        return this.state.loading + 100 / 3;
+    }
+
     constructor(props){
         super(props);
         this.state = {
             SchemeOfWork: {},
             Lesson: {},
             hasError: false,
+            loading: 0,
             markdown_html: {},
+            socialmediadata: []
         }
-    
-        this.socialmediadata = [];
 
         this.scheme_of_work_id = props.match.params.scheme_of_work_id;
         this.lesson_id = props.match.params.lesson_id;
@@ -25,16 +31,19 @@ class ActivityPage extends React.Component {
 
     componentDidMount() {
 
-        getSiteConfig(this);
+        this.NO_OF_COMPONENTS_TO_LOAD = 6;
 
-        this.socialmediadata = getSocialMediaLinks();
+        getSiteConfig(this);
 
         getSchemeOfWork(this, this.scheme_of_work_id);
 
         getLesson(this, this.scheme_of_work_id, this.lesson_id);
 
+        getResource(this, this.scheme_of_work_id, this.lesson_id, this.resource_id)
+
         getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
 
+        getSocialMediaLinks(this);
     }
     
     static getDerivedStateFromError(error) {
@@ -48,6 +57,7 @@ class ActivityPage extends React.Component {
         
         this.state = {
             hasError: true,
+            loading: 50
         }
       }
       
@@ -56,29 +66,39 @@ class ActivityPage extends React.Component {
         return (
             <React.Fragment>
                 <ActivityPageContainer 
-                    resource={this.state.Lesson}
+                    resource={this.state.Resource}
                     schemeofwork={this.state.SchemeOfWork}
+                    lesson={this.state.Lesson}
                     markdown_html={this.state.markdown_html}
-                    socialmediadata={this.socialmediadata}
+                    socialmediadata={this.state.socialmediadata}
+                    loading={this.state.loading}
                 />
             </React.Fragment>
         )
     }
 };
 
-export const ActivityPageContainer = ({resource, schemeofwork, markdown_html, socialmediadata}) => {
-    if (resource === undefined || schemeofwork === undefined) {
+export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_html, socialmediadata, loading = 0}) => {
+    if (resource === undefined || schemeofwork === undefined || lesson === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
+        
+        let breadcrumbItems = [
+            {text:"Home", url:"/"}, 
+            {text:schemeofwork.name, url:`/Course/${schemeofwork.id}`},
+            {text:lesson.title, url:`/Course/${schemeofwork.id}/Lesson/${lesson.id}`}
+        ]
+
         return (
             <React.Fragment>
 
                 <BannerWidget heading={resource.title} description={resource.page_note} />
-
+                <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={resource.title} />                
                         <MarkdownWidget markdown_html={markdown_html} />    
                     </div>
                 </div>

@@ -1,0 +1,14 @@
+.content {
+    visibility: hidden;
+    animation: 3s fadeIn;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    99% {
+      visibility: hidden;
+    }
+    100% {
+      visibility: visible;
+    }
+  }

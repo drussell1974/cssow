@@ -14,7 +14,6 @@ const BannerWidget = ({heading, description}) => {
                     <a href="#main" className="more">Learn More</a>
                 </div>
             </section>
-
         )
     }
 }

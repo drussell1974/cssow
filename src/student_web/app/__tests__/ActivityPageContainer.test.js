@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
 import { ActivityPageContainer } from '../pages/ActivityPage';
@@ -13,6 +14,11 @@ describe("ActivityPageContainer", () =>{
         id: 1,
         name: "CPU Architecture",
         description: "CPU components: ALU, Control Unit, Registers and Buses",
+    };
+
+    let lesson = {
+        id: 1,
+        title: "Types of CPU Architecture",
     };
 
     let resource = 
@@ -45,7 +51,10 @@ describe("ActivityPageContainer", () =>{
     })
 
     it('renders empty model', () => {
-        render(<ActivityPageContainer />);
+        render(
+            <MemoryRouter>
+                <ActivityPageContainer />
+            </MemoryRouter>);
         
         expect(container.textContent).toMatch('');
     })
@@ -53,7 +62,10 @@ describe("ActivityPageContainer", () =>{
     describe('has a banner', () => {
         
         it('with heading', () => {
-            render(<ActivityPageContainer resource={resource} schemeofwork={schemesofwork} socialmediadata />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector('section#banner .inner header h1').textContent
@@ -61,7 +73,10 @@ describe("ActivityPageContainer", () =>{
         })
 
         it('with description', () => {
-            render(<ActivityPageContainer resource={resource} schemeofwork={schemesofwork} socialmediadata />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector('section#banner .inner header p').textContent
@@ -69,10 +84,73 @@ describe("ActivityPageContainer", () =>{
         })
     })
 
+    describe('has breadcrumb', () => {
+
+        it('with home link', () => {
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) > a').textContent
+            ).toEqual('Home');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) a').getAttribute("href")
+            ).toEqual('/');
+        })
+
+
+        it('with Course link', () => {
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2)').textContent
+            ).toEqual('CPU Architecture');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
+            ).toEqual('/Course/1');
+        })
+
+        it('with Lesson link', () => {
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3)').textContent
+            ).toEqual('Types of CPU Architecture');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
+            ).toEqual('/Course/1/Lesson/1');
+        })
+
+        it('with current page text only', () => {
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                </MemoryRouter>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(4)').textContent
+            ).toEqual('OCR AS and A Level Computer Science');
+        })
+    })
+
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} socialmediadata />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} socialmediadata />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector('footer#footer h2').textContent
@@ -80,7 +158,10 @@ describe("ActivityPageContainer", () =>{
         })
 
         it('with scheme of work overview summary', () => {
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} socialmedia />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} socialmedia />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector('footer#footer p').textContent
@@ -94,7 +175,10 @@ describe("ActivityPageContainer", () =>{
             
             const markdown_html = "<h1>Test ActivityPageContainer displays markdown widget</h1>";
 
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} markdown_html={markdown_html} socialmedia />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} markdown_html={markdown_html} socialmedia />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector("#main .inner section.markdown h2").textContent
@@ -105,7 +189,10 @@ describe("ActivityPageContainer", () =>{
             
             const markdown_html = "<h1>Test ActivityPageContainer displays markdown widget</h1>";
 
-            render(<ActivityPageContainer schemeofwork={schemesofwork} resource={resource} markdown_html={markdown_html} socialmedia />);
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} markdown_html={markdown_html} socialmedia />
+                </MemoryRouter>);
 
             expect(
                 container.querySelector("#main .inner section.markdown div.markdown-body").textContent

@@ -1,16 +1,18 @@
 import React, { Fragment } from 'react';
 
 export const SpinnerWidget = ({loading}) => {
-    if(loading === undefined) {
+    if(loading === undefined || loading == 0 || loading == 100) {
         return <Fragment></Fragment>;
-    } else if (loading == true) {
+    } else {     
+        let percentage = `${loading}%`;
         return (
-            <div className="spinner-border text-light" role="status">
-                <span className="sr-only">loading...</span>
-            </div>
+            <Fragment>
+                <div className="progress--fill" style={{ width: "0%" }}>
+                </div>
+                <div className="progress" style={{ width: percentage }}>
+                </div>
+            </Fragment>
         )
-    } else {
-        return <Fragment></Fragment>;
     }
 }
 

@@ -3,21 +3,27 @@ import { LessonObjectivesWidget } from '../widgets/LessonObjectivesWidget';
 import { LessonKeywordsWidget } from '../widgets/LessonKeywordsWidget';
 import { LessonBoxMenuWidget } from '../widgets/LessonBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
+import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
+import { SpinnerWidget } from '../widgets/SpinnerWidget';
 import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 
 class LessonPage extends React.Component {
-    
+   
+    onProgress() {
+        return this.state.loading + 100 / 3;
+    }
+
     constructor(props){
         super(props);
         this.state = {
             SchemeOfWork: {},
             Lesson: {},
             hasError: false,
+            loading: 0,
+            socialmediadata: []
         }
     
-        this.socialmediadata = [];
-
         this.scheme_of_work_id = props.match.params.scheme_of_work_id;
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
@@ -26,11 +32,13 @@ class LessonPage extends React.Component {
 
     componentDidMount() {
 
-        this.socialmediadata = getSocialMediaLinks();
-        
+        this.NO_OF_COMPONENTS_TO_LOAD = 3;
+
         getSchemeOfWork(this, this.scheme_of_work_id);
 
         getLesson(this, this.scheme_of_work_id, this.lesson_id);   
+
+        getSocialMediaLinks(this);
     }
     
     static getDerivedStateFromError(error) {
@@ -43,7 +51,7 @@ class LessonPage extends React.Component {
         console.log(error, errorInfo);
         
         this.state = {
-            hasError: true,
+            hasError: true
         }
       }
       
@@ -53,26 +61,32 @@ class LessonPage extends React.Component {
                 lesson={this.state.Lesson}
                 keywords={this.state.Lesson.keywords}
                 schemeofwork={this.state.SchemeOfWork}
-                socialmediadata={this.socialmediadata}
+                socialmediadata={this.state.socialmediadata}
             />
         )
     }
 };
 
-export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata}) => {
+export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, loading = 0}) => {
     if (lesson === undefined || schemeofwork === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
 
+        let breadcrumbItems = [
+            {text:"Home", url:"/"}, 
+            {text:schemeofwork.name, url:`/Course/${schemeofwork.id}`},
+        ]
+
         return (
             <React.Fragment>
                 
                 <BannerWidget heading={lesson.title} description={lesson.summary} />
-
+                <SpinnerWidget loading={loading} />
                 <div id="main">
-                    <div className="inner">
+                    <div className="inner clearfix">
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={lesson.title} />
                         <section className="objectives">
                             <LessonObjectivesWidget data={lesson} />
                         </section>

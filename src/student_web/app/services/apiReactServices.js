@@ -1,4 +1,13 @@
 
+const onProgress = (reactComponent) => {
+    if (reactComponent.NO_OF_COMPONENTS_TO_LOAD == 0 || reactComponent.state.loading == undefined || reactComponent.NO_OF_COMPONENTS_TO_LOAD == undefined){
+        return 0;
+    }
+
+    let progress = reactComponent.state.loading + 100 / (reactComponent.NO_OF_COMPONENTS_TO_LOAD - 1);
+        return progress;
+};
+
 const getSchemesOfWork = (reactComponent) => {
     fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/?format=json`)
         .then(res => { 
@@ -9,12 +18,16 @@ const getSchemesOfWork = (reactComponent) => {
             reactComponent.setState({
                 SchemesOfWork: data.schemesofwork, 
                 hasError: false,
+                loading: onProgress(reactComponent),
+                isLoaded: true,
             });
         },  
         (error) => {
             reactComponent.setState({
                 SchemesOfWork: [],
                 hasError: true,
+                isLoaded: true,
+                onerror: onProgress(reactComponent),
             });
         }
     )
@@ -29,15 +42,18 @@ const getSchemeOfWork = (reactComponent, scheme_of_work_id) => {
         .then(
         (data) => {
             reactComponent.setState({
-                SchemeOfWork: data.schemeofwork, 
+                SchemeOfWork: data.schemeofwork,
+                loading: onProgress(reactComponent), 
                 hasError: false,
+                isLoaded: true,
             });
         },  
         (error) => {
- 
             reactComponent.setState({
                 SchemeOfWork: {},
                 hasError: true,
+                isLoaded: true,
+                onerror: reactComponent.onError(error),
             });
         }
     )
@@ -53,13 +69,17 @@ const getLessons = (reactComponent, scheme_of_work_id) => {
         (data) => {
             reactComponent.setState({
                 Lessons: data.lessons, 
+                loading: onProgress(reactComponent),
                 hasError: false,
+                isLoaded: true,
             });
         },  
         (error) => {
             reactComponent.setState({
                 Lessons: [],
                 hasError: true,
+                isLoaded: true,
+                onerror: reactComponent.onError(error),
             });
         }
     )
@@ -75,13 +95,17 @@ const getLesson = (reactComponent, scheme_of_work_id, lesson_id) => {
         (data) => {
             reactComponent.setState({
                 Lesson: data.lesson, 
+                loading: onProgress(reactComponent),
                 hasError: false,
+                isLoaded: true,
             });
         },  
         (error) => {
             reactComponent.setState({
                 Lesson: {},
                 hasError: true,
+                isLoaded: true,
+                onerror: reactComponent.onError(error),
             });
         }
     )
@@ -96,14 +120,18 @@ const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) 
         .then(
         (data) => {
             reactComponent.setState({
-                Resource: data.resource, 
+                Resource: data.resource,
+                loading: onProgress(reactComponent), 
                 hasError: false,
+                isLoaded: true,
             });
         },  
         (error) => {
             reactComponent.setState({
                 Resource: {},
                 hasError: true,
+                isLoaded: true,
+                onerror: reactComponent.onError(error),
             });
         }
     )
@@ -117,7 +145,8 @@ const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, 
         (result) => {
             reactComponent.setState({
             isLoaded: true,
-            markdown_html: result.markdown
+            loading: onProgress(reactComponent),
+            markdown_html: result.markdown,
           });
         },
         // Note: it's important to handle errors here
@@ -125,38 +154,45 @@ const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, 
         // exceptions from actual bugs in components.
         (error) => {
             reactComponent.setState({
+            hasError: true,
             isLoaded: true,
             markdown_html: error,
-            error
+            error,
+            onerror: reactComponent.onError(error),
           });
         }
       )
 } 
 
 
-const getSocialMediaLinks = () => {
-    return [
-        {
-            "name":"Twitter",
-            "iconClass":"icon fa-twitter",
-            "url":"http://twitter.com",
-        },
-        {
-            "name":"Facebook",
-            "iconClass":"icon fa-facebook",
-            "url":"http://www.facebook.com",
-        },
-        {
-            "name":"Instagram",
-            "iconClass":"icon fa-instagram",
-            "url":"http://www.instagram.com",
-        },
-        {
-            "name":"Email",
-            "iconClass":"icon fa-envelope",
-            "url":"mail://noaddress@example.com",
-        },
-    ];
+const getSocialMediaLinks = (reactComponent) => {
+    reactComponent.setState({
+        socialmediadata: [
+            {
+                "name":"Twitter",
+                "iconClass":"icon fa-twitter",
+                "url":"http://twitter.com",
+            },
+            {
+                "name":"Facebook",
+                "iconClass":"icon fa-facebook",
+                "url":"http://www.facebook.com",
+            },
+            {
+                "name":"Instagram",
+                "iconClass":"icon fa-instagram",
+                "url":"http://www.instagram.com",
+            },
+            {
+                "name":"Email",
+                "iconClass":"icon fa-envelope",
+                "url":"mail://noaddress@example.com",
+            },
+        ],
+        loading: onProgress(reactComponent),
+        hasError: false,
+        isLoaded: true,
+    });
 }
 
 
@@ -166,7 +202,9 @@ const getSiteConfig = (reactComponent) => {
             name:"Dave Russell",
             description:""
         }, 
+        loading: onProgress(reactComponent),
         hasError: false,
+        isLoaded: true,
     });
 }
 

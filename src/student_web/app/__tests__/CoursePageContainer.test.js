@@ -101,6 +101,36 @@ describe("CoursePageContainer", () =>{
         })
     })
 
+
+    describe('has breadcrumb', () => {
+
+        it('with home link', () => {
+            render(
+                <Router>
+                    <CoursePageContainer lessons={lessons} schemeofwork={schemeofwork} site={site} socialmediadata />
+                </Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) > a').textContent
+            ).toEqual('Home');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) > a').getAttribute("href")
+            ).toEqual('/');
+        })
+
+        it('with current page text only', () => {
+            render(
+                <Router>
+                    <CoursePageContainer lessons={lessons} schemeofwork={schemeofwork} site={site} socialmediadata />
+                </Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2)').textContent
+            ).toEqual('KS3 Computing');
+        })
+    })
+
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {

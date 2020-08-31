@@ -157,6 +157,47 @@ describe("LessonPageContainer", () =>{
         })
     })
 
+
+    describe('has breadcrumb', () => {
+
+        it('with home link', () => {
+            
+            render(<Router><LessonPageContainer lesson={lesson} schemeofwork={schemesofwork} keywords={lesson.key_words} socialmediadata /></Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) > a').textContent
+            ).toEqual('Home');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1) a').getAttribute("href")
+            ).toEqual('/');
+        })
+
+
+        it('with Course link', () => {
+
+            render(<Router><LessonPageContainer lesson={lesson} schemeofwork={schemesofwork} keywords={lesson.key_words} socialmediadata /></Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2)').textContent
+            ).toEqual('CPU Architecture');
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
+            ).toEqual('/Course/1');
+        })
+
+       it('with current page text only', () => {
+            
+            render(<Router><LessonPageContainer lesson={lesson} schemeofwork={schemesofwork} keywords={lesson.key_words} socialmediadata /></Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3)').textContent
+            ).toEqual('Curabitur id purus feugiat, porttitor.');
+ 
+        })
+    })
+    
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {
