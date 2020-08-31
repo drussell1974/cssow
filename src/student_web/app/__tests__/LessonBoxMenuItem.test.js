@@ -214,7 +214,7 @@ describe('LessonBoxMenuMarkdownPageLinkItem', () => {
 
         expect(
             container.querySelector('div.box a').getAttribute('href')
-            ).toMatch('/Lesson/123/Activity/31/FromRESTToGraphQL.md');
+            ).toMatch('/lesson/123/activity/31/FromRESTToGraphQL.md');
     })
 
     it('has a image', () => {
@@ -250,7 +250,7 @@ describe('LessonBoxMenuMarkdownPageLinkItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('/Lesson/123/Activity/31/FromRESTToGraphQL.md');
+        ).toMatch('/lesson/123/activity/31/FromRESTToGraphQL.md');
     })
 
     it('has type label heading from reference type name', () => {

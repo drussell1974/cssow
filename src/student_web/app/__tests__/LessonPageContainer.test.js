@@ -184,7 +184,7 @@ describe("LessonPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/Course/1');
+            ).toEqual('/course/1');
         })
 
        it('with current page text only', () => {
@@ -280,7 +280,7 @@ describe("LessonPageContainer", () =>{
 
             expect(
                 container.querySelector("#main .inner section.resources div.box:nth-last-child(1) .inner a").getAttribute("href")
-            ).toMatch("/Lesson/1/Activity/31/FromRESTToGraphQL.md/")
+            ).toMatch("/lesson/1/activity/31/FromRESTToGraphQL.md/")
         })
 
         it('with keywords', () => {

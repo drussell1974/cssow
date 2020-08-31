@@ -98,7 +98,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('/Course');
+        ).toMatch('/course');
     })
 
     it('has a disabled view button', () => {

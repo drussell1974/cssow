@@ -149,7 +149,7 @@ describe('LessonActivityWidget', () => {
 
             expect(
                 container.querySelector('li a.activity-link--markdown').getAttribute('href')
-            ).toMatch("/Lesson/220/Activity/119/The-TCP_IP-Protocol-Stack.md")
+            ).toMatch("/lesson/220/activity/119/The-TCP_IP-Protocol-Stack.md")
         })
     })
 })
