@@ -1,8 +1,9 @@
 import React from 'react';
 import { SchemeOfWorkBoxMenuWidget } from '../widgets/SchemeOfWorkBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
+import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
-import { SpinnerWidget } from '../widgets/SpinnerWidget';   
+import { SpinnerWidget } from '../widgets/SpinnerWidget';
 import { getSchemesOfWork, getSiteConfig, getSocialMediaLinks } from '../services/apiReactServices';
 
 class SchemeOfWorkPage extends React.Component {
@@ -13,19 +14,20 @@ class SchemeOfWorkPage extends React.Component {
             Site: {},
             SchemesOfWork: [],
             hasError: false,
-            Loading: true
+            loading: 0,
+            socialmediadata: []
         }
-    
-        this.socialmediadata = [];
     }
 
     componentDidMount() {
 
-        getSiteConfig(this);
+        this.NO_OF_COMPONENTS_TO_LOAD = 3;
 
-        this.socialmediadata = getSocialMediaLinks();
+        getSiteConfig(this);
         
         getSchemesOfWork(this);
+
+        getSocialMediaLinks(this);
     }
     
     static getDerivedStateFromError(error) {
@@ -39,6 +41,7 @@ class SchemeOfWorkPage extends React.Component {
         
         this.state = {
             hasError: true,
+            loading: 50
         }
       }
       
@@ -48,14 +51,14 @@ class SchemeOfWorkPage extends React.Component {
             <SchemeOfWorkPageContainer 
                 site={this.state.Site}
                 schemesofwork={this.state.SchemesOfWork}
-                socialmediadata={this.socialmediadata}
-                loading={this.state.Loading}
+                socialmediadata={this.state.socialmediadata}
+                loading={this.state.loading}
             />
         )
     }
 };
 
-export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata, loading}) => {
+export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata, loading = 0}) => {
     if (schemesofwork === undefined || site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
@@ -68,6 +71,8 @@ export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata,
                 <BannerWidget heading={site.name} description={site.description} />
                     <div id="main">
                         <div className="inner">
+                            <SpinnerWidget loading={loading} />
+                            <BreadcrumbWidget activePageName={"Home"} />    
                             <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="Course" typeButtonText="View Course" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                         </div>
                     </div>

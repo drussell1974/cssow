@@ -23,7 +23,18 @@ describe('SpinnerWidget', () => {
 
     it('renders empty if not explicitly loading', () => {
 
-        let status = { }
+        let status = 0;
+
+        render(<SpinnerWidget loading={status} />);
+
+        expect(
+            container.textContent
+        ).toEqual("");
+    })
+
+    it('renders empty when loaded', () => {
+
+        let status = 100;
 
         render(<SpinnerWidget loading={status} />);
 
@@ -34,7 +45,7 @@ describe('SpinnerWidget', () => {
 
     it('renders empty while loading is false', () => {
         
-        let status = false;
+        let status = 0;
         
         render(<SpinnerWidget loading={status} />);
 
@@ -45,13 +56,13 @@ describe('SpinnerWidget', () => {
 
     it('renders spinner while loading', () => {
         
-        let status = true;
+        let status = 70;
 
         render(<SpinnerWidget loading={status} />);
 
         expect(
             container.textContent
-        ).toEqual("loading...");
+        ).toEqual("70%");
     })
 
 })

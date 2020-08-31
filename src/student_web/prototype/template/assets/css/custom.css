@@ -34,6 +34,14 @@ div.progress {
     width: 0%;
     height: 20px;
     background-color: #49B39D;
+    animation: example 5s linear 2s infinite;
+}
+
+
+/* DEMO TEMPLATE ONLY */
+
+div.progress {
+    animation: example 5s linear 2s infinite;
 }
 
 @keyframes example {

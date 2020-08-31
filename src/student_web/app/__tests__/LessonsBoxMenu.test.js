@@ -65,7 +65,7 @@ describe('LessonsBoxMenu', () => {
     it('renders empty model', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons} />
+                <LessonsBoxMenuWidget data={lessons} />
             </MemoryRouter>
             );
         
@@ -75,7 +75,7 @@ describe('LessonsBoxMenu', () => {
     it('renders lessons container', () => {    
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons} />
+                <LessonsBoxMenuWidget data={lessons} />
             </MemoryRouter>
             );
         
@@ -99,7 +99,7 @@ describe('LessonsBoxMenu', () => {
     it('has a single box', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons.slice(0,1)} />
+                <LessonsBoxMenuWidget data={lessons.slice(0,1)} />
             </MemoryRouter>);
 
         expect(
@@ -111,7 +111,7 @@ describe('LessonsBoxMenu', () => {
     it('has a multiple boxes', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons} typeButtonClass="button style2 fit" typeDisabledButtonClass="button style2 fit disabled" />
+                <LessonsBoxMenuWidget data={lessons} typeButtonClass="button style2 fit" typeDisabledButtonClass="button style2 fit disabled" />
             </MemoryRouter>);
 
         expect(
@@ -126,7 +126,7 @@ describe('LessonsBoxMenu', () => {
     it('renders buttons with typeLabelText', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons} typeLabelText="lesson" />
+                <LessonsBoxMenuWidget data={lessons} typeLabelText="lesson" />
             </MemoryRouter>);
 
         expect(
@@ -138,7 +138,7 @@ describe('LessonsBoxMenu', () => {
     it('renders buttons with ', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget data={lessons} typeButtonText="View" typeButtonClass="button style2 fit" />
+                <LessonsBoxMenuWidget data={lessons} typeButtonText="View" typeButtonClass="button style2 fit" />
             </MemoryRouter>);
 
         expect(
@@ -155,13 +155,13 @@ describe('LessonsBoxMenu', () => {
 
         render(
             <MemoryRouter>
-            <LessonsBoxMenuWidget
-                data={lessons}
-                typeButtonText="View" 
-                typeButtonClass='button fit'
-                typeDisabledButtonText="Coming soon" 
-                typeDisabledButtonClass='button fit disabled'
-                 />
+                <LessonsBoxMenuWidget
+                    data={lessons}
+                    typeButtonText="View" 
+                    typeButtonClass='button fit'
+                    typeDisabledButtonText="Coming soon" 
+                    typeDisabledButtonClass='button fit disabled'
+                    />
             </MemoryRouter>);
 
         expect(

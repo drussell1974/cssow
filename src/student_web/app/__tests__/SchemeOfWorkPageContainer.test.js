@@ -64,6 +64,18 @@ describe("SchemeOfWorkPageContainer", () =>{
         })
     })
 
+
+    describe('has breadcrumb', () => {
+
+        it('with current page text only', () => {
+            render(<Router><SchemeOfWorkPageContainer site={site} schemesofwork={schemesofwork} socialmediadata /></Router>);
+
+            expect(
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1)').textContent
+            ).toEqual('Home');
+        })
+    })
+
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {
