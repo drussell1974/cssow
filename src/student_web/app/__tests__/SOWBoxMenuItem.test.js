@@ -91,7 +91,7 @@ describe ('SOWBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('/Lesson');
+        ).toMatch('/lesson');
     })
 
     it('has type label heading', () => {

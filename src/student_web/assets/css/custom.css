@@ -24,7 +24,6 @@
     margin-bottom: 1rem;
     list-style: none;
     border-radius: .25rem;
-    text-transform: lowercase;
 }
 
 .breadcrumb-item+.breadcrumb-item:before {

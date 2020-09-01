@@ -171,7 +171,7 @@ describe("CoursePageContainer", () =>{
 
             expect(
                 container.querySelector("#main .inner div.lessons > .box:nth-child(1) .inner a").getAttribute('href')
-            ).toMatch("/Lesson/1");
+            ).toMatch("/lesson/1");
 
             // Last
             expect(
@@ -184,7 +184,7 @@ describe("CoursePageContainer", () =>{
 
             expect(
                 container.querySelector("#main .inner div.lessons > .box:nth-last-child(1) .inner a").getAttribute('href')
-            ).toMatch("Lesson/6");
+            ).toMatch("lesson/6");
         })
     })
 });

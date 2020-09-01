@@ -114,7 +114,7 @@ describe("ActivityPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/Course/1');
+            ).toEqual('/course/1');
         })
 
         it('with Lesson link', () => {
@@ -129,7 +129,8 @@ describe("ActivityPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
-            ).toEqual('/Course/1/Lesson/1');
+            ).toEqual('/course/1/lesson/1');
+
         })
 
         it('with current page text only', () => {

@@ -87,8 +87,9 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
         
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
-            {text:schemeofwork.name, url:`/Course/${schemeofwork.id}`},
-            {text:lesson.title, url:`/Course/${schemeofwork.id}/Lesson/${lesson.id}`}
+            {text:schemeofwork.name, url:`/course/${schemeofwork.id}`},
+            {text:lesson.title, url:`/course/${schemeofwork.id}/lesson/${lesson.id}`}
+
         ]
 
         return (

@@ -13,9 +13,9 @@ ReactDOM.render(
     <Router>
         <Switch>
             <Route exact path="/" component={SchemeOfWorkPage} ></Route>
-            <Route path="/Course/:scheme_of_work_id/Lesson/:lesson_id/Activity/:resource_id/:md_document_name/" component={ActivityPage} />
-            <Route path="/Course/:scheme_of_work_id/Lesson/:lesson_id" component={LessonPage} />
-            <Route path="/Course/:scheme_of_work_id" component={CoursePage} />
+            <Route path="/course/:scheme_of_work_id/lesson/:lesson_id/ativity/:resource_id/:md_document_name/" component={ActivityPage} />
+            <Route path="/course/:scheme_of_work_id/lesson/:lesson_id" component={LessonPage} />
+            <Route path="/course/:scheme_of_work_id" component={CoursePage} />
         </Switch>
     </Router>
 , document.getElementById('app'));

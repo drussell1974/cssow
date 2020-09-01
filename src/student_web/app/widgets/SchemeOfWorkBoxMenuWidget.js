@@ -5,7 +5,7 @@ const SchemeOfWorkBoxLinkButton = ({data, typeButtonText, typeButtonClass, typeD
     if (data.number_of_lessons === 0 || (data.number_of_learning_objectives === 0 && data.number_of_resources === 0)) {
         return ( <button className={typeDisabledButtonClass} data-poptrox="youtube,800x400" >{typeDisabledButtonText}</button>)
     } else {
-        return ( <Link to={`/Course/${data.id}`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
+        return ( <Link to={`/course/${data.id}`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
     }
 }
 

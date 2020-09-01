@@ -6,7 +6,7 @@ const LessonBoxLinkButton = ({data, typeButtonText, typeButtonClass, typeDisable
     if (data.number_of_learning_objectives == 0 && data.number_of_resources == 0) {
         return ( <button className={typeDisabledButtonClass} data-poptrox="youtube,800x400" >{typeDisabledButtonText}</button>)
     } else {
-        return ( <Link to={`/Course/${data.scheme_of_work_id}/Lesson/${data.id}`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
+        return ( <Link to={`/course/${data.scheme_of_work_id}/lesson/${data.id}`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
     }
 }
 

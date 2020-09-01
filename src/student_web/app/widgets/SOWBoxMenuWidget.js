@@ -14,7 +14,7 @@ export const SOWBoxMenuItem = ({data, typeLabelText, typeButtonText}) => {
                     <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.title}</h3>
                     <p>{data.summary}</p>
-                    <Link to={`/Course/${data.scheme_of_work_id}/Lesson/${data.id}`} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</Link>                </div>
+                    <Link to={`/course/${data.scheme_of_work_id}/lesson/${data.id}`} className="button fit" data-poptrox="youtube,800x400">{typeButtonText}</Link>                </div>
             </div>
         )
     }
