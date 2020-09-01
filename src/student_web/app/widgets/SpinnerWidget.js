@@ -7,7 +7,7 @@ export const SpinnerWidget = ({loading}) => {
         let percentage = `${loading}%`;
         return (
             <Fragment>
-                <div className="progress--fill" style={{ width: "0%" }}>
+                <div className="progress progress--css-animated" style={{ width: "0%" }}>
                 </div>
                 <div className="progress" style={{ width: percentage }}>
                 </div>

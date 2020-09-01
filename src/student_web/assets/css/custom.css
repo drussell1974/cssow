@@ -34,18 +34,15 @@
 }
 
 div.progress {
-    float: left;
     width: 0%;
     height: 20px;
     background-color: #49B39D;
 }
 
-div.progress--fill {
+div.progress--css-animated {
+    z-index: 1;
     float: left;
-    width: 0%;
-    height: 20px;
-    background-color: #49B39D;
-    animation: progressbar 5s linear 1s;
+    animation: progressbar 5s forwards 1s;
 }
 
 @keyframes progressbar {
@@ -55,7 +52,7 @@ div.progress--fill {
     40%  { width: 40% }
     60%  { width: 60% }
     80%  { width: 80% }
-    100%  { width: 90% }
+    100%  { width: 100% }
 }
 
 .clearfix {
