@@ -77,6 +77,7 @@ export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, load
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
             {text:schemeofwork.name, url:`/course/${schemeofwork.id}`},
+
         ]
 
         return (
