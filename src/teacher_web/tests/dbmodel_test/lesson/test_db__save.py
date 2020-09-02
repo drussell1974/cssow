@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log import handle_log_info
+from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
 
 save = Model.save
@@ -145,6 +146,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, "")
+        
 
         # mock functions not being tested    
         LessonDataAccess._upsert_related_topic_ids = MagicMock()

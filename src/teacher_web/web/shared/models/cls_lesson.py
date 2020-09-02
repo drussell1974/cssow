@@ -877,6 +877,38 @@ class LessonDataAccess:
         :return: appended results
         """
 
+        #TODO: move 4 lines down to include in transaction (fix transaction first)
+        LessonDataAccess._delete_keywords(db, model, results, auth_user)
+
+        execHelper = ExecHelper()
+        execHelper.begin(db, TRANSACTION_STATE.OPEN)
+
+        try:
+
+            for key_word in model.key_words:
+
+                str_insert = "lesson__insert_keywords"
+            
+                params = (key_word.id, model.id, model.scheme_of_work_id, auth_user)
+
+                results = execHelper.insert(db, str_insert, params, handle_log_info)
+                
+            execHelper.end_transaction()
+            execHelper.commit()
+            
+        except:
+            #("execHelper: catch exception!")
+            execHelper.rollback()
+            raise
+        finally:
+            execHelper.end()
+            
+        return results
+
+
+    @staticmethod
+    def _delete_keywords(db, model, results, auth_user):
+        
         execHelper = ExecHelper()
         execHelper.begin(db, TRANSACTION_STATE.OPEN)
 
@@ -886,18 +918,10 @@ class LessonDataAccess:
 
             results = execHelper.delete(db, str_delete, params, handle_log_info)
             
-
-            for key_word in model.key_words:
-                str_insert = "lesson__insert_keywords"
-                
-                params = (key_word.id, model.id, auth_user)
-                results = execHelper.insert(db, str_insert, params, handle_log_info)
-                
             execHelper.end_transaction()
             execHelper.commit()
             
         except:
-            #("execHelper: catch exception!")
             execHelper.rollback()
             raise
         finally:

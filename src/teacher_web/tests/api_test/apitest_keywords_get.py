@@ -9,7 +9,7 @@ class apitest_keywords_get(APITestCase):
 
     def setUp(self):
         # set up
-        self.get("/api/keywords")
+        self.get("/api/keywords/11")
         
         self.last_item_index = len(self.payload["keywords"]) - 1
 

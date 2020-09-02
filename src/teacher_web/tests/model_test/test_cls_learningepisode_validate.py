@@ -634,7 +634,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # set up
         test = self._construct_valid_object()
 
-        test.key_words = [KeywordModel(1, "Bytes 1")]
+        test.key_words = [KeywordModel(1, "Bytes 1", scheme_of_work_id=13)]
 
         # test
         test.validate()
@@ -654,7 +654,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # generate data
         for n in range(100):
             test.key_words.append(
-                KeywordModel(n, "Bytes {}".format(n))
+                KeywordModel(n, "Bytes {}".format(n), scheme_of_work_id=13)
             )
         
         # test
@@ -675,7 +675,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # generate data
         for n in range(101):
             test.key_words.append(
-                KeywordModel(n, "Bytes {}".format(n))
+                KeywordModel(n, "Bytes {}".format(n), 13)
             )
 
         # test
@@ -693,7 +693,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # set up
         test = self._construct_valid_object()
 
-        test.key_words = [KeywordModel(1, "")]
+        test.key_words = [KeywordModel(1, "", scheme_of_work_id=13)]
 
         # test
         test.validate()

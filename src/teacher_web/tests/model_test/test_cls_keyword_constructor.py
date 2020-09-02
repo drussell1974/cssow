@@ -26,7 +26,7 @@ class test_cls_keyword_constructor(TestCase):
     def test_constructor_set_valid_values(self):
 
         # self.test
-        self.test = KeywordModel(1, "Algorithm", "A list of instructions")
+        self.test = KeywordModel(1, "Algorithm", "A list of instructions", scheme_of_work_id=13)
 
         self.test.validate()
 

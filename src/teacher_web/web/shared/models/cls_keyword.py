@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from .core.basemodel import BaseModel
+from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty
 from .core.log import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
 
@@ -10,25 +10,28 @@ class KeywordModel(BaseModel):
     id = 0
     term = ""
     definition = ""
+    scheme_of_work_id = 0
 
     exception_handler=None
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = ""):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0):
         self.id = id_
         self.term = term
         self.definition = definition
+        self.scheme_of_work_id = try_int(scheme_of_work_id)
 
 
-    def from_dict(self, dict_obj):
+    def from_dict(self, dict_obj, scheme_of_work_id):
         
         if type(dict_obj) is not dict:
             raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
 
         self.id = dict_obj["id"]
         self.term = dict_obj["term"]
-        self.definition = dict_obj["definition"]  
+        self.definition = dict_obj["definition"]
+        self.scheme_of_work_id = scheme_of_work_id
 
         # validate
         self.validate()
@@ -37,14 +40,14 @@ class KeywordModel(BaseModel):
         return self 
 
 
-    def from_json(self, str_json, encoding="utf8"):
-
+    def from_json(self, str_json, scheme_of_work_id, encoding="utf8"):
+        """ takes a json string and creates an instance of this object """
         if type(str_json) is not str:
             raise TypeError("str_json Type is {}. Value <{}> must be type string (str).".format(type(str_json), str_json))
         
         dict_obj = json.loads(str_json)
 
-        return self.from_dict(dict_obj)
+        return self.from_dict(dict_obj, scheme_of_work_id)
 
 
     def validate(self):
@@ -59,9 +62,12 @@ class KeywordModel(BaseModel):
         self._validate_required_string("term", self.term, 1, 100)
         self._validate_regular_expression("term", self.term, r"[^0-9,;!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
 
-        # validate page_uri
+        # validate defintion
         self._validate_optional_string("definition", self.definition, 250)
 
+        # validate required scheme_of_work_id
+        self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
+        
 
     def _clean_up(self):
         """ clean up properties by removing by casting and ensuring safe for inserting etc """
@@ -80,39 +86,46 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, id, auth_user):
-        rows = KeywordDataAccess.get_model(db, id, auth_user)
+    def get_model(db, id, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user)
         
         data = KeywordModel(0, "", "")
 
         for row in rows:
-            data = KeywordModel(row[0], row[1], row[2])
+            data = KeywordModel(row[0], row[1], row[2], row[3])
 
         return data
 
 
     @staticmethod
-    def get_options(db, auth_user):
-        return KeywordDataAccess.get_options(db, auth_user)
+    def get_options(db, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user)
 
-
-    @staticmethod
-    def get_all(db, auth_user):
-        rows = KeywordDataAccess.get_all(db, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+            item = KeywordModel(row[0], row[1], row[2], row[3])
+            data.append(item)
+            
         return data
 
 
     @staticmethod
-    def get_by_terms(db, key_words_list, allow_all, auth_user):
-        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, auth_user)
+    def get_all(db, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user)
+        data = []
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], row[2], row[3]))
+        return data
+
+
+    @staticmethod
+    def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user)
 
         data = []
 
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2]))
+            data.append(KeywordModel(row[0], row[1], row[2], row[3]))
 
         return data
 
@@ -120,11 +133,11 @@ class KeywordModel(BaseModel):
     @staticmethod
     def save(db, model, published, auth_user):
         if model.is_new():
-            data = KeywordDataAccess._insert(db, model, published, auth_user)
+            data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, published, auth_user)
             model.id = data[0]            
             model.published = 2
         else:
-            data = KeywordDataAccess._update(db, model, published, auth_user)
+            data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, published, auth_user)
 
         return model
 
@@ -138,25 +151,19 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_options(db, auth_user):
+    def get_options(db, scheme_of_work_id, auth_user):
         execHelper = ExecHelper()
 
         select_sql = "keyword__get_options"
-        params = (auth_user,)
+        params = (scheme_of_work_id, auth_user)
         rows = []
         #271 Stored procedure (get_options)
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
-        
-        data = []
-        for row in rows:
-            item = KeywordModel(row[0], row[1], row[2])
-            data.append(item)
-            
-        return data
+        return rows
 
 
     @staticmethod
-    def get_model(db, id, auth_user):
+    def get_model(db, id, scheme_of_work_id, auth_user):
         """
         Get a full list of terms and definitions
         :param db:
@@ -167,7 +174,7 @@ class KeywordDataAccess:
 
         select_sql = "keyword__get"
     
-        params = (id, auth_user)
+        params = (id, scheme_of_work_id, auth_user)
 
         rows = []
 
@@ -178,7 +185,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_all(db, auth_user):
+    def get_all(db, scheme_of_work_id, auth_user):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -188,7 +195,7 @@ class KeywordDataAccess:
 
         select_sql = "keyword__get_all"
 
-        params = (auth_user,)
+        params = (scheme_of_work_id, auth_user)
         
         rows = []
         
@@ -199,7 +206,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_by_terms(db, key_words_list, allow_all, auth_user):
+    def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user):
         """
         Get a full list of terms and definitions
         :param db:
@@ -213,13 +220,13 @@ class KeywordDataAccess:
     
 
         select_sql = "keyword__get_by_term"
-        params = ("", auth_user)
+        params = ("", scheme_of_work_id, auth_user)
 
         ' remove whitespace and use lower'
         key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
         if len(key_words_list) > 0:
-            params = ("','".join(sql_safe(key_words_list).split(',')), auth_user)
+            params = ("','".join(sql_safe(key_words_list).split(',')), scheme_of_work_id, auth_user)
     
     
         rows = []
@@ -230,14 +237,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user):
+    def _insert(db, model, scheme_of_work_id, published, auth_user):
         """ Inserts key word and definition """
 
         execHelper = ExecHelper()
 
         stored_procedure = "keyword__insert"
 
-        params = (model.id, model.term, model.definition, auth_user, published)    
+        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user, published)    
     
         new_id = execHelper.insert(db,
             stored_procedure
@@ -249,15 +256,15 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def _update(db, model, published, auth_user):
+    def _update(db, model, scheme_of_work_id, published, auth_user):
         """ Inserts key word and definition """
         
         execHelper = ExecHelper()
         
         str_update = "keyword__update"
         
-        params = (model.id, model.term, model.definition, model.published, auth_user)
-   
+        params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user)
+    
         execHelper.update(db, str_update, params, handle_log_info)
 
         return model

@@ -68,7 +68,7 @@ class test_viewmodel_EditViewModel(TestCase):
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(Model, "save", return_value=None):
                 
-                save_keyword.model = Mock(return_value=KeywordModel(12))
+                save_keyword.model = Mock(return_value=KeywordModel(12, scheme_of_work_id=13))
 
                 # act
                 mock_model = Model(99, "")                
@@ -108,7 +108,7 @@ class test_viewmodel_EditViewModel(TestCase):
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(Model, "save", return_value=None):
                 
-                save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM"))
+                save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM",scheme_of_work_id=11))
 
                 # act
 

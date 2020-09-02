@@ -34,12 +34,12 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (6079,)
+                , (13, 6079)
                 , []
                 , handle_log_info)
 
@@ -48,39 +48,42 @@ class test_db_keyword__get_options(TestCase):
 
     def test__should_call_select__return_single_item(self):
         # arrange
-        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.")]
+        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (6079,)
+                , (13, 6079)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(1, len(rows))
             self.assertEqual("Binary", rows[0].term)
+            self.assertEqual("Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", rows[0].definition)
+            self.assertEqual(13, rows[0].scheme_of_work_id)
+
 
 
     def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [
-            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.")
-            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.")
-            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.")]
+            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13)
+            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13)
+            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.", 13)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (6079,)
+                , (13, 6079)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

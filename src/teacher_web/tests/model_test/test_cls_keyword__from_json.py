@@ -36,7 +36,7 @@ class test_cls_keyword__from_json(TestCase):
         self.test = KeywordModel()
 
         # act
-        self.test.from_json('{"id":1, "term":"Algorithm", "definition":"A list of instructions"}')
+        self.test.from_json('{"id":1, "term":"Algorithm", "definition":"A list of instructions"}', 13)
 
         # assert
         
@@ -54,7 +54,7 @@ class test_cls_keyword__from_json(TestCase):
         self.test = KeywordModel()
 
         # act
-        self.test.from_json('{"id":1, "term":"", "definition":"A list of instructions"}')
+        self.test.from_json('{"id":1, "term":"", "definition":"A list of instructions"}', 13)
 
         # assert
         self.assertFalse(self.test.is_valid)

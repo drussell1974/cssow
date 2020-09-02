@@ -45,7 +45,7 @@
     <!-- show error_message -->
     {% include '_partials/form.viewmodel.alert_message.html' %}
     <!-- show error_message END -->
-    
+
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Year group")}}</label>
@@ -86,7 +86,6 @@
       </div>
         <hr>
     </div>
-    <!-- Content START -->
     <div class="control-group">
       <div class="form-group controls">
       <label>{{_("Curriculum")}}</label>
@@ -99,7 +98,6 @@
       <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
       </div>
   </div>
-  <!-- Content END -->
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Topic")}}</label>
@@ -174,11 +172,11 @@
     <!-- Hidden Fields -->
     <input type="hidden" name="id" value="{{content.data.lesson.id}}" id="hdn-lesson_id">
     <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
-    <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}" id="hdn-scheme_of_work_id">
     <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
     <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
     <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
-    <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' %}" id="hdn-keywords_uri"><!-- get_key_words  -->
+    <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' content.data.scheme_of_work_id %}" id="hdn-keywords_uri"><!-- get_key_words  -->
   </form>
 </article>
 {% endblock %}
@@ -204,6 +202,7 @@
       </div>
       <div class="modal-body">
         <input type="hidden" id="keywordModalId" />
+        <input type="hidden" id="keywordModalSchemeOfWorkId" />
         <textarea id="keywordModalDefinition" class="form-control" rows="3" max="100" style="display:table-cell; width:100%;"></textarea>
         <div class="invalid-feedback">{{_("invalid keyword definition")}}</div>
       </div>
@@ -228,12 +227,11 @@
         , "#keywords-tokenfield" // token_input_css_selector
         , ".tokenfield .invalid" // invalid_tokens_css_selector
         , "is-invalid invalid error" // invalid_classes
-        , "#hdn-key_words" // form_keyword_post
         , "#keywordModal" // modal_id
         , "#keywordModalId" // modal_id_id
         , "#keywordModalTitle" // modal_title_id
         , "#keywordModalDefinition" // modal_body_id
-        , "#keywordModalSaveButton" // modal_save_button_id, 
+        , "#keywordModalSaveButton" // modal_save_button_id
       )
       
     </script>

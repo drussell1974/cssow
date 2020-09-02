@@ -17,6 +17,7 @@
 .group-subheading {
     font-size: larger;
     text-decoration: underline;
+    font-style: oblique;
 }
 
 .post-title--long-text {

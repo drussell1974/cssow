@@ -1,5 +1,5 @@
-function keyword_token_handler(get_keywords_url, token_input_css_selector, invalid_tokens_css_selector, invalid_classes, form_keyword_post, modal_id, modal_id_id, modal_title_id, modal_definition_id, modal_save_button_id) {
-
+function keyword_token_handler(get_keywords_url, token_input_css_selector, invalid_tokens_css_selector, invalid_classes, modal_id, modal_id_id, modal_title_id, modal_definition_id, modal_save_button_id) {
+  
   keyword_options = [];
   
   function transform_keyword_options(result) {
@@ -10,12 +10,19 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
 
   function get_keyword_data(active_token_attrs) {        
     var found = keyword_options.find(x => x.value == active_token_attrs.value);
-    if (found !== undefined) { // item has been found
+    if (found != undefined) { // item has been found
+      
+      console.log(found);
+
       active_token_attrs.id = found.id;
       active_token_attrs.term = found.value;
       active_token_attrs.definition = found.definition;
       active_token_attrs.is_valid = found.is_valid;
+      
     } else {
+
+      console.log(found);
+      
       // set defaults (not valid)
       active_token_attrs.id = 0;
       active_token_attrs.term = active_token_attrs.value;
@@ -37,7 +44,6 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
   }
 
   function validate(target, form_control, active_token_attrs) {
-    console.log(`validating keyword id:${active_token_attrs.id} value:${active_token_attrs.value} term:${active_token_attrs.term} definition:${active_token_attrs.definition} is_valid:${active_token_attrs.is_valid}`);
 
     var re = /[^0-9,!-)]([A-Za-z0-9 ]+)?/g
     
@@ -69,9 +75,7 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
         $(modal_id_id).val(active_token_attrs.id);
         $(modal_title_id).val(active_token_attrs.term);
         $(modal_definition_id).val(active_token_attrs.definition);
-      
         // update keyword definitions when finished
-        //$(modal_id).on('hidden.bs.modal', function(e) {
         $(modal_save_button_id).click(function (e) {
 
           //e.preventDefault();
@@ -93,9 +97,8 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
           modal_data.is_valid = validate(target, $(modal_title_id), modal_data);
     
           if(!modal_data.is_valid){
-            $(modal_title_id).addClass(invalid_classes);
-
             // stop modal from closing from save button
+            $(modal_title_id).addClass(invalid_classes);
           } else {
             
             // update token data and close form

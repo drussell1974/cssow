@@ -7,14 +7,14 @@ class test_cls_keyword__validate__definition(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KeywordModel(1, term = "A", definition = "")
+        self.test = KeywordModel(1, term = "A", definition = "", scheme_of_work_id=13)
 
 
     def tearDown(self):
         pass
 
 
-    def test_min__valid_extreme(self):
+    def test_min__valid(self):
         # set up
 
         self.test.definition = "A"
@@ -102,7 +102,7 @@ class test_cls_keyword__validate__term(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KeywordModel(1, "", "")
+        self.test = KeywordModel(1, "", "", scheme_of_work_id=13)
 
 
     def tearDown(self):
@@ -283,3 +283,67 @@ class test_cls_keyword__validate__term(TestCase):
             # test
             self.test.validate()
             self.assertTrue("term" in self.test.validation_errors, "value '{}' should not be valid".format(word))
+
+
+class test_cls_keyword__validate__scheme_of_work_id(TestCase):
+
+    test = None
+
+    def setUp(self):
+        self.test = KeywordModel(1, term = "A", definition = "", scheme_of_work_id=13)
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.scheme_of_work_id = 1
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("scheme_of_work_id" in self.test.validation_errors, "scheme_of_work_id should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+
+        self.test.scheme_of_work_id = 0
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("scheme_of_work_id" in self.test.validation_errors, "scheme_of_work_id should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test_max__valid_extreme(self):
+        # set up
+        
+        self.test.scheme_of_work_id = 99999
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("scheme_of_work_id" in self.test.validation_errors, "scheme_of_work_id should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+        # set up
+
+        self.test.scheme_of_work_id = 100000
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("scheme_of_work_id" in self.test.validation_errors, "scheme_of_work_id should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")

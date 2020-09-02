@@ -28,7 +28,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
 
             with self.assertRaises(KeyError):
                 # act and assert
-                ViewModel(db, 22, allow_all=True, auth_user=99)
+                ViewModel(db, 22, allow_all=True, scheme_of_work_id = 13, auth_user=99)
             #TODO: #233 remove self.assertRaises
              
             # assert
@@ -49,7 +49,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            result = ViewModel(db, 22, allow_all=True, auth_user=99)
+            result = ViewModel(db, 22, allow_all=True, scheme_of_work_id=13, auth_user=99)
 
             # assert functions was called
             Model.get_by_terms.assert_called()
@@ -68,7 +68,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            result = ViewModel(db, 23, allow_all=True, auth_user=99)
+            result = ViewModel(db, 23, allow_all=True, scheme_of_work_id=13, auth_user=99)
 
             # assert functions was called
             Model.get_by_terms.assert_called()
@@ -85,7 +85,7 @@ class test_viewmodel_KeywordGetModelByTermsViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            result = ViewModel(db, "DIMM", allow_all=True, auth_user=99)
+            result = ViewModel(db, "DIMM", allow_all=True, scheme_of_work_id=13, auth_user=99)
 
             # assert functions was called
             Model.get_by_terms.assert_called()

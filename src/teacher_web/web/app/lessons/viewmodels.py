@@ -93,9 +93,8 @@ class LessonEditViewModel(BaseViewModel):
         self.model = data
 
         try:
-            
             # transform key_words from string to dictionary list
-            decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item), json.loads(key_words_json)))
+            decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item, self.model.scheme_of_work_id), json.loads(key_words_json)))
                     
             #handle_log_warning(self.db, "processing key words", decoded_key_words)
 
@@ -106,11 +105,11 @@ class LessonEditViewModel(BaseViewModel):
                 save_keyword = KeywordSaveViewModel(db, keyword)
                 
                 kyw_model = save_keyword.execute(auth_user)
-
                 
                 self.model.key_words.append(kyw_model)
     
         except Exception as ex:
+            self.error_message = ex
             handle_log_exception(db, "An error occurred processing key words json", ex)
             raise
 
