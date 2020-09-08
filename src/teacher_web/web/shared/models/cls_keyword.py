@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from uuid import uuid1
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty
 from .core.log import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
@@ -11,20 +12,25 @@ class KeywordModel(BaseModel):
     term = ""
     definition = ""
     scheme_of_work_id = 0
+    belongs_to_lessons = []
+    number_of_lessons = 0
 
     exception_handler=None
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, published = 1):
         self.id = id_
         self.term = term
         self.definition = definition
         self.scheme_of_work_id = try_int(scheme_of_work_id)
+        self.belongs_to_lessons = []
+        self.number_of_lessons = 0
+        self.published = published
 
 
     def from_dict(self, dict_obj, scheme_of_work_id):
-        
+    
         if type(dict_obj) is not dict:
             raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
 
@@ -32,11 +38,10 @@ class KeywordModel(BaseModel):
         self.term = dict_obj["term"]
         self.definition = dict_obj["definition"]
         self.scheme_of_work_id = scheme_of_work_id
-
-        # validate
+        self.published = dict_obj["published"]
+        
         self.validate()
         
-
         return self 
 
 
@@ -50,23 +55,27 @@ class KeywordModel(BaseModel):
         return self.from_dict(dict_obj, scheme_of_work_id)
 
 
-    def validate(self):
+    def validate(self, skip_validation = []):
         """ clean up and validate model """
+        super().validate(skip_validation)
 
-        self._on_before_validate()
-
-        # clean properties before validation
-        self._clean_up()
+        # do not validate deleted items
+        if self.published == 2:
+            self.is_valid = True;
+            self.on_after_validate()
+            return
 
         # validate title
         self._validate_required_string("term", self.term, 1, 100)
-        self._validate_regular_expression("term", self.term, r"[^0-9,;!-())]([A-Za-z0-9 ())]+)?", "value must be alphanumeric, but start with or be a number")
+        self._validate_regular_expression("term", self.term, r"[^0-9,;!-())]([A-Za-z0-9 ()\-/)]+)?", "value must be alphanumeric, but start with or be a number")
 
         # validate defintion
         self._validate_optional_string("definition", self.definition, 250)
 
         # validate required scheme_of_work_id
         self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
+
+        self.on_after_validate()
         
 
     def _clean_up(self):
@@ -92,7 +101,7 @@ class KeywordModel(BaseModel):
         data = KeywordModel(0, "", "")
 
         for row in rows:
-            data = KeywordModel(row[0], row[1], row[2], row[3])
+            data = KeywordModel(row[0], row[1], row[2], row[3], row[4])
 
         return data
 
@@ -103,7 +112,8 @@ class KeywordModel(BaseModel):
 
         data = []
         for row in rows:
-            item = KeywordModel(row[0], row[1], row[2], row[3])
+            item = KeywordModel(row[0], row[1], row[2], row[3], row[4])
+            item.number_of_lessons = row[5]
             data.append(item)
             
         return data
@@ -114,7 +124,7 @@ class KeywordModel(BaseModel):
         rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2], row[3]))
+            data.append(KeywordModel(row[0], row[1], row[2], row[3], row[4]))
         return data
 
 
@@ -125,26 +135,27 @@ class KeywordModel(BaseModel):
         data = []
 
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2], row[3]))
+            data.append(KeywordModel(row[0], row[1], row[2], row[3], row[4]))
 
         return data
 
 
     @staticmethod
-    def save(db, model, published, auth_user):
+    def save(db, model, auth_user):        
+        if model.published == 2:
+            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
         if model.is_new():
-            data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, published, auth_user)
-            model.id = data[0]            
-            model.published = 2
+            data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user)
+            model.id = data[0]
         else:
-            data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, published, auth_user)
+            data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user)
 
         return model
 
 
     @staticmethod
-    def delete(db, id, auth_user):
-        return KeywordDataAccess.delete(db, id, auth_user)
+    def delete(db, model, auth_user):
+        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
 
 
 class KeywordDataAccess:
@@ -271,14 +282,14 @@ class KeywordDataAccess:
  
 
     @staticmethod
-    def delete(db, id, auth_user):
+    def delete(db, id, scheme_of_work_id, auth_user):
         """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete"
             
-        params = (id, auth_user)
+        params = (id, scheme_of_work_id, auth_user)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

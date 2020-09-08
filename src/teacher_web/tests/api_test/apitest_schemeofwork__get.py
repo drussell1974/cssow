@@ -34,3 +34,19 @@ class apitest_schemeofwork__get(APITestCase):
 
     def test__should_have_desription(self):
         self.assertEqual('Computing curriculum for A-Level', self.payload["schemeofwork"]["description"].rstrip())
+
+
+    def test__should_have_number_of_resources(self):
+        self.assertEqual(60, self.payload["schemeofwork"]["number_of_resources"])
+
+
+    def test__should_have_number_of_lessons(self):
+        self.assertEqual(26, self.payload["schemeofwork"]["number_of_lessons"])
+
+
+    def test__should_have_number_of_learning_objectives(self):
+        self.assertEqual(127, self.payload["schemeofwork"]["number_of_learning_objectives"])
+
+
+    def test__should_have_keywords(self):
+        self.assertEqual(160, self.payload["schemeofwork"]["number_of_keywords"])

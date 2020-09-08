@@ -26,10 +26,10 @@ class Test_basemodel_Constructor(TestCase):
                         is_from_db = False)
 
         # test
-        test.validate()
+        test.validate([])
 
         # validate
-        self.assertFalse(test.is_valid)
+        self.assertTrue(test.is_valid)
 
 
     def test_constructor_default(self):
@@ -63,14 +63,14 @@ class Test_basemodel_Constructor(TestCase):
                         is_from_db = False)
 
         # test
-        test.validate()
+        test.validate([])
 
         # assert
         self.assertEqual(1, test.id)
         self.assertEqual(self.created_now, test.created)
         self.assertEqual(1, test.created_by_id)
-        self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue(len(test.validation_errors) == 0, "%s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
 
 
     def test_constructor_is_new(self):

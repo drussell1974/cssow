@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, Mock, patch
 from app.default.viewmodels import KeywordGetModelViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
 
-
+@skip("Verify usage")
 class test_viewmodel_KeywordGetModelViewModel(TestCase):
 
     def setUp(self):        

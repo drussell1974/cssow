@@ -89,7 +89,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         # act
 
         test_context = ViewModel(self.mock_db, Model(0, "Unit Test", scheme_of_work_id=13))
-        test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
+        #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save", return_value=new_instance_to_save):
             
@@ -97,7 +97,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             
             # assert
 
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
             Model.save.assert_called()
             
             self.assertEqual(119, test_context.model.id)
@@ -111,7 +111,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         test_context = ViewModel(self.mock_db, Model(0, "", scheme_of_work_id=13))
  
-        test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
+        #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save"):
             # act
@@ -119,7 +119,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             test_context.execute(99)
             
             # assert
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
 
             Model.save.assert_not_called()
 
@@ -140,7 +140,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         # start with new object id=0
         test_context = ViewModel(self.mock_db, Model(0, "New Keyword", scheme_of_work_id=13))
  
-        test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
+        #test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
         
         with patch.object(Model, "save"):
             # act
@@ -148,7 +148,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             test_context.execute(99)
             
             # assert
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
 
             Model.save.assert_called()
 

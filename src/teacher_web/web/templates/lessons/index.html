@@ -123,7 +123,7 @@
     </a>
     <div class="badge-group">
       {% for key_word in row.key_words %}
-        <i class="badge badge-secondary" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
+        <i class="badge badge-secondary {{ key_word.published_state }}" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
       {% endfor %}
     </div>
     <div class="links card-body stackable-group-sm">

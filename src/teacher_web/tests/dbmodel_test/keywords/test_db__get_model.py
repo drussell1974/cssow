@@ -54,8 +54,8 @@ class test_db__get_model(TestCase):
     def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [
-            (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13)
-            ]
+            (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 1)
+        ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -73,3 +73,5 @@ class test_db__get_model(TestCase):
             self.assertEqual(702, actual_results.id)
             self.assertEqual("Fringilla", actual_results.term),
             self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results.definition)
+            self.assertEqual(13, actual_results.scheme_of_work_id)
+            self.assertEqual(1, actual_results.published)

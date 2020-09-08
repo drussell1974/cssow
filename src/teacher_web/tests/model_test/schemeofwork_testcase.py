@@ -13,7 +13,8 @@ class SchemeOfWork_TestCase(TestCase):
                                      key_stage_id=2,
                                      key_stage_name="test key stage",
                                      published=1)
-
+        test.key_words = []
+        
         # test
         test.validate()
 
@@ -25,7 +26,7 @@ class SchemeOfWork_TestCase(TestCase):
         self.assertEqual("test exam board", test.exam_board_name, "--- setUp --- exam_board_name should be ''")
         self.assertEqual(2, test.key_stage_id, "--- setUp --- key_stage_id should be 0")
         self.assertEqual("test key stage", test.key_stage_name, "--- setUp --- key_stage_name should be ''")
-        self.assertTrue(test.is_valid, "--- setUp --- is_valid should be True")
         self.assertTrue(len(test.validation_errors) == 0, "There should be no validation errors ---- test.validation_errors = %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "--- setUp --- is_valid should be True")
 
         return test

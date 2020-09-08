@@ -89,7 +89,7 @@ class test_db__get_by_terms(TestCase):
     
     def test__should_call_select___with__key_words_list__and__allow_all__True__return_single_item(self):
         # arrange
-        expected_result = [(702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13)]
+        expected_result = [(702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -115,9 +115,9 @@ class test_db__get_by_terms(TestCase):
     def test__should_call_select___with__key_words_list__and__allow_all__True__return_multiple_items(self):
         # arrange
         expected_result = [
-            (67, "Vestibulum", "nec arcu nec dolor vehicula ornare non.", 133),
-            (68, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 133),
-            (69, "Lorem", "rutrum a arcu ultrices, id mollis", 133)
+            (67, "Vestibulum", "nec arcu nec dolor vehicula ornare non.", 133, 1),
+            (68, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 133, 1),
+            (69, "Lorem", "rutrum a arcu ultrices, id mollis", 133, 2)
         ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -139,9 +139,10 @@ class test_db__get_by_terms(TestCase):
             self.assertEqual("Vestibulum", actual_results[0].term),
             self.assertEqual("nec arcu nec dolor vehicula ornare non.", actual_results[0].definition)
             self.assertEqual(133, actual_results[0].scheme_of_work_id)
-
+            self.assertEqual(1, actual_results[0].published)
 
             self.assertEqual(69, actual_results[2].id)
             self.assertEqual("Lorem", actual_results[2].term),
             self.assertEqual("rutrum a arcu ultrices, id mollis", actual_results[2].definition)
             self.assertEqual(133, actual_results[2].scheme_of_work_id)
+            self.assertEqual(2, actual_results[2].published)

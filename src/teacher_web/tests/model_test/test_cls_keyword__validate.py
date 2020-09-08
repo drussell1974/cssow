@@ -269,7 +269,7 @@ class test_cls_keyword__validate__term(TestCase):
 
     def test_should_be_valid(self):
 
-        for word in ["ABCVDFas df2", "A1234", "ABCVDFas", "A9", "A9B", "A 10", "ABC (DEF)"]:
+        for word in ["ABCVDFas df2", "A1234", "ABCVDFas", "A9", "A9B", "A 10", "ABC (DEF)", "ABC-DEF"]:
             self.test.term = word
             # test
             self.test.validate()

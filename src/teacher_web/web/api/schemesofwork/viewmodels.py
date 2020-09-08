@@ -1,6 +1,7 @@
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.serializers.srl_schemeofwork import SchemeOfWorkModelSerializer
+from shared.serializers.srl_keyword import KeywordModelSerializer
 
 class SchemeOfWorkGetAllViewModel(BaseViewModel):
     

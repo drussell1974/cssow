@@ -121,14 +121,9 @@ class LessonModel (BaseModel):
             return False
 
 
-    def validate(self):
-
+    def validate(self, skip_validation = []):
         """ clean up and validate model """
-
-        self._on_before_validate()
-
-        # clean properties before validation
-        self._clean_up()
+        super().validate(skip_validation)
 
         # Validate summary
         self._validate_required_string("title", self.title, 1, 45)
@@ -353,7 +348,7 @@ class LessonModel (BaseModel):
         rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2])))
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2]), row[3], row[4]))
         return data
 
 

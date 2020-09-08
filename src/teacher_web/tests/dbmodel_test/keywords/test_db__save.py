@@ -29,6 +29,7 @@ class test_db__save(TestCase):
         expected_exception = KeyError("Bang!")
 
         model = Model(0, term="", definition="Mauris ac velit ultricies, vestibulum.")
+        model.published = 1
         model.is_new = Mock(return_value=True)
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -36,7 +37,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                save(self.fake_db, model, 1, 6079)
+                save(self.fake_db, model, 6079)
 
 
     def test_should_call___update___updatewith_exception(self):
@@ -45,6 +46,7 @@ class test_db__save(TestCase):
 
         model = Model(1, term="", definition="Mauris ac velit ultricies, vestibulum.")
         model.is_new = Mock(return_value=False)
+        model.published = 1
         
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -52,7 +54,7 @@ class test_db__save(TestCase):
             with self.assertRaises(KeyError):
                 # act 
                 
-                save(self.fake_db, model, 1, 6079)
+                save(self.fake_db, model, 6079)
 
 
     def test_should_call__update_with__is_new__false(self):
@@ -70,7 +72,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, 1, 6079)
+            actual_result = save(self.fake_db, model, 6079)
             
             # assert
             
@@ -86,7 +88,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, term="Mauris", definition="Mauris ac velit ultricies, vestibulum.", scheme_of_work_id=13)
-        
+        model.published = 1
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
         
@@ -95,7 +97,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, 1, 6079)
+            actual_result = save(self.fake_db, model, 6079)
 
             # assert
 

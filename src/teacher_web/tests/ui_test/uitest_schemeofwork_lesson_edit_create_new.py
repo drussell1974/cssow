@@ -121,7 +121,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.send_keys(Keys.TAB)
         
         ' ctl-key_words '
-
+        '''
         elem = self.test_context.find_element_by_id("keywords-tokenfield")
         elem.send_keys("Comparison operator")
         elem.send_keys(Keys.TAB)
@@ -130,7 +130,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         elem.send_keys("OR")
         elem.send_keys(Keys.TAB)
         elem.send_keys(Keys.TAB)
-        
+        '''
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")

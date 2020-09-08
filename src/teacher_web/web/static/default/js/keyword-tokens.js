@@ -1,10 +1,12 @@
-function keyword_token_handler(get_keywords_url, token_input_css_selector, invalid_tokens_css_selector, invalid_classes, modal_id, modal_id_id, modal_title_id, modal_definition_id, modal_save_button_id) {
+function keyword_token_handler(get_keywords_url, token_input_css_selector, invalid_tokens_css_selector, invalid_classes, modal_id, modal_id_id, modal_title_id, modal_definition_id, modal_save_button_id, on_remove_token) {
   
   keyword_options = [];
+  has_initialized = false;
+  suppress_modal = false;
   
   function transform_keyword_options(result) {
     result.keywords.map(x => { 
-      keyword_options.push({ value: x.term, term: x.term, id: x.id, definition: x.definition, is_valid: x.is_valid }); 
+      keyword_options.push({ value: x.term, term: x.term, id: x.id, definition: x.definition, number_of_lessons: x.number_of_lessons, is_valid: x.is_valid, published: x.published, is_new: false }); 
     }); 
   }
 
@@ -12,28 +14,28 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
     var found = keyword_options.find(x => x.value == active_token_attrs.value);
     if (found != undefined) { // item has been found
       
-      console.log(found);
-
       active_token_attrs.id = found.id;
       active_token_attrs.term = found.value;
       active_token_attrs.definition = found.definition;
       active_token_attrs.is_valid = found.is_valid;
-      
+      active_token_attrs.number_of_lessons = found.number_of_lessons;
+      active_token_attrs.published = found.published;
+      active_token_attrs.is_new = found.is_new;
     } else {
 
-      console.log(found);
-      
       // set defaults (not valid)
       active_token_attrs.id = 0;
       active_token_attrs.term = active_token_attrs.value;
       active_token_attrs.definition = "";
       active_token_attrs.is_valid = false;
+      active_token_attrs.number_of_lessons = 0;
+      active_token_attrs.published = 1;
+      active_token_attrs.is_new = true;
     }
   }
 
   function invalidator(target, keyword_data) {
     var invalid_tokens = document.querySelectorAll(invalid_tokens_css_selector);
-    console.log(`there are ${invalid_tokens.length} invalid tokens`);
     // handle no is_valid varialbe
     if (invalid_tokens.length == 1 && keyword_data.is_valid === false) {
       // there is one invalid token and this 
@@ -45,7 +47,7 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
 
   function validate(target, form_control, active_token_attrs) {
 
-    var re = /[^0-9,!-)]([A-Za-z0-9 ]+)?/g
+    var re = /[^0-9,!-/)]([A-Za-z0-9 ]+)?/g
     
     active_token_attrs.is_valid = re.test(active_token_attrs.value);
     
@@ -61,16 +63,25 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
     return active_token_attrs.is_valid;
   }
 
-  function assign_modal(target, active_token_attrs) {
-    // assign modal to token and store data
+  function target_modal(target, active_token_attrs) {
+    // assign modal class to token and store data
     target.attr("data-toggle", "modal");
     target.attr("data-target",modal_id);
+    target.attr("data-keyword_id", active_token_attrs.id);
+    target.attr("data-keyword_term", active_token_attrs.term);
+    target.attr("data-keyword_defintion", active_token_attrs.definition);
+    target.attr("data-number_of_lessons", active_token_attrs.number_of_lessons);
+    target.attr("data-published", active_token_attrs.published);
+    target.attr("data-is_new", active_token_attrs.is_new);
+
     // handle open and close dialog
     target.click(function(e) {
-      
-      // get key_word
-      //key_word = $(e.target).parent().data('keyword');
-      
+      // do not open if modal has been suppress (e.g. when token is being removed)
+      if (suppress_modal == true) {
+        suppress_modal = false;
+        return false;
+      }   
+
       if(active_token_attrs !== undefined && active_token_attrs !== null) {
         $(modal_id_id).val(active_token_attrs.id);
         $(modal_title_id).val(active_token_attrs.term);
@@ -78,11 +89,6 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
         // update keyword definitions when finished
         $(modal_save_button_id).click(function (e) {
 
-          //e.preventDefault();
-
-          // update data on target
-          console.log(`saving definition...`)
-          
           // get values from modal form
           
           var modal_data = {
@@ -101,98 +107,78 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
             $(modal_title_id).addClass(invalid_classes);
           } else {
             
-            // update token data and close form
-
-            console.log("modal updating token data...");
-
             // update active token
             active_token_attrs.id = modal_data.id;
             active_token_attrs.value = modal_data.value;
             active_token_attrs.term = modal_data.value;
             active_token_attrs.definition = modal_data.definition;
             
-            // update label
-
-            //active_token_attrs.label = modal_data.value;
-         
             // close the modal
             $(modal_id).modal('hide');
-         
           }
         })
       }
     });
   }
 
-  $.ajax({url:get_keywords_url,
-    success: function(result){   
-      
-      transform_keyword_options(result);
-
-      $(token_input_css_selector).tokenfield({
-        autocomplete: {
-          source: keyword_options, //keywordservice.getkeywordsonly(),
-          delay: 100
-        },
-        showAutocompleteOnFocus: true,
-      })
-    },
-    error: function(){
-        $("#token-error").html('Could not get keywords at this time');
-    }
-  });
-
+  function fetch_keywords_from_service(show_all) {
+    $.ajax({url:get_keywords_url + `?show_all=${show_all}`,
+      success: function(result){   
+    
+        transform_keyword_options(result);
+    
+        $(token_input_css_selector).tokenfield({
+          autocomplete: {
+            source: keyword_options,
+            delay: 100
+          },
+          showAutocompleteOnFocus: true,
+        })
+      },
+      error: function(){
+          $("#token-error").html('Could not get keywords at this time');
+      }
+    });
+  }
   // events
 
-  $(token_input_css_selector).on('tokenfield:createtoken', function (e) {
-    console.log('tokenfield:createtoken:....')
-  });
-
-  $(token_input_css_selector).on('tokenfield:createdtoken', function (e) {
-    console.log('tokenfield:createdtoken:....')
-  });
-  
-  $(token_input_css_selector).on('tokenfield:edittoken', function (e) {
-    console.log('tokenfield:edittoken:....')
-  });
-
-  $(token_input_css_selector).on('tokenfield:editedtoken', function (e) {
-    console.log('tokenfield:editedtoken:....')
+  $(token_input_css_selector).on('tokenfield:initialize', function (e) {
+    has_initialized = true;    
   });
 
   $(token_input_css_selector).on('tokenfield:removetoken', function (e) {
-    console.log('tokenfield:removetoken:....')
-  });
-
-  $(token_input_css_selector).on('tokenfield:removedtoken', function (e) {
-    console.log('tokenfield:removedtoken:....')
+    suppress_modal = true;
+    
+    return on_remove_token(e);
   });
 
   $(token_input_css_selector).on('tokenfield:removetoken tokenfield:edittoken', function (e) {
-    console.log('tokenfield:removetoken tokenfield:edittoken: invalidating....')
     invalidator($(e.relatedTarget).parent(), e.attrs);
   });
 
   $(token_input_css_selector).on('tokenfield:createtoken', function (e) {
-    console.log('tokenfield:createtoken: get existing data if new....')
-    // on the form the Keywords are initially loaded with the value only...
     // look up in the list of keywords (find gets the first item)
     if(e.attrs.id === undefined){
       // assign as invalid
       e.attrs.is_valid = false;
       // check if exists and update values accordingly
       get_keyword_data(e.attrs);
+    } 
+    // any new terms marked new
+    if (e.attrs.id == 0 && has_initialized == true) {
+      e.attrs.is_new = true;
     }
   });
 
   $(token_input_css_selector).on('tokenfield:createdtoken tokenfield:editedtoken', function (e) {
-    console.log('tokenfield:createdtoken tokenfield:editedtoken: validate and allow modal....')
     var target = $(e.relatedTarget);
     
     validate(target, target.parent(), e.attrs);
-
+    
     if(e.attrs.is_valid) {
-      assign_modal(target, e.attrs);
+      target_modal(target, e.attrs);
     }
   })
+
+  fetch_keywords_from_service();
 }

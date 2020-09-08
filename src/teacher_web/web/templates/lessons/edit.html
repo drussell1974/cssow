@@ -141,18 +141,21 @@
       <!-- KS123 Pathway END -->
       {% endif %}
     <div class="control-group">
-      <div class="form-group  controls">
+      <div class="form-group controls">
         <label>{{_("Keywords")}}</label>
         <!-- keyword-tokens flelds START-->
         <input type="hidden" class="form-control" id="tags" />  
         <input type="hidden" class="key_words" id="hdn-key_words" name="key_words" />
         <input type="text" name="key_words_str" class="form-control" id="keywords-tokenfield" value="{{ content.data.lesson.key_words_str }}" />
+        </div>
+
+
+
         <!-- keyword-tokens fields END-->
         <div class="small">{{_("Click token to to enter definition")}}</div>
         <div class="invalid-feedback">{{_("one or more invalid keywords")}}</div>
+        <!-- TODO: Add key -->
       </div>
-      <hr>
-    </div>
       <!-- Pathway Objectives START -->
       <div class="control-group">
         <div class="form-group controls">
@@ -179,12 +182,6 @@
     <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' content.data.scheme_of_work_id %}" id="hdn-keywords_uri"><!-- get_key_words  -->
   </form>
 </article>
-{% endblock %}
-
-{% block head_css %} 
-  {% load static %}
-  <link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
-  <link href="{% static 'default/vendor/sliptree/css/tokenfield-typeahead.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block modal %}
@@ -215,13 +212,24 @@
 </div>
 {% endblock %}
 
+
+{% block head_css %} 
+  {% load static %}
+  <link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
+  <link href="{% static 'default/vendor/sliptree/css/tokenfield-typeahead.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+
 {% block page_js %}
     {% load static %}
     <script type="text/javascript" src="{% static 'default/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'default/js/lessonFormValidation.js' %}"></script>
+    <script type="text/javascript" src="{% static 'default/js/keyword-form-validation.js' %}"></script>
     <script type="text/javascript" src="{% static 'default/js/keyword-tokens.js' %}"></script>
     <script>
-      
+      function remove_lesson_token() {
+        return true;
+      }
+
       keyword_token_handler(
         document.getElementById('hdn-keywords_uri').value // get_keywords_url
         , "#keywords-tokenfield" // token_input_css_selector
@@ -232,6 +240,7 @@
         , "#keywordModalTitle" // modal_title_id
         , "#keywordModalDefinition" // modal_body_id
         , "#keywordModalSaveButton" // modal_save_button_id
+        , remove_lesson_token // on_remove_token
       )
       
     </script>

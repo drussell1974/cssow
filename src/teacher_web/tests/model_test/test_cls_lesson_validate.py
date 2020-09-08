@@ -600,7 +600,6 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-
 class test_LessonModel_validate__key_words(Lesson_TestCase):
 
     test = None
@@ -705,6 +704,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         self.assertEqual(test.validation_errors["key_words"][0:56], "|key_words(id:1):{'term': 'required'}|")
 
         self.assertEqual(test.key_words_str[0:34], "")
+
 
 @skip("key_words_str READONLY")
 class test_LessonModel_validate__key_words_str(Lesson_TestCase):

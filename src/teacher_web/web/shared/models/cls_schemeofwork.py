@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe
+from .core.db_helper import ExecHelper, sql_safe, to_empty
 from shared.models.core.log import handle_log_info
+from shared.models.cls_keyword import KeywordModel
 
 
 class SchemeOfWorkListModel(models.Model):
@@ -20,6 +21,8 @@ class SchemeOfWorkModel(BaseModel):
     number_of_lessons = 0
     number_of_learning_objectives = 0
     number_of_resources = 0
+    number_of_keywords = 0
+    key_words = []
     
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
@@ -32,16 +35,19 @@ class SchemeOfWorkModel(BaseModel):
         self.key_stage_name = key_stage_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
+        self.number_of_keywords = 0
 
 
-    def validate(self):
+    @property
+    def key_words_str(self):
+        key_word_map = map(lambda m: m.term, self.key_words)
+        # assign as comma seperated list
+        return ",".join(list(key_word_map))
 
+
+    def validate(self, skip_validation = []):
         """ clean up and validate model """
-
-        self._on_before_validate()
-
-        # clean properties before validation
-        self._clean_up()
+        super().validate(skip_validation)
 
         # Validate name
         self._validate_required_string("name", self.name, 1, 40)
@@ -51,7 +57,12 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
+        # Validate key_words (array)
+        self._validate_optional_list("key_words", self.key_words, None, 1000)    
+        self._validate_children("key_words", self, self.key_words, skip_validation=["scheme_of_work_id"])
 
+
+        #self.on_after_validate()
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
@@ -91,6 +102,7 @@ class SchemeOfWorkModel(BaseModel):
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
+            #model.key_words = SchemeOfWorkModel.get_all_keywords(db, model.id, auth_user)
 
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
@@ -118,9 +130,9 @@ class SchemeOfWorkModel(BaseModel):
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
-
-            model.on_fetched_from_db()                                                                                                  
-
+            model.key_words = SchemeOfWorkModel.get_all_keywords(db, model.id, auth_user)
+            model.number_of_keywords = len(model.key_words)
+            model.on_fetched_from_db()         
         return model
 
 
@@ -203,17 +215,34 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
+    def get_all_keywords(db, scheme_of_work_id, auth_user):
+        rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user)
+        data = []
+        for row in rows:
+            data.append(KeywordModel(row[0], row[1], to_empty(row[2]), row[3], row[4]))
+        return data
+
+
+    @staticmethod
     def save(db, model, auth_user, published=1):
+        
         if try_int(published) == 2:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
             #TODO: check row count before updating
             model.published = 2
         else:
+            # 1. upsert scheme of work
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
                 SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
+
+            # 2. save key words
+                
+            for keyword in model.key_words:
+                keyword.scheme_of_work_id = model.id
+                KeywordModel.save(db, keyword, auth_user)
 
         return model
 
@@ -293,6 +322,8 @@ class SchemeOfWorkDataAccess:
     def _update(db, model, published, auth_user):
         execHelper = ExecHelper()
 
+        # 1. update scheme of work 
+
         str_update = "scheme_of_work__update"
         params = (
             model.id,
@@ -311,6 +342,8 @@ class SchemeOfWorkDataAccess:
     @staticmethod
     def _insert(db, model, published, auth_user):
         execHelper = ExecHelper()
+
+        # 1. insert scheme of work
 
         str_insert = "scheme_of_work__insert"      
         params = (
@@ -466,4 +499,24 @@ class SchemeOfWorkDataAccess:
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        return rows
+
+
+    @staticmethod
+    def get_all_keywords(db, scheme_of_work_id, auth_user):
+        """
+        Get a full list of terms and definitions
+
+        :param db: database context
+        :scheme_of_work: the scheme of work identifier
+        :return: list of terms and defintion
+        """
+
+        execHelper = ExecHelper()
+
+        select_sql = "scheme_of_work__get_all_keywords"
+        params = (scheme_of_work_id, auth_user)
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
         return rows

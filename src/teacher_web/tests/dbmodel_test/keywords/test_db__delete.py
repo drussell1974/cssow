@@ -29,25 +29,25 @@ class test_db__delete(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                delete(self.fake_db, model.id, 6079)
+                delete(self.fake_db, model, 6079)
 
 
     def test_should_call__delete(self):
         # arrange
-        model = Model(797, term="Morbi", definition="sit amet mauris ut ante porttitor interdum.")
+        model = Model(797, term="Morbi", definition="sit amet mauris ut ante porttitor interdum.", scheme_of_work_id = 12)
         
         expected_result = 1
 
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = delete(self.fake_db, model.id, 6079)
+            actual_result = delete(self.fake_db, model, 6079)
             
             # assert
 
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'keyword__delete'
-             , (797, 6079)
+             , (797, 12, 6079)
              , handle_log_info)
             
             self.assertEqual(expected_result, actual_result)

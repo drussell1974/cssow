@@ -2,6 +2,11 @@
     color:#dc3545 !important;
 }
 
+.mark-for-deletion .token-label {
+    text-decoration: line-through;
+    color: #dc3545;
+}
+
 .unpublished, .deleting {
     opacity: 0.5;
 }

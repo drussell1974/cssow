@@ -48,7 +48,7 @@ class test_db_keyword__get_options(TestCase):
 
     def test__should_call_select__return_single_item(self):
         # arrange
-        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13)]
+        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 1, 2)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -66,15 +66,15 @@ class test_db_keyword__get_options(TestCase):
             self.assertEqual("Binary", rows[0].term)
             self.assertEqual("Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", rows[0].definition)
             self.assertEqual(13, rows[0].scheme_of_work_id)
-
+            self.assertEqual(2, rows[0].number_of_lessons)            
 
 
     def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [
-            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13)
-            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13)
-            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.", 13)]
+            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13, 0, [])
+            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 0, [])
+            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.", 13, 1, [123])]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act

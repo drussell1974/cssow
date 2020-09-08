@@ -8,7 +8,7 @@ from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
-from app.default.viewmodels import KeywordGetModelByTermsViewModel, KeywordSaveViewModel, KeywordGetAllListViewModel
+from app.default.viewmodels import KeywordSaveViewModel, KeywordGetAllListViewModel
 
 
 class LessonIndexViewModel(BaseViewModel):
@@ -95,9 +95,6 @@ class LessonEditViewModel(BaseViewModel):
         try:
             # transform key_words from string to dictionary list
             decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item, self.model.scheme_of_work_id), json.loads(key_words_json)))
-                    
-            #handle_log_warning(self.db, "processing key words", decoded_key_words)
-
             # TODO: move to execute function for saving
             for keyword in decoded_key_words:
                 
