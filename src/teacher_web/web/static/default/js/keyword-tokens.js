@@ -165,7 +165,7 @@ function keyword_token_handler(get_keywords_url, token_input_css_selector, inval
       get_keyword_data(e.attrs);
     } 
     // any new terms marked new
-    if (e.attrs.id == 0 && has_initialized == true) {
+    if (has_initialized == true) {
       e.attrs.is_new = true;
     }
   });
