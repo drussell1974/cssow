@@ -1,6 +1,6 @@
 .content {
     visibility: hidden;
-    animation: 3s fadeIn;
+    animation: 6s fadeIn;
     animation-fill-mode: forwards;
 }
 

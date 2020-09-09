@@ -53,13 +53,9 @@ class ContentModel(BaseModel):
         return self 
 
 
-    def validate(self):
+    def validate(self, skip_validation = []):
         """ clean up and validate model """
-
-        self._on_before_validate()
-
-        # clean properties before validation
-        self._clean_up()
+        super().validate(skip_validation)
 
         # validate description
         self._validate_required_string("description", self.description, 1, 500)

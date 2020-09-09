@@ -5,4 +5,4 @@ class KeywordModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Model
-        fields = ["id", "term", "definition"]
+        fields = ["id", "term", "definition", "scheme_of_work_id", "published", "number_of_lessons"]

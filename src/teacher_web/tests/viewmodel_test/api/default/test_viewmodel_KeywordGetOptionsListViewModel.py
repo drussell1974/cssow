@@ -8,7 +8,7 @@ from api.default.viewmodels import KeywordGetOptionsListViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
 
 
-class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
+class test_viewmodel_KeywordGetOptionsListViewModel(TestCase):
 
     def setUp(self):        
         pass
@@ -32,7 +32,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 6079)
+            self.viewmodel = ViewModel(db, 13, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
@@ -43,7 +43,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56, term="Nullam")]
+        data_to_return = [Model(56, term="Nullam", scheme_of_work_id=13)]
         
         with patch.object(Model, "get_options", return_value=data_to_return):
 
@@ -53,7 +53,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 6079)
+            self.viewmodel = ViewModel(db, 13, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()
@@ -64,7 +64,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56, term="placerat"),Model(57, term="Aenean"),Model(58, term="Praesent")]
+        data_to_return = [Model(56, term="placerat"),Model(57, term="Aenean", scheme_of_work_id=13),Model(58, term="Praesent", scheme_of_work_id=13)]
         
         with patch.object(Model, "get_options", return_value=data_to_return):
 
@@ -74,7 +74,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 6079)
+            self.viewmodel = ViewModel(db, 13, 6079)
 
             # assert functions was called
             Model.get_options.assert_called()

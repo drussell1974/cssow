@@ -4,7 +4,7 @@ View Models
 import io
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
@@ -37,37 +37,32 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 class TopicGetOptionsListViewModel(BaseViewModel):
     #TODO: #235 Rename to {ViewName}ViewModel
     def __init__(self, db, topic_id, auth_user, lvl=2):
+        raise DeprecationWarning("no matching view")
         self.model = TopicModel.get_options(db, topic_id=topic_id, auth_user=auth_user, lvl=lvl)
 
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
     # TODO: #235 Depracate not a matching View
-    def __init__(self, db, auth_user):
-        self.model = KeywordModel.get_options(db, auth_user)
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        raise DeprecationWarning("no matching view")
+        self.model = KeywordModel.get_options(db, scheme_of_work_id, auth_user)
 
 
 class KeywordGetAllListViewModel(BaseViewModel):
     #TODO: #235 Depracate not a matching View
-    def __init__(self, db, lesson_id):
-        self.model = KeywordModel.get_all(db, lesson_id)
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        raise DeprecationWarning("no matching view")
+        self.model = KeywordModel.get_all(db, scheme_of_work_id,  auth_user)
 
 
 class KeywordGetModelViewModel(BaseViewModel):
     #TODO: #235 Depracate not a matching View
-    def __init__(self, db, lesson_id, auth_user):
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        raise DeprecationWarning("no matching view")
         self.db = db
         # get model
-
-        data = KeywordModel.get_model(self.db, lesson_id, auth_user)
-
+        data = KeywordModel.get_model(self.db, scheme_of_work_id, auth_user)
         self.model = data
-        
-
-class KeywordGetModelByTermsViewModel(BaseViewModel):
-
-    def __init__(self, db, key_words_list, allow_all, auth_user):
-
-        self.model = KeywordModel.get_by_terms(db, key_words_list, allow_all, auth_user)
         
 
 class KeywordSaveViewModel(BaseViewModel):
@@ -80,54 +75,16 @@ class KeywordSaveViewModel(BaseViewModel):
     def execute(self, auth_user, published=1):
 
         if type(self.model) is KeywordModel:
-        
-            if self.model.id == 0:
-                """ check the term does already existing create instanace """
-                model_found = self._find_by_term(self.db, self.model.term,  auth_user)
-
-                if model_found is not None:
-                    handle_log_warning(self.db, "saving keyword", "keyword already exists. Using existing item. (keyword id:{}, term:'{}', definition:'{}')".format(self.model.id, self.model.term, self.model.definition))
-                    # assign found model
-                    self.model = model_found
-
+            
             self.model.validate()
-
+            
             if self.model.is_valid == True:
-                data = KeywordModel.save(self.db, self.model, published, auth_user)
+                data = KeywordModel.save(self.db, self.model, auth_user)
                 self.model = data
             else:
-                handle_log_warning(self.db, "saving keyword", "keywordnot valid (keyword id:{}, term:'{}', definition:'{}')".format(self.model.id, self.model.term, self.model.definition))
+                handle_log_error(self.db, "saving keyword", "keyword not valid (keyword id:{}, term:'{}', definition:'{}', scheme_of_work_id:{}) validation_errors:{}".format(self.model.id, self.model.term, self.model.definition, self.model.scheme_of_work_id, self.model.validation_errors))
         else:
             raise AttributeError("Cannot save KeywordModel of type {}".format(type(self.model)))
         
         return self.model
 
-
-    def _find_keyword_by_id(self, db, id, auth_user):
-        """ Get the model by id """
-        
-        get_keyword = KeywordGetModelViewModel(db, id, auth_user)
-
-        return get_keyword.model
-
-
-    def _find_by_term(self, db, term, auth_user):
-        """ search by term """
-
-        get_keyword = KeywordGetModelByTermsViewModel(db, term, allow_all=True, auth_user=auth_user)
-        
-        if get_keyword.model is None or len(get_keyword.model) == 0:
-            return None
-        else:
-            return get_keyword.model[0]
-
-
-    def _find_or_create_by_term(self, db, term, definition, auth_user):
-        """ search by term and create new if necessary"""
-
-        get_keyword = KeywordGetModelByTermsViewModel(db, term, allow_all=True, auth_user=auth_user)
-        
-        if get_keyword.model is None or len(get_keyword.model) == 0:
-            return KeywordModel(0, term, definition)
-        else:
-            return get_keyword.model[0]

@@ -37,13 +37,14 @@ class test_cls_keyword__from_dict(TestCase):
         self.test = KeywordModel()
 
         # act
-        self.test.from_dict({"id":1, "term":"Algorithm", "definition":"A list of instructions"})
+        self.test.from_dict({"id":1, "term":"Algorithm", "definition":"A list of instructions","published":1}, 13)
 
         # assert
         
         self.assertEqual(1, self.test.id)
         self.assertEqual("Algorithm", self.test.term)
         self.assertEqual("A list of instructions", self.test.definition)
+        self.assertEqual(1, self.test.published)
         self.assertTrue(self.test.is_valid)
         self.assertFalse(self.test.is_new())
 
@@ -54,7 +55,7 @@ class test_cls_keyword__from_dict(TestCase):
         self.test = KeywordModel()
 
         # act
-        self.test.from_dict({"id":1, "term":"", "definition":"A list of instructions"})
+        self.test.from_dict({"id":1, "term":"", "definition":"A list of instructions", "published":1}, 13)
 
         # assert
         self.assertFalse(self.test.is_valid)

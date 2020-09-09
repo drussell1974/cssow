@@ -46,7 +46,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
 
-                test_context = ViewModel(self.mock_db, mock_model, '[{"id": 4, "term": "Four", "definition": ""}]', auth_user=99)
+                test_context = ViewModel(self.mock_db, mock_model, '[{"id": 4, "term": "Four", "definition": "","published":1}]', auth_user=99)
                 test_context.execute(published=1)
                                 
                 # assert functions was called
@@ -68,7 +68,7 @@ class test_viewmodel_EditViewModel(TestCase):
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(Model, "save", return_value=None):
                 
-                save_keyword.model = Mock(return_value=KeywordModel(12))
+                save_keyword.model = Mock(return_value=KeywordModel(12, scheme_of_work_id=13))
 
                 # act
                 mock_model = Model(99, "")                
@@ -78,7 +78,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
                 
-                test_context = ViewModel(self.mock_db, mock_model, key_words_json='[{"id":99,"term":"","definition":""}]', auth_user=99)
+                test_context = ViewModel(self.mock_db, mock_model, key_words_json='[{"id":99,"term":"","definition":"","published":1}]', auth_user=99)
                 test_context.execute(0)
                                 
                 # assert save functions was not called
@@ -102,13 +102,13 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_model.year_id = 10
         mock_model.key_stage_id = 4
 
-        key_words_json = '[{"id":493,"term":"","definition":""},{"id":32,"term":"DRAM","definition":"The brain of the computer, responsible for executing programs and carrying out arithmetic and logical operations."},{"id":19,"term":"Fetch Decode Execute (FDE)","definition":""}]'
+        key_words_json = '[{"id":493,"term":"","definition":"","published":1},{"id":32,"term":"DRAM","definition":"The brain of the computer, responsible for executing programs and carrying out arithmetic and logical operations.","published":1},{"id":19,"term":"Fetch Decode Execute (FDE)","definition":"","published":1}]'
         
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(Model, "save", return_value=None):
                 
-                save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM"))
+                save_keyword.execute = Mock(return_value=KeywordModel(493,"DRAM",scheme_of_work_id=11))
 
                 # act
 

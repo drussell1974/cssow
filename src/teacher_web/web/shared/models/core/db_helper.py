@@ -158,7 +158,7 @@ class ExecHelper:
             self.rollback()
 
             if log_info is not None:
-                log_info(self.db, "ExecHelper.insert", "An error occurred inserting data '{}'".format(sql), LOG_TYPE.Error)    
+                log_info(self.db, "ExecHelper.insert", "An error occurred inserting data '{}{}".format(sql, params), LOG_TYPE.Error)    
             raise
 
         finally:

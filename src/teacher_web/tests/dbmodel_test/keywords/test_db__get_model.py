@@ -38,13 +38,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 22, auth_user=6079)
+            actual_results = get_model(self.fake_db, 22, 13, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get'
-                , (22, 6079)
+                , (22, 13, 6079)
                 , []
                 , handle_log_info)
                 
@@ -54,22 +54,24 @@ class test_db__get_model(TestCase):
     def test__should_call_select__return_single_item(self):
         # arrange
         expected_result = [
-            (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.")
-            ]
+            (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 1)
+        ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 702, auth_user=6079)
+            actual_results = get_model(self.fake_db, 702, 13, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "keyword__get"
-                , (702, 6079)
+                , (702, 13, 6079)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(702, actual_results.id)
             self.assertEqual("Fringilla", actual_results.term),
             self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results.definition)
+            self.assertEqual(13, actual_results.scheme_of_work_id)
+            self.assertEqual(1, actual_results.published)

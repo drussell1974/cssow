@@ -32,11 +32,17 @@
     content: "/";
 }
 
+
 div.progress {
     width: 0%;
     height: 20px;
     background-color: #49B39D;
-    animation: progressbar 2s linear 1s;
+}
+
+div.progress--css-animated {
+    z-index: 1;
+    float: left;
+    animation: progressbar 5s forwards 1s;
 }
 
 @keyframes progressbar {
@@ -46,8 +52,9 @@ div.progress {
     40%  { width: 40% }
     60%  { width: 60% }
     80%  { width: 80% }
-    100%  { width: 90% }
+    100%  { width: 100% }
 }
+
 
 .clearfix {
     overflow: auto;

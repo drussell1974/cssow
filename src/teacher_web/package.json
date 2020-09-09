@@ -13,7 +13,8 @@
     "install:":"pip install -r requirements.txt && yarn build",
     "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip install -r requirements.dev.txt && yarn build:test",
-    "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=*.bin --exclude=media web ../database/schema requirements.txt && yarn build:venv",
+    "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=*.bin --exclude=media web ../database/schema requirements.txt && yarn build-static",
+    "build-static": "tar -czf ../../build/teacher-web/teacher-web.build.static.tar.gz --exclude=*.bin --exclude=media web/static",
     "build:dev": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "test:all": "yarn test:unit && yarn test-ui",
@@ -26,7 +27,7 @@
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_cancel.py"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_delete.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

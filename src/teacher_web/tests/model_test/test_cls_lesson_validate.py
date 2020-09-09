@@ -600,7 +600,6 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-
 class test_LessonModel_validate__key_words(Lesson_TestCase):
 
     test = None
@@ -634,7 +633,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # set up
         test = self._construct_valid_object()
 
-        test.key_words = [KeywordModel(1, "Bytes 1")]
+        test.key_words = [KeywordModel(1, "Bytes 1", scheme_of_work_id=13)]
 
         # test
         test.validate()
@@ -654,7 +653,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # generate data
         for n in range(100):
             test.key_words.append(
-                KeywordModel(n, "Bytes {}".format(n))
+                KeywordModel(n, "Bytes {}".format(n), scheme_of_work_id=13)
             )
         
         # test
@@ -675,7 +674,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # generate data
         for n in range(101):
             test.key_words.append(
-                KeywordModel(n, "Bytes {}".format(n))
+                KeywordModel(n, "Bytes {}".format(n), 13)
             )
 
         # test
@@ -693,7 +692,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         # set up
         test = self._construct_valid_object()
 
-        test.key_words = [KeywordModel(1, "")]
+        test.key_words = [KeywordModel(1, "", scheme_of_work_id=13)]
 
         # test
         test.validate()
@@ -705,6 +704,7 @@ class test_LessonModel_validate__key_words(Lesson_TestCase):
         self.assertEqual(test.validation_errors["key_words"][0:56], "|key_words(id:1):{'term': 'required'}|")
 
         self.assertEqual(test.key_words_str[0:34], "")
+
 
 @skip("key_words_str READONLY")
 class test_LessonModel_validate__key_words_str(Lesson_TestCase):

@@ -18,8 +18,8 @@ class TopicGetOptionsListViewModel(BaseViewModel):
 
 class KeywordGetOptionsListViewModel(BaseViewModel):
 
-    def __init__(self, db, auth_user):
+    def __init__(self, db, scheme_of_work_id, auth_user):
 
-        data = KeywordModel.get_options(db, auth_user)
+        data = KeywordModel.get_options(db, scheme_of_work_id, auth_user)
 
         self.model = list(map(lambda m: KeywordModelSerializer(m).data, data))

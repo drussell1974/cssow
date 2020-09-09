@@ -33,9 +33,9 @@ class test_viewmodel_SaveListViewModel(TestCase):
     def test_execute_called_save__with_exception(self):
 
         # arrange
-        on_find_or_create__create_new_instance = Model(15, "Database","")
+        on_find_or_create__create_new_instance = Model(15, "Database","",13)
         
-        test_context = ViewModel(self.mock_db, Model(15,"Database",""))
+        test_context = ViewModel(self.mock_db, Model(15,"Database","", 13))
         
         test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
 
@@ -61,12 +61,12 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # arrange
         
-        data_to_return = Model(112, "Unit Testing", "new definition")
+        data_to_return = Model(112, "Unit Testing", "new definition", 13)
         data_to_return.is_valid = True
 
         # act
 
-        test_context = ViewModel(self.mock_db, Model(112, "Unit Testing", "new definition"))
+        test_context = ViewModel(self.mock_db, Model(112, "Unit Testing", "new definition", 13))
         test_context._find_keyword_by_id = Mock(return_value=data_to_return)
         
         with patch.object(Model, "save", return_value=data_to_return):
@@ -83,13 +83,13 @@ class test_viewmodel_SaveListViewModel(TestCase):
     def test_execute_called_save__add_model_to_data__when_not_exists(self):
 
         # arrange
-        on_find_or_create__create_new_instance = Model(0, "Unit Test")        
+        on_find_or_create__create_new_instance = Model(0, "Unit Test", scheme_of_work_id=13)        
         new_instance_to_save = Model(119, "Unit Test")
 
         # act
 
-        test_context = ViewModel(self.mock_db, Model(0, "Unit Test"))
-        test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
+        test_context = ViewModel(self.mock_db, Model(0, "Unit Test", scheme_of_work_id=13))
+        #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save", return_value=new_instance_to_save):
             
@@ -97,7 +97,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             
             # assert
 
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
             Model.save.assert_called()
             
             self.assertEqual(119, test_context.model.id)
@@ -107,11 +107,11 @@ class test_viewmodel_SaveListViewModel(TestCase):
     def test_execute_not_called_save__add_model_to_data__when_not_valid(self):
 
         # arrange
-        on_find_or_create__create_new_instance = Model(0, "")        
+        on_find_or_create__create_new_instance = Model(0, "", scheme_of_work_id=13)        
 
-        test_context = ViewModel(self.mock_db, Model(0, ""))
+        test_context = ViewModel(self.mock_db, Model(0, "", scheme_of_work_id=13))
  
-        test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
+        #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save"):
             # act
@@ -119,7 +119,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             test_context.execute(99)
             
             # assert
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
 
             Model.save.assert_not_called()
 
@@ -135,12 +135,12 @@ class test_viewmodel_SaveListViewModel(TestCase):
         # arrange
 
         # -- return object with new id
-        on_find_or_create__find_existing_instance = Model(101, "New Keyword")        
+        on_find_or_create__find_existing_instance = Model(101, "New Keyword", scheme_of_work_id=13)        
 
         # start with new object id=0
-        test_context = ViewModel(self.mock_db, Model(0, "New Keyword"))
+        test_context = ViewModel(self.mock_db, Model(0, "New Keyword", scheme_of_work_id=13))
  
-        test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
+        #test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
         
         with patch.object(Model, "save"):
             # act
@@ -148,7 +148,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
             test_context.execute(99)
             
             # assert
-            test_context._find_by_term.assert_called()
+            #test_context._find_by_term.assert_called()
 
             Model.save.assert_called()
 

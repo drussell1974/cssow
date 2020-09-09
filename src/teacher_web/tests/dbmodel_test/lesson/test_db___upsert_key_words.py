@@ -37,11 +37,11 @@ class test_db___upsert_key_words(TestCase):
     
     def test_should_call__reinsert__key_words(self):
          # arrange
-        model = LessonModel(10, "")
+        model = LessonModel(10, "", scheme_of_work_id = 14)
         
         model.key_words = [
-            KeywordModel(id_=12, term="CPU", definition=""), 
-            KeywordModel(id_=13, term="FDE", definition="")
+            KeywordModel(id_=12, term="CPU", definition="", scheme_of_work_id=14), 
+            KeywordModel(id_=13, term="FDE", definition="", scheme_of_work_id=14)
         ]
         
         expected_rows = []
@@ -56,7 +56,7 @@ class test_db___upsert_key_words(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (13, 10, 6079)
+             , (13, 10, 14, 6079)
              , handle_log_info)
 
         self.assertEqual([], actual_result)
@@ -65,8 +65,9 @@ class test_db___upsert_key_words(TestCase):
     
     def test_should_call__reinsert__key_words__insert_new(self):
          # arrange
-        model = LessonModel(79, "")
-        model.key_words = [KeywordModel(id_ = 12, term="CPU", definition="")]
+        model = LessonModel(79, "", scheme_of_work_id = 13)
+        
+        model.key_words = [KeywordModel(id_ = 12, term="CPU", definition="", scheme_of_work_id=13)]
         
         expected_result = []
 
@@ -80,7 +81,7 @@ class test_db___upsert_key_words(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (12, 79, 6079)
+             , (12, 79, 13, 6079)
              , handle_log_info)
 
         self.assertEqual(actual_result, expected_result)

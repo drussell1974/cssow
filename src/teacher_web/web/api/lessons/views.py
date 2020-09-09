@@ -46,7 +46,7 @@ class LessonPathwayObjectivesViewSet(APIView):
     
         ''' get the pathway objectives '''
         pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words, auth_user = auth_user_id(request))
-        should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id)
+        should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id, auth_user_id(request))
 
         return JsonResponse({
             "pathway-objectives": pathwayobjectives, 

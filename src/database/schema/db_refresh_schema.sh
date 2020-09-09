@@ -4,7 +4,8 @@
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_content.sql
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_learning_objective__has__lesson.sql
 #mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_lesson.sql
-mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_logging.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_logging.sql
+#mysql -u $1 -p$2 -h $3 $4 < tables/alter_table__sow_key_word.sql
 
 # views
 
@@ -219,6 +220,9 @@ mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get.sql
 
 echo scheme_of_work__get_all
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_all.sql
+
+echo scheme_of_work__get_all_keywords
+mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_all_keywords.sql
 
 echo scheme_of_work__get_key_stage_id_only
 mysql -u $1 -p$2 -h $3 $4 < storedprocedures/scheme_of_work__get_key_stage_id_only.sql

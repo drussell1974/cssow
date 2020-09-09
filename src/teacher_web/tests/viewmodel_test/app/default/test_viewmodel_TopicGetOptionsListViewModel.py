@@ -8,6 +8,7 @@ from shared.models.cls_topic import TopicModel as Model
 
 #Serializer = test_context.KeywordModelSerializer
 
+@skip("Verify usage")
 class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
 
     def setUp(self):
