@@ -58,7 +58,7 @@ class test_db__get_filtered(TestCase):
         # arrange
         expected_result = []
 
-        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 1, 20)
+        fake_search_criteria = LessonFilter("Lorum ipsum", [5, 10, 25, 50, 100], 1, 20)
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -69,7 +69,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (5, 0, 20, 6079)
+                , (5, "Lorum ipsum", 0, 20, 6079)
                 , []
                 , handle_log_info)
                 
@@ -105,7 +105,7 @@ class test_db__get_filtered(TestCase):
             343
         )]
 
-        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 1, 20)
+        fake_search_criteria = LessonFilter("", [5, 10, 25, 50, 100], 1, 20)
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -116,7 +116,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (3, 0, 20, 6079)
+                , (3, "", 0, 20, 6079)
                 , []
                 , handle_log_info)
 
@@ -169,7 +169,7 @@ class test_db__get_filtered(TestCase):
             4,"learning_objectives",23,343
         )]
 
-        fake_search_criteria = LessonFilter([5, 10, 25, 50, 100], 2, 10)
+        fake_search_criteria = LessonFilter("", [5, 10, 25, 50, 100], 2, 10)
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -180,7 +180,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson__get_filtered'
-                 , (3, 1, 10, 6079)
+                 , (3, "", 1, 10, 6079)
                  , []
                  , handle_log_info)
 

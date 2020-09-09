@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS lesson__get_filtered;
 
 CREATE PROCEDURE lesson__get_filtered (
  IN p_scheme_of_work_id INT,
+ IN p_keyword_search VARCHAR(100),
  IN p_page INT,
  IN p_pagesize INT,
  IN p_auth_user INT)
@@ -37,6 +38,15 @@ BEGIN
     LEFT JOIN sow_content as cnt ON cnt.id = le.content_id
     LEFT JOIN auth_user as user ON user.id = sow.created_by  
     WHERE le.scheme_of_work_id = p_scheme_of_work_id
+        AND (p_keyword_search = "" or le.title LIKE CONCAT('%', p_keyword_search, '%') 
+                or 
+                le.id IN (
+                            SELECT lesson_id 
+                            FROM sow_lesson__has__key_words lkw
+                            INNER JOIN sow_key_word as kw ON kw.id = lkw.key_word_id
+                            WHERE kw.name LIKE CONCAT('%', p_keyword_search, '%')
+                        )
+            )
         AND (sow.published = 1 
                 or p_auth_user IN (SELECT auth_user_id 
                                 FROM sow_teacher 

@@ -37,7 +37,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
                     # act
                     with self.assertRaises(Http404):
-                        self.viewmodel = ViewModel(db, self.mock_request, page=1, pagesize=10, pagesize_options=[5,10,20,40], scheme_of_work_id = 999, auth_user=99)
+                        self.viewmodel = ViewModel(db, self.mock_request, page=1, pagesize=10, pagesize_options=[5,10,20,40], scheme_of_work_id=999, keyword_search="", auth_user=99)
 
                         self.assertEqual("", self.viewmodel.error_message)
                         
@@ -68,7 +68,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     self.mock_request.method = "GET"
                     
                     # act
-                    self.viewmodel = ViewModel(db, self.mock_request, 83, page=1, pagesize=10, pagesize_options=[5,10,20,40], auth_user=99)
+                    self.viewmodel = ViewModel(db, self.mock_request, 83, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
                     # assert functions was called
                     
@@ -102,7 +102,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.mock_request.method = "GET"
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_request, 75, page=1, pagesize=10, pagesize_options=[5,10,20,40], auth_user=99)
+            self.viewmodel = ViewModel(db, self.mock_request, 75, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
 
             # assert functions was called
@@ -138,7 +138,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.mock_request.method = "GET"
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], auth_user=99)
+            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
             # assert functions was called
             
@@ -176,7 +176,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             # act
 
-            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], auth_user=99)
+            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
             # assert functions was called
             

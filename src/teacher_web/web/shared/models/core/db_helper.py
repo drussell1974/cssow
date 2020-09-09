@@ -97,7 +97,7 @@ class ExecHelper:
             self.rollback()
             
             if log_info is not None:
-                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s %s'" % (sql, params), log_type=LOG_TYPE.Error)    
             raise e
         finally:
             self.end()
@@ -126,7 +126,7 @@ class ExecHelper:
             self.rollback()
             
             if log_info is not None:
-                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s'" % sql, log_type=LOG_TYPE.Error)    
+                log_info(self.db, "ExecHelper.select", "An error occurred selecting data '%s %s'" % (sql, params), log_type=LOG_TYPE.Error)    
             raise e
         finally:
             self.end()

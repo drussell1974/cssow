@@ -13,14 +13,16 @@ from app.default.viewmodels import KeywordSaveViewModel, KeywordGetAllListViewMo
 
 class LessonIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
         
         data = []
 
         self.model = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
-        
+        #page_direction = 0
+        # create pager
+        self.search_criteria = LessonFilter(keyword_search, pagesize_options, page, pagesize, 0)
     
         try:
             # name to appear
@@ -31,11 +33,6 @@ class LessonIndexViewModel(BaseViewModel):
             # side menu options
             self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
             self.model = data
-
-            page_direction = 0
-            
-            # create pager
-            self.search_criteria = LessonFilter(pagesize_options, page, pagesize, page_direction)
             
             # get pager from POST 
 

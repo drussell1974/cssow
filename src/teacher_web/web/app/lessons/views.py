@@ -34,9 +34,9 @@ def index(request, scheme_of_work_id):
     
     pagesize = settings.PAGER["default"]["pagesize"]
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
-    
+    keyword_search = request.POST.get("keyword_search", "")
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user=auth_user_id(request))
+    lessonIndexView = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user=auth_user_id(request))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 

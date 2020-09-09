@@ -89,10 +89,15 @@
 <article class="widget widget-lessons-list">
   <form id="form" method="post" class="needs-validation" action="{% url 'lesson.index' content.data.scheme_of_work_id %}#main">
     {% csrf_token %}
-    <!-- Pager -->
+    <!-- Search/Pager-->
+    <div class="form-group stackable-group stackable-group-sm">
+      <div class="control-group col-12">
+        <input class="form-control stackable" type="text" name="keyword_search" placeholder="Enter keyword/term" value="{{content.data.search_criteria.keyword_search}}" maxlength="70" id="ctl-keyword_search">
+      </div>
+    </div>
     <!-- #274: use form.pager.html partial -->
     {% include '_partials/form.pager.search.html' %}
-    <!-- Pager // END -->
+    <!-- Search/Pager // END -->
     <hr>
   </form>
   {% if content.data.lessons|length == 0 %}
@@ -123,7 +128,7 @@
     </a>
     <div class="badge-group">
       {% for key_word in row.key_words %}
-        <i class="badge badge-secondary {{ key_word.published_state }}" data-toggle="popover" data-placement="bottom" title="{{ key_word.term }}" data-content="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
+        <i class="badge badge-secondary {{ key_word.published_state }}" title="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
       {% endfor %}
     </div>
     <div class="links card-body stackable-group-sm">

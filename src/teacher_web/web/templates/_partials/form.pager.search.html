@@ -1,7 +1,7 @@
 <!-- search_criteria -->
 <div class="form-group stackable-group stackable-group-sm">
     <div class="control-group">
-      <button type="submit" class="btn btn-primary stackable" name="page_direction" value="{{ content.data.search_criteria.page_direction_reset }}">{{_("Search")}}</button>
+      <button type="submit" class="btn btn-primary stackable" name="page_direction" value="{{ content.data.search_criteria.page_direction_reset }}" id="btn-search">{{_("Search")}}</button>
       <select class="btn btn-outline-secondary stackable" name="pagesize">
         {% for pagesize in content.data.search_criteria.pagesize_options %}
         {% if content.data.search_criteria.pagesize == pagesize %}

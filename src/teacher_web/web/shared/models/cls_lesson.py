@@ -14,10 +14,10 @@ from .cls_ks123pathway import KS123PathwayModel
 
 class LessonFilter(Pager):
 
-    def __init__(self, pagesize_options, page = 1, pagesize = 20, page_direction = 0):
+    def __init__(self, keyword_search, pagesize_options, page = 1, pagesize = 20, page_direction = 0):
         # base
         super().__init__(pagesize_options, page, pagesize, page_direction)
-
+        self.keyword_search = keyword_search
 
     def valiidate(self):
         super().validate()
@@ -297,6 +297,7 @@ class LessonModel (BaseModel):
     def get_filtered(db, scheme_of_work_id, search_criteria, auth_user):
         rows = LessonDataAccess.get_filtered(db, 
             scheme_of_work_id, 
+            search_criteria.keyword_search,
             search_criteria.page,
             search_criteria.pagesize,
             auth_user)
@@ -465,7 +466,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_filtered(db, scheme_of_work_id, page, pagesize, auth_user):
+    def get_filtered(db, scheme_of_work_id, keyword_search, page, pagesize, auth_user):
         """
         get lessons for the scheme of work
 
@@ -477,7 +478,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_filtered"
-        params = (scheme_of_work_id, page - 1, pagesize, auth_user); 
+        params = (scheme_of_work_id, keyword_search, page - 1, pagesize, auth_user); 
 
         rows = []    
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

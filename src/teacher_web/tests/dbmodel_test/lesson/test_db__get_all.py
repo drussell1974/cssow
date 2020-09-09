@@ -36,7 +36,7 @@ class test_db__get_all(TestCase):
 
         LessonModel.get_number_of_learning_objectives = Mock(return_value=3)
 
-        self.search_criteria = LessonFilter([5, 10, 25, 50, 2])
+        self.search_criteria = LessonFilter("", [5, 10, 25, 50, 2])
 
 
     def tearDown(self):
