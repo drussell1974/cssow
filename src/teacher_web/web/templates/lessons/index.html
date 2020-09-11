@@ -1,6 +1,14 @@
 {% extends '_partials/__layout.twocolumn.contentheading.html' %}
 {% load student_uri %}
 
+
+{% block head_js %} 
+  <!-- #295: Google Analytics script.googleanalytics.html partial -->
+  {% include '_partials/script.googleanalytics.html' %}
+  <!-- Google Analytics // END -->
+{% endblock %}
+
+
 {% block breadcrumb %}
 <section class="widget widget-breadcrumb widget-breadcrumb--lessons-index">
   <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
