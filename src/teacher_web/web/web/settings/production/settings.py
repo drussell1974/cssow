@@ -86,6 +86,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'student_uri':'shared.models.utils.tags'
+            }
         },
     },
 ]
@@ -199,3 +202,5 @@ PAGER = {
         "pagesize_options": [ 10, 25, 50, 100 ]
     }
 }
+
+STUDENT_WEB__WEB_SERVER_WWW = os.environ['STUDENT_WEB__WEB_SERVER_WWW']

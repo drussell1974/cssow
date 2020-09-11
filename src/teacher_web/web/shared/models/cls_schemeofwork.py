@@ -6,14 +6,6 @@ from shared.models.core.log import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 
 
-class SchemeOfWorkListModel(models.Model):
-    schemesofwork = []
-    def __init__(self, data):
-        
-        # TODO: remove __dict__ . The object should be serialised to json further up the stack
-        self.schemesofwork = get_all(None, 11, None).__dict__
-
-
 class SchemeOfWorkModel(BaseModel):
 
     name = ""

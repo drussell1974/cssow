@@ -1,4 +1,6 @@
 {% extends '_partials/__layout.twocolumn.contentheading.html' %}
+{% load student_uri %}
+
 {% block breadcrumb %}
 <section class="widget widget-breadcrumb widget-breadcrumb--lessons-index">
   <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
@@ -139,7 +141,9 @@
         {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
       </a>
     </div>
-    <p class="post-meta">{{_("Created by")}}
+    <p class="post-meta">
+      <a href="{% student_uri row.scheme_of_work_id row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
+      {_("Created by")}}
       <a href="#">{{ row.created_by_name }}</a>
       {% if row.created %}
         on {{ row.created }}

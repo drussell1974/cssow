@@ -7,7 +7,7 @@ from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
-class test_viewmodel_GetModelViewModel(TestCase):
+class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):        
         pass

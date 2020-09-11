@@ -1,3 +1,7 @@
+.student_portal--link {
+    color: rgba(0,0,255,0.5);
+}
+
 .error {
     color:#dc3545 !important;
 }
