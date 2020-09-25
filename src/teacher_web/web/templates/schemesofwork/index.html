@@ -52,7 +52,14 @@
             <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
               {{_("Curriculum")}} <span class="badge badge-light"></span>
             </a>
-          
+            <button class="btn btn-outline-dark stackable"  data-toggle="collapse" href="#collapseKeywords{{ row.id }}" role="button" aria-expanded="false" aria-controls="collapseKeywords{{ row.id }}">
+              {{_("Show keywords")}} <span class="badge badge-light"></span>
+            </button>
+          </div>
+          <div class="badge-group collapse" id="collapseKeywords{{ row.id }}">
+            {% for key_word in row.key_words %}
+              <button class="badge badge-secondary {{ key_word.published_state }}" title="{{ key_word.definition }}" >{{ key_word.term }}</button>&nbsp;
+            {% endfor %}
           </div>
 
             <p class="post-meta">{{_("Created by")}}

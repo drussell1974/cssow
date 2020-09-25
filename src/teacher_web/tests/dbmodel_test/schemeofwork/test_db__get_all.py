@@ -3,6 +3,8 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess, handle_log_info
+from shared.models.cls_keyword import KeywordModel
+
 
 class test_db__get_all(TestCase):
     
@@ -54,6 +56,7 @@ class test_db__get_all(TestCase):
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
+        SchemeOfWorkModel.get_all_keywords = Mock(return_value=[KeywordModel(), KeywordModel()])
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -70,6 +73,7 @@ class test_db__get_all(TestCase):
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
             SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()
             SchemeOfWorkModel.get_number_of_resources.assert_called()
+            SchemeOfWorkModel.get_all_keywords.assert_called()
 
             self.assertEqual(1, len(rows))
             self.assertEqual(6, rows[0]["id"])
@@ -89,6 +93,7 @@ class test_db__get_all(TestCase):
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
+        SchemeOfWorkModel.get_all_keywords = Mock(return_value=[KeywordModel(), KeywordModel()])
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -107,6 +112,7 @@ class test_db__get_all(TestCase):
             SchemeOfWorkModel.get_number_of_lessons.assert_called()
             SchemeOfWorkModel.get_number_of_learning_objectives.assert_called()
             SchemeOfWorkModel.get_number_of_resources.assert_called()
+            SchemeOfWorkModel.get_all_keywords.assert_called()
 
             self.assertEqual(3, len(rows))
 

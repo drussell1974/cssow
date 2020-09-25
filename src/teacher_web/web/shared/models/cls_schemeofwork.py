@@ -94,7 +94,7 @@ class SchemeOfWorkModel(BaseModel):
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
-            #model.key_words = SchemeOfWorkModel.get_all_keywords(db, model.id, auth_user)
+            model.key_words = SchemeOfWorkModel.get_all_keywords(db, model.id, auth_user)
 
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)

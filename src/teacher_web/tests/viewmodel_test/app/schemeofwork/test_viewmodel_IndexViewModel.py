@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.cls_keyword import KeywordModel
 
 
 class test_viewmodel_IndexViewModel(TestCase):
@@ -41,8 +42,10 @@ class test_viewmodel_IndexViewModel(TestCase):
     def test_init_called_fetch__single_row(self):
         
         # arrange
-        
-        data_to_return = [Model(56)]
+        model = Model(56, "Lorum")
+        model.key_words = [KeywordModel(), KeywordModel()]
+
+        data_to_return = [model]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
 
@@ -57,6 +60,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(1, len(self.viewmodel.model))
+
+            self.assertEqual("Lorum", self.viewmodel.model[0].name)
+            self.assertEqual(2, len(self.viewmodel.model[0].key_words))
 
 
     def test_init_called_fetch__multiple_rows(self):

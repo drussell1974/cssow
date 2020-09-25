@@ -18,6 +18,8 @@ class uitest_schemeofwork_failed_log_in(UITestCase):
 
         self.test_context.implicitly_wait(4)
 
+        self.wait(s=2)
+        
 
     def tearDown(self):
         pass
@@ -32,7 +34,6 @@ class uitest_schemeofwork_failed_log_in(UITestCase):
     def test_page__login_should_fail_with_incorrect_credentials(self):
 
         # setup
-
         self.test_context.find_element_by_id("btn-login").click()
 
         # test
