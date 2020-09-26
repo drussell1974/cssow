@@ -138,7 +138,7 @@
     </a>
     <div class="badge-group">
       {% for key_word in row.key_words %}
-        <i class="badge badge-secondary {{ key_word.published_state }}" title="{{ key_word.definition }}" >{{ key_word.term }}</i>&nbsp;
+        <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}">{{ key_word.term }}</button>&nbsp;
       {% endfor %}
     </div>
     <div class="links card-body stackable-group-sm">
@@ -151,7 +151,7 @@
     </div>
     <p class="post-meta">
       <a href="{% student_uri row.scheme_of_work_id row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
-      {_("Created by")}}
+      {{_("Created by")}}
       <a href="#">{{ row.created_by_name }}</a>
       {% if row.created %}
         on {{ row.created }}

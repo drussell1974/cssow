@@ -58,7 +58,7 @@
           </div>
           <div class="badge-group collapse" id="collapseKeywords{{ row.id }}">
             {% for key_word in row.key_words %}
-              <button class="badge badge-secondary {{ key_word.published_state }}" title="{{ key_word.definition }}" >{{ key_word.term }}</button>&nbsp;
+              <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}" >{{ key_word.term }}</button>&nbsp;
             {% endfor %}
           </div>
 
