@@ -1,0 +1,3 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password1.';
+GRANT ALL PRIVILEGES ON *.* TO 'drussell1974'@'%';
+CREATE SCHEMA IF NOT EXISTS test_cssow_api;

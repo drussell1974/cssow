@@ -10,7 +10,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: Testing... default
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 
 # increment
 x=$(($x+$?))
@@ -18,7 +18,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_schemesofwork_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
 
 # increment
 x=$(($x+$?))
@@ -26,7 +26,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_failed_log_in.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
 
 # increment
 x=$(($x+$?))
@@ -34,7 +34,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... lessonuitest_schemeofwork_content_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 
 # increment
 x=$(($x+$?))
@@ -42,7 +42,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... lessonuitest_schemeofwork_lesson_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 
 # increment
 x=$(($x+$?))
@@ -50,7 +50,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_learningobjective_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 
 # increment
 x=$(($x+$?))
@@ -58,7 +58,7 @@ x=$(($x+$?))
 
 ## start test
 echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_resources_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 
 # increment 
 x=$(($x+$?))

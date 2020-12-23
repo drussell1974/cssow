@@ -155,7 +155,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         
         # THIS IS THE HEADING FROM THE LOADED MARKDOWN (THIS SHOULD BE THE FIRST ELEMENT OR BE INCLUDED... format should be hash for h1 - e.g. '#Donec fermentum')
 
-        self.assertEqual("Donec fermentum", elem.text)
+        self.assertEqual("Configure DHCP on a home router", elem.text)
 
 
         ' After opening edit Open Modal '

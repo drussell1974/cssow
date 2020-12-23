@@ -58,19 +58,20 @@ class uitest_schemeofwork_resources_edit_cancel(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
+        # TODO: improve performance
+        self.wait()
 
         ' Open Modal '
 
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
 
-
         ' click no (finding button appears to cancel dialog) '        
         
         elem = self.test_context.find_element_by_id("cancelModalContinueButton")
         elem.click()
-        
-        self.wait(s=2)
+        # TODO: improve performance
+        self.wait()
 
         # assert
         ' should be redirected '

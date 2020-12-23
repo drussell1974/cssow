@@ -8,6 +8,33 @@ A django web application for administering computer science schemes of work and 
 
 - Prerequisites
 
+A. Python
+---------
+apt-get install python3
+apt-get install python3-pip
+
+B. Yarn
+-------
+
+apt-get install curl
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - 
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+C. MySQL
+--------
+
+*MySQL Server*
+
+> apt-get install mysql-server
+
+*Workbench*
+
+Download debian file
+
+https://dev.mysql.com/downloads/workbench/
+
+> dpkg -i mysql-workbench*.deb
 
 - Start web
 

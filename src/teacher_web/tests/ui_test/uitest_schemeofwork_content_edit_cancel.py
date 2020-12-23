@@ -73,8 +73,8 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         #231: then click the continue button
         elem = self.test_context.find_element_by_id("cancelModalContinueButton")
         elem.click()
-        
-        self.wait(s=2)
+        # improve performance 
+        self.wait()
 
         # assert
         ' should be redirected '

@@ -11,7 +11,6 @@ class apitest_schemeofwork_resource_get_markdown(APITestCase):
         uri = "/api/schemesofwork/{}/lessons/{}/resources/{}/markdown/{}?format=json".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_md_document_resource_id, self.test_md_document_name)
         self.get(uri)
         
-
     def tearDown(self):
         pass
 
@@ -31,4 +30,4 @@ class apitest_schemeofwork_resource_get_markdown(APITestCase):
 
     def test__first_should_have_name(self):
         # check first few characters
-        self.assertEqual('<h1>Donec fermentum</h1>', self.payload["markdown"][0:24])
+        self.assertEqual('<h1>Configure DHCP on a ', self.payload["markdown"][0:24])

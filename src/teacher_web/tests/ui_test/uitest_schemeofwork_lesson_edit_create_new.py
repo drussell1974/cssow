@@ -11,6 +11,8 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         # setup
         self.test_path = '/schemesofwork/{}/lessons/new'.format(self.test_scheme_of_work_id)
         self.do_log_in(self.root_uri + self.test_path)
+        # TODO: improve performance
+        self.wait()
 
 
     def tearDown(self):

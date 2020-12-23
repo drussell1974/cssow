@@ -77,7 +77,8 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        
+        #print(redirect_to_uri_on_login)
+
         login_uri = self.root_uri + "/accounts/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '

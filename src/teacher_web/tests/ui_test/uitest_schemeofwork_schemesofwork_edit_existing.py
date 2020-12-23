@@ -11,6 +11,8 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
     def setUp(self):
         # setup
         self.do_log_in(self.root_uri + "/schemesofwork/{}/edit".format(self.test_scheme_of_work_id))
+        # TODO: improve performance
+        self.wait()
 
 
     def tearDown(self):
