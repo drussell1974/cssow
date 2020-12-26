@@ -145,4 +145,4 @@ class test_db__get_by_terms(TestCase):
             self.assertEqual("Lorem", actual_results[2].term),
             self.assertEqual("rutrum a arcu ultrices, id mollis", actual_results[2].definition)
             self.assertEqual(133, actual_results[2].scheme_of_work_id)
-            self.assertEqual(2, actual_results[2].published)
+            self.assertEqual(1, actual_results[2].published)

@@ -160,7 +160,7 @@
     <hr>
   {% endfor %}
   {% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'resource.delete_unpublished' content.data.scheme_of_work_id content.data.lesson_id %}">{{_('Clean')}}</a>
+    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'resource.delete_unpublished' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_('Clean')}}</a>
   {% endif %}
   {% endif %}
 

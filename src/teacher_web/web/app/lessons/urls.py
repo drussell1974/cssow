@@ -14,4 +14,5 @@ urlpatterns = [
     path('<int:lesson_id>/whiteboard', views.whiteboard, name="lesson.whiteboard_view"),
     path('<int:lesson_id>/learning-objectives/', include('app.learningobjectives.urls')),
     path('<int:lesson_id>/resources/', include('app.resources.urls')),
+    path('<int:lesson_id>/keywords/', include('app.lesson_keywords.urls')),
 ]

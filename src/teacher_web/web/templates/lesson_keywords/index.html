@@ -1,0 +1,174 @@
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
+
+
+{% block head_js %} 
+  <!-- #295: Google Analytics script.googleanalytics.html partial -->
+  {% include '_partials/script.googleanalytics.html' %}
+  <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--resources-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</section>
+{% endblock %}
+
+
+{% block sidecontent %}
+
+{% if content.data.lesson_id > 0 %}
+<section class="card widget widget-button widget-button--blackboard">
+  <div class="alert alert-secondary">
+    <a href="{% url 'lesson.whiteboard_view' content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+      {{_("Blackboard display")}}
+    </a>
+  </div>
+</section>
+{% endif %}
+
+<!-- SIDE MENU START -->
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("Menu")}} <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+    <div class="list-group">
+          
+      <section class="card widget widget--sidebar">
+        <div class="card-body">
+          <div class="card-header widget-header">
+            <h5 class="card-heading">{{ _("This lesson") }}</h5>
+          </div>
+          <div class="card-text widget-main">
+            <ul class="navbar-nav flex-column fillspace">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                    {{_("Learning objectives")}} <div class="small"></div>
+                  </a>
+              </li>
+              <li class="nav-item bg-light">
+                <a class="nav-link" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                  {{_("Keywords")}} <div class="small"></div>
+                </a>
+              </li>
+              <li class="nav-item bg-light">
+                  <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                    {{_("Resources")}} <div class="small"></div>
+                  </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card widget widget--sidebar">
+        <div class="card-body">
+          <div class="card-header widget-header">
+            <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
+          </div>
+          <div class="card-text widget-main">
+            <ul class="navbar-nav flex-column fillspace">
+              <li class="nav-item bg-light">
+                <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+                  {{_("Lessons")}} <div class="small"></div>
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                    {{_("Keywords")}} <div class="small"></div>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
+                    {{_("Content")}} <div class="small"></div>
+                  </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card widget widget-sidenav d-none d-lg-block">
+        <div class="card-body">
+          <div class="card-header widget-header">
+            <h5 class="card-title">{{_("Other lessons")}}</h5>
+          </div>
+          <div class="card-text">
+            <ul class="navbar-nav flex-column fillspace">
+              {% for opt in content.data.lesson_options %}
+              <li class="nav-item {% if opt.id == content.data.lesson_id %}bg-light{% endif %}">
+                  <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
+                    {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
+                  </a>
+              </li>
+            {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</nav>
+
+<!-- SIDE MENU // END -->
+
+{% endblock %}
+
+
+
+{% block maincontent %}
+
+<!-- Pager Header -->      
+{% if request.user.is_authenticated %}
+  <span class="float-right">  
+    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.new' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+  </span>
+{% endif %}
+<h2 class="group-heading">{{_("Keywords")}}</h2>
+<hr />
+<!-- Pager Header END -->      
+
+{% if content.data.keywords|length == 0 %}
+<div class="alert alert-warning" role="alert">
+    <span class="large">{{_('There are no keywords for this lesson.')}}</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+  {% for row in content.data.keywords %}
+    <div class="post-preview {{ row.published_state }}">
+      <a name="{{ row.id }}"></a>
+      <a class="edit" href="{% url 'lesson_keywords.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+        <h3 class="post-title">
+          <i class="fa {{row.type_icon}}"></i> {{ row.term }}
+        </h3>
+        <h4 class="post-subtitle">
+            {{ row.definition }}
+        </h4>
+      </a>
+    </div>
+    <hr>
+  {% endfor %}
+  {% endif %}
+
+  <footer class="widget widget--article-footer">
+    {% if request.user.is_authenticated %}
+      <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson_keywords.delete_unpublished' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_('Clean')}}</a>
+    {% endif %}
+  </footer>
+
+{% endblock %}

@@ -37,12 +37,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, 13, 6079)
+            rows = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079) 
                 , []
                 , handle_log_info)
@@ -59,12 +59,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, 6079)
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079) 
                 , []
                 , handle_log_info)
@@ -89,12 +89,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, 6079)
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079)
                 , []
                 , handle_log_info)
@@ -122,12 +122,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, 6079)
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079)
                 , []
                 , handle_log_info)
@@ -151,12 +151,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, 6079)
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079)
                 , []
                 , handle_log_info)
@@ -186,12 +186,12 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, 6079)
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keyword__get_all'
+                'scheme_of_work__get_all_keywords'
                 , (13, 6079)
                 , []
                 , handle_log_info)

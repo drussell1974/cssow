@@ -38,13 +38,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 22, 13, auth_user=6079)
+            actual_results = get_model(self.fake_db, 22, 13, 11, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get'
-                , (22, 13, 6079)
+                , (22, 11, 6079)
                 , []
                 , handle_log_info)
                 
@@ -60,13 +60,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 702, 13, auth_user=6079)
+            actual_results = get_model(self.fake_db, 702, 13, 11, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "keyword__get"
-                , (702, 13, 6079)
+                , (702, 11, 6079)
                 , []
                 , handle_log_info)
                 

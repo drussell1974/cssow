@@ -11,7 +11,6 @@ from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
 
 from shared.viewmodels.baseviewmodel import BaseViewModel
-from app.default.viewmodels import KeywordSaveViewModel
 from shared.view_model import ViewModel
 
 

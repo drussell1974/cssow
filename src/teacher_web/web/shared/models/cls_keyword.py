@@ -19,14 +19,15 @@ class KeywordModel(BaseModel):
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, published = 1):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+        super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.term = term
         self.definition = definition
         self.scheme_of_work_id = try_int(scheme_of_work_id)
         self.belongs_to_lessons = []
         self.number_of_lessons = 0
-        self.published = published
+        self.published = try_int(published)
 
 
     def from_dict(self, dict_obj, scheme_of_work_id):
@@ -95,15 +96,15 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, id, scheme_of_work_id, auth_user):
+    def get_model(db, id, lesson_id, scheme_of_work_id, auth_user):
         rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user)
         
-        data = KeywordModel(0, "", "")
-
+        model = KeywordModel(0, "", "")
         for row in rows:
-            data = KeywordModel(row[0], row[1], row[2], row[3], row[4])
+            model = KeywordModel(row[0], row[1], row[2], row[3], published=row[4])
+            model.on_fetched_from_db()
 
-        return data
+        return model
 
 
     @staticmethod
@@ -120,11 +121,17 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user)
+    def get_all(db, scheme_of_work_id, lesson_id, auth_user):
+        
+        rows = []
+
+        if lesson_id > 0:
+            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user)
+        else:
+            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2], row[3], row[4]))
+            data.append(KeywordModel(row[0], row[1], row[2], row[3], published=row[4]))
         return data
 
 
@@ -141,7 +148,7 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):        
+    def save(db, model, auth_user):    
         if model.published == 2:
             data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
         if model.is_new():
@@ -149,6 +156,9 @@ class KeywordModel(BaseModel):
             model.id = data[0]
         else:
             data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user)
+        
+        for lesson_id in model.belongs_to_lessons:
+            KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user)
 
         return model
 
@@ -157,6 +167,17 @@ class KeywordModel(BaseModel):
     def delete(db, model, auth_user):
         return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
 
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+        return rows
+
+
+    @staticmethod
+    def publish_by_id(db, id, auth_user):
+        return KeywordDataAccess.publish(db, auth_user, id)        
+        
 
 class KeywordDataAccess:
 
@@ -184,14 +205,14 @@ class KeywordDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "keyword__get"
-    
+        
         params = (id, scheme_of_work_id, auth_user)
 
         rows = []
 
         #271 Stored procedure
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
-
+    
         return rows
 
 
@@ -204,13 +225,35 @@ class KeywordDataAccess:
         """
         execHelper = ExecHelper()
 
-        select_sql = "keyword__get_all"
+        select_sql = "scheme_of_work__get_all_keywords"
 
         params = (scheme_of_work_id, auth_user)
         
         rows = []
         
-        #TODO: 271 Stored procedure
+        # 271 Stored procedure
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+
+        return rows
+
+
+    @staticmethod
+    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user):
+        """
+        Get a full list of terms and definitions
+        :param db: database context
+        :return: list of terms and defintion
+        """
+        execHelper = ExecHelper()
+
+        select_sql = "lesson__get_all_keywords"
+
+        # TODO: get by lesson id optional
+        params = (lesson_id, auth_user)
+        
+        rows = []
+        
+        # 271 Stored procedure
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 
         return rows
@@ -292,4 +335,49 @@ class KeywordDataAccess:
         params = (id, scheme_of_work_id, auth_user)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval
+
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id):
+        """ Delete all unpublished keywords """
+
+        execHelper = ExecHelper()
+        
+        # TODO: 299 Create StoredProcedure
+        str_delete = "keyword__delete_unpublished"
+        params = (scheme_of_work_id, auth_user_id)
+            
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval
+
+
+    @staticmethod
+    def publish(db, auth_user, id_):
+        
+        model = KeywordModel(id_)
+        model.publish = True
+
+        execHelper = ExecHelper()
+        # TODO: 299 Create StoredProcedure
+        str_update = "keyword__publish"
+        params = (model.id, model.published, auth_user)
+
+        rval = []
+        rval = execHelper.update(db, str_update, params, handle_log_info)
+
+        return rval
+
+
+    @staticmethod
+    def upsert_lesson(db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
+        """ Checks if the keyword already belongs to the lesson and inserts accordingly """
+        execHelper = ExecHelper()
+        # TODO: 299 Create StoredProcedure
+        str_upsert = "lesson__insert_keywords"
+        params = (keyword_id, lesson_id, scheme_of_work_id, auth_user)
+
+        rval = []
+        rval = execHelper.insert(db, str_upsert, params, handle_log_info)
+
         return rval

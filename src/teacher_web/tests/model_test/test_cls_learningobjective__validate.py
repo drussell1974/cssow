@@ -706,7 +706,7 @@ class test_LearningObjectiveModel_validate__group_name(LearningObjective_TestCas
 
         test = self._construct_valid_object()
 
-        test.group_name = "Loerm ipsum dol" # 15 characters
+        test.group_name = "Loerm ipsum dog" # 15 characters
 
         # test
         test.validate()

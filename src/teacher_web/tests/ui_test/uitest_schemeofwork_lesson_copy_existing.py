@@ -103,7 +103,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         # TODO: improve performance
-        self.wait(s=2)
+        self.wait()
         
         # assert
         ' should return to edit be on the same page '

@@ -16,10 +16,10 @@ BEGIN
             INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id 
       WHERE 
             lkw.lesson_id = p_lesson_id
-            AND published = 1 
-                  -- or p_auth_user IN (SELECT auth_user_id 
-                  --              FROM sow_teacher 
-                  --              WHERE auth_user_id = p_auth_user AND scheme_of_work_id = kw.scheme_of_work_id)
+            AND (published = 1 
+                  or p_auth_user IN (SELECT auth_user_id 
+                                     FROM sow_teacher 
+                                     WHERE auth_user_id = p_auth_user AND scheme_of_work_id = kw.scheme_of_work_id))
       ORDER BY kw.name;
 END;
 

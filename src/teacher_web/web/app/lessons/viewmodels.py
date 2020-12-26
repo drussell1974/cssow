@@ -8,7 +8,7 @@ from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
-from app.default.viewmodels import KeywordSaveViewModel, KeywordGetAllListViewModel
+from app.default.viewmodels import KeywordSaveViewModel
 
 
 class LessonIndexViewModel(BaseViewModel):
@@ -81,7 +81,7 @@ class LessonGetModelViewModel(BaseViewModel):
 class LessonEditViewModel(BaseViewModel):
 
     def __init__(self, db, data, key_words_json, auth_user):
-
+        
         self.db = db
         self.auth_user = auth_user
 

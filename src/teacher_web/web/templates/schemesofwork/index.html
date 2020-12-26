@@ -80,7 +80,7 @@
       <!-- Scheme of works END -->
 
       {% if request.user.is_authenticated %}
-        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' %}">{{_('Clean')}}</a>
+        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' %}#main">{{_('Clean')}}</a>
       {% endif %}
     </article>
 

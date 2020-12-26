@@ -171,7 +171,7 @@
   <!-- Pager Footer -->
   <footer class="widget widget--article-footer">
     {% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson.delete_unpublished' content.data.scheme_of_work_id %}">{{_('Clean')}}</a>
+    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'lesson.delete_unpublished' content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
     {% endif %}
   </footer>
   <!-- Pager Footer END -->

@@ -98,7 +98,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         elem = self.test_context.find_element_by_id("ctl-group_name")
         elem.clear()
-        elem.send_keys("Loerm ipsum dol")
+        elem.send_keys("Lorem ipsum dol")
         
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")

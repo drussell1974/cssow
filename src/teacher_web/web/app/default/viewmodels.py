@@ -57,7 +57,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
 
 class KeywordGetModelViewModel(BaseViewModel):
     #TODO: #235 Depracate not a matching View
-    def __init__(self, db, scheme_of_work_id, auth_user):
+    def __init__(self, db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
         raise DeprecationWarning("no matching view")
         self.db = db
         # get model

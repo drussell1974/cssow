@@ -10,8 +10,8 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         # setup
         #231: open a learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content/{}/edit".format(self.test_scheme_of_work_id, self.test_content_id))
-
-        self.wait(s=2)
+        # TODO: 299 improve performance
+        self.wait()
 
 
     def tearDown(self):
@@ -66,8 +66,8 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         #231: click the cancel button
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
-
-
+        self.wait()
+    
         ' click no (finding button appears to cancel dialog) '        
         
         #231: then click the continue button

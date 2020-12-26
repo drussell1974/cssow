@@ -9,7 +9,7 @@ BEGIN
       SELECT 
             kw.id as id, 
             kw.name as term, 
-            kw.definition as definition,
+            kw.definition as definition,cssow_api 
             kw.scheme_of_work_id as scheme_of_work_id,
             kw.published as published
       FROM sow_key_word kw

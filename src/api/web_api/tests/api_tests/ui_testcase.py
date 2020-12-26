@@ -15,7 +15,7 @@ class UITestCase(TestCase):
     test_lesson_id = 131
     test_learning_objective_id = 410
     test_reference = 10
-
+    test_keyword_id = 265
 
     def wait(self, s = 5):
         import time

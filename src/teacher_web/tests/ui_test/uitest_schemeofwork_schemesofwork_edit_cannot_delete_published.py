@@ -34,8 +34,7 @@ class uitest_schemeofwork_schemesofwork_edit_cannot_delete_published(UITestCase)
 
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        
-        elem.click()
+        self.wait(s=2)
 
         ' Open Modal '
 
@@ -44,13 +43,6 @@ class uitest_schemeofwork_schemesofwork_edit_cannot_delete_published(UITestCase)
         elem = self.test_context.find_element_by_id("deleteButton")
         attr = elem.get_attribute("disabled")
         self.assertTrue(attr)
-
-        #231: stay on page
-
-        # check this does nothing (#290 commented out due to error Element <button id="deleteButton" class="btn btn-danger stackable float-right" name="published" type="submit"> is not clickable at point (945,845) because another element <li class="ui-menu-item"> obscures it)
-        #elem.click()
-        
-        #231: assert we're still on the stay on page
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
         
