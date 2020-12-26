@@ -60,6 +60,30 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
 
 
+    def test_page__post_preview__item__navigate_to_lessons(self):
+        # setup
+        self.test_context.find_element_by_id('lnk-schemeofwork-lessons--{}'.format(self.test_scheme_of_work_id)).click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        
+
+    def test_page__post_preview__item__navigate_to_curriculum(self):
+        # setup
+        self.test_context.find_element_by_id('lnk-schemeofwork-curriculum--{}'.format(self.test_scheme_of_work_id)).click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
+        
+
+    def test_page__post_preview__item__navigate_to_keywords(self):
+        # setup
+        self.test_context.find_element_by_id('lnk-schemeofwork-keywords--{}'.format(self.test_scheme_of_work_id)).click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        
+
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
         # setup
         self.try_log_in(self.root_uri + "/schemesofwork")

@@ -90,7 +90,7 @@ def edit(request, scheme_of_work_id, keyword_id):
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword {} for {}".format(model.term, scheme_of_work.description), data=data, active_model=model, alert_message="")
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), data=data, active_model=model, alert_message="")
     
         # TODO: 299 create keywords/edit.html page
     return render(request, "keywords/edit.html", view_model.content)

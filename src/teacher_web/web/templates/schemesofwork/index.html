@@ -46,22 +46,16 @@
             </h4>
           </a>
           <div class="card-body stackable-group-sm">
-            <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
+            <a id="lnk-schemeofwork-lessons--{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
               {{_("Lessons")}} <span class="badge badge-light">{{row.number_of_lessons}}</span>
             </a>
-            <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
+            <a id="lnk-schemeofwork-curriculum--{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
               {{_("Curriculum")}} <span class="badge badge-light"></span>
             </a>
-            <button class="btn btn-outline-dark stackable"  data-toggle="collapse" href="#collapseKeywords{{ row.id }}" role="button" aria-expanded="false" aria-controls="collapseKeywords{{ row.id }}">
-              {{_("Show keywords")}} <span class="badge badge-light"></span>
-            </button>
+            <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'keywords.index' row.id %}" class="btn btn-outline-dark stackable">
+              {{_("Keywords")}} <span class="badge badge-light"></span>
+            </a>
           </div>
-          <div class="badge-group collapse" id="collapseKeywords{{ row.id }}">
-            {% for key_word in row.key_words %}
-              <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}" >{{ key_word.term }}</button>&nbsp;
-            {% endfor %}
-          </div>
-
             <p class="post-meta">{{_("Created by")}}
               <a href="{% student_uri row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
               <a href="#">{{ row.created_by_name }}</a>

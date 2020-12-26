@@ -45,7 +45,7 @@ class uitest_schemeofwork_keyword_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword Random Access Memory (RAM) for Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level')
 
 
     def test_page__should_redirect_if_invalid(self):
