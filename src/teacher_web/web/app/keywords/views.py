@@ -148,29 +148,20 @@ def save(request, scheme_of_work_id, keyword_id):
     else:
         """ redirect back to page and show message """
 
-        #request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
-        
-        #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
-
-        #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
-        lesson = get_lesson_view.model
-        
-        # TODO: 299 keyword_id, keyword: model
+        get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
+        scheme_of_work = get_scheme_of_work_view.model
 
         data = {
             "scheme_of_work_id": scheme_of_work_id,
-            "lesson_id": lesson_id,
             "keyword_id": model.id,
             "keyword": model,
             "validation_errors":model.validation_errors
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message="", error_message=error_message)
-    
-        # TODO: 299 create keywords/edit.html page
-    
+        
+        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, data=data, active_model=model, alert_message="", error_message=error_message)        
+        
         return render(request, "keywords/edit.html", view_model.content)
-
+        
     return HttpResponseRedirect(redirect_to_url)
 
 

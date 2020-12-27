@@ -126,6 +126,13 @@ class LessonKeywordSaveViewModel(BaseViewModel):
 
 
     def execute(self, published):
+
+        def get_term(record):
+            return record.term
+
+        # TODO: 299 get all_terms before validating
+        self.model.all_terms = list(map(get_term, Model.get_options(self.db, self.model.scheme_of_work_id, self.auth_user)))
+
         self.model.validate()
 
         if self.model.is_valid == True or published == 2:

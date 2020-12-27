@@ -179,7 +179,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
             "keyword": model,
             "validation_errors":model.validation_errors
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {} for {}".format(model.term, lesson.title), data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), data=data, active_model=model, alert_message="", error_message=error_message)
     
         # TODO: 299 create lesson_keywords/edit.html page
     

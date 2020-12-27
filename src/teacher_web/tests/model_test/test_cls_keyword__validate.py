@@ -285,6 +285,62 @@ class test_cls_keyword__validate__term(TestCase):
             self.assertTrue("term" in self.test.validation_errors, "value '{}' should not be valid".format(word))
 
 
+class test_cls_keyword__validate__term__duplicate_check(TestCase):
+
+    test = None
+
+    def setUp(self):
+        self.test = KeywordModel(0, "", "", scheme_of_work_id=13)
+
+
+    def tearDown(self):
+        pass
+
+
+    def test__term__when_unique___if_new(self):
+        
+        # set up
+        self.test.term = "A"
+        self.test.all_terms = ["B", "C", "D"]
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("term" in self.test.validation_errors, "term should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "should be is_valid")
+
+
+    def test__when_duplicate___if_new(self):
+
+        # set up
+        self.test.term = "A"
+        self.test.all_terms = ["A", "B", "C"]
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("term" in self.test.validation_errors, "term should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test__when_duplicate___if_not_new(self):
+
+        # set up
+        self.test.id = 1
+        self.test.term = "A"
+        self.test.all_terms = ["A", "B", "C"]
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("term" in self.test.validation_errors, "term should not have validation error %s" % self.test.validation_errors)
+        print(self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "should be is_valid")
+        
+
 class test_cls_keyword__validate__scheme_of_work_id(TestCase):
 
     test = None

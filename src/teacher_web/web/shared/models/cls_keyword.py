@@ -19,7 +19,7 @@ class KeywordModel(BaseModel):
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, all_terms = []):
         super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.term = term
@@ -28,6 +28,7 @@ class KeywordModel(BaseModel):
         self.belongs_to_lessons = []
         self.number_of_lessons = 0
         self.published = try_int(published)
+        self.all_terms = []
 
 
     def from_dict(self, dict_obj, scheme_of_work_id):
@@ -75,6 +76,9 @@ class KeywordModel(BaseModel):
 
         # validate required scheme_of_work_id
         self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
+
+        # TODO: 299 validate duplicates
+        self._validate_duplicate("term", self.term, self.all_terms, "Cannot save duplicate term")
 
         self.on_after_validate()
         
@@ -148,7 +152,8 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):    
+    def save(db, model, auth_user):
+        """ save model """
         if model.published == 2:
             data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
         if model.is_new():

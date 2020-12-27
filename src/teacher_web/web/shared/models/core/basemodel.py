@@ -110,6 +110,8 @@ class BaseModel(models.Model):
 
     def on_after_validate(self):
         self.skip_validation = []
+        if any(self.validation_errors.values()):
+            self.error_message = next(iter(self.validation_errors.values()))
 
 
     def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value, match_regular_expression=(None,None)):
@@ -182,6 +184,18 @@ class BaseModel(models.Model):
                 # add errors to property only if there are errors
                 if len(all_errors) > 0:
                     self.validation_errors[name_of_property] = all_errors
+
+
+    # TODO: 299 prevent duplicate values
+    def _validate_duplicate(self, name_of_property, value_to_validate, duplicate_checklist, friendly_message):
+        """ check if a value already exists in the duplicate_checklist property """
+        if name_of_property not in self.skip_validation:
+            if self.is_new() == True:
+                for value in duplicate_checklist:
+                    # add errors to property only if there are errors
+                    if value == value_to_validate:
+                        self.validation_errors[name_of_property] = "{} already exists. {}".format(value_to_validate, friendly_message)
+                        self.is_valid = False
 
 
     def _validate_regular_expression(self, name_of_property, value_to_validate, pattern_to_match, friendly_message):

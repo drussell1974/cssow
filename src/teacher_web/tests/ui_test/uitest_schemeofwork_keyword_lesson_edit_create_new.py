@@ -42,13 +42,34 @@ class uitest_schemeofwork_keyword_lesson_edit_create_new(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new keyword for Types of CPU architecture')
         
 
-    def test_page__should_redirect_to_index_if_valid(self):
+    def test_page__should_stay_on_same_page_if_duplicate(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
+        ' term Enter Valid but duplicate term '
+
+        elem = self.test_context.find_element_by_id("ctl-term")
+        elem.clear()
+        elem.send_keys(self.TEST_KEYWORD_DUPLICATE_TERM)
+
+        ' submit the form '
+        elem = self.test_context.find_element_by_id("saveDraftButton")
+        elem.send_keys(Keys.RETURN)
+
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new keyword for Types of CPU architecture')
+        
+
+    def test_page__should_redirect_to_index_if_valid(self):
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         ' term Enter Valid '
 
