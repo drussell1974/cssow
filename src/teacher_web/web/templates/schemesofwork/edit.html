@@ -81,14 +81,7 @@
         </div>
         <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
         <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
-        <input type="hidden" name="get_key_words_uri" value="{% url 'api.default.keywords' content.data.scheme_of_work_id %}" id="hdn-keywords_uri">
     </form>
 </article>
 {% endblock %}
 
-
-{% block head_css %} 
-  {% load static %}
-  <link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
-  <link href="{% static 'default/vendor/sliptree/css/tokenfield-typeahead.min.css' %}" rel="stylesheet">
-{% endblock %}

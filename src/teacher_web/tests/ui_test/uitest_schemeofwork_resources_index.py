@@ -64,6 +64,16 @@ class uitest_schemeofwork_resource_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
 
 
+    def test_page__breadcrumb__navigate_to_whiteboard_view(self):
+        # setup
+
+        self.test_context.find_element_by_id('lnk-whiteboard_view').click()
+        self.test_context.implicitly_wait(4)
+
+        # assert (TEST parent page is still open)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+
+
     def test_page__show_published_only(self):
         # setup
         section = self.test_context.find_elements_by_class_name('post-preview')

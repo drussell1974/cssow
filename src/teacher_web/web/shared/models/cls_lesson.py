@@ -39,12 +39,12 @@ class LessonModel (BaseModel):
     year_id = None
     key_stage_id = None
     published = 1
-    key_words = []
-    key_words_str = []  
+    key_words = []  
     resources = []
     learning_objectives = []
     number_of_resources = 0
     number_of_learning_objectives = 0
+    number_of_keywords = 0
 
     def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         #231: implement across all classes
@@ -75,13 +75,6 @@ class LessonModel (BaseModel):
         self.orig_id = orig_id
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
 
-
-    @property
-    def key_words_str(self):
-        key_word_map = map(lambda m: m.term, self.key_words)
-        # assign as comma seperated list
-        return ",".join(list(key_word_map))
-        
         
     def from_json(self, str_json, encoding="utf8"):
         try:
@@ -161,10 +154,6 @@ class LessonModel (BaseModel):
 
         # Validate summary
         self._validate_optional_string("summary", self.summary, 80)
-
-        # Validate key_words (array)
-        self._validate_optional_list("key_words", self.key_words, None, 100)
-        self._validate_children("key_words", self, self.key_words)
 
         return self.is_valid
 
@@ -284,6 +273,8 @@ class LessonModel (BaseModel):
             model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
             ' get number of resources for this lesson '
             model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            ' get number of keywords for this lesson '
+            model.number_of_keywords = len(model.key_words)
             ' get related topics '
             model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
             ' get ks123 pathways '
@@ -334,6 +325,8 @@ class LessonModel (BaseModel):
             model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
             ' get number of resources for this lesson '
             model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+            ' get number of keywords for this lesson '
+            model.number_of_keywords = len(model.key_words)
             ' get related topics '
             model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
             ' get ks123 pathways '
@@ -662,10 +655,6 @@ class LessonDataAccess:
 
         LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user=auth_user)
 
-        # 5. insert key words
-
-        LessonDataAccess._upsert_key_words(db, model, rows, auth_user=auth_user)
-
         return model
 
 
@@ -717,10 +706,6 @@ class LessonDataAccess:
         # 4. insert pathway ks123
 
         LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user)
-
-        # 5. insert key words
-
-        LessonDataAccess._upsert_key_words(db, model, rows, auth_user)
 
         # 6. insert objectives
         if model.is_copy():
@@ -858,34 +843,6 @@ class LessonDataAccess:
                 params = (model.id, pathway_id, auth_user)
                 results = execHelper.insert(db, str_insert, params, handle_log_info)
         
-        return results
-
-
-    @staticmethod
-    def _upsert_key_words(db, model, results, auth_user):
-        """ 
-        inserts sow_lesson__has__keywords if key_word_id does not exist in table
-
-        :param db: the database context
-        :param model: the lesson model
-        :param results: results to be appended
-        :param auth_user: the user executing the command
-        :return: appended results
-        """
-
-        #TODO: move 4 lines down to include in transaction (fix transaction first)
-        LessonDataAccess._delete_keywords(db, model, results, auth_user)
-
-        execHelper = ExecHelper()
-
-        for key_word in model.key_words:
-
-            str_insert = "lesson__insert_keywords"
-        
-            params = (key_word.id, model.id, model.scheme_of_work_id, auth_user)
-
-            results = execHelper.insert(db, str_insert, params, handle_log_info)
-                  
         return results
 
 

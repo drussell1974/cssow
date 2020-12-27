@@ -80,7 +80,7 @@ class LessonGetModelViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    def __init__(self, db, data, key_words_json, auth_user):
+    def __init__(self, db, data, auth_user):
         
         self.db = db
         self.auth_user = auth_user
@@ -88,24 +88,6 @@ class LessonEditViewModel(BaseViewModel):
         # assign data directly to the model
 
         self.model = data
-
-        try:
-            # transform key_words from string to dictionary list
-            decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item, self.model.scheme_of_work_id), json.loads(key_words_json)))
-            # TODO: move to execute function for saving
-            for keyword in decoded_key_words:
-                
-                # get or insert
-                save_keyword = KeywordSaveViewModel(db, keyword)
-                
-                kyw_model = save_keyword.execute(auth_user)
-                
-                self.model.key_words.append(kyw_model)
-    
-        except Exception as ex:
-            self.error_message = ex
-            handle_log_exception(db, "An error occurred processing key words json", ex)
-            raise
 
 
     def execute(self, published):

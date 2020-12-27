@@ -55,13 +55,6 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         selected_option = elem.first_selected_option
         self.assertEqual("Algorithms", selected_option.text)
 
-        ' keyword dropdown '
-        elem = self.test_context.find_elements_by_css_selector("div.tokenfield div.token")
-        self.assertEqual(3, len(elem))
-        self.assertEqual("Central Processing Unit (CPU)×", elem[0].text)
-        self.assertEqual("Fetch Decode Execute (FDE)×", elem[1].text)
-        self.assertEqual("Random Access Memory (RAM)×", elem[2].text)
-
 
     """ Test edits """
     def test_page__should_stay_on_same_page_if_invalid(self):

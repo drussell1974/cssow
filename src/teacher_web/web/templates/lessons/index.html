@@ -148,12 +148,12 @@
     </div>
     <div class="links card-body stackable-group-sm">
       <a href="{% url 'learningobjective.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-learningobjectives--{{row.id}}">
-        {{_("Learning objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
+        {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
       </a>
-      <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark stackable" id="btn-lesson-resources--{{row.id}}">
+      <a href="{% url 'resource.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-resources--{{row.id}}">
         {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
       </a>
-      <a href="{% url 'lesson_keywords.index' row.scheme_of_work_id row.id %}"  class="btn btn-outline-dark stackable" id="btn-lesson-keywords--{{row.id}}">
+      <a href="{% url 'lesson_keywords.index' row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-keywords--{{row.id}}">
         {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
       </a>
       

@@ -599,7 +599,7 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
         self.assertTrue("year_id" in test.validation_errors, "year_id should have validation error %s" % test.validation_errors)
         self.assertFalse(test.is_valid, "is_valid should be False")
 
-
+@skip("depreciate saving keyword when saving lesson")
 class test_LessonModel_validate__key_words(Lesson_TestCase):
 
     test = None

@@ -1,12 +1,10 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
-_upsert_key_words = LessonDataAccess._upsert_key_words
-
-
+@skip("depreceate saving keyword when saving lesson")
 class test_db___upsert_key_words(TestCase):
 
 

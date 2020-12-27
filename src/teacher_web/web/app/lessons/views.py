@@ -13,7 +13,6 @@ from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
-from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
@@ -91,7 +90,10 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
+        # TODO: 299 depreciate saving keyword when saving lesson
+        #modelviewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
+        modelviewmodel = LessonEditViewModel(db, model, auth_user=auth_user_id(request))
+
         try:
             modelviewmodel.execute(published)
             model = modelviewmodel.model
@@ -116,7 +118,8 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
     content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_id(request), scheme_of_work.id)
     topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_id(request))
-    key_words_options = KeywordModel.get_options(db, scheme_of_work.id, request.user.id)
+    # TODO: 299 depreciate saving keyword when saving lesson
+    #key_words_options = KeywordModel.get_options(db, scheme_of_work.id, request.user.id)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user = auth_user_id(request))
     ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_id(request))
     
@@ -131,7 +134,8 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "year_options": year_options,
         "selected_year_id": model.year_id,
         "lesson": model,
-        "key_words_options": key_words_options,
+        # TODO: 299 depreciate saving keyword when saving lesson
+        #"key_words_options": key_words_options,
         "ks123_pathways": ks123_pathways,
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
