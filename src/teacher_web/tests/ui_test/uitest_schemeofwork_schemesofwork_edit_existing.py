@@ -31,19 +31,6 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
         
 
-    def test_page__breadcrumb_navigate_to_lesson_index(self):
-        # test
-        
-        elem = self.test_context.find_element_by_id('btn-bc-lessons')
-        self.assertEqual("Lessons", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
-
-
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # test
         elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
@@ -75,7 +62,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert

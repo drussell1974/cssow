@@ -5,7 +5,6 @@ from django.http.response import Http404
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 
-from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
@@ -64,17 +63,6 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 created_by_id=auth_user)
         
             try:
-    
-                key_words_json=request.POST.get("key_words")
-            
-                # transform key_words from string to dictionary list
-                decoded_key_words = list(map(lambda item: KeywordModel().from_dict(item, self.model.id), json.loads(key_words_json)))
-            
-                self.model.key_words.clear()
-                
-                for keyword in decoded_key_words:
-                    self.model.key_words.append(keyword)
-
                 self.model.validate()
                 
                 if self.model.is_valid == True:

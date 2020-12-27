@@ -53,7 +53,7 @@
               {{_("Curriculum")}} <span class="badge badge-light"></span>
             </a>
             <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'keywords.index' row.id %}" class="btn btn-outline-dark stackable">
-              {{_("Keywords")}} <span class="badge badge-light"></span>
+              {{_("Keywords")}} <span class="badge badge-light">{{row.number_of_keywords}}</span>
             </a>
           </div>
             <p class="post-meta">{{_("Created by")}}

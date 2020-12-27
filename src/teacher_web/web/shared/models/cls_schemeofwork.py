@@ -49,12 +49,8 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
-        # Validate key_words (array)
-        self._validate_optional_list("key_words", self.key_words, None, 1000)    
-        self._validate_children("key_words", self, self.key_words, skip_validation=["scheme_of_work_id"])
 
-
-        #self.on_after_validate()
+        self.on_after_validate()
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
@@ -95,6 +91,7 @@ class SchemeOfWorkModel(BaseModel):
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
             model.key_words = SchemeOfWorkModel.get_all_keywords(db, model.id, auth_user)
+            model.number_of_keywords = len(model.key_words)
 
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
@@ -220,21 +217,13 @@ class SchemeOfWorkModel(BaseModel):
         
         if try_int(published) == 2:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
-            #TODO: check row count before updating
             model.published = 2
         else:
-            # 1. upsert scheme of work
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
                 SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
-
-            # 2. save key words
-                
-            for keyword in model.key_words:
-                keyword.scheme_of_work_id = model.id
-                KeywordModel.save(db, keyword, auth_user)
 
         return model
 

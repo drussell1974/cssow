@@ -70,7 +70,6 @@ class uitest_schemeofwork_content_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
 
 
-
     def test_page__show_published_only(self):
         # arrange
         section = self.test_context.find_elements_by_class_name('post-preview')

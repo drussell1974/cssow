@@ -6,15 +6,9 @@
     <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
         <div class="container">
             <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
+                <li class="nav-item">
+                    <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
                 </li>
-                <!-- SHOULD ONLY DISPLAY IF EXISTING -->
-                {% if content.data.scheme_of_work.id > 0 %}
-                    <li class="nav-item">
-                        <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
-                    </li>
-                {% endif %}
             </ul>
         </div>
     </nav>
@@ -78,19 +72,6 @@
                 <div class="help-block text-danger invalid-feedback"></div>
             </div>
         </div>
-        <div class="control-group">
-            <div class="form-group  controls">
-                <label>{{_("Keywords")}}</label>
-                <!-- keyword-tokens flelds START-->
-                <input type="hidden" class="form-control" id="tags" />  
-                <input type="hidden" class="key_words" id="hdn-key_words" name="key_words" />
-                <input type="text" name="key_words_str" class="form-control" id="keywords-tokenfield" value="{{ content.data.scheme_of_work.key_words_str }}" />
-                <div class="invalid-feedback">{{_("one or more invalid keywords")}}</div>
-                <!-- keyword-tokens fields END-->
-                
-            </div>
-            <hr>
-        </div>
         <br>
         <div id="success"></div>
         
@@ -106,93 +87,8 @@
 {% endblock %}
 
 
-{% block modal %}
-<div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="keywordModalTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Title
-          <input type="text" class="form-control" required id="keywordModalTitle" />
-          <div class="invalid-feedback">{{_("invalid keyword term")}}</div>
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="keywordModalId" />
-        <input type="hidden" id="keywordModalSchemeOfWorkId" />
-        <textarea id="keywordModalDefinition" class="form-control" rows="3" max="100" style="display:table-cell; width:100%;"></textarea>
-        <div class="invalid-feedback">{{_("invalid keyword definition")}}</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="keywordModalSaveButton" >Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
-
-
 {% block head_css %} 
   {% load static %}
   <link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet">
   <link href="{% static 'default/vendor/sliptree/css/tokenfield-typeahead.min.css' %}" rel="stylesheet">
-{% endblock %}
-
-
-{% block page_js %}
-    {% load static %}
-    <script type="text/javascript" src="{% static 'default/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'default/js/keyword-form-validation.js' %}"></script>
-    <script type="text/javascript" src="{% static 'default/js/keyword-tokens.js' %}"></script>
-    <script>
-        function confirm_deletion(term, number_of_lessons) {
-            var message = `Are you sure you want to delete "${term}"?`;
-            if (number_of_lessons > 0) {
-                message = `${message}\n\nThis item is linked to ${number_of_lessons} lesson(s) and will no longer be associated to those lesson(s)!!!`;
-            }
-            return confirm(message);
-        }
-        function remove_schemeofwork_token(e){
-            // toggle deleted items
-            if (e.attrs.published == 2) {
-                $(e.relatedTarget).removeClass("mark-for-deletion");
-                e.attrs.published = 1;
-                return false;
-            }
-            
-            // just remove if new
-            if (e.attrs.is_new == true) {
-                return true;
-            }
-
-            // confirm with user before marking for deletion (ALWAYS CHECK)
-            remove = confirm_deletion(e.attrs.term, e.attrs.number_of_lessons);
-            if (remove) {
-                $(e.relatedTarget).addClass("mark-for-deletion");
-                e.attrs.published = 2;
-            } else {
-                $(e.relatedTarget).removeClass("mark-for-deletion");
-                e.attrs.published = 1;
-            }
-        
-            // do not remove
-            return false;
-        }
-
-        keyword_token_handler(
-            document.getElementById('hdn-keywords_uri').value // get_keywords_url
-            , "#keywords-tokenfield" // token_input_css_selector
-            , ".tokenfield .invalid" // invalid_tokens_css_selector
-            , "is-invalid invalid error" // invalid_classes
-            , "#keywordModal" // modal_id
-            , "#keywordModalId" // modal_id_id
-            , "#keywordModalTitle" // modal_title_id
-            , "#keywordModalDefinition" // modal_body_id
-            , "#keywordModalSaveButton" // modal_save_button_id
-            , remove_schemeofwork_token // on_remove_token
-        )
-    </script>
 {% endblock %}

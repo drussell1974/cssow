@@ -31,8 +31,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
-                    "lesson_id": 230,
-                    "key_words":  '[]'
+                    "lesson_id": 230
                 }
 
         mock_db = MagicMock()
@@ -69,8 +68,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
-                    "lesson_id": 230,
-                    "key_words": '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
+                    "lesson_id": 230
                 }
 
 
@@ -99,8 +97,6 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 self.assertEqual(99, test_context.model.id)
                 self.assertEqual("Proin id massa metus. Aliqua tinciduntx.", test_context.model.name)
-                #self.assertEqual("", test_context.model.key_words)
-                self.assertEqual(2, len(test_context.model.key_words))
 
 
     def test_execute_called_save__add_model_to_data__return_invalid(self):
@@ -150,5 +146,3 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertFalse(test_context.model.is_valid)
                 self.assertEqual(1, len(test_context.model.validation_errors)) 
                 self.assertEqual({'exam_board_id': '0 is not a valid range'}, test_context.model.validation_errors) 
-                #self.assertEqual("", test_context.model.key_words)
-                self.assertEqual(2, len(test_context.model.key_words))
