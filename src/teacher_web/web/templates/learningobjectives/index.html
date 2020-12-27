@@ -59,6 +59,11 @@
                   </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                  {{_("Keywords")}} <div class="small"></div>
+                </a>
+              </li>
+              <li class="nav-item">
                   <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">
                     {{_("Resources")}} <div class="small"></div>
                   </a>
@@ -78,6 +83,11 @@
               <li class="nav-item bg-light">
                 <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
                   {{_("Lessons")}} <div class="small"></div>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
+                  {{_("Keywords")}} <div class="small"></div>
                 </a>
               </li>
               <li class="nav-item">

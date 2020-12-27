@@ -45,6 +45,11 @@
                     {{_("Lessons")}} <div class="small"></div>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
+                    {{_("Keywords")}} <div class="small"></div>
+                  </a>
+                </li>
                 <li class="nav-item bg-light">
                     <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
                       {{_("Content")}} <div class="small"></div>

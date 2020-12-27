@@ -80,7 +80,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
         # arrange
-        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=2)
+        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
 
 
     def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):

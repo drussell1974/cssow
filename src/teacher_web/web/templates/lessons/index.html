@@ -42,9 +42,14 @@
           <div class="card-text widget-main">
             <ul class="navbar-nav flex-column fillspace">
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+                  <a class="nav-link bg-light" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
                     {{_("Lessons")}} <div class="small"></div>
                   </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
+                  {{_("Keywords")}} <div class="small"></div>
+                </a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
