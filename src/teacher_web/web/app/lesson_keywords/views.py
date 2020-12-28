@@ -17,7 +17,7 @@ from shared.models.cls_lesson import LessonModel
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
-from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonKeywordGetAllListViewModel, LessonKeywordSaveViewModel, LessonKeywordDeleteUnpublishedViewModel
+from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonKeywordGetAllListViewModel, LessonKeywordSelectViewModel, LessonKeywordSaveViewModel, LessonKeywordDeleteUnpublishedViewModel
 
 from shared.models.core import validation_helper
 
@@ -34,6 +34,25 @@ def index(request, scheme_of_work_id, lesson_id):
     
     # TODO: 299 create lesson_keywords/index.html page
     return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
+
+
+# 299 Keyword Index
+def select(request, scheme_of_work_id, lesson_id):
+    ''' Get keywords for lesson '''
+
+    #253 check user id
+    keywords_select = LessonKeywordSelectViewModel(db, request, lesson_id, scheme_of_work_id, auth_user_id(request))  
+    
+    if request.method == "POST":
+        
+        keywords_select.execute(request)
+
+        if request.POST["next"] != "None" and request.POST["next"] != "":
+            redirect_to_url = request.POST["next"]
+            return HttpResponseRedirect(redirect_to_url)
+    
+    # TODO: 299 create lesson_keywords/index.html page
+    return render(request, "lesson_keywords/select.html", keywords_select.view(request).content)
 
 
 # TODO: 299 create new
@@ -161,10 +180,6 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
             redirect_to_url = reverse('keyword.edit', args=(scheme_of_work_id, model.id))
     else:
         """ redirect back to page and show message """
-
-        #request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
-        
-        #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
         #253 check user id
         get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    

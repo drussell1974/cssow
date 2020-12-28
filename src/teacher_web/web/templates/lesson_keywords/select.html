@@ -1,0 +1,70 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--keywords-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="btn-bc-keywords" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Keywords")}}</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block maincontent %}
+
+<!-- Pager Header -->      
+{% if request.user.is_authenticated %}
+  <span class="float-right">  
+    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.new' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+  </span>
+{% endif %}
+<h2 class="group-heading">{{_("Keywords")}}</h2>
+<hr />
+<!-- Pager Header END -->      
+
+<article class="widget widget-form widget-keyword-form">
+    <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.select' content.data.scheme_of_work_id content.data.lesson_id %}">
+        {% csrf_token %}
+
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        {% for opt in content.data.keyword_options %}
+        <div class="custom-control custom-checkbox">
+            
+            <input type="checkbox" class="term-control-input" name="term" id="chk-term--{{opt.id}}" value="{{opt.id}}" {% if opt.selected %} checked {% endif%}>
+            
+            <label class="term-control-label" for="termCheck">{{opt.term}}</label>
+        </div>
+        {% endfor %}
+
+        <br>
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        
+        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
+        <input type="hidden" name="next" value="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+    </form>
+<hr>
+</article>
+{% endblock %}
+
+
+{% block page_js %}
+    {% load static %}
+    <script src="{% static 'default/js/md_document--upload.js' %}"></script>
+    <script src="{% static 'default/js/md_document--preview.js' %}"></script>
+{% endblock %}

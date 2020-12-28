@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lesson_keywords.views import index, new, edit, delete_item, save, publish_item, delete_unpublished
+from app.lesson_keywords.views import index, select, new, edit, delete_item, save, publish_item, delete_unpublished
 
 # Create your tests here.
 class test_app_route_lesson_keywords_page(TestCase):
@@ -39,15 +39,15 @@ class test_app_route_lesson_keywords_page(TestCase):
         self.assertEqual("/schemesofwork/127/lessons/32/keywords/1/edit", url)
 
 
-    def test__keywords_new__url_resolves_to_edit(self):
-        url = resolve('/schemesofwork/127/lessons/32/keywords/new')
-        self.assertEqual("lesson_keywords.new", url.url_name)
-        self.assertEqual(url.func, new)
+    def test__keywords_select__url_resolves_to_select(self):
+        url = resolve('/schemesofwork/127/lessons/32/keywords/select')
+        self.assertEqual("lesson_keywords.select", url.url_name)
+        self.assertEqual(url.func, select)
 
     
-    def test__keywords_new__url_resolves_to_edit__reverse(self):
-        url = reverse("lesson_keywords.new", args=[127, 32])
-        self.assertEqual("/schemesofwork/127/lessons/32/keywords/new", url)
+    def test__keywords_select__url_resolves_to_select__reverse(self):
+        url = reverse("lesson_keywords.select", args=[127, 32])
+        self.assertEqual("/schemesofwork/127/lessons/32/keywords/select", url)
     
 
     def test__keywords_save__url_resolves_to_save(self):    

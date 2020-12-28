@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name="lesson_keywords.index"),
     path('delete_unpublished', views.delete_unpublished, name="lesson_keywords.delete_unpublished"), 
+    path('select', views.select, name="lesson_keywords.select"),
     path('new', views.new, name="lesson_keywords.new"),
     path('<int:keyword_id>/edit', views.edit, name="lesson_keywords.edit"),
     path('<int:keyword_id>/delete', views.delete_item, name="lesson_keywords.delete_item"), 

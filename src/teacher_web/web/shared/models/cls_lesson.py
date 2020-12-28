@@ -397,6 +397,16 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
+    def save_keywords(db, model, auth_user):
+        
+        results = []
+
+        LessonDataAccess._delete_keywords(db, model, results, auth_user)
+        
+        return LessonDataAccess._upsert_key_words(db, model, results, auth_user=auth_user)
+
+
+    @staticmethod
     def publish(db, auth_user, lesson_id):
         return LessonDataAccess.publish(db, auth_user, lesson_id)
     
@@ -843,6 +853,30 @@ class LessonDataAccess:
                 params = (model.id, pathway_id, auth_user)
                 results = execHelper.insert(db, str_insert, params, handle_log_info)
         
+        return results
+
+
+    @staticmethod
+    def _upsert_key_words(db, model, results, auth_user):
+        """ 
+        inserts sow_lesson__has__keywords if key_word_id does not exist in table
+        :param db: the database context
+        :param model: the lesson model
+        :param results: results to be appended
+        :param auth_user: the user executing the command
+        :return: appended results
+        """
+
+        execHelper = ExecHelper()
+        
+        for key_word in model.key_words:
+            
+            str_insert = "lesson__insert_keywords"
+        
+            params = (key_word.id, model.id, model.scheme_of_work_id, auth_user)
+
+            results = execHelper.insert(db, str_insert, params, handle_log_info)
+                  
         return results
 
 

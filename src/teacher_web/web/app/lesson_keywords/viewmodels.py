@@ -61,6 +61,77 @@ class LessonKeywordGetAllListViewModel(BaseViewModel):
         return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
+class LessonKeywordSelectViewModel(BaseViewModel):
+    
+
+    def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
+            
+        self.auth_user = auth_user
+        self.db = db
+        self.request = request
+        self.scheme_of_work_id = scheme_of_work_id
+        self.lesson_id = lesson_id
+        
+
+    def execute(self, request):
+            self.model = Model(
+                id_=request.POST.get("lesson_id", 0),
+                scheme_of_work_id=request.POST.get("scheme_of_work_id", 0))
+            
+            self.model.key_words = list(map(lambda x: Model(int(x)), request.POST.getlist("term")))
+            
+            try:
+                
+                data = LessonModel.save_keywords(self.db, self.model, self.auth_user)
+                    
+            except Exception as ex:
+                self.error_message = ex
+                handle_log_exception(db, "An error occurred saving lesson keywords", ex)
+                #raise
+    
+    def view(self, request):      
+
+        def mark_as_selected(keyword):
+            if keyword.id in list(map(lambda x : int(x.id), self.model.key_words)):
+                keyword.selected = True
+                keyword.belongs_to_lessons.append(self.lesson_id)
+            return keyword
+
+        try:
+            # get model
+            self.model = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
+            self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
+            
+            #248 Http404
+            if self.lesson_id > 0:
+                if self.model is None or self.model.is_from_db == False:
+                    self.on_not_found(self.model, self.lesson_id, self.scheme_of_work_id)
+
+            self.lesson_options = LessonModel.get_options(self.db, self.scheme_of_work_id, self.auth_user)  
+            
+            self.keyword_options = list(map(mark_as_selected, self.scheme_of_work.key_words))
+            
+        except Http404 as e:
+            raise e
+
+        except Exception as e:
+            handle_log_exception(self.db, "An error occured viewing resources", e)
+            self.error_message = repr(e)
+            raise e
+
+        data = {
+            "scheme_of_work_id": self.scheme_of_work_id,
+            "lesson_id":self.lesson_id,
+            "scheme_of_work": self.scheme_of_work,
+            "lesson": self.model,
+            "keywords": self.scheme_of_work.key_words,
+            "lesson_options": self.lesson_options,
+            "keyword_options": self.keyword_options
+        }
+        
+        return ViewModel(self.model.title, self.model.title, "Select keywords for {}".format(self.model.title), data=data, active_model=self.model, error_message=self.error_message)
+
+
 class LessonKeywordGetModelViewModel(BaseViewModel):
     
     def __init__(self, db, keyword_id, lesson_id, scheme_of_work_id, auth_user):

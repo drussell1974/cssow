@@ -134,7 +134,7 @@
 <!-- Pager Header -->      
 {% if request.user.is_authenticated %}
   <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.new' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.select' content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("select")}}</a>
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Keywords")}}</h2>

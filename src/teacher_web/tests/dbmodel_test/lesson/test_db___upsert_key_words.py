@@ -4,8 +4,9 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
 
-@skip("depreceate saving keyword when saving lesson")
-class test_db___upsert_key_words(TestCase):
+_save_keywords = LessonModel.save_keywords
+
+class test_db___save_keywords(TestCase):
 
 
     def setUp(self):
@@ -30,7 +31,7 @@ class test_db___upsert_key_words(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                _upsert_key_words(self.fake_db, model, auth_user_id=99)
+                _save_keywords(self.fake_db, model, auth_user_id=99)
     
     
     def test_should_call__reinsert__key_words(self):
@@ -47,7 +48,7 @@ class test_db___upsert_key_words(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_rows):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=6079)
+            actual_result = _save_keywords(self.fake_db, model, auth_user=6079)
             
             # assert
             ExecHelper.insert.assert_called()
@@ -72,7 +73,7 @@ class test_db___upsert_key_words(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[]):
             # act
 
-            actual_result = _upsert_key_words(self.fake_db, model, [], auth_user=6079)
+            actual_result = _save_keywords(self.fake_db, model, auth_user=6079)
             
             # assert
             ExecHelper.insert.assert_called()

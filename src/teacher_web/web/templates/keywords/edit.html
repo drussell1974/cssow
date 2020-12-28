@@ -56,7 +56,6 @@
         
         <input type="hidden" name="id" value="{{content.data.keyword.id}}">
         <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
-        <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
         <input type="hidden" name="next" value="{% url 'keywords.index' content.data.scheme_of_work_id %}" >
         <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
     </form>
