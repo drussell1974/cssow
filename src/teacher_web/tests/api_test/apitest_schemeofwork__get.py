@@ -49,4 +49,4 @@ class apitest_schemeofwork__get(APITestCase):
 
 
     def test__should_have_keywords(self):
-        self.assertEqual(194, self.payload["schemeofwork"]["number_of_keywords"])
+        self.assertEqual(193, self.payload["schemeofwork"]["number_of_keywords"])
