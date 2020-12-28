@@ -107,7 +107,7 @@ class UITestCase(TestCase):
 
 
 
-    def open_unpublished_item(self, page_url = None):
+    def open_unpublished_item(self, class_selector, page_url = None):
 
         if page_url is not None:
             self.do_log_in(self.root_uri + page_url)
@@ -115,18 +115,19 @@ class UITestCase(TestCase):
 
         #231: find the unpublished item in the index
 
-        elem = self.test_context.find_element_by_css_selector(".unpublished .edit .post-title")
-
+        elem = self.test_context.find_element_by_css_selector(class_selector)
+        
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        
         elem.click()
         
 
-    def delete_unpublished_item(self, page_url = None):
+    def delete_unpublished_item(self, class_selector, page_url = None):
         """ open and delete unpublished item"""
 
         ' Open to edit '
-        self.open_unpublished_item(page_url)
+        self.open_unpublished_item(class_selector, page_url)
 
         self.wait(s=2)
 

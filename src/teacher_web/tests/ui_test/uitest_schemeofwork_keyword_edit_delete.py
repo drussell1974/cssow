@@ -32,7 +32,7 @@ class uitest_schemeofwork_keyword_edit_delete(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(s=2)
+        self.wait(s=5)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
 
@@ -55,7 +55,7 @@ class uitest_schemeofwork_keyword_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        self.delete_unpublished_item()
+        self.delete_unpublished_item(".card-columns .unpublished h5.card-title")
         
         self.wait(s=2)
 
@@ -64,5 +64,5 @@ class uitest_schemeofwork_keyword_edit_delete(UITestCase):
         
         #231: items after should be less than before
         
-        items_after = self.test_context.find_elements_by_class_name("post-preview")
+        items_after = self.test_context.find_elements_by_class_name("card-keyword")
         self.assertEqual(193, len(items_after))

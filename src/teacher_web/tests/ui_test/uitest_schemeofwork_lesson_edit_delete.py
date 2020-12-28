@@ -119,7 +119,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         #delete
 
         ' Open edit - go to page 1 '
-        self.delete_unpublished_item("/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
+        self.delete_unpublished_item(".unpublished .edit .post-title", "/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
         
         self.wait(s=2)
 

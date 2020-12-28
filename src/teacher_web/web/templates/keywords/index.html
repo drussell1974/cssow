@@ -101,28 +101,34 @@
 <!-- Pager Header END -->      
 
 {% if content.data.keywords|length == 0 %}
-<div class="alert alert-warning" role="alert">
-    <span class="large">{{_('There are no keywords for this lesson.')}}</span>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+  <div class="alert alert-warning" role="alert">
+      <span class="large">{{_('There are no keywords for this lesson.')}}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
 {% else %}
-  {% for row in content.data.keywords %}
-    <div class="post-preview {{ row.published_state }}">
-      <a name="{{ row.id }}"></a>
-      <a class="edit" href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
-        <h3 class="post-title">
-          <i class="fa {{row.type_icon}}"></i> {{ row.term }}
-        </h3>
-        <h4 class="post-subtitle">
-            {{ row.definition }}
-        </h4>
-      </a>
+  <div class="form-group stackable-group stackable-group-sm">
+    <div class="control-group col-12">
+      <input class="form-control stackable" type="text" name="keyword_search" placeholder="Enter keyword/term" value="{{ content.data.search_criteria.keyword_search }}" maxlength="70" id="ctl-keyword_search">
     </div>
-    <hr>
-  {% endfor %}
-  {% endif %}
+  </div>  
+
+    {% for row in content.data.keywords %}
+
+      <div class="card card-keyword {{ row.published_state }}">
+        <a name="{{ row.id }}"></a>
+        <div class="card-body">
+          <a href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
+          <h5 class="card-title">{{ row.term }}</h5>
+          </a>
+          <p class="card-text small">{{ row.definition }}</p>
+        </div>
+      </div>
+
+    {% endfor %}
+
+{% endif %}
 
   <footer class="widget widget--article-footer">
     {% if request.user.is_authenticated %}
@@ -130,4 +136,10 @@
     {% endif %}
   </footer>
 
+{% endblock %}
+
+
+{% block page_js %}
+    {% load static %} 
+    <script type="text/javascript" src="{% static 'default/js/keyword-card-search.js' %}"></script>
 {% endblock %}

@@ -88,5 +88,5 @@ class uitest_schemeofwork_keyword_lesson_select_edit_existing(UITestCase):
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
-        elem = self.test_context.find_elements_by_class_name("post-preview")
+        elem = self.test_context.find_elements_by_class_name("card-keyword")
         self.assertEqual(2, len(elem))

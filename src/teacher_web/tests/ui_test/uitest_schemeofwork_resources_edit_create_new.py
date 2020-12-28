@@ -139,7 +139,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
         # open newly created resource to edit
 
-        self.open_unpublished_item()
+        self.open_unpublished_item(".unpublished .post-title")
 
         # verify with preview that document is stored (required markdown-service running)
 
