@@ -78,4 +78,4 @@ class uitest_schemeofwork_keyword_lesson_edit_create_new_page_navigation(UITestC
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select keywords for Types of CPU architecture')

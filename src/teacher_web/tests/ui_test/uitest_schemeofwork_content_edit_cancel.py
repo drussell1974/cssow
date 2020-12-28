@@ -66,7 +66,7 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         #231: click the cancel button
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
-        self.wait()
+        self.wait(s=2)
     
         ' click no (finding button appears to cancel dialog) '        
         
