@@ -36,15 +36,21 @@
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.select' content.data.scheme_of_work_id content.data.lesson_id %}">
         {% csrf_token %}
 
+        <div class="form-group stackable-group stackable-group-sm">
+        <div class="control-group col-12">
+            <input class="form-control stackable" type="text" name="keyword_search" placeholder="Enter keyword/term" value="{{ content.data.search_criteria.keyword_search }}" maxlength="70" id="ctl-keyword_search">
+        </div>
+        </div>  
+        
         <!-- show error_message -->
         {% include '_partials/form.viewmodel.alert_message.html' %}
         <!-- show error_message END -->
         {% for opt in content.data.keyword_options %}
-        <div class="custom-control custom-checkbox">
+        <div class="custom-control custom-checkbox card-keyword">
             
             <input type="checkbox" class="term-control-input" name="term" id="chk-term--{{opt.id}}" value="{{opt.id}}" {% if opt.selected %} checked {% endif%}>
             
-            <label class="term-control-label" for="termCheck">{{opt.term}}</label>
+            <label class="term-control-label card-title" for="termCheck">{{opt.term}}</label>
         </div>
         {% endfor %}
 
@@ -65,6 +71,5 @@
 
 {% block page_js %}
     {% load static %}
-    <script src="{% static 'default/js/md_document--upload.js' %}"></script>
-    <script src="{% static 'default/js/md_document--preview.js' %}"></script>
+    <script type="text/javascript" src="{% static 'default/js/keyword-card-search.js' %}"></script>
 {% endblock %}
