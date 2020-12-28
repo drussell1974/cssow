@@ -48,12 +48,41 @@ class uitest_schemeofwork_keyword_lesson_edit_existing(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Random Access Memory (RAM) for Types of CPU architecture')
 
 
-    def test_page__should_redirect_if_invalid(self):
+
+    def test_page__should_stay_on_same_page_if_renamed_to_create_duplicate(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' name (cause validation error by entering blank '
+        elem = self.test_context.find_element_by_id("ctl-term")
+        elem.clear()
+        elem.send_keys(self.TEST_KEYWORD_RENAME_TERM_TO)
+        
+        ' submit the form '
+        elem = self.test_context.find_element_by_id("saveButton")
+        elem.send_keys(Keys.RETURN)
+        self.wait(s=2)
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Central Processing Unit (CPU) for Types of CPU architecture')
+
+        #elem = self.test_context.find_element_by_id("saveButton")
+        #self.assertEqual("", elem.text)
+
+        
+    def test_page__should_redirect_if_valid(self):
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' name (cause validation error by entering blank '
+        elem = self.test_context.find_element_by_id("ctl-term")
+        elem.clear()
+        elem.send_keys(self.TEST_KEYWORD_TERM)
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")

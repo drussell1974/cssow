@@ -21,7 +21,8 @@ class UITestCase(TestCase):
     test_reference = os.environ["TEST_RESOURCE_ID"]
     test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
     test_keyword_id = os.environ["TEST_KEYWORD_ID"]
-    TEST_KEYWORD_DUPLICATE_TERM = os.environ["TEST_KEYWORD_DUPLICATE_TERM"]
+    TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
+    TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]
     
     def wait(self, s = 5):
         import time

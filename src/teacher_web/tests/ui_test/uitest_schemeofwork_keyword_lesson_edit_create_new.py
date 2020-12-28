@@ -53,7 +53,7 @@ class uitest_schemeofwork_keyword_lesson_edit_create_new(UITestCase):
 
         elem = self.test_context.find_element_by_id("ctl-term")
         elem.clear()
-        elem.send_keys(self.TEST_KEYWORD_DUPLICATE_TERM)
+        elem.send_keys(self.TEST_KEYWORD_TERM)
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")

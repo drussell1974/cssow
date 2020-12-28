@@ -1,0 +1,2 @@
+ALTER TABLE sow_lesson__has__key_words
+DROP COLUMN key_word;

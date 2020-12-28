@@ -39,7 +39,7 @@ class test_db_keyword__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 6079)
+                , (13, 0, 6079)
                 , []
                 , handle_log_info)
 
@@ -53,12 +53,12 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, 6079, 777)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 6079)
+                , (13, 777, 6079)
                 , []
                 , handle_log_info)
                 
@@ -83,7 +83,7 @@ class test_db_keyword__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 6079)
+                , (13, 0, 6079)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

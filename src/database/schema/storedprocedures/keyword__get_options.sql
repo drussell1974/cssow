@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS keyword__get_options;
 
 CREATE PROCEDURE keyword__get_options (
  IN p_scheme_of_work_id INT,
+ IN p_exclude_id INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -18,6 +19,7 @@ BEGIN
         LEFT JOIN sow_lesson__has__key_words as lkw ON lkw.key_word_id = kw.id
     WHERE 
         kw.scheme_of_work_id = p_scheme_of_work_id
+			AND kw.id != p_exclude_id
             AND published = 1 
                   -- or p_auth_user IN (SELECT auth_user_id 
                   --                   FROM sow_teacher 

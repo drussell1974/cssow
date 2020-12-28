@@ -172,7 +172,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
     
 
     if model.is_valid == True:
-        ' save keyword '
+        ' saved keyword '
   
         ' redirect as necessary '
         if request.POST["next"] != None and request.POST["next"] != "":

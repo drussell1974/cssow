@@ -336,9 +336,8 @@ class test_cls_keyword__validate__term__duplicate_check(TestCase):
         self.test.validate()
 
         # assert
-        self.assertFalse("term" in self.test.validation_errors, "term should not have validation error %s" % self.test.validation_errors)
-        print(self.test.validation_errors)
-        self.assertTrue(self.test.is_valid, "should be is_valid")
+        self.assertTrue("term" in self.test.validation_errors, "term should not have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
         
 
 class test_cls_keyword__validate__scheme_of_work_id(TestCase):

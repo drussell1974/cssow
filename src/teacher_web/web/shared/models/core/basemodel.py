@@ -190,12 +190,9 @@ class BaseModel(models.Model):
     def _validate_duplicate(self, name_of_property, value_to_validate, duplicate_checklist, friendly_message):
         """ check if a value already exists in the duplicate_checklist property """
         if name_of_property not in self.skip_validation:
-            if self.is_new() == True:
-                for value in duplicate_checklist:
-                    # add errors to property only if there are errors
-                    if value == value_to_validate:
-                        self.validation_errors[name_of_property] = "{} already exists. {}".format(value_to_validate, friendly_message)
-                        self.is_valid = False
+            if len(list(filter(lambda x: x == value_to_validate, duplicate_checklist))) > 0:
+                self.validation_errors[name_of_property] = "{} already exists. {}".format(value_to_validate, friendly_message)
+                self.is_valid = False
 
 
     def _validate_regular_expression(self, name_of_property, value_to_validate, pattern_to_match, friendly_message):

@@ -77,9 +77,9 @@ class KeywordModel(BaseModel):
         # validate required scheme_of_work_id
         self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
 
-        # TODO: 299 validate duplicates
+        # 299 validate duplicates
         self._validate_duplicate("term", self.term, self.all_terms, "Cannot save duplicate term")
-
+        
         self.on_after_validate()
         
 
@@ -112,8 +112,8 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user)
+    def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user, exclude_id)
 
         data = []
         for row in rows:
@@ -188,11 +188,19 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user):
+    def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
+        """
+        Get list of options
+        :param db:
+        :scheme_of_work_id: scheme of work
+        :auth_user: authorised user id
+        :exclude_id: used to excluce current option
+        :return: term and definition
+        """
         execHelper = ExecHelper()
-
+        
         select_sql = "keyword__get_options"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, exclude_id, auth_user)
         rows = []
         #271 Stored procedure (get_options)
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

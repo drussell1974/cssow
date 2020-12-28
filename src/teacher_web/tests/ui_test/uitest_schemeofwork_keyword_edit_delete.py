@@ -65,4 +65,4 @@ class uitest_schemeofwork_keyword_edit_delete(UITestCase):
         #231: items after should be less than before
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
-        self.assertEqual(194, len(items_after))
+        self.assertEqual(193, len(items_after))
