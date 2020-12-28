@@ -32,12 +32,9 @@ def index(request, scheme_of_work_id):
     #253 check user id
     getall_keywords = KeywordGetAllListViewModel(db, request, scheme_of_work_id, auth_user_id(request))  
     
-    # TODO: 299 create keywords/index.html page
     return render(request, "keywords/index.html", getall_keywords.view().content)
 
 
-# TODO: 299 create new
-# TODO: 299 add permission
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def new(request, scheme_of_work_id):
     ''' Create a new keyword '''
@@ -62,13 +59,10 @@ def new(request, scheme_of_work_id):
     return render(request, "keywords/edit.html", view_model.content)
 
 
-# TODO: 299 edit exiting
-# TODO: 299 add permission
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def edit(request, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    # TODO: 299 KeywordGetModelViewModel
     get_model_view = KeywordGetModelViewModel(db, keyword_id, scheme_of_work_id, auth_user_id(request))
     model = get_model_view.model
     
@@ -92,12 +86,9 @@ def edit(request, scheme_of_work_id, keyword_id):
 
     view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), data=data, active_model=model, alert_message="")
     
-        # TODO: 299 create keywords/edit.html page
     return render(request, "keywords/edit.html", view_model.content)
 
 
-# TODO: 299 save
-# TODO: 299 add permission
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def save(request, scheme_of_work_id, keyword_id):
     
@@ -110,8 +101,6 @@ def save(request, scheme_of_work_id, keyword_id):
     error_message = ""
 
     """ save_item non-view action """
-    # create instance of model from request.vars
-    # TODO: 299 reference KeywordModel id, term, definition
     model = KeywordModel(
         id_=keyword_id,
         scheme_of_work_id=scheme_of_work_id,
@@ -129,7 +118,6 @@ def save(request, scheme_of_work_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    # TODO: 299 Reference KeywordSaveViewModel
     save_keyword_view = KeywordSaveViewModel(db, model, auth_user_id(request))
     
     save_keyword_view.execute(int(request.POST["published"]))
@@ -165,7 +153,6 @@ def save(request, scheme_of_work_id, keyword_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
-# TODO: 299 add permission
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
     """ delete item and redirect back to referer """
@@ -173,13 +160,11 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    # TODO: 299 delete by keyword_id
     ResourceModel.delete(db, keyword_id, auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
-# TODO: 299 add permission
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
@@ -192,7 +177,6 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     return HttpResponseRedirect(redirect_to_url)
 
 
-# TODO: 299 add permission
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
     """ delete item and redirect back to referer """

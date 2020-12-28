@@ -357,7 +357,6 @@ class KeywordDataAccess:
 
         execHelper = ExecHelper()
         
-        # TODO: 299 Create StoredProcedure
         str_delete = "keyword__delete_unpublished"
         params = (scheme_of_work_id, auth_user_id)
             
@@ -372,8 +371,9 @@ class KeywordDataAccess:
         model.publish = True
 
         execHelper = ExecHelper()
-        # TODO: 299 Create StoredProcedure
+
         str_update = "keyword__publish"
+        
         params = (model.id, model.published, auth_user)
 
         rval = []
@@ -386,8 +386,9 @@ class KeywordDataAccess:
     def upsert_lesson(db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
         """ Checks if the keyword already belongs to the lesson and inserts accordingly """
         execHelper = ExecHelper()
-        # TODO: 299 Create StoredProcedure
+        
         str_upsert = "lesson__insert_keywords"
+        
         params = (keyword_id, lesson_id, scheme_of_work_id, auth_user)
 
         rval = []

@@ -186,7 +186,6 @@ class BaseModel(models.Model):
                     self.validation_errors[name_of_property] = all_errors
 
 
-    # TODO: 299 prevent duplicate values
     def _validate_duplicate(self, name_of_property, value_to_validate, duplicate_checklist, friendly_message):
         """ check if a value already exists in the duplicate_checklist property """
         if name_of_property not in self.skip_validation:

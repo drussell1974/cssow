@@ -90,8 +90,6 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        # TODO: 299 depreciate saving keyword when saving lesson
-        #modelviewmodel = LessonEditViewModel(db, model, key_words_json=request.POST.get("key_words"), auth_user=auth_user_id(request))
         modelviewmodel = LessonEditViewModel(db, model, auth_user=auth_user_id(request))
 
         try:
@@ -132,8 +130,6 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "year_options": year_options,
         "selected_year_id": model.year_id,
         "lesson": model,
-        # TODO: 299 depreciate saving keyword when saving lesson
-        #"key_words_options": key_words_options,
         "ks123_pathways": ks123_pathways,
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }

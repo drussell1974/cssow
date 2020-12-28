@@ -201,7 +201,7 @@ class LessonKeywordSaveViewModel(BaseViewModel):
         def get_term(record):
             return record.term
 
-        # TODO: 299 get all_terms before validating
+        # 299 get all_terms before validating (exluding current term)
         self.model.all_terms = list(map(get_term, Model.get_options(self.db, self.model.scheme_of_work_id, self.auth_user, exclude_id = self.model.id)))
         
         self.model.validate()

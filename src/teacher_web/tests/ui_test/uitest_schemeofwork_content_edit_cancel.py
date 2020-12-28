@@ -10,7 +10,7 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         # setup
         #231: open a learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content/{}/edit".format(self.test_scheme_of_work_id, self.test_content_id))
-        # TODO: 299 improve performance
+        # TODO: improve performance 
         self.wait()
 
 
