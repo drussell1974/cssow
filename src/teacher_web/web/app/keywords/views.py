@@ -116,7 +116,7 @@ def save(request, scheme_of_work_id, keyword_id):
         id_=keyword_id,
         scheme_of_work_id=scheme_of_work_id,
         term=request.POST.get("term", ""),
-        definition=request.POST.get("defintion", ""),
+        definition=request.POST.get("definition", ""),
         created=datetime.now(),
         #253 check user id
         created_by_id=auth_user_id(request),
