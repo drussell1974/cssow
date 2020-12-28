@@ -53,9 +53,8 @@ class uitest_schemeofwork_keyword_lesson_edit_delete(UITestCase):
     def test_page__should_redirect_to_index_after_deletion(self):
 
         #delete
-
         ' Open edit '
-        self.delete_unpublished_item(".card-columns .unpublished h5.card-title")
+        self.delete_unpublished_item(".unpublished .card-title")
         
         self.wait(s=5)
 
