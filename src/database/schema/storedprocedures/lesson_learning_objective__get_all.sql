@@ -40,7 +40,8 @@ BEGIN
         or p_auth_user IN (SELECT auth_user_id 
                         FROM sow_teacher 
                         WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        );
+        )
+	ORDER BY solo_taxonomy_level;
 END;
 //
 
