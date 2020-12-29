@@ -1,6 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_lesson import LessonModel
 
 import shared.models.cls_keyword as test_context 
 
@@ -56,26 +57,30 @@ class test_db__get_all(TestCase):
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2)
             ]
 
-        with patch.object(ExecHelper, 'select', return_value=expected_result):
-            # act
+        with patch.object(LessonModel, 'get_by_keyword', return_value=[]):
+            with patch.object(ExecHelper, 'select', return_value=expected_result):
+                # act
 
-            actual_results = get_all(self.fake_db, 13, 0, 6079)
-            
-            # assert
-
-            ExecHelper.select.assert_called_with(self.fake_db,
-                'scheme_of_work__get_all_keywords'
-                , (13, 6079) 
-                , []
-                , handle_log_info)
+                actual_results = get_all(self.fake_db, 13, 0, 6079)
                 
+                # assert
 
-            self.assertEqual(1, len(actual_results))
+                ExecHelper.select.assert_called_with(self.fake_db,
+                    'scheme_of_work__get_all_keywords'
+                    , (13, 6079) 
+                    , []
+                    , handle_log_info)
+                    
 
-            self.assertEqual(702, actual_results[0].id)
-            self.assertEqual("Fringilla", actual_results[0].term),
-            self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].definition)
-            self.assertEqual(2, actual_results[0].published)
+                self.assertEqual(1, len(actual_results))
+
+                self.assertEqual(702, actual_results[0].id)
+                self.assertEqual("Fringilla", actual_results[0].term),
+                self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].definition)
+                self.assertEqual(2, actual_results[0].published)
+            
+                LessonModel.get_by_keyword.assert_not_called()
+                self.assertEqual([], actual_results[0].belongs_to_lessons)
 
 
     def test__should_call_select__return_multiple_item(self):
@@ -111,6 +116,35 @@ class test_db__get_all(TestCase):
             self.assertEqual("Phasellus", actual_results[2].term),
             self.assertEqual("rutrum lorem a arcu ultrices, id mollis", actual_results[2].definition)
             self.assertEqual(1, actual_results[2].published)
+
+
+
+    def test__should_call_get_by_keyword__when__get_lesson_is_true(self):
+        # arrange
+        expected_result = [
+            (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2)
+            ]
+
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
+            # act
+
+            actual_results = get_all(self.fake_db, 13, 0, 6079)
+            
+            # assert
+
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'scheme_of_work__get_all_keywords'
+                , (13, 6079) 
+                , []
+                , handle_log_info)
+                
+
+            self.assertEqual(1, len(actual_results))
+
+            self.assertEqual(702, actual_results[0].id)
+            self.assertEqual("Fringilla", actual_results[0].term),
+            self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].definition)
+            self.assertEqual(2, actual_results[0].published)
 
 
     def test__should_call_select__with_empty_search_term(self):

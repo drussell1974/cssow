@@ -5,6 +5,7 @@ from rest_framework import serializers, status
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -34,6 +35,10 @@ class KeywordGetAllListViewModel(BaseViewModel):
 
             # get model
             data = Model.get_all(db, scheme_of_work_id, 0, auth_user)
+
+            for kw in data:
+                kw.belongs_to_lessons = LessonModel.get_by_keyword(db, kw.id, scheme_of_work_id, auth_user)
+
             self.model = data
 
         except Http404 as e:
@@ -76,7 +81,7 @@ class KeywordGetModelViewModel(BaseViewModel):
             
             # get model
             model = Model.get_model(self.db, keyword_id, 0, scheme_of_work_id, auth_user)
-            
+
             #299 Http404
             if model is None or model.is_from_db == False:
                 self.on_not_found(model, keyword_id, scheme_of_work_id) 

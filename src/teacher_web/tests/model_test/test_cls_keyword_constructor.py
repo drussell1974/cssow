@@ -20,6 +20,7 @@ class test_cls_keyword_constructor(TestCase):
         self.assertEqual(0, self.test.id)
         self.assertEqual("", self.test.term, "term should be ''")
         self.assertEqual("", self.test.definition, "definition should be ''")
+        self.assertEqual([], self.test.belongs_to_lessons)
         self.assertTrue(self.test.is_new())
 
 
@@ -34,5 +35,6 @@ class test_cls_keyword_constructor(TestCase):
         self.assertEqual(1, self.test.id)
         self.assertEqual("Algorithm", self.test.term, "term should be ''")
         self.assertEqual("A list of instructions", self.test.definition, "definition should be ''")
+        self.assertEqual([], self.test.belongs_to_lessons)
         self.assertTrue(self.test.is_valid)
         self.assertFalse(self.test.is_new())

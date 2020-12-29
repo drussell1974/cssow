@@ -75,3 +75,4 @@ class test_db__get_model(TestCase):
             self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results.definition)
             self.assertEqual(13, actual_results.scheme_of_work_id)
             self.assertEqual(1, actual_results.published)
+            self.assertEqual([], actual_results.belongs_to_lessons)

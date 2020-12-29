@@ -80,6 +80,18 @@ class uitest_schemeofwork_keyword_index(UITestCase):
         self.assertEqual(193, result, "number of elements not as expected")
 
 
+    def test_page__show_published_only(self):
+        # setup
+        section = self.test_context.find_elements_by_class_name('card-keyword--lessons')
+
+        # test
+        result = len(section)
+
+        # assert
+        # ***** less 5 should be visible to test@localhost for testing purposes
+        self.assertEqual(193, result, "number of elements not as expected")
+
+
     def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
         # arrange
         self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)

@@ -284,6 +284,7 @@ class LessonModel (BaseModel):
             data.append(model.__dict__)
         return data
 
+
     @staticmethod
     def get_filtered(db, scheme_of_work_id, search_criteria, auth_user):
         rows = LessonDataAccess.get_filtered(db, 
@@ -334,6 +335,57 @@ class LessonModel (BaseModel):
             
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
+        return data
+
+
+    @staticmethod
+    def get_by_keyword(db, key_word_id, scheme_of_work_id, auth_user, parent_only = True):
+        rows = LessonDataAccess.get_by_keyword(db, 
+            key_word_id,
+            scheme_of_work_id, 
+            auth_user)
+
+        data = []
+        for row in rows:
+            model = LessonModel(
+                id_=row[0],
+                title = row[1],
+                order_of_delivery_id=row[2],
+                scheme_of_work_id=row[3],
+                scheme_of_work_name=row[4],
+                content_id=row[5],
+                content_description=row[6],
+                topic_id=row[7],
+                topic_name=row[8],
+                parent_topic_id=row[9],
+                parent_topic_name=row[10],
+                key_stage_id=row[11],
+                year_id=row[12],
+                year_name=row[13],
+                summary=row[14],
+                created=row[15],
+                created_by_id=row[16],
+                created_by_name=row[17],
+                published = row[18]
+            )
+            
+            if parent_only == False:
+                ' get the key words from the learning objectives '
+                model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
+                ' get the number of learning objectives ' 
+                model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+                ' get number of learning objectives for this lesson '
+                model.number_of_learning_objectives = LessonModel.get_number_of_learning_objectives(db, model.id, auth_user)
+                ' get number of resources for this lesson '
+                model.number_of_resources = ResourceModel.get_number_of_resources(db, model.id, auth_user)
+                ' get number of keywords for this lesson '
+                model.number_of_keywords = len(model.key_words)
+                ' get related topics '
+                model.related_topic_ids = LessonModel.get_related_topic_ids(db, model.id, model.topic_id, auth_user)
+                ' get ks123 pathways '
+                model.pathway_ks123_ids = LessonModel.get_ks123_pathway_objective_ids(db, model.id, auth_user)
+            
+            data.append(model)
         return data
 
 
@@ -617,6 +669,28 @@ class LessonDataAccess:
         
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+        
+        return rows
+
+
+    @staticmethod
+    def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user):
+        """
+        get lessons using this key word
+
+        :param db:database context
+        :param key_word_id: the key word identifier
+        :param scheme_of_work_id: the scheme of work identifier
+        :return: list of lessons for the key word
+        """
+
+        execHelper = ExecHelper()
+
+        select_sql = "lesson__get_by_keyword"
+        params = (keyword_id, scheme_of_work_id, auth_user); 
+
+        rows = []    
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         
         return rows
 
