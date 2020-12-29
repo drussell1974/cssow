@@ -77,8 +77,9 @@ class KeywordModel(BaseModel):
         # validate required scheme_of_work_id
         self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
 
-        # 299 validate duplicates
-        self._validate_duplicate("term", self.term, self.all_terms, "Cannot save duplicate term")
+        if self.published != 2:
+            # 299 validate duplicates
+            self._validate_duplicate("term", self.term, self.all_terms, "Cannot save duplicate term")
         
         self.on_after_validate()
         
@@ -100,7 +101,7 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, id, lesson_id, scheme_of_work_id, auth_user):
+    def get_model(db, id, scheme_of_work_id, auth_user):
         rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user)
         
         model = KeywordModel(0, "", "")
@@ -183,9 +184,14 @@ class KeywordModel(BaseModel):
     def publish_by_id(db, id, auth_user):
         return KeywordDataAccess.publish(db, auth_user, id)        
         
+    @staticmethod
+    def merge_duplicates(db, id, scheme_of_work_id, auth_user):
+        merged_model = KeywordModel.get_model(db, id, scheme_of_work_id, auth_user)
+        KeywordDataAccess.merge_duplicates(db, merged_model, scheme_of_work_id, auth_user)
+        return merged_model
+
 
 class KeywordDataAccess:
-
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
@@ -394,4 +400,23 @@ class KeywordDataAccess:
         rval = []
         rval = execHelper.insert(db, str_upsert, params, handle_log_info)
 
+        return rval
+
+
+
+    @staticmethod
+    def merge_duplicates(db, model, scheme_of_work_id, auth_user):
+        """ Inserts key word and definition """
+
+        execHelper = ExecHelper()
+
+        stored_procedure = "keyword__merge_duplicates"
+        params = (model.id, scheme_of_work_id, auth_user)
+        execHelper.add_custom(stored_procedure, params)
+    
+        rval = execHelper.custom(db,
+            stored_procedure
+            , handle_log_info
+        )
+        
         return rval

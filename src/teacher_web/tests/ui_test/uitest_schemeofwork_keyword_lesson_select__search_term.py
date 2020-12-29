@@ -26,7 +26,7 @@ class uitest_schemeofwork_keyword_lesson_select__search_term(UITestCase):
         elem = self.test_context.find_elements_by_xpath("//*[contains(@class, 'card-keyword')]")
         
         # assert
-        self.assertEqual(193, len(elem))
+        self.assertEqual(162, len(elem))
 
 
     def test_page__should_show_none(self):

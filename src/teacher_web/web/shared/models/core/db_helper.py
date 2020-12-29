@@ -20,6 +20,15 @@ class ExecHelper:
     cur = None
     transaction_state = None
 
+
+    def __init__(self):
+        self.custom_procs = {}
+
+        
+    def add_custom(self, stored_procedure_name, params):
+        self.custom_procs[stored_procedure_name] = params
+
+
     def begin(self, db, transaction_state=TRANSACTION_STATE.NONE):
         """
         set start cursor (set autocommit to false if specified)
@@ -227,6 +236,39 @@ class ExecHelper:
     
             if log_info is not None:
                 log_info(self.db, "ExecHelper.delete", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
+
+        return result
+
+
+    def custom(self, db, proc_name, result, log_info=None):
+        ''' run the sql statement '''
+        
+        result = []
+
+        params = self.custom_procs[proc_name]
+        
+        self.begin(db)
+
+        try:
+
+            self.cur.callproc(proc_name, params)
+            
+            result = self.cur.rowcount
+
+            self.commit()
+
+        except Exception as e:
+
+            self.rollback()
+
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.custom", "An error occurred executing stored procedure '%s'" % sql, log_type=LOG_TYPE.Error)    
+            raise e
+        finally:
+            self.end()
+        
+            if log_info is not None:
+                log_info(self.db, "ExecHelper.custom", "executed:{}, with results: number of records affected = {}".format(sql, result), LOG_TYPE.Verbose)
 
         return result
 

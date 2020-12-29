@@ -123,13 +123,12 @@
           <h5 class="card-title">{{ row.term }}</h5>
           </a>
           <p class="card-text small">{{ row.definition }}</p>
-          {% if row.belongs_to_lessons|length > 0 %}
           <hr>
           <span class="small">{{_('Lessons:')}}
           {% for lesson in row.belongs_to_lessons %}
             <a href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id lesson.id %}" class="card-link card-keyword--lessons">{{ lesson.title }}</a> &nbsp;
           {% endfor %}
-          {% endif %} 
+          <a href="{% url 'keywords.merge_duplicates' content.data.scheme_of_work_id row.id %}#main" class="float-right" title="{{_('This will merge duplicates with this key word. Replaces this version of the key word with the lesson')}}"><i class="fa fa-object-group"></i></a> &nbsp;
           </span>
         </div>
       </div>

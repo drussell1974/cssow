@@ -61,7 +61,7 @@ class KeywordGetModelViewModel(BaseViewModel):
         raise DeprecationWarning("no matching view")
         self.db = db
         # get model
-        data = KeywordModel.get_model(self.db, scheme_of_work_id, auth_user)
+        data = KeywordModel.get_model(self.db, keyword_id, scheme_of_work_id, auth_user)
         self.model = data
         
 

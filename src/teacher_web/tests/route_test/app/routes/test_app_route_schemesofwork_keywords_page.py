@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.keywords.views import index, new, edit, delete_item, save, publish_item, delete_unpublished
+from app.keywords.views import index, new, edit, delete_item, save, publish_item, delete_unpublished, merge_duplicates
 
 # Create your tests here.
 class test_app_route_schemesofwork_keywords_page(TestCase):
@@ -54,6 +54,17 @@ class test_app_route_schemesofwork_keywords_page(TestCase):
         url = resolve('/schemesofwork/127/keywords/99/save')
         self.assertEqual("keywords.save", url.url_name)
         self.assertEqual(url.func, save)
+
+
+    def test__keywords_merge_duplicates__url_resolves_to_merge_duplicates(self):
+        url = resolve("/schemesofwork/11/keywords/99/merge")
+        self.assertEqual("keywords.merge_duplicates", url.url_name)
+        self.assertEqual(url.func, merge_duplicates)
+        
+    
+    def test__keywords_merge_duplicates__url_resolves_to_merge_duplicates__reverse(self):
+        url = reverse("keywords.merge_duplicates", args=[11, 99])
+        self.assertEqual("/schemesofwork/11/keywords/99/merge", url)
 
     
     def test__keywords_save__url_resolves_to_save__reverse(self):

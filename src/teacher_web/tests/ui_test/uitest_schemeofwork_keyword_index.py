@@ -63,7 +63,7 @@ class uitest_schemeofwork_keyword_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(193, result, "number of elements not as expected")
+        self.assertEqual(162, result, "number of elements not as expected")
 
 
     def test_page__show_published_and_owned(self):
@@ -77,7 +77,7 @@ class uitest_schemeofwork_keyword_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(193, result, "number of elements not as expected")
+        self.assertEqual(162, result, "number of elements not as expected")
 
 
     def test_page__show_published_only(self):
@@ -89,7 +89,7 @@ class uitest_schemeofwork_keyword_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(193, result, "number of elements not as expected")
+        self.assertEqual(50, result, "number of elements not as expected")
 
 
     def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):

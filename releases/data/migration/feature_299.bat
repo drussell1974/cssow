@@ -6,4 +6,4 @@ mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/keyw
 mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/lesson__get_by_keyword.sql
 mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/lesson__get_all_keywords.sql
 mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/lesson_learning_objective__get_all.sql
-mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/keyword__merge_duplicate.sql
+mysql -u drussell1974 -p cssow_api < ../../database/schema/storedprocedures/keyword__merge_duplicates.sql

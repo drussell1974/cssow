@@ -152,7 +152,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
                     self.on_not_found(self.lesson, lesson_id, scheme_of_work_id)
             
             # get model
-            model = Model.get_model(self.db, keyword_id, lesson_id, scheme_of_work_id, auth_user)
+            model = Model.get_model(self.db, keyword_id, scheme_of_work_id, auth_user)
             
             #299 Http404 on keyword (also ensure keyword belongs to lesson)
             if model is None or model.is_from_db == False:

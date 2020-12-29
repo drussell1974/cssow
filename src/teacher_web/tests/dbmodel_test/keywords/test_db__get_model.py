@@ -38,7 +38,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 22, 13, 11, auth_user=6079)
+            actual_results = get_model(self.fake_db, 22, 11, auth_user=6079)
             
             # assert
 
@@ -60,7 +60,7 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 702, 13, 11, auth_user=6079)
+            actual_results = get_model(self.fake_db, 702, 11, auth_user=6079)
             
             # assert
 

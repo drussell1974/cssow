@@ -67,10 +67,13 @@ class uitest_schemeofwork_keyword_lesson_edit_delete(UITestCase):
         self.assertEqual(3, len(items_after))
 
 
-        #delete
+        ###################
+        # clean up delete #
+        ###################
+
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        self.wait()
+        self.wait(s=2)
 
         elem.click()

@@ -80,7 +80,7 @@ class KeywordGetModelViewModel(BaseViewModel):
                     self.on_not_found(self.scheme_of_work, scheme_of_work_id)
             
             # get model
-            model = Model.get_model(self.db, keyword_id, 0, scheme_of_work_id, auth_user)
+            model = Model.get_model(self.db, keyword_id, scheme_of_work_id, auth_user)
 
             #299 Http404
             if model is None or model.is_from_db == False:
@@ -152,3 +152,77 @@ class KeywordPublishModelViewModel(BaseViewModel):
     def __init__(self, db, keyword_id, auth_user):
         data = Model.publish_by_id(db, auth_user, keyword_id)
         self.model = data
+
+
+class KeywordMergeViewModel(BaseViewModel):
+
+    def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
+        
+        self.db = db
+        self.auth_user = auth_user
+        self.scheme_of_work_id = scheme_of_work_id
+        self.keyword_id = keyword_id
+        self.schemeofwork_options = []
+        
+    def execute(self, request):
+        try:
+            self.redirect_to_url = ""
+            self.alert_message = "Duplicate keywords will be merged and deleted and definition lost. Click Merge to continue or click Cancel to return to the previous page."
+
+            if request.method == "POST":
+                if request.POST.get("confirm") == "2":
+                    # 303 execute merge
+                    self.model = Model.merge_duplicates(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
+                    self.saved = True
+                    self.alert_message = "deleted!"
+                else:
+                    self.saved = False
+
+                if request.POST["next"] != None and request.POST["next"] != "":
+                    self.redirect_to_url = request.POST["next"]
+                else:
+                    self.redirect_to_url = reverse('keyword.index', args=(self.scheme_of_work_id))
+                
+                self.redirect_to_url = "{}#{}".format(self.redirect_to_url, self.keyword_id) # jumps to merged keyword using bookmark in url
+                
+                return
+
+            # get model
+            self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
+            
+            self.schemeofwork_options = SchemeOfWorkModel.get_options(self.db, self.auth_user) 
+
+            #248 Http404
+            if self.scheme_of_work_id > 0:
+                if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+                    self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
+
+            data = Model.get_model(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
+            self.model = data
+            
+            #248 Http404
+            if self.keyword_id > 0:
+                if self.model is None or self.model.is_from_db == False:
+                    self.on_not_found(self.model, self.key_word_id)
+                    
+        except Http404 as e:
+            raise e
+
+        except Exception as e:
+            self.error_message = repr(e)
+            handle_log_exception(self.db, "An error occurred viewing keywords", e)
+            #TODO: REMOVE swallow up and handle on form
+            raise e
+
+
+    def view(self):
+
+        data = {
+            "scheme_of_work_id":self.scheme_of_work_id,
+            "schemeofwork": self.scheme_of_work,
+            "keyword": self.model,
+            "schemeofwork_options": self.schemeofwork_options
+        }
+
+        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {}".format(self.model.term), data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        

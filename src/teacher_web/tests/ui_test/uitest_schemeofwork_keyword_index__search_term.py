@@ -23,10 +23,10 @@ class uitest_schemeofwork_keyword_index__search_term(UITestCase):
 
     def test_page__should_all_by_default(self):
         # test
-        elem = self.test_context.find_elements_by_xpath("//*[contains(@class, 'card-keyword')]")
+        elem = self.test_context.find_elements_by_xpath("//*[contains(@class, 'card card-keyword')]")
         
         # assert
-        self.assertEqual(193, len(elem))
+        self.assertEqual(162, len(elem))
 
 
     def test_page__should_show_none(self):
