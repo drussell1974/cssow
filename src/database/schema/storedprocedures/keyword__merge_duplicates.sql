@@ -1,6 +1,6 @@
 DELIMITER //
 
--- DROP PROCEDURE IF EXISTS keyword__merge_duplicates;
+DROP PROCEDURE IF EXISTS keyword__merge_duplicates;
 
 CREATE PROCEDURE keyword__merge_duplicates (
  IN p_key_word_id INT,

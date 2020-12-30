@@ -10,7 +10,7 @@ yarn --cwd src/student_web build
 yarn --cwd src/teacher_web build
 
 # Create docker-compose with new build number
-sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-compose.yml
+#sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-compose.yml
 
     
 if [ $1 ] ;then
@@ -19,11 +19,11 @@ if [ $1 ] ;then
     
     # build and push
 
-    sudo docker-compose -f build/docker-compose.yml build
+    #sudo docker-compose -f build/docker-compose.yml build
 
     echo -e "\nbuild.sh: \e[1;33m pushing images... ($BUILDNO) \e[0m"
 
-    sudo docker-compose -f build/docker-compose.yml push
+    #sudo docker-compose -f build/docker-compose.yml push
 
     # Remove build from docker-compose.yml (build before this line)
 
