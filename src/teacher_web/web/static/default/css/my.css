@@ -135,11 +135,14 @@ h4, h5, h6 {
 
 
 /* OVERRIDES */
-.site-heading {
+header.masthead {
+    margin-bottom: 15px;
+}
+header.masthead .site-heading {
     padding: 112px 0 56px !important;
 }
 
-.site-heading h1 {
+header.masthead .site-heading h1 {
     font-size: 60px !important;
 }   
 
