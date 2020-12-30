@@ -134,6 +134,15 @@ h4, h5, h6 {
 }
 
 
+/* OVERRIDES */
+.site-heading {
+    padding: 112px 0 56px !important;
+}
+
+.site-heading h1 {
+    font-size: 60px !important;
+}   
+
 /*.pagination div:after {
     content: ' | ';
     white-space: pre;
