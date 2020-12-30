@@ -51,7 +51,7 @@ class uitest_schemeofwork_keyword_lesson_select__search_term(UITestCase):
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         
         # assert
-        self.assertEqual(26, len(elem))
+        self.assertEqual(25, len(elem))
 
 
     def test_page__should_single_item_match(self):

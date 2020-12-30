@@ -157,14 +157,15 @@ class KeywordModel(BaseModel):
         """ save model """
         if model.published == 2:
             data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
-        if model.is_new():
-            data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user)
-            model.id = data[0]
         else:
-            data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user)
-        
-        for lesson_id in model.belongs_to_lessons:
-            KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user)
+            if model.is_new():
+                data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user)
+                model.id = data[0]
+            else:
+                data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user)
+            
+            for lesson_id in model.belongs_to_lessons:
+                KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user)
 
         return model
 
@@ -337,7 +338,7 @@ class KeywordDataAccess:
         str_update = "keyword__update"
         
         params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user)
-    
+        
         execHelper.update(db, str_update, params, handle_log_info)
 
         return model
@@ -392,7 +393,7 @@ class KeywordDataAccess:
     def upsert_lesson(db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
         """ Checks if the keyword already belongs to the lesson and inserts accordingly """
         execHelper = ExecHelper()
-        
+            
         str_upsert = "lesson__insert_keywords"
         
         params = (keyword_id, lesson_id, scheme_of_work_id, auth_user)
