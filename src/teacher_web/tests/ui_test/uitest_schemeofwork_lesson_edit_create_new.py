@@ -31,10 +31,6 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
         ' ensure headings are correct '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST@LOCALHOST')
     
-        ' ensure secondary heading appears '
-        elem = self.test_context.find_element_by_class_name("secondary-heading")
-        self.assertEqual("Create new lesson for A-Level Computer Science", elem.text)
-
         ' topic dropdown '
         elems = self.test_context.find_elements_by_xpath(".//*[@id='ctl-topic_id']/option")
         self.assertEqual(7, len(elems))
