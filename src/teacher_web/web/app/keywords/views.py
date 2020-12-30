@@ -197,9 +197,8 @@ def merge_duplicates(request, scheme_of_work_id, keyword_id):
 
     merge_viewmodel.execute(request)
 
-    if merge_viewmodel.saved == True:
+    if merge_viewmodel.completed == True:
         ' redirect as necessary '
-        
         return HttpResponseRedirect(merge_viewmodel.redirect_to_url)
     
     return render(request, "keywords/merge.html", merge_viewmodel.view().content)

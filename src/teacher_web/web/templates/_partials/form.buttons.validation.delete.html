@@ -1,0 +1,75 @@
+<!-- VALIDATION ERROR - json value -->
+<input type="hidden" name="validation_errors" value="{{ content.validation_errors }}" id="hdn-validation_errors" />
+
+{% if content.validation_errors %}
+    <ul class="list-group alaert alert-danger">
+        {% for key, value in content.validation_errors.items %}
+            <li class="list-group-item strong"> 
+                <small>{{ key }}: {{ value }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- BUTTONS -->
+<button type="submit" name="published" value="2" class="btn btn-danger stackable float-right" id="deleteButton">{{_("Continue")}}</button>
+<button type="cancel" name="published" value="-1" class="btn btn-dark stackable" id="cancelButton" >{{_("Cancel")}}</button>
+
+
+{% load static %}    
+<script type="text/javascript" src="{% static 'default/js/formValidation.js' %}"></script>
+<!--// BUTTONS END -->
+
+<!-- MODALS -->
+<div class="modal" id="cancelModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{_("Are you sure you want to cancel?")}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>{{_("Your changes have not been changed!")}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="cancelModalContinueButton">{{_("Yes, cancel")}}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelModalStayButton" >{{_("No, go back")}}</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% if content.active_model.id > 0 %}
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{_("Are you sure you want to continue?")}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if content.alert_message.dialog_delete_message is not None %}
+                    {{ content.alert_message.dialog_delete_message | safe }}
+                {% endif %}
+                {% if content.alert_message.dialog_delete_message is None %}
+                    <p>'{{ content.active_model.display_name }}'</p>
+                {% endif %}
+                <p class="alert alert-danger"><strong>{{_("You may not be able to recover your data.<br><br>Ensure you are deleting the correct item before you continue.")|safe}}</strong><br><br>
+                <label><input type="checkbox" id="deleteModalIAgree" data-target="#deleteModalContinueButton" /> {{_("I understand the risk")}}</label></p>
+            </div>  
+            <div class="modal-footer">
+                
+                <!-- get href through partial view parameters -->
+
+                <button type="submit" name="published" disabled value="2" class="btn btn-danger" id="deleteModalContinueButton" data-toggle="tooltip" title="Please confirm you understand the risk!">{{_("Yes, delete")}}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalStayButton" >{{_("No, go back")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!--// MODALS -->

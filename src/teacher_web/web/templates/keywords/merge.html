@@ -51,8 +51,7 @@
         <br>
         <div id="success"></div>
         <div class="form-group stackable-group stackable-group-sm">
-            <button type="submit" name="confirm" value="2" class="btn btn-primary stackable" id="saveButton">{{_("Merge")}}</button>
-            <button type="cancel" class="btn btn-secondary stackable" id="cancelButton" >{{_("Cancel")}}</button>
+            {% include '_partials/form.buttons.validation.delete.html' %}
         </div>
         
         <input type="hidden" name="id" value="{{content.data.keyword.id}}">

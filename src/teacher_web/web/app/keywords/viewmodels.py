@@ -163,27 +163,29 @@ class KeywordMergeViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.keyword_id = keyword_id
         self.schemeofwork_options = []
+        self.completed = False
         
+
     def execute(self, request):
         try:
             self.redirect_to_url = ""
             self.alert_message = "Duplicate keywords will be merged and deleted and definition lost. Click Merge to continue or click Cancel to return to the previous page."
 
             if request.method == "POST":
-                if request.POST.get("confirm") == "2":
+                if request.POST.get("published") == "2":
                     # 303 execute merge
                     self.model = Model.merge_duplicates(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
-                    self.saved = True
                     self.alert_message = "deleted!"
-                else:
-                    self.saved = False
-
+                    
                 if request.POST["next"] != None and request.POST["next"] != "":
                     self.redirect_to_url = request.POST["next"]
                 else:
                     self.redirect_to_url = reverse('keyword.index', args=(self.scheme_of_work_id))
                 
                 self.redirect_to_url = "{}#{}".format(self.redirect_to_url, self.keyword_id) # jumps to merged keyword using bookmark in url
+                
+                # POST completed
+                self.completed = True
                 
                 return
 
@@ -224,5 +226,5 @@ class KeywordMergeViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
 
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {}".format(self.model.term), data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {} for {}".format(self.model.term, self.scheme_of_work.name), data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
         
