@@ -7,7 +7,9 @@ class uitest_schemeofwork_keyword_edit_existing_page_navigation(UITestCase):
     def setUp(self):
         # setup
         self.do_log_in(self.root_uri + "/schemesofwork/{}/keywords/{}/edit".format(self.test_scheme_of_work_id, self.test_keyword_id))
+        self.wait(s=2)
 
+        
     def tearDown(self):
         #self.do_delete_scheme_of_work()
         pass
