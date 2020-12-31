@@ -48,7 +48,7 @@
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Definition")}}</label>
-                <input type="text" class="form-control" name="definition" placeholder="{{_('Enter a definition')}}" id="ctl-definition" maxlength="250" value="{{content.data.keyword.definition}}" />        
+                <textarea class="form-control preserve-text" name="definition" placeholder="{{_('Enter a definition')}}" id="ctl-definition" maxlength="250" value="{{content.data.keyword.definition}}" rows="3">{{content.data.keyword.definition}} </textarea>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
             </div>
         </div>
@@ -68,11 +68,4 @@
     </form>
 <hr>
 </article>
-{% endblock %}
-
-
-{% block page_js %}
-    {% load static %}
-    <script src="{% static 'default/js/md_document--upload.js' %}"></script>
-    <script src="{% static 'default/js/md_document--preview.js' %}"></script>
 {% endblock %}

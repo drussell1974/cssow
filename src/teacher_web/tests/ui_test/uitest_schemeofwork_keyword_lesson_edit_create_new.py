@@ -33,6 +33,21 @@ class uitest_schemeofwork_keyword_lesson_edit_create_new(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
+        ' term Enter Valid '
+        elem = self.test_context.find_element_by_id("ctl-term")
+        elem.clear()
+        elem.send_keys(self.TEST_KEYWORD_TERM)
+
+        ' definition Enter Valid '
+        elem = self.test_context.find_element_by_id("ctl-definition")
+        elem.clear()
+        # first paragraph
+        elem.send_keys("Lorem xipsum dolor sit amet, consectetur adipiscing elit. Quisque eros est, feugiat id diam eu, iaculis vulputate dui.")
+        # second paragraph
+        elem.send_keys(Keys.ENTER)
+        elem.send_keys(Keys.ENTER)
+        elem.send_keys("Quisque diame lorem, aliquam non tortor vel, tristique vestibulum leo. Integer mattis eros in diam faucibus interdum. Sed nec tortor.")
+
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)

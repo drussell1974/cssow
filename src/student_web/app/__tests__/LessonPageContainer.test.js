@@ -24,9 +24,9 @@ describe("LessonPageContainer", () =>{
         image_url: "images/pic01.jpg",
         url: "https://youtu.be/s6zR2T9vn2a",
         key_words: [
-            { id: 12, term: "Memory Data Register (MDR)"},
-            { id: 7,  term: "Registers"},
-            { id: 13, term: "Accumulator (ACC)"}
+            { id: 12, term: "Memory Data Register (MDR)", definition: "Nulla pellentesque tellus eu rutrum viverra. Sed eu enim consequat, pharetra nisi at, tempus odio. Duis sit amet nisl in dolor tincidunt condimentum sit amet ut nisl. Mauris fringilla tincidunt eros, nec volutpat nisi venenatis nec. Sed diam elit, vestibulum sit amet turpis in, pharetra iaculis nisi. Sed eget porttitor turpis, nec ullamcorper nisi."},
+            { id: 7,  term: "Registers", definition: "Praesent rutrum eu justo ut mollis. Sed sed dui nec massa fermentum pharetra. Phasellus a diam vitae dolor feugiat congue. Duis gravida rhoncus ornare. Cras vel neque ac urna aliquet euismod."},
+            { id: 13, term: "Accumulator (ACC)", definition: "Pellentesque est enim, mollis eu magna et, rhoncus sollicitudin dui. Nam feugiat lectus nulla, eu fringilla nisi tincidunt sit amet. Fusce eget feugiat orci. Praesent rutrum eu justo ut mollis. Sed sed dui nec massa fermentum pharetra. Phasellus a diam vitae dolor feugiat congue."}
         ],
         learning_objectives: [
             {
@@ -294,13 +294,21 @@ describe("LessonPageContainer", () =>{
             
             // First
             expect(
-                container.querySelector("#main .inner section.keywords ul.keywords li:nth-child(1)").textContent
+                container.querySelector("#main .inner section.keywords div.keywords div.block-text:nth-child(1) b").textContent
             ).toMatch("Memory Data Register (MDR)");
+
+            expect(
+                container.querySelector("#main .inner section.keywords div.keywords div.block-text:nth-child(1) p").textContent
+            ).toMatch("Nulla pellentesque tellus eu rutrum viverra. Sed eu enim consequat, pharetra nisi at, tempus odio. Duis sit amet nisl in dolor tincidunt condimentum sit amet ut nisl. Mauris fringilla tincidunt eros, nec volutpat nisi venenatis nec. Sed diam elit, vestibulum sit amet turpis in, pharetra iaculis nisi. Sed eget porttitor turpis, nec ullamcorper nisi.");
 
             // Last
             expect(
-                container.querySelector("#main .inner section.keywords ul.keywords li:nth-last-child(1)").textContent
+                container.querySelector("#main .inner section.keywords div.keywords div.block-text:nth-last-child(1) b").textContent
             ).toMatch("Accumulator (ACC)");
+
+            expect(
+                container.querySelector("#main .inner section.keywords div.keywords div.block-text:nth-last-child(1) p").textContent
+            ).toMatch("Pellentesque est enim, mollis eu magna et, rhoncus sollicitudin dui. Nam feugiat lectus nulla, eu fringilla nisi tincidunt sit amet. Fusce eget feugiat orci. Praesent rutrum eu justo ut mollis. Sed sed dui nec massa fermentum pharetra. Phasellus a diam vitae dolor feugiat congue.");
         })
     })
 });

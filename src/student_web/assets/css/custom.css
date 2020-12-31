@@ -58,3 +58,17 @@ div.progress--css-animated {
 .clearfix {
     overflow: auto;
 }
+
+.preserve-linebreak {
+    white-space: pre-line;
+}
+.keywords {
+    padding-bottom: 1em;
+}
+
+.keywords .block-text {
+    border: 1px;
+    border-color: #49B39D;
+    border-style: groove;
+    padding: 1em;
+}
