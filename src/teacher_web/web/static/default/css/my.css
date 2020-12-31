@@ -119,6 +119,10 @@ h4, h5, h6 {
     cursor: not-allowed;
 }
 
+.preserve-linebreak {
+    white-space: pre-line;
+}
+
 @media (max-width: 576px) {
     .stackable-group-sm .stackable {
         width: 100%;

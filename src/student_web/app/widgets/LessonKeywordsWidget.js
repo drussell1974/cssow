@@ -8,12 +8,16 @@ export const LessonKeywordsWidget = ({keywords}) => {
         return (
             <Fragment>
                 <h2>Keywords</h2>
-                <ul className="keywords">
+                <div className="keywords">
                 {keywords.map(item => (
-                        <li key={item.id}><b>{item.term}</b>
-                        <br/>{item.definition}</li>
+                    
+                        <div className="block-text" key={item.id}>
+                            <b>{item.term}</b>
+                            <p className="preserve-linebreak">{item.definition}</p>
+                        </div>
+                    
                     ))}
-                </ul>
+                </div>
             </Fragment>
         );
     }

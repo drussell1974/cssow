@@ -122,7 +122,7 @@
           <a href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
           <h5 class="card-title">{{ row.term }}</h5>
           </a>
-          <p class="card-text small">{{ row.definition }}</p>
+          <p class="card-text small preserve-linebreak">{{ row.definition }}</p>
           <hr>
           <span class="small">{{_('Lessons:')}}
           {% for lesson in row.belongs_to_lessons %}
