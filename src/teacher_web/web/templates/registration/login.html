@@ -1,12 +1,14 @@
 {% extends '_partials/__layout.onecolumn.contentheading.html' %}
 {% block header %}
 <div class="site-heading">
-    <h1>Log In</h1>
+    <h1>{{_("Log in")}}</h1>
     <span class="subheading">Register to create schemes of work and lessons</span>
 </div>
 {% endblock %}
 
 {% block maincontent %}
+
+    <h1>{{_('Login')}}</h1>
     <form method="post" action="{% url 'login' %}" id="frm-login-form">
         <div className="form-group row">
             {% csrf_token %}
@@ -21,7 +23,7 @@
                         <p id="login_message">Your account doesn't have access to this page. To proceed,
                     please login with an account that has access.</p>
                     {% else %}
-                        <p id="login_message">Please login to see this page.</p>
+                    <p>{{_("Enter your user name and password")}}</p>                
                     {% endif %}
                 {% endif %}
             </div>
@@ -42,16 +44,18 @@
             </div>
         </div>
         <div className="form-group row" id="submit_record__row">
-            <div className="col-sm-9 col-sm-offset-3"> 
-                <input type="submit" value="login" class="btn btn-primary">
+            <div className="col-sm-9 col-sm-offset-3">
+                <div class="form-group stackable-group stackable-group-sm">
+                    <div class="control-group">
+                        <br> 
+                        <input type="submit" value="login" class="btn btn-primary stackable">
+                        <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}}</a>
+                        <a href="{% url 'password_reset' %}" class="btn btn-link stackable">{{_('Lost password?')}}</a>
+                    </div>
+                </div>
             </div>
         </div>
         <input type="hidden" name="next" value="{{ next }}">
-        <div className="form-group row">
-            <div className="col-sm-9 col-sm-offset-3">
-                <a href="{% url 'password_reset' %}">Lost password?</a>
-            </div>
-        </div>
     </form>
 
     {# Assumes you setup the password_reset view in your URLconf #}

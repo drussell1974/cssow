@@ -147,12 +147,17 @@ USE_TZ = True
 
 # EMAIL HOST
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'  # During development only
+EMAIL_FILE_PATH = os.environ['TEACHER_WEB__EMAILBACKEND_PATH'] 
+
 EMAIL_HOST = os.environ['EMAIL_SERVER__HOST_EXT']
 EMAIL_PORT = os.environ['EMAIL_SERVER__PORT_EXT']
 EMAIL_HOST_USER = os.environ['EMAIL_SERVER__HOST_USER']
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.environ['TEACHER_WEB__EMAILBACKEND_PATH'] 
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_SERVER__HOST_PASSWORD']
+EMAIL_USE_TLS = os.environ["EMAIL_SERVER__USE_TLS"]
+DEFAULT_FROM_EMAIL = os.environ['EMAIL_SERVER__FROM_EMAIL']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
