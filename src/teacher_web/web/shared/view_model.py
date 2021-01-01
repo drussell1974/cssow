@@ -38,7 +38,7 @@ class ViewModel:
             "auth": {
                 "user":False,
                 "settings": {
-                    "actions_disabled":["register", "retrieve_password"],
+                    "actions_disabled":["retrieve_password"],
                 }
             },
             "session": {

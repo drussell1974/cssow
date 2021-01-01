@@ -33,8 +33,8 @@ class uitest_schemeofwork_default_change_password(UITestCase):
         # assert
         # TODO: set title
         #self.assertWebPageTitleAndHeadings('', 'Reset password', 'Enter a new password')
-        # assert - site-heading
-        self.assertEqual("Password change", self.test_context.find_element_by_css_selector("#content > h1").text)
+        # assert - site-heading .col-xl-8 > h1:nth-child(1)
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password confirmation')
         # assert - title
         self.assertEqual("Please enter your old password, for security’s sake, and then enter your new password twice so we can verify you typed it in correctly.", self.test_context.find_element_by_css_selector("#content-main > form > div > p").text)
 
