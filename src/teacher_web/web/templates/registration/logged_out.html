@@ -1,6 +1,11 @@
 {% extends '_partials/__layout.html' %}
 
 {% block maincontent %}
-  <h2>You are logged out</h2>
-  <a href="{% url 'default' %}">Home</a>
+  <h2>{{_('You are logged out')}}</h2>
+
+  <div class="form-group stackable-group stackable-group-sm">
+    <a href="{% url 'default' %}" class="btn btn-primary stackable">{{_('Home')}}</a>
+    <a href="{% url 'login' %}" class="btn btn-primary stackable" id="signinButton">{{_("Sign in")}}</a>
+  </div>
+
 {% endblock %}

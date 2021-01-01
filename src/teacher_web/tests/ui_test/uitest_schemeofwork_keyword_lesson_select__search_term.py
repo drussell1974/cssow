@@ -46,6 +46,8 @@ class uitest_schemeofwork_keyword_lesson_select__search_term(UITestCase):
         # test
         elem = self.test_context.find_element_by_id("ctl-keyword_search")
         elem.send_keys("Ra")
+        
+        self.wait(s=2)
 
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         
