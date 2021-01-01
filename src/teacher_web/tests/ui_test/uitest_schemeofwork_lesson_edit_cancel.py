@@ -73,4 +73,4 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
 
         # assert
         ' should be redirected '
-        self.assertWebPageTitleAndHeadings('', 'Log In', 'Register to create schemes of work and lessons')
+        self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')

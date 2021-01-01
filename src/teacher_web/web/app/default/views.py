@@ -17,3 +17,7 @@ def index(request):
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 
     return render(request, "default/index.html", view_model.content)
+
+
+def profile(request):
+    return render(request, "accounts/profile.html")

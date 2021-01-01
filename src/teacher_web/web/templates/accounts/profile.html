@@ -1,0 +1,13 @@
+{% extends '_partials/__layout.onecolumn.html' %}
+{% block header %}
+<div class="site-heading">
+  <h1>{{_('Account')}}</h1>
+  <span class="subheading">{{_('Your profile')}}</span>
+</div>
+{% endblock %}
+
+{% block maincontent %}
+  {% if request.user.is_authenticated %}
+    <h1>{{request.user}}</h1>
+  {% endif %}
+{% endblock %}
