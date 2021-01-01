@@ -59,7 +59,7 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
+        self.wait(s=2)
 
         ' Open Modal '
 

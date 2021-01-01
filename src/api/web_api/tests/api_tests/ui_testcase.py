@@ -49,7 +49,7 @@ class UITestCase(TestCase):
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("co2m1c")
+            elem.send_keys("password1.")
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -80,7 +80,7 @@ class UITestCase(TestCase):
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("co2m1c")
+            elem.send_keys("password1.")
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)

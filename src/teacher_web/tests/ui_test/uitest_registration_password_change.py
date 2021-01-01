@@ -8,8 +8,7 @@ class uitest_registration_password_reset_request_new(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.test_path = "/accounts/password_reset"
-        self.test_context.get(self.root_uri + self.test_path)
+        self.try_log_in(self.root_uri + "/accounts/password_change")
 
         self.test_context.implicitly_wait(4)
 
@@ -35,9 +34,22 @@ class uitest_registration_password_reset_request_new(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
 
-        elem = self.test_context.find_element_by_id("id_email")
-        elem.send_keys("test@localhost")
+        ' old password '
+        elem = self.test_context.find_element_by_id("id_old_password")
+        elem.clear()
+        elem.send_keys("password1.")
 
+        ' new password '
+        elem = self.test_context.find_element_by_id("id_new_password1")
+        elem.clear()
+        elem.send_keys("password1.")
+
+        ' confirm new password '
+        elem = self.test_context.find_element_by_id("id_new_password2")
+        elem.clear()
+        elem.send_keys("password1.")
+
+        ' submit '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.click()
         self.wait(s=2)
@@ -45,9 +57,9 @@ class uitest_registration_password_reset_request_new(UITestCase):
         # assert
 
         elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Password reset request sent", elem[0].text)
+        self.assertEqual("Password changed", elem[0].text)
 
-        self.assertWebPageTitleAndHeadings('', 'Registration', 'Reset password')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Password changed')
 
 
     def test_page__should_stay_on_same_page_if_invalid(self):
@@ -58,7 +70,13 @@ class uitest_registration_password_reset_request_new(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
 
-        elem = self.test_context.find_element_by_id("id_email")
+        elem = self.test_context.find_element_by_id("id_old_password")
+        elem.clear()
+
+        elem = self.test_context.find_element_by_id("id_new_password1")
+        elem.clear()
+
+        elem = self.test_context.find_element_by_id("id_new_password2")
         elem.clear()
 
         elem = self.test_context.find_element_by_id("saveButton")
@@ -68,7 +86,7 @@ class uitest_registration_password_reset_request_new(UITestCase):
         # assert
 
         elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Forgot your password?", elem[0].text)
+        self.assertEqual("Change password", elem[0].text)
 
-        self.assertWebPageTitleAndHeadings('', 'Registration', 'Reset your password')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password confirmation')
 
