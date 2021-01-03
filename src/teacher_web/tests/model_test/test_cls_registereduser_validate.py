@@ -92,8 +92,9 @@ class test_RegsteredUserModel_validate__first_name(Lesson_TestCase):
         # arrange
         test = RegisteredUserModel()
 
-        # TODO: 206 set correct number of characters 150
-        test.first_name = "Lorem ipsum dolor sit amet, consectetur adipi" # 45 characters
+        # set number of characters 150
+        test.first_name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tristique nisi eros,"\
+            "porta tempor elit pharetra eget. Curabitur placerat arcu a et." 
 
         # act
         test.validate()
@@ -108,8 +109,9 @@ class test_RegsteredUserModel_validate__first_name(Lesson_TestCase):
         # arrange
         test = RegisteredUserModel()
 
-        # TODO: 206 set correct number of characters 150 + 1
-        test.first_name = "Lorem ipsum dolor sit amet, consectetur adipis" # 46 characters + 1
+        # set number of characters 150 + 1
+        test.first_name = "Lorem ipsumx dolor sit amet, consectetur adipiscing elit. Curabitur tristique nisi eros,"\
+            "porta tempor elit pharetra eget. Curabitur placerat arcu a et."
 
         # act
         test.validate()
@@ -178,8 +180,9 @@ class test_RegisteredUserModel__validate__last_name(Lesson_TestCase):
         # arrange
         test = RegisteredUserModel()
 
-        # TODO: 206 set correct number of characters 150
-        test.last_name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        # set number of characters 150
+        test.last_name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "\
+             "Proin in neque ut turpis mollis tincidunt. Nulla eget pulvinar ante. Lorem ipsum dolor nulla."
 
         # test
         test.validate()
@@ -193,8 +196,9 @@ class test_RegisteredUserModel__validate__last_name(Lesson_TestCase):
         # arrange
         test = RegisteredUserModel()
 
-        # TODO: 206 set correct number of characters 150 + 1
-        test.last_name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        # set number of characters 150 + 1
+        test.last_name = "Lorem ipsumx dolor sit amet, consectetur adipiscing elit. "\
+             "Proin in neque ut turpis mollis tincidunt. Nulla eget pulvinar ante. Lorem ipsum dolor nulla."
 
         # test
         test.validate()
@@ -261,9 +265,10 @@ class test_RegisteredUserModel__validate__email(Lesson_TestCase):
     def test_max__valid_extreme(self):
         # arrange
         test = RegisteredUserModel()
-        # TODO: 206 set correct number of characters 255
-        test.email = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-
+        # set number of characters 255
+        test.email = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus nisl. "\
+            "Proin maximus laoreet augue eget pellentesque. Vestibulum venenatis non elit vitae convallis. "\
+            "Vestibulum nulla libero, posuere quis dapibus sed, elementum sed risus lectus."
         # test
         test.validate()
 
@@ -276,8 +281,11 @@ class test_RegisteredUserModel__validate__email(Lesson_TestCase):
         # arrange
         test = RegisteredUserModel()
 
-        # TODO: 206 set correct number of characters 255 + 1
-        test.email = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa"
+        # set number of characters 255 + 1
+        test.email = "Lorem ipsumx dolor sit amet, consectetur adipiscing elit. Maecenas vel tellus nisl. "\
+            "Proin maximus laoreet augue eget pellentesque. Vestibulum venenatis non elit vitae convallis. "\
+            "Vestibulum nulla libero, posuere quis dapibus sed, elementum sed risus lectus."
+
         # test
         test.validate()
 

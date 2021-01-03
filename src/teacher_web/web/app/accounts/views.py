@@ -8,7 +8,7 @@ from django.views import generic
 # TODO: 206 inherit RegisteredUserForm from UserCreationForm - comment out line below
 from django.contrib.auth.forms import UserCreationForm
 # TODO: 206 uncomment
-# from .viewmodels import AccountsRegisterViewModel
+# from .viewmodels import RegisterUserForm
 
 from shared.view_model import ViewModel
 

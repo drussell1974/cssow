@@ -14,7 +14,6 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 # TODO: 206 inherit RegisteredUserForm from UserCreationForm to include new fields
-
 class RegisterUserForm(UserCreationForm):
     #password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     #password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
@@ -71,7 +70,6 @@ class AccountsRegisterViewModel(BaseViewModel):
 
     def view(self):
         
-        return RegisterIndexViewModel.as_view()
         data = {
             "form": self.model
         }
