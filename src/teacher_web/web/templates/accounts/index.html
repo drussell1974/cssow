@@ -8,16 +8,14 @@
 
 {% block maincontent %}
   {% if request.user.is_authenticated %}
-    <h1>{{request.user}}</h1>
+    <h1>{{request.user.first_name}}</h1>
     <div>
       <h2>Password</h2>
-      {% if 'change_password' not in auth.settings.actions_disabled %}
         <div>
             <a class="btn" href="{% url 'password_change' %}" id="btn-password_change">
               <i class="fa fa-key"></i> {{_("Change password")}}
             </a>
         </div>
-      {% endif %}
       {% if request.user.is_superuser %}
         <h2>{{_('Super user')}}</h2>
         <div>

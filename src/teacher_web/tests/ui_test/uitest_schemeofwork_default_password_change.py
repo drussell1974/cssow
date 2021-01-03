@@ -32,5 +32,5 @@ class uitest_schemeofwork_default_password_change(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password confirmation')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password')
         

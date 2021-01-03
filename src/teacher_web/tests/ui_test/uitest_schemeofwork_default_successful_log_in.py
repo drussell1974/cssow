@@ -32,7 +32,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
         elem = self.test_context.find_element_by_id("btn-profile")
-        self.assertEqual("TEST@LOCALHOST", elem.text)
+        self.assertEqual("TEST USER", elem.text)
 
         elem = self.test_context.find_element_by_id("btn-logout")
         self.assertEqual("LOGOUT", elem.text)

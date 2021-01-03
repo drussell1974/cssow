@@ -35,7 +35,7 @@
         <div class="btn-group">
           {% if request.user.is_authenticated %}
           <!-- Dropdown -->
-          <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user}}</button>
+          <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
           <div class="dropdown-menu">
             {% if 'change_password' not in auth.settings.actions_disabled %}
                 <a class="dropdown-item " href="{% url 'password_change' %}" id="btn-password_change">

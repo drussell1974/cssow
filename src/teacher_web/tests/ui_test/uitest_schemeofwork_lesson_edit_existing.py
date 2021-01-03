@@ -28,7 +28,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture', 'TEST@LOCALHOST')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture', 'TEST USER')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")

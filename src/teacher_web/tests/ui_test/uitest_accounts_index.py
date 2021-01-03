@@ -31,6 +31,6 @@ class uitest_accounts_index(UITestCase):
         # arrange
         elem = self.test_context.find_element_by_class_name("maincontent h1")
 
-        self.assertEqual("test@localhost", elem.text)
+        self.assertEqual("Test User", elem.text)
 
 
