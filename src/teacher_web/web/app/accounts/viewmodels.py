@@ -6,7 +6,9 @@ from rest_framework import serializers, status
 from django import forms
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.cls_registereduser import RegisteredUserModel
@@ -37,6 +39,8 @@ class RegisterUserForm(UserCreationForm):
         user.username = self.cleaned_data["email"]
         if commit:
             user.save()
+            teacher_group = Group.objects.get(name='teacher')
+            teacher_group.user_set.add(user)
         return user
 
 '''
@@ -47,8 +51,8 @@ class RegisterUserForm(UserCreationForm):
         if password1 and password2 and password1 != password2:
             raise ValidationError("Passwords don't match")
         return password2
-
 '''
+
 
 # TODO: 206 inherit RegisteredUserForm from UserCreationForm may not required AccountsRegiterViewModel
 class AccountsRegisterViewModel(BaseViewModel):
