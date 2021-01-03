@@ -42,7 +42,7 @@
                 {% if 'register' not in auth.settings.actions_disabled %}
                     <a href="{% url 'accounts.register' %}" class="btn btn-link stackable">{{_("Register")}}</a>
                 {% endif %}
-                {{ auth.settings }}
+                
                 {% if 'retrieve_password' not in auth.settings.actions_disabled %}
                     <a href="{% url 'password_reset' %}" class="btn btn-link stackable">{{_('Lost password?')}}</a>
                 {% endif %}

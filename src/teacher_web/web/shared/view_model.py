@@ -1,3 +1,5 @@
+from django.conf import settings
+
 class ViewModel:
     active_model__id = 0
     active_model__display_name = ""
@@ -7,7 +9,7 @@ class ViewModel:
     def __init__(self, page_prefix, main_heading, sub_heading, data = None, active_model = None, error_message = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = ""):
         """ Create View Model """
         self.data = data
-        #raise KeyError("ViewModel init")
+
         ui_messages = { 
             "alert_message": alert_message if len(alert_message) > 0 else None,
             "error_message": error_message if len(str(error_message)) > 0 else None,
@@ -38,7 +40,7 @@ class ViewModel:
             "auth": {
                 "user":False,
                 "settings": {
-                    "actions_disabled":["retrieve_password"],
+                    "actions_disabled": settings.ACTIONS_DISABLED
                 }
             },
             "session": {
