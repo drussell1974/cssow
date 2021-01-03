@@ -3,12 +3,13 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_registration_password_change_cancel(UITestCase):
+class uitest_accounts_register_cancel(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.try_log_in(self.root_uri + "/accounts/password_change")
+        self.test_path = "/accounts/register/"
+        self.test_context.get(self.root_uri + self.test_path)
 
         self.test_context.implicitly_wait(4)
 
@@ -26,14 +27,20 @@ class uitest_registration_password_change_cancel(UITestCase):
 
     """ Test edit """
     
-    def test_page__should_stay_on_same_page_if_stay(self):
+    def test_page__should_redirect(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-        ' Open Modal '
+
+        ' ENTER SOMETHING BEFORE CANCELLING '
+        elem = self.test_context.find_element_by_id("id_username")
+        elem.clear()
+        elem.send_keys("test@localhost")
+
+        ' cancel '
 
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()

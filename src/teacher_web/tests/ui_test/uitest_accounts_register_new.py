@@ -3,12 +3,12 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_registration_password_change(UITestCase):
+class uitest_accounts_register_new(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.try_log_in(self.root_uri + "/accounts/password_change")
+        self.try_log_in(self.root_uri + "/accounts/register")
 
         self.test_context.implicitly_wait(4)
 
@@ -26,7 +26,8 @@ class uitest_registration_password_change(UITestCase):
 
     """ Test edit """
     
-    def test_page__should_direct_to_reset_sent(self):
+    @skip("don't create new user during testing")
+    def test_page__should_direct_to_confirmation_sent(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
@@ -34,18 +35,18 @@ class uitest_registration_password_change(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
 
-        ' old password '
-        elem = self.test_context.find_element_by_id("id_old_password")
+        ' first name '
+        elem = self.test_context.find_element_by_id("id_username")
+        elem.clear()
+        elem.send_keys("test@localhost")
+
+        ' enter password '
+        elem = self.test_context.find_element_by_id("id_password1")
         elem.clear()
         elem.send_keys("password1.")
 
-        ' new password '
-        elem = self.test_context.find_element_by_id("id_new_password1")
-        elem.clear()
-        elem.send_keys("password1.")
-
-        ' confirm new password '
-        elem = self.test_context.find_element_by_id("id_new_password2")
+        ' confirm password '
+        elem = self.test_context.find_element_by_id("id_password2")
         elem.clear()
         elem.send_keys("password1.")
 
@@ -70,13 +71,14 @@ class uitest_registration_password_change(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
 
-        elem = self.test_context.find_element_by_id("id_old_password")
+        elem = self.test_context.find_element_by_id("id_username")
+        elem.clear()
+        elem.send_keys("test@localhost")
+
+        elem = self.test_context.find_element_by_id("id_password1")
         elem.clear()
 
-        elem = self.test_context.find_element_by_id("id_new_password1")
-        elem.clear()
-
-        elem = self.test_context.find_element_by_id("id_new_password2")
+        elem = self.test_context.find_element_by_id("id_password2")
         elem.clear()
 
         elem = self.test_context.find_element_by_id("saveButton")
@@ -86,7 +88,7 @@ class uitest_registration_password_change(UITestCase):
         # assert
 
         elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Change password", elem[0].text)
+        self.assertEqual("Registration", elem[0].text)
 
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password confirmation')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
 

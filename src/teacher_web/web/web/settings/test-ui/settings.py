@@ -40,6 +40,8 @@ INTERNAL_IPS = [
 
 # Application definition
 
+
+
 INSTALLED_APPS = [
     'app.default',
     'shared.models',
@@ -65,6 +67,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+#AUTH_USER_MODEL = 'default.RegisteredUserModel'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False

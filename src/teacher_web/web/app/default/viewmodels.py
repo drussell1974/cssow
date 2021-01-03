@@ -11,8 +11,9 @@ from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
+
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
-    # TODO: #235 Rename to {ViewName}ViewModel
+    
     def __init__(self, db, top, auth_user):
         self.model = []
         self.db = db
@@ -66,7 +67,6 @@ class KeywordGetModelViewModel(BaseViewModel):
         
 
 class KeywordSaveViewModel(BaseViewModel):
-    #TODO: Rename or Depracate. No matching View
     def __init__(self, db, model):
         self.db = db
         self.model = model

@@ -2,9 +2,9 @@
     color: rgba(0,0,255,0.5);
 }
 
-.error {
+.error, .errorlist {
     color:#dc3545 !important;
-}
+}   
 
 .mark-for-deletion .token-label {
     text-decoration: line-through;
@@ -150,6 +150,15 @@ header.masthead .site-heading h1 {
     font-size: 60px !important;
 }   
 
+form span.helptext,
+form ul > li {
+    font-size: smaller;
+}
+
+form span.helptext::before {
+    content: "\a";
+    white-space: pre;
+}
 /*.pagination div:after {
     content: ' | ';
     white-space: pre;

@@ -56,7 +56,7 @@ class test_LessonModel_validate__title(Lesson_TestCase):
         # assert
         self.assertEqual(test.title, "Data Representation: Sound")
         self.assertTrue(test.is_valid, "is_valid should be True")
-        self.assertFalse("summary" in test.validation_errors, "summary should not have validation error %s" % test.validation_errors)
+        self.assertFalse("title" in test.validation_errors, "title should not have validation error %s" % test.validation_errors)
 
 
     def test_min__valid_extreme_trim_whitespace(self):

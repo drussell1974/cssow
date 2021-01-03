@@ -1,0 +1,22 @@
+{% extends '_partials/__layout.onecolumn.html' %}
+{% block header %}
+<div class="site-heading">
+  <h1>{{_('Account')}}</h1>
+  <span class="subheading">{{_('Registration')}}</span>
+</div>
+{% endblock %}
+
+{% block maincontent %}
+<h1>{{_('Registration')}}</h1>
+
+  <p>{{_("Enter details")}}</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="site-registration-form">
+    {{ form.as_p }}
+    </div>
+    <input type="submit" class="btn btn-primary" value="{{_('Register')}}" id="saveButton">
+    <a href="{% url 'default' %}" type="submit" class="btn btn-secondary" id="cancelButton">{{_('Cancel')}}</a>
+  </form>
+{% endblock %}

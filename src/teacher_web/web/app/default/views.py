@@ -18,6 +18,3 @@ def index(request):
 
     return render(request, "default/index.html", view_model.content)
 
-
-def profile(request):
-    return render(request, "accounts/profile.html")
