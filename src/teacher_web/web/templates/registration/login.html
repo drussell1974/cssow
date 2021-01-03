@@ -10,6 +10,7 @@
 
     <h1>{{_('Login')}}</h1>
     <form method="post" action="{% url 'login' %}" id="frm-login-form">
+
         <div className="form-group row">
             {% csrf_token %}
             <div className="col-sm-9 col-sm-offset-3">
@@ -23,36 +24,28 @@
                         <p id="login_message">Your account doesn't have access to this page. To proceed,
                     please login with an account that has access.</p>
                     {% else %}
-                    <p>{{_("Enter your user name and password")}}</p>                
+                    <p>{{_("Enter your email and password")}}</p>                
                     {% endif %}
                 {% endif %}
             </div>
         </div>
         
-        <div className="form-group row" id="auth_user_email__row">
-            {{ form.username.label_tag }}
-            <div className="col-sm-9">
-                {{ form.username }}
-                <span className="help-block"></span>
-            </div>
-        </div>
-        <div className="form-group row" id="auth_user_password__row">
-            {{ form.password.label_tag }}
-            <div className="col-sm-9">
-                {{ form.password }}
-                <span className="help-block"></span>
-            </div>
-        </div>
-        <div className="form-group row" id="submit_record__row">
-            <div className="col-sm-9 col-sm-offset-3">
-                <div class="form-group stackable-group stackable-group-sm">
-                    <div class="control-group">
-                        <br> 
-                        <input type="submit" value="login" class="btn btn-primary stackable">
-                        <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}}</a>
-                        <a href="{% url 'password_reset' %}" class="btn btn-link stackable">{{_('Lost password?')}}</a>
-                    </div>
-                </div>
+        {% include '_partials/form.auto.html' %}
+        
+        <div class="form-group stackable-group stackable-group-sm">
+            <div class="control-group">
+                <br> 
+                <input type="submit" value="login" class="btn btn-primary stackable">
+                
+                <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}}</a>
+
+                {% if 'register' not in auth.settings.actions_disabled %}
+                    <a href="{% url 'accounts.register' %}" class="btn btn-link stackable">{{_("Register")}}</a>
+                {% endif %}
+                {{ auth.settings }}
+                {% if 'retrieve_password' not in auth.settings.actions_disabled %}
+                    <a href="{% url 'password_reset' %}" class="btn btn-link stackable">{{_('Lost password?')}}</a>
+                {% endif %}
             </div>
         </div>
         <input type="hidden" name="next" value="{{ next }}">

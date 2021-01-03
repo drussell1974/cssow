@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 # TODO: 206 inherit RegisteredUserForm from UserCreationForm - comment out line below
-from django.contrib.auth.forms import UserCreationForm
-# TODO: 206 uncomment
-# from .viewmodels import RegisterUserForm
+#from django.contrib.auth.forms import UserCreationForm
+# 206 uncomment
+from .viewmodels import RegisterUserForm
 
 from shared.view_model import ViewModel
 
@@ -19,7 +19,8 @@ def index(request):
     
 
 class RegisterUserView(generic.CreateView):
-    # TODO: 206 inherit RegisteredUserForm from UserCreationForm - see .viewmodels.py
-    form_class = UserCreationForm
+    # 206 inherit RegisteredUserForm from UserCreationForm - see .viewmodels.py
+    #form_class = UserCreationForm
+    form_class = RegisterUserForm
     success_url = reverse_lazy('login')
     template_name = 'accounts/register.html'

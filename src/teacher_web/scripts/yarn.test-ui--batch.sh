@@ -80,6 +80,15 @@ python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_scheme
 x=$(($x+$?))
 ## end test
 
+
+## start test
+echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_keyword_lesson_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_keyword_lesson_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
 # exit with incremented exit code 
 # ensures any test that fail will 
 # result in exit code or this script

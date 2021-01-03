@@ -36,9 +36,14 @@ class uitest_accounts_register_cancel(UITestCase):
 
 
         ' ENTER SOMETHING BEFORE CANCELLING '
-        elem = self.test_context.find_element_by_id("id_username")
+        elem = self.test_context.find_element_by_id("id_email")
         elem.clear()
         elem.send_keys("test@localhost")
+
+
+        elem = self.test_context.find_element_by_id("id_first_name")
+        elem.clear()
+        elem.send_keys("Mr D")
 
         ' cancel '
 

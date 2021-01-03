@@ -150,15 +150,10 @@ header.masthead .site-heading h1 {
     font-size: 60px !important;
 }   
 
-form span.helptext,
-form ul > li {
-    font-size: smaller;
+.form-group--auto input {
+    width: 100% !important;
 }
 
-form span.helptext::before {
-    content: "\a";
-    white-space: pre;
-}
 /*.pagination div:after {
     content: ' | ';
     white-space: pre;

@@ -7,16 +7,25 @@
 {% endblock %}
 
 {% block maincontent %}
-<h1>{{_('Registration')}}</h1>
+    {% if user.is_authenticated %}
 
-  <p>{{_("Enter details")}}</p>
+      <h1 class="error text-center">{{_('You are already registered')}}</p>
+    {% else %}
 
-  <form method="POST">
-    {% csrf_token %}
+    <h1>{{_('Registration')}}</h1>
+
+    <p>{{_("Enter your details")}}</p>
+
     <div class="site-registration-form">
-    {{ form.as_p }}
+    <form method="POST" class="needs-validation">
+      {% csrf_token %}
+        {% include '_partials/form.auto.html' %}
+      
+        <div class="form-group stackable-group stackable-group-sm">
+        <input type="submit" class="btn btn-primary" value="{{_('Register')}}" id="saveButton">
+        <a href="{% url 'default' %}" type="submit" class="btn btn-secondary" id="cancelButton">{{_('Cancel')}}</a>
+      </div>
+    </form>
     </div>
-    <input type="submit" class="btn btn-primary" value="{{_('Register')}}" id="saveButton">
-    <a href="{% url 'default' %}" type="submit" class="btn btn-secondary" id="cancelButton">{{_('Cancel')}}</a>
-  </form>
+  {% endif %}
 {% endblock %}
