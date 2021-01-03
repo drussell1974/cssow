@@ -73,8 +73,8 @@ x=$(($x+$?))
 ## end test
 
 ## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_keyword_*.py
-python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_keyword_*.py
+echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_schemesofwork_keyword_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_keyword_*.py
 
 # increment
 x=$(($x+$?))
@@ -82,8 +82,8 @@ x=$(($x+$?))
 
 
 ## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_keyword_lesson_*.py
-python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_keyword_lesson_*.py
+echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_lesson_keyword_*.py
+python3 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_keyword_*.py
 
 # increment
 x=$(($x+$?))

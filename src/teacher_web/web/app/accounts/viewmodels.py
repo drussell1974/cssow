@@ -18,7 +18,7 @@ class RegisterUserForm(UserCreationForm):
     #password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     #password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
     #username = forms.CharField(max_length=150, label='User name', required=True, help_text='required')
-    first_name = forms.CharField(label='Display name', max_length=150, required=False, help_text="required")
+    first_name = forms.CharField(label='Display name', max_length=150, required=True, help_text="required")
     #last_name = forms.CharField(max_length=150, required=False)
     ''' Email used as user name so limit to 150 characters '''
     email = forms.EmailField(label='Email', max_length=150, required=True, help_text='required') 
