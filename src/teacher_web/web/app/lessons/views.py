@@ -8,6 +8,7 @@ from django.urls import reverse
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.viewmodels.decorators.permissions import unauthorise_request
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel, try_int
@@ -168,7 +169,7 @@ def delete(request, scheme_of_work_id, lesson_id):
     
 
 #TODO: #234 add permission
-#@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')
+@unauthorise_request
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 

@@ -6,6 +6,7 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from shared.models.core.django_helper import auth_user_id
+from shared.viewmodels.decorators.permissions import unauthorise_request
 
 # TODO: use view models
 from shared.models.cls_learningobjective import LearningObjectiveModel
@@ -15,10 +16,9 @@ from shared.models.cls_lesson import LessonModel
 # view models
 from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 
-
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
-
+    @unauthorise_request
     def get(self, request, scheme_of_work_id, lesson_id):
         
         resource_type_id = request.GET.get("resource_type_id", 0)

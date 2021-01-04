@@ -19,19 +19,18 @@ class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(label='Display name', max_length=150, required=True, help_text="required")
     ''' Email used as user name so limit to 150 characters '''
     email = forms.EmailField(label='Email', max_length=150, required=True, help_text='required') 
-
+    
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('email','first_name',) #, 'memorable_word_1', 'memorable_word_2')
+        fields = ('email','first_name',)
     
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
-        #display_name = display_name + "xxx"
         user.set_password(self.cleaned_data["password1"])
         user.username = self.cleaned_data["email"]
         if commit:
             user.save()
-            teacher_group = Group.objects.get(name='teacher')
+            teacher_group = Group.objects.get(name='head of department')
             teacher_group.user_set.add(user)
         return user
