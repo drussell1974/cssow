@@ -56,8 +56,8 @@ class uitest_registration_password_change(UITestCase):
 
         # assert
 
-        elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Password changed", elem[0].text)
+        elem = self.test_context.find_element_by_css_selector(".maincontent h1")
+        self.assertEqual("Password changed", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Account', 'Password changed')
 
@@ -88,5 +88,5 @@ class uitest_registration_password_change(UITestCase):
         elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
         self.assertEqual("Change password", elem[0].text)
 
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password confirmation')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Change password')
 

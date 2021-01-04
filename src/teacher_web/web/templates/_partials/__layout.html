@@ -57,7 +57,7 @@
                 <a class="navbar-brand" href="{% url 'accounts.register' %}">{{_("Register")}}</a>
               {% endif %}
               {% if 'retrieve_password' not in auth.settings.actions_disabled %}
-                <a class="navbar-brand" href="{% url 'default' %}">{{_("Lost password")}}</a>
+                <a class="navbar-brand" href="{% url 'password_reset' %}">{{_("Lost password")}}</a>
               {% endif %}
           {% endif %}
         </div>
