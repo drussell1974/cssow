@@ -10,13 +10,13 @@ See ../README.md
 
 > add-apt-repository ppa:deadsnakes/ppa
 
-> sudo apt-get update
+> apt-get update
 
-> sudo apt-get install python3.5
+> apt-get install python3.7
 
-> apt-get install python3.6
+> apt-get install python3.7
 
-> apt-get install python3.6-dev
+> apt-get install python3.7-dev
 
 > apt-get install default-libmysqlclient-dev
 
