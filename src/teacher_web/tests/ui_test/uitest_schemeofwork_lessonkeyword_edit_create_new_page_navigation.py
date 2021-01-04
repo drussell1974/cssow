@@ -1,12 +1,12 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class uitest_schemeofwork_lesson_keyword_select_page_navigation(UITestCase):
+class uitest_schemeofwork_lessonkeyword_edit_create_new_page_navigation(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/keywords/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
         # TODO: improve performance
         self.wait()
 
@@ -27,7 +27,7 @@ class uitest_schemeofwork_lesson_keyword_select_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select keywords for Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new keyword for Types of CPU architecture')
 
 
     """ Breadcrumb """
@@ -67,3 +67,15 @@ class uitest_schemeofwork_lesson_keyword_select_page_navigation(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+
+
+    def test_page__breadcrumb__navigate_to_keywords_index(self):
+        #test
+        elem = self.test_context.find_element_by_id('btn-bc-keywords-select')
+        self.assertEqual("Select", elem.text)
+
+        # test
+        elem.click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select keywords for Types of CPU architecture')

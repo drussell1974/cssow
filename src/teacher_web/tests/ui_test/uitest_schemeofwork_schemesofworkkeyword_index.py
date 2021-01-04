@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class uitest_schemeofwork_keyword_index(UITestCase):
+class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     test_context = WebBrowserContext()
 

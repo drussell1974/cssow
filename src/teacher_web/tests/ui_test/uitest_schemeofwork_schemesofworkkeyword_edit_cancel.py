@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_schemeofwork_schemesofwork_keyword_edit_cancel(UITestCase):
+class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
     test_context = WebBrowserContext()
 

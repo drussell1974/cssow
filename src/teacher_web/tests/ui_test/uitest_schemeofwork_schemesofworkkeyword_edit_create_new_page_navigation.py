@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class uitest_schemeofwork_schemesofwork_keyword_edit_create_new_page_navigation(UITestCase):
+class uitest_schemeofwork_schemesofworkkeyword_edit_create_new_page_navigation(UITestCase):
 
     test_context = WebBrowserContext()
 

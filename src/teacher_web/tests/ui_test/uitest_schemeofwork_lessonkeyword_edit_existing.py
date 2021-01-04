@@ -2,7 +2,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 import unittest
 
-class uitest_schemeofwork_lesson_keyword_edit_existing(UITestCase):
+class uitest_schemeofwork_lessonkeyword_edit_existing(UITestCase):
 
     test_context = WebBrowserContext()
     

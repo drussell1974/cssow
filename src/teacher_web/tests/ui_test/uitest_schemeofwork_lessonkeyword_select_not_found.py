@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 from selenium.webdriver.support.select import Select
 
-class uitest_schemeofwork_lesson_keyword_select_not_found(UITestCase):
+class uitest_schemeofwork_lessonkeyword_select_not_found(UITestCase):
 
     test_context = WebBrowserContext()
 

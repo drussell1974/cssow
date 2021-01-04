@@ -3,7 +3,7 @@ from ui_testcase import UITestCase, WebBrowserContext
 from unittest import skip
 
 
-class uitest_schemeofwork_lesson_keyword_select_edit_existing(UITestCase):
+class uitest_schemeofwork_lessonkeyword_select_edit_existing(UITestCase):
 
     test_context = WebBrowserContext()
     

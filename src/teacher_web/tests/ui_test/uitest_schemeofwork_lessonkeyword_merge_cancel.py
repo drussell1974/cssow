@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_schemeofwork_lesson_keyword_merge_cancel(UITestCase):
+class uitest_schemeofwork_lessonkeyword_merge_cancel(UITestCase):
 
     test_context = WebBrowserContext()
 
