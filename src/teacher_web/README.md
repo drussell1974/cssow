@@ -22,13 +22,23 @@ See ../README.md
 
 > apt-get install python3-pip
 
+### Windows
+
+Download the installer
+
+https://www.python.org/downloads/release/python-379/
+
 ## virtualenv
 
 Install virtual environment
 
 > pip install virtualenv
 
-Create a virtual environment
+### Windows
+
+Select pip when installing python using the installer
+
+### Create a virtual environment
 
 > cd <root>/src/teacher_web/
 
@@ -37,6 +47,16 @@ Create a virtual environment
 > virtualenv -p [executable] .venv/django
 
 > source .venv/django/bin/activate
+
+### Windows
+
+> cd <root>/src/teacher_web/
+
+> mkdir -p .venv/django
+
+> python -m venv c:\path\to\myenv
+
+> source .venv/django/Scripts/activate
 
 # Prerequisites
 
@@ -49,6 +69,18 @@ Create a virtual environment
 > sudo apt-get update
 
 > sudo apt-get install yarn -y
+
+### Windows
+
+1. Install Node.js using the installer
+
+https://nodejs.org/en/
+
+2. Install Yarn using the installer
+
+https://classic.yarnpkg.com/en/docs/install/#windows-stable
+
+## use yarn to add requirement.txt to active virtual environment
 
 Use 'yarn build' from package.json to install the prerequisites, or directly from the command line...
 
@@ -229,6 +261,10 @@ Use the following guidance as the project structure...
 > cd src/teacher_web
 
 > source .venv/django/bin/activate
+
+## Windows
+
+> source .venv/django/Scripts/activate
 
 2. Run the website
 
