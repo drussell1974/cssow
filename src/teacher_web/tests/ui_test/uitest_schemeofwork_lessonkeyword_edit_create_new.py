@@ -36,7 +36,7 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new(UITestCase):
         ' term Enter Valid '
         elem = self.test_context.find_element_by_id("ctl-term")
         elem.clear()
-        elem.send_keys(self.TEST_KEYWORD_TERM)
+        #elem.send_keys(self.TEST_KEYWORD_TERM)
 
         ' definition Enter Valid '
         elem = self.test_context.find_element_by_id("ctl-definition")
@@ -67,7 +67,7 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new(UITestCase):
         ' term Enter Valid but duplicate term '
 
         elem = self.test_context.find_element_by_id("ctl-term")
-        elem.clear()
+        elem.clear()    
         elem.send_keys(self.TEST_KEYWORD_TERM)
 
         ' submit the form '

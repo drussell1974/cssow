@@ -5,9 +5,14 @@ from selenium.webdriver.common.keys import Keys
 import os
 
 def WebBrowserContext():
+
+    ''' Uncomment Chrome driver -- chromedriver.exe '''
     #options = webdriver.ChromeOptions()
     #options.add_argument("--start-maximized")
-    return webdriver.Firefox()
+    return webdriver.Chrome()
+
+    ''' Uncomment for Firefox -- geckodriver.exe '''
+    #return webdriver.Firefox()
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]
 TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]

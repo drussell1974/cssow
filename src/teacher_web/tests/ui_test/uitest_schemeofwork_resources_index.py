@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class uitest_schemeofwork_resource_index(UITestCase):
+class uitest_schemeofwork_resources_index(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -112,4 +112,4 @@ class uitest_schemeofwork_resource_index(UITestCase):
 
     def test_page__should_have_sidenav__showing_other_lessons(self):
         # arrange
-        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Other lessons", expected_no_of_items=26)
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Other lessons", expected_no_of_items=25)

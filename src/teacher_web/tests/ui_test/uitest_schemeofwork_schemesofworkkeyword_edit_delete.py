@@ -65,4 +65,4 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
         #231: items after should be less than before
         
         items_after = self.test_context.find_elements_by_class_name("card-keyword")
-        self.assertEqual(162, len(items_after))
+        self.assertEqual(155, len(items_after))

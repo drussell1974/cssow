@@ -5,7 +5,7 @@ from datetime import datetime
 dt = datetime.today()
 
 # get command line arguments
-PATH = sys.argv[1]
+INIT_PATH = sys.argv[1]
 ARCHIVE_PATH = sys.argv[2]
 CLOUD_PATH = sys.argv[3]
 DATABASE = sys.argv[4]
@@ -13,27 +13,29 @@ USER = sys.argv[5]
 PASSWORD = sys.argv[6]
 
 # create file name from 
-FILE_NAME = f"db-backup.{DATABASE}.{dt.year}-{dt.month:02d}-{dt.day:02d}-{dt.hour:02d}{dt.minute:02d}.sql"
-PATH = f"{PATH}\{FILE_NAME}"
-# create the mysqldump command and execute
-CMD = f"mysqldump -u{USER} -p{PASSWORD} {DATABASE} > {PATH}"
-print("running data backup... %s" % CMD)  
-os.system(CMD)
+DATA_FILE_NAME = f"db-backup.DAT.{DATABASE}.{dt.year}-{dt.month:02d}-{dt.day:02d}-{dt.hour:02d}{dt.minute:02d}.sql"
+SCHEMA_FILE_NAME = f"db-backup.SCH.{DATABASE}.{dt.year}-{dt.month:02d}-{dt.day:02d}-{dt.hour:02d}{dt.minute:02d}.sql"
 
-# copy latest to cloud
+INIT_DATA_PATH = f"{INIT_PATH}\{DATA_FILE_NAME}"
+# create the mysqldump command for the data backup and execute
+os.system(f"mysqldump -u{USER} -p{PASSWORD} {DATABASE} > {INIT_DATA_PATH}")
+# create the mysqldump command for the schema backup and execute
+INIT_SCHEMA_PATH = f"{INIT_PATH}\{SCHEMA_FILE_NAME}"
+os.system(f"mysqldump --no-data --routines -u{USER} -p{PASSWORD} {DATABASE} > {INIT_SCHEMA_PATH}")
+
+# copy latest data and schema to the cloud
 try:
-    CLOUD_PATH = f"{CLOUD_PATH}\db-backup.{DATABASE}.latest.sql"
-    CMD = f"xcopy {PATH} {CLOUD_PATH} /Y"
-    print("copy to cloud... %s" % CMD)
-    os.system(CMD)
-except e:
+    CLOUD_DATA_PATH = f"{CLOUD_PATH}\db-backup.DATA.{DATABASE}.latest.sql"
+    os.system( f"xcopy {INIT_DATA_PATH} {CLOUD_DATA_PATH} /Y")
+
+    CLOUD_SCHEMA_PATH = f"{CLOUD_PATH}\db-backup.SCHEMA.{DATABASE}.latest.sql"
+    os.system(f"xcopy {INIT_SCHEMA_PATH} {CLOUD_SCHEMA_PATH} /Y")
+except:
     pass # TODO: give warning to write to event viewer
 
-# copy to backup drive
+# copy theto backup drive
 try:
-    #ARCHIVE_PATH = f"{ARCHIVE_PATH}\{FILE_NAME}"
-    CMD = f"xcopy {PATH} {ARCHIVE_PATH}"
-    print("copy to archive ... %s" % CMD)
-    os.system(CMD)
-except e:
+    os.system(f"xcopy {INIT_DATA_PATH} {ARCHIVE_PATH}\\")
+    os.system(f"xcopy {INIT_SCHEMA_PATH} {ARCHIVE_PATH}\\")
+except:
     pass # TODO: give warning to write to event viewer

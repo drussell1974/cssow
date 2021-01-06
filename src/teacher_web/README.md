@@ -146,13 +146,32 @@ NOTE: You may need to ensure driver is executable...
 
 > chmod +x /src/teacher_web/geckodriver.exe 
 
-Try...
+### Windows
 
-> cp /src/teacher_web/geckodriver.exe /usr/bin/
+1. Check your version of chrome (paste in the address bar - chrome://settings/help)
 
-Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line...
+2. Download the version of chromedriver to match the version of chrome you have installed, from https://chromedriver.chromium.org/downloads and extract to /src/teacher_web/chromedriver.exe
 
-Create a test user (see web/settings/test-ui/settings.py and respective .env file for TEST_USER_NAME and TEST_USER_PSWD to create user accordingly as a teacher for TEST_SCHEME_OF_WORK_ID). Update TEST_* variables accordingly.
+NOTE: You may need to ensure driver is not blocked...
+
+3. Open explorer /src/teacher_web/chromedriver.exe 
+
+4. Right-click chromedriver.exe
+
+5. At the bottom of the General tab tick unblock and click ok
+
+NOTE: Check Anti-virus software
+
+## Running the Selenium/UI tests
+
+Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line. e.g.
+
+1. Create a test user (see web/settings/test-ui/settings.py and respective .env file for TEST_USER_NAME and TEST_USER_PSWD to create user accordingly as a teacher for TEST_SCHEME_OF_WORK_ID). Update TEST_* variables accordingly.
+
+2. Run a single test
+
+> python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+
 
 If necessary, install a mail server to recieve reset password messages https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04 and https://help.ubuntu.com/community/Dovecot
 

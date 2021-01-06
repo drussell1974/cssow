@@ -26,7 +26,7 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         elem = self.test_context.find_elements_by_xpath("//*[contains(@class, 'card-keyword')]")
         
         # assert
-        self.assertEqual(162, len(elem))
+        self.assertEqual(155, len(elem))
 
 
     def test_page__should_show_none(self):
@@ -52,7 +52,7 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         
         # assert
-        self.assertEqual(25, len(elem))
+        self.assertEqual(24, len(elem))
 
 
     def test_page__should_single_item_match(self):
