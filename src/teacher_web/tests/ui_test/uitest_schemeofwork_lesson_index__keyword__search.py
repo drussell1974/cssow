@@ -107,14 +107,3 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
             self.wait()
-
-'''
-# TODO: write results to file
-# TODO: can this be in the base class?
-
-if __name__ == '__main__':
-   log_file = ' test_results.txt'
-   with open(log_file, "w") as f:
-       runner = unittest.TextTestRunner(f)
-       unittest.main(testRunner=runner)
-'''

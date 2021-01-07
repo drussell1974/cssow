@@ -30,4 +30,4 @@ class apitest_schemeofwork_resource_get_markdown(APITestCase):
 
     def test__first_should_have_name(self):
         # check first few characters
-        self.assertEqual('<h1>Configure DHCP on a ', self.payload["markdown"][0:24])
+        self.assertEqual('<h1>consectetur adipisci', self.payload["markdown"][0:24])
