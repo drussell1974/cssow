@@ -1,14 +1,16 @@
-from enum import Enum
+from enum import IntFlag
 
-class TEACHER_SCHEMEOFWORK(Enum):
+class SCHEMEOFWORK(IntFlag):
     """ Teacher permissions for schemes of work, keywords and curriculum content """
-    CAN_VIEW = 1
-    CAN_ADD = 2
-    CAN_EDIT = 4
+    NONE = 7
+    VIEW = 2
+    EDIT = 4
+    ADD = 8
 
 
-class TEACHER_LESSON(Enum):
+class LESSON(IntFlag):
     """ Teacher permissions for lessons, keywords, learning objectives and resources """
-    CAN_VIEW = 1
-    CAN_ADD = 2
-    CAN_EDIT = 4
+    NONE = 7
+    VIEW = 2
+    EDIT = 4
+    ADD = 8

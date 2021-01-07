@@ -1,4 +1,4 @@
-from shared.models.enums.permissions import TEACHER_SCHEMEOFWORK, TEACHER_LESSON 
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 
 def unauthorise_request(func):
     """
