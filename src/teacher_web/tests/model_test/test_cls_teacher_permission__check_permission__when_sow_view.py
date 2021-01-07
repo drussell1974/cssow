@@ -16,19 +16,19 @@ class test_cls_teacher_permission__check_permission__when_sow_view(TestCase):
 
     def test_check__none_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.NONE))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.NONE))
 
 
     def test_check__edit_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.EDIT))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDIT))
         
 
     def test_check__add_returns_false(self):
         # asser
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.ADD))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.ADD))
 
 
     def test_check__view_returns_true(self):
         # assert
-        self.assertTrue(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.VIEW))
+        self.assertTrue(self.test.check_permission(SCHEMEOFWORK.VIEW))

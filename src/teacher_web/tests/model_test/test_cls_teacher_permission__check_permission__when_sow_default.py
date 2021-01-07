@@ -15,19 +15,19 @@ class test_cls_teacher_permission__check_permission__when_sow_default(TestCase):
 
     def test_check__has_no_permission_by_default(self):
         # assert
-        self.assertTrue(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.NONE))
+        self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
 
 
     def test_check__cannot_edit_by_default(self):
         # assert
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.EDIT))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDIT))
         
 
     def test_check__cannot_add_by_default(self):
         # assert
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.ADD))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.ADD))
 
 
     def test_check__cannot_view_by_default(self):
         # assert
-        self.assertFalse(self.test.check_scheme_of_work_permission(SCHEMEOFWORK.VIEW))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.VIEW))

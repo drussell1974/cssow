@@ -20,12 +20,20 @@ class TeacherPermissionModel(models.Model):
         # id
         self.auth_user = int(self.auth_user)
 
+    def check_permission(self, permission):
+        if type(permission) == SCHEMEOFWORK:
+            return self._check_scheme_of_work_permission(permission)
+        elif type(permission) == LESSON:
+            return self._check_lesson_permission(permission)
+        else:
+            raise TypeError("permission is type {}. Must be type SCHEME_OF_WORK or LESSON_ACCESS.".format(type(permission)))
 
-    def check_scheme_of_work_permission(self, permission):
+
+    def _check_scheme_of_work_permission(self, permission):
         return self.scheme_of_work_permission % permission == 0
 
 
-    def check_lesson_permission(self, permission):
+    def _check_lesson_permission(self, permission):
         return self.lesson_permission % permission == 0
         
 
