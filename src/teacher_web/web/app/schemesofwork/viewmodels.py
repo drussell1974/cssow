@@ -11,10 +11,13 @@ from shared.models.cls_keystage import KeyStageModel
 
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
+from shared.viewmodels.decorators.permissions import check_teacher_permission
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 
 
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
+    @check_teacher_permission(permission=SCHEMEOFWORK.VIEW, redirect_to_url="/accounts/login")
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 

@@ -123,7 +123,7 @@ use 'yarn' to run tests from package.json to run the unit tests that include tes
 2. Run api
 
 > /src/teacher-web$ source .venv/django/bin/activate 
-> /src/teacher-web$ yarn build:dev
+> /src/teacher-web$ yarn build:test
 
 Open api url in web browser http://localhost:3002/api/schemesofwork/127/lessons/64
 

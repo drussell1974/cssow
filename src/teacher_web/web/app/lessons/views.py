@@ -23,6 +23,7 @@ from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDelet
 from datetime import datetime
 
 # Create your views here.        
+
 def index(request, scheme_of_work_id, lesson_id = 0):
     """ Get lessons for scheme of work """
     

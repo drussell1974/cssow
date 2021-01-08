@@ -5,10 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
-#from shared.models.core import validation_helper
-
 from shared.view_model import ViewModel
-
 from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
@@ -18,7 +15,6 @@ from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 # Create your views here.
 
 def index(request):
-
     #253 check user id
     getall_view =  SchemeOfWorkIndexViewModel(db, auth_user=auth_user_id(request))
     

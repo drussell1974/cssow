@@ -17,6 +17,8 @@
     "build-static": "tar -czf ../../build/teacher-web/teacher-web.build.static.tar.gz --exclude=*.bin --exclude=media web/static",
     "build:dev": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
     "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "start:dev":"source ../../../.venv/django/Scripts/activate && yarn build:dev",
+    "start:test":"source ../../../.venv/django/Scripts/activate && yarn build:test",
     "test:all": "yarn test:unit && yarn test-ui",
     "test:unit":"yarn test-helpers && yarn test-dbmodels && yarn test-models && yarn test-viewmodels && yarn test-routes && yarn test-api ", 
     "test:coverage":"coverage erase && yarn test:unit && coverage html && coverage report && echo '[1;30m Run **serve htmlcov** and open in browser \\e[0m'", 
@@ -27,7 +29,8 @@
     "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
-    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh",
+    "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh && yarn test-ui--permissions",
+    "test-ui--permissions": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--permissions.sh",
     "test-ui--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--verify.sh",
     "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index__keyword__search.py"
   },
