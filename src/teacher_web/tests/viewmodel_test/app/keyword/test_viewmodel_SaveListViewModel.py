@@ -6,7 +6,6 @@ from unittest.mock import MagicMock, Mock, patch
 from app.default.viewmodels import KeywordSaveViewModel as ViewModel, KeywordGetModelViewModel
 from shared.models.cls_keyword import KeywordModel as Model
 
-
 class test_viewmodel_SaveListViewModel(TestCase):
 
     def setUp(self):

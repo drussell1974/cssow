@@ -17,6 +17,7 @@ from shared.view_model import ViewModel
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
     
     def __init__(self, db, top, auth_user):
+        raise DeprecationWarning("no matching view")
         self.model = []
         self.db = db
 
@@ -29,7 +30,8 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
 
     def view(self, main_heading, sub_heading):
-
+        raise DeprecationWarning("no matching view")
+        
         data = {
             "latest_schemes_of_work":self.model
         }
