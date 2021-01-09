@@ -91,7 +91,7 @@ class test_viewmodel_IndexViewModel(TestCase):
 
 
     @patch.object(TeacherPermissionModel, 'check_permission', return_value=False)
-    def test_init_return_check_permission_false(self, check_permission):
+    def test_init_should_raise_PermissionError(self, check_permission):
         
         # arrange
         db = MagicMock()

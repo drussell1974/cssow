@@ -152,7 +152,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_execute_called_save__with_check_permission_returns_false(self, check_permission):
+    def test_should_raise_TeacherPermissionError(self, check_permission):
         
         # arrange
         

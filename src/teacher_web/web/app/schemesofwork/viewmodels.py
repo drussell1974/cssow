@@ -115,6 +115,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
+    @check_teacher_permission(SCHEMEOFWORK.PUBLISH, "/")
     def __init__(self, db, auth_user):
         data = Model.delete_unpublished(db, auth_user)
         self.model = data
@@ -122,6 +123,7 @@ class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
 class SchemeOfWorkPublishModelViewModel(BaseViewModel):
 
+    @check_teacher_permission(SCHEMEOFWORK.PUBLISH, "/")
     def __init__(self, db, scheme_of_work_id, auth_user):
         data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
         self.model = data

@@ -87,7 +87,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
 
     @patch.object(TeacherPermissionModel, 'check_permission',return_value=False)
-    def test_init_with_check_permission_returns_false(self, check_permission):
+    def test_init_should_raise_PermissionError(self, check_permission):
         
         # assert
         with self.assertRaises(PermissionError):
