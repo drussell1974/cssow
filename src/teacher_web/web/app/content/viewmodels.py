@@ -5,15 +5,18 @@ from django.http import Http404
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.viewmodels.baseviewmodel import BaseViewModel
-from shared.view_model import ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.viewmodels.decorators.permissions import check_teacher_permission
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.baseviewmodel import BaseViewModel
+from shared.view_model import ViewModel
 
 
 class ContentIndexViewModel(BaseViewModel):
     
+    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")
     def __init__(self, db, scheme_of_work_id, auth_user):
         """ determine and action request """
         self.auth_user = auth_user
@@ -46,6 +49,7 @@ class ContentEditViewModel(BaseViewModel):
     is_content_ready = False
     error_message = ""
 
+    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
     def __init__(self, db, request, scheme_of_work_id, content_id, auth_user):
         
         self.db = db
