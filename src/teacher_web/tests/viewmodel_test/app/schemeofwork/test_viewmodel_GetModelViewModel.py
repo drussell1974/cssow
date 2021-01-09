@@ -6,7 +6,7 @@ from django.http import Http404
 
 from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
-
+from shared.viewmodels.decorators.permissions import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 
@@ -18,7 +18,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__with_exception(self):
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
+    def test_init_called_fetch__with_exception(self, check_permission):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -39,7 +40,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
             
             
 
-    def test_init_called_fetch__no_return_rows(self):
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
+    def test_init_called_fetch__no_return_rows(self, check_permission):
         
         # arrange
         
@@ -60,7 +62,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
             Model.get_model.assert_called()
 
 
-    def test_init_called_fetch__return_item(self):
+    @patch.object(TeacherPermissionModel, 'check_permission',return_value=True)
+    def test_init_called_fetch__return_item(self, check_permission):
         
         # arrange
         
@@ -81,3 +84,17 @@ class test_viewmodel_GetModelViewModel(TestCase):
             Model.get_model.assert_called()
             self.assertEqual(99, self.viewmodel.model.id)
             self.assertEqual("Duis diam arcu, rhoncus ac", self.viewmodel.model.name)
+
+
+    @patch.object(TeacherPermissionModel, 'check_permission',return_value=False)
+    def test_init_with_check_permission_returns_false(self, check_permission):
+        
+        # assert
+        with self.assertRaises(PermissionError):
+
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            # act
+            self.viewmodel = ViewModel(db, 456, auth_user=99)
+

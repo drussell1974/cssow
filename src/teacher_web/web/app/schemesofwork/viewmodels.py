@@ -40,6 +40,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
 
 class SchemeOfWorkEditViewModel(BaseViewModel):
 
+    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
     def __init__(self, db, request, scheme_of_work_id, auth_user):
         
         self.db = db
