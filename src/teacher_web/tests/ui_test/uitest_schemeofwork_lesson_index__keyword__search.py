@@ -26,7 +26,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
         # array of expected items per pages
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         # act
 

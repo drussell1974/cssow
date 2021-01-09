@@ -17,8 +17,8 @@ class TeacherPermissionModel(models.Model):
 
     def _clean_up(self):
         """ clean up properties by removing by casting and ensuring safe for inserting etc """
-        # id
         self.auth_user = int(self.auth_user)
+
 
     def check_permission(self, permission):
         if type(permission) == SCHEMEOFWORK:

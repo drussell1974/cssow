@@ -10,7 +10,7 @@ A django web application for administering computer science schemes of work and 
 
 A. Python
 ---------
-apt-get install python3
+apt-get install python3.7
 apt-get install python3-pip
 
 B. Yarn

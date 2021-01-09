@@ -28,6 +28,7 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
     
+    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model

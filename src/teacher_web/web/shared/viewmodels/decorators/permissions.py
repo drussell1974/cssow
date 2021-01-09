@@ -1,3 +1,4 @@
+from django.db import connection as db
 from django.http import HttpResponseRedirect
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.cls_teacher_permission import TeacherPermissionModel
@@ -23,6 +24,8 @@ class check_teacher_permission:
     def __init__(self, permission, redirect_to_url):
         """ SCHEMEOFWORK_ACCESS and LESSON_ACCESS decorator argument """
         self._permission = permission
+        self._auth_user = 0
+        self._scheme_of_work_id = 0
         self._redirect_to_url = redirect_to_url
 
 
@@ -30,21 +33,15 @@ class check_teacher_permission:
         """ the parent function """
 
         def inner(*args, **kwargs):
-            print("call innert")
-            for arg in args:
-                print(arg)
-                
-            for arg in kwargs:
-                print(arg)  
-            '''
-            scheme_of_work_id = kwargs["scheme_of_work_id"]
-            lesson_id = kwargs["lesson_id"]
-            '''
-            model = TeacherPermissionModel.get_model(self.db, 0, 0)
-            if model.check_permission(self._permission) == False:
-                print(f"redirecting to {self._redirect_to_url}")
-                return HttpResponseRedirect(self._redirect_to_url)
-            else:
-                print("user {selfpermission ")
-                
+            if "auth_user" in kwargs.keys():
+                self._auth_user = kwargs["auth_user"]
+            if "scheme_of_work_id" in kwargs.keys():
+                self._scheme_of_work_id = kwargs["scheme_of_work_id"]
+            model = TeacherPermissionModel.get_model(db, self._auth_user, self._scheme_of_work_id)
+            if model.check_permission(self._permission) == False:            
+                raise PermissionError(f"You do not have permission to {str(self._permission).split('.')[1]} view this {str(self._permission).split('.')[0]}") 
+
+            # call decorated function
+            func(*args, **kwargs)
+            
         return inner

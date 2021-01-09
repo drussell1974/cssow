@@ -35,7 +35,7 @@ class uitest_schemeofwork_resources__cannot_delete_published(UITestCase):
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         
-        elem.click()
+        #elem.click()
 
         ' Open Modal '
         

@@ -63,7 +63,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # array of expected items per pages
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """

@@ -87,7 +87,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         #231: items after should be less than before
         
-        expected_item_per_page = [10,10,7,0]
+        expected_item_per_page = [10,10,6,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """
@@ -129,7 +129,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         
         #231: items after should be less than before
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """
