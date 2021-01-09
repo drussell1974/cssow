@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, Mock, patch
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_keyword import KeywordModel
+from shared.viewmodels.decorators.permissions import TeacherPermissionModel
 
 
 class test_viewmodel_IndexViewModel(TestCase):
@@ -18,7 +19,8 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
+    def test_init_called_fetch__no_return_rows(self, check_permission):
         
         # arrange
         
@@ -39,7 +41,8 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
+    def test_init_called_fetch__single_row(self, check_permission):
         
         # arrange
         model = Model(56, "Lorum")
@@ -65,7 +68,8 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(2, len(self.viewmodel.model[0].key_words))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
+    def test_init_called_fetch__multiple_rows(self, check_permission):
         
         # arrange
         
@@ -84,3 +88,16 @@ class test_viewmodel_IndexViewModel(TestCase):
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))
+
+
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=False)
+    def test_init_return_check_permission_false(self, check_permission):
+        
+        # arrange
+        db = MagicMock()
+        db.cursor = MagicMock()
+                
+        with self.assertRaises(PermissionError):
+
+            # act
+            self.viewmodel = ViewModel(db, auth_user=99)
