@@ -17,7 +17,6 @@ from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
 
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(permission=SCHEMEOFWORK.VIEW, redirect_to_url="/accounts/login")
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 

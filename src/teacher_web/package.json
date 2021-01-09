@@ -7,16 +7,16 @@
   "license": "MIT",
   "pre-commit": "test",
   "scripts": {
-    "create-admin": "python ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
-    "make-migrations": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py makemigrations models --settings=web.settings.development.settings",
-    "migrate": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py migrate --settings=web.settings.development.settings",
-    "install:":"pip install -r requirements.txt && yarn build",
-    "install:dev":"pip install -r requirements.dev.txt && yarn build:dev",
-    "install:test":"pip install -r requirements.dev.txt && yarn build:test",
+    "create-admin": "python3.7 ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
+    "make-migrations": "env-cmd -f ../../dotenv/.env.development python3.7 ./web/manage.py makemigrations models --settings=web.settings.development.settings",
+    "migrate": "env-cmd -f ../../dotenv/.env.development python3.7 ./web/manage.py migrate --settings=web.settings.development.settings",
+    "install:":"pip3 install -r requirements.txt && yarn build",
+    "install:dev":"pip3 install -r requirements.dev.txt && yarn build:dev",
+    "install:test":"pip3 install -r requirements.dev.txt && yarn build:test",
     "build": "tar -czf ../../build/teacher-web/teacher-web.build.tar.gz --exclude=*.bin --exclude=media web ../database/schema requirements.txt && yarn build-static",
     "build-static": "tar -czf ../../build/teacher-web/teacher-web.build.static.tar.gz --exclude=*.bin --exclude=media web/static",
-    "build:dev": "env-cmd -f ../../dotenv/.env.development python ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
-    "build:test": "pip install coverage && env-cmd -f ../../dotenv/.env.test-ui python ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
+    "build:dev": "env-cmd -f ../../dotenv/.env.development python3 ./web/manage.py runserver --settings=web.settings.development.settings 127.0.0.1:3002",
+    "build:test": "python3.7 --version && env-cmd -f ../../dotenv/.env.test-ui python3.7 ./web/manage.py runserver --settings=web.settings.test-ui.settings 127.0.0.1:3002",
     "start:dev":"source ../../../.venv/django/Scripts/activate && yarn build:dev",
     "start:test":"source ../../../.venv/django/Scripts/activate && yarn build:test",
     "test:all": "yarn test:unit && yarn test-ui",
@@ -32,7 +32,7 @@
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh && yarn test-ui--permissions",
     "test-ui--permissions": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--permissions.sh",
     "test-ui--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--verify.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index__keyword__search.py"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python3.7 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index__keyword__search.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"
