@@ -6,6 +6,8 @@ from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 

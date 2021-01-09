@@ -30,7 +30,7 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, auth_user=99, lesson_id=999)
+                self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=999)
             #TODO: #233 remove self.assertRaises
              
             # assert
@@ -52,7 +52,7 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99, lesson_id=101)
+            self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=101)
 
             # assert functions was called
             Model.delete_unpublished.assert_called()
@@ -74,7 +74,7 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99, lesson_id=912)
+            self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=912)
 
             # assert functions was called
             Model.delete_unpublished.assert_called()
@@ -102,7 +102,7 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99, lesson_id=912)
+            self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=912)
 
             # assert functions was called
             Model.delete_unpublished.assert_called()

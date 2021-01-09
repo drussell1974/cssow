@@ -24,22 +24,22 @@ class LessonViewSet(APIView):
         resource_type_id = request.GET.get("resource_type_id", 0)
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request), resource_type_id)
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request), resource_type_id=resource_type_id)
         return JsonResponse({ "lesson": get_lesson_view.model })
     
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
-    
+    # TODO: 206 @unauthorise_request
     def get (self, request, scheme_of_work_id):
         #253 check user id
-        get_lessons_view = LessonGetAllViewModel(db, scheme_of_work_id, auth_user_id(request))
+        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work=scheme_of_work_id, auth_user=auth_user_id(request))
         return JsonResponse({"lessons": get_lessons_view.model})
 
 
 class LessonPathwayObjectivesViewSet(APIView):
     ''' API endpoint for list of lessons pathway objectives'''
-
+    # TODO: 206 @unauthorise_request
     def get(self, request, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
 
         raise DeprecationWarning("verify usage")
@@ -55,6 +55,8 @@ class LessonPathwayObjectivesViewSet(APIView):
 
 
 class LessonPathwayKs123ViewSet(APIView):
+
+    # TODO: 206 @unauthorise_request
     def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")

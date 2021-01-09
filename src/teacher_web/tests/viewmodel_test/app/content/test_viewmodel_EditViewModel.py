@@ -41,7 +41,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
         with self.assertRaises(Http404):
             # act
-            ViewModel(self.mock_db, mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
 
             # assert functions was to return data called
             SchemeOfWorkModel.get_model.assert_called()
@@ -62,7 +62,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
         with self.assertRaises(Http404):
             # act
-            ViewModel(self.mock_db, mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
 
             # assert functions was to return data called
             SchemeOfWorkModel.get_model.assert_called()
@@ -83,7 +83,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
         # act
-        viewmodel = ViewModel(self.mock_db, mock_request, scheme_of_work_id=234, content_id=0, auth_user=99)
+        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=0, auth_user=99)
         
         # assert 
 
@@ -113,7 +113,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
         # act
-        viewmodel = ViewModel(self.mock_db, mock_request, scheme_of_work_id=234, content_id=101, auth_user=99)
+        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=101, auth_user=99)
         
         # assert 
         
@@ -147,7 +147,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # call view
         with self.assertRaises(Http404):
             # act
-            viewmodel = ViewModel(self.mock_db, mock_request, scheme_of_work_id=234, content_id=67, auth_user=99)
+            viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=67, auth_user=99)
         
             # assert 
             
@@ -175,7 +175,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
                 method = "POST"
             )
             
-            test_context = ViewModel(self.mock_db, mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)
                                         
             # assert 
         
@@ -205,7 +205,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
             #"", "Vivamus venenatis interdum sem.", "Quisque imperdiet lectus efficitur enim porttitor, vel iaculis ligula ullamcorper"
 
-            viewmodel = ViewModel(self.mock_db, mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            viewmodel = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
             
             # assert 
         
@@ -246,4 +246,4 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
         with self.assertRaises(PermissionError):
             # act
-            ViewModel(self.mock_db, mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)
+            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)

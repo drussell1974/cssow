@@ -29,7 +29,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id
-    getall_resources = ResourceGetAllViewModel(db, request, lesson_id, scheme_of_work_id, auth_user_id(request))  
+    getall_resources = ResourceGetAllViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
         
     return render(request, "resources/index.html", getall_resources.view().content)
 
@@ -47,7 +47,7 @@ def new(request, scheme_of_work_id, lesson_id):
         lesson_id=lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     #253 check user id
@@ -72,7 +72,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
     #253 check user id
-    get_model_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id(request))
+    get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_model_view.model
 
     if model == None:
@@ -85,7 +85,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
     lesson = get_lesson_view.model
 
     #253 check user id
@@ -147,7 +147,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_resource_view = ResourceSaveViewModel(db, model, auth_user_id(request))
+    save_resource_view = ResourceSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
     
     save_resource_view.execute(int(request.POST["published"]))
 
@@ -175,7 +175,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
         lesson = get_lesson_view.model
             
         #253 check user id

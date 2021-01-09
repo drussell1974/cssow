@@ -40,11 +40,9 @@ class TeacherPermissionModel(models.Model):
     @staticmethod
     def get_model(db, scheme_of_work_id, auth_user):
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work_id, auth_user)
-        model = TeacherPermissionModel(auth_user, scheme_of_work_id) # Default
+        model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id) # Default
         for row in rows:
-            model = TeacherPermissionModel(auth_user, scheme_of_work_id, 
-                row[0], 
-                row[1])
+            model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id, scheme_of_work_permission=row[0], lesson_permission=row[1])
         return model
 
 
@@ -56,8 +54,7 @@ class TeacherPermissionDataAccess:
 
         str_select = "scheme_of_work__get_teacher_permissions"
         params = (scheme_of_work_id, auth_user)
-
         rows = []
         rows = helper.select(db, str_select, params, rows, handle_log_info)
-
+        
         return rows

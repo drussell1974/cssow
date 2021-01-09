@@ -12,7 +12,7 @@ def index(request):
 
     # get the schemes of work
     #253 check user id
-    modelview = SchemeOfWorkGetLatestViewModel(db, top = 5, auth_user=auth_user_id(request))
+    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_user_id(request))
     
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 

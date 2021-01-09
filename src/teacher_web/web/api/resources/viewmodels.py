@@ -1,3 +1,5 @@
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.serializers.srl_resource import ResourceSerializer
 from shared.models.cls_resource import ResourceModel

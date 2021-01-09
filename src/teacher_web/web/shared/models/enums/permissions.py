@@ -6,7 +6,8 @@ class SCHEMEOFWORK(IntFlag):
     VIEW = 2
     EDIT = 4
     ADD = 8
-    PUBLISH = 16
+    DELETE = 16
+    PUBLISH = 32
 
 
 class LESSON(IntFlag):
@@ -15,4 +16,5 @@ class LESSON(IntFlag):
     VIEW = 2
     EDIT = 4
     ADD = 8
-    PUBLISH = 16
+    DELETE = 16
+    PUBLISH = 32

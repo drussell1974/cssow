@@ -30,7 +30,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
     #253 check user id
-    getall_keywords = KeywordGetAllListViewModel(db, request, scheme_of_work_id, auth_user_id(request))  
+    getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
     
     return render(request, "keywords/index.html", getall_keywords.view().content)
 
@@ -45,7 +45,7 @@ def new(request, scheme_of_work_id):
         definition="",
         scheme_of_work_id=scheme_of_work_id)
     
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -63,7 +63,7 @@ def new(request, scheme_of_work_id):
 def edit(request, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    get_model_view = KeywordGetModelViewModel(db, keyword_id, scheme_of_work_id, auth_user_id(request))
+    get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_model_view.model
     
     if model == None:
@@ -75,7 +75,7 @@ def edit(request, scheme_of_work_id, keyword_id):
 
     #253 check user id
 
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -118,7 +118,7 @@ def save(request, scheme_of_work_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = KeywordSaveViewModel(db, model, auth_user_id(request))
+    save_keyword_view = KeywordSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -136,7 +136,7 @@ def save(request, scheme_of_work_id, keyword_id):
     else:
         """ redirect back to page and show message """
 
-        get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
+        get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
         scheme_of_work = get_scheme_of_work_view.model
 
         data = {
@@ -184,7 +184,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
     redirect_to_url = request.META.get('HTTP_REFERER')
     
     #253 check user id
-    KeywordDeleteUnpublishedViewModel(db, scheme_of_work_id, lesson_id, auth_user=auth_user_id(request))
+    KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -193,7 +193,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
 def merge_duplicates(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
-    merge_viewmodel = KeywordMergeViewModel(db, keyword_id, scheme_of_work_id, auth_user=auth_user_id(request))
+    merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=key_word_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
     merge_viewmodel.execute(request)
 

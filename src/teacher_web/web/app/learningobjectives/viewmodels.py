@@ -6,6 +6,8 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_solotaxonomy import SoloTaxonomyModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 

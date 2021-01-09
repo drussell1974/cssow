@@ -36,7 +36,7 @@ def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
     #253 check user id
-    learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+    learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     
     return render(request, "learningobjectives/index.html", learningobjectivesviewmodel.view().content)
 
@@ -47,12 +47,12 @@ def new(request, scheme_of_work_id, lesson_id):
 
     # check if an existing_learning_objective_id has been passed
      
-    #253 check user id
-    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, scheme_of_work_id, lesson_id, auth_user_id(request))
+    #253 check user id 
+    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=0, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
     model = get_lessonobjective_view.model
     
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -102,7 +102,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         ## GET request from client ##
     
         #253 check user id
-        get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id(request))
+        get_model_viewmodel = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=learning_objective_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
         model = get_model_viewmodel.model
 
 
@@ -129,7 +129,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         redirect_to_url = ""
 
         #253 check user id
-        viewmodel = LearningObjectiveEditViewModel(db, model, auth_user_id(request))
+        viewmodel = LearningObjectiveEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
         
         viewmodel.execute(int(request.POST["published"]))
         model = viewmodel.model
@@ -147,7 +147,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
             
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -216,7 +216,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     redirect_to_url = ""
 
     #253 check user id
-    viewmodel = LearningObjectiveEditViewModel(db, model, auth_user_id(request))
+    viewmodel = LearningObjectiveEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
     
     model = viewmodel.model
 
@@ -249,7 +249,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LearningObjectiveDeleteUnpublishedViewModel(db, lesson_id, auth_user_id(request))
+    LearningObjectiveDeleteUnpublishedViewModel(db=db, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -261,7 +261,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LearningObjectivePulishModelViewModel(db, learning_objective_id, auth_user_id(request))
+    LearningObjectivePulishModelViewModel(db=db, learning_objective_id=learning_objective_id, auth_user=auth_user_id(request))
 
     # redirect
     return HttpResponseRedirect(redirect_to_url)

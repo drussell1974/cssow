@@ -6,6 +6,8 @@ from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
@@ -80,14 +82,11 @@ class LessonGetModelViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, model, auth_user):
         
         self.db = db
         self.auth_user = auth_user
-
-        # assign data directly to the model
-
-        self.model = data
+        self.model = model
 
 
     def execute(self, published):
@@ -116,5 +115,5 @@ class LessonDeleteViewModel(BaseViewModel):
 
 class LessonDeleteUnpublishedViewModel(BaseViewModel):
     
-    def __init__(self, db, auth_user, lesson_id):
-        self.model = Model.delete_unpublished(db, auth_user, lesson_id)
+    def __init__(self, db, auth_user, scheme_of_work_id):
+        self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)

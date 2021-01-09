@@ -34,7 +34,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -58,7 +58,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -83,21 +83,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))
 
-
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=False)
-    def test_init_should_raise_PermissionError(self, check_permission):
-        
-        # arrange
-        db = MagicMock()
-        db.cursor = MagicMock()
-                
-        with self.assertRaises(PermissionError):
-
-            # act
-            self.viewmodel = ViewModel(db, auth_user=99)

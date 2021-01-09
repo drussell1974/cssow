@@ -44,7 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
             # act
 
-            test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
                         
             # assert 
 
@@ -90,7 +90,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
                 
                 # assert 
                 self.assertEqual("", test_context.error_message)
@@ -132,7 +132,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
 
                 # assert 
 
@@ -152,7 +152,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_TeacherPermissionError(self, check_permission):
+    def test_should_raise_PermissionError(self, check_permission):
         
         # arrange
         
@@ -174,6 +174,6 @@ class test_viewmodel_EditViewModel(TestCase):
         with self.assertRaises(PermissionError):
     
             # act
-            test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
             
 

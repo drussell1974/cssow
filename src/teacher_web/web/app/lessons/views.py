@@ -37,7 +37,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user=auth_user_id(request))
+    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_id(request))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 
@@ -56,7 +56,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         
         if lesson_id > 0:
             #253 check user id
-            get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+            get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
             model = get_lesson_view.model
     
         # handle copy
@@ -92,7 +92,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db, model, auth_user=auth_user_id(request))
+        modelviewmodel = LessonEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
 
         try:
             modelviewmodel.execute(published)
@@ -148,7 +148,7 @@ def publish(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    publishlesson_view = LessonPublishViewModel(db, auth_user_id(request), lesson_id)
+    publishlesson_view = LessonPublishViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     # check for null and 404
 
@@ -164,7 +164,7 @@ def delete(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    modelviewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
+    modelviewmodel = LessonDeleteViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
@@ -175,7 +175,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
     #253 check user id
-    get_lesson_view =  LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+    get_lesson_view =  LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user_id=auth_user_id(request))
     model = get_lesson_view.model
 
     data = {
@@ -201,7 +201,7 @@ def initialise_keywords(request, scheme_of_work_id):
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
 
     #253 check user id
-    lessons = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user=auth_user_id(request))
+    lessons = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_option=pagesize_options, auth_user=auth_user_id(request))
 
 
     scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id(request))
@@ -226,8 +226,8 @@ def delete_unpublished(request, scheme_of_work_id):
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #235 Create ViewModel
+    #235 Create ViewModelscheme_of_work_id
     #253 check user id
-    LessonDeleteUnpublishedViewModel(db, scheme_of_work_id, auth_user_id(request))
+    LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)

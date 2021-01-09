@@ -1,5 +1,7 @@
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.serializers.srl_schemeofwork import SchemeOfWorkModelSerializer
 from shared.serializers.srl_keyword import KeywordModelSerializer
 

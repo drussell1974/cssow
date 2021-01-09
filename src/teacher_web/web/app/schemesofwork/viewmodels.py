@@ -4,20 +4,18 @@ from rest_framework import serializers, status
 from django.http.response import Http404
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
-
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
-from shared.viewmodels.decorators.permissions import check_teacher_permission
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 
 
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.NONE, "/")
+    # @check_teacher_permission(SCHEMEOFWORK.NONE, "/")
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 
@@ -51,7 +49,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
 
-            getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user)
+            getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
 
             self.model = getmodel_view.model
             
@@ -111,14 +109,6 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         delete_message = delete_message + "</ul>"
 
         return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
-
-
-class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
-
-    @check_teacher_permission(SCHEMEOFWORK.PUBLISH, "/")
-    def __init__(self, db, auth_user):
-        data = Model.delete_unpublished(db, auth_user)
-        self.model = data
 
 
 class SchemeOfWorkPublishModelViewModel(BaseViewModel):

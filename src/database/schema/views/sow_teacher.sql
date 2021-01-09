@@ -10,7 +10,7 @@ AS
     WHERE user.is_active = 1 AND user.is_superuser = 1
     UNION
     -- is the user as teacher of this this scheme of work
-    SELECT user.id AS auth_user_id, teach.scheme_of_work_id AS scheme_of_work_id, user.first_name as first_name, user.last_name as last_name, 1 as scheme_of_work_permission, 1 as lesson_permission
+    SELECT user.id AS auth_user_id, teach.scheme_of_work_id AS scheme_of_work_id, user.first_name as first_name, user.last_name as last_name, scheme_of_work_permission as scheme_of_work_permission, lesson_permission as lesson_permission
     FROM auth_user AS user
     INNER JOIN sow_scheme_of_work__has__teacher AS teach ON user.id = teach.auth_user_id 
     WHERE user.is_active = 1;

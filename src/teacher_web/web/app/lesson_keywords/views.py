@@ -30,7 +30,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
     #253 check user id
-    getall_keywords = LessonKeywordGetAllListViewModel(db, request, lesson_id, scheme_of_work_id, auth_user_id(request))  
+    getall_keywords = LessonKeywordGetAllListViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
     
     return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
 
@@ -41,7 +41,7 @@ def select(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
     #253 check user id
-    keywords_select = LessonKeywordSelectViewModel(db, request, lesson_id, scheme_of_work_id, auth_user_id(request))  
+    keywords_select = LessonKeywordSelectViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
     
     if request.method == "POST":
         
@@ -67,10 +67,10 @@ def new(request, scheme_of_work_id, lesson_id):
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user_id=auth_user_id(request))
     lesson = get_lesson_view.model
 
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user_id(request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -89,7 +89,7 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    get_model_view = LessonKeywordGetModelViewModel(db, keyword_id, lesson_id, scheme_of_work_id, auth_user_id(request))
+    get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_model_view.model
     
     if model == None:
@@ -102,7 +102,7 @@ def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
     lesson = get_lesson_view.model
 
     #253 check user id
@@ -149,7 +149,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = LessonKeywordSaveViewModel(db, model, auth_user_id(request))
+    save_keyword_view = LessonKeywordSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -168,7 +168,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
         """ redirect back to page and show message """
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))    
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
         lesson = get_lesson_view.model
         
         data = {
@@ -223,6 +223,6 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
     # Use ViewModel
 
     #253 check user id
-    LessonKeywordDeleteUnpublishedViewModel(db, scheme_of_work_id, lesson_id, auth_user=auth_user_id(request))
+    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)

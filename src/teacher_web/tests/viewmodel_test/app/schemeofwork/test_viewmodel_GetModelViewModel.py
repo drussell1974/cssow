@@ -56,7 +56,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db, 123, auth_user=99)
+                self.viewmodel = ViewModel(db=db, scheme_of_work_id=123, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -78,7 +78,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 456, auth_user=99)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=456, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -96,5 +96,5 @@ class test_viewmodel_GetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, 456, auth_user=99)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=456, auth_user=99)
 

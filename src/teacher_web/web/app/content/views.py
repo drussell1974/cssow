@@ -19,7 +19,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 def index(request, scheme_of_work_id):
 
     #253 check user id
-    view_model = ContentIndexViewModel(db, scheme_of_work_id, auth_user_id(request))
+    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     
     return render(request, "content/index.html", view_model.view().content)
 
@@ -30,7 +30,7 @@ def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 
     #253 check user id
-    view_model = ContentEditViewModel(db, request, scheme_of_work_id, content_id, auth_user_id(request))
+    view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_user_id(request))
 
     if view_model.is_content_ready:
         

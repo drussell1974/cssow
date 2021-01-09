@@ -7,10 +7,13 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 class LessonKeywordGetAllListViewModel(BaseViewModel):
+    
     
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         

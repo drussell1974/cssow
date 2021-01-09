@@ -14,7 +14,7 @@ class ResourceViewSet(APIView):
     def get(self, request, scheme_of_work_id, lesson_id, resource_id):
 
         #253 check user id
-        resource_view = ResourceGetModelViewModel(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id(request))
+        resource_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
         return JsonResponse({"resource": resource_view.model})
 
@@ -25,6 +25,6 @@ class ResourceMarkdownViewSet(APIView):
     def get(self, request, scheme_of_work_id, lesson_id, resource_id, md_document_name):
         
         #253 check user id
-        markdown_view = ResourceGetMarkdownViewModel(settings.MARKDOWN_STORAGE, resource_id, lesson_id, scheme_of_work_id, md_document_name, auth_user_id(request))
+        markdown_view = ResourceGetMarkdownViewModel(MARKDOWN_STORAGE=settings.MARKDOWN_STORAGE, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, md_document_name=md_document_name, auth_user=auth_user_id(request))
 
         return JsonResponse({"markdown": markdown_view.model})
