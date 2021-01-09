@@ -22,7 +22,7 @@ def unauthorise_request(func):
 class check_teacher_permission:
     """ checks the teachers permission on the scheme of work and redirect if user does not have permission """
 
-    def __init__(self, permission, redirect_to_url):
+    def __init__(self, permission, redirect_to_url="/"):
         """ SCHEMEOFWORK_ACCESS and LESSON_ACCESS decorator argument """
         self._permission = permission
         self._auth_user = 0
