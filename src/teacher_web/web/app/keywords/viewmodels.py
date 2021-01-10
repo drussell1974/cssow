@@ -78,7 +78,7 @@ class KeywordGetModelViewModel(BaseViewModel):
         try:
             # get model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, scheme_of_work_id, auth_user)
-
+            
             #248 Http404
             if scheme_of_work_id > 0:
                 if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:

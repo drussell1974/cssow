@@ -62,7 +62,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             Model.get_model.assert_called()
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission',return_value=True)
+    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
     def test_init_called_fetch__return_item(self, check_permission):
         
         # arrange

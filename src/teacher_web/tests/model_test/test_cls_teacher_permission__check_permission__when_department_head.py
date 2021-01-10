@@ -16,9 +16,9 @@ class test_cls_teacher_permission__check_permission__when_department_head(TestCa
         pass
 
 
-    def test_check__none_returns_false(self):
+    def test_check__none_returns_true(self):
         # assert
-        self.assertFalse(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
 
 
     def test_check__student_returns_true(self):

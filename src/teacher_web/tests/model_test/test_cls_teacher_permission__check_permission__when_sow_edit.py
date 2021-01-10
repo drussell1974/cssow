@@ -14,9 +14,9 @@ class test_cls_teacher_permission__check_permission__when_sow_edit(TestCase):
         pass
 
 
-    def test_check__none_returns_false(self):
+    def test_check__none_returns_true(self):
         # assert
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.NONE))
+        self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
 
 
     def test_check__edit_returns_true(self):
