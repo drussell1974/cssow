@@ -4,11 +4,14 @@ from django.http import Http404
 # test context
 
 from app.lessons.viewmodels import LessonGetModelViewModel as ViewModel
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonGetModelViewModel(TestCase):
+    
+    VIEW_ONLY_PERMISSIONS = TeacherPermissionModel(99, 22, SCHEMEOFWORK.VIEW, LESSON.OWNER, DEPARTMENT.STUDENT)
 
     def setUp(self):        
         pass
@@ -17,8 +20,9 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
     def tearDown(self):
         pass
 
-
-    def test_init_called_fetch__with_exception(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    @patch.object(TeacherPermissionModel, "get_model", return_value=VIEW_ONLY_PERMISSIONS)
+    def test_init_called_fetch__with_exception(self, check_permission, TeacherPermissionModel_get_model):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -30,7 +34,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, 99, scheme_of_work_id=22, auth_user=99)
+                self.viewmodel = ViewModel(db=db, lesson_id=99, scheme_of_work_id=22, auth_user=99)
             #TODO: #233 remove self.assertRaises
              
             # assert
@@ -38,7 +42,8 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_fetch__no_return_rows(self, check_permission):
         
         # arrange
         
@@ -53,14 +58,16 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db, 123, scheme_of_work_id=22, auth_user=99)
+                self.viewmodel = ViewModel(db=db, lesson_id=123, scheme_of_work_id=22, auth_user=99)
 
                 # assert functions was called
                 Model.get_model.assert_called()
                 self.assertIsNone(self.viewmodel.model)
 
 
-    def test_init_called_fetch__return_item(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    @patch.object(TeacherPermissionModel, "get_model", return_value=VIEW_ONLY_PERMISSIONS)
+    def test_init_called_fetch__return_item(self, check_permission, TeacherPermissionModel_get_model):
         
         # arrange
         
@@ -81,10 +88,23 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 456, scheme_of_work_id=22, auth_user=99)
+            self.viewmodel = ViewModel(db=db, lesson_id=456, scheme_of_work_id=22, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
             self.assertEqual(99, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
             self.assertEqual(3, len(self.viewmodel.model.key_words))
+
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange
+
+        db = MagicMock()
+        db.cursor = MagicMock()
+        
+        with self.assertRaises(PermissionError):
+            # act
+            self.viewmodel = ViewModel(db=db, lesson_id=99, scheme_of_work_id=22, auth_user=99)

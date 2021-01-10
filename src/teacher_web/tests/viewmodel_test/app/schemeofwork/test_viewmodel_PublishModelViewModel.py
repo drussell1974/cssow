@@ -36,6 +36,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             # assert functions was called
             Model.publish_by_id.assert_called()
 
+
     @patch.object(TeacherPermissionModel, 'check_permission', return_value=False)
     def test_should_raise_PermissionError(self, check_permission):
         

@@ -52,6 +52,7 @@ class TeacherPermissionModel(models.Model):
         for row in rows:
             model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id, scheme_of_work_permission=row[0], lesson_permission=row[1], department_permission=row[2])
             return model
+            
         return model
 
 

@@ -67,6 +67,7 @@ class LessonIndexViewModel(BaseViewModel):
 
 class LessonGetModelViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
