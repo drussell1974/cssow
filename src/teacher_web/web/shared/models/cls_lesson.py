@@ -339,9 +339,9 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_by_keyword(db, key_word_id, scheme_of_work_id, auth_user, parent_only = True):
+    def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user, parent_only = True):
         rows = LessonDataAccess.get_by_keyword(db, 
-            key_word_id,
+            keyword_id,
             scheme_of_work_id, 
             auth_user)
 
@@ -679,7 +679,7 @@ class LessonDataAccess:
         get lessons using this key word
 
         :param db:database context
-        :param key_word_id: the key word identifier
+        :param keyword_id: the key word identifier
         :param scheme_of_work_id: the scheme of work identifier
         :return: list of lessons for the key word
         """
@@ -933,7 +933,7 @@ class LessonDataAccess:
     @staticmethod
     def _upsert_key_words(db, model, results, auth_user):
         """ 
-        inserts sow_lesson__has__keywords if key_word_id does not exist in table
+        inserts sow_lesson__has__keywords if keyword_id does not exist in table
         :param db: the database context
         :param model: the lesson model
         :param results: results to be appended

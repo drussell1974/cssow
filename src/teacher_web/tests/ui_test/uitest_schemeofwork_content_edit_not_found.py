@@ -28,7 +28,7 @@ class uitest_schemeofwork_content_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content/{}/edit".format(999999, self.test_content_id))
 
         # assert
-        self.assertCustom404("(id=0) (192, 999999) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/curriculum-content/192/edit")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):

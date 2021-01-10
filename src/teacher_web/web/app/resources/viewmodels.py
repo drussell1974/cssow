@@ -121,11 +121,13 @@ class ResourceGetModelViewModel(BaseViewModel):
 
 class ResourceSaveViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
-        self.model = data
+        self.scheme_of_work_id = scheme_of_work_id
+        self.lesson_id = lesson_id
+        self.model = model
 
 
     def execute(self, published):

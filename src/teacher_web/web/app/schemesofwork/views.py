@@ -8,6 +8,7 @@ from shared.models.core.log import handle_log_warning, handle_log_info
 from shared.view_model import ViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
+from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 # Create your views here.
@@ -41,3 +42,14 @@ def edit(request, scheme_of_work_id = 0):
     
     return render(request, "schemesofwork/edit.html", save_view.view().content)
 
+
+@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+def delete_unpublished(request):
+    """ delete item and redirect back to referer """
+
+    redirect_to_url = request.META.get('HTTP_REFERER')
+
+    #253 check user id
+    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=auth_user_id(request))
+
+    return HttpResponseRedirect(redirect_to_url)

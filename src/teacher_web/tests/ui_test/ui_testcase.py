@@ -51,6 +51,10 @@ class UITestCase(TestCase):
         elem = self.test_context.find_element_by_css_selector('#info > p')
         self.assertEqual(info_message, elem.text)
 
+    def assertCustomPermissionDenied(self, h1):
+        elem = self.test_context.find_element_by_css_selector("div#summary h1")
+        self.assertEqual(h1, elem.text)
+
 
     def try_log_in(self, redirect_to_uri_on_login):
         """
@@ -73,18 +77,29 @@ class UITestCase(TestCase):
             ' submit the form '
             elem.send_keys(Keys.RETURN)
 
-
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             pass
 
 
-    def do_log_in(self, redirect_to_uri_on_login):
+    def try_log_out(uri):
+        try:
+            elem = self.test_context.find_element_by_id("btn-logout")
+            elem.click()
+        except:
+            pass # ignore errors as may already be logged out
+
+        self.test_context.get(self.root_uri + uri)
+        self.test_context.implicitly_wait(4)
+
+
+    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        #print(redirect_to_uri_on_login)
+        if print_uri == True:
+            print(redirect_to_uri_on_login)
 
         login_uri = self.root_uri + "/accounts/login"
 
@@ -103,18 +118,21 @@ class UITestCase(TestCase):
             ' submit the form '
             elem.send_keys(Keys.RETURN)
             self.wait(s=1)
-            
+
+            if wait > 0:
+                self.wait(s=wait)
+                            
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
+            print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
             pass
 
 
 
-    def open_unpublished_item(self, class_selector, page_url = None):
+    def open_unpublished_item(self, class_selector, page_url = None, print_uri=False):
 
         if page_url is not None:
-            self.do_log_in(self.root_uri + page_url)
+            self.do_log_in(self.root_uri + page_url, print_uri)
             self.wait(s=2)
 
         #231: find the unpublished item in the index

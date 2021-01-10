@@ -4,7 +4,7 @@ from .core.basemodel import BaseModel, BaseDataAccess, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty
 from shared.models.core.log import handle_log_info
 from shared.models.cls_keyword import KeywordModel
-
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -350,7 +350,9 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         str_insert = "scheme_of_work__has__teacher__insert"
-        params = (model.id, auth_user)
+        
+        # TODO: #206 Get Permissions from auth_user (pass auth_user as object)
+        params = (model.id, auth_user, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         

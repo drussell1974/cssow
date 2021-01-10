@@ -22,14 +22,9 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
     def test_page__when_public_user___should_redirect_to_login_with_permission_error(self):
         # test
-        try:
-            elem = self.test_context.find_element_by_id("btn-logout")
-            elem.click()
-        except:
-            pass # ignore errors as may already be logged out
+        
 
-        self.test_context.get(self.root_uri + f"/schemesofwork/{self.test_scheme_of_work_id}/lessons")
-        self.test_context.implicitly_wait(4)
+        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons")
         
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')

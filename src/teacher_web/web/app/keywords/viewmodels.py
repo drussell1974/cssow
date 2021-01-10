@@ -122,10 +122,11 @@ class KeywordSaveViewModel(BaseViewModel):
 
 
     @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
-    def __init__(self, db, model, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
+        self.scheme_of_work_id = scheme_of_work_id
         self.model = model
 
 
@@ -215,7 +216,7 @@ class KeywordMergeViewModel(BaseViewModel):
             #248 Http404
             if self.keyword_id > 0:
                 if self.model is None or self.model.is_from_db == False:
-                    self.on_not_found(self.model, self.key_word_id)
+                    self.on_not_found(self.model, self.keyword_id)
                     
         except Http404 as e:
             raise e

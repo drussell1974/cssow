@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, handle_log_info
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 
 class test_db__get_teacher_permission(TestCase):
     
@@ -28,7 +28,7 @@ class test_db__get_teacher_permission(TestCase):
     
     def test__should_call__select__return_no_permissions(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.NONE), int(SCHEMEOFWORK.NONE))]
+        expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE))]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -47,11 +47,12 @@ class test_db__get_teacher_permission(TestCase):
             self.assertEqual(99, model.scheme_of_work_id)
             self.assertEqual(SCHEMEOFWORK.NONE, int(model.scheme_of_work_permission))
             self.assertEqual(LESSON.NONE, model.lesson_permission)
+            self.assertEqual(DEPARTMENT.NONE, model.department_permission)
             
 
     def test__should_call__select__return_has_permission_to_view(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.ADD), int(SCHEMEOFWORK.NONE))]
+        expected_result = [(int(SCHEMEOFWORK.EDIT), int(LESSON.VIEW), int(DEPARTMENT.NONE))]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
@@ -69,5 +70,6 @@ class test_db__get_teacher_permission(TestCase):
                  
             self.assertEqual(6, model.auth_user)
             self.assertEqual(99, model.scheme_of_work_id)
-            self.assertEqual(SCHEMEOFWORK.ADD, model.scheme_of_work_permission)
-            self.assertEqual(LESSON.NONE, model.lesson_permission)
+            self.assertEqual(SCHEMEOFWORK.EDIT, model.scheme_of_work_permission)
+            self.assertEqual(LESSON.VIEW, model.lesson_permission)
+            self.assertEqual(DEPARTMENT.NONE, model.department_permission)

@@ -13,7 +13,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         # setup
         #231: create a new resource
         self.do_log_in(self.root_uri + "/schemesofwork/new")
-
+        self.wait(s=2)
         
         # setup
         elem = self.test_context.find_element_by_id("ctl-description")
@@ -64,7 +64,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         
         items_before = self.test_context.find_elements_by_class_name("post-preview")
         self.assertEqual(4, len(items_before))
-
+    
 
     def tearDown(self):
         pass
@@ -84,9 +84,9 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
 
         ' Open edit '
 
-        self.delete_unpublished_item(".unpublished .edit .post-title")
+        self.delete_unpublished_item(".unpublished .post-title")
         
-        self.wait(s=2)
+        self.wait(s=20)
 
         # back to index
 

@@ -38,7 +38,7 @@ class test_cls_teacher_permission__check_permission__accept_types(TestCase):
     def test_can_accept_SCHEMEOFWORK_ACCESS_type(self):
         # assert
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.ADD))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDIT))
         
 
     def test_can_accept_LESSON_ACCESS_type(self):

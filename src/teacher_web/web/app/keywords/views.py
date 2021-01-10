@@ -118,7 +118,7 @@ def save(request, scheme_of_work_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = KeywordSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
+    save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -193,7 +193,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
 def merge_duplicates(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
-    merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=key_word_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
     merge_viewmodel.execute(request)
 

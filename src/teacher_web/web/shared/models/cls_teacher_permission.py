@@ -4,15 +4,17 @@ from enum import Enum
 from shared.models.core.log import handle_log_info
 from shared.models.core.db_helper import ExecHelper, sql_safe
 from shared.models.core.basemodel import BaseModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 
 class TeacherPermissionModel(models.Model):
 
-    def __init__(self, auth_user, scheme_of_work_id, scheme_of_work_permission=SCHEMEOFWORK.NONE, lesson_permission=LESSON.NONE):
+    def __init__(self, auth_user, scheme_of_work_id, scheme_of_work_permission=SCHEMEOFWORK.NONE, lesson_permission=LESSON.NONE, department_permission=DEPARTMENT.NONE):
         self.auth_user = auth_user
         self.scheme_of_work_id = scheme_of_work_id
         self.scheme_of_work_permission = scheme_of_work_permission
         self.lesson_permission = lesson_permission
+        # TODO: #206 Change default department_permission in contructor to DEPARTMENT.NONE
+        self.department_permission = department_permission
 
 
     def _clean_up(self):
@@ -25,6 +27,8 @@ class TeacherPermissionModel(models.Model):
             return self._check_scheme_of_work_permission(permission)
         elif type(permission) == LESSON:
             return self._check_lesson_permission(permission)
+        elif type(permission) == DEPARTMENT:
+            return self._check_department_permission(permission)
         else:
             raise TypeError("permission is type {}. Must be type SCHEME_OF_WORK or LESSON_ACCESS.".format(type(permission)))
 
@@ -35,14 +39,19 @@ class TeacherPermissionModel(models.Model):
 
     def _check_lesson_permission(self, permission):
         return self.lesson_permission % permission == 0
-        
+
+
+    def _check_department_permission(self, permission):
+        return self.department_permission % permission == 0
+
 
     @staticmethod
     def get_model(db, scheme_of_work_id, auth_user):
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work_id, auth_user)
         model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id) # Default
         for row in rows:
-            model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id, scheme_of_work_permission=row[0], lesson_permission=row[1])
+            model = TeacherPermissionModel(auth_user=auth_user, scheme_of_work_id=scheme_of_work_id, scheme_of_work_permission=row[0], lesson_permission=row[1], department_permission=row[2])
+            return model
         return model
 
 
@@ -54,7 +63,7 @@ class TeacherPermissionDataAccess:
 
         str_select = "scheme_of_work__get_teacher_permissions"
         params = (scheme_of_work_id, auth_user)
+        
         rows = []
         rows = helper.select(db, str_select, params, rows, handle_log_info)
-        
         return rows

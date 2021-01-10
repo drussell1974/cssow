@@ -58,3 +58,14 @@ class test_app_route_schemesofwork_page(TestCase):
     def test__schemesofwork_publish_item__resolves_to_publish__reverse(self):
         url = reverse("schemesofwork.publish_item", args=[127])
         self.assertEqual("/schemesofwork/127/publish", url)
+
+
+    def test__schemesofwork_delete_unpublished__resolves_to_delete_unpublished(self):
+        url = resolve("/schemesofwork/delete_unpublished")
+        self.assertEqual("schemesofwork.delete_unpublished", url.url_name)
+        self.assertEqual(url.func, delete_unpublished)
+
+
+    def test__schemesofwork_delete_unpublished__resolves_to_delete_unpublished__reverse(self):
+        url = reverse("schemesofwork.delete_unpublished")
+        self.assertEqual("/schemesofwork/delete_unpublished", url)

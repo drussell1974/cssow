@@ -12,7 +12,8 @@ from shared.view_model import ViewModel
 class KeywordGetAllListViewModel(BaseViewModel):
     
     def __init__(self, db, request, scheme_of_work_id, auth_user):
-        
+        # TODO: #206 remove if necessary
+        raise AttributeError("remove this code and put file in correct location if used???")
         self.model = []
         self.auth_user = auth_user
         self.db = db
@@ -59,7 +60,8 @@ class KeywordGetAllListViewModel(BaseViewModel):
 class KeywordGetModelViewModel(BaseViewModel):
     
     def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
-
+        # TODO: #206 remove if necessary
+        raise AttributeError("remove this code and put file in correct location if used???")
         self.model = None
         self.db = db
         self.auth_user = auth_user
@@ -110,11 +112,15 @@ class KeywordGetModelViewModel(BaseViewModel):
 
 class KeywordSaveViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
 
-        self.db = db
+        # TODO: #206 remove if necessary
+        raise AttributeError("remove this code and put file in correct location if used???")
+        
+        self.db = dbmodel,
         self.auth_user = auth_user
-        self.model = data
+        self.scheme_of_work_id = scheme_of_work_id
+        self.model = model
 
 
     def execute(self, published):
@@ -132,6 +138,10 @@ class KeywordSaveViewModel(BaseViewModel):
 class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, scheme_of_work_id, auth_user):
+        
+        # TODO: #206 remove if necessary
+        raise AttributeError("remove this code and put file in correct location if used???")
+        
         data = Model.delete_unpublished(db, scheme_of_work_id, auth_user)
         self.model = data
 
@@ -139,5 +149,7 @@ class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 class KeywordPublishModelViewModel(BaseViewModel):
 
     def __init__(self, db, keyword_id, auth_user):
+        # TODO: #206 remove if necessary
+        raise AttributeError("remove this code and put file in correct location if used???")
         data = Model.publish_by_id(db, auth_user, keyword_id)
         self.model = data

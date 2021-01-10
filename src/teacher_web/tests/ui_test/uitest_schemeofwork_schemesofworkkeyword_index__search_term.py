@@ -1,14 +1,17 @@
+from unittest import skip
+from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
+@skip("TODO: #206 check if javascript is not triggering the filtering when automated.")
 class uitest_schemeofwork_schemesofworkkeyword_index__search_term(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id)
-        self.test_context.get(self.root_uri + self.test_path)
-
+        #self.test_path = "/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id)
+        #self.test_context.get(self.root_uri + self.test_path)
+        self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id), print_uri=False)
         self.test_context.implicitly_wait(4)
 
 
@@ -46,8 +49,9 @@ class uitest_schemeofwork_schemesofworkkeyword_index__search_term(UITestCase):
         # test
         elem = self.test_context.find_element_by_id("ctl-keyword_search")
         elem.send_keys("Ram")
-        self.wait()
-
+        elem.send_keys(Keys.ENTER)
+        self.wait(s=1)
+        
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         
         # assert
@@ -59,8 +63,10 @@ class uitest_schemeofwork_schemesofworkkeyword_index__search_term(UITestCase):
         # test
         elem = self.test_context.find_element_by_id("ctl-keyword_search")
         elem.send_keys("Random Access Memory (RAM)")
+        elem.send_keys(Keys.ENTER)
+        self.wait(s=1)
         
-        elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
+        elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'display: block')]")
         
         # assert
         self.assertEqual(1, len(elem))

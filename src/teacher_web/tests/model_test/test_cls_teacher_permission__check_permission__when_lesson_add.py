@@ -1,6 +1,6 @@
 from unittest import TestCase
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import LESSON
 
 class test_cls_teacher_permission__check_permission__when_lesson_add(TestCase):
 

@@ -57,11 +57,11 @@ class UITestCase(TestCase):
 
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
+            print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
             pass
 
 
-    def do_log_in(self, redirect_to_uri_on_login):
+    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -69,9 +69,14 @@ class UITestCase(TestCase):
         login_uri = "http://dev.computersciencesow.net:8000/schemeofwork/default/user/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))
-
-
+        
+        go_to_url = "{}?_next={}".format(login_uri, redirect_to_uri_on_login)
+        
+        if print_uri = True:
+            print(f"{go_to_url}")
+        
+        self.test_context.get(go_to_url)
+    
         try:
             self.test_context.implicitly_wait(4)
 
@@ -85,9 +90,12 @@ class UITestCase(TestCase):
             ' submit the form '
             elem.send_keys(Keys.RETURN)
 
+            if wait > 0:
+                self.wait(s=wait)
+                
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
+            print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
             pass
 
 

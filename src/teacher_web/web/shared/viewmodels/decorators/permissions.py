@@ -46,16 +46,17 @@ class check_teacher_permission:
             self.kwargs = kwargs
             self.db = self.getkeyargs("db") # db cannot be a positional argument
             self._auth_user = self.getkeyargs("auth_user") # auth_user cannot be a positiional argument
-            self._lesson_id = self.getkeyargs("lesson_id", default_value=DEFAULT_LESSON_ID)
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
+            self._lesson_id = self.getkeyargs("lesson_id", default_value=DEFAULT_LESSON_ID)
             
+            # TODO: Remove this, as ViewModel should pass scheme_of_work_id
+            '''
             if self._scheme_of_work_id == DEFAULT_SCHEME_OF_WORK_ID:
                 # try the model
                 model = self.getkeyargs("model")
                 if model is not None:
                     self._scheme_of_work_id = model.scheme_of_work_id
 
-            '''
             if self._lesson_id == DEFAULT_LESSON_ID:
                 # try the model
                 model = self.getkeyargs("model")
@@ -63,8 +64,7 @@ class check_teacher_permission:
                     self._scheme_of_work_id = model.lesson_id
             '''
             
-            str_err = f"You do not have permission to {str(self._permission).split('.')[1]} this {str(self._permission).split('.')[0]} ({self._scheme_of_work_id})" 
-            
+            str_err = f"You do not have {str(self._permission).split('.')[1]} permission for this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id})" 
             model = TeacherPermissionModel.get_model(self.db, scheme_of_work_id=self._scheme_of_work_id, auth_user=self._auth_user)
             if model.check_permission(self._permission) == False:           
                 raise PermissionError(str_err) 

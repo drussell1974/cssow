@@ -7,7 +7,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -15,7 +15,7 @@ from shared.view_model import ViewModel
 
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
-    # @check_teacher_permission(SCHEMEOFWORK.NONE, "/")
+    @check_teacher_permission(DEPARTMENT.NONE, "/")
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 
@@ -27,7 +27,7 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")
+    @check_teacher_permission(DEPARTMENT.NONE, "/")
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
@@ -39,7 +39,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
 
 class SchemeOfWorkEditViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
+    @check_teacher_permission(DEPARTMENT.TEACHER, "/")
     def __init__(self, db, request, scheme_of_work_id, auth_user):
         
         self.db = db
@@ -48,13 +48,13 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
-
-            getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+            getmodel_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
 
             self.model = getmodel_view.model
-            
+        
         elif request.method == "POST":
             ## POST back from client ##
+
             # create instance of model from request.vars
             self.model = Model(
                 id_=request.POST.get("id", 0),
@@ -63,7 +63,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
                 created=datetime.now(),
-                created_by_id=auth_user)
+                created_by_id=self.auth_user)
         
             try:
                 self.model.validate()
@@ -81,8 +81,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             except Exception as ex:
                 self.error_message = ex
                 handle_log_exception(db, "An error occurred processing key words json", ex)
-                #raise
-            
+                
 
     def view(self):
         
@@ -110,10 +109,18 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
         return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
+ 
+class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
+
+    @check_teacher_permission(DEPARTMENT.HEAD, "/")
+    def __init__(self, db, auth_user):
+        data = Model.delete_unpublished(db, auth_user)
+        self.model = data
+
 
 class SchemeOfWorkPublishModelViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.PUBLISH, "/")
+    @check_teacher_permission(DEPARTMENT.HEAD, "/")
     def __init__(self, db, scheme_of_work_id, auth_user):
         data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
         self.model = data

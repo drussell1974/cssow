@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, Mock, patch
 from app.default.viewmodels import SchemeOfWorkGetLatestViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
-@skip("not matching view")
+
 class test_viewmodel_SchemeOfWorkGetLatestViewModel(TestCase):
 
     def setUp(self):        

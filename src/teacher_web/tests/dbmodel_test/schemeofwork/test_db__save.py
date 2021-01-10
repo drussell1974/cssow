@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
-
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 # create test context
 
 save = Model.save
@@ -106,7 +106,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__has__teacher__insert'
-                 , (101, 6079)
+                 , (101, 6079, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
                  , handle_log_info)
                  
 

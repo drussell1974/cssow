@@ -33,7 +33,7 @@ class LessonListViewSet(APIView):
     # TODO: 206 @unauthorise_request
     def get (self, request, scheme_of_work_id):
         #253 check user id
-        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work=scheme_of_work_id, auth_user=auth_user_id(request))
+        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
         return JsonResponse({"lessons": get_lessons_view.model})
 
 

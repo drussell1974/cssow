@@ -6,10 +6,12 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id)
-        self.test_context.get(self.root_uri + self.test_path)
-
+        #self.test_path = "/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id)
+        #self.test_context.get(self.root_uri + self.test_path)
+        self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id), print_uri=False)
+        
         self.test_context.implicitly_wait(4)
+        self.wait(s=1)
 
 
     def tearDown(self):
@@ -68,7 +70,6 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     def test_page__show_published_and_owned(self):
         # setup
-        self.do_log_in(redirect_to_uri_on_login=self.test_path)
         
         section = self.test_context.find_elements_by_class_name('card-keyword')
 

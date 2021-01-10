@@ -1,6 +1,6 @@
 from ui_testcase import UITestCase, WebBrowserContext
 
-class test_schemeofwork_lesson_whiteboard(UITestCase):
+class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
     test_context = WebBrowserContext()
 

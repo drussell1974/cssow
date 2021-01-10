@@ -147,7 +147,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_resource_view = ResourceSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
+    save_resource_view = ResourceSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_user_id(request))
     
     save_resource_view.execute(int(request.POST["published"]))
 

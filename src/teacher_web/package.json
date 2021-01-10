@@ -32,7 +32,7 @@
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh && yarn test-ui--permissions",
     "test-ui--permissions": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--permissions.sh",
     "test-ui--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--verify.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui python3.7 -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index__keyword__search.py"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_schemeofwork_lesson_get_all.py"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"

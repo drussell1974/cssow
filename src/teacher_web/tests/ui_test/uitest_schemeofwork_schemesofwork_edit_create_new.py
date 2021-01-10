@@ -120,7 +120,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         #delete
         
-        # TODO: Edit and delete
+        # TODO: 206 delete only schemes of work belonging to department
 
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
         ' Ensure element is visible '

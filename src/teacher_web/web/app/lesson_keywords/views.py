@@ -67,7 +67,7 @@ def new(request, scheme_of_work_id, lesson_id):
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user_id=auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))

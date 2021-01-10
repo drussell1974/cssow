@@ -1,6 +1,6 @@
 from unittest import TestCase
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import SCHEMEOFWORK
 
 class test_cls_teacher_permission__check_permission__when_sow_default(TestCase):
 
@@ -21,11 +21,16 @@ class test_cls_teacher_permission__check_permission__when_sow_default(TestCase):
     def test_check__cannot_edit_by_default(self):
         # assert
         self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDIT))
-        
+    
 
-    def test_check__cannot_add_by_default(self):
-        # assert
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.ADD))
+    def test_check__cannot_delete_by_default(self):
+        # asser
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.DELETE))
+
+
+    def test_check__cannot_publish_by_default(self):
+        # asser
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.PUBLISH))
 
 
     def test_check__cannot_view_by_default(self):

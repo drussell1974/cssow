@@ -34,7 +34,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
             # act
 
-            test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, scheme_of_work_id=99, lesson_id=13, model=mock_model, auth_user=99)
             test_context.execute(published=1)
                    
             # assert functions was called
@@ -60,7 +60,7 @@ class test_viewmodel_SaveViewModel(TestCase):
                 
             # act
             
-            test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, scheme_of_work_id=99, lesson_id=12, model=mock_model, auth_user=99)
             test_context.execute(1)
                             
             # assert save functions was not called

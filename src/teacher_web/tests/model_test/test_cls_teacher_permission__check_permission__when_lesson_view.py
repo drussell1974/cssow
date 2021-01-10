@@ -1,6 +1,6 @@
 from unittest import TestCase
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import LESSON
 
 class test_cls_teacher_permission__check_permission__when_lesson_view(TestCase):
 
@@ -25,10 +25,14 @@ class test_cls_teacher_permission__check_permission__when_lesson_view(TestCase):
         self.assertFalse(self.test.check_permission(LESSON.EDIT))
         
 
-    def test_check__add_returns_false(self):
-        # assert
-        self.assertFalse(self.test.check_permission(LESSON.ADD))
+    def test_check__delete_returns_false(self):
+        # asser
+        self.assertFalse(self.test.check_permission(LESSON.DELETE))
 
+
+    def test_check__publish_returns_false(self):
+        # asser
+        self.assertFalse(self.test.check_permission(LESSON.PUBLISH))
 
     def test_check__view_returns_true(self):
         # assert

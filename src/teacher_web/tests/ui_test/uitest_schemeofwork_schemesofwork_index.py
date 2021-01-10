@@ -7,7 +7,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/schemesofwork")
+        self.do_log_in(self.root_uri + "/schemesofwork")
         self.test_context.implicitly_wait(4)
 
 

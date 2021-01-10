@@ -56,7 +56,7 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
         ' Open edit '
         self.delete_unpublished_item(".unpublished .card-title")
         
-        self.wait(s=5)
+        self.wait(s=3)
 
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')

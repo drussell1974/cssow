@@ -175,7 +175,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
     #253 check user id
-    get_lesson_view =  LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user_id=auth_user_id(request))
+    get_lesson_view =  LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_lesson_view.model
 
     data = {

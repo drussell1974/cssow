@@ -80,11 +80,11 @@ class LearningObjectiveGetModelViewModel(BaseViewModel):
 
 class LearningObjectiveEditViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
-        self.model = data
+        self.model = model
 
 
     def execute(self, published):
