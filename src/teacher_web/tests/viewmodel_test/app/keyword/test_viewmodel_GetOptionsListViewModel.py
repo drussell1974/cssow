@@ -5,8 +5,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.default.viewmodels import KeywordGetOptionsListViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
-#Serializer = test_context.KeywordModelSerializer
 
 @skip("Verify usage")
 class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
@@ -58,7 +58,6 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             self.assertEqual(1, len(actual_result.model))
             
 
-
     def test_init_called_fetch__single_item(self):
         
         # arrange
@@ -76,5 +75,22 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             # assert functions was called
             Model.get_options.assert_called()
             
-            self.assertEqual(3, len(actual_result.model))
+            self.assertEqual(3, len(actual_result.model))            
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_should_raise_PermissionError(self, check_permission, SchemeOfWorkModel__get_model):
+        # arrange
+        
+        with self.assertRaises(PermissionError):
+            
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            # act
+            actual_result = ViewModel(db, 12, 6079)
+
+            # assert functions was called
+            Model.get_options.assert_called()
+            self.assertEqual(0, len(actual_result.model))
             

@@ -5,6 +5,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.default.viewmodels import KeywordSaveViewModel as ViewModel, KeywordGetModelViewModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.cls_teacher_permission import TeacherPermissionModel
+
 
 class test_viewmodel_SaveListViewModel(TestCase):
 
@@ -17,24 +19,26 @@ class test_viewmodel_SaveListViewModel(TestCase):
         pass
 
 
-    def test_execute_not_called_save__with_exception__when_invaid_type(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_not_called_save__with_exception__when_invaid_type(self, check_permission):
         """ View Model does not process new instance """
 
         # arrange
         
-        test_context = ViewModel(self.mock_db, KeywordGetModelViewModel)
+        test_context = ViewModel(db=self.mock_db, model=None, scheme_of_work_id=23, auth_user=34)
         
         with self.assertRaises(AttributeError):
             # act
             test_context.execute(99)
 
 
-    def test_execute_called_save__with_exception(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__with_exception(self, check_permission):
 
         # arrange
         on_find_or_create__create_new_instance = Model(15, "Database","",13)
         
-        test_context = ViewModel(self.mock_db, Model(15,"Database","", 13))
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(15,"Database","", 13), auth_user=99)
         
         test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
 
@@ -56,7 +60,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("Database", test_context.model.term)
 
 
-    def test_execute_called_save__update_existing(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__update_existing(self, check_permission):
 
         # arrange
         
@@ -65,7 +70,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # act
 
-        test_context = ViewModel(self.mock_db, Model(112, "Unit Testing", "new definition", 13))
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(112, "Unit Testing", "new definition", 13), auth_user=99)
         test_context._find_keyword_by_id = Mock(return_value=data_to_return)
         
         with patch.object(Model, "save", return_value=data_to_return):
@@ -79,7 +84,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("new definition", test_context.model.definition)
 
 
-    def test_execute_called_save__add_model_to_data__when_not_exists(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data__when_not_exists(self, check_permission):
 
         # arrange
         on_find_or_create__create_new_instance = Model(0, "Unit Test", scheme_of_work_id=13)        
@@ -87,7 +93,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # act
 
-        test_context = ViewModel(self.mock_db, Model(0, "Unit Test", scheme_of_work_id=13))
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "Unit Test", scheme_of_work_id=13), auth_user=99)
         #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save", return_value=new_instance_to_save):
@@ -103,12 +109,13 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("Unit Test", test_context.model.term)
 
 
-    def test_execute_not_called_save__add_model_to_data__when_not_valid(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_not_called_save__add_model_to_data__when_not_valid(self, check_permission):
 
         # arrange
         on_find_or_create__create_new_instance = Model(0, "", scheme_of_work_id=13)        
 
-        test_context = ViewModel(self.mock_db, Model(0, "", scheme_of_work_id=13))
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model= Model(0, "", scheme_of_work_id=13), auth_user=99)
  
         #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
@@ -128,7 +135,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual({'term': 'required'}, test_context.model.validation_errors)
 
 
-    def test_execute_called_save__add_model_to_data__when_new_term_already_exists(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data__when_new_term_already_exists(self, check_permission):
         """ View will try create a new keyword """
         
         # arrange
@@ -137,7 +145,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         on_find_or_create__find_existing_instance = Model(101, "New Keyword", scheme_of_work_id=13)        
 
         # start with new object id=0
-        test_context = ViewModel(self.mock_db, Model(0, "New Keyword", scheme_of_work_id=13))
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "New Keyword", scheme_of_work_id=13), auth_user=99)
  
         #test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
         
@@ -152,12 +160,13 @@ class test_viewmodel_SaveListViewModel(TestCase):
             Model.save.assert_called()
 
 
-    def test_execute_not_called_save__add_model_to_data__when_passing_json_string(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_not_called_save__add_model_to_data__when_passing_json_string(self, check_permission):
         """ String will be parsed and used to find existing object """
         
         # arrange
         
-        test_context = ViewModel(self.mock_db, '{"id":999,"term":"non-existing object","definition":""}')
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=34, model='{"id":999,"term":"non-existing object","definition":""}', auth_user=99)
         test_context._find_keyword_by_id = Mock(return_value=None)
         
         with patch.object(Model, "save", return_value=None):
@@ -173,3 +182,13 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
             Model.save.assert_not_called()
 
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange
+        
+        with self.assertRaises(PermissionError):
+            # act
+
+            ViewModel(db=self.mock_db, scheme_of_work_id=99, auth_user=99)
+            

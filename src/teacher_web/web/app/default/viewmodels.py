@@ -69,10 +69,12 @@ class KeywordGetModelViewModel(BaseViewModel):
         
 
 class KeywordSaveViewModel(BaseViewModel):
-    def __init__(self, db, model):
+    
+    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
         self.db = db
         self.model = model
-
+        self.auth_user = auth_user
 
     def execute(self, auth_user, published=1):
 
