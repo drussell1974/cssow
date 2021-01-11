@@ -82,10 +82,12 @@ class LearningObjectiveGetModelViewModel(BaseViewModel):
 
 class LearningObjectiveEditViewModel(BaseViewModel):
 
-    def __init__(self, db, model, auth_user):
+    @check_teacher_permission(LESSON.EDIT)
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
+        self.scheme_of_work_id = scheme_of_work_id
         self.model = model
 
 
