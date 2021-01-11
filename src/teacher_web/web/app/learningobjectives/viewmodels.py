@@ -13,6 +13,7 @@ from shared.view_model import ViewModel
 
 class LearningObjectiveIndexViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user):
         self.model = []
         self.db = db
