@@ -48,7 +48,5 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             db = MagicMock()
             db.cursor = MagicMock()
 
-            self.mock_model = Model(56)
-
             # act
             self.viewmodel = ViewModel(db=db, lesson_id=56, auth_user=99)
