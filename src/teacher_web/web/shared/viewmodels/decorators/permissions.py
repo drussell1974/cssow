@@ -47,7 +47,7 @@ class check_teacher_permission:
             self.db = self.getkeyargs("db") # db cannot be a positional argument
             self._auth_user = self.getkeyargs("auth_user") # auth_user cannot be a positiional argument
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
-            self._lesson_id = self.getkeyargs("lesson_id", default_value=DEFAULT_LESSON_ID)
+            #self._lesson_id = self.getkeyargs("lesson_id", default_value=DEFAULT_LESSON_ID)
             
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission for this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id})" 
             model = TeacherPermissionModel.get_model(self.db, scheme_of_work_id=self._scheme_of_work_id, auth_user=self._auth_user)

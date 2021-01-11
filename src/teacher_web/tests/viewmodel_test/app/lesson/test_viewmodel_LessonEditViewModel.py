@@ -21,7 +21,8 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
-    def test_execute_called_save__add_model_to_data(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data(self, check_permission):
         
         # arrange
         
@@ -45,7 +46,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
 
-                test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+                test_context = ViewModel(db=self.mock_db, scheme_of_work_id=12, model=mock_model, auth_user=99)
                 test_context.execute(published=1)
                                 
                 # assert functions was called
@@ -59,7 +60,8 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertTrue(test_context.model.is_valid)
                 
 
-    def test_execute_called_save__add_model_to_data__return_invalid(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data__return_invalid(self, check_permission):
         
         # arrange
         
@@ -77,7 +79,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
                 
-                test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+                test_context = ViewModel(db=self.mock_db, scheme_of_work_id=12, model=mock_model, auth_user=99)
                 test_context.execute(0)
                                 
                 # assert save functions was not called
@@ -93,4 +95,8 @@ class test_viewmodel_EditViewModel(TestCase):
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
     def test_should_raise_PermissionError(self, check_permission):
         # arrange
-        pass
+        
+        mock_model = Model(99, "")   
+        
+        with self.assertRaises(PermissionError):
+            ViewModel(db=self.mock_db, model=mock_model, auth_user=99)
