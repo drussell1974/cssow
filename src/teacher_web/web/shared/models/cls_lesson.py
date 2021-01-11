@@ -459,8 +459,8 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def publish(db, auth_user, lesson_id):
-        return LessonDataAccess.publish(db, auth_user, lesson_id)
+    def publish(db, auth_user, lesson_id, scheme_of_work_id):
+        return LessonDataAccess.publish(db, lesson_id, scheme_of_work_id, auth_user)
     
 
     @staticmethod
@@ -979,7 +979,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def publish(db, id_, auth_user):
+    def publish(db, lesson_id, scheme_of_work_id, auth_user):
         """ 
         set the lesson to published state
 
@@ -991,7 +991,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         str_publish = "lesson__publish"
-        params = (id_, 1, auth_user)
+        params = (lesson_id, 1, auth_user)
         
         rval = []
         rval = execHelper.update(db, str_publish, params, rval)

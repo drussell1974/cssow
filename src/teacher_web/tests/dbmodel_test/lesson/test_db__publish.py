@@ -43,7 +43,7 @@ class test_db__publish(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = publish(self.fake_db, 56, 99)
+            actual_result = publish(self.fake_db, 56, 13, 99)
             
             # assert
 

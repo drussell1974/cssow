@@ -106,8 +106,10 @@ class LessonEditViewModel(BaseViewModel):
 
 class LessonPublishViewModel(BaseViewModel):
 
-    def __init__(self, db, auth_user, lesson_id):
-        self.model = Model.publish(db, auth_user, lesson_id)
+
+    @check_teacher_permission(LESSON.PUBLISH)
+    def __init__(self, db, auth_user, lesson_id, scheme_of_work_id):
+        self.model = Model.publish(db, auth_user, lesson_id, scheme_of_work_id)
     
 
 class LessonDeleteViewModel(BaseViewModel):
