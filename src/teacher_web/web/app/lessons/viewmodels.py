@@ -15,6 +15,7 @@ from app.default.viewmodels import KeywordSaveViewModel
 
 class LessonIndexViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
         
         data = []
