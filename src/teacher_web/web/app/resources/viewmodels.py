@@ -61,12 +61,9 @@ class ResourceIndexViewModel(BaseViewModel):
         return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
-
-
-
-
 class ResourceGetModelViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, resource_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
 
         self.model = None
