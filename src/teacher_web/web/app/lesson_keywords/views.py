@@ -17,7 +17,7 @@ from shared.models.cls_lesson import LessonModel
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
-from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonKeywordGetAllListViewModel, LessonKeywordSelectViewModel, LessonKeywordSaveViewModel, LessonKeywordDeleteUnpublishedViewModel
+from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonKeywordIndexViewModel, LessonKeywordSelectViewModel, LessonKeywordSaveViewModel, LessonKeywordDeleteUnpublishedViewModel
 
 from shared.models.core import validation_helper
 
@@ -30,7 +30,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
     #253 check user id
-    getall_keywords = LessonKeywordGetAllListViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
+    getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
     
     return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
 

@@ -12,7 +12,7 @@ from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
-class LessonKeywordGetAllListViewModel(BaseViewModel):
+class LessonKeywordIndexViewModel(BaseViewModel):
     
     
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
@@ -77,21 +77,21 @@ class LessonKeywordSelectViewModel(BaseViewModel):
         
 
     def execute(self, request):
-            self.model = Model(
-                id_=request.POST.get("lesson_id", 0),
-                scheme_of_work_id=request.POST.get("scheme_of_work_id", 0))
+        self.model = Model(
+            id_=request.POST.get("lesson_id", 0),
+            scheme_of_work_id=request.POST.get("scheme_of_work_id", 0))
+        
+        self.model.key_words = list(map(lambda x: Model(int(x)), request.POST.getlist("term")))
+        
+        try:
             
-            self.model.key_words = list(map(lambda x: Model(int(x)), request.POST.getlist("term")))
-            
-            try:
+            data = LessonModel.save_keywords(self.db, self.model, self.auth_user)
                 
-                data = LessonModel.save_keywords(self.db, self.model, self.auth_user)
-                    
-            except Exception as ex:
-                self.error_message = ex
-                handle_log_exception(db, "An error occurred saving lesson keywords", ex)
-                #raise
-    
+        except Exception as ex:
+            self.error_message = ex
+            handle_log_exception(db, "An error occurred saving lesson keywords", ex)
+            
+            
     def view(self, request):      
 
         def mark_as_selected(keyword):
@@ -137,6 +137,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
 
 class LessonKeywordGetModelViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
 
         self.model = None
@@ -192,10 +193,12 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
 
 class LessonKeywordSaveViewModel(BaseViewModel):
 
-    def __init__(self, db, model, auth_user):
+    @check_teacher_permission(LESSON.EDIT)
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
+        self.scheme_of_work_id = scheme_of_work_id
         self.model = model
 
 
