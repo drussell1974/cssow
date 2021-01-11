@@ -1,12 +1,8 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.resources.viewmodels import ResourceSaveViewModel as ViewModel
 from shared.models.cls_resource import ResourceModel as Model
-
-#Serializer = test_context.KeywordModelSerializer
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_SaveViewModel(TestCase):
 
@@ -19,7 +15,8 @@ class test_viewmodel_SaveViewModel(TestCase):
         pass
 
 
-    def test_execute_called_save__add_model_to_data(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data(self, check_permission):
         
         # arrange
 
@@ -45,7 +42,8 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.title)
 
 
-    def test_execute_called_save__add_model_to_data__return_invalid(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_execute_called_save__add_model_to_data__return_invalid(self, check_permission):
          
         # arrange
 
@@ -73,3 +71,17 @@ class test_viewmodel_SaveViewModel(TestCase):
             self.assertFalse(test_context.model.is_valid)
             self.assertEqual(1, len(test_context.model.validation_errors)) 
             self.assertEqual({'page_note': 'required'}, test_context.model.validation_errors) 
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange 
+        # assert
+
+        mock_model = Model(99, title="Proin id massa metus. Aliqua tincidunt.")
+        mock_model.type_id = 1
+        mock_model.publisher = "Penguin"
+        mock_model.page_note = "" # invalid value
+
+        with self.assertRaises(PermissionError):
+            ViewModel(db=self.mock_db, scheme_of_work_id=99, lesson_id=12, model=mock_model, auth_user=99)

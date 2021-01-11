@@ -119,6 +119,7 @@ class ResourceGetModelViewModel(BaseViewModel):
 
 class ResourceSaveViewModel(BaseViewModel):
 
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db
