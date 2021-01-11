@@ -11,8 +11,9 @@ from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
-class ResourceGetAllViewModel(BaseViewModel):
+class ResourceIndexViewModel(BaseViewModel):
     
+    @check_teacher_permission(LESSON.VIEW)
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
         self.model = []

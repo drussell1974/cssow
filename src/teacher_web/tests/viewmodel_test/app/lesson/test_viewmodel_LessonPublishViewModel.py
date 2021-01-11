@@ -1,9 +1,6 @@
 import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.lessons.viewmodels import LessonPublishViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_teacher_permission import TeacherPermissionModel

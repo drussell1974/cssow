@@ -16,7 +16,7 @@ from shared.models.cls_lesson import LessonModel
 
 # view models
 from ..lessons.viewmodels import LessonGetModelViewModel
-from ..resources.viewmodels import ResourceGetModelViewModel, ResourceGetAllViewModel, ResourceSaveViewModel
+from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
 
 from shared.models.core import validation_helper
 
@@ -29,7 +29,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id
-    getall_resources = ResourceGetAllViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
+    getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
         
     return render(request, "resources/index.html", getall_resources.view().content)
 
