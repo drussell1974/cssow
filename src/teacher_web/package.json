@@ -32,7 +32,7 @@
     "test-ui": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--batch.sh && yarn test-ui--permissions",
     "test-ui--permissions": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--permissions.sh",
     "test-ui--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--verify.sh",
-    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/viewmodel_test/app/lesson --settings=web.settings.test-ui.settings"
+    "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/viewmodel_test/app/learningobjective --settings=web.settings.test-ui.settings"
   },
   "dependencies": {
     "env-cmd": "^10.1.0"
