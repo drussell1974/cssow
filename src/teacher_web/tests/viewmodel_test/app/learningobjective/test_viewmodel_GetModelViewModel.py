@@ -6,7 +6,7 @@ from django.http import Http404
 
 from app.learningobjectives.viewmodels import LearningObjectiveGetModelViewModel as ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 
@@ -18,7 +18,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_fetch__no_return_rows(self, check_permission):
         
         # arrange
         
@@ -31,14 +32,15 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db, 99, lesson_id=19, scheme_of_work_id=84, auth_user=99)
+                self.viewmodel = ViewModel(db=db, learning_objective_id=99, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
                 # assert functions was called
                 Model.get_model.assert_called()
                 self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_fetch__single_row(self, check_permission):
         
         # arrange
         
@@ -51,7 +53,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, 56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
+            self.viewmodel = ViewModel(db=db, learning_objective_id=56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -59,3 +61,16 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.assertEqual(56, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.description)
             self.assertTrue(self.viewmodel.model.is_from_db)
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange 
+        # assert
+        with self.assertRaises(PermissionError):
+
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            # act
+            self.viewmodel = ViewModel(db=db, learning_objective_id=56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
