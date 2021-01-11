@@ -92,15 +92,10 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
         # arrange 
         # assert
 
-        data_to_return = Model(912, "How to save the world in a day")
-        data_to_return.published = 1
+        with self.assertRaises(PermissionError):
 
-        
-        with patch.object(Model, "publish", return_value=data_to_return):
-            with self.assertRaises(PermissionError):
+            db = MagicMock()
+            db.cursor = MagicMock()
 
-                db = MagicMock()
-                db.cursor = MagicMock()
-
-                # act
-                ViewModel(db=db, auth_user=99, lesson_id=912)
+            # act
+            ViewModel(db=db, scheme_of_work_id=13, auth_user=99, lesson_id=912)
