@@ -4,14 +4,12 @@ from django.http import Http404
 # test context
 
 from app.lessons.viewmodels import LessonGetModelViewModel as ViewModel
-from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonGetModelViewModel(TestCase):
     
-    VIEW_ONLY_PERMISSIONS = TeacherPermissionModel(99, 22, SCHEMEOFWORK.VIEW, LESSON.OWNER, DEPARTMENT.STUDENT)
 
     def setUp(self):        
         pass
@@ -21,8 +19,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         pass
 
     @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    @patch.object(TeacherPermissionModel, "get_model", return_value=VIEW_ONLY_PERMISSIONS)
-    def test_init_called_fetch__with_exception(self, check_permission, TeacherPermissionModel_get_model):
+    def test_init_called_fetch__with_exception(self, check_permission):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -66,8 +63,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
 
     @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    @patch.object(TeacherPermissionModel, "get_model", return_value=VIEW_ONLY_PERMISSIONS)
-    def test_init_called_fetch__return_item(self, check_permission, TeacherPermissionModel_get_model):
+    def test_init_called_fetch__return_item(self, check_permission):
         
         # arrange
         
