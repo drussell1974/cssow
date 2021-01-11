@@ -66,7 +66,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
 
 class LessonKeywordSelectViewModel(BaseViewModel):
     
-
+    @check_teacher_permission(LESSON.EDIT)
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
             
         self.auth_user = auth_user
@@ -85,13 +85,13 @@ class LessonKeywordSelectViewModel(BaseViewModel):
         
         try:
             
-            data = LessonModel.save_keywords(self.db, self.model, self.auth_user)
+            LessonModel.save_keywords(self.db, self.model, self.auth_user)
                 
         except Exception as ex:
             self.error_message = ex
             handle_log_exception(db, "An error occurred saving lesson keywords", ex)
             
-            
+
     def view(self, request):      
 
         def mark_as_selected(keyword):

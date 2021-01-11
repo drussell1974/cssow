@@ -7,7 +7,6 @@ from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.decorators.permissions import TeacherPermissionModel
-#Serializer = test_context.KeywordModelSerializer
 
 class test_viewmodel_EditViewModel(TestCase):
 
@@ -45,7 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
             # act
 
             test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
-                        
+            
             # assert 
 
             self.assertEqual("", test_context.error_message)
