@@ -110,6 +110,7 @@ class LessonPublishViewModel(BaseViewModel):
 
 class LessonDeleteViewModel(BaseViewModel):
 
+    @check_teacher_permission(LESSON.DELETE)
     def __init__(self, db, auth_user, lesson_id):
         self.model = Model.delete(db, auth_user, lesson_id)
 
