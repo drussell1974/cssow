@@ -6,13 +6,16 @@ from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception
 from shared.models.core.log_type import LOG_TYPE
 from shared.viewmodels.baseviewmodel import BaseViewModel
+from shared.models.enums.permissions import DEPARTMENT 
+from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.view_model import ViewModel
 from shared.models.cls_eventlog import EventLogModel, EventLogFilter
 
 
 class EventLogIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, request, settings, auth_user):
+    @check_teacher_permission(DEPARTMENT.HEAD)
+    def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
 
         self.db = db
         self.settings = settings
@@ -40,7 +43,7 @@ class EventLogIndexViewModel(BaseViewModel):
             self.search_criteria.validate()
             
             if self.search_criteria.is_valid == True:
-                self.model = EventLogModel.get_all(self.db, self.search_criteria, self.auth_user)
+                self.model = EventLogModel.get_all(self.db, scheme_of_work_id, self.search_criteria, self.auth_user)
 
         except Exception as e:
             self.error_message = str(e)

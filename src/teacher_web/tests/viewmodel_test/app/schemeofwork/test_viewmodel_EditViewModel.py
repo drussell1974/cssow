@@ -44,6 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
             # act
 
             test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+            test_context.model.key_words.clear()
             
             # assert 
 
@@ -173,6 +174,6 @@ class test_viewmodel_EditViewModel(TestCase):
         with self.assertRaises(PermissionError):
     
             # act
-            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+            ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
             
 

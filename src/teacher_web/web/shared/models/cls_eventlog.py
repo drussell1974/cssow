@@ -53,9 +53,10 @@ class EventLogModel(BaseModel):
 
 
     @staticmethod
-    def get_all(db, search_criteria, auth_user):
+    def get_all(db, scheme_of_work_id, search_criteria, auth_user):
 
         rows = EventLogDataAccess.get_all(db, 
+            scheme_of_work_id,
             search_criteria.page, 
             search_criteria.pagesize,
             search_criteria.date_from, 
@@ -83,12 +84,12 @@ class EventLogModel(BaseModel):
 class EventLogDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_all(db, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
+    def get_all(db, scheme_of_work_id, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
-        params = (page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
+        params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
