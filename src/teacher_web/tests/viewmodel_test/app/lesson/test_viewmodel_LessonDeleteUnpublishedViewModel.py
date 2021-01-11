@@ -1,12 +1,9 @@
 import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.lessons.viewmodels import LessonDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
 
@@ -18,7 +15,8 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
         pass
 
 
-    def test_init_called_delete__with_exception(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_delete__with_exception(self, check_permission):
         
         # arrange        
         with patch.object(Model, "delete_unpublished", side_effect=KeyError):
@@ -31,14 +29,10 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             with self.assertRaises(KeyError):
                 # act
                 self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=999)
-            #TODO: #233 remove self.assertRaises
-             
-            # assert
-            #TODO: #233 assert error_message
-            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
-    def test_init_called_delete__no_return_rows(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_delete__no_return_rows(self, check_permission):
         
         # arrange
         
@@ -59,7 +53,8 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.assertIsNone(self.viewmodel.model)
 
 
-    def test_init_called_delete__return_item(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_delete__return_item(self, check_permission):
         
         # arrange
         
@@ -83,7 +78,8 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.assertEqual(2, self.viewmodel.model[0].published)
 
 
-    def test_init_called_delete__return_items(self):
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    def test_init_called_delete__return_items(self, check_permission):
         
         # arrange
         
@@ -113,3 +109,15 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             self.assertEqual(414, self.viewmodel.model[2].id)
             self.assertEqual("Donec bibendum mi vitae felis", self.viewmodel.model[2].title)
             self.assertEqual(2, self.viewmodel.model[2].published)
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange
+
+        db = MagicMock()
+        db.cursor = MagicMock()
+    
+        with self.assertRaises(PermissionError):
+            # act
+            self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=999)
