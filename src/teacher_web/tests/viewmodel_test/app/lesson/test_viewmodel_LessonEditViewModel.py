@@ -8,8 +8,7 @@ from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
-from shared.serializers.srl_keyword import KeywordModelSerializer
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_EditViewModel(TestCase):
 
@@ -89,3 +88,9 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertFalse(test_context.model.is_valid)            
                 self.assertEqual(1, len(test_context.model.validation_errors)) 
                 self.assertEqual({'title': 'required'}, test_context.model.validation_errors) 
+
+
+    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
+    def test_should_raise_PermissionError(self, check_permission):
+        # arrange
+        pass
