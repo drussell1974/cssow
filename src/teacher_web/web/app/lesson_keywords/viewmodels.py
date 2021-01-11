@@ -78,7 +78,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
 
     def execute(self, request):
         self.model = Model(
-            id_=request.POST.get("lesson_id", 0),
+            id_ = request.POST.get("lesson_id", 0),
             scheme_of_work_id=request.POST.get("scheme_of_work_id", 0))
         
         self.model.key_words = list(map(lambda x: Model(int(x)), request.POST.getlist("term")))
