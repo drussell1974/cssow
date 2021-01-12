@@ -39,13 +39,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, 12, search_criteria, auth_user=6079)
+            rows = get_all(db=self.fake_db, scheme_of_work_id=69, search_criteria=search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (12, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", 6079)
+                , (69, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", 6079)
                 , []
                 , handle_log_info)
                 
@@ -63,13 +63,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 13, search_criteria, auth_user=6079)
+            actual_results = get_all(self.fake_db, scheme_of_work_id=68, search_criteria=search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (13, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", 6079)
+                , (68, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", 6079)
                 , []
                 , handle_log_info)                
 
@@ -98,13 +98,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 11, search_criteria, auth_user=6079)
+            actual_results = get_all(db=self.fake_db, scheme_of_work_id=67, search_criteria=search_criteria, auth_user=6079)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (11, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", 6079)
+                , (67, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", 6079)
                 , []
                 , handle_log_info)
 

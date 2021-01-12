@@ -113,10 +113,10 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=66, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 7, 6079)
+            Model.delete.assert_called_with(db, 66, 7, 6079)
 
             self.assertEqual([], self.viewmodel.model)
 
@@ -138,10 +138,10 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=63, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 14, 6079)
+            Model.delete.assert_called_with(db, 63, 14, 6079)
             self.assertEqual("1 event logs deleted", self.viewmodel.alert_message)
             self.assertEqual([], self.viewmodel.model)
 
@@ -166,7 +166,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 28, 6079)
+            Model.delete.assert_called_with(db, 13, 28, 6079)
             self.assertEqual("3 event logs deleted", self.viewmodel.alert_message)
             self.assertEqual([], self.viewmodel.model)
 

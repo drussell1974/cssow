@@ -84,7 +84,7 @@ class EventLogDeleteOldViewModel(BaseViewModel):
                 if older_than_n_days < settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS:
                     raise Exception("events in the last %s days cannot be deleted" % settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
 
-                rows_affected = EventLogModel.delete(db, older_than_n_days, auth_user)
+                rows_affected = EventLogModel.delete(db, scheme_of_work_id, older_than_n_days, auth_user)
 
                 self.alert_message = "%s event logs deleted" % rows_affected
 

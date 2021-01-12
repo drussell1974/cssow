@@ -39,14 +39,14 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = delete(self.fake_db, 23, auth_user=6079)
+            actual_result = delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=6079)
 
             # assert
 
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 "logging__delete"
-                , (23, 6079)
+                , (69, 31, 6079)
                 , handle_log_info)
 
             # check subsequent functions where called

@@ -76,8 +76,8 @@ class EventLogModel(BaseModel):
 
 
     @staticmethod
-    def delete(db, older_than_n_days, auth_user):
-        res = EventLogDataAccess.delete(db, older_than_n_days, auth_user)
+    def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
+        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user)
         return res
 
 
@@ -98,12 +98,12 @@ class EventLogDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete(db, older_than_n_days, auth_user):
+    def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         
-        params = (older_than_n_days, auth_user)
+        params = (scheme_of_work_id, older_than_n_days, auth_user)
         
         rows = []
         rows = execHelper.delete(db, "logging__delete", params, handle_log_info)
