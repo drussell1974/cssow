@@ -6,8 +6,8 @@ class DEPARTMENT(IntFlag):
     STUDENT = 2
     TEACHER = 4
     HEAD = 8
-    ADMIN = 128
-
+    ADMIN = 64
+    
 
 class SCHEMEOFWORK(IntFlag):
     """ Teacher permissions for schemes of work, keywords and curriculum content """
@@ -16,7 +16,7 @@ class SCHEMEOFWORK(IntFlag):
     EDIT = 4
     DELETE = 16
     PUBLISH = 32
-    OWNER = 128
+    OWNER = 64
 
 
 class LESSON(IntFlag):
@@ -27,4 +27,4 @@ class LESSON(IntFlag):
     ADD = 8
     DELETE = 16
     PUBLISH = 32
-    OWNER = 128
+    OWNER = 64
