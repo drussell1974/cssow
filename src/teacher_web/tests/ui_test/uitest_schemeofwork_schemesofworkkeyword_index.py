@@ -101,3 +101,8 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
     def test_page__should_have_sidenav__showing_other_lessons(self):
         # arrange
         self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
+
+
+    def test_page__should_have_sidenav__showing_administrator_links(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Adminstrator", expected_no_of_items=0)

@@ -6,6 +6,7 @@ class DEPARTMENT(IntFlag):
     STUDENT = 2
     TEACHER = 4
     HEAD = 8
+    ADMIN = 128
 
 
 class SCHEMEOFWORK(IntFlag):

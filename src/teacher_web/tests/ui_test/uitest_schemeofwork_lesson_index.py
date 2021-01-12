@@ -88,6 +88,11 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
 
 
+    def test_page__should_have_sidenav__showing_administrator_links(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Adminstrator", expected_no_of_items=0)
+
+        
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
         # setup
         elem = self.test_context.find_element_by_id('btn-lesson-learningobjectives--{}'.format(self.test_lesson_id))

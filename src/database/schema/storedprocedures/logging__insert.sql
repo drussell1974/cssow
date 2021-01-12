@@ -3,6 +3,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS logging__insert;
 
 CREATE PROCEDURE logging__insert (
+ IN p_scheme_of_work_id INT(11),
  IN p_message VARCHAR(200),
  IN p_details TEXT,
  IN p_event_type TINYINT(4),
@@ -14,6 +15,7 @@ BEGIN
 
     INSERT INTO sow_logging
     (
+		scheme_of_work_id,
         message, 
         details, 
         event_type,
@@ -23,6 +25,7 @@ BEGIN
     )
     VALUES 
     (
+		p_scheme_of_work_id,
         p_message,
         p_details,
         p_event_type,

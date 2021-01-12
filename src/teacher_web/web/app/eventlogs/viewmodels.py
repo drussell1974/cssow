@@ -14,7 +14,7 @@ from shared.models.cls_eventlog import EventLogModel, EventLogFilter
 
 class EventLogIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(DEPARTMENT.HEAD)
+    @check_teacher_permission(DEPARTMENT.ADMIN)
     def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
 
         self.db = db
@@ -68,7 +68,8 @@ class EventLogIndexViewModel(BaseViewModel):
 
 class EventLogDeleteOldViewModel(BaseViewModel):
     
-    def __init__(self, db, request, settings, auth_user):
+    @check_teacher_permission(DEPARTMENT.ADMIN)
+    def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
         """ delete event log on POST """
         
         self.model = []
