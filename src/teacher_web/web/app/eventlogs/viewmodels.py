@@ -18,6 +18,7 @@ class EventLogIndexViewModel(BaseViewModel):
     def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
 
         self.db = db
+        self.scheme_of_work_id = scheme_of_work_id
         self.settings = settings
         self.auth_user = auth_user
 
@@ -43,7 +44,7 @@ class EventLogIndexViewModel(BaseViewModel):
             self.search_criteria.validate()
             
             if self.search_criteria.is_valid == True:
-                self.model = EventLogModel.get_all(self.db, scheme_of_work_id, self.search_criteria, self.auth_user)
+                self.model = EventLogModel.get_all(self.db, self.scheme_of_work_id, self.search_criteria, self.auth_user)
 
         except Exception as e:
             self.error_message = str(e)
@@ -52,6 +53,7 @@ class EventLogIndexViewModel(BaseViewModel):
     def view(self):
         
         data = { 
+            "scheme_of_work_id": self.scheme_of_work_id
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },
@@ -73,6 +75,7 @@ class EventLogDeleteOldViewModel(BaseViewModel):
         """ delete event log on POST """
         
         self.model = []
+        self._scheme_of_work_id = scheme_of_work_id
         self.settings = settings
 
         self.search_criteria = EventLogFilter(settings.PAGER["default"]["pagesize_options"])
@@ -95,7 +98,8 @@ class EventLogDeleteOldViewModel(BaseViewModel):
 
     def view(self):
 
-        data = { 
+        data = {
+            "scheme_of_work_id": self._scheme_of_work_id
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },
