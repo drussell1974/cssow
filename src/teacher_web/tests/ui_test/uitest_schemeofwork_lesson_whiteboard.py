@@ -1,4 +1,5 @@
 from ui_testcase import UITestCase, WebBrowserContext
+from unittest import skip
 
 class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
@@ -52,6 +53,3 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
         # assert
         self.assertEqual("Learning materials", elem.text)
         self.assertEqual(4, len(elems))
-
-
-

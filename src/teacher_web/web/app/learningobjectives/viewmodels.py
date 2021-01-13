@@ -106,14 +106,14 @@ class LearningObjectiveEditViewModel(BaseViewModel):
 class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
 
     @check_teacher_permission(LESSON.DELETE)
-    def __init__(self, db, lesson_id, auth_user):
-        data = Model.delete_unpublished(db, lesson_id, auth_user)
+    def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
+        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
         self.model = data
 
 
 class LearningObjectivePublishModelViewModel(BaseViewModel):
 
     @check_teacher_permission(LESSON.PUBLISH)
-    def __init__(self, db, learning_objective_id, scheme_of_work_id, auth_user):
-        data = Model.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
+    def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
+        data = Model.publish_item(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
         self.model = data

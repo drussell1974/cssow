@@ -33,7 +33,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             self.mock_model = Model(56)
 
             # act
-            self.viewmodel = ViewModel(db=db, lesson_id=56, auth_user=99)
+            self.viewmodel = ViewModel(db=db, lesson_id=56, scheme_of_work_id=13, auth_user=99)
 
             # assert functions was called
             Model.delete_unpublished.assert_called()

@@ -249,7 +249,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LearningObjectiveDeleteUnpublishedViewModel(db=db, lesson_id=lesson_id, auth_user=auth_user_id(request))
+    LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)
 

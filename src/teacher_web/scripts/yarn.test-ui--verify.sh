@@ -10,10 +10,10 @@ echo yarn test-ui--verify.sh: Testing... verify by file name - use asterisks wil
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_existing.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_delete.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_create_new.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_delete.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_create_new.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_whiteboard.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_whiteboard.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_index_not_found.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_edit_not_found.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_index.py

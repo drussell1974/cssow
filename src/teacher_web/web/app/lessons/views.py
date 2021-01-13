@@ -18,7 +18,7 @@ from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonGetModelViewModel
 
 from datetime import datetime
 
@@ -175,7 +175,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
     #253 check user id
-    get_lesson_view =  LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_lesson_view.model
 
     data = {

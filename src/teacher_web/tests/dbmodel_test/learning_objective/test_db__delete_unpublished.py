@@ -34,18 +34,17 @@ class test_db__delete_unpublished(TestCase):
 
 
     def test_should_call__delete(self):
-         # arrange
-        model = Model(1, "")
+        # arrange
         
         expected_result = []
 
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
             
-            actual_result = delete_unpublished(self.fake_db, 19, auth_user=99)
+            delete_unpublished(self.fake_db, 13, 19, auth_user=99)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db, 
                 "lesson_learning_objective__delete_unpublished"
-                , (19,99)
+                , (13, 19,99)
                 , handle_log_info)
