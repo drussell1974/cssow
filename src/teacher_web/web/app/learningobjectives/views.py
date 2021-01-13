@@ -129,7 +129,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         redirect_to_url = ""
 
         #253 check user id
-        viewmodel = LearningObjectiveEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
+        viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
         
         viewmodel.execute(int(request.POST["published"]))
         model = viewmodel.model
@@ -216,7 +216,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     redirect_to_url = ""
 
     #253 check user id
-    viewmodel = LearningObjectiveEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
+    viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
     
     model = viewmodel.model
 
