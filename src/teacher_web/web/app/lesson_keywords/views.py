@@ -149,7 +149,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = LessonKeywordSaveViewModel(db=db, model=model, auth_user=auth_user_id(request))
+    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
     
     save_keyword_view.execute(int(request.POST["published"]))
 
