@@ -6,13 +6,9 @@ class uitest_schemeofwork_content_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/curriculum-content".format(self.test_scheme_of_work_id)
+        self.do_log_in("/schemesofwork/{}/curriculum-content".format(self.test_scheme_of_work_id))
         
-        #self.test_context.get(self.root_uri + self.test_path)
-        #self.test_context.implicitly_wait(4)
-
-        self.do_log_in(self.root_uri + self.test_path)
-
+        self.wait(s=2)
 
     def tearDown(self):
         pass

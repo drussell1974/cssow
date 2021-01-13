@@ -6,9 +6,8 @@ class uitest_schemeofwork_resources_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, self.test_lesson_id)
-        self.test_context.get(self.root_uri + self.test_path)
-
+        self.try_log_in("/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        
         self.test_context.implicitly_wait(4)
 
 

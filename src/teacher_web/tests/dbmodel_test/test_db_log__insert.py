@@ -61,7 +61,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
         
-            log.write("something happened", "", test_context.LOG_TYPE.Verbose)
+            log.write("something happened", "", test_context.LOG_TYPE.Verbose, 76)
             
             # assert
             
@@ -83,7 +83,7 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
         
-            log.write("something happened", "", test_context.LOG_TYPE.Verbose)
+            log.write("something happened", "", test_context.LOG_TYPE.Verbose, 77)
             
             # assert
             

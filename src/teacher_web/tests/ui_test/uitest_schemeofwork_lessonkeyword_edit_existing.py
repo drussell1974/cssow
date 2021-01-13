@@ -10,9 +10,9 @@ class uitest_schemeofwork_lessonkeyword_edit_existing(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/keywords/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_keyword_id))
+        self.do_log_in("/schemesofwork/{}/lessons/{}/keywords/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_keyword_id))
 
-
+        
     def tearDown(self):
         pass
 

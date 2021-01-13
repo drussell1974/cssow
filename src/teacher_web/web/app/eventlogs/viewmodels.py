@@ -53,7 +53,7 @@ class EventLogIndexViewModel(BaseViewModel):
     def view(self):
         
         data = { 
-            "scheme_of_work_id": self.scheme_of_work_id
+            "scheme_of_work_id": self.scheme_of_work_id,
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },
@@ -92,14 +92,14 @@ class EventLogDeleteOldViewModel(BaseViewModel):
                 self.alert_message = "%s event logs deleted" % rows_affected
 
             except Exception as e:
-                handle_log_exception(db, "Error deleting old event logs", e)
+                handle_log_exception(db, scheme_of_work_id, "Error deleting old event logs", e)
                 self.error_message = str(e)
 
 
     def view(self):
 
         data = {
-            "scheme_of_work_id": self._scheme_of_work_id
+            "scheme_of_work_id": self._scheme_of_work_id,
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },

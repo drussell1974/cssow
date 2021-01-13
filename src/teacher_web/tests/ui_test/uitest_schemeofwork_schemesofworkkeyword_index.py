@@ -6,8 +6,6 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     def setUp(self):
         # set up
-        #self.test_path = "/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id)
-        #self.test_context.get(self.root_uri + self.test_path)
         self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id), print_uri=False)
         
         self.test_context.implicitly_wait(4)
@@ -105,4 +103,4 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     def test_page__should_have_sidenav__showing_administrator_links(self):
         # arrange
-        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Adminstrator", expected_no_of_items=0)
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Administrator", expected_no_of_items=1)
