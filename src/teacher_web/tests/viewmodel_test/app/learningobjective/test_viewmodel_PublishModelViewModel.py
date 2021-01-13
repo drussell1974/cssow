@@ -15,7 +15,7 @@ class test_viewmodel_PublishModelViewModel(TestCase):
         pass
 
 
-    @skip("Http404 not implemented")
+    @skip(" TODO: #206 Http404/PermissionDenied not implemented")
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
     def test_should_raise404__when_item_does_not_exist(self, check_permission):
         

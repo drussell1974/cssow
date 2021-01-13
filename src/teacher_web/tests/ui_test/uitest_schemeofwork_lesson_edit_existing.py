@@ -10,9 +10,8 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.test_path = '/schemesofwork/{}/lessons/{}/edit'.format(self.test_scheme_of_work_id, self.test_lesson_id)
-        self.do_log_in(self.root_uri + self.test_path)
-
+        self.do_log_in('/schemesofwork/{}/lessons/{}/edit'.format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.wait(s=2)
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()

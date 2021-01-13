@@ -6,7 +6,6 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from shared.models.core.django_helper import auth_user_id
-from shared.viewmodels.decorators.permissions import unauthorise_request
 
 # TODO: use view models
 from shared.models.cls_learningobjective import LearningObjectiveModel
@@ -18,7 +17,7 @@ from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
-    @unauthorise_request
+
     def get(self, request, scheme_of_work_id, lesson_id):
         
         resource_type_id = request.GET.get("resource_type_id", 0)
@@ -30,7 +29,7 @@ class LessonViewSet(APIView):
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
-    # TODO: 206 @unauthorise_request
+
     def get (self, request, scheme_of_work_id):
         #253 check user id
         get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
@@ -39,7 +38,7 @@ class LessonListViewSet(APIView):
 
 class LessonPathwayObjectivesViewSet(APIView):
     ''' API endpoint for list of lessons pathway objectives'''
-    # TODO: 206 @unauthorise_request
+
     def get(self, request, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
 
         raise DeprecationWarning("verify usage")
@@ -56,7 +55,7 @@ class LessonPathwayObjectivesViewSet(APIView):
 
 class LessonPathwayKs123ViewSet(APIView):
 
-    # TODO: 206 @unauthorise_request
+
     def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")

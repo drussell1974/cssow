@@ -82,7 +82,7 @@ class UITestCase(TestCase):
             pass
 
 
-    def try_log_out(uri):
+    def try_log_out(self, uri):
         try:
             elem = self.test_context.find_element_by_id("btn-logout")
             elem.click()

@@ -35,10 +35,9 @@ class uitest_schemeofwork_content_index(UITestCase):
 
 
     def test_page__submenu__navigate_to_lesson_new(self):
-        # setup
-        self.do_log_in(self.test_path)
+        # arrange
 
-        # test
+        # act
         self.test_context.find_element_by_id('btn-new').click()
         self.wait()
 
@@ -68,7 +67,7 @@ class uitest_schemeofwork_content_index(UITestCase):
 
     def test_page__should_have_sidenav__showing_administrator_links(self):
         # arrange
-        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Adminstrator", expected_no_of_items=0)
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Administrator", expected_no_of_items=1)
 
         
     def test_page__show_published_only(self):

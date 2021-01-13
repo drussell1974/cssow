@@ -1,7 +1,7 @@
 from ui_testcase import UITestCase, WebBrowserContext
 import unittest
 
-class uitest_schemeofwork_schemesofwork_index(UITestCase):
+class uitest_schemeofwork_schemesofwork_index_permission(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -27,4 +27,4 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons")
         
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/11/lessons/")

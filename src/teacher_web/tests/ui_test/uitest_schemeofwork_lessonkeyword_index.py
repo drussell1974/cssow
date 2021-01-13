@@ -85,7 +85,7 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
     def test_page__show_published_and_owned(self):
         # setup
-        self.do_log_in(redirect_to_uri_on_login=self.test_path)
+        #self.do_log_in(redirect_to_uri_on_login=self.test_path)
         
         section = self.test_context.find_elements_by_class_name('card-keyword')
 

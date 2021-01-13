@@ -4,6 +4,8 @@ from selenium.webdriver.support.select import Select
 import unittest
 from ui_testcase import UITestCase, WebBrowserContext
 
+
+@unittest.skip("implement department table with owner key to allow creation of schemes of work")
 class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()

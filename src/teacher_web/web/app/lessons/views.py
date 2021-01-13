@@ -92,7 +92,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db=db, model=model, auth_user=auth_user_id(request))
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
         try:
             modelviewmodel.execute(published)
@@ -148,7 +148,7 @@ def publish(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    publishlesson_view = LessonPublishViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
+    LessonPublishViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     # check for null and 404
 

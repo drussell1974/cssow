@@ -351,7 +351,6 @@ class SchemeOfWorkDataAccess:
         
         str_insert = "scheme_of_work__has__teacher__insert"
         
-        # TODO: #206 Get Permissions from auth_user (pass auth_user as object)
         params = (model.id, auth_user, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
         
         execHelper.insert(db, str_insert, params, handle_log_info)

@@ -29,7 +29,8 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertCustom404("item (220, 999999) does not exist, is currrently unavailable or you do not have permission.")
+        #self.assertCustom404("item (220, 999999) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/lessons/220/resources/")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
@@ -39,3 +40,4 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
 
         # assert
         self.assertCustom404("item (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
+        #self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/11/lesson/999999/resources")

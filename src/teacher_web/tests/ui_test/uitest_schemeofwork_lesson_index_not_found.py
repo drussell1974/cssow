@@ -28,4 +28,5 @@ class uitest_schemeofwork_lesson_index_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons".format(999999))
 
         # assert
-        self.assertCustom404("'' (999999,) does not exist, is currrently unavailable or you do not have permission.")
+        #self.assertCustom404("'' (999999,) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/lessons/")

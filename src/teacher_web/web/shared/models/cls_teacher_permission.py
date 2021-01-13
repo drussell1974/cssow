@@ -13,7 +13,6 @@ class TeacherPermissionModel(models.Model):
         self.scheme_of_work_id = scheme_of_work_id
         self.scheme_of_work_permission = scheme_of_work_permission
         self.lesson_permission = lesson_permission
-        # TODO: #206 Change default department_permission in contructor to DEPARTMENT.NONE
         self.department_permission = department_permission
 
 

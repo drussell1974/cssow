@@ -29,6 +29,7 @@ class apitest_keywords_get(APITestCase):
         self.assertIsNotNone(self.payload)
         self.assertIsNotNone(self.payload["keywords"])
 
+
     @skip("remove new keywords for testing")
     def test__should_be_alphabetical_order(self):
         self.assertEqual(367, len(self.payload["keywords"]))

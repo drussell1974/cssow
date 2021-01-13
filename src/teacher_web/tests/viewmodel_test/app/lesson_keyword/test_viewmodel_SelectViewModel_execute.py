@@ -38,7 +38,7 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
             # act
             test_context.execute(99)
 
-    @skip("not implemented")
+
     @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
     def test_execute_called_save__with_exception(self, check_permission):
 
@@ -102,7 +102,6 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
             LessonModel.save_keywords.assert_called()
 
 
-    @skip("not implemented")
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
     def test_should_raise_PermissionError(self, check_permission):
         # arrange
@@ -111,3 +110,4 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
             # act
 
             ViewModel(db=self.mock_db, scheme_of_work_id=99, model=KeywordModel(0, "New Keyword", scheme_of_work_id=13), auth_user=99)
+            

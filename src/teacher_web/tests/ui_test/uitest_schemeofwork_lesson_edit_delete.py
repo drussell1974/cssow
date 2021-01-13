@@ -13,7 +13,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         # setup
         #231: create a new resource
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/new".format(self.test_scheme_of_work_id))
-
+        self.wait(s=2)
         
         # arrange
         elem = self.test_context.find_element_by_tag_name("form")
