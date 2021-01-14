@@ -76,11 +76,11 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                     self.model = data
                 else:
                     self.alert_message = "validation errors %s" % self.model.validation_errors 
-                    handle_log_warning(self.db, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
+                    handle_log_warning(self.db, scheme_of_work_id, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
                     
             except Exception as ex:
                 self.error_message = ex
-                handle_log_exception(db, "An error occurred processing key words json", ex)
+                handle_log_exception(db, scheme_of_work_id, "An error occurred processing key words json", ex)
                 
 
     def view(self):

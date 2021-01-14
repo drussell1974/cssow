@@ -93,7 +93,7 @@ def handle_log_verbose(db, scheme_of_work_id, msg, details = "", log_type = LOG_
     logger.write(scheme_of_work_id, msg, details, log_type)
     
     
-def handle_log_info(db, msg, scheme_of_work_id, details = "", log_type = LOG_TYPE.Information):
+def handle_log_info(db, scheme_of_work_id, msg, details = "", log_type = LOG_TYPE.Information):
     logger = Log(db, settings.LOGGING_LEVEL)
     logger.write(scheme_of_work_id, msg, details, log_type)
     

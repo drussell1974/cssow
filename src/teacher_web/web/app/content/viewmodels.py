@@ -99,7 +99,7 @@ class ContentEditViewModel(BaseViewModel):
                     #TODO: show error message for custom exception
                     self.error_message = repr(e)
             else:
-                handle_log_warning(self.db, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+                handle_log_warning(self.db, scheme_of_work_id, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
 
     def view(self):

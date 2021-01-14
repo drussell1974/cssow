@@ -143,7 +143,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
             return HttpResponseRedirect(redirect_to_url)
         else:
-            handle_log_warning(db, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
+            handle_log_warning(db, self.scheme_of_work_id, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
             
 
     #253 check user id

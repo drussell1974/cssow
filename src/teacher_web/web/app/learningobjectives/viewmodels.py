@@ -98,7 +98,7 @@ class LearningObjectiveEditViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving learning objective", "learning objective is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving learning objective", "learning objective is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
         return self.model
 
@@ -115,5 +115,5 @@ class LearningObjectivePublishModelViewModel(BaseViewModel):
 
     @check_teacher_permission(LESSON.PUBLISH)
     def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
-        data = Model.publish_item(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
+        data = Model.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
         self.model = data

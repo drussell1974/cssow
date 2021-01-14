@@ -50,7 +50,7 @@ class LessonIndexViewModel(BaseViewModel):
             raise notfound        
         except Exception as e:
             self.error_message = repr(e)
-            handle_log_exception(db, "Error initialising LessonIndexViewModel", e)
+            handle_log_exception(db, scheme_of_work_id, "Error initialising LessonIndexViewModel", e)
             
 
     def view(self):
@@ -106,6 +106,7 @@ class LessonEditViewModel(BaseViewModel):
         self.db = db
         self.auth_user = auth_user
         self.model = model
+        self.scheme_of_work_id = scheme_of_work_id
 
 
     def execute(self, published):
@@ -115,7 +116,7 @@ class LessonEditViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
 
         return self.model
 
