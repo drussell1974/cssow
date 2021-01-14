@@ -46,7 +46,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
             raise e
 
         except Exception as e:
-            handle_log_exception(self.db, "An error occured viewing resources", e)
+            handle_log_exception(self.db, self.scheme_of_work_id, "An error occured viewing resources", e)
             self.error_message = repr(e)
             raise e
 
@@ -84,12 +84,10 @@ class LessonKeywordSelectViewModel(BaseViewModel):
         self.model.key_words = list(map(lambda x: Model(int(x)), request.POST.getlist("term")))
         
         try:
-            
-            LessonModel.save_keywords(self.db, self.model, self.auth_user)
-                
+            LessonModel.save_keywords(self.db, self.model, self.auth_user)    
         except Exception as ex:
             self.error_message = ex
-            handle_log_exception(db, "An error occurred saving lesson keywords", ex)
+            handle_log_exception(self.db, self.scheme_of_work_id, "An error occurred saving lesson keywords", ex)
             
 
     def view(self, request):      
@@ -118,7 +116,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
             raise e
 
         except Exception as e:
-            handle_log_exception(self.db, "An error occured viewing resources", e)
+            handle_log_exception(self.db, self.scheme_of_work_id, "An error occured viewing resources", e)
             self.error_message = repr(e)
             raise e
 
@@ -172,7 +170,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
 
         except Exception as e:
             self.error_message = repr(e)
-            handle_log_exception(db, "An error occurred viewing keywords", e)
+            handle_log_exception(db, scheme_of_work_id, "An error occurred viewing keywords", e)
             #TODO: REMOVE swallow up and handle on form
             raise e
 
@@ -216,7 +214,7 @@ class LessonKeywordSaveViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving keyword", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving keyword", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
         return self.model
 

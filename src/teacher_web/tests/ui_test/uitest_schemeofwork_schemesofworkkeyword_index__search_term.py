@@ -2,7 +2,7 @@ from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-@skip("TODO: #206 check if javascript is not triggering the filtering when automated.")
+# @skip("TODO: #206 check if javascript is not triggering the filtering when automated.")
 class uitest_schemeofwork_schemesofworkkeyword_index__search_term(UITestCase):
 
     test_context = WebBrowserContext()

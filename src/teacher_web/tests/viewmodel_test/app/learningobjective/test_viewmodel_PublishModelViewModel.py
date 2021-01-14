@@ -15,23 +15,19 @@ class test_viewmodel_PublishModelViewModel(TestCase):
         pass
 
 
-    @skip(" TODO: #206 Http404/PermissionDenied not implemented")
     @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
     def test_should_raise404__when_item_does_not_exist(self, check_permission):
         
-        # arrange
         
-        data_to_return = None
-        
-        with patch.object(Model, "get_model", return_value=data_to_return):
+        with patch.object(Model, "get_model"):
 
             db = MagicMock()
             db.cursor = MagicMock()
 
             # act
-            with self.assertRaises(Http404):
+            with self.assertRaises(PermissionError):
                 # act
-                ViewModel(db=db, learning_objective_id=56, scheme_of_work_id=101, auth_user=99)
+                ViewModel(db=db, learning_objective_id=56, lesson_id=2, scheme_of_work_id=101, auth_user=99)
 
 
     @patch.object(TeacherPermissionModel, "check_permission", return_value=True)

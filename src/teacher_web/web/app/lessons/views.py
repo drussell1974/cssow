@@ -108,7 +108,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
                 
                 return HttpResponseRedirect(redirect_to_url)
             else:
-                handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
+                handle_log_warning(db, scheme_of_work, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
         
         except Exception as e:
             error_message = e
