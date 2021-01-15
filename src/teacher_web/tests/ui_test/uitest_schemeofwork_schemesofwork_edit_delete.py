@@ -4,7 +4,6 @@ from ui_testcase import UITestCase, WebBrowserContext
 from selenium.webdriver.support.select import Select
 
 
-@skip("TODO: #206 implemented add department table with owner key to allow creation of schemes of work")
 class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
 
     test_context = WebBrowserContext()

@@ -19,6 +19,9 @@ class BaseModel(models.Model):
     is_from_db = False
     skip_validation = []
 
+    # Data type ranges
+    MAX_INT = 2147483647
+
     def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db):
         self.id = try_int(id_)
         self.display_name = display_name

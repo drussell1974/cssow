@@ -22,8 +22,8 @@ class test_db__get_teacher_permission(TestCase):
         with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
-            with self.assertRaises(Exception):
-                SchemeOfWorkModel.has_permission(self.fake_db, 4)
+            with self.assertRaises(KeyError):
+                Model.get_model(self.fake_db, 99, 999)
 
     
     def test__should_call__select__return_no_permissions(self):

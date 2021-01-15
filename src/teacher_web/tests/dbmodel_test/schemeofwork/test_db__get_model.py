@@ -51,7 +51,7 @@ class test_db__get_model(TestCase):
 
     def test__should_call__select__return_single_item(self):
         # arrange
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "", "2020-07-21 17:09:34", 1, "test_user", 1)]
 
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
@@ -75,6 +75,8 @@ class test_db__get_model(TestCase):
             self.assertEqual(6, model.id)
             self.assertEqual("Lorem", model.name)
             self.assertEqual("ipsum dolor sit amet.", model.description)
+            self.assertEqual(56, model.department_id)
+            self.assertEqual("", model.department_name)
             self.assertFalse(model.is_new())
             self.assertTrue(model.is_from_db)
 

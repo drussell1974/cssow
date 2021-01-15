@@ -31,6 +31,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "department_id": 68,
                     "lesson_id": 230
                 }
 
@@ -70,6 +71,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "department_id": 67,
                     "lesson_id": 230
                 }
 
@@ -115,6 +117,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "exam_board_id": 0,
                     "key_stage_id": 3,
                     "lesson_id": 0,
+                    "department_id": 56,
                     "key_words":  '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
                 }
 

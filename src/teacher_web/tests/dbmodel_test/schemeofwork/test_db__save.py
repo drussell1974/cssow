@@ -51,7 +51,7 @@ class test_db__save(TestCase):
 
     def test_should_call__update_with__is_new__false(self):
          # arrange
-        model = Model(89)
+        model = Model(89, department_id=43)
         model.is_new = Mock(return_value=False)
 
         with patch.object(ExecHelper, 'update', return_value=model):
@@ -62,7 +62,7 @@ class test_db__save(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 0, 1, 6079)
+                , (89, '', '', 0, 0, 43, 1, 6079)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -71,7 +71,7 @@ class test_db__save(TestCase):
     def test_should_call__scheme_of_work__insert__when__is_new__true(self):
         # arrange
 
-        model = Model(0)
+        model = Model(0, department_id=45)
 
         DataAccess._insert_as__teacher = Mock(return_value=1)
 
@@ -84,7 +84,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, '', 0, 1, 6079)
+                 , (0, '', '', 0, 0, 45, '', 0, 1, 6079)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -108,7 +108,6 @@ class test_db__save(TestCase):
                  'scheme_of_work__has__teacher__insert'
                  , (101, 6079, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
                  , handle_log_info)
-                 
 
             self.assertEqual(101, actual_result.id)
 

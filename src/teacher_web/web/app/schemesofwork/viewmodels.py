@@ -4,9 +4,10 @@ from rest_framework import serializers, status
 from django.http.response import Http404
 from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -62,6 +63,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 description=request.POST.get("description", ""),
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
+                department_id=request.POST.get("department_id", 0),
                 created=datetime.now(),
                 created_by_id=self.auth_user)
         
@@ -88,6 +90,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         # get options
         self.examboard_options = ExamBoardModel.get_options(self.db, self.auth_user)
         self.keystage_options = KeyStageModel.get_options(self.db, self.auth_user)
+        self.department_options = DepartmentModel.get_options(self.db, self.auth_user)
 
         # view data
         data = {
@@ -95,6 +98,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             "scheme_of_work": self.model,
             "examboard_options": self.examboard_options,
             "keystage_options": self.keystage_options,
+            "department_options": self.department_options
         }
         
         # build alert message to be displayed
