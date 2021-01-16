@@ -50,6 +50,6 @@ def delete_unpublished(request):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=auth_user_id(request))
+    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(redirect_to_url)

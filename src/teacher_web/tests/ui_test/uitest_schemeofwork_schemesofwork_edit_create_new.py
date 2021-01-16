@@ -5,7 +5,6 @@ import unittest
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-@unittest.skip("implement department table with owner key to allow creation of schemes of work")
 class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     test_context = WebBrowserContext()
@@ -77,7 +76,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
-        elem = self.test_context.find_element_by_id("ctl-description")
+        elem = self.test_context.find_element_by_id("ctl-name")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -89,6 +88,11 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
         ' name '
         elem = self.test_context.find_element_by_id("ctl-name")
         elem.send_keys("should_redirect_to_index_if_valid")
+
+        ' description '
+        elem = self.test_context.find_element_by_id("ctl-description")
+        ' description - Fill in field with some information '
+        elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' exam board - just skip as not required'
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
@@ -102,11 +106,6 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
                  opt.click()
 
         elem.send_keys(Keys.TAB)
-
-        ' name '
-        elem = self.test_context.find_element_by_id("ctl-description")
-        ' description - Fill in field with some information '
-        elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field {}" + str(datetime.now()))
 
         ' select the submit button (to remove cursor from textarea '
 

@@ -40,7 +40,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_options'
-                , (6079)
+                , (6079,)
                 , []
                 , handle_log_info)
 
@@ -61,7 +61,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (6079)
+                , (6079,)
                 , []
                 , handle_log_info)
 
@@ -81,7 +81,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (6079)
+                , (6079,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

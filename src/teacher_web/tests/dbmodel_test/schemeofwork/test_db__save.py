@@ -75,7 +75,7 @@ class test_db__save(TestCase):
 
         DataAccess._insert_as__teacher = Mock(return_value=1)
 
-        with patch.object(ExecHelper, 'insert', return_value=(101)):
+        with patch.object(ExecHelper, 'insert', return_value=(101,)):
             # act
 
             actual_result = save(self.fake_db, model, 6079)
@@ -97,7 +97,7 @@ class test_db__save(TestCase):
 
         model = Model(0)
 
-        with patch.object(ExecHelper, 'insert', return_value=(101)):
+        with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
 
             actual_result = save(self.fake_db, model, 6079)

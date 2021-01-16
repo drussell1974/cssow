@@ -6,12 +6,11 @@ CREATE PROCEDURE scheme_of_work__get_teacher_permissions (
  IN p_scheme_of_work_id INT,
  IN p_auth_user INT)
 BEGIN
-	-- IFNULL(teach.scheme_of_work_permission, 64), IFNULL(teach.lesson_permission, 64), IFNULL(teach.department_permission, 64)
-	SELECT 
-        IFNULL(IFNULL(teach_sow.scheme_of_work_permission, teach_dep.scheme_of_work_permission), 0) as scheme_of_work_permission, 
-        IFNULL(IFNULL(teach_sow.lesson_permission, teach_dep.lesson_permission), 0) as lesson_permission, 
-		IFNULL(IFNULL(teach_sow.department_permission, teach_dep.department_permission), 0) as department_permission,
-		user.id as auth_user_id
+	
+    SELECT 
+      IFNULL(IFNULL(teach_sow.scheme_of_work_permission, teach_dep.scheme_of_work_permission), 7) as scheme_of_work_permission, 
+      IFNULL(IFNULL(teach_sow.lesson_permission, teach_dep.lesson_permission), 7) as lesson_permission, 
+      IFNULL(IFNULL(teach_sow.department_permission, teach_dep.department_permission), 7) as department_permission
     FROM auth_user as user    
     INNER JOIN sow_department as dep
     LEFT JOIN sow_department__has__teacher as teach_dep 
@@ -33,4 +32,5 @@ CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(0, 2);
 CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(11, 2);
 CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(0, 12);
 CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(11, 12);
+CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(999999, 12);
 

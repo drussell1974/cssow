@@ -17,7 +17,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         self.wait(s=2)
         
         # setup
-        elem = self.test_context.find_element_by_id("ctl-description")
+        elem = self.test_context.find_element_by_id("ctl-name")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -29,6 +29,11 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         ' name '
         elem = self.test_context.find_element_by_id("ctl-name")
         elem.send_keys("should_redirect_to_index_if_valid")
+
+        ' description '
+        elem = self.test_context.find_element_by_id("ctl-description")
+        ' description - Fill in field with some information '
+        elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field")
 
         ' exam board - just skip as not required'
         elem = self.test_context.find_element_by_id("ctl-exam_board_id")
@@ -43,18 +48,14 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
-        ' name '
-        elem = self.test_context.find_element_by_id("ctl-description")
-        ' description - Fill in field with some information '
-        elem.send_keys("test_schemeofwork_schemesofwork_new.test_page__edit_existing__should_redirect_to_index_if_valid, last updated this field")
-
         ' select the submit button (to remove cursor from textarea '
-
+        
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         # TODO: improve performance
-        self.wait()
+        
+        self.wait(s=2)
         
         # assert
         ' should still be on the same page '

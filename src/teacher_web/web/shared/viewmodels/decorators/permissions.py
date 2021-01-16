@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from shared.models.core.log import handle_log_info, handle_log_warning
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.cls_teacher_permission import TeacherPermissionModel
@@ -55,6 +55,7 @@ class check_teacher_permission:
             if model.check_permission(self._permission) == False: 
                 handle_log_warning(self.db, self._scheme_of_work_id, str_err)
                 raise PermissionError(str_err) 
+                redirect(self._redirect_to_url)
 
             # call decorated function
             func(*args, **kwargs)

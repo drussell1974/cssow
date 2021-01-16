@@ -353,7 +353,8 @@ class SchemeOfWorkDataAccess:
     
         results = execHelper.insert(db, str_insert, params, handle_log_info)
         
-        model.id = results
+        if len(results) > 0:
+            model.id = results[0]
 
         return model
 
@@ -364,7 +365,7 @@ class SchemeOfWorkDataAccess:
         
         str_insert = "scheme_of_work__has__teacher__insert"
         
-        params = (model.id, auth_user, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
+        params = (model.id, auth_user, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER))
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         

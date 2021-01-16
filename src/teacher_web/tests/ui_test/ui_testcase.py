@@ -51,9 +51,15 @@ class UITestCase(TestCase):
         elem = self.test_context.find_element_by_css_selector('#info > p')
         self.assertEqual(info_message, elem.text)
 
+
     def assertCustomPermissionDenied(self, h1):
         elem = self.test_context.find_element_by_css_selector("div#summary h1")
         self.assertEqual(h1, elem.text)
+
+
+    def assertLoginPage(self, alert_message = ""):
+        elem = self.test_context.find_element_by_css_selector("div.site-heading > h1")
+        self.assertEqual("Log in", elem.text)
 
 
     def try_log_in(self, redirect_to_uri_on_login):
