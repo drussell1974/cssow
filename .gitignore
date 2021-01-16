@@ -20,6 +20,8 @@ lib-cov
 # test coverage directory
 coverage
 
+skip*test/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
