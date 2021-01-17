@@ -6,27 +6,22 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-
 from shared.models.core.django_helper import auth_user_id
+from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
-
-# TODO: use view models
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
-
-# view models
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
 from ..keywords.viewmodels import KeywordGetModelViewModel, KeywordGetAllListViewModel, KeywordSaveViewModel, KeywordDeleteUnpublishedViewModel, KeywordMergeViewModel
-
 from shared.models.core import validation_helper
-
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-
 from shared.filehandler import handle_uploaded_markdown
 
-# 299 Keyword Index
+
+@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
 def index(request, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
     #253 check user id
@@ -36,6 +31,7 @@ def index(request, scheme_of_work_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def new(request, scheme_of_work_id):
     ''' Create a new keyword '''
 

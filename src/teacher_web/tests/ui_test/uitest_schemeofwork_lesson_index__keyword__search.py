@@ -45,7 +45,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
-            self.wait()
+            self.wait(s=2)
 
 
     def test_page__should__show_only_show_lessons_with_keyword_in_title__no_results(self):
