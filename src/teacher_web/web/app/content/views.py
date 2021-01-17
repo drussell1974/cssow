@@ -7,15 +7,17 @@ from django.urls import reverse
 
 from shared.models.core.log import handle_log_warning
 from shared.models.core.django_helper import auth_user_id
-
 # TODO: remove after creating view model
 from shared.view_model import ViewModel
+from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.viewmodels.decorators.permissions import min_permission_required
 from .viewmodels import ContentIndexViewModel, ContentEditViewModel
-
 from shared.models.cls_content import ContentModel
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
+
+@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
 def index(request, scheme_of_work_id):
 
     #253 check user id
@@ -26,6 +28,7 @@ def index(request, scheme_of_work_id):
 
 #234 add permission
 @permission_required('models.change_contentmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 
