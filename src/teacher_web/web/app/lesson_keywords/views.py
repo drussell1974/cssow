@@ -6,10 +6,10 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-
 from shared.models.core.django_helper import auth_user_id
+from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
-
 # TODO: use view models
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
@@ -26,7 +26,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from shared.filehandler import handle_uploaded_markdown
 
-# 299 Keyword Index
+@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
     #253 check user id
@@ -192,6 +192,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.DELETE, "/accounts/login/")
 def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
     """ delete item and redirect back to referer """
 
@@ -204,6 +205,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.PUBLISH, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
     #231: published item     
