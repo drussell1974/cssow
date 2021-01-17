@@ -5,14 +5,16 @@ from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
+from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 # Create your views here.
 
+@min_permission_required(DEPARTMENT.NONE, "/accounts/login/")
 def index(request):
     #253 check user id
     getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_id(request))
@@ -27,6 +29,7 @@ def index(request):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(DEPARTMENT.HEAD, "/accounts/login/")
 def edit(request, scheme_of_work_id = 0):
     """ edit action """
     
@@ -44,6 +47,7 @@ def edit(request, scheme_of_work_id = 0):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(DEPARTMENT.HEAD, "/accounts/login/")
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 

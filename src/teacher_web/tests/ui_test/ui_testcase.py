@@ -33,7 +33,7 @@ class UITestCase(TestCase):
         time.sleep(s)
     
 
-    def assertWebPageTitleAndHeadings(self, title, h1, subheading, username=None):
+    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None):
 
         # test - subheading
         self.assertEqual(title, self.test_context.title, "title not as expected")
@@ -42,9 +42,12 @@ class UITestCase(TestCase):
         # assert - title
         self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
         # assert - username
-        if username != None:
+        if should_be_logged_in == True and username != None:
             profile = self.test_context.find_element_by_id("btn-profile")
-            self.assertEqual(username, profile.text)
+            self.assertEqual(username.upper(), profile.text.upper())
+        elif should_be_logged_in == False:
+            profile = self.test_context.find_element_by_id("btn-login")
+            self.assertEqual("Login", profile.text)
 
 
     def assertCustom404(self, info_message):
@@ -57,12 +60,15 @@ class UITestCase(TestCase):
         self.assertEqual(h1, elem.text)
 
 
-    def assertLoginPage(self, alert_message = ""):
+    def assertLoginPage(self, login_message = "", exception_message=""):
         elem = self.test_context.find_element_by_css_selector("div.site-heading > h1")
         self.assertEqual("Log in", elem.text)
+        # TODO: #206 assert messages
+        elem = self.test_context.find_element_by_id("login_message")
+        self.assertEqual(login_message, elem.text)
 
 
-    def try_log_in(self, redirect_to_uri_on_login):
+    def try_log_in(self, redirect_to_uri_on_login, enter_username=None, enter_password=None):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -75,10 +81,10 @@ class UITestCase(TestCase):
             self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("id_username")
-            elem.send_keys(TEST_USER_NAME)
+            elem.send_keys(enter_username if None else TEST_USER_NAME)
             
             elem = self.test_context.find_element_by_id("id_password")
-            elem.send_keys(TEST_USER_PSWD)
+            elem.send_keys(enter_password if None else TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -88,39 +94,56 @@ class UITestCase(TestCase):
             pass
 
 
-    def try_log_out(self, uri):
+    def try_click_log_out(self, wait):
         try:
             elem = self.test_context.find_element_by_id("btn-logout")
             elem.click()
-        except:
+
+            self.wait(s=wait)
+        except Exception as e:
+            print("try_click_log_out handled - probably logged out already ({})".format(e.args))
             pass # ignore errors as may already be logged out
 
+
+    def try_log_out(self, uri, wait=2):
+        
+        self.try_click_log_out(wait=wait)
+
         self.test_context.get(self.root_uri + uri)
-        self.test_context.implicitly_wait(4)
+        
+        self.wait(s=wait)
 
 
-    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0):
+    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0, enter_username=None, enter_password=None):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
+        enter_username = enter_username if enter_username is not None else TEST_USER_NAME
+        enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
+
         if print_uri == True:
             print(redirect_to_uri_on_login)
 
-        login_uri = self.root_uri + "/accounts/login"
+        ' Try log out first '
 
-        ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
-
+        self.try_click_log_out(wait=wait)
         
+        ' Open uri - if authentication is required this should automatically redirect to login '
+
+        login_uri = self.root_uri + "/accounts/login"
+        self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
+        
+
         try:
             self.test_context.implicitly_wait(4)
-
+            
             elem = self.test_context.find_element_by_id("id_username")
-            elem.send_keys(TEST_USER_NAME)
+            elem.send_keys(enter_username)
             
             elem = self.test_context.find_element_by_id("id_password")
-            elem.send_keys(TEST_USER_PSWD)
+            elem.send_keys(enter_password)
+
             ' submit the form '
             elem.send_keys(Keys.RETURN)
             self.wait(s=1)
@@ -132,7 +155,6 @@ class UITestCase(TestCase):
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
             pass
-
 
 
     def open_unpublished_item(self, class_selector, page_url = None, print_uri=False):

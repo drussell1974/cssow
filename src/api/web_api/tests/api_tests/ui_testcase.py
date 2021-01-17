@@ -3,6 +3,10 @@ from django.test import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+
+TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
+
 def WebBrowserContext():
     options = webdriver.ChromeOptions();
     options.add_argument("--start-maximized");
@@ -32,7 +36,7 @@ class UITestCase(TestCase):
         self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
 
 
-    def try_log_in(self, redirect_to_uri_on_login):
+    def try_log_in(self, redirect_to_uri_on_login, enter_username="test@localhost", enter_password="password1."):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -45,11 +49,11 @@ class UITestCase(TestCase):
             self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys("test@localhost")
+            elem.send_keys(enter_username)
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("password1.")
+            elem.send_keys(enter_password)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -61,7 +65,7 @@ class UITestCase(TestCase):
             pass
 
 
-    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0):
+    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0, enter_username="test@localhost", enter_password="password1."):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -81,11 +85,10 @@ class UITestCase(TestCase):
             self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys("test@localhost")
-            #elem.send_keys(Keys.TAB)
-
+            elem.send_keys(enter_username if None else TEST_USER_NAME)
+            
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("password1.")
+            elem.send_keys(enter_password if None else TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
