@@ -21,6 +21,8 @@ class uitest_schemeofwork_schemesofwork_pages__public_permissions(UITestCase):
 
 
     def test_page__index__should_be_allowed(self):
+        #path('<int:scheme_of_work_id>', views.index, name='schemesofwork.view'),    
+        #path('', views.index, name='schemesofwork.index'),
         # test
         self.do_log_in(f"/schemesofwork", enter_username="schemeofwork-viewer@localhost", wait=5)
         
@@ -29,6 +31,7 @@ class uitest_schemeofwork_schemesofwork_pages__public_permissions(UITestCase):
 
 
     def test_page__new__should_redirect_to_login_when_with_permission_error(self):
+        #path('new', views.edit, name='schemesofwork.new'),
         # test
         self.try_log_out(f"/schemesofwork/new")
         
@@ -37,6 +40,7 @@ class uitest_schemeofwork_schemesofwork_pages__public_permissions(UITestCase):
 
 
     def test_page__edit__should_redirect_to_login_when_with_permission_error(self):
+        #path('<int:scheme_of_work_id>/edit', views.edit, name='schemesofwork.edit'),
         # test
         self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/edit")
         
@@ -45,6 +49,7 @@ class uitest_schemeofwork_schemesofwork_pages__public_permissions(UITestCase):
 
 
     def test_page__delete_unpublished__should_redirect_to_login_when_with_permission_error(self):
+        #path('delete_unpublished', views.delete_unpublished, name="schemesofwork.delete_unpublished"),
         # test
         self.try_log_out(f"/schemesofwork/delete_unpublished")
         
