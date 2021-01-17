@@ -90,6 +90,7 @@ class min_permission_required:
             if model.check_permission(self._permission) == False: 
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = f"You do not have {str(self._permission).split('.')[1]} permission for this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id}) redirect {self._redirect_to_url}" 
+            
                 return self.redirect_handler(str_err) 
 
             # call decorated function
@@ -107,6 +108,7 @@ class min_permission_required:
 
 
     def redirect_handler(self, error_message):
-        handle_log_warning(db, self._scheme_of_work_id, error_message)
+        
+        handle_log_warning(db, self._scheme_of_work_id, msg="permission denied", details=error_message)
 
         return redirect(f"{self._redirect_to_url}?next={self._return_url}")

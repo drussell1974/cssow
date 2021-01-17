@@ -8,7 +8,8 @@ from django.urls import reverse
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
-from shared.viewmodels.decorators.permissions import unauthorise_request
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.viewmodels.decorators.permissions import min_permission_required, unauthorise_request
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel, try_int
@@ -24,6 +25,7 @@ from datetime import datetime
 
 # Create your views here.        
 
+@min_permission_required(LESSON.VIEW, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id = 0):
     """ Get lessons for scheme of work """
     
@@ -43,6 +45,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
+#@min_permission_required(LESSON.EDIT, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
@@ -142,13 +145,14 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
+#@min_permission_required(LESSON.PUBLISH, "/accounts/login/")
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LessonPublishViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
+    LessonPublishViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     # check for null and 404
 
@@ -158,18 +162,18 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+#@min_permission_required(LESSON.DELETE, "/accounts/login/")
 def delete(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    modelviewmodel = LessonDeleteViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
+    LessonDeleteViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
 
-#TODO: #234 add permission
 @unauthorise_request
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
@@ -189,38 +193,8 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
-def initialise_keywords(request, scheme_of_work_id):
-    
-    raise DeprecationWarning("Not longer used.")
-
-    # default pager settings
-    
-    if page == 0:
-        page = settings.PAGER["default"]["page"]
-    pagesize = settings.PAGER["default"]["pagesize"]
-    pagesize_options = settings.PAGER["default"]["pagesize_options"]
-
-    #253 check user id
-    lessons = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_option=pagesize_options, auth_user=auth_user_id(request))
-
-
-    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id(request))
-    #253 check user id
-    schemeofwork_options = LessonModel.get_options(db, scheme_of_work_id, auth_user=auth_user_id(request))
-    
-    data = {
-        "scheme_of_work_id":int(scheme_of_work_id),
-        "schemeofwork_options": schemeofwork_options,
-        "lessons": lessons,
-        "topic_name": "",
-    }
-
-    view_model = ViewModel("scheme_of_work_name", "scheme_of_work_name", "Lessons", data=data)
-    
-    return render(request, "lessons/index.html", view_model.content)
-
-
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+#@min_permission_required(LESSON.DELETE, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
