@@ -70,7 +70,7 @@ class KeywordGetModelViewModel(BaseViewModel):
 
 class KeywordSaveViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
+    @check_teacher_permission(SCHEMEOFWORK.EDIT)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
         self.db = db
         self.model = model

@@ -16,7 +16,7 @@ from shared.view_model import ViewModel
 
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(DEPARTMENT.NONE, "/")
+    @check_teacher_permission(DEPARTMENT.NONE)
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
 
@@ -28,7 +28,7 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(DEPARTMENT.NONE, "/")
+    @check_teacher_permission(DEPARTMENT.NONE)
     def __init__(self, db, scheme_of_work_id, auth_user):
         self.db = db
         # get model
@@ -40,7 +40,7 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
 
 class SchemeOfWorkEditViewModel(BaseViewModel):
 
-    @check_teacher_permission(DEPARTMENT.TEACHER, "/")
+    @check_teacher_permission(DEPARTMENT.HEAD)
     def __init__(self, db, request, scheme_of_work_id, auth_user):
         
         self.db = db
@@ -116,7 +116,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
-    @check_teacher_permission(DEPARTMENT.HEAD, "/")
+    @check_teacher_permission(DEPARTMENT.HEAD)
     def __init__(self, db, auth_user):
         data = Model.delete_unpublished(db, auth_user)
         self.model = data
@@ -124,7 +124,7 @@ class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
 class SchemeOfWorkPublishModelViewModel(BaseViewModel):
 
-    @check_teacher_permission(DEPARTMENT.HEAD, "/")
+    @check_teacher_permission(DEPARTMENT.HEAD)
     def __init__(self, db, scheme_of_work_id, auth_user):
         data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
         self.model = data

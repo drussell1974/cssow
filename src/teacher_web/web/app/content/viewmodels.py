@@ -16,7 +16,7 @@ from shared.view_model import ViewModel
 
 class ContentIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")
+    @check_teacher_permission(SCHEMEOFWORK.VIEW)
     def __init__(self, db, scheme_of_work_id, auth_user):
         """ determine and action request """
         self.auth_user = auth_user
@@ -49,7 +49,7 @@ class ContentEditViewModel(BaseViewModel):
     is_content_ready = False
     error_message = ""
 
-    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
+    @check_teacher_permission(SCHEMEOFWORK.EDIT)
     def __init__(self, db, request, scheme_of_work_id, content_id, auth_user):
         
         self.db = db

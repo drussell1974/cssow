@@ -15,7 +15,7 @@ from shared.view_model import ViewModel
 
 class KeywordGetAllListViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")  
+    @check_teacher_permission(SCHEMEOFWORK.VIEW)  
     def __init__(self, db, request, scheme_of_work_id, auth_user):
         
         self.model = []
@@ -67,7 +67,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
 
 class KeywordGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEW, "/")
+    @check_teacher_permission(SCHEMEOFWORK.VIEW)
     def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
 
         self.model = None
@@ -121,7 +121,7 @@ class KeywordGetModelViewModel(BaseViewModel):
 class KeywordSaveViewModel(BaseViewModel):
 
 
-    @check_teacher_permission(SCHEMEOFWORK.EDIT, "/")
+    @check_teacher_permission(SCHEMEOFWORK.EDIT)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
@@ -150,7 +150,7 @@ class KeywordSaveViewModel(BaseViewModel):
 
 class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.DELETE, "/")
+    @check_teacher_permission(SCHEMEOFWORK.DELETE)
     def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
         data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
         self.model = data
@@ -158,7 +158,7 @@ class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
 class KeywordPublishModelViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.PUBLISH, "/")
+    @check_teacher_permission(SCHEMEOFWORK.PUBLISH)
     def __init__(self, db, keyword_id, auth_user):
         data = Model.publish_by_id(db, auth_user, keyword_id)
         self.model = data
@@ -166,7 +166,7 @@ class KeywordPublishModelViewModel(BaseViewModel):
 
 class KeywordMergeViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.DELETE, "/")
+    @check_teacher_permission(SCHEMEOFWORK.DELETE)
     def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
         
         self.db = db
