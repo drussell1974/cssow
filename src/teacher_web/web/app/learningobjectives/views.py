@@ -4,7 +4,8 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-
+from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 
@@ -31,7 +32,7 @@ from shared.models.core.log import handle_log_warning
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel
 
-
+@min_permission_required(SCHEMEOFWORK.VIEW, login_url="/accounts/login")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
@@ -261,7 +262,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LearningObjectivePulishModelViewModel(db=db, learning_objective_id=learning_objective_id, auth_user=auth_user_id(request))
+    LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_user_id(request))
 
     # redirect
     return HttpResponseRedirect(redirect_to_url)

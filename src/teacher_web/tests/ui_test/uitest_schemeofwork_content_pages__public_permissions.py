@@ -36,17 +36,6 @@ class uitest_schemeofwork_content_pages__public_permissions(UITestCase):
         #path('new', views.edit, name="content.new"),
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/999999/new")
-        
-        # assert
-        self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
-
-
-    def test_page__new__should_redirect_to_login_with_permission_error(self):
-        
-        #path('new', views.edit, name="content.new"),
-        
-        # act
         self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new")
         
         # assert
