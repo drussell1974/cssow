@@ -1,7 +1,7 @@
 from ui_testcase import UITestCase, WebBrowserContext
 import unittest
 
-class uitest_schemeofwork_content_pages__public_permissions(UITestCase):
+class uitest_schemeofwork_content_pages__permissions(UITestCase):
 
     test_context = WebBrowserContext()
 
