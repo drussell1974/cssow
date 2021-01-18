@@ -4,7 +4,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.models.enums.permissions import LESSON
 from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
@@ -32,7 +32,7 @@ from shared.models.core.log import handle_log_warning
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel
 
-@min_permission_required(SCHEMEOFWORK.VIEW, login_url="/accounts/login")
+@min_permission_required(LESSON.VIEW, login_url="/accounts/login")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
@@ -43,6 +43,7 @@ def index(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDIT, login_url="/accounts/login")
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
 
@@ -96,6 +97,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDIT, login_url="/accounts/login")
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
     ''' Edit an existing learning objective '''
     
@@ -193,6 +195,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDIT, login_url="/accounts/login")
 def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
 
@@ -244,6 +247,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
 
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.DELETE, login_url="/accounts/login")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
@@ -256,6 +260,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDIT, login_url="/accounts/login")
 def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
     #231: published item     
