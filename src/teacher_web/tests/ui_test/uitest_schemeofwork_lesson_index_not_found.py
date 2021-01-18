@@ -28,4 +28,4 @@ class uitest_schemeofwork_lesson_index_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons".format(999999))
 
         # assert
-        self.assertLoginPage(login_message="Your account doesn't have access to this page. To proceed, please login with an account that has access.")
+        self.assertLoginPage(login_message="The item is currrently unavailable or you do not have permission.")

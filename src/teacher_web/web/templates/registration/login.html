@@ -22,7 +22,7 @@
                 <p id="login_message">    
                     {% if next %}
                         {% if user.is_authenticated %}
-                            Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+                            The item is currrently unavailable or you do not have permission.
                         {% else %}
                             {{_("Enter your email and password")}}            
                         {% endif %}

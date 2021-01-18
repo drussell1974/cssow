@@ -101,7 +101,7 @@ class UITestCase(TestCase):
 
             self.wait(s=wait)
         except Exception as e:
-            print("try_click_log_out handled - probably logged out already ({})".format(e.args))
+            #print("try_click_log_out handled - probably logged out already ({})".format(e.args))
             pass # ignore errors as may already be logged out
 
 
