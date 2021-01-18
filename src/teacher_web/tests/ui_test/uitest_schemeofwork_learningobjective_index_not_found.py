@@ -28,7 +28,7 @@ class uitest_schemeofwork_learningobjective_index_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives".format(999999, self.test_lesson_id))
 
         # assert
-        self.assertLoginPage(login_message="The item is currrently unavailable or you do not have permission.")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
@@ -36,4 +36,4 @@ class uitest_schemeofwork_learningobjective_index_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives".format(self.test_scheme_of_work_id, 999999))
 
         # assert
-        self.assertCustom404("[] (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustom404("[] (999999, 11) does not exist, is currently unavailable or you do not have permission.")

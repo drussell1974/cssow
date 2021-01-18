@@ -35,7 +35,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_not_found(UITestCase):
         
         self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/keywords/92/edit")
         
-        #self.assertCustom404("(id=0) (999999,) does not exist, is currrently unavailable or you do not have permission.")
+        #self.assertCustom404("(id=0) (999999,) does not exist, is currently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_keyword_id__does_not_exist(self):
@@ -43,4 +43,4 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/keywords/{}/edit".format(self.test_scheme_of_work_id, 999999), print_uri=True)
 
         # assert
-        self.assertCustom404("(id=0) (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustom404("(id=0) (999999, 11) does not exist, is currently unavailable or you do not have permission.")

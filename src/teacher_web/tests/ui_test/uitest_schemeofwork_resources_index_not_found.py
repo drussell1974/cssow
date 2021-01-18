@@ -29,7 +29,7 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertLoginPage(login_message="The item is currrently unavailable or you do not have permission.")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
@@ -38,4 +38,4 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertCustom404("item (999999, 11) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertCustom404("item (999999, 11) does not exist, is currently unavailable or you do not have permission.")

@@ -28,4 +28,4 @@ class uitest_schemeofwork_content_index_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content".format(999999))
 
         # assert
-        self.assertLoginPage(login_message="The item is currrently unavailable or you do not have permission.")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
