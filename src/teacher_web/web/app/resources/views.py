@@ -2,30 +2,24 @@ from datetime import datetime
 from django import forms
 from django.conf import settings
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-
+from shared.filehandler import handle_uploaded_markdown
+from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
-from shared.view_model import ViewModel
-
-# TODO: use view models
+from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
-
-# view models
+from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
 
-from shared.models.core import validation_helper
-
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
-
-from shared.filehandler import handle_uploaded_markdown
-
-
+@min_permission_required(LESSON.VIEW, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id

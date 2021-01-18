@@ -2,7 +2,7 @@ from ui_testcase import UITestCase, WebBrowserContext
 from django.urls import reverse
 import unittest
 
-class uitest_schemeofwork_keyword_pages__public_permissions(UITestCase):
+class uitest_schemeofwork_schemesofworkkeyword_pages__public_permissions(UITestCase):
 
     test_context = WebBrowserContext()
 
