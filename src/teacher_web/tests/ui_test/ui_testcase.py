@@ -33,6 +33,19 @@ class UITestCase(TestCase):
         time.sleep(s)
     
 
+    def assertSidebarResponsiveMenu(self, section_no, expected_title, expected_no_of_items):
+        
+        # title
+        title_elem = self.test_context.find_element_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[1]/h5'.format(section_no))
+
+        # list lists
+        list_item_elems = self.test_context.find_elements_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[2]/ul/li'.format(section_no)) 
+
+        # assert
+        self.assertEqual(expected_title, title_elem.text)
+        self.assertEqual(expected_no_of_items, len(list_item_elems), "number of items not as expected")
+
+
     def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None):
 
         # test - subheading
@@ -60,12 +73,12 @@ class UITestCase(TestCase):
         self.assertEqual(h1, elem.text)
 
 
-    def assertLoginPage(self, login_message = "", exception_message=""):
+    def assertLoginPage(self, redirect_to_url="", login_message = "", exception_message=""):
         elem = self.test_context.find_element_by_css_selector("div.site-heading > h1")
-        self.assertEqual("Log in", elem.text)
+        self.assertEqual("Log in", elem.text, f"text for element .site-heading h1 at '{redirect_to_url}' not expected")
         # TODO: #206 assert messages
         elem = self.test_context.find_element_by_id("login_message")
-        self.assertEqual(login_message, elem.text)
+        self.assertEqual(login_message, elem.text, f"text for element #login_message at '{redirect_to_url}' not expected")
 
 
     def try_log_in(self, redirect_to_uri_on_login, enter_username=None, enter_password=None):
@@ -198,15 +211,16 @@ class UITestCase(TestCase):
         elem.click()
 
 
+    def run_testcases__permission(self, testcases, batch_name):
 
-    def assertSidebarResponsiveMenu(self, section_no, expected_title, expected_no_of_items):
-        
-        # title
-        title_elem = self.test_context.find_element_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[1]/h5'.format(section_no))
+        for testcase in testcases:
+            # test
+            self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=1)
+            
+            # assert
+            if testcase["allow"] == False:
+                self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at")
+            else:
+                self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"])
 
-        # list lists
-        list_item_elems = self.test_context.find_elements_by_xpath('//*[@id="sidebarResponsive"]/div/section[{}]/div/div[2]/ul/li'.format(section_no)) 
-
-        # assert
-        self.assertEqual(expected_title, title_elem.text)
-        self.assertEqual(expected_no_of_items, len(list_item_elems), "number of items not as expected")
+        print("Ran {} tests (for testcases_test_permissions - {} )".format(len(testcases), batch_name))
