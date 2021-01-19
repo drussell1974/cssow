@@ -1,11 +1,16 @@
 ## start test
 echo yarn test-ui--verify.sh: Testing... verify by file name - use asterisks wildcard as neccessary
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_edit_not_found.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_index_not_found.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_edit_not_found.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_index_not_found.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_index_not_found.py
+
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_users.py 
+
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_pages__permissions_when_different_logged_in_users.py 
+
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*_pages__permissions_when_different_logged_in_users.py 
+
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_users.py
+
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*_pages__permissions_when_different_logged_in_users.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_*.py
 

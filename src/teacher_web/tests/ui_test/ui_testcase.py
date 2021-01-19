@@ -213,14 +213,22 @@ class UITestCase(TestCase):
 
     def run_testcases__permission(self, testcases, batch_name):
 
+        ran = 0
         for testcase in testcases:
             # test
-            self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=1)
-            
-            # assert
-            if testcase["allow"] == False:
-                self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at")
+            if "skip" in testcase.keys() and testcase["skip"] == True:
+                pass
             else:
-                self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"])
+                #print("testing route {}".format(testcase["route"]))
+                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=1)
+                
+                # assert
+                if testcase["allow"] == False:
+                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at")
+                    #print("PASSED route {}".format(testcase["route"]))
+                else:
+                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"])
+                    #print("PASSED route {}".format(testcase["route"]))
+                ran = ran + 1
 
-        print("Ran {} tests (for testcases_test_permissions - {} )".format(len(testcases), batch_name))
+        print("Ran {} tests ({} skipped) - name {})".format(ran, len(testcases) - ran, batch_name))

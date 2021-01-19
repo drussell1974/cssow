@@ -53,4 +53,4 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
             },    
         ]
         
-        self.run_testcases__permission(testcases, "event_log")
+        self.run_testcases__permission(testcases, "eventlog")

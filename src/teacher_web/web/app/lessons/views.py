@@ -8,7 +8,7 @@ from django.urls import reverse
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
 from shared.models.core.log import handle_log_warning, handle_log_info
-from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import LESSON
 from shared.viewmodels.decorators.permissions import min_permission_required, unauthorise_request
 from shared.view_model import ViewModel
 # view models
@@ -45,7 +45,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.EDIT, "/accounts/login/")
+@min_permission_required(LESSON.EDIT, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
@@ -165,7 +165,9 @@ def publish(request, scheme_of_work_id, lesson_id):
 #@min_permission_required(LESSON.DELETE, "/accounts/login/")
 def delete(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
-    
+
+    raise DeprecationWarning("remove if not longer in use")
+
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
@@ -194,7 +196,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.DELETE, "/accounts/login/")
+@min_permission_required(LESSON.DELETE, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
