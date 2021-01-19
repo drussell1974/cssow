@@ -8,7 +8,9 @@ echo yarn test-ui--verify.sh: Testing... verify by file name - use asterisks wil
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*_pages__permissions_when_different_logged_in_users.py 
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_users.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resource_pages__permissions_when_different_logged_in_users.py
+
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged_in_users.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*_pages__permissions_when_different_logged_in_users.py
 

@@ -46,21 +46,21 @@ class UITestCase(TestCase):
         self.assertEqual(expected_no_of_items, len(list_item_elems), "number of items not as expected")
 
 
-    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None):
+    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed"):
 
         # test - subheading
-        self.assertEqual(title, self.test_context.title, "title not as expected")
+        self.assertEqual(title, self.test_context.title, "title not as expected ({failed_message})")
         # assert - site-heading
-        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text)
+        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, "main_heading not as expected ({failed_message})")
         # assert - title
-        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
+        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text, "subheading not as expected ({failed_message})")
         # assert - username
         if should_be_logged_in == True and username != None:
             profile = self.test_context.find_element_by_id("btn-profile")
-            self.assertEqual(username.upper(), profile.text.upper())
+            self.assertEqual(username.upper(), profile.text.upper(), "username not as expected ({failed_message})")
         elif should_be_logged_in == False:
             profile = self.test_context.find_element_by_id("btn-login")
-            self.assertEqual("Login", profile.text)
+            self.assertEqual("Login", profile.text, "Login button text not as expected ({failed_message})")
 
 
     def assertCustom404(self, info_message):
@@ -73,12 +73,12 @@ class UITestCase(TestCase):
         self.assertEqual(h1, elem.text)
 
 
-    def assertLoginPage(self, redirect_to_url="", login_message = "", exception_message=""):
+    def assertLoginPage(self, redirect_to_url="", login_message = "", exception_message="", failed_message = "assertLoginPage failed"):
         elem = self.test_context.find_element_by_css_selector("div.site-heading > h1")
-        self.assertEqual("Log in", elem.text, f"text for element .site-heading h1 at '{redirect_to_url}' not expected")
+        self.assertEqual("Log in", elem.text, f"text for element .site-heading h1 at '{redirect_to_url}' not expected - {failed_message}")
         # TODO: #206 assert messages
         elem = self.test_context.find_element_by_id("login_message")
-        self.assertEqual(login_message, elem.text, f"text for element #login_message at '{redirect_to_url}' not expected")
+        self.assertEqual(login_message, elem.text, f"text for element #login_message at '{redirect_to_url}' not expected  - {failed_message}")
 
 
     def try_log_in(self, redirect_to_uri_on_login, enter_username=None, enter_password=None):
@@ -213,22 +213,20 @@ class UITestCase(TestCase):
 
     def run_testcases__permission(self, testcases, batch_name):
 
-        ran = 0
+        print(f"running {len(testcases)} test cases for {batch_name}... ")
+
         for testcase in testcases:
             # test
             if "skip" in testcase.keys() and testcase["skip"] == True:
-                pass
+                print("skipped!!!")
             else:
                 #print("testing route {}".format(testcase["route"]))
                 self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=1)
                 
                 # assert
                 if testcase["allow"] == False:
-                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at")
+                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
                     #print("PASSED route {}".format(testcase["route"]))
                 else:
-                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"])
+                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
                     #print("PASSED route {}".format(testcase["route"]))
-                ran = ran + 1
-
-        print("Ran {} tests ({} skipped) - name {})".format(ran, len(testcases) - ran, batch_name))
