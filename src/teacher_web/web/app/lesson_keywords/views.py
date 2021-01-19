@@ -10,20 +10,14 @@ from shared.models.core.django_helper import auth_user_id
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.viewmodels.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
-# TODO: use view models
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
-
-# view models
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
 from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonKeywordIndexViewModel, LessonKeywordSelectViewModel, LessonKeywordSaveViewModel, LessonKeywordDeleteUnpublishedViewModel
-
 from shared.models.core import validation_helper
-
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-
 from shared.filehandler import handle_uploaded_markdown
 
 @min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
@@ -37,6 +31,7 @@ def index(request, scheme_of_work_id, lesson_id):
 
 # 299 Keyword Index
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def select(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
@@ -55,6 +50,7 @@ def select(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
@@ -86,6 +82,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
@@ -121,6 +118,7 @@ def edit(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
 def save(request, scheme_of_work_id, lesson_id, keyword_id):
     
     def upload_error_handler(e, msg):
@@ -218,6 +216,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.DELETE, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
