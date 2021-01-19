@@ -21,20 +21,19 @@ class uitest_schemeofwork_learningobjective_pages__permissions_when_different_lo
 
 
     def test_page__permission_when__schemeofwork_viewer(self):
+        """ test permissions on content
+            
+        #path('', views.index, name='learningobjective.index'),
+        #path('new', views.new, name='learningobjective.new'),
+        #path('delete_unpublished', views.delete_unpublished, name='learningobjective.delete_unpublished'),
+        #path('<int:learning_objective_id>/edit', views.edit, name='learningobjective.edit'),
+        #path('<int:learning_objective_id>/save', views.save, name='learningobjective.save'),
+        #path('<int:learning_objective_id>/publish', views.publish_item, name="learningobjective.publish_item")            
         
+        """
         username = "schemeofwork-viewer@localhost"
 
         testcases = [
-            
-            ## content ##
-            
-            #path('', views.index, name='learningobjective.index'),
-            #path('new', views.new, name='learningobjective.new'),
-            #path('delete_unpublished', views.delete_unpublished, name='learningobjective.delete_unpublished'),
-            #path('<int:learning_objective_id>/edit', views.edit, name='learningobjective.edit'),
-            #path('<int:learning_objective_id>/save', views.save, name='learningobjective.save'),
-            #path('<int:learning_objective_id>/publish', views.publish_item, name="learningobjective.publish_item")            
-            
             {
                 "route":"learningobjective.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives",

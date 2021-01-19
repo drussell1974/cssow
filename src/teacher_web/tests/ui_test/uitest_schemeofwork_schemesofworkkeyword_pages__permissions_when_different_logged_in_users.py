@@ -20,21 +20,22 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
 
 
     def test_page__permission_when__schemeofwork_viewer(self):
+        """ test permission on schemeofwork keywords
+
+        #path('', views.index, name="keywords.index"),
+        #path('delete_unpublished', views.delete_unpublished, name="keywords.delete_unpublished"), 
+        #path('new', views.new, name="keywords.new"),
+        #path('<int:keyword_id>/edit', views.edit, name="keywords.edit"),
+        #path('<int:keyword_id>/delete', views.delete_item, name="keywords.delete_item"), 
+        #path('<int:keyword_id>/publish_item', views.publish_item, name="keywords.publish_item"), 
+        #path('<int:keyword_id>/save', views.save, name="keywords.save"),
+        #path('<int:keyword_id>/merge', views.merge_duplicates, name="keywords.merge_duplicates")
         
+        """
+
         username = "schemeofwork-viewer@localhost"
 
-        testcases = [
-
-            ## schemeofwork keywords ##
-            #path('', views.index, name="keywords.index"),
-            #path('delete_unpublished', views.delete_unpublished, name="keywords.delete_unpublished"), 
-            #path('new', views.new, name="keywords.new"),
-            #path('<int:keyword_id>/edit', views.edit, name="keywords.edit"),
-            #path('<int:keyword_id>/delete', views.delete_item, name="keywords.delete_item"), 
-            #path('<int:keyword_id>/publish_item', views.publish_item, name="keywords.publish_item"), 
-            #path('<int:keyword_id>/save', views.save, name="keywords.save"),
-            #path('<int:keyword_id>/merge', views.merge_duplicates, name="keywords.merge_duplicates")
-            
+        testcases = [            
             {
                 "route":"keywords.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords",

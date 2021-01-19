@@ -1,7 +1,7 @@
 from ui_testcase import UITestCase, WebBrowserContext
 from unittest import skip
 
-class uitest_schemeofwork_resource_pages__permissions_when_different_logged_in_users(UITestCase):
+class uitest_schemeofwork_resources_pages__permissions_when_different_logged_in_users(UITestCase):
 
     test_context = WebBrowserContext()
 
@@ -21,7 +21,7 @@ class uitest_schemeofwork_resource_pages__permissions_when_different_logged_in_u
 
 
     def test_page__permission_when__schemeofwork_viewer(self):
-        """ test permission on resource
+        """ test permissions on resource
             
         #path('', views.index, name="resource.index"),
         #path('delete_unpublished', views.delete_unpublished, name="resource.delete_unpublished"), 
@@ -30,6 +30,7 @@ class uitest_schemeofwork_resource_pages__permissions_when_different_logged_in_u
         #path('<int:resource_id>/delete', views.delete_item, name="resource.delete_item"), 
         #path('<int:resource_id>/publish_item', views.publish_item, name="resource.publish_item"), 
         #path('<int:resource_id>/save', views.save, name="resource.save")
+        
         """
 
         username = "schemeofwork-viewer@localhost"

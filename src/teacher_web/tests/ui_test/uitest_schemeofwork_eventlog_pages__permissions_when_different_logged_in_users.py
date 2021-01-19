@@ -25,18 +25,15 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
 
 
     def test_page__permission_when__schemeofwork_viewer(self):
-        
+        """ test permission on event-logs
+
+        #path("", views.index, name="eventlog.index"),
+        #path("delete", views.delete, name="eventlog.delete")
+
+        """
         username = "schemeofwork-viewer@localhost"
 
         testcases = [
-            
-            ## content ##
-        
-            ## event-logs ##
-
-            #path("", views.index, name="eventlog.index"),
-            #path("delete", views.delete, name="eventlog.delete")
-
             {
                 "route":"eventlog.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",

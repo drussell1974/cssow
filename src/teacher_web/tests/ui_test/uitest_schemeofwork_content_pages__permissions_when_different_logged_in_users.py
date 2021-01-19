@@ -21,17 +21,16 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
 
 
     def test_page__permission_when__schemeofwork_viewer(self):
+        """ test permission on content
+
+        #path('', views.index, name="content.index"),
+        #path('new', views.edit, name="content.new"),
+        #path('<int:content_id>/edit', views.edit, name="content.edit"),
         
+        """
         username = "schemeofwork-viewer@localhost"
 
         testcases = [
-            
-            ## content ##
-            
-            #path('', views.index, name="content.index"),
-            #path('new', views.edit, name="content.new"),
-            #path('<int:content_id>/edit', views.edit, name="content.edit"),
-            
             {
                 "route":"content.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content",
