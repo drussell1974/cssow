@@ -9,8 +9,6 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         # set up
         self.do_log_in("/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
-        self.test_context.implicitly_wait(4)
-
 
     def tearDown(self):
         pass

@@ -6,9 +6,7 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id), print_uri=False)
-        
-        self.test_context.implicitly_wait(4)
+        self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id))
         self.wait(s=1)
 
 

@@ -8,8 +8,6 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
         # set up
         self.do_log_in("/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
 
-        self.test_context.implicitly_wait(4)
-
 
     def tearDown(self):
         pass

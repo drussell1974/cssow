@@ -1,6 +1,10 @@
+import time
 from unittest import TestCase
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import os
 
 def WebBrowserContext():
@@ -28,10 +32,16 @@ class UITestCase(TestCase):
     TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
     TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]
     
-    def wait(self, s = 5):
-        import time
+    def wait(self, s = 3):
         time.sleep(s)
-    
+
+
+    def find_element_by_id__with_explicit_wait(self, element_id, wait=5):
+        elem = WebDriverWait(self.test_context, wait).until(
+            EC.presence_of_element_located((By.ID, element_id))
+        )
+        return elem
+
 
     def assertSidebarResponsiveMenu(self, section_no, expected_title, expected_no_of_items):
         
@@ -89,11 +99,11 @@ class UITestCase(TestCase):
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get(redirect_to_uri_on_login)
+        self.test_context.implicitly_wait(4)
 
         try:
-            self.test_context.implicitly_wait(4)
 
-            elem = self.test_context.find_element_by_id("id_username")
+            elem = self.find_element_by_id__with_explicit_wait("id_username")
             elem.send_keys(enter_username if None else TEST_USER_NAME)
             
             elem = self.test_context.find_element_by_id("id_password")
@@ -109,10 +119,8 @@ class UITestCase(TestCase):
 
     def try_click_log_out(self, wait):
         try:
-            elem = self.test_context.find_element_by_id("btn-logout")
+            elem = self.test_context.find_element_by_id("btn-logout")    
             elem.click()
-
-            self.wait(s=wait)
         except Exception as e:
             #print("try_click_log_out handled - probably logged out already ({})".format(e.args))
             pass # ignore errors as may already be logged out
@@ -124,19 +132,16 @@ class UITestCase(TestCase):
 
         self.test_context.get(self.root_uri + uri)
         
-        self.wait(s=wait)
+        self.test_context.implicitly_wait(wait)
 
 
-    def do_log_in(self, redirect_to_uri_on_login, print_uri=False, wait=0, enter_username=None, enter_password=None):
+    def do_log_in(self, redirect_to_uri_on_login, wait=1, enter_username=None, enter_password=None):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
         enter_username = enter_username if enter_username is not None else TEST_USER_NAME
         enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
-
-        if print_uri == True:
-            print(redirect_to_uri_on_login)
 
         ' Try log out first '
 
@@ -146,12 +151,11 @@ class UITestCase(TestCase):
 
         login_uri = self.root_uri + "/accounts/login"
         self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
-        
+        self.test_context.implicitly_wait(wait)
 
         try:
-            self.test_context.implicitly_wait(4)
-            
-            elem = self.test_context.find_element_by_id("id_username")
+
+            elem = self.find_element_by_id__with_explicit_wait("id_username")
             elem.send_keys(enter_username)
             
             elem = self.test_context.find_element_by_id("id_password")
@@ -159,7 +163,6 @@ class UITestCase(TestCase):
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
-            self.wait(s=1)
 
             if wait > 0:
                 self.wait(s=wait)
@@ -170,11 +173,10 @@ class UITestCase(TestCase):
             pass
 
 
-    def open_unpublished_item(self, class_selector, page_url = None, print_uri=False):
+    def open_unpublished_item(self, class_selector, page_url = None):
 
         if page_url is not None:
-            self.do_log_in(self.root_uri + page_url, print_uri)
-            self.wait(s=2)
+            self.do_log_in(self.root_uri + page_url)
 
         #231: find the unpublished item in the index
 
@@ -191,8 +193,6 @@ class UITestCase(TestCase):
 
         ' Open to edit '
         self.open_unpublished_item(class_selector, page_url)
-
-        self.wait(s=2)
 
         ' After opening edit Open Modal '
 
@@ -221,7 +221,7 @@ class UITestCase(TestCase):
                 print("s", end="")
             else:
                 #print("testing route {}".format(testcase["route"]))
-                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=1)
+                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"])
                 
                 # assert
                 if testcase["allow"] == False:

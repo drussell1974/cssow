@@ -32,7 +32,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
         """
 
         username = "schemeofwork-viewer@localhost"
-
+        
         testcases = [            
             {
                 "route":"schemesofwork.new",
@@ -85,3 +85,4 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
         ]
         
         self.run_testcases__permission(testcases, "schemeofwork")
+        

@@ -1,3 +1,4 @@
+import time
 from django.db import connection as db
 from unittest import TestCase
 import json
@@ -14,8 +15,7 @@ class APITestCase(TestCase):
     test_md_document_resource_id = os.environ["TEST_MD_DOCUMENT_RESOURCE_ID"]
     test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
     
-    def wait(self, s = 5):
-        import time
+    def wait(self, s = 3):
         time.sleep(s)
 
     def get(self, uri):

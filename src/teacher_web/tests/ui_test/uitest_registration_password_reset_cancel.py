@@ -19,7 +19,6 @@ class uitest_registration_password_reset_cancel(UITestCase):
         
         self.test_path = "/accounts/password_reset"
         self.test_context.get(self.root_uri + self.test_path)
-
         self.test_context.implicitly_wait(4)
 
 

@@ -7,8 +7,7 @@ class uitest_schemeofwork_default_password_change(UITestCase):
     def setUp(self):
         # set up
         self.do_log_in(self.root_uri)
-        self.test_context.implicitly_wait(4)
-
+        
 
     def tearDown(self):
         pass

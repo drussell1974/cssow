@@ -8,8 +8,6 @@ class uitest_schemeofwork_resources_index(UITestCase):
         # set up
         self.do_log_in("/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, self.test_lesson_id))
         
-        self.test_context.implicitly_wait(4)
-
 
     def tearDown(self):
         
@@ -67,8 +65,7 @@ class uitest_schemeofwork_resources_index(UITestCase):
         # setup
 
         self.test_context.find_element_by_id('lnk-whiteboard_view').click()
-        self.test_context.implicitly_wait(4)
-
+        
         # assert (TEST parent page is still open)
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 

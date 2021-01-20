@@ -10,7 +10,6 @@ class uitest_accounts_index(UITestCase):
     def setUp(self):
         self.try_log_in(self.root_uri + "/accounts")
 
-        self.test_context.implicitly_wait(4)
         self.wait(s=2)
 
     def tearDown(self):

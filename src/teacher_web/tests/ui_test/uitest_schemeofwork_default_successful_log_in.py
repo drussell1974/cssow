@@ -11,8 +11,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(self.root_uri + "/schemesofwork")
-        self.test_context.implicitly_wait(4)
+        self.do_log_in("/schemesofwork", wait=1)
 
 
     def tearDown(self):

@@ -8,8 +8,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
     def setUp(self):
         # set up
         self.do_log_in(self.root_uri + "/schemesofwork")
-        self.test_context.implicitly_wait(4)
-
+        self.wait()
 
     def tearDown(self):
         pass
@@ -26,6 +25,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+
 
     @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
     def test_page__navigate_to_lesson_index(self):

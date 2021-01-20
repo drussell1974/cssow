@@ -64,7 +64,7 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()
 
-        self.wait(s=2)
+        self.wait(s=3)
 
         ' click no (finding button appears to cancel dialog) '        
         

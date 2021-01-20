@@ -9,9 +9,7 @@ class uitest_accounts_register_new_when_logged_in(UITestCase):
 
     def setUp(self):
         self.do_log_in(self.root_uri + "/accounts/register")
-
-        self.test_context.implicitly_wait(4)
-
+        
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()

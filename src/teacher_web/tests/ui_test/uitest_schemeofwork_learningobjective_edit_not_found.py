@@ -28,8 +28,7 @@ class uitest_schemeofwork_learningobjective_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(999999, self.test_lesson_id, self.test_learning_objective_id))
 
         # assert
-        #self.assertCustom404("item (220, 999999) does not exist, is currently unavailable or you do not have permission.")
-        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/lessons/220/learning-objectives/410/edit")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):

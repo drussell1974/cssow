@@ -9,8 +9,7 @@ class uitest_registration_password_change_cancel(UITestCase):
 
     def setUp(self):
         self.try_log_in(self.root_uri + "/accounts/password_change")
-
-        self.test_context.implicitly_wait(4)
+        self.wait()
 
 
     def tearDown(self):

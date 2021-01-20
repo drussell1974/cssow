@@ -10,8 +10,6 @@ class uitest_accounts_register_new(UITestCase):
     def setUp(self):
         self.try_log_in(self.root_uri + "/accounts/register")
 
-        self.test_context.implicitly_wait(4)
-
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -89,7 +87,8 @@ class uitest_accounts_register_new(UITestCase):
 
         elem = self.test_context.find_element_by_id("saveButton")
         elem.click()
-        self.wait(s=2)
+
+        self.wait(s=1)
 
         # assert
 

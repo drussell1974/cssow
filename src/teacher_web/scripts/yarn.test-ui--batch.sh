@@ -1,8 +1,14 @@
-echo "yarn.test-ui--batch.sh:\e[1;33m Use virtualenv 'source .python-env/bin/activate' and run pip install -r requirements \e[0m"
+
+start_date=$(date)
+
+echo started... $start_date 
+echo "yarn.test-ui--batch.sh:\e[1;33m Use virtualenv 'source .venv/django/bin/activate' and run pip install -r requirements \e[0m"
 echo "yarn.test-ui--batch.sh:\e[1;33m Run task build:test ensure web server is running and http://${TEST_HOST}:${TEST_PORT} is available \e[0m"
 echo "yarn.test-ui--batch.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting process using port 3002 \e[0m"
 
+
 x=0
+
 
 # increment 
 x=$(($x+$?))
@@ -99,3 +105,5 @@ else
 fi
 
 exit $x
+
+echo $start_date - $(date)
