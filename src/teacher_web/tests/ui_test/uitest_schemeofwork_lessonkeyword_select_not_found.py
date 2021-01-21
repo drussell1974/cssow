@@ -24,7 +24,7 @@ class uitest_schemeofwork_lessonkeyword_select_not_found(UITestCase):
 
     """ Test edit """
 
-    def test_page_should_redirect_to_404__if_scheme_of_work_id__does_not_exist(self):
+    def test_page_should_redirect_to_login_page__if_scheme_of_work_id__does_not_exist(self):
         # act        
         self.do_log_in("/schemesofwork/{}/lessons/{}/keywords/select".format(999999, self.test_lesson_id))
 
@@ -34,7 +34,7 @@ class uitest_schemeofwork_lessonkeyword_select_not_found(UITestCase):
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
         # act        
-        self.do_log_in("/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, 999999, self.test_keyword_id))
+        self.do_log_in("/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, 999999))
 
         # assert
-        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
+        self.assertCustom404("item (999999, 11) does not exist, is currently unavailable or you do not have permission.")

@@ -23,7 +23,7 @@ class uitest_schemeofwork_lesson_edit_not_found(UITestCase):
 
     """ Test edit """
 
-    def test_page_should_redirect_to_404__if_scheme_of_work_id__does_not_exist(self):
+    def test_page_should_redirect_to_login_page__if_scheme_of_work_id__does_not_exist(self):
         # act        
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/edit".format(999999, self.test_lesson_id))
         self.wait(s=2)

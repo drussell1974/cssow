@@ -22,6 +22,14 @@ x=$(($x+$?))
 ## end test
 
 ## start test
+echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_failed_log_in.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+## start test
 echo yarn.test-ui--batch.sh: Testing... default
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 
@@ -32,14 +40,6 @@ x=$(($x+$?))
 ## start test
 echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_schemesofwork_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
-
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn.test-ui--batch.sh: running... uitest_schemeofwork_failed_log_in.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
 
 # increment
 x=$(($x+$?))
