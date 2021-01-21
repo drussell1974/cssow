@@ -166,7 +166,7 @@ class UITestCase(TestCase):
 
             if wait > 0:
                 self.wait(s=wait)
-                            
+            
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
             print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
@@ -221,7 +221,7 @@ class UITestCase(TestCase):
                 print("s", end="")
             else:
                 #print("testing route {}".format(testcase["route"]))
-                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"])
+                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=5)
                 
                 # assert
                 if testcase["allow"] == False:

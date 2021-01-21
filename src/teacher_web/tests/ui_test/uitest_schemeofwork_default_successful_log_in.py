@@ -11,7 +11,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in("/schemesofwork", wait=1)
+        self.do_log_in("/schemesofwork", wait=2)
 
 
     def tearDown(self):
