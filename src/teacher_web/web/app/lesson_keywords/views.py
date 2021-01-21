@@ -20,7 +20,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from shared.filehandler import handle_uploaded_markdown
 
-@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.VIEWER, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
     #253 check user id
@@ -31,7 +31,7 @@ def index(request, scheme_of_work_id, lesson_id):
 
 # 299 Keyword Index
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def select(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
@@ -50,7 +50,7 @@ def select(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
@@ -82,7 +82,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
@@ -118,7 +118,7 @@ def edit(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def save(request, scheme_of_work_id, lesson_id, keyword_id):
     
     def upload_error_handler(e, msg):
@@ -190,7 +190,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.DELETE, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
     """ delete item and redirect back to referer """
 
@@ -203,7 +203,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.PUBLISH, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
     #231: published item     
@@ -216,7 +216,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.DELETE, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 

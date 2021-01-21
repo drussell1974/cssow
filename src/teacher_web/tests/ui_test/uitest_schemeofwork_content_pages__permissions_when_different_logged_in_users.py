@@ -28,13 +28,12 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
         #path('<int:content_id>/edit', views.edit, name="content.edit"),
         
         """
-        username = "schemeofwork-viewer@localhost"
 
         testcases = [
             {
                 "route":"content.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
@@ -43,14 +42,14 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
             {
                 "route":"content.new",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"content.edit",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localusername = host",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },            

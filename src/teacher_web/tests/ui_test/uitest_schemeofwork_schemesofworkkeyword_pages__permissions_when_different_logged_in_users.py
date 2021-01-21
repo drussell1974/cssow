@@ -33,13 +33,11 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
         
         """
 
-        username = "schemeofwork-viewer@localhost"
-
         testcases = [            
             {
                 "route":"keywords.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
@@ -48,35 +46,35 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
             {
                 "route":"keywords.delete_unpublished",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.new",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/new",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.edit",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.save",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.merge",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },

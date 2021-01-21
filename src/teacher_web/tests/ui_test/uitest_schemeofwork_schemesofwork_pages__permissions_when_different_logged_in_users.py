@@ -30,21 +30,19 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
         path('', views.index, name='schemesofwork.index'), 
         
         """
-
-        username = "schemeofwork-viewer@localhost"
         
         testcases = [            
             {
                 "route":"schemesofwork.new",
                 "uri":f"/schemesofwork/new",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"schemesofwork.delete_unpublished",
                 "uri":f"/schemesofwork/delete_unpublished",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
@@ -52,7 +50,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
                 "skip": True,
                 "route":"schemesofwork.view",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A",
@@ -61,7 +59,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             {
                 "route":"schemesofwork.edit",
                 "uri":f"/schemesofwork/999999999/edit",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
@@ -69,14 +67,14 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
                 "skip": True,
                 "route":"schemesofwork.publish_item",
                 "uri":f"/schemesofwork/999999999/publish",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"schemesofwork.index",
                 "uri":f"/schemesofwork",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Schemes of Work",

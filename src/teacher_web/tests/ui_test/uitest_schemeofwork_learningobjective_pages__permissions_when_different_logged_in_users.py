@@ -31,13 +31,12 @@ class uitest_schemeofwork_learningobjective_pages__permissions_when_different_lo
         #path('<int:learning_objective_id>/publish', views.publish_item, name="learningobjective.publish_item")            
         
         """
-        username = "schemeofwork-viewer@localhost"
 
         testcases = [
             {
                 "route":"learningobjective.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
@@ -46,35 +45,35 @@ class uitest_schemeofwork_learningobjective_pages__permissions_when_different_lo
             {
                 "route":"learningobjective.new",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/new",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.delete_unpublished",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.edit",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/edit",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.save",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/save",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.publish",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/publish",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },

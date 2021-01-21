@@ -34,13 +34,11 @@ class uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_use
         
         """
 
-        username = "schemeofwork-viewer@localhost"
-
         testcases = [            
             {
                 "route":"lesson.index",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
@@ -49,42 +47,42 @@ class uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_use
             {
                 "route":"lesson.delete_unpublished",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/delete_unpublished",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"lesson.new",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/new",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"lesson.edit",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/edit",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"lesson.copy",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/copy",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"lesson.publish",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/copy",
-                "enter_username": username,
+                "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"lesson.whiteboard",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard",
-                "enter_username":username,
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",

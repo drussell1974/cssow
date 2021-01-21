@@ -52,7 +52,7 @@ class test_db__get_teacher_permission(TestCase):
 
     def test__should_call__select__return_has_permission_to_view(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.EDIT), int(LESSON.VIEW), int(DEPARTMENT.NONE))]
+        expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE))]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
@@ -70,6 +70,6 @@ class test_db__get_teacher_permission(TestCase):
                  
             self.assertEqual(6, model.auth_user)
             self.assertEqual(99, model.scheme_of_work_id)
-            self.assertEqual(SCHEMEOFWORK.EDIT, model.scheme_of_work_permission)
-            self.assertEqual(LESSON.VIEW, model.lesson_permission)
+            self.assertEqual(SCHEMEOFWORK.EDITOR, model.scheme_of_work_permission)
+            self.assertEqual(LESSON.VIEWER, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)

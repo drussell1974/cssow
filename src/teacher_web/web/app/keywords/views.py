@@ -21,7 +21,7 @@ from django.contrib.contenttypes.models import ContentType
 from shared.filehandler import handle_uploaded_markdown
 
 
-@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.VIEWER, "/accounts/login/")
 def index(request, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
     #253 check user id
@@ -31,7 +31,7 @@ def index(request, scheme_of_work_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def new(request, scheme_of_work_id):
     ''' Create a new keyword '''
 

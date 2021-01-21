@@ -66,7 +66,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
 
 class LessonKeywordSelectViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.EDIT)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
             
         self.auth_user = auth_user
@@ -135,7 +135,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
 
 class LessonKeywordGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
 
         self.model = None
@@ -191,7 +191,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
 
 class LessonKeywordSaveViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.EDIT)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db

@@ -17,7 +17,7 @@ from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 
-@min_permission_required(SCHEMEOFWORK.VIEW, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.VIEWER, "/accounts/login/")
 def index(request, scheme_of_work_id):
 
     #253 check user id
@@ -28,7 +28,7 @@ def index(request, scheme_of_work_id):
 
 #234 add permission
 @permission_required('models.change_contentmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDIT, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 

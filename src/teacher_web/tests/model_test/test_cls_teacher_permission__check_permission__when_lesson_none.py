@@ -21,21 +21,16 @@ class test_cls_teacher_permission__check_permission__when_lesson_none(TestCase):
         self.assertTrue(self.test.check_permission(LESSON.NONE))
 
 
+    def test_check__owner_returns_false(self):
+        # assert
+        self.assertFalse(self.test.check_permission(LESSON.OWNER))
+
+
     def test_check__edit_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_permission(LESSON.EDIT))
+        self.assertFalse(self.test.check_permission(LESSON.EDITOR))
         
-
-    def test_check__delete_returns_false(self):
-        # asser
-        self.assertFalse(self.test.check_permission(LESSON.DELETE))
-
-
-    def test_check__publish_returns_false(self):
-        # asser
-        self.assertFalse(self.test.check_permission(LESSON.PUBLISH))
-
 
     def test_check__view_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_permission(LESSON.VIEW))
+        self.assertFalse(self.test.check_permission(LESSON.VIEWER))

@@ -6,6 +6,7 @@ class test_cls_teacher_permission__check_permission__when_sow_none(TestCase):
 
     def setUp(self):
         # act
+        ''' The lesson owner '''
         self.test = Model(auth_user=2,scheme_of_work_id=11, 
             scheme_of_work_permission=SCHEMEOFWORK.NONE)
 
@@ -20,21 +21,16 @@ class test_cls_teacher_permission__check_permission__when_sow_none(TestCase):
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
 
 
+    def test_check__owner_returns_false(self):
+        # assert
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.OWNER))
+
+
     def test_check__edit_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDIT))
-
-
-    def test_check__delete_returns_false(self):
-        # asser
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.DELETE))
-
-
-    def test_check__publish_returns_false(self):
-        # asser
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.PUBLISH))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDITOR))
 
 
     def test_check__view_returns_false(self):
         # assert
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.VIEW))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.VIEWER))

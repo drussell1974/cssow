@@ -6,8 +6,9 @@ class test_cls_teacher_permission__check_permission__when_sow_edit(TestCase):
 
     def setUp(self):
         # act
+        ''' The scheme of work owner '''
         self.test = Model(auth_user=2,scheme_of_work_id=11, 
-            scheme_of_work_permission=SCHEMEOFWORK.EDITOR)
+            scheme_of_work_permission=SCHEMEOFWORK.OWNER)
 
 
     def tearDown(self):
@@ -19,9 +20,9 @@ class test_cls_teacher_permission__check_permission__when_sow_edit(TestCase):
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
 
 
-    def test_check__owner_returns_false(self):
+    def test_check__owner_returns_true(self):
         # assert
-        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.OWNER))
+        self.assertTrue(self.test.check_permission(SCHEMEOFWORK.OWNER))
 
 
     def test_check__edit_returns_true(self):

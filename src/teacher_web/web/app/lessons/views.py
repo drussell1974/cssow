@@ -25,7 +25,7 @@ from datetime import datetime
 
 # Create your views here.        
 
-@min_permission_required(LESSON.VIEW, "/accounts/login/")
+@min_permission_required(LESSON.VIEWER, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id = 0):
     """ Get lessons for scheme of work """
     
@@ -45,7 +45,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDIT, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
@@ -145,7 +145,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.PUBLISH, "/accounts/login/")
+#@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
     
@@ -162,7 +162,7 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.DELETE, "/accounts/login/")
+#@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def delete(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
@@ -196,7 +196,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(LESSON.DELETE, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 

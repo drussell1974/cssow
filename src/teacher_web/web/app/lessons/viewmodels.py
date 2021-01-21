@@ -15,7 +15,7 @@ from app.default.viewmodels import KeywordSaveViewModel
 
 class LessonIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
         
         data = []
@@ -68,7 +68,7 @@ class LessonIndexViewModel(BaseViewModel):
 
 class LessonGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
@@ -100,7 +100,7 @@ class LessonWhiteboardViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.EDIT)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
         
         self.db = db
@@ -124,20 +124,20 @@ class LessonEditViewModel(BaseViewModel):
 class LessonPublishViewModel(BaseViewModel):
 
 
-    @check_teacher_permission(LESSON.PUBLISH)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, lesson_id, scheme_of_work_id):
         self.model = Model.publish(db, auth_user, lesson_id, scheme_of_work_id)
     
 
 class LessonDeleteViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.DELETE)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, lesson_id):
         self.model = Model.delete(db, auth_user, lesson_id)
 
 
 class LessonDeleteUnpublishedViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.DELETE)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, scheme_of_work_id):
         self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)

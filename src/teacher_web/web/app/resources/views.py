@@ -19,7 +19,7 @@ from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
 
-@min_permission_required(LESSON.VIEW, "/accounts/login/")
+@min_permission_required(LESSON.VIEWER, "/accounts/login/")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id
@@ -30,7 +30,7 @@ def index(request, scheme_of_work_id, lesson_id):
 
 #234 add permission
 @permission_required('cssow.add_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDIT, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
@@ -63,7 +63,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 #234 add permission
 @permission_required('cssow.change_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDIT, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
@@ -103,7 +103,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
 #234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDIT, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def save(request, scheme_of_work_id, lesson_id, resource_id):
     
     def upload_error_handler(e, msg):
@@ -208,7 +208,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 
 #234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.DELETE, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
@@ -222,7 +222,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
 #234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.PUBLISH, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
     #231: published item     

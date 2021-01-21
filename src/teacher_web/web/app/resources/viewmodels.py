@@ -13,7 +13,7 @@ from shared.view_model import ViewModel
 
 class ResourceIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
         self.model = []
@@ -63,7 +63,7 @@ class ResourceIndexViewModel(BaseViewModel):
 
 class ResourceGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, resource_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
 
         self.model = None
@@ -119,7 +119,7 @@ class ResourceGetModelViewModel(BaseViewModel):
 
 class ResourceSaveViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db

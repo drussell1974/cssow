@@ -13,7 +13,7 @@ from shared.view_model import ViewModel
 
 class LearningObjectiveIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user):
         self.model = []
         self.db = db
@@ -68,7 +68,7 @@ class LearningObjectiveIndexViewModel(BaseViewModel):
 class LearningObjectiveGetModelViewModel(BaseViewModel):
 
     #248 Add parameters
-    @check_teacher_permission(LESSON.VIEW)
+    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
@@ -82,7 +82,7 @@ class LearningObjectiveGetModelViewModel(BaseViewModel):
 
 class LearningObjectiveEditViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.EDIT)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
@@ -105,7 +105,7 @@ class LearningObjectiveEditViewModel(BaseViewModel):
 
 class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.DELETE)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
         data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
         self.model = data
@@ -113,7 +113,7 @@ class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
 
 class LearningObjectivePublishModelViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.PUBLISH)
+    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
         data = Model.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
         self.model = data
