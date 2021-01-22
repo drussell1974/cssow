@@ -34,14 +34,14 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
 
         testcases = [
             {
-                "route":"eventlog.index",
+                "route":"eventlog.index as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"eventlog.delete",
+                "route":"eventlog.delete as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -50,7 +50,17 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
 
 
             {
-                "route":"eventlog.index",
+                "route":"eventlog.index as schemeofwork-editor@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },  
+
+
+            {
+                "skip":True,
+                "route":"eventlog.index as schemeofwork-owner@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,

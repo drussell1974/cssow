@@ -222,13 +222,13 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
 #234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDITOR, "/accounts/login/")
+@min_permission_required(LESSON.OWNER, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
     #231: published item     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    cls_resource.publish_item(db, resource_id, auth_user_id(request))
-
+    ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_user_id(request))
+    
     return HttpResponseRedirect(redirect_to_url)

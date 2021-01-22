@@ -31,7 +31,7 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
 
         testcases = [
             {
-                "route":"content.index",
+                "route":"content.index as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -40,14 +40,14 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
                 "exp__subheading":"Curriculum",
             },
             {
-                "route":"content.new",
+                "route":"content.new as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"content.edit",
+                "route":"content.edit as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -56,14 +56,26 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
 
 
             {
-                "route":"content.edit",
+                "route":"content.edit as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
                 "exp__subheading":"Edit: data representation",
-            },           
+            },
+
+
+            {
+                "skip":True,
+                "route":"content.edit as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit",
+                "enter_username":"schemeofwork-owner@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"",
+                "exp__subheading":"",
+            },
         ]
         
         self.run_testcases__permission(testcases, "content")

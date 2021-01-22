@@ -56,6 +56,7 @@ def new(request, scheme_of_work_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def edit(request, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
@@ -86,6 +87,7 @@ def edit(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
 def save(request, scheme_of_work_id, keyword_id):
     
     def upload_error_handler(e, msg):
@@ -150,6 +152,7 @@ def save(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def delete_item(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
@@ -162,6 +165,7 @@ def delete_item(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, keyword_id):
     ''' Publish the keyword '''
     #231: published item     
@@ -174,6 +178,7 @@ def publish_item(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
     """ delete item and redirect back to referer """
 
@@ -186,6 +191,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def merge_duplicates(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 

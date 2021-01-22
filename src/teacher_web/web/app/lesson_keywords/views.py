@@ -203,7 +203,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
     #231: published item     
@@ -216,7 +216,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 

@@ -377,12 +377,12 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def publish_item(db, model, scheme_of_work_id, auth_user):
+    def publish_item(db, resource_id, scheme_of_work_id, auth_user):
         
         execHelper = ExecHelper()
 
         str_publish = "lesson_resource__publish_item"
-        params = (model.id, scheme_of_work_id, model.published, auth_user)
+        params = (resource_id, scheme_of_work_id, 1, auth_user)
         
         rval = execHelper.update(db, str_publish, params)
 

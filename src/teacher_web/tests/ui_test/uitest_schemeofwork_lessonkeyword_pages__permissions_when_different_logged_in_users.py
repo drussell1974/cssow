@@ -36,7 +36,7 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
         
         testcases = [           
             {
-                "route":"lesson_keywords.index",
+                "route":"lesson_keywords.index as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -45,49 +45,49 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
                 "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
             },
             {
-                "route":"lesson_keywords.delete_unpublished",
+                "route":"lesson_keywords.delete_unpublished as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.select",
+                "route":"lesson_keywords.select as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/select",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.new",
+                "route":"lesson_keywords.new as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/new",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.edit",
+                "route":"lesson_keywords.edit as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/999999999/edit",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.delete",
+                "route":"lesson_keywords.delete as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/999999999/delete",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.publish_item",
+                "route":"lesson_keywords.publish_item as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/999999999/publish_item",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"lesson_keywords.save",
+                "route":"lesson_keywords.save as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/999999999/save",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
@@ -97,7 +97,7 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
 
 
             {
-                "route":"lesson_keywords.edit",
+                "route":"lesson_keywords.edit as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": True,
@@ -107,11 +107,23 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
                 "exp__subheading":"Edit: Random Access Memory (RAM) for Types of CPU architecture",
             },
             {
-                "route":"lesson_keywords.delete_unpublished",
+                "route":"lesson_keywords.delete_unpublished as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
+
+
+            {
+                "skip":True,
+                "route":"lesson_keywords.delete_unpublished as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
+                "enter_username": "schemeofwork-owner@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"",
+                "exp__subheading":"",
             },
         ]
         

@@ -35,7 +35,7 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
 
         testcases = [            
             {
-                "route":"keywords.index",
+                "route":"keywords.index as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -44,35 +44,35 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
                 "exp__subheading":"Computing curriculum for A-Level",
             },
             {
-                "route":"keywords.delete_unpublished",
+                "route":"keywords.delete_unpublished as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"keywords.new",
+                "route":"keywords.new as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/new",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"keywords.edit",
+                "route":"keywords.edit as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"keywords.save",
+                "route":"keywords.save as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"keywords.merge",
+                "route":"keywords.merge as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -81,7 +81,7 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
 
 
             {
-                "route":"keywords.edit",
+                "route":"keywords.edit as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
@@ -91,11 +91,23 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
                 "exp__subheading":"Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level",
             },
             {
-                "route":"keywords.delete_unpublished",
+                "route":"keywords.delete_unpublished as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
+
+
+            {
+                "skip": True,
+                "route":"keywords.delete_unpublished as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
+                "enter_username":"schemeofwork-owner@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"",
+                "exp__subheading":"",
             },
             
         ]

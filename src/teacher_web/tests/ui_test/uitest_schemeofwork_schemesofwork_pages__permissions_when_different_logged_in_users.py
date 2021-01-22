@@ -33,14 +33,14 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
         
         testcases = [            
             {
-                "route":"schemesofwork.new",
+                "route":"schemesofwork.new as schemeofwork-viewer@localhost should deny",
                 "uri":f"/schemesofwork/new",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"schemesofwork.delete_unpublished",
+                "route":"schemesofwork.delete_unpublished as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/delete_unpublished",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -48,7 +48,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             },
             {
                 "skip": True,
-                "route":"schemesofwork.view",
+                "route":"schemesofwork.view as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -57,7 +57,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
                 "exp__subheading":"B",
             },
             {
-                "route":"schemesofwork.edit",
+                "route":"schemesofwork.edit as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/999999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -65,14 +65,14 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             },
             {
                 "skip": True,
-                "route":"schemesofwork.publish_item",
+                "route":"schemesofwork.publish_item as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork/999999999/publish",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
-                "route":"schemesofwork.index",
+                "route":"schemesofwork.index as schemeofwork-viewer@localhost",
                 "uri":f"/schemesofwork",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -83,7 +83,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             
             
             {
-                "route":"schemesofwork.edit",
+                "route":"schemesofwork.edit as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/edit",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
@@ -92,11 +92,23 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
                 "exp__subheading":"A-Level Computer Science",
             },
             {
-                "route":"schemesofwork.delete_unpublished",
+                "route":"schemesofwork.delete_unpublished as schemeofwork-editor@localhost",
                 "uri":f"/schemesofwork/delete_unpublished",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
+
+
+            {
+                "skip": True,
+                "route":"schemesofwork.delete_unpublished as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/delete_unpublished",
+                "enter_username":"schemeofwork-owner@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"",
+                "exp__subheading":"",
             },
         ]
         

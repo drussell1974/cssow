@@ -145,7 +145,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.EDITOR, "/accounts/login/")
+@min_permission_required(LESSON.OWNER, "/accounts/login/")
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
     
@@ -162,7 +162,7 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-#@min_permission_required(LESSON.EDITOR, "/accounts/login/")
+@min_permission_required(LESSON.EDITOR, "/accounts/login/")
 def delete(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 

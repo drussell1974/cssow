@@ -240,7 +240,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     else:
         """ redirect back to page and show message """
         
-        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
+        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors)
         redirect_to_url = reverse('learningobjective.edit', args=(scheme_of_work_id,lesson_id,learning_objective_id))
 
     return HttpResponseRedirect(redirect_to_url)
@@ -260,7 +260,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
     #231: published item     

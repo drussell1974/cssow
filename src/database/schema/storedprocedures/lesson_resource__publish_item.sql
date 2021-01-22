@@ -10,7 +10,7 @@ CREATE PROCEDURE lesson_resource__publish_item (
 BEGIN
     UPDATE sow_resource 
     SET published = p_published
-    WHERE id = p_learning_objective_id
+    WHERE id = p_resource_id
         AND p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 
                             WHERE auth_user_id = p_auth_user AND scheme_of_work_id = p_scheme_of_work_id);
