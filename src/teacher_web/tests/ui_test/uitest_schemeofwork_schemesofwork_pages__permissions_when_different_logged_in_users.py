@@ -80,6 +80,24 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
                 "exp__h1":"Schemes of Work",
                 "exp__subheading":"Our shared schemes of work by key stage",
             },
+            
+            
+            {
+                "route":"schemesofwork.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/edit",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"A-Level Computer Science",
+            },
+            {
+                "route":"schemesofwork.delete_unpublished",
+                "uri":f"/schemesofwork/delete_unpublished",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
         ]
         
         self.run_testcases__permission(testcases, "schemeofwork")

@@ -46,7 +46,16 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-            },    
+            },
+
+
+            {
+                "route":"eventlog.index",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },  
         ]
         
         self.run_testcases__permission(testcases, "eventlog")

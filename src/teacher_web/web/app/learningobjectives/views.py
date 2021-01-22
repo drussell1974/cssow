@@ -247,7 +247,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
 
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 

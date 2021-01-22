@@ -78,6 +78,25 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
+
+
+            {
+                "route":"keywords.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"A-Level Computer Science",
+                "exp__subheading":"Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level",
+            },
+            {
+                "route":"keywords.delete_unpublished",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
             
         ]
         

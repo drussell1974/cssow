@@ -88,6 +88,26 @@ class uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_use
                 "exp__h1":"Types of CPU architecture",
                 "exp__subheading":"Algorithms",
             },
+
+
+            {
+                "route":"lesson.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/edit",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Algorithms",
+            },
+            {
+                "route":"lesson.delete_unpublished",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/delete_unpublished",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
         ]
+        
         
         self.run_testcases__permission(testcases, "lesson")

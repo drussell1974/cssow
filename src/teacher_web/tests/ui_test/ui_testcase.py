@@ -220,13 +220,11 @@ class UITestCase(TestCase):
             if "skip" in testcase.keys() and testcase["skip"] == True:
                 print("s", end="")
             else:
-                #print("testing route {}".format(testcase["route"]))
-                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=5)
+                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=2)
                 
                 # assert
                 if testcase["allow"] == False:
                     self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
-                    #print("PASSED route {}".format(testcase["route"]))
                 else:
                     self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
-                    #print("PASSED route {}".format(testcase["route"]))
+                

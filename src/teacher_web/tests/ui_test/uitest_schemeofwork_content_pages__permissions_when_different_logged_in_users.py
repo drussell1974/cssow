@@ -49,10 +49,21 @@ class uitest_schemeofwork_content_pages__permissions_when_different_logged_in_us
             {
                 "route":"content.edit",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
-                "enter_username":"schemeofwork-viewer@localusername = host",
+                "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-            },            
+            },       
+
+
+            {
+                "route":"content.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit",
+                "enter_username":"schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"A-Level Computer Science",
+                "exp__subheading":"Edit: data representation",
+            },           
         ]
         
         self.run_testcases__permission(testcases, "content")

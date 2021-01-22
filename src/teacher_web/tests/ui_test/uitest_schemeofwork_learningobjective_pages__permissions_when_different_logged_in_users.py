@@ -77,6 +77,25 @@ class uitest_schemeofwork_learningobjective_pages__permissions_when_different_lo
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
+
+
+            {
+                "route":"learningobjective.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/edit",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow":True,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes",
+            },
+            {
+                "route":"learningobjective.delete_unpublished",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
         ]
         
         self.run_testcases__permission(testcases, "learningobjective")

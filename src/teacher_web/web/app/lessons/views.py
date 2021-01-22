@@ -196,7 +196,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(LESSON.EDITOR, "/accounts/login/")
+@min_permission_required(LESSON.OWNER, "/accounts/login/")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 

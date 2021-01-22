@@ -85,6 +85,25 @@ class uitest_schemeofwork_resources_pages__permissions_when_different_logged_in_
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
+
+
+            {
+                "route":"resource.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/edit",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Edit: OCR AS and A Level Computer Science",
+            },
+            {
+                "route":"resource.delete_unpublished",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/delete_unpublished",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
         ]
         
         self.run_testcases__permission(testcases, "resource")

@@ -93,6 +93,26 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
+            
+
+
+            {
+                "route":"lesson_keywords.edit",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": True,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Edit: Random Access Memory (RAM) for Types of CPU architecture",
+            },
+            {
+                "route":"lesson_keywords.delete_unpublished",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
+                "enter_username": "schemeofwork-editor@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },
         ]
         
         self.run_testcases__permission(testcases, "lessonkeywords")
