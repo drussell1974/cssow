@@ -158,8 +158,10 @@
       {% for row in value.learning_objectives %}    
         <div class="post-preview {{ row.published_state }}">
           <a name="{{ row.id }}"></a>
-          <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
             <h3 class="post-title">
+              <a class="edit" href="{% url 'learningobjective.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+                <i class="far fa-edit"></i>
+              </a>
               {{ row.description}}
             </h3>
             {% if request.user.is_authenticated and 1 == 2%}
