@@ -123,6 +123,11 @@
 <!-- Curriculum list END -->
 <hr />
 
+<footer class="widget widget--article-footer">
+  {% if request.user.is_authenticated %}
+    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'content.delete_unpublished' content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
+  {% endif %}
+</footer>
 
 </article>
 

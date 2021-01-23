@@ -53,6 +53,13 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },       
+            {
+                "route":"content.delete_unpublished as schemeofwork-viewer@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
+                "enter_username":"schemeofwork-viewer@localhost",
+                "allow": False,
+                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+            },       
 
 
             {
@@ -63,6 +70,16 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
                 "exp__subheading":"Edit: data representation",
+            },
+
+            {
+                "route":"content.delete_unpublished as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/delete_unpublished",
+                "enter_username":"schemeofwork-owner@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"A-Level Computer Science",
+                "exp__subheading":"Curriculum",
             },
         ]
         

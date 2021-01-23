@@ -53,3 +53,11 @@ class uitest_permissions_schemeofwork_content__when_vistor(UITestCase):
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
 
         
+    def test_page__delete_unpublished__should_redirect_to_login_when_with_permission_error(self):
+        #path('delete_unpublished', views.delete_unpublished, name="content.delete_unpublished"), 
+        # test
+        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/delete_unpublished")
+        
+        # assert
+        self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
+
