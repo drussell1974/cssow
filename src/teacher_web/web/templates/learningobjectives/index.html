@@ -46,53 +46,11 @@
   <div class="collapse navbar-collapse" id="sidebarResponsive">
     <div class="list-group">
             
-      {% include '_partials/widget.sidebar.lesson.html'  %}        
+      {% include '_partials/widget.sidebar.this-lesson.html'  %}        
 
-      <section class="card widget widget--sidebar">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
-          </div>
-          <div class="card-text widget-main">
-            <ul class="navbar-nav flex-column fillspace">
-              <li class="nav-item bg-light">
-                <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
-                  {{_("Lessons")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
-                  {{_("Keywords")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
-                    {{_("Curriculum")}} <div class="small"></div>
-                  </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %} 
 
-      <section class="card widget widget-sidenav d-none d-lg-block">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-title">{{_("Other lessons")}}</h5>
-          </div>
-          <div class="card-text">
-            <ul class="navbar-nav flex-column fillspace">
-            {% for opt in content.data.lesson_options %}
-              <li class="nav-item {% if opt.id == content.data.lesson_id %}bg-light{% endif %}">
-                  <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
-                    {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
-                  </a>
-              </li>
-            {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </section>
+      {% include '_partials/widget.sidebar.other-lessons.html'  %}
     
     </div>
   </div>

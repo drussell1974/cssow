@@ -1,7 +1,7 @@
-<section class="card widget widget--sidebar widget--sidebar__lesson">
+<section class="card widget widget--sidebar widget--sidebar---this-lesson">
     <div class="card-body">
         <div class="card-header widget-header">
-        <h5 class="card-heading">{{ _("This lesson") }} <i class="far fa-edit small"></i></h5>
+        <h5 class="card-heading">{{ _("This lesson") }} <a href="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}" id="edit-lesson--sidebar"><i class="far fa-edit small float-right"></i></a></h5>
         </div>
         <div class="card-text widget-main">
         <ul class="navbar-nav flex-column fillspace">
