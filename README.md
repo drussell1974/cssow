@@ -71,6 +71,10 @@ or everything
 
 > yarn test:all
 
+Test on commit - see package.json for solution
+
+> yarn add husky
+
 Create and Publish Deployment
 -----------------------------
 
