@@ -150,14 +150,15 @@
   {% for row in content.data.resources %}
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
-      <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
         <h3 class="post-title">
-          <i class="fa {{row.type_icon}}"></i> {{ row.title }}
+          <i class="fa {{ row.type_icon }}"></i>
+          <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+            <i class="far fa-edit"></i> 
+          </a> {{ row.title }}
         </h3>
         <h4 class="post-subtitle">
             {{ row.publisher }}
         </h4>
-      </a>
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}

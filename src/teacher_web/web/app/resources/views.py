@@ -214,7 +214,7 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     ResourceModel.delete_unpublished(db, lesson_id, auth_user_id(request))
 
-    return HttpResponseRedirect("resource.index", args=[scheme_of_work_id, lesson_id])
+    return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))
 
 
 #234 add permission
@@ -224,6 +224,5 @@ def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
 
     ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_user_id(request))
-    url = reverse("resource.index", args=[scheme_of_work_id, lesson_id])
     
-    return HttpResponseRedirect(url)
+    return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))
