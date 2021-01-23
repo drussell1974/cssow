@@ -86,7 +86,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
 
         ' Open edit '
 
-        self.delete_unpublished_item(".unpublished .post-title")
+        self.delete_unpublished_item(".unpublished .edit .fa-edit")
         
         self.wait(s=20)
 
