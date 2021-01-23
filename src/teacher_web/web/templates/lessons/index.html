@@ -129,7 +129,6 @@
   {% for row in content.data.lessons %} 
   <div class="post-preview {{ row.published_state }}">
     <a name="{{row.id}}"></a>
-    <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
       <div class="float-right card">
         <div class="card-body">
         <h5 class="small text-muted">Lesson {{ row.order_of_delivery_id }}</h5>  
@@ -137,12 +136,14 @@
       </div>
       </div>
       <h3 class="post-title">
+        <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
+          <i class="far fa-edit"></i>
+        </a>
         {{ row.title }}
-      </h3>   
+      </h3>
       {% if row.summary != "" %}
         <h4 class="post-subtitle">{{ row.summary }}</h4>
       {% endif %}
-    </a>
     <div class="badge-group">
       {% for key_word in row.key_words %}
         <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}">{{ key_word.term }}</button>&nbsp;
