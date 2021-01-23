@@ -1,0 +1,26 @@
+<section class="card widget widget--sidebar widget--sidebar__lesson">
+    <div class="card-body">
+        <div class="card-header widget-header">
+        <h5 class="card-heading">{{ _("This lesson") }} <i class="far fa-edit small"></i></h5>
+        </div>
+        <div class="card-text widget-main">
+        <ul class="navbar-nav flex-column fillspace">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                {{_("Learning objectives")}} <div class="small"></div>
+                </a>
+            </li>
+            <li class="nav-item bg-light">
+            <a class="nav-link" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                {{_("Keywords")}} <div class="small"></div>
+            </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+                {{_("Resources")}} <div class="small"></div>
+                </a>
+            </li>
+        </ul>
+        </div>
+    </div>
+</section>
