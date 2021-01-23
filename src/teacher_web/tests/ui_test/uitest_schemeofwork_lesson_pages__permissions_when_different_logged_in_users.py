@@ -110,14 +110,13 @@ class uitest_schemeofwork_lesson_pages__permissions_when_different_logged_in_use
 
 
             {
-                "skip":True,
                 "route":"lesson.delete_unpublished as schemeofwork-owner@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/delete_unpublished",
                 "enter_username": "schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"",
-                "exp__subheading":"",
+                "exp__h1":"A-Level Computer Science",
+                "exp__subheading":"Lessons",
             },
         ]
         

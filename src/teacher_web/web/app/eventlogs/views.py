@@ -15,6 +15,7 @@ from .viewmodels import EventLogIndexViewModel, EventLogDeleteOldViewModel
 
 
 @permission_required('cssow.view_eventlogs', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
 def index(request, scheme_of_work_id):
     """ view the event log """    
     modelview = EventLogIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_user_id(request))
@@ -23,6 +24,7 @@ def index(request, scheme_of_work_id):
 
 
 @permission_required('cssow.delete_eventlogs', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
 def delete(request, scheme_of_work_id, rows = 0):
     """ delete old logs """
     modelview = EventLogDeleteOldViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_user_id(request))

@@ -116,14 +116,13 @@ class uitest_schemeofwork_resources_pages__permissions_when_different_logged_in_
 
 
             {
-                "skip":True,
                 "route":"resource.publish_item as schemeofwork-owner@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_scheme_of_work_id}/resources/{self.test_reference}/publish_item",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/publish_item",
                 "enter_username": "schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"",
-                "exp__subheading":"",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
             },
         ]
         

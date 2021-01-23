@@ -251,23 +251,16 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    #253 check user id
     LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
-    #231: published item     
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    #253 check user id
+    
     LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_user_id(request))
 
-    # redirect
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))

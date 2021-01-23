@@ -48,7 +48,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             },
             {
                 "skip": True,
-                "route":"schemesofwork.view as schemeofwork-viewer@localhost",
+                "route":"schemesofwork.view as schemeofwork-viewer@localhost --- NOT IMPLEMENT",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
@@ -65,7 +65,7 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
             },
             {
                 "skip": True,
-                "route":"schemesofwork.publish_item as schemeofwork-viewer@localhost",
+                "route":"schemesofwork.publish_item as schemeofwork-viewer@localhost ---- publish view NOT IMPLEMENTED",
                 "uri":f"/schemesofwork/999999999/publish",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
@@ -101,14 +101,22 @@ class uitest_schemeofwork_schemesofwork_pages__permissions_when_different_logged
 
 
             {
-                "skip": True,
-                "route":"schemesofwork.delete_unpublished as schemeofwork-owner@localhost",
+                "route":"schemesofwork.delete_unpublished as department-admin@localhost",
                 "uri":f"/schemesofwork/delete_unpublished",
-                "enter_username":"schemeofwork-owner@localhost",
+                "enter_username":"department-admin@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"",
-                "exp__subheading":"",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"Our shared schemes of work by key stage",
+            },
+            {
+                "route":"schemesofwork.edit as department-admin@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/edit",
+                "enter_username":"department-admin@localhost",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"A-Level Computer Science",
             },
         ]
         

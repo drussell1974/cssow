@@ -47,13 +47,10 @@ def edit(request, scheme_of_work_id = 0):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(DEPARTMENT.HEAD, "/accounts/login/")
+@min_permission_required(DEPARTMENT.ADMIN, "/accounts/login/")
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    #253 check user id
     SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("schemesofwork.index"))

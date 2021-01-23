@@ -100,14 +100,13 @@ class uitest_schemeofwork_schemesofworkkeyword_pages__permissions_when_different
 
 
             {
-                "skip": True,
                 "route":"keywords.delete_unpublished as schemeofwork-owner@localhost",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"",
-                "exp__subheading":"",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"Our shared schemes of work by key stage",
             },
             
         ]

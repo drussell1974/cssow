@@ -200,10 +200,6 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    #235 Create ViewModelscheme_of_work_id
-    #253 check user id
     LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("lesson.index", args=[scheme_of_work_id]))

@@ -107,8 +107,8 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
                 "exp__subheading":"Edit: Random Access Memory (RAM) for Types of CPU architecture",
             },
             {
-                "route":"lesson_keywords.delete_unpublished as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
+                "route":"lesson_keywords.publish_item as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/publish_item",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -116,14 +116,14 @@ class uitest_schemeofwork_lessonkeyword_pages__permissions_when_different_logged
 
 
             {
-                "skip":True,
-                "route":"lesson_keywords.delete_unpublished as schemeofwork-owner@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/keywords/delete_unpublished",
+                "route":"lesson_keywords.publish_item as schemeofwork-owner@localhost",
+                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/delete_unpublished",
                 "enter_username": "schemeofwork-owner@localhost",
                 "allow": True,
+                "wait_for_element_id": "index-page--group-heading",
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"",
-                "exp__subheading":"",
+                "exp__h1":"Types of CPU architecture",
+                "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
             },
         ]
         

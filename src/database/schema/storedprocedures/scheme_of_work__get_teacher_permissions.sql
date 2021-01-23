@@ -27,10 +27,3 @@ END;
 //
 
 DELIMITER ;
-
-CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(0, 2);
-CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(11, 2);
-CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(0, 12);
-CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(11, 12);
-CALL `drussell1974$cssow_api`.`scheme_of_work__get_teacher_permissions`(999999, 12);
-

@@ -1,6 +1,6 @@
 from django.db import connection as db
 from django.shortcuts import redirect
-from shared.models.core.log import handle_log_info, handle_log_warning
+from shared.models.core.log import handle_log_info, handle_log_warning, handle_log_error
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
@@ -86,11 +86,13 @@ class min_permission_required:
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
 
             model = TeacherPermissionModel.get_model(db, scheme_of_work_id=self._scheme_of_work_id, auth_user=self._auth_user)
-            
+            handle_log_info(db, self._scheme_of_work_id, f"auth_user_id:{self._auth_user} - d:{model.department_permission},s:{model.scheme_of_work_permission},l:{model.lesson_permission}")
             if model.check_permission(self._permission) == False: 
                 ''' redirect if user does not have permissions for this scheme of work '''
-                str_err = f"You do not have {str(self._permission).split('.')[1]} permission for this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id}) redirect {self._redirect_to_url}" 
-            
+                str_err = \
+                        f"You do not have {str(self._permission).split('.')[1]} permission for "\
+                        f"this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id}) redirect to {self._redirect_to_url}. "
+
                 return self.redirect_handler(str_err) 
 
             # call decorated function
@@ -108,7 +110,5 @@ class min_permission_required:
 
 
     def redirect_handler(self, error_message):
-        
         handle_log_warning(db, self._scheme_of_work_id, msg="permission denied", details=error_message)
-
         return redirect(f"{self._redirect_to_url}?next={self._return_url}")

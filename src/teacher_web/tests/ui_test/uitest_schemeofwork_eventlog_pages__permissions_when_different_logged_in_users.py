@@ -59,12 +59,13 @@ class uitest_schemeofwork_eventlog_pages__permissions_when_different_logged_in_u
 
 
             {
-                "skip":True,
-                "route":"eventlog.index as schemeofwork-owner@localhost",
+                "route":"eventlog.index as drussell1974",
                 "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
-                "enter_username":"schemeofwork-editor@localhost",
-                "allow": False,
-                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "enter_username":"drussell1974",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Event Log",
+                "exp__subheading":"view event logs",
             },  
         ]
         

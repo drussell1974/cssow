@@ -212,12 +212,9 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-
-    #253 check user id
     ResourceModel.delete_unpublished(db, lesson_id, auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect("resource.index", args=[scheme_of_work_id, lesson_id])
 
 
 #234 add permission
@@ -225,10 +222,8 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 @min_permission_required(LESSON.OWNER, "/accounts/login/")
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
-    #231: published item     
-    redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #253 check user id
     ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_user_id(request))
+    url = reverse("resource.index", args=[scheme_of_work_id, lesson_id])
     
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(url)

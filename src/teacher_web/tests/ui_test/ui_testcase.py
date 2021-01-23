@@ -119,7 +119,7 @@ class UITestCase(TestCase):
 
     def try_click_log_out(self, wait):
         try:
-            elem = self.test_context.find_element_by_id("btn-logout")    
+            elem = self.find_element_by_id__with_explicit_wait("btn-logout")    
             elem.click()
         except Exception as e:
             #print("try_click_log_out handled - probably logged out already ({})".format(e.args))

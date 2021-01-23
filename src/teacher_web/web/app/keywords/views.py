@@ -166,15 +166,12 @@ def delete_item(request, scheme_of_work_id, keyword_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
-def publish_item(request, scheme_of_work_id, keyword_id):
+def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
-    #231: published item     
-    redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #253 check user id
-    cls_keyword.publish_item(db, keyword_id, auth_user_id(request))
+    KeywordModel.publish_by_id(db, keyword_id, auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("keywords.index", args=[scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
@@ -182,12 +179,9 @@ def publish_item(request, scheme_of_work_id, keyword_id):
 def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-    
-    #253 check user id
     KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("schemesofwork.index"))
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
