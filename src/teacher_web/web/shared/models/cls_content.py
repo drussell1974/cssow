@@ -113,7 +113,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        pass
+        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
 
 
 class ContentDataAccess(BaseDataAccess):
@@ -229,4 +229,26 @@ class ContentDataAccess(BaseDataAccess):
 
         rows = execHelper.delete(db, stored_procedure, params, handle_log_info)
 
+        return rows
+
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        """ 
+        Delete all unpublished content 
+
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the rows
+        """
+
+        execHelper = ExecHelper()
+        
+        str_delete = "content__delete_unpublished"
+        params = (scheme_of_work_id, auth_user)
+        
+        rows = []
+        rows = execHelper.delete(db, str_delete, params, handle_log_info)
+        
         return rows
