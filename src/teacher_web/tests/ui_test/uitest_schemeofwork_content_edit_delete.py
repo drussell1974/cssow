@@ -53,7 +53,7 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        self.delete_unpublished_item(".unpublished a.edit")
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit")
         
         self.wait(s=2)
 

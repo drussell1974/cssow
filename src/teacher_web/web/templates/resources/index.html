@@ -152,7 +152,7 @@
       <a name="{{ row.id }}"></a>
         <h3 class="post-title">
           <i class="fa {{ row.type_icon }}"></i>
-          <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+          <a class="edit float-right" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
             <i class="far fa-edit"></i> 
           </a> {{ row.title }}
         </h3>

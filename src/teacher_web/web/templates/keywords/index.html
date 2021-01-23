@@ -123,7 +123,7 @@
         <a name="{{ row.id }}"></a>
         <div class="card-body">
           <h5 class="card-title">  
-            <a class="edit" href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
+            <a class="edit float-right" href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
               <i class="far fa-edit"></i>
             </a>{{ row.term }}</h5>
           <p class="card-text small preserve-linebreak">{{ row.definition }}</p>

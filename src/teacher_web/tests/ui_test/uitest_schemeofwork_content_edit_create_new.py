@@ -76,4 +76,4 @@ class uitest_schemeofwork_content_edit_create_new(UITestCase):
 
         # teardown
 
-        self.delete_unpublished_item(".unpublished .edit .post-title")
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit")

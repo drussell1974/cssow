@@ -161,7 +161,7 @@
         <a name="{{ row.id }}"></a>
         <div class="card-body">
             <h5 class="card-title">
-              <a class="edit" href="{% url 'lesson_keywords.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+              <a class="edit float-right" href="{% url 'lesson_keywords.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
                 <i class="far fa-edit"></i>
               </a>
               {{ row.term }}

@@ -112,7 +112,7 @@
   <ul class="list-group list-group-flush">
     {% for row in content.data.curriculum_content %}
     <li class="list-group-item post-preview {{ row.published_state }}">
-      <a class="edit" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
+      <a class="edit float-right" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
         <i class="far fa-edit"></i>
       </a>
       <span class="post-title post-title--long-text">{{ row.letter_prefix }} - {{ row.description }}</span>
