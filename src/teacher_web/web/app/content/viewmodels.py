@@ -117,3 +117,11 @@ class ContentEditViewModel(BaseViewModel):
         }
 
         return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, data=data, active_model=self.model, error_message=self.error_message)
+
+
+class ContentDeleteUnpublishedViewModel(BaseViewModel):
+    
+    @check_teacher_permission(LESSON.EDITOR)
+    def __init__(self, db, auth_user, scheme_of_work_id):
+        self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)
+        

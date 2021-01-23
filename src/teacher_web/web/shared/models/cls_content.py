@@ -111,6 +111,10 @@ class ContentModel(BaseModel):
 
         return model
 
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        pass
+
 
 class ContentDataAccess(BaseDataAccess):
 
