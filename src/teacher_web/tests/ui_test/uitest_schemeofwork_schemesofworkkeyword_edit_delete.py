@@ -55,7 +55,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        self.delete_unpublished_item(".unpublished h5.card-title")
+        self.delete_unpublished_item(".unpublished h5.card-title a.edit .fa-edit")
         
         self.wait(s=2)
 

@@ -122,9 +122,10 @@
       <div class="card card-keyword {{ row.published_state }}">
         <a name="{{ row.id }}"></a>
         <div class="card-body">
-          <a href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
-          <h5 class="card-title">{{ row.term }}</h5>
-          </a>
+          <h5 class="card-title">  
+            <a class="edit" href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
+              <i class="far fa-edit"></i>
+            </a>{{ row.term }}</h5>
           <p class="card-text small preserve-linebreak">{{ row.definition }}</p>
           <hr>
           <span class="small">{{_('Lessons:')}}
