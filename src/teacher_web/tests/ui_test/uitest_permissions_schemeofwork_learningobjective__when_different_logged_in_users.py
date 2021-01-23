@@ -1,7 +1,7 @@
 from ui_testcase import UITestCase, WebBrowserContext
 from unittest import skip
 
-class uitest_schemeofwork_learningobjective_pages__permissions_when_different_logged_in_users(UITestCase):
+class uitest_permissions_schemeofwork_learningobjective__when_different_logged_in_users(UITestCase):
 
     test_context = WebBrowserContext()
 

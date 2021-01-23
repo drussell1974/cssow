@@ -1,7 +1,7 @@
 from ui_testcase import UITestCase, WebBrowserContext
 from unittest import skip
 
-class uitest_schemeofwork_lesson_pages__permissions_when_vistor(UITestCase):
+class uitest_permissions_schemeofwork_lesson__when_vistor(UITestCase):
 
     test_context = WebBrowserContext()
 

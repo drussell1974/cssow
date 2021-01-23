@@ -29,7 +29,8 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_not_found(UITestCase):
         self.do_log_in(self.root_uri + "/schemesofwork/{}/keywords/{}/edit".format(999999, self.test_keyword_id))
 
         # assert
-        self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/keywords/92/edit")
+        #self.assertCustomPermissionDenied(h1="PermissionError at /schemesofwork/999999/keywords/92/edit")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")
 
 
     def test_page_should_redirect_to_404__if_keyword_id__does_not_exist(self):

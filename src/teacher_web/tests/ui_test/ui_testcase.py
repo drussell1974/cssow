@@ -53,7 +53,7 @@ class UITestCase(TestCase):
 
         # assert
         self.assertEqual(expected_title, title_elem.text)
-        self.assertEqual(expected_no_of_items, len(list_item_elems), "number of items not as expected")
+        self.assertGreaterEqual(len(list_item_elems), expected_no_of_items, "number of items not as expected")
 
 
     def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed"):
@@ -213,7 +213,7 @@ class UITestCase(TestCase):
 
     def run_testcases__permission(self, testcases, batch_name):
 
-        print(f"running {len(testcases)} test cases for {batch_name}... ")
+        print(f"running {len(testcases)} test cases for {batch_name}!", end="")
 
         for testcase in testcases:
             # test

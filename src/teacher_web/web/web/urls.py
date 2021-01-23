@@ -37,6 +37,7 @@ urlpatterns = [
     ### app ###
 
     path('accounts/', include('django.contrib.auth.urls')),
+    #path('accounts/profile', include('app.accounts.urls')),
     path('admin/', admin.site.urls),
     # app event-log
     path('schemesofwork/<int:scheme_of_work_id>/event-log/', include('app.eventlogs.urls')),
