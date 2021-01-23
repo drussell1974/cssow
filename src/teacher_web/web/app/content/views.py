@@ -11,7 +11,7 @@ from shared.models.core.django_helper import auth_user_id
 from shared.view_model import ViewModel
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.viewmodels.decorators.permissions import min_permission_required
-from .viewmodels import ContentIndexViewModel, ContentEditViewModel
+from .viewmodels import ContentIndexViewModel, ContentEditViewModel, ContentDeleteUnpublishedViewModel
 from shared.models.cls_content import ContentModel
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
@@ -46,3 +46,13 @@ def edit(request, scheme_of_work_id, content_id=0):
 
 
     return render(request, "content/edit.html", view_model.view().content)    
+
+
+@permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+def delete_unpublished(request, scheme_of_work_id):
+    """ delete item and redirect back to referer """
+
+    ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+
+    return HttpResponseRedirect(reverse("content.index", args=[scheme_of_work_id]))
