@@ -12,17 +12,14 @@ BEGIN
         name as term,
         kw.definition as definition,
         kw.scheme_of_work_id as scheme_of_work_id,
-        kw.published as published
+        kw.published as published,
+        kw.created as created
     FROM 
         sow_key_word as kw
     WHERE
         kw.id = p_keyword_id 
         AND kw.scheme_of_work_id = p_scheme_of_work_id
-            AND (kw.published = 1 
-                  or p_auth_user IN (SELECT auth_user_id 
-                                     FROM sow_teacher 
-                                     WHERE auth_user_id = p_auth_user AND scheme_of_work_id = kw.scheme_of_work_id))
-    ORDER BY kw.name;
+	ORDER BY kw.name;
 END;
 //
 

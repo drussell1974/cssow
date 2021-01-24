@@ -6,7 +6,7 @@ from shared.models.cls_learningobjective import LearningObjectiveModel
 class Test_LearningObjectiveModel_Constructor(TestCase):
 
     test = None
-    current_date_for_test = ""
+    current_date_for_test = "2021-01-24 08:06:49.771575"
 
     """ Shared functions """
     def setUp(self):
@@ -32,7 +32,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
     def test_constructor_default(self):
         # set up
         test = LearningObjectiveModel(0)
-
+        test.created = "2021-01-24 08:01:49.771575"
         # assert
         self.assertEqual(0, test.id)
         self.assertEqual("", test.description)
@@ -53,7 +53,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         self.assertEqual(0, test.key_stage_id)
         self.assertEqual("", test.key_stage_name)
         self.assertEqual(None, test.parent_id)
-        self.assertEqual("", test.created)
+        self.assertEqual("2021-01-24 08:01:49.771575", test.created)
         self.assertEqual(0, test.created_by_id)
         self.assertEqual("", test.created_by_name)
 

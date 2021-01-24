@@ -20,6 +20,7 @@ class KeywordModel(BaseModel):
     info_handler=None
     
     def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, all_terms = []):
+
         super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.term = term
@@ -118,8 +119,10 @@ class KeywordModel(BaseModel):
 
         data = []
         for row in rows:
-            item = KeywordModel(row[0], row[1], row[2], row[3], row[4])
+            item = KeywordModel(row[0], term=row[1], definition=row[2], scheme_of_work_id=row[3], published=row[4])
             item.number_of_lessons = row[5]
+            item.created = row[6]
+
             data.append(item)
             
         return data
@@ -147,7 +150,7 @@ class KeywordModel(BaseModel):
         data = []
 
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2], row[3], row[4]))
+            data.append(KeywordModel(row[0], term=row[1], definition=row[2], scheme_of_work_id=row[3], published=row[4], created=row[5]))
 
         return data
 

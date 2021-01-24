@@ -25,7 +25,7 @@ class BaseModel(models.Model):
     def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db):
         self.id = try_int(id_)
         self.display_name = display_name
-        self.created = created
+        self.created = created if len(str(created)) > 0 else str(datetime.now())
         self.created_by_id = try_int(created_by_id)
         self.created_by_name = created_by_name
         self.published = published

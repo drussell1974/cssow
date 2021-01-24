@@ -50,7 +50,7 @@ class test_db__get_all_keywords(TestCase):
     def test__should_call_select__return_single_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'select', return_value=[(87,"Fetch Decode Execute", "The process carried out by the CPU", 13, 1, 0)]):
+        with patch.object(ExecHelper, 'select', return_value=[(87,"Fetch Decode Execute", "The process carried out by the CPU", 13, 1, '2020-01-24 07:26')]):
             # act
 
             actual_results = get_all_keywords(self.fake_db, 13, 6079)
@@ -73,7 +73,12 @@ class test_db__get_all_keywords(TestCase):
     def test__should_call_select__return_multiple_item(self):
         # arrange
 
-        with patch.object(ExecHelper, 'select', return_value=[(1034,"DDR","", 13, 1, 2),(1045,"DIMM","", 13, 1, 2),(12,"DRAM","", 13, 1, 2) ]):
+        with patch.object(ExecHelper, 'select', return_value=[
+                    (1034,"DDR","", 13, 1, 2, '2020-01-24 07:27:01'),
+                    (1045,"DIMM","", 13, 1, 2, '2020-01-24 07:27:02'),
+                    (12,"DRAM","", 13, 1, 2, '2020-01-24 07:27:03') 
+                ]
+            ):
             # act
 
             actual_results = get_all_keywords(self.fake_db, 13, 6079)
