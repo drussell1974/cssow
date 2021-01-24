@@ -12,7 +12,7 @@ BEGIN
     INNER JOIN sow_department__has__teacher as dep_teach
 		ON dep_teach.department_id = dep.id
     WHERE dep_teach.auth_user_id = p_auth_user;
-END;sdd
+END;
 //
 
 DELIMITER ;
