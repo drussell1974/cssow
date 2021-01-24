@@ -11,7 +11,8 @@ BEGIN
             kw.name as term, 
             kw.definition as definition,
             kw.scheme_of_work_id as scheme_of_work_id,
-            kw.published as published
+            kw.published as published,
+            kw.created as created
       FROM sow_lesson__has__key_words as lkw 
             INNER JOIN sow_key_word kw ON kw.id = lkw.key_word_id 
       WHERE 

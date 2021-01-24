@@ -78,7 +78,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
-        
+        model.created = '2021-01-24 07:18:18.677084'
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
         
@@ -94,7 +94,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 "lesson_learning_objective__insert"
-                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '', 0, 1, 99)
+                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, 1, 99)
                 , handle_log_info)
                 
             self.assertEqual(23, actual_result.id)

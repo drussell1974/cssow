@@ -72,6 +72,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, department_id=45)
+        model.created = "2021-01-24 07:13:09.681409"
 
         DataAccess._insert_as__teacher = Mock(return_value=1)
 
@@ -84,7 +85,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, 45, '', 0, 1, 6079)
+                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, 6079)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()

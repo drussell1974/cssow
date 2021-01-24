@@ -394,7 +394,7 @@ class LessonModel (BaseModel):
         rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2]), row[3], row[4]))
+            data.append(KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4], created=row[5]))
         return data
 
 

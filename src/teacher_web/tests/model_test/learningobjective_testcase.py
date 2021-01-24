@@ -6,7 +6,7 @@ from shared.models.cls_learningobjective import LearningObjectiveModel
 
 class LearningObjective_TestCase(TestCase):
 
-    current_date_for_test = ""
+    current_date_for_test = "2021-01-24 08:05:49.771575"
 
     """ Shared functions """
     def setUp(self):

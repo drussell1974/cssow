@@ -48,7 +48,7 @@ class test_db_keyword__get_options(TestCase):
 
     def test__should_call_select__return_single_item(self):
         # arrange
-        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 1, 2)]
+        expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 1, 2, '2020-01-24 07:30:01')]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -72,9 +72,10 @@ class test_db_keyword__get_options(TestCase):
     def test__should_call_select__return_multiple_item(self):
         # arrange
         expected_result = [
-            (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13, 0, [])
-            ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 0, [])
-            ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.", 13, 1, [123])]
+                (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13, 0, [], '2020-01-24')
+                ,(2,"Decimal", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, '2020-01-24 07:32:01', 0, [], 0, '2020-01-24 07:42.01')
+                ,(3, "Hexadecimal", "Phasellus mauris lacus, accumsan non viverra non, sagittis nec lorem. Vestibulum tristique laoreet nisi non congue.", 13, '2020-01-24 07:32:02', 1, [123], 1, '2020-01-24 07.42.02')
+            ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
