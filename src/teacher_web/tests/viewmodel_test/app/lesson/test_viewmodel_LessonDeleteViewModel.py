@@ -19,8 +19,7 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__with_exception(self, check_permission):
+    def test_init_called_delete__with_exception(self):
         
         # arrange        
         with patch.object(Model, "delete", side_effect=KeyError):
@@ -35,8 +34,7 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
                 self.viewmodel = ViewModel(db, auth_user=99, lesson_id=999)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__no_return_rows(self, check_permission):
+    def test_init_called_delete__no_return_rows(self):
         
         # arrange
         
@@ -57,8 +55,7 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
             self.assertIsNone(self.viewmodel.model)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__return_item(self, check_permission):
+    def test_init_called_delete__return_item(self):
         
         # arrange
         
@@ -82,14 +79,3 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
             self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
             self.assertEqual(2, self.viewmodel.model.published)
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-        pass
-
-        with self.assertRaises(PermissionError):
-            db = MagicMock()
-            db.cursor = MagicMock()
-            # act
-            self.viewmodel = ViewModel(db=db, auth_user=99, lesson_id=999)

@@ -63,14 +63,14 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         ' Open Modal '
 
         #231: click the cancel button
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
 
         ' click no (finding button appears to cancel dialog) '        
         
         #231: then click the continue button
-        elem = self.test_context.find_element_by_id("cancelModalContinueButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         self.wait(s=2)
         elem.click()
         

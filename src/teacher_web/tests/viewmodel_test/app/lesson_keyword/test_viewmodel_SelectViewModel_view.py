@@ -21,10 +21,10 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
     @patch.object(LessonModel, "get_options", return_value=[])
-    def test_init_called_fetch__no_return_rows(self, check_permission, LessonModel__get_model, LessonModel__get_options):
+    def test_init_called_fetch__no_return_rows(self, LessonModel__get_model, LessonModel__get_options):
         
         # arrange
         db = MagicMock()
@@ -51,9 +51,9 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             self.assertEqual(45, actual_result.model.id)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
-    def test_init_called_fetch_single_item(self, check_permission, LessonModel__get_model):
+    def test_init_called_fetch_single_item(self, LessonModel__get_model):
 
         # arrange
         db = MagicMock()
@@ -81,10 +81,10 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             self.assertEqual(1, len(actual_result.keyword_options))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
     @patch.object(LessonModel, "get_options", return_value=[LessonModel(34), Model(35), Model(36)])
-    def test_init_called_fetch__multiple_items(self, check_permission, LessonModel__get_model, LessonModel__get_options):
+    def test_init_called_fetch__multiple_items(self, LessonModel__get_model, LessonModel__get_options):
         
         # arrange
         
@@ -116,23 +116,3 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             self.assertEqual(45, actual_result.model.id)    
             self.assertEqual(3, len(actual_result.lesson_options))        
             self.assertEqual(3, len(actual_result.keyword_options))
-        
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-        
-        db = MagicMock()
-        db.cursor = MagicMock()
-
-        mock_request = Mock(
-            method = "GET"
-        )
-        
-        with self.assertRaises(PermissionError):
-            
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            ViewModel(db=db, request=mock_request, lesson_id=45, scheme_of_work_id=12, auth_user=6079)

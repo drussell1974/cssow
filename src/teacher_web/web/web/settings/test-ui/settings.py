@@ -191,7 +191,7 @@ MARKDOWN_TYPE_ID = 10
 # Error = 1
 LOGGING_LEVEL = 2
 LOG_TO_SQL = False
-LOG_TO_CONSOLE = True
+LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
 
 # Minimum number of days to keep log

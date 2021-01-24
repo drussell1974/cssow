@@ -24,8 +24,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self, check_permission):
+    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self):
         
         # arrange
 
@@ -47,8 +46,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self, check_permission):
+    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=None)
@@ -68,8 +66,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_GET__edit_new_model(self, check_permission):
+    def test_init_on_GET__edit_new_model(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -98,8 +95,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_GET__edit_existing_model(self, check_permission):
+    def test_init_on_GET__edit_existing_model(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -128,8 +124,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self, check_permission):
+    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -157,9 +152,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             viewmodel.view()
             
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self, check_permission):
+    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -187,8 +180,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             Model.save.assert_called()
 
             
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_on_POST__invalid_model_is_content_ready__false(self, check_permission):
+    def test_init_on_POST__invalid_model_is_content_ready__false(self):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -233,17 +225,3 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             self.assertEqual({'letter_prefix': 'aB is not valid. value must be an uppercase letter'}, ui_view["content"]["validation_errors"])
             #self.assertEqual("errors", ui_view["session"]["alert_message"])
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_init_raises_PermissionError(self, check_permission):
-
-
-        # arrange
-        mock_post = Mock(
-            POST = {"id":"0", "description":"Proin id massa metus. Aliqua tincidunt.", "letter_prefix":"B","key_stage_id":"4","published":"1"},
-            method = "POST"
-        )
-
-        with self.assertRaises(PermissionError):
-            # act
-            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)

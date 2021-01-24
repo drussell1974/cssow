@@ -7,15 +7,12 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel as Model
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 
 class KeywordGetAllListViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEWER)  
     def __init__(self, db, request, scheme_of_work_id, auth_user):
         
         self.model = []
@@ -67,7 +64,6 @@ class KeywordGetAllListViewModel(BaseViewModel):
 
 class KeywordGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEWER)
     def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
 
         self.model = None
@@ -121,7 +117,6 @@ class KeywordGetModelViewModel(BaseViewModel):
 class KeywordSaveViewModel(BaseViewModel):
 
 
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
@@ -150,7 +145,6 @@ class KeywordSaveViewModel(BaseViewModel):
 
 class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
         data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
         self.model = data
@@ -158,7 +152,6 @@ class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
 class KeywordPublishModelViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, keyword_id, auth_user):
         data = Model.publish_by_id(db, auth_user, keyword_id)
         self.model = data
@@ -166,7 +159,6 @@ class KeywordPublishModelViewModel(BaseViewModel):
 
 class KeywordMergeViewModel(BaseViewModel):
 
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, keyword_id, scheme_of_work_id, auth_user):
         
         self.db = db

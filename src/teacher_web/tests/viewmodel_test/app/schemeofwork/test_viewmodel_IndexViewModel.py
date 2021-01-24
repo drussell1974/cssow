@@ -19,8 +19,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -41,8 +40,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         model = Model(56, "Lorum")
@@ -68,8 +66,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(2, len(self.viewmodel.model[0].key_words))
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__multiple_rows(self, check_permission):
+    def test_init_called_fetch__multiple_rows(self):
         
         # arrange
         

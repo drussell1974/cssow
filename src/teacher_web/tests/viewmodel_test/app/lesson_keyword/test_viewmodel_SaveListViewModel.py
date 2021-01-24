@@ -19,8 +19,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_not_called_save__with_exception__when_invaid_type(self, check_permission):
+    
+    def test_execute_not_called_save__with_exception__when_invaid_type(self):
         """ View Model does not process new instance """
 
         # arrange
@@ -32,8 +32,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             test_context.execute(99)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__with_exception(self, check_permission):
+    
+    def test_execute_called_save__with_exception(self):
 
         # arrange
         on_find_or_create__create_new_instance = Model(15, "Database","",13)
@@ -54,8 +54,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("Database", test_context.model.term)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__update_existing(self, check_permission):
+    
+    def test_execute_called_save__update_existing(self):
 
         # arrange
         
@@ -78,8 +78,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("new definition", test_context.model.definition)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data__when_not_exists(self, check_permission):
+    
+    def test_execute_called_save__add_model_to_data__when_not_exists(self):
 
         # arrange
         on_find_or_create__create_new_instance = Model(0, "Unit Test", scheme_of_work_id=13)        
@@ -103,8 +103,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual("Unit Test", test_context.model.term)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_not_called_save__add_model_to_data__when_not_valid(self, check_permission):
+    
+    def test_execute_not_called_save__add_model_to_data__when_not_valid(self):
 
         # arrange
         
@@ -126,8 +126,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             self.assertEqual({'term': 'required'}, test_context.model.validation_errors)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data__when_new_term_already_exists(self, check_permission):
+    
+    def test_execute_called_save__add_model_to_data__when_new_term_already_exists(self):
         """ View will try create a new keyword """
         
         # arrange
@@ -148,8 +148,8 @@ class test_viewmodel_SaveListViewModel(TestCase):
             Model.save.assert_called()
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_not_called_save__add_model_to_data__when_passing_json_string(self, check_permission):
+    
+    def test_execute_not_called_save__add_model_to_data__when_passing_json_string(self):
         """ String will be parsed and used to find existing object """
         
         # arrange
@@ -170,13 +170,4 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
             Model.save.assert_not_called()
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-        
-        with self.assertRaises(PermissionError):
-            # act
-
-            ViewModel(db=self.mock_db, scheme_of_work_id=99, model=Model(0, "New Keyword", scheme_of_work_id=13), auth_user=99)
             

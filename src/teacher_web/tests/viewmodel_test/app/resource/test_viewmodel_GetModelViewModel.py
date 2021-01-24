@@ -20,8 +20,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return(self, check_permission):
+    
+    def test_init_called_fetch__no_return(self):
         
         # arrange
         
@@ -38,8 +38,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         
@@ -70,8 +70,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.assertEqual("http://bbc.co.uk/xxou343hhYY", self.viewmodel.model.page_uri)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)    
-    def test_init_called_override_return_url(self, check_permission):
+        
+    def test_init_called_override_return_url(self):
         # arrange
         
         data_to_return = Model(34, title="How to save the world in a day")
@@ -101,18 +101,3 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
                 self.assertEqual("/api/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange 
-        # assert
-
-        with self.assertRaises(PermissionError):
-        
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            self.mock_model = Mock()
-
-            # act
-            self.viewmodel = ViewModel(db=self.fake_db, resourse_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=99)

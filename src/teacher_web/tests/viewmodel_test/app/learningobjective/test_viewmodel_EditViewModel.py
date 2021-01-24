@@ -15,8 +15,7 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data(self, check_permission):
+    def test_execute_called_save__add_model_to_data(self):
         
         # arrange
 
@@ -41,8 +40,7 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.description)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data__return_invalid(self, check_permission):
+    def test_execute_called_save__add_model_to_data__return_invalid(self):
          
         # arrange
 
@@ -68,18 +66,3 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertFalse(test_context.model.is_valid)
             self.assertEqual(1, len(test_context.model.validation_errors)) 
             self.assertEqual({'lesson_id': '0 is not a valid range'}, test_context.model.validation_errors) 
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange 
-        mock_model = Model(99, "Proin id massa metus. Aliqua tincidunt.")
-
-        # assert
-        with self.assertRaises(PermissionError):
-
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            ViewModel(db=self.mock_db, scheme_of_work_id=13, model=mock_model, auth_user=99)

@@ -76,21 +76,3 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
             Model.get_options.assert_called()
             
             self.assertEqual(3, len(actual_result.model))            
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_should_raise_PermissionError(self, check_permission, SchemeOfWorkModel__get_model):
-        # arrange
-        
-        with self.assertRaises(PermissionError):
-            
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            actual_result = ViewModel(db, 12, 6079)
-
-            # assert functions was called
-            Model.get_options.assert_called()
-            self.assertEqual(0, len(actual_result.model))
-            

@@ -46,8 +46,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                         self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_404_if_scheme_of_work_not_found(self, check_permission):
+    def test_init_called_404_if_scheme_of_work_not_found(self):
         
         # arrange
         
@@ -72,8 +71,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                         self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -98,8 +96,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         
@@ -124,8 +121,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__multiple_rows(self, check_permission):
+    def test_init_called_fetch__multiple_rows(self):
         
         # arrange
         
@@ -147,20 +143,4 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(3, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
-
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_init_raises_PermissionError(self, check_permission):
-        
-        # arrange
-        
-        data_to_return = [Model(56,"", ""),Model(57,"", ""),Model(58,"", "")]
- 
-        db = MagicMock()
-        db.cursor = MagicMock()
-
-        with self.assertRaises(PermissionError):
-            # act
-            self.viewmodel = ViewModel(db=db, scheme_of_work_id = 103, auth_user=99)
+                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})

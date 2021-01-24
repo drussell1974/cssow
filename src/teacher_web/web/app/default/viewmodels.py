@@ -8,8 +8,6 @@ from shared.models.core.log import handle_log_exception, handle_log_warning, han
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -70,7 +68,6 @@ class KeywordGetModelViewModel(BaseViewModel):
 
 class KeywordSaveViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
         self.db = db
         self.model = model

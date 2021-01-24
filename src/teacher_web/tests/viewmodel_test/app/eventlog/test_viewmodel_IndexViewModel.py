@@ -30,8 +30,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_view__request_method_get(self, check_permission):
+    def test_view__request_method_get(self):
         
         # arrange
         mock_request = Mock()
@@ -92,8 +91,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual("view error", test_context.model[2].subcategory)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_view__request_method_post(self, check_permission):
+    def test_view__request_method_post(self):
         
         # arrange
         
@@ -164,8 +162,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual("update", test_context.model[2].subcategory)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_view__request_method_post__return_invalid(self, check_permission):
+    def test_view__request_method_post__return_invalid(self):
         
         # arrange
         
@@ -200,8 +197,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual(0, len(test_context.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_view__request_method__should_have__settings(self, check_permission):
+    def test_view__request_method__should_have__settings(self):
         
         # arrange
         
@@ -232,30 +228,3 @@ class test_viewmodel_IndexViewModel(TestCase):
 
                 self.assertEqual(7, test_context.settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
                 self.assertEqual(30, test_context.settings.MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS)
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_init_raises_PermissionError(self, check_permission):
-        
-        # arrange
-
-        db = MagicMock()
-        db.cursor = MagicMock()
-        
-        mock_request = Mock()
-        mock_request.method = "POST"
-        mock_request.POST = {
-            "date_from":"",
-            "date_to":"",
-            "event_type":"",
-            "category":"",
-            "subcategory":"",
-            "page":"2",
-            "pagesize":"25",
-            "page_direction":"-1"
-        }
-
-        with self.assertRaises(PermissionError):
-            # act
-
-            ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)

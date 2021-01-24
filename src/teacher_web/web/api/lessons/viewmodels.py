@@ -1,7 +1,5 @@
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_lesson import LessonModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.serializers.srl_lesson import LessonModelSerializer
 
 class LessonGetAllViewModel(BaseViewModel):

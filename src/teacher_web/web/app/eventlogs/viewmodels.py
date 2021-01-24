@@ -6,15 +6,12 @@ from shared.models.core.basemodel import try_int
 from shared.models.core.log import handle_log_exception
 from shared.models.core.log_type import LOG_TYPE
 from shared.viewmodels.baseviewmodel import BaseViewModel
-from shared.models.enums.permissions import DEPARTMENT 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.view_model import ViewModel
 from shared.models.cls_eventlog import EventLogModel, EventLogFilter
 
 
 class EventLogIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(DEPARTMENT.ADMIN)
     def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
 
         self.db = db
@@ -70,7 +67,6 @@ class EventLogIndexViewModel(BaseViewModel):
 
 class EventLogDeleteOldViewModel(BaseViewModel):
     
-    @check_teacher_permission(DEPARTMENT.ADMIN)
     def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
         """ delete event log on POST """
         

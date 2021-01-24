@@ -18,8 +18,8 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data(self, check_permission):
+    
+    def test_execute_called_save__add_model_to_data(self):
         
         # arrange
 
@@ -59,8 +59,8 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual([], test_context.model.key_words)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data__with_keywords(self, check_permission):
+    
+    def test_execute_called_save__add_model_to_data__with_keywords(self):
         
         # arrange
         mock_request = Mock()
@@ -103,8 +103,8 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual("Proin id massa metus. Aliqua tinciduntx.", test_context.model.name)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__add_model_to_data__return_invalid(self, check_permission):
+    
+    def test_execute_called_save__add_model_to_data__return_invalid(self):
          
         # arrange
 
@@ -152,31 +152,3 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertFalse(test_context.model.is_valid)
                 self.assertEqual(1, len(test_context.model.validation_errors)) 
                 self.assertEqual({'exam_board_id': '0 is not a valid range'}, test_context.model.validation_errors) 
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        
-        # arrange
-        
-        mock_db = MagicMock()
-        mock_db.cursor = MagicMock()
-
-        mock_request = Mock()
-        mock_request.method = "POST"
-        mock_request.POST = {
-                    "id": 99,
-                    "name":"Proin id massa metus. Aliqua tinciduntx.",
-                    "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
-                    "exam_board_id": 56,
-                    "key_stage_id": 5,
-                    "lesson_id": 230
-                }
-
-        # assert
-        with self.assertRaises(PermissionError):
-    
-            # act
-            ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
-            
-

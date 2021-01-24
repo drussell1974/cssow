@@ -6,14 +6,11 @@ from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 class ResourceIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
         self.model = []
@@ -63,7 +60,6 @@ class ResourceIndexViewModel(BaseViewModel):
 
 class ResourceGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, resource_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
 
         self.model = None
@@ -119,7 +115,6 @@ class ResourceGetModelViewModel(BaseViewModel):
 
 class ResourceSaveViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db

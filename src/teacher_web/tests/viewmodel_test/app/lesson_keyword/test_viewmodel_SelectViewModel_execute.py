@@ -20,8 +20,8 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_not_called_save__with_exception__when_invaid_type(self, check_permission):
+    
+    def test_execute_not_called_save__with_exception__when_invaid_type(self):
         """ ViewModel does not process new instance """
 
         # arrange
@@ -39,8 +39,8 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
             test_context.execute(99)
     
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_execute_called_save__update_existing(self, check_permission):
+    
+    def test_execute_called_save__update_existing(self):
 
         # arrange
         
@@ -68,14 +68,3 @@ class test_viewmodel_SelectViewModel_execute(TestCase):
             
             # assert functions was called
             LessonModel.save_keywords.assert_called()
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-        
-        with self.assertRaises(PermissionError):
-            # act
-
-            ViewModel(db=self.mock_db, scheme_of_work_id=99, model=KeywordModel(0, "New Keyword", scheme_of_work_id=13), auth_user=99)
-            

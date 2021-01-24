@@ -36,7 +36,7 @@ class UITestCase(TestCase):
         time.sleep(s)
 
 
-    def find_element_by_id__with_explicit_wait(self, element_id, wait=5):
+    def find_element_by_id__with_explicit_wait(self, element_id, wait=2):
         elem = WebDriverWait(self.test_context, wait).until(
             EC.presence_of_element_located((By.ID, element_id))
         )
