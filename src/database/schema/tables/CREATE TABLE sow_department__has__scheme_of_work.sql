@@ -2,7 +2,7 @@ CREATE TABLE `sow_department__has__scheme_of_work` (
   `scheme_of_work_id` INT NOT NULL,
   `department_id` INT(11) NOT NULL,
   PRIMARY KEY (`scheme_of_work_id`, `department_id`),
-  INDEX `fk_sow_department__has__scheme_of_work__has__department_id` (`department_id` ASC) VISIBLE,
+  INDEX `fk_sow_department__has__scheme_of_work__has__department_id` (`department_id` ASC),
   CONSTRAINT `fk_sow_department__has__scheme_of_work__has__department_id`
     FOREIGN KEY (`department_id`)
     REFERENCES `sow_department` (`id`)

@@ -18,4 +18,4 @@ SET
     `scheme_of_work_permission` = 64, 
     `lesson_permission` = 64, 
     `department_permission` = 64
-WHERE (`scheme_of_work_id` = 11) and (`auth_user_id` = 2');
+WHERE (`scheme_of_work_id` = 11) and (`auth_user_id` = 2);
