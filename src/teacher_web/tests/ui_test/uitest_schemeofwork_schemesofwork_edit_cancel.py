@@ -9,7 +9,6 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
 
     def setUp(self):
         self.test_context.implicitly_wait(10)
-        #231: TODO: open existing resource
         self.do_log_in(self.root_uri + "/schemesofwork/{}/edit".format(self.test_scheme_of_work_id))
 
 
@@ -61,12 +60,12 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
 
         ' Open Modal '
 
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
-
+        
         ' click yes, cancel (finding button appears to cancel dialog) '        
         
-        elem = self.test_context.find_element_by_id("cancelModalContinueButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
         
         self.wait(s=5)

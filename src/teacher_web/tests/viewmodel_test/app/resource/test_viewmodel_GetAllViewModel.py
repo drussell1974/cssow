@@ -15,8 +15,8 @@ class test_viewmodel_GetAllViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -42,8 +42,8 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         
@@ -69,8 +69,8 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 self.assertEqual(1, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__multiple_rows(self, check_permission):
+    
+    def test_init_called_fetch__multiple_rows(self):
         
         # arrange
         
@@ -94,17 +94,3 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 Model.get_all.assert_called()
                 self.assertEqual(3, len(self.viewmodel.model))
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange 
-        # assert
-
-        with self.assertRaises(PermissionError):
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            mock_request = Mock()
-
-            # act
-            self.viewmodel = ViewModel(db=db, request=mock_request, lesson_id=99, scheme_of_work_id=12, auth_user=99)

@@ -29,8 +29,8 @@ x=$(($x+$?))
 
 
 ## start test
-echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_*_when_vistor.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_*_when_vistor.py
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_content_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_content_*.py
 
 # increment
 x=$(($x+$?))
@@ -38,8 +38,62 @@ x=$(($x+$?))
 
 
 ## start test
-echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_*_when_different_logged_in_users.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_*_when_different_logged_in_users.py
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_eventlog_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_learningobjective_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_learningobjective_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_lesson_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_lesson_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_lessonkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_lessonkeyword_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_resources_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_resources_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_schemesofwork_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_schemesofwork_*.py
+
+# increment
+x=$(($x+$?))
+## end test
+
+
+## start test
+echo yarn.test-ui--permissions.sh: running... uitest_permissions_schemeofwork_schemesofworkkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_schemesofworkkeyword_*.py
 
 # increment
 x=$(($x+$?))

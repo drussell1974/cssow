@@ -18,8 +18,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_should_call_published(self, check_permission):
+    def test_should_call_published(self):
         
         # arrange
         
@@ -35,19 +34,3 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
 
             # assert functions was called
             Model.publish_by_id.assert_called()
-
-
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        
-        # arrange
-        
-        db = MagicMock()
-        db.cursor = MagicMock()
-
-        # assert
-        with self.assertRaises(PermissionError):
-            
-            # act
-            self.viewmodel = ViewModel(db=db, scheme_of_work_id=7839, auth_user=99)
-

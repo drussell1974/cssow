@@ -31,6 +31,9 @@ BEGIN
         p_published
     );
 
+	INSERT INTO sow_department__has__teacher (auth_user_id, department_id) 
+	VALUES (p_created_by, LAST_INSERT_ID());
+    
     SELECT LAST_INSERT_ID();
 END;
 //

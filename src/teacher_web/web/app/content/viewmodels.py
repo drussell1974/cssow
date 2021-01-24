@@ -8,7 +8,6 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -16,7 +15,6 @@ from shared.view_model import ViewModel
 
 class ContentIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(SCHEMEOFWORK.VIEWER)
     def __init__(self, db, scheme_of_work_id, auth_user):
         """ determine and action request """
         self.auth_user = auth_user
@@ -49,7 +47,6 @@ class ContentEditViewModel(BaseViewModel):
     is_content_ready = False
     error_message = ""
 
-    @check_teacher_permission(SCHEMEOFWORK.EDITOR)
     def __init__(self, db, request, scheme_of_work_id, content_id, auth_user):
         
         self.db = db
@@ -121,7 +118,6 @@ class ContentEditViewModel(BaseViewModel):
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, scheme_of_work_id):
         self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)
         

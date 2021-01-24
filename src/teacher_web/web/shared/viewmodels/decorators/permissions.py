@@ -21,47 +21,6 @@ def unauthorise_request(func):
     return inner
 
 
-class check_teacher_permission:
-    """ checks the teachers permission on the scheme of work and redirect if user does not have permission """
-
-    def __init__(self, permission):
-        """ SCHEMEOFWORK_ACCESS and LESSON_ACCESS decorator argument """
-        self._permission = permission
-        self._auth_user = 0
-        self._scheme_of_work_id = 0
-
-
-    def getkeyargs(self, key, default_value = None):
-        if key in self.kwargs.keys():
-            return self.kwargs[key]
-        elif default_value is not None:
-            return default_value
-        else:
-            raise KeyError(f"'{key}' value must be passed as a keyword argument")
-
-
-    def __call__(self, func):
-        """ the parent function """
-
-        def inner(*args, **kwargs):
-            self.kwargs = kwargs
-            self.db = self.getkeyargs("db") # db cannot be a positional argument
-            self._auth_user = self.getkeyargs("auth_user") # auth_user cannot be a positiional argument
-            self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
-
-            model = TeacherPermissionModel.get_model(self.db, scheme_of_work_id=self._scheme_of_work_id, auth_user=self._auth_user)
-            
-            if model.check_permission(self._permission) == False: 
-                str_err = f"You do not have {str(self._permission).split('.')[1]} permission for this {str(self._permission).split('.')[0]} ({self._auth_user}, {self._scheme_of_work_id})" 
-                handle_log_warning(self.db, self._scheme_of_work_id, str_err)
-                raise PermissionError(str_err)
-
-            # call decorated function
-            func(*args, **kwargs)
-            
-        return inner
-
-
 class min_permission_required:
     """ checks the teachers permission on the scheme of work and redirect if user does not have permission """
 

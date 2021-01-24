@@ -15,8 +15,7 @@ class test_viewmodel_PublishModelViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise404__when_item_does_not_exist(self, check_permission):
+    def test_should_raise404__when_item_does_not_exist(self):
         
         
         with patch.object(Model, "get_model"):
@@ -25,13 +24,12 @@ class test_viewmodel_PublishModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            with self.assertRaises(PermissionError):
-                # act
-                ViewModel(db=db, learning_objective_id=56, lesson_id=2, scheme_of_work_id=101, auth_user=99)
+            #with self.assertRaises(PermissionError):
+            #   # act
+            ViewModel(db=db, learning_objective_id=56, lesson_id=2, scheme_of_work_id=101, auth_user=99)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_should_call_publish_item(self, check_permission):
+    def test_should_call_publish_item(self):
         
         # arrange
         
@@ -49,16 +47,3 @@ class test_viewmodel_PublishModelViewModel(TestCase):
 
             # assert functions was called
             Model.publish_item.assert_called()
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange 
-        # assert
-        with self.assertRaises(PermissionError):
-
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            self.viewmodel = ViewModel(db=db, learning_objective_id=56, scheme_of_work_id=101, auth_user=99)

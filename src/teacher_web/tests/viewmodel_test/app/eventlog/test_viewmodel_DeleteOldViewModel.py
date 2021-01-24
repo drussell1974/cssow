@@ -29,8 +29,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__with_exceptioin__should_show_error_message(self, check_permission):
+    def test_init_called_delete__with_exceptioin__should_show_error_message(self):
         
         # arrange        
         with patch.object(Model, "delete", side_effect=KeyError("There was an error executing the stored procedure")):
@@ -51,8 +50,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.assertEqual("'There was an error executing the stored procedure'", self.viewmodel.error_message)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__should_not_call_delete_when_GET_request(self, check_permission):
+    def test_init_called_delete__should_not_call_delete_when_GET_request(self):
         
         # arrange        
         with patch.object(Model, "delete"):
@@ -71,9 +69,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             Model.delete.assert_not_called()
 
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__should_not_call_delete_when_days_less_than_7(self, check_permission):
+    def test_init_called_delete__should_not_call_delete_when_days_less_than_7(self):
         
         # arrange        
         with patch.object(Model, "delete"):
@@ -94,8 +90,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             Model.delete.assert_not_called()
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__no_return_rows(self, check_permission):
+    def test_init_called_delete__no_return_rows(self):
         
         # arrange
         
@@ -121,8 +116,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.assertEqual([], self.viewmodel.model)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__return_item(self, check_permission):
+    def test_init_called_delete__return_item(self):
         
         # arrange
         
@@ -146,8 +140,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.assertEqual([], self.viewmodel.model)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__return_items(self, check_permission):
+    def test_init_called_delete__return_items(self):
         
         # arrange
         
@@ -169,18 +162,3 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             Model.delete.assert_called_with(db, 13, 28, 6079)
             self.assertEqual("3 event logs deleted", self.viewmodel.alert_message)
             self.assertEqual([], self.viewmodel.model)
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_init_raises_PermissionError(self, check_permission):
-        
-        # arrange
-
-        db = MagicMock()
-        db.cursor = MagicMock()
-        
-        mock_request = Mock()
-
-        with self.assertRaises(PermissionError):
-            # act
-            ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)

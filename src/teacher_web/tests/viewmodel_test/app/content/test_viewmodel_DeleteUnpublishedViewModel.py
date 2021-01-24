@@ -15,8 +15,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__with_exception(self, check_permission):
+    def test_init_called_delete__with_exception(self):
         
         # arrange        
         with patch.object(Model, "delete_unpublished", side_effect=KeyError):
@@ -31,8 +30,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
                 self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=999)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__no_return_rows(self, check_permission):
+    def test_init_called_delete__no_return_rows(self):
         
         # arrange
         
@@ -53,8 +51,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             self.assertIsNone(self.viewmodel.model)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__return_item(self, check_permission):
+    def test_init_called_delete__return_item(self):
         
         # arrange
         
@@ -78,8 +75,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             self.assertEqual(2, self.viewmodel.model[0].published)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_delete__return_items(self, check_permission):
+    def test_init_called_delete__return_items(self):
         
         # arrange
         
@@ -109,15 +105,3 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             self.assertEqual(414, self.viewmodel.model[2].id)
             self.assertEqual("Donec bibendum mi vitae felis", self.viewmodel.model[2].description)
             self.assertEqual(2, self.viewmodel.model[2].published)
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-
-        db = MagicMock()
-        db.cursor = MagicMock()
-    
-        with self.assertRaises(PermissionError):
-            # act
-            self.viewmodel = ViewModel(db=db, auth_user=99, scheme_of_work_id=999)

@@ -4,8 +4,6 @@ from rest_framework import serializers, status
 from rest_framework.parsers import JSONParser
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.serializers.srl_keyword import KeywordModelSerializer
 from shared.serializers.srl_topic import TopicModelSerializer

@@ -27,10 +27,10 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    
     @patch.object(SchemeOfWorkModel, "get_model", return_value=fake_schemeofwork)
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
-    def test_init_called_fetch__no_return_rows(self, check_permission, SchemeOfWorkModel__get_model, LessonModel__get_model):
+    def test_init_called_fetch__no_return_rows(self, SchemeOfWorkModel__get_model, LessonModel__get_model):
         
         # arrange
 
@@ -54,10 +54,10 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
 
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
+    
     @patch.object(SchemeOfWorkModel, "get_model", return_value=fake_schemeofwork)
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
-    def test_init_called_fetch__return_item(self, check_permission, SchemeOfWorkModel__get_model, LessonModel__get_model):
+    def test_init_called_fetch__return_item(self, SchemeOfWorkModel__get_model, LessonModel__get_model):
         
         # arrange
         data_to_return = Model(101, "Abstraction")
@@ -78,26 +78,3 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
             Model.get_model.assert_called()
             self.assertEqual(101, self.viewmodel.model.id)
             self.assertEqual("Abstraction", self.viewmodel.model.term)
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=fake_schemeofwork)
-    @patch.object(LessonModel, "get_model", return_value=fake_lesson)
-    def test_should_raise_PermissionError(self, check_permission, SchemeOfWorkModel__get_model, LessonModel__get_model):
-        # arrange
-        data_to_return = Model(101, "Abstraction")
-        data_to_return.is_from_db = True
-    
-        with patch.object(Model, "get_model", return_value=data_to_return):
-
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            with self.assertRaises(PermissionError):
-                # act
-                self.viewmodel = ViewModel(db=db, scheme_of_work_id=23, lesson_id=2, keyword_id=101, auth_user=99)
-
-                # assert functions was called
-                Model.get_model.assert_called()
-                self.assertEqual(101, self.viewmodel.model.id)
-                self.assertEqual("Abstraction", self.viewmodel.model.term)

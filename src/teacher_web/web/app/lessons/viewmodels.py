@@ -6,8 +6,6 @@ from shared.models.core.log import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.viewmodels.decorators.permissions import check_teacher_permission
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
@@ -15,7 +13,6 @@ from app.default.viewmodels import KeywordSaveViewModel
 
 class LessonIndexViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
         
         data = []
@@ -68,7 +65,6 @@ class LessonIndexViewModel(BaseViewModel):
 
 class LessonGetModelViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.VIEWER)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
@@ -84,7 +80,6 @@ class LessonGetModelViewModel(BaseViewModel):
 
 class LessonWhiteboardViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.NONE)
     def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
@@ -100,7 +95,6 @@ class LessonWhiteboardViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, scheme_of_work_id, model, auth_user):
         
         self.db = db
@@ -124,20 +118,17 @@ class LessonEditViewModel(BaseViewModel):
 class LessonPublishViewModel(BaseViewModel):
 
 
-    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, lesson_id, scheme_of_work_id):
         self.model = Model.publish(db, auth_user, lesson_id, scheme_of_work_id)
     
 
 class LessonDeleteViewModel(BaseViewModel):
 
-    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, lesson_id):
         self.model = Model.delete(db, auth_user, lesson_id)
 
 
 class LessonDeleteUnpublishedViewModel(BaseViewModel):
     
-    @check_teacher_permission(LESSON.EDITOR)
     def __init__(self, db, auth_user, scheme_of_work_id):
         self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)

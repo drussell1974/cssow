@@ -18,8 +18,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         pass
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__with_exception(self, check_permission):
+    def test_init_called_fetch__with_exception(self):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -32,16 +31,9 @@ class test_viewmodel_GetModelViewModel(TestCase):
             with self.assertRaises(KeyError):
                 # act
                 self.viewmodel = ViewModel(db, 99, auth_user=99)
-            #TODO: #233 remove self.assertRaises
-             
-            # assert
-            #TODO: #233 assert error_message
-            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
-            
             
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -62,8 +54,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             Model.get_model.assert_called()
 
 
-    @patch.object(TeacherPermissionModel, 'check_permission', return_value=True)
-    def test_init_called_fetch__return_item(self, check_permission):
+    def test_init_called_fetch__return_item(self):
         
         # arrange
         
@@ -85,16 +76,4 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.assertEqual(99, self.viewmodel.model.id)
             self.assertEqual("Duis diam arcu, rhoncus ac", self.viewmodel.model.name)
 
-
-    @patch.object(TeacherPermissionModel, 'check_permission',return_value=False)
-    def test_init_should_raise_PermissionError(self, check_permission):
-        
-        # assert
-        with self.assertRaises(PermissionError):
-
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            self.viewmodel = ViewModel(db=db, scheme_of_work_id=456, auth_user=99)
 

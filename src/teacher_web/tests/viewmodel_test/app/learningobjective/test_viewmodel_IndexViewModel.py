@@ -18,8 +18,8 @@ class test_viewmodel_IndexViewModel(TestCase):
     def tearDown(self):
         pass
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -39,8 +39,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual(0, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         
@@ -61,8 +60,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                     self.assertEqual(1, len(self.viewmodel.model))
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__multiple_rows(self, check_permission):
+    def test_init_called_fetch__multiple_rows(self):
         
         # arrange
         
@@ -87,17 +85,3 @@ class test_viewmodel_IndexViewModel(TestCase):
                     # assert functions was called
                     Model.get_all.assert_called()
                     self.assertEqual(3, len(self.viewmodel.model))
-
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange 
-        # assert
-        with self.assertRaises(PermissionError):
-
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            # act
-            self.viewmodel = ViewModel(db=db, lesson_id=12, scheme_of_work_id=2, auth_user=99)

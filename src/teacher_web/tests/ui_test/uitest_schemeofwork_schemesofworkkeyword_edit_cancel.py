@@ -36,12 +36,12 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
         ' Open Modal '
 
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
         ' click no '        
         
-        elem = self.test_context.find_element_by_id("cancelModalStayButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalStayButton")
         elem.click()
         
         self.wait(s=2)
@@ -61,13 +61,13 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
         ' Open Modal '
 
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
 
         ' click no (finding button appears to cancel dialog) '        
         
-        elem = self.test_context.find_element_by_id("cancelModalContinueButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
         
         self.wait(s=2)

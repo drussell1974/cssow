@@ -18,9 +18,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         pass
 
 
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_404_if_scheme_of_work_not_found(self, check_permission):
+    def test_init_called_404_if_scheme_of_work_not_found(self):
         
         # arrange
         
@@ -51,8 +49,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                         self.assertEqual("", self.viewmodel.error_message)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
 
@@ -87,8 +84,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     )
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__single_row(self, check_permission):
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
@@ -123,8 +119,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             )
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__should_return_multiple_rows(self, check_permission):
+    def test_init_called_fetch__should_return_multiple_rows(self):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
@@ -160,8 +155,8 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             )
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__should_return__multiple_rows__with_post(self, check_permission):
+    
+    def test_init_called_fetch__should_return__multiple_rows__with_post(self):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
@@ -196,19 +191,3 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                 , "Lessons"
                 , {}
             )
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-
-        with self.assertRaises(PermissionError):        
-            
-            db = MagicMock()
-            db.cursor = MagicMock()
-
-            self.mock_request = Mock()
-
-            # act
-
-            self.viewmodel = ViewModel(db=db, request=self.mock_request, scheme_of_work_id=96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)

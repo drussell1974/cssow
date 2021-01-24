@@ -31,6 +31,14 @@ class RegisterUserForm(UserCreationForm):
         user.username = self.cleaned_data["email"]
         if commit:
             user.save()
+            # a newly registered user is always head of department
             teacher_group = Group.objects.get(name='head of department')
             teacher_group.user_set.add(user)
+
+            # TODO: #318 get is_teacher field
+            
+            # TODO: #318 insert department - execute department__insert, inistitution__insert
+
+            # DeparmentModel.save(db, user.id, is_teacher, department_name, school_name)
+
         return user

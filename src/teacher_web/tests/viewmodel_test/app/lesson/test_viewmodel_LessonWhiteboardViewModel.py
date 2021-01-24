@@ -18,8 +18,8 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
     def tearDown(self):
         pass
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__with_exception(self, check_permission):
+    
+    def test_init_called_fetch__with_exception(self):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -39,8 +39,8 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
             #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__no_return_rows(self, check_permission):
+    
+    def test_init_called_fetch__no_return_rows(self):
         
         # arrange
         
@@ -62,8 +62,8 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
                 self.assertIsNone(self.viewmodel.model)
 
 
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=True)
-    def test_init_called_fetch__return_item(self, check_permission):
+    
+    def test_init_called_fetch__return_item(self):
         
         # arrange
         
@@ -92,15 +92,3 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
             self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
             self.assertEqual(3, len(self.viewmodel.model.key_words))
 
-
-
-    @patch.object(TeacherPermissionModel, "check_permission", return_value=False)
-    def test_should_raise_PermissionError(self, check_permission):
-        # arrange
-
-        db = MagicMock()
-        db.cursor = MagicMock()
-        
-        with self.assertRaises(PermissionError):
-            # act
-            self.viewmodel = ViewModel(db=db, lesson_id=99, scheme_of_work_id=22, auth_user=99)
