@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, handle_log_info
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 
 class test_db__get_teacher_permission(TestCase):
@@ -23,7 +24,7 @@ class test_db__get_teacher_permission(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                Model.get_model(self.fake_db, 99, 999)
+                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 999)
 
     
     def test__should_call__select__return_no_permissions(self):
@@ -33,7 +34,7 @@ class test_db__get_teacher_permission(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, 99, 999)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 999)
             
             # assert
 
@@ -43,8 +44,8 @@ class test_db__get_teacher_permission(TestCase):
                 , []
                 , handle_log_info)
                 
-            self.assertEqual(999, model.auth_user)
-            self.assertEqual(99, model.scheme_of_work_id)
+            self.assertEqual(999, model.teacher_id)
+            self.assertEqual(99, model.scheme_of_work.id)
             self.assertEqual(SCHEMEOFWORK.NONE, int(model.scheme_of_work_permission))
             self.assertEqual(LESSON.NONE, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)
@@ -58,7 +59,7 @@ class test_db__get_teacher_permission(TestCase):
             
             # act
             
-            model = Model.get_model(self.fake_db, 99, 6)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 6)
             
             # assert
 
@@ -67,9 +68,10 @@ class test_db__get_teacher_permission(TestCase):
                 , (99, 6)
                 , []
                 , handle_log_info)
-                 
-            self.assertEqual(6, model.auth_user)
-            self.assertEqual(99, model.scheme_of_work_id)
+            
+            self.assertEqual("", model.auth_user_name)
+            self.assertEqual(6, model.teacher_id)
+            self.assertEqual(99, model.scheme_of_work.id)
             self.assertEqual(SCHEMEOFWORK.EDITOR, model.scheme_of_work_permission)
             self.assertEqual(LESSON.VIEWER, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)

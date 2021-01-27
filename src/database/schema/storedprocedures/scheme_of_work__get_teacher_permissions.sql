@@ -6,7 +6,6 @@ CREATE PROCEDURE scheme_of_work__get_teacher_permissions (
  IN p_scheme_of_work_id INT,
  IN p_auth_user INT)
 BEGIN
-	
     SELECT 
       IFNULL(IFNULL(teach_sow.scheme_of_work_permission, teach_dep.scheme_of_work_permission), 7) as scheme_of_work_permission, 
       IFNULL(IFNULL(teach_sow.lesson_permission, teach_dep.lesson_permission), 7) as lesson_permission, 
@@ -23,6 +22,7 @@ BEGIN
 			or p_scheme_of_work_id = 0)
     WHERE user.id = p_auth_user
     LIMIT 1;
+    
 END;
 //
 
