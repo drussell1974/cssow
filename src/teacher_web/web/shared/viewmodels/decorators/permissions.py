@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from shared.models.core.log import handle_log_info, handle_log_warning, handle_log_error
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.cls_teacher_permission import TeacherPermissionModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 UNAUTHORISED_USER_ID = None
 DEFAULT_SCHEME_OF_WORK_ID = 0
@@ -44,7 +45,7 @@ class min_permission_required:
             self.kwargs = kwargs
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
 
-            model = TeacherPermissionModel.get_model(db, scheme_of_work_id=self._scheme_of_work_id, auth_user=self._auth_user)
+            model = TeacherPermissionModel.get_model(db, SchemeOfWorkModel(self._scheme_of_work_id), auth_user=self._auth_user)
             handle_log_info(db, self._scheme_of_work_id, f"auth_user_id:{self._auth_user} - d:{model.department_permission},s:{model.scheme_of_work_permission},l:{model.lesson_permission}")
             if model.check_permission(self._permission) == False: 
                 ''' redirect if user does not have permissions for this scheme of work '''
