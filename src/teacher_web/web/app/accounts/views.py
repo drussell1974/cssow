@@ -12,7 +12,13 @@ from shared.view_model import ViewModel
 @login_required()
 def index(request):
     return render(request, "accounts/index.html")
-    
+
+def my_team_permissions(request):
+
+    content = None
+
+    return render(request, "accounts/my_team_permissions.html", content)    
+
 
 class RegisterUserView(generic.CreateView):
     # 206 inherit RegisteredUserForm from UserCreationForm - see .viewmodels.py

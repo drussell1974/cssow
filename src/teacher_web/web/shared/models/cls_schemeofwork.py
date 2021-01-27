@@ -30,6 +30,7 @@ class SchemeOfWorkModel(BaseModel):
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
+        self.teacher_permissions = []
 
 
     @property

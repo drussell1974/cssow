@@ -3,7 +3,7 @@ from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from .core.log import handle_log_info
 from shared.models.core.basemodel import BaseModel
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class DepartmentModel(BaseModel):
 
@@ -79,11 +79,11 @@ class DepartmentDataAccess:
 
         except Exception as e:
             raise Exception("Error getting departments", e)
+        
 
-    
     @staticmethod
     def _insert(db, model, teacher_id, auth_user):
-        """ inserts the sow_resource and sow_scheme_of_work__has__reference """
+        """ inserts the sow_department """
         execHelper = ExecHelper()
 
         sql_insert_statement = "department__insert"
@@ -103,7 +103,7 @@ class DepartmentDataAccess:
 
     @staticmethod
     def _update(db, model, teacher_id, auth_user):
-        """ updates the sow_lesson and sow_lesson__has__topics """
+        """ updates the sow_department """
         
         execHelper = ExecHelper()
         
