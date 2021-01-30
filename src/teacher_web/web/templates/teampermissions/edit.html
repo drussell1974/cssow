@@ -1,0 +1,88 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--account-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-my_account" href="{% url 'accounts.index' %}">{{_("My account")}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-my_account" href="{% url 'team-permissions.index' %}">{{_("Team Permissions")}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</section>
+{% endblock %}
+
+{% block maincontent %}
+
+<article class="widget widget-form widget-keyword-form">
+    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.data.scheme_of_work_id content.data.teacher_id %}">
+        {% csrf_token %}
+
+        <!-- show error_message -->
+            {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        <h1>{{ content.data.teacher_name }}</h1>
+        <h2>{{ _("Permissions for")}} {{ content.data.scheme_of_work_name }}</h2>
+        <hr>
+
+        <!-- Department Permissions START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Department")}}</label>
+                <select class="form-control" name="department_permission" id="ctl-type_id" required>
+                    {% for opt in content.data.department_permission_options %}
+                    <option value="{{opt.name}}" {% if opt.value == content.data.department_permission %} selected {% endif %}>{{opt.name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Department Permissions END -->
+
+        <!-- Scheme of work Permissions START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Scheme of work")}}</label>
+                <select class="form-control" name="scheme_of_work_permission" id="ctl-type_id" required>
+                    {% for opt in content.data.scheme_of_work_permission_options %}
+                    <option value="{{opt.name}}" {% if opt.value == content.data.scheme_of_work_permission %} selected {% endif %}>{{opt.name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Scheme of work Permissions END -->
+
+        <!-- Lesson Permissions START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Lesson")}}</label>
+                <select class="form-control" name="lesson_permission" id="ctl-type_id" required>
+                    {% for opt in content.data.lesson_permission_options %}
+                    <option value="{{opt.name}}" {% if opt.value == content.data.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Lesson Permissions END -->
+
+        <br>
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        
+        <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
+        <input type="hidden" name="teacher_id" value={{content.data.teacher_id}}>
+        <input type="hidden" name="next" value="{% url 'team-permissions.index' %}" >
+        <input type="hidden" name="is_from_db" value="{{content.data.model.is_from_db}}" >
+    </form>
+<hr>
+</article>
+{% endblock %}

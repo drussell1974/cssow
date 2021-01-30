@@ -217,6 +217,13 @@ class BaseModel(models.Model):
         self._validate_optional_string(name_of_property, value_to_validate, max_value)
 
 
+    def _validate_enum(self, name_of_property, value_to_validate, enum_values):
+        if name_of_property not in self.skip_validation:
+            if value_to_validate is None or value_to_validate not in list(enum_values):
+                self.validation_errors[name_of_property] = "{} is not a valid value".format(value_to_validate)
+                self.is_valid = False
+
+
     @staticmethod
     def depreciation_notice(msg="Deprecated"):
         warnings.warn(msg, DeprecationWarning)

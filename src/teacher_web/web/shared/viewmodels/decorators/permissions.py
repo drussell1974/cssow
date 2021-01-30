@@ -44,8 +44,8 @@ class min_permission_required:
             ''' scheme_of_work_id must be included in the view function or default '''
             self.kwargs = kwargs
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
-
-            model = TeacherPermissionModel.get_model(db, SchemeOfWorkModel(self._scheme_of_work_id), auth_user=self._auth_user)
+            ''' teacher_id and auth_user are the same in this call'''
+            model = TeacherPermissionModel.get_model(db, SchemeOfWorkModel(self._scheme_of_work_id), teacher_id=self._auth_user, auth_user=self._auth_user)
             handle_log_info(db, self._scheme_of_work_id, f"auth_user_id:{self._auth_user} - d:{model.department_permission},s:{model.scheme_of_work_permission},l:{model.lesson_permission}")
             if model.check_permission(self._permission) == False: 
                 ''' redirect if user does not have permissions for this scheme of work '''

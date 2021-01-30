@@ -71,8 +71,8 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher__update'
-                , (11, 1069, DEPARTMENT.STUDENT, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, 99)
+                'scheme_of_work__has__teacher_permission__update'
+                , (11, 1069, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 99)
                 ,handle_log_info)
 
             self.assertEqual(11, actual_result.scheme_of_work.id)
@@ -101,8 +101,8 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher__insert'
-                , (14, 56, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER, 99)
+                'scheme_of_work__has__teacher_permission__insert'
+                , (14, 56, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 99, False)
                 , handle_log_info)
             
             self.assertEqual(14, actual_result.scheme_of_work.id)
@@ -132,7 +132,7 @@ class test_db__save(TestCase):
 
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher__delete'
+                'scheme_of_work__has__teacher_permission__delete'
                 , (19, 79, 99)
                 , handle_log_info)
             

@@ -227,7 +227,7 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
+    def save(db, model, auth_user, published=1, is_authorised = False):
         
         if try_int(published) == 2:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
@@ -235,7 +235,7 @@ class SchemeOfWorkModel(BaseModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user, is_authorised=is_authorised)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
 
@@ -363,12 +363,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def _insert_as__teacher(db, model, auth_user):
+    def _insert_as__teacher(db, model, auth_user, is_authorised):
         execHelper = ExecHelper()
         
-        str_insert = "scheme_of_work__has__teacher__insert"
+        str_insert = "scheme_of_work__has__teacher_permission__insert"
         
-        params = (model.id, auth_user, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER))
+        params = (model.id, auth_user, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user, is_authorised)
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         

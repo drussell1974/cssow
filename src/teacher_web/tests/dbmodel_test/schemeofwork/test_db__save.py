@@ -101,13 +101,13 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
 
-            actual_result = save(self.fake_db, model, 6079)
+            actual_result = save(self.fake_db, model, 6079, is_authorised=True)
 
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
-                 'scheme_of_work__has__teacher__insert'
-                 , (101, 6079, DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER)
+                 'scheme_of_work__has__teacher_permission__insert'
+                 , (101, 6079, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, 6079, True)
                  , handle_log_info)
 
             self.assertEqual(101, actual_result.id)

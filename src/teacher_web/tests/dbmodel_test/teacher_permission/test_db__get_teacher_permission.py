@@ -24,28 +24,30 @@ class test_db__get_teacher_permission(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 999)
+                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), teacher_id=7099, auth_user=99)
 
     
     def test__should_call__select__return_no_permissions(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE))]
+        expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE), "James Joyce")]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 999)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Ulysses"), teacher_id=6059, auth_user=999)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_teacher_permissions"
-                , (99, 999)
+                , (99, 6059, 999)
                 , []
                 , handle_log_info)
                 
-            self.assertEqual(999, model.teacher_id)
+            self.assertEqual("James Joyce", model.teacher_name)
+            self.assertEqual(6059, model.teacher_id)
             self.assertEqual(99, model.scheme_of_work.id)
+            self.assertEqual("Ulysses", model.scheme_of_work.name)
             self.assertEqual(SCHEMEOFWORK.NONE, int(model.scheme_of_work_permission))
             self.assertEqual(LESSON.NONE, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)
@@ -53,25 +55,26 @@ class test_db__get_teacher_permission(TestCase):
 
     def test__should_call__select__return_has_permission_to_view(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE))]
+        expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert")]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce"), 6)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(14, name="Dune"), teacher_id=6079, auth_user=99)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_teacher_permissions"
-                , (99, 6)
+                , (14, 6079, 99)
                 , []
                 , handle_log_info)
             
-            self.assertEqual("", model.auth_user_name)
-            self.assertEqual(6, model.teacher_id)
-            self.assertEqual(99, model.scheme_of_work.id)
+            self.assertEqual("Frank Herbert", model.teacher_name)
+            self.assertEqual(6079, model.teacher_id)
+            self.assertEqual(14, model.scheme_of_work.id)
+            self.assertEqual("Dune", model.scheme_of_work.name)
             self.assertEqual(SCHEMEOFWORK.EDITOR, model.scheme_of_work_permission)
             self.assertEqual(LESSON.VIEWER, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)

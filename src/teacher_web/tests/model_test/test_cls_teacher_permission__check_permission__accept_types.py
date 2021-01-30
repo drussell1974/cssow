@@ -8,7 +8,7 @@ class test_cls_teacher_permission__check_permission__accept_types(TestCase):
 
     def setUp(self):
         # act
-        self.test = Model(auth_user=2, auth_user_name="", scheme_of_work=SchemeOfWorkModel(11),
+        self.test = Model(teacher_id=2, teacher_name="", scheme_of_work=SchemeOfWorkModel(11),
             scheme_of_work_permission=SCHEMEOFWORK.NONE,
             lesson_permission=LESSON.NONE)
 
