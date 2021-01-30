@@ -16,6 +16,11 @@
               <i class="fa fa-key"></i> {{_("Change password")}}
             </a>
         </div>
+        <div>
+          <a class="btn" href="{% url 'team-permissions.index' %}" id="btn-password_change">
+            <i class="fa fa-users"></i> {{_("Team permissions")}}
+          </a>
+      </div>
       {% if request.user.is_superuser %}
         <h2>{{_('Super user')}}</h2>
         <div>

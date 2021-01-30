@@ -15,7 +15,7 @@ class test_cls_teacher_permission__constructor(TestCase):
     def test_constructor_default(self):
 
         # self.test
-        self.test = Model(auth_user=2, auth_user_name="Mr Russell", scheme_of_work=SchemeOfWorkModel(11))
+        self.test = Model(teacher_id=2, teacher_name="Mr Russell", scheme_of_work=SchemeOfWorkModel(11))
 
         # assert
         self.assertEqual(2, self.test.teacher_id)

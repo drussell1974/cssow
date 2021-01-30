@@ -35,13 +35,13 @@ class test_db__get_team_permissions(TestCase):
                 
             # act
             
-            rows = Model.get_team_permissions(self.fake_db, auth_user = 6079)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user = 99)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_team_permissions'
-                , (6079,)
+                , (6079,99,)
                 , []
                 , handle_log_info)
 
@@ -58,18 +58,18 @@ class test_db__get_team_permissions(TestCase):
             
             # act
 
-            rows = Model.get_team_permissions(self.fake_db, auth_user = 6079)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user = 99)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079,)
+                , (6079,99)
                 , []
                 , handle_log_info)
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("John Doe", rows[0].teacher_permissions[0].auth_user_name, "First item not as expected")
+            self.assertEqual("John Doe", rows[0].teacher_permissions[0].teacher_name, "First item not as expected")
             
 
     def test__should_call__select__multiple_items(self):
@@ -82,16 +82,16 @@ class test_db__get_team_permissions(TestCase):
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_team_permissions(self.fake_db, auth_user = 6079)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=99)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079,)
+                , (6079,99,)
                 , []
                 , handle_log_info)
             self.assertEqual(2, len(rows)) # NOTE: there are two schemes of work and 3 teachers
-            self.assertEqual("John Doe", rows[0].teacher_permissions[0].auth_user_name, "First item not as expected")
-            self.assertEqual("Jane Rogers", rows[len(rows)-1].teacher_permissions[0].auth_user_name, "Last item not as expected")
-            self.assertEqual("Bill Gates", rows[len(rows)-1].teacher_permissions[1].auth_user_name, "Last item not as expected")
+            self.assertEqual("John Doe", rows[0].teacher_permissions[0].teacher_name, "First item not as expected")
+            self.assertEqual("Jane Rogers", rows[len(rows)-1].teacher_permissions[0].teacher_name, "Last item not as expected")
+            self.assertEqual("Bill Gates", rows[len(rows)-1].teacher_permissions[1].teacher_name, "Last item not as expected")

@@ -8,10 +8,9 @@ class test_cls_teacher_permission__check_permission__when_lesson_none(TestCase):
 
     def setUp(self):
         # act
-        self.test = Model(auth_user=2, auth_user_name="", scheme_of_work=SchemeOfWorkModel(11), 
+        self.test = Model(teacher_id=2, teacher_name="", scheme_of_work=SchemeOfWorkModel(11), 
             lesson_permission=LESSON.NONE)
 
-        pass
 
     def tearDown(self):
         pass

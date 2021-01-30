@@ -1,0 +1,97 @@
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
+
+
+{% block head_js %} 
+  <!-- #295: Google Analytics script.googleanalytics.html partial -->
+  {% include '_partials/script.googleanalytics.html' %}
+  <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--account-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-my_account" href="{% url 'accounts.index' %}">{{_("My account")}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</section>
+{% endblock %}
+
+{% block maincontent %}
+
+  <!-- Pager Header -->      
+  <h2 class="group-heading">{{_("My team permissions")}}</h2>
+  <hr />
+  <!-- Pager Header END -->      
+
+  {% if content.data.my_team_permissions|length == 0 %}
+  <div class="alert alert-warning" role="alert">
+      <span class="large">{{_('You do not own any schemes of work.')}}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+{% else %}
+
+      {% for scheme_of_work in content.data.my_team_permissions %}
+        
+        <div class="card card-team">
+          <a name="{{ row.id }}"></a>
+          <div class="card-body">
+            <h5 class="card-title">
+                {{ scheme_of_work.name }}
+            </h5>
+            <hr>
+            <span class="small">
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{_("Teacher")}}</th>
+                    <th scope="col">{{_("Department")}}</th>
+                    <th scope="col">{{_("Scheme of work")}} </th>
+                    <th scope="col" colspan="2">{{_("Lesson")}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+              {% for member in scheme_of_work.teacher_permissions %}
+
+                <tr>
+                  <th scope="row">{{member.teacher_name}}</th>
+                  <td>{{member.department_permission.name}}</td>
+                  <td>{{member.scheme_of_work_permission.name}}</td>
+                  <td>{{member.lesson_permission.name}}</td>
+                  <td>
+                    <a href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                      <i class="far fa-edit"></i>
+                    </a>
+                  </td>
+                </tr>
+            
+              {% endfor %}
+                <tr>
+                  <th colspan="5">
+                    {% if request.user.is_authenticated %}
+                      <span class="float-right">  
+                        <a class="btn btn-warning" id="btn-new small" href="{% url 'team-permissions.edit' scheme_of_work.id 0 %}">{{_("add")}}</a>
+                      </span>
+                    {% endif %}
+                  </th>
+                </tr>
+                </tbody>
+              </table>
+
+          </span>
+        </div>
+      </div>
+
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

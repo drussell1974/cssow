@@ -162,7 +162,7 @@ class LessonModel (BaseModel):
         """ clean up properties by casting and ensuring safe for inserting etc """
 
         self.id = int(self.id)
-
+    
         if self.title is not None:
             self.title = sql_safe(self.title)
 

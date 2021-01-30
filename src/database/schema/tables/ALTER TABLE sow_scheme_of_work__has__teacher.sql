@@ -10,3 +10,6 @@ ALTER lesson_permission SET DEFAULT 7;
 
 ALTER TABLE sow_scheme_of_work__has__teacher
 ALTER scheme_of_work_permission SET DEFAULT 7;
+
+ALTER TABLE sow_scheme_of_work__has__teacher
+ADD COLUMN is_authorised BOOLEAN DEFAULT True after auth_user_id;
