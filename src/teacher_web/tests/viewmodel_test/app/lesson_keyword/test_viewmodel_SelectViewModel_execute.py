@@ -7,7 +7,7 @@ from app.lesson_keywords.viewmodels import LessonKeywordSelectViewModel as ViewM
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.core.log import handle_log_exception
+from shared.models.core.log_handlers import handle_log_exception
 
 class test_viewmodel_SelectViewModel_execute(TestCase):
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
 
 

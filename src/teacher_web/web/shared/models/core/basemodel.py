@@ -38,19 +38,6 @@ class BaseModel(models.Model):
         return "{} (id={})".format(self.display_name, self.id)
 
 
-    def from_dict(self, dict_obj):
-        raise NotImplementedError("from_dict not implemented")        
-
-
-    def on__from_post(self, dict_obj):
-        if type(dict_obj) is not dict:
-            raise TypeError("dict_json Type is {}. Value <{}> must be type dictionary (dict).".format(type(dict_obj), dict_obj))
-
-
-    """
-    State members
-    """
-
     def set_published_state(self):
         if self.published == 0:
             self.published_state = "unpublished"
@@ -73,10 +60,7 @@ class BaseModel(models.Model):
         """ event to use when instances has been retreived from the data """
         self.is_from_db = True
 
-    """
-    Friendly names
-    """
-
+    '''
     def get_ui_created(self, dt):
         return datetime.strftime(dt, "%d %B %Y")
 
@@ -89,11 +73,7 @@ class BaseModel(models.Model):
             b = datetime.now()
             delta = b - a
             self.is_recent = False if delta.days > 3 else True
-
-
-    """
-    Validation members
-    """
+    '''
 
     def validate(self, skip_validation):
         self._on_before_validate(skip_validation)
@@ -174,7 +154,7 @@ class BaseModel(models.Model):
                         self.validation_errors[name_of_property] = "{} is not a valid url".format(value_to_validate)
                         self.is_valid = False
 
-
+    '''
     def _validate_children(self, name_of_property, parent, children_to_validate, skip_validation=[]):
         if name_of_property not in self.skip_validation:
             if parent.is_valid and children_to_validate is not None:
@@ -187,7 +167,7 @@ class BaseModel(models.Model):
                 # add errors to property only if there are errors
                 if len(all_errors) > 0:
                     self.validation_errors[name_of_property] = all_errors
-
+    '''
 
     def _validate_duplicate(self, name_of_property, value_to_validate, duplicate_checklist, friendly_message):
         """ check if a value already exists in the duplicate_checklist property """
@@ -204,10 +184,10 @@ class BaseModel(models.Model):
                     self.validation_errors[name_of_property] = "{} is not valid. {}".format(value_to_validate, friendly_message)
                     self.is_valid = False
 
-
+    '''
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-
+    '''
 
     def _validate_required_string_if(self, name_of_property, value_to_validate, min_value, max_value, func):
         if func(self) == True:
@@ -258,10 +238,6 @@ class BaseModel(models.Model):
         return model
 
 
-"""
-formatting members
-"""
-
 def try_int(val, return_value=None):
     """ convert value to int or None """
     try:
@@ -269,51 +245,3 @@ def try_int(val, return_value=None):
     except:
         val = return_value
     return val
-
-
-
-from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
-
-class BaseDataAccess:
-
-    @staticmethod
-    def _insert(db, insert_sql_statement, params, rows = []):
-        """ Insert into the database
-
-            :param db: database
-            
-            :param insert_sql_statement: the INSERT INTO sql statement
-            
-            :param rows: previous returned rows
-            
-            :return: updated_rows, last_inserted_id the updated rows and the last inserted id
-        """
-
-        execHelper = ExecHelper()
-
-        updated_rows = []
-    
-        rows, last_inserted_id = execHelper.insert(db, insert_sql_statement, params, handle_log_info)
-        
-        return updated_rows, last_inserted_id
-
-
-    @staticmethod
-    def _update(db, update_sql_statement, params):
-
-        execHelper = ExecHelper()
-
-        result = execHelper.update(db, update_sql_statement, params, handle_log_info)
-        
-        return result # updated rows
-
-
-    @staticmethod
-    def _delete(db, delete_sql_statement, params):
-        
-        execHelper = ExecHelper()
-
-        result = execHelper.delete(db, delete_sql_statement, params, handle_log_info)
-
-        return result # delete rows

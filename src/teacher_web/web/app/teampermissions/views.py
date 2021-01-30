@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from django.db import connection as db
 from django.urls import reverse_lazy
 from django.views import generic

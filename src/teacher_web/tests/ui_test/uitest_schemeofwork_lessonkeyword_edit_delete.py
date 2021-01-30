@@ -39,6 +39,14 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
 
 
     def tearDown(self):
+        self.wait(s=20)
+        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait(s=2)
+
+        elem.click()
+
         pass
 
 
@@ -66,14 +74,3 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
         items_after = self.test_context.find_elements_by_class_name("card-keyword")
         self.assertEqual(3, len(items_after))
 
-
-        ###################
-        # clean up delete #
-        ###################
-
-        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        self.wait(s=2)
-
-        elem.click()

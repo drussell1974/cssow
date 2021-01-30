@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import Mock
-from shared.models.core.log import Log, LOG_TYPE
+from shared.models.core.log_handlers import Log, LOG_TYPE
 
 class test__logger__for__log__info(TestCase):
 

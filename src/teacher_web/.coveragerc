@@ -5,6 +5,8 @@ omit =
    web/manage.py
    web/shared/encrypt.py
    web/shared/filehandler.py 
+   web/shared/models/core/db_helper.py
+   web/shared/models/decorators/permissions.py
    web/web/*
    web/**/views.py
    web/**/apps.py

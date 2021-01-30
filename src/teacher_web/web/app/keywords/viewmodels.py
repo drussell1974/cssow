@@ -2,7 +2,7 @@ import json
 from django.http import Http404
 from django.urls import reverse
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
@@ -145,8 +145,8 @@ class KeywordSaveViewModel(BaseViewModel):
 
 class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
-        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        data = Model.delete_unpublished(db, scheme_of_work_id, auth_user)
         self.model = data
 
 
@@ -215,7 +215,7 @@ class KeywordMergeViewModel(BaseViewModel):
 
         except Exception as e:
             self.error_message = repr(e)
-            handle_log_exception(self.db, scheme_of_work_id, "An error occurred viewing keywords", e)
+            handle_log_exception(self.db, self.scheme_of_work_id, "An error occurred viewing keywords", e)
             #TODO: REMOVE swallow up and handle on form
             raise e
 

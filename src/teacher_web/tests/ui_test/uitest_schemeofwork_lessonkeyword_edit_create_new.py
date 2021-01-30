@@ -49,7 +49,7 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new(UITestCase):
         elem.send_keys("Quisque diame lorem, aliquam non tortor vel, tristique vestibulum leo. Integer mattis eros in diam faucibus interdum. Sed nec tortor.")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
 
         # assert

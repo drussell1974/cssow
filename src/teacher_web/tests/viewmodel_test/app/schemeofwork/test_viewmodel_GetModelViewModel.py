@@ -6,7 +6,6 @@ from django.http import Http404
 
 from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
-from shared.viewmodels.decorators.permissions import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.default.viewmodels import KeywordSaveViewModel as ViewModel, KeywordGetModelViewModel
+from app.default.viewmodels import KeywordSaveViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 

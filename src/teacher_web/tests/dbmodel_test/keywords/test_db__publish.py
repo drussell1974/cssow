@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 
 publish_by_id = KeywordModel.publish_by_id

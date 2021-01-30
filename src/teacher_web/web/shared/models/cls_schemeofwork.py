@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe, to_empty
-from shared.models.core.log import handle_log_info
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 

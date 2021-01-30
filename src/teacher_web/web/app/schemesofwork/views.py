@@ -4,9 +4,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel

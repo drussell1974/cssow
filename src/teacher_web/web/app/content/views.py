@@ -5,12 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from shared.models.core.log import handle_log_warning
+from shared.models.core.log_handlers import handle_log_warning
 from shared.models.core.django_helper import auth_user_id
 # TODO: remove after creating view model
 from shared.view_model import ViewModel
 from shared.models.enums.permissions import SCHEMEOFWORK
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from .viewmodels import ContentIndexViewModel, ContentEditViewModel, ContentDeleteUnpublishedViewModel
 from shared.models.cls_content import ContentModel
 from shared.models.cls_keystage import KeyStageModel

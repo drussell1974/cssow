@@ -1,7 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, TeacherPermissionDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 

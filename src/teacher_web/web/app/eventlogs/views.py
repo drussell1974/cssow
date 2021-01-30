@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from shared.models.core.django_helper import auth_user_id
 from shared.models.enums.permissions import SCHEMEOFWORK
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from .viewmodels import EventLogIndexViewModel, EventLogDeleteOldViewModel
 
