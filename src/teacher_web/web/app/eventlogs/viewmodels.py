@@ -3,7 +3,7 @@ View Models
 """
 import io
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception
+from shared.models.core.log_handlers import handle_log_exception
 from shared.models.core.log_type import LOG_TYPE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel

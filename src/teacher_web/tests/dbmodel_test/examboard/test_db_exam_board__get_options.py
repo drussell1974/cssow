@@ -2,7 +2,7 @@ import shared.models.cls_examboard as test_context
 from unittest.mock import Mock, MagicMock, patch
 from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 
 get_options = test_context.ExamBoardModel.get_options
 

@@ -3,13 +3,12 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.default.viewmodels import KeywordGetOptionsListViewModel as ViewModel
+from app.keywords.viewmodels import KeywordGetAllListViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
-@skip("Verify usage")
-class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
+class test_viewmodel_KeywordsGetAllListViewModel(TestCase):
 
     def setUp(self):
         pass
@@ -25,16 +24,18 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = []
         
-        with patch.object(Model, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+
             # act
-            actual_result = ViewModel(db, 12, 6079)
+            actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=12, auth_user=6079)
 
             # assert functions was called
-            Model.get_options.assert_called()
+            Model.get_all.assert_called()
             self.assertEqual(0, len(actual_result.model))
             
 
@@ -44,16 +45,18 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = [Model(34)]
         
-        with patch.object(Model, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+
             # act
-            actual_result = ViewModel(db)
+            actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=12, auth_user=6079)
 
             # assert functions was called
-            Model.get_options.assert_called()
+            Model.get_all.assert_called()
             
             self.assertEqual(1, len(actual_result.model))
             
@@ -64,15 +67,17 @@ class test_viewmodel_KeywordsGetOptionsListViewModel(TestCase):
         
         data_to_return = [Model(34), Model(35), Model(36)]
         
-        with patch.object(Model, "get_options", return_value=data_to_return):
+        with patch.object(Model, "get_all", return_value=data_to_return):
             
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+
             # act
-            actual_result = ViewModel(db, 12, 6079)
+            actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=12, auth_user=6079)
 
             # assert functions was called
-            Model.get_options.assert_called()
+            Model.get_all.assert_called()
             
             self.assertEqual(3, len(actual_result.model))            

@@ -2,7 +2,7 @@ import json
 from django.http import Http404
 from django.urls import reverse
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
@@ -216,8 +216,8 @@ class LessonKeywordSaveViewModel(BaseViewModel):
 
 class LessonKeywordDeleteUnpublishedViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
-        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+    def __init__(self, db, scheme_of_work_id, auth_user):
+        data = Model.delete_unpublished(db, scheme_of_work_id, auth_user)
         self.model = data
 
 

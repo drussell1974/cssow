@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_examboard import ExamBoardModel

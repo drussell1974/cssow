@@ -3,7 +3,7 @@ from shared.models.cls_department import DepartmentModel as Model, handle_log_in
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
-class test_DepartmentDataAccess___insert(TestCase):
+class test_DepartmentDataAccess___update(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -28,13 +28,13 @@ class test_DepartmentDataAccess___insert(TestCase):
 
     def test__should_call__save__if_valid(self):
         # arrange
-        expected_result = [99]
+        expected_result = [101]
 
-        fake_model = Model(0, "Lorum ipsum")
+        fake_model = Model(101, "Lorum ipsum")
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = True
 
-        with patch.object(ExecHelper, "insert", return_value=expected_result):
+        with patch.object(ExecHelper, "update", return_value=expected_result):
                 
             # act
             
@@ -42,24 +42,23 @@ class test_DepartmentDataAccess___insert(TestCase):
             
             # assert
 
-            ExecHelper.insert.assert_called_with(self.fake_db,
-                'department__insert'
-                , (0, "Lorum ipsum", 6080, 0, "2021-01-24 07:20:01.907507", 6079)
+            ExecHelper.update.assert_called_with(self.fake_db,
+                'department__update'
+                , (101, 'Lorum ipsum', 6080, 6079)
                 , handle_log_info)
 
-            self.assertEqual(99, result.id)
+            self.assertEqual(101, result.id)
 
 
     def test__should_not_call__save__if_not_valid(self):
         # arrange
         expected_result = [99]
 
-        fake_model = Model(0, "Lorum ipsum")
+        fake_model = Model(99, "Lorum ipsum")
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = False
 
-
-        with patch.object(ExecHelper, "insert", return_value=expected_result):
+        with patch.object(ExecHelper, "update", return_value=expected_result):
                 
             # act
             
@@ -67,6 +66,7 @@ class test_DepartmentDataAccess___insert(TestCase):
             
             # assert
 
-            ExecHelper.insert.assert_not_called()
+            ExecHelper.update.not_called()
 
-            self.assertEqual(0, result.id)
+            self.assertEqual(99, result.id)
+            self.assertFalse(result.is_valid)

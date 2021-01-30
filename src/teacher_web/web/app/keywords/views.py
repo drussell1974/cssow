@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core.django_helper import auth_user_id
 from shared.models.enums.permissions import SCHEMEOFWORK
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
@@ -176,10 +176,10 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
-def delete_unpublished(request, scheme_of_work_id, lesson_id = 0):
+def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
+    KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
     return HttpResponseRedirect(reverse("schemesofwork.index"))
 

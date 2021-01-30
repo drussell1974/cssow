@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from enum import Enum
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.db_helper import ExecHelper, sql_safe
 from shared.models.core.basemodel import BaseModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel

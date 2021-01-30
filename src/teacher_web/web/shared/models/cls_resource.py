@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import markdown
-from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
+from shared.models.core.log_handlers import handle_log_info
 from datetime import datetime
 from .core.db_helper import to_empty
 

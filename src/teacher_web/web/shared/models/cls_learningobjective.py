@@ -3,7 +3,7 @@ from datetime import datetime
 from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 
 
 class LearningObjectiveModel (BaseModel):

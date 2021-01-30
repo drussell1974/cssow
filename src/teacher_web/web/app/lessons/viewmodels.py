@@ -2,7 +2,7 @@ import json
 from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel

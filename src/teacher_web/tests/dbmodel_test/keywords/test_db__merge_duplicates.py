@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel, KeywordDataAccess
 

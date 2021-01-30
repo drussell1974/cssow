@@ -14,7 +14,7 @@ from shared.models.core.django_helper import auth_user_id
 from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel

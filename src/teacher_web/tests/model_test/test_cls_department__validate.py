@@ -42,6 +42,7 @@ class test_Department_validate__name(TestCase):
         self.assertEqual(test.name, "x")
         self.assertTrue(test.is_valid, "is_valid should be True")
 
+
     def test_min__invalid_extreme(self):
         # arrange
         test = DepartmentModel(1, "Lorem ipsum")

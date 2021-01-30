@@ -1,6 +1,6 @@
 from django.db import connection as db
 from django.shortcuts import redirect
-from shared.models.core.log import handle_log_info, handle_log_warning, handle_log_error
+from shared.models.core.log_handlers import handle_log_info, handle_log_warning, handle_log_error
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel

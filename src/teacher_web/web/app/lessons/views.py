@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
-from shared.viewmodels.decorators.permissions import min_permission_required, unauthorise_request
+from shared.models.decorators.permissions import min_permission_required, unauthorise_request
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel, try_int

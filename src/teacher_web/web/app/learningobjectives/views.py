@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.models.enums.permissions import LESSON
-from shared.viewmodels.decorators.permissions import min_permission_required
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 
@@ -27,7 +27,7 @@ from shared.models.cls_examboard import ExamBoardModel
 from shared.models.core.basemodel import try_int
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning
+from shared.models.core.log_handlers import handle_log_warning
 
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel

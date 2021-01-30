@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
@@ -50,8 +50,8 @@ class DepartmentModel(BaseModel):
     def save(db, model, teacher_id, auth_user):
         """ save model """
         if model.published == 2:
-            data = DepartmentDataAccess._delete(db, model.id, auth_user)
-        else:
+            data = DepartmentDataAccess._delete(db, model, auth_user)
+        elif model.is_valid == True:
             if model.is_new():
                 data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user)
                 model.id = data[0]
@@ -125,7 +125,7 @@ class DepartmentDataAccess:
 
         execHelper = ExecHelper()
 
-        sql = "lesson_resource__delete"
+        sql = "department__delete"
         params = (model.id, auth_user)
     
         #271 Stored procedure

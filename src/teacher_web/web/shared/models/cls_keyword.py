@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 from uuid import uuid1
-from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, sql_safe, to_empty
-from .core.log import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
+from shared.models.core.basemodel import BaseModel, try_int
+from shared.models.core.db_helper import ExecHelper, sql_safe, to_empty
+from shared.models.core.log_handlers import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
 
 
 class KeywordModel(BaseModel):
@@ -179,8 +179,8 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
-        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
         return rows
 
 
@@ -362,14 +362,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id):
-        """ Delete all unpublished keywords """
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+        """ Delete all unpublished keywords for the scheme of work"""
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete_unpublished"
         params = (scheme_of_work_id, auth_user_id)
-            
+    
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
 

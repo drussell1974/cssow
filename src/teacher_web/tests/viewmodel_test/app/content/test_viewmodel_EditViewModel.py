@@ -9,8 +9,6 @@ from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_keystage import KeyStageModel
 from app.content.viewmodels import ContentEditViewModel as ViewModel
-from shared.viewmodels.decorators.permissions import TeacherPermissionModel
-
 
 
 class test_viewmodel_EditViewModel(ViewModelTestCase):

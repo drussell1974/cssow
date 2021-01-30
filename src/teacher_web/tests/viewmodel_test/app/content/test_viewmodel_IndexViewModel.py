@@ -10,7 +10,6 @@ from app.content.viewmodels import ContentIndexViewModel as ViewModel
 #247 used in ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.viewmodels.decorators.permissions import TeacherPermissionModel
 
 class test_viewmodel_IndexViewModel(ViewModelTestCase):
 

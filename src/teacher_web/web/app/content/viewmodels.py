@@ -3,7 +3,7 @@ from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
