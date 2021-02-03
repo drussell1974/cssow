@@ -227,7 +227,7 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1, is_authorised = False):
+    def save(db, model, auth_user, published=1):
         
         if try_int(published) == 2:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
@@ -235,7 +235,7 @@ class SchemeOfWorkModel(BaseModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user, is_authorised=is_authorised)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user, is_authorised=True)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
 

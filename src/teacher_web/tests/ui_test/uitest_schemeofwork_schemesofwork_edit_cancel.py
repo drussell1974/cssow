@@ -52,16 +52,16 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
 
     def test_page__should_redirect_to_index_if_continue(self):
         # setup
-        elem = self.test_context.find_element_by_tag_name("form")
-
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
 
         ' Open Modal '
 
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
         elem.click()
+
+
         
         ' click yes, cancel (finding button appears to cancel dialog) '        
         

@@ -10,8 +10,8 @@ class test_cls_teacher_permission__check_permission__when_lesson_view(TestCase):
         ''' The lesson view only '''
         self.test = Model(teacher_id=2, teacher_name="", scheme_of_work=SchemeOfWorkModel(11),
             lesson_permission=LESSON.VIEWER)
+        self.test.is_authorised = True
 
-        pass
 
     def tearDown(self):
         pass
@@ -35,3 +35,15 @@ class test_cls_teacher_permission__check_permission__when_lesson_view(TestCase):
     def test_check__view_returns_true(self):
         # assert
         self.assertTrue(self.test.check_permission(LESSON.VIEWER))
+
+
+    def test_should_be_false__when_is_authorised__false(self):
+        # arrange
+
+        self.test.is_authorised = False
+        
+        # assert
+        self.assertFalse(self.test.check_permission(LESSON.VIEWER))
+        self.assertFalse(self.test.check_permission(LESSON.EDITOR))
+        self.assertFalse(self.test.check_permission(LESSON.OWNER))
+        self.assertFalse(self.test.check_permission(LESSON.NONE))

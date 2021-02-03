@@ -11,8 +11,7 @@ class test_cls_teacher_permission__check_permission__accept_types(TestCase):
         self.test = Model(teacher_id=2, teacher_name="", scheme_of_work=SchemeOfWorkModel(11),
             scheme_of_work_permission=SCHEMEOFWORK.NONE,
             lesson_permission=LESSON.NONE)
-
-        pass
+        self.test.is_authorised = True
 
     def tearDown(self):
         pass
@@ -45,5 +44,16 @@ class test_cls_teacher_permission__check_permission__accept_types(TestCase):
     def test_can_accept_LESSON_ACCESS_type(self):
         # assert
         self.assertTrue(self.test.check_permission(LESSON.NONE))
+        self.assertFalse(self.test.check_permission(LESSON.OWNER))
+
+
+    def test_should_be_false__when_is_authorised__false(self):
+        # assert
+
+        self.test.is_authorised = False
+
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.NONE))
+        self.assertFalse(self.test.check_permission(SCHEMEOFWORK.EDITOR))
+        self.assertFalse(self.test.check_permission(LESSON.NONE))
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
 

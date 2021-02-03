@@ -10,9 +10,9 @@ class test_cls_teacher_permission__check_permission__when_department_student(Tes
         # act
         self.test = Model(teacher_id=2, teacher_name="", scheme_of_work=SchemeOfWorkModel(11), 
             department_permission=DEPARTMENT.STUDENT)
+        self.test.is_authorised = True
 
-        pass
-
+        
     def tearDown(self):
         pass
 
@@ -35,3 +35,15 @@ class test_cls_teacher_permission__check_permission__when_department_student(Tes
     def test_check__teacher_returns_false(self):
         # assert
         self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
+
+
+    def test_should_be_false__when_is_authorised__false(self):
+        # arrange
+
+        self.test.is_authorised = False
+        
+        # assert
+        self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.NONE))

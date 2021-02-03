@@ -101,7 +101,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
 
-            actual_result = save(self.fake_db, model, 6079, is_authorised=True)
+            actual_result = save(self.fake_db, model, 6079)
 
             # assert
 

@@ -14,7 +14,6 @@ from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 
 # Create your views here.
 
-@min_permission_required(DEPARTMENT.NONE, "/accounts/login/")
 def index(request):
     #253 check user id
     getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_id(request))
@@ -29,7 +28,7 @@ def index(request):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(DEPARTMENT.HEAD, "/accounts/login/")
+@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id = 0):
     """ edit action """
     
@@ -47,7 +46,7 @@ def edit(request, scheme_of_work_id = 0):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(DEPARTMENT.ADMIN, "/accounts/login/")
+@min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 

@@ -11,7 +11,8 @@ BEGIN
       IFNULL(IFNULL(teach_sow.scheme_of_work_permission, teach_dep.scheme_of_work_permission), 7) as scheme_of_work_permission, 
       IFNULL(IFNULL(teach_sow.lesson_permission, teach_dep.lesson_permission), 7) as lesson_permission, 
       IFNULL(IFNULL(teach_sow.department_permission, teach_dep.department_permission), 7) as department_permission,
-      user.first_name
+      user.first_name as teacher_name,
+      IFNULL(teach_sow.is_authorised, False) as is_authorised
     FROM auth_user as user    
     INNER JOIN sow_department as dep
     LEFT JOIN sow_department__has__teacher as teach_dep 
@@ -30,4 +31,4 @@ END;
 
 DELIMITER ;
 
-CALL scheme_of_work__get_teacher_permissions(11,5,2);
+CALL scheme_of_work__get_teacher_permissions(127,30,2);

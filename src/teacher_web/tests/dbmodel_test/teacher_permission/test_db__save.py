@@ -27,6 +27,7 @@ class test_db__save(TestCase):
         scheme_of_work = MagicMock(id=99, name="A-Level Computer Science")
 
         model = Model(1, "", scheme_of_work)
+        model.is_valid = True
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
@@ -42,8 +43,9 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=1, name="A-Level Computer Science")
         
-        model = Model(13, "Dave Russell", scheme_of_work, SCHEMEOFWORK.EDITOR, LESSON.EDITOR, DEPARTMENT.TEACHER)
+        model = Model(13, "Dave Russell", scheme_of_work, SCHEMEOFWORK.EDITOR, LESSON.EDITOR, DEPARTMENT.TEACHER, is_authorised=True)
         model.is_new = Mock(return_value=False)
+        model.is_valid = True
 
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -59,8 +61,9 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=11, name="A-Level Computer Science")
         
-        model = Model(1069, "Dave Russell", scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT)
+        model = Model(1069, "Dave Russell", scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT, is_authorised=False)
         model.is_new = Mock(return_value=False)
+        model.is_valid = True
         
         with patch.object(ExecHelper, 'update', return_value=(1,)):
             # act
@@ -72,7 +75,7 @@ class test_db__save(TestCase):
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__update'
-                , (11, 1069, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 99)
+                , (11, 1069, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 99, False)
                 ,handle_log_info)
 
             self.assertEqual(11, actual_result.scheme_of_work.id)
@@ -84,9 +87,10 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=14, name="A-Level Computer Science")
 
-        model = Model(56, "Jane Mellor", scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD)
+        model = Model(56, "Jane Mellor", scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
+        model.is_valid = True
         
         # mock functions not being tested
 
@@ -102,7 +106,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__insert'
-                , (14, 56, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 99, False)
+                , (14, 56, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 99, True)
                 , handle_log_info)
             
             self.assertEqual(14, actual_result.scheme_of_work.id)
@@ -114,9 +118,10 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=19, name="A-Level Computer Science")
 
-        model = Model(79, "Jane Mellor", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER)
+        model = Model(79, "Jane Mellor", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, is_authorised=False)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=False)
+        model.is_valid = True
         model.published = 2
 
         # mock functions not being tested

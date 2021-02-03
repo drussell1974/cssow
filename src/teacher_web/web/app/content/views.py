@@ -17,7 +17,7 @@ from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 
-@min_permission_required(SCHEMEOFWORK.VIEWER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, scheme_of_work_id):
 
     #253 check user id
@@ -28,7 +28,7 @@ def index(request, scheme_of_work_id):
 
 #234 add permission
 @permission_required('models.change_contentmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 
@@ -49,7 +49,7 @@ def edit(request, scheme_of_work_id, content_id=0):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 

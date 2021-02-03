@@ -22,7 +22,13 @@ CREATE TABLE `sow_department__has__teacher` (
 ALTER TABLE sow_department__has__teacher ADD COLUMN `lesson_permission` SMALLINT NOT NULL DEFAULT 64 after department_id;    
 ALTER TABLE sow_department__has__teacher ADD COLUMN `scheme_of_work_permission` SMALLINT NOT NULL DEFAULT 64 after department_id;
 ALTER TABLE sow_department__has__teacher ADD COLUMN `department_permission` SMALLINT NOT NULL DEFAULT 64 after department_id;
-  
-INSERT INTO `sow_department__has__teacher` (`department_id`, `auth_user_id`, `scheme_of_work_permission`, `lesson_permission`, `department_permission`) 
-SELECT dep.`id`, user.`id`, 64, 64, 64
-FROM `sow_department` as dep, `auth_user` as user;
+
+ALTER TABLE sow_department__has__teacher
+ADD COLUMN created_by INT DEFAULT 0 after lesson_permission;
+
+ALTER TABLE sow_department__has__teacher
+ADD COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP after created_by;
+
+ALTER TABLE sow_department__has__teacher
+ADD COLUMN modified DATETIME ON UPDATE CURRENT_TIMESTAMP after created;
+

@@ -21,7 +21,7 @@ from django.contrib.contenttypes.models import ContentType
 from shared.filehandler import handle_uploaded_markdown
 
 
-@min_permission_required(SCHEMEOFWORK.VIEWER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
     #253 check user id
@@ -31,7 +31,7 @@ def index(request, scheme_of_work_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def new(request, scheme_of_work_id):
     ''' Create a new keyword '''
 
@@ -56,7 +56,7 @@ def new(request, scheme_of_work_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
@@ -87,7 +87,7 @@ def edit(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.EDITOR, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def save(request, scheme_of_work_id, keyword_id):
     
     def upload_error_handler(e, msg):
@@ -152,7 +152,7 @@ def save(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_item(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
@@ -165,7 +165,7 @@ def delete_item(request, scheme_of_work_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
@@ -175,7 +175,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
@@ -185,7 +185,7 @@ def delete_unpublished(request, scheme_of_work_id):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(SCHEMEOFWORK.OWNER, "/accounts/login/")
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def merge_duplicates(request, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
