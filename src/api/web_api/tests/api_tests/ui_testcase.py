@@ -1,6 +1,5 @@
 #from unittest import TestCase
 import time
-import os
 from django.test import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
