@@ -29,7 +29,7 @@ class test_db__get_teacher_permission(TestCase):
     
     def test__should_call__select__return_no_permissions(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE), "James Joyce")]
+        expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE), "James Joyce", False)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -51,11 +51,12 @@ class test_db__get_teacher_permission(TestCase):
             self.assertEqual(SCHEMEOFWORK.NONE, int(model.scheme_of_work_permission))
             self.assertEqual(LESSON.NONE, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)
+            self.assertFalse(model.is_authorised)
             
 
     def test__should_call__select__return_has_permission_to_view(self):
         # arrange
-        expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert")]
+        expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert", True)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
@@ -78,3 +79,4 @@ class test_db__get_teacher_permission(TestCase):
             self.assertEqual(SCHEMEOFWORK.EDITOR, model.scheme_of_work_permission)
             self.assertEqual(LESSON.VIEWER, model.lesson_permission)
             self.assertEqual(DEPARTMENT.NONE, model.department_permission)
+            self.assertTrue(model.is_authorised)

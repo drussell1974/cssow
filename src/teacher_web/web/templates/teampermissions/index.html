@@ -61,6 +61,8 @@
                 <tbody>
               {% for member in scheme_of_work.teacher_permissions %}
 
+                {% if member.is_authorised %}
+                
                 <tr>
                   <th scope="row">{{member.teacher_name}}</th>
                   <td>{{member.department_permission.name}}</td>
@@ -72,17 +74,34 @@
                     </a>
                   </td>
                 </tr>
-            
-              {% endfor %}
-                <tr>
-                  <th colspan="5">
-                    {% if request.user.is_authenticated %}
-                      <span class="float-right">  
-                        <a class="btn btn-warning" id="btn-new small" href="{% url 'team-permissions.edit' scheme_of_work.id 0 %}">{{_("add")}}</a>
-                      </span>
-                    {% endif %}
-                  </th>
+
+                {% else %}
+                
+                <tr class="bg-info">
+                  <th class="text-white" scope="row">{{member.teacher_name}}</th>
+                  <td class="text-white">{{member.department_permission.name}}</td>
+                  <td class="text-white">{{member.scheme_of_work_permission.name}}</td>
+                  <td class="text-white">{{member.lesson_permission.name}}</td>
+                  <td>
+                    <a href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                      <i class="far fa-w-edit"></i>
+                    </a>
+                  </td>
                 </tr>
+                <tr class="bg-info">
+                  <th scope="row" colspan="5">
+                    <a class="btn btn-danger float-right" href="{% url 'team-permissions.delete' scheme_of_work.id member.teacher_id %}" >
+                      {{_("Reject")}}
+                    </a>
+                    <a class="btn btn-warning float-right" href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                      {{_("Approve")}}
+                    </a>
+                  </td>
+                </tr>
+                
+                {% endif %}
+                
+              {% endfor %}
                 </tbody>
               </table>
 

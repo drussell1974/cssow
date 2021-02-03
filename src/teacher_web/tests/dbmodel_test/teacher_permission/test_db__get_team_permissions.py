@@ -51,7 +51,7 @@ class test_db__get_team_permissions(TestCase):
     def test__should_call__select__single_items(self):
         # arrange
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER)),
+            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
         ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -75,9 +75,9 @@ class test_db__get_team_permissions(TestCase):
     def test__should_call__select__multiple_items(self):
         # arrange
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER)),
-            (2, "Jane Rogers", 68,  "Information Technology", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR)), 
-            (3, "Bill Gates", 68,  "A-Level Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER))
+            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (2, "Jane Rogers", 68,  "Information Technology", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
+            (3, "Bill Gates", 68,  "A-Level Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
         ]
 
         with patch.object(ExecHelper, "select", return_value=expected_result):

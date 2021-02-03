@@ -1,11 +1,9 @@
 """
 View Models
 """
-import io
 from rest_framework import serializers, status
 from django import forms
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -15,7 +13,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON, parse_enum
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -73,7 +71,6 @@ class TeamPermissionEditViewModel(BaseViewModel):
             "department_permission": self.model.department_permission,
             "scheme_of_work_permission": self.model.scheme_of_work_permission,
             "lesson_permission": self.model.lesson_permission,
-            "scheme_of_work_options": SchemeOfWorkModel.get_options(db, self.auth_user),
             "department_permission_options": list(DEPARTMENT),
             "scheme_of_work_permission_options": list(SCHEMEOFWORK),
             "lesson_permission_options": list(LESSON),
@@ -89,9 +86,14 @@ class TeamPermissionEditViewModel(BaseViewModel):
         self.model.scheme_of_work_permission = self.request.POST.get("scheme_of_work_permission", 0)
         self.model.lesson_permission = self.request.POST.get("lesson_permission", 0)
 
-        self.model.validate() 
-
+        self.model.validate()
+        
         if self.model.is_valid == True:
+            
+            ''' explicitly authorise '''
+
+            self.model.is_authorised = True
+
             data = TeacherPermissionModel.save(self.db, self.model, self.auth_user)
 
             self.on_post_complete(True)
@@ -99,7 +101,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
             # TODO: #318 - log by department/user_
             #handle_log_warning(self.db, self.scheme_of_work_id, "saving learning objective", "permission settings are not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
             pass
-
+        
         return self.view()
 
 
@@ -129,3 +131,80 @@ class TeamPermissionDeleteViewModel(BaseViewModel):
         if self.model is not None:
             # can now delete    
             self.model = TeacherPermissionModel.delete(db, self.model, self.auth_user)
+
+
+class TeamPermissionRequestAccessViewModel(BaseViewModel):
+
+    def __init__(self, db, request, scheme_of_work_id, teacher_id, teacher_name, permission, auth_user):
+        
+        self.scheme_of_work_id = scheme_of_work_id
+        self.teacher_id = teacher_id
+        self.teacher_name = teacher_name
+        self.permission = parse_enum(permission)
+        self.auth_user = auth_user
+
+        self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
+        
+        # Http404
+        if self.scheme_of_work_id > 0:
+            if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+                self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
+
+        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, teacher_id=teacher_id, auth_user=auth_user)
+    
+        # Check if permission has already been granted
+        if self.teacher_id > 0:
+            self.model.validate()
+            if self.model is not None and self.model.is_from_db == True and self.model.is_authorised == True:
+                raise PermissionError(f"{teacher_name} has already been granted access to this scheme of work.")
+
+        self.model = TeacherPermissionModel(
+            scheme_of_work=self.scheme_of_work, 
+            teacher_id=teacher_id, 
+            teacher_name=teacher_name,
+            is_authorised=False,
+            department_permission = self.permission if type(self.permission) is DEPARTMENT else DEPARTMENT.NONE,
+            scheme_of_work_permission = self.permission if type(self.permission) is SCHEMEOFWORK else SCHEMEOFWORK.NONE,
+            lesson_permission = self.permission if type(self.permission) is LESSON else LESSON.NONE
+        )
+        
+
+    def execute(self):
+
+        if self.model.validate():
+            # can now request access
+            self.model = TeacherPermissionModel.request_access(db, self.model, self.auth_user)
+        else:
+            raise ValidationError(self.model.validation_errors)
+
+
+class TeamPermissionRequestLoginViewModel(AuthenticationForm):
+    def __init__(self, db, request, get_context_data, auth_user, **kwargs):
+        super().__init__(request)
+        
+        self.scheme_of_work_id = kwargs["scheme_of_work_id"] 
+        self.teacher_id = auth_user
+        self.request_made = False
+        
+        self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
+        # Http404
+        if self.scheme_of_work.id > 0:
+            if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+                self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
+        
+        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, teacher_id=self.teacher_id, auth_user=auth_user)    
+        # Check if permission has already been granted
+        if self.model.teacher_id > 0:
+            self.model.validate()
+            if self.model is not None and self.model.is_from_db == True and self.model.is_authorised is False:
+                self.request_made = True
+        
+        kwargs = dict(**kwargs, request_made=self.request_made)
+
+        self.context = get_context_data(**kwargs)
+
+
+    def view(self):
+        return self.context
+
+        

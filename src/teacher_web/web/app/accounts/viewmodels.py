@@ -4,7 +4,6 @@ View Models
 import io
 from rest_framework import serializers, status
 from django import forms
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
@@ -12,12 +11,13 @@ from django.core.exceptions import ValidationError
 from django.db import connection as db
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 # 206 inherit RegisteredUserForm from UserCreationForm to include new fields
-class RegisterUserForm(UserCreationForm):
+class RegisterTeacherForm(UserCreationForm):
     first_name = forms.CharField(label='Display name', max_length=150, required=True, help_text="required")
     ''' Email used as user name so limit to 150 characters '''
     email = forms.EmailField(label='Email', max_length=150, required=True, help_text='required') 

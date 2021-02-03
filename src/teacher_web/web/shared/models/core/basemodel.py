@@ -12,7 +12,6 @@ class BaseModel(models.Model):
     created_by_id = 0
     created_by_name = ""
     is_valid = False
-    # TODO: return dictionary with double quotes for json parsing
     validation_errors = {}
     error_message = ""
     published = 0

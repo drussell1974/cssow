@@ -8,7 +8,7 @@ from django.views import generic
 from shared.models.core.django_helper import auth_user_id
 from shared.view_model import ViewModel
 
-from .viewmodels import RegisterUserForm
+from .viewmodels import RegisterTeacherForm
 
 # Create your views here.
 @login_required()
@@ -16,8 +16,8 @@ def index(request):
     return render(request, "accounts/index.html")
 
 
-class RegisterUserView(generic.CreateView):
+class RegisterTeacherView(generic.CreateView):
     # 206 inherit RegisteredUserForm from UserCreationForm - see .viewmodels.py
-    form_class = RegisterUserForm
+    form_class = RegisterTeacherForm
     success_url = reverse_lazy('login')
     template_name = 'accounts/register.html'

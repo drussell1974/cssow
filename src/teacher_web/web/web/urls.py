@@ -25,13 +25,9 @@ urlpatterns = [
     
     ### api ##
     
-    # api resource
     path('api/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/resources/', include('api.resources.urls')),
-    # api lessons
     path('api/schemesofwork/<int:scheme_of_work_id>/lessons/', include('api.lessons.urls')),
-    # api schemesofwork
     path('api/schemesofwork/', include('api.schemesofwork.urls')),
-    # api default
     path('api/', include('api.default.urls')),
     
     ### app ###
@@ -39,17 +35,10 @@ urlpatterns = [
     path('accounts/team-permissions', include('app.teampermissions.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    # app event-log
     path('schemesofwork/<int:scheme_of_work_id>/event-log/', include('app.eventlogs.urls')),
-    # app content
     path('schemesofwork/<int:scheme_of_work_id>/curriculum-content/', include('app.content.urls')),
-    # app lesson
     path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lessons.urls')),
-    # app schemeofwork
     path('schemesofwork/', include('app.schemesofwork.urls')),
-    # TODO: move to reference app
-    path('reference/<int:reference_id>/edit', views.index, name="reference.edit"),
-    # app default
     path('', include('app.default.urls')),    
 ]
 

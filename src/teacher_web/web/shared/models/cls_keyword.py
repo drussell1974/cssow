@@ -271,7 +271,6 @@ class KeywordDataAccess:
 
         select_sql = "lesson__get_all_keywords"
 
-        # TODO: get by lesson id optional
         params = (lesson_id, auth_user)
         
         rows = []

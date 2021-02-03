@@ -1,5 +1,19 @@
 from enum import IntFlag
 
+
+def parse_enum(permission):
+    enum_type = permission.split('.')[0]
+    value = permission.split('.')[1]
+
+    if enum_type == "DEPARTMENT":
+        return DEPARTMENT[value]
+    elif enum_type == "SCHEMEOFWORK":
+        return SCHEMEOFWORK[value]
+    elif enum_type == "LESSON":
+        return LESSON[value]
+    return None
+
+
 class DEPARTMENT(IntFlag):
     """ Teacher permissions for for viewing or adding """
     NONE = 1
