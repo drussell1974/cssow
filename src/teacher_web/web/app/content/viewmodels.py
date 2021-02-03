@@ -3,13 +3,14 @@ from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.viewmodels.baseviewmodel import BaseViewModel
-from shared.view_model import ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
+from shared.viewmodels.baseviewmodel import BaseViewModel
+from shared.view_model import ViewModel
 
 
 class ContentIndexViewModel(BaseViewModel):
@@ -95,7 +96,7 @@ class ContentEditViewModel(BaseViewModel):
                     #TODO: show error message for custom exception
                     self.error_message = repr(e)
             else:
-                handle_log_warning(self.db, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+                handle_log_warning(self.db, scheme_of_work_id, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
 
     def view(self):
@@ -113,3 +114,10 @@ class ContentEditViewModel(BaseViewModel):
         }
 
         return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, data=data, active_model=self.model, error_message=self.error_message)
+
+
+class ContentDeleteUnpublishedViewModel(BaseViewModel):
+    
+    def __init__(self, db, auth_user, scheme_of_work_id):
+        self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)
+        

@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import Mock
-from shared.models.core.log import Log, LOG_TYPE
+from shared.models.core.log_handlers import Log, LOG_TYPE
 
 class test__logger__for__log__verbose(TestCase):
 
@@ -23,7 +23,7 @@ class test__logger__for__log__verbose(TestCase):
     def test_should_log__log_type__verbose(self):
 
         # act
-        self.test_log.write("Something happened", "put some details here", LOG_TYPE.Verbose)
+        self.test_log.write(71, "Something happened", "put some details here", LOG_TYPE.Verbose)
         
         # assert
 
@@ -34,7 +34,7 @@ class test__logger__for__log__verbose(TestCase):
     def test_should_log__log_type__info(self):
 
         # act
-        self.test_log.write("Something happened", "", LOG_TYPE.Information)
+        self.test_log.write(72, "Something happened", "", LOG_TYPE.Information)
   
         # assert
 
@@ -45,7 +45,7 @@ class test__logger__for__log__verbose(TestCase):
     def test_should_log__log_type__warning(self):
 
         # act
-        self.test_log.write("Something happened", "", LOG_TYPE.Warning)
+        self.test_log.write(70, "Something happened", "", LOG_TYPE.Warning)
 
         # assert
 
@@ -56,7 +56,7 @@ class test__logger__for__log__verbose(TestCase):
     def test_should_log__log_type__error(self):
 
         # act
-        self.test_log.write("Something happened", "", LOG_TYPE.Error)
+        self.test_log.write(73, "Something happened", "", LOG_TYPE.Error)
         # assert
 
         self.test_log._write_to_django_log.assert_called()

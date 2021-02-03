@@ -51,7 +51,7 @@ class test_db__get_all(TestCase):
 
     def test__should_call__select__return_single_item(self):
         # arrange
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "sit dolor amet", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
 
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
@@ -79,6 +79,10 @@ class test_db__get_all(TestCase):
             self.assertEqual(6, rows[0]["id"])
             self.assertEqual("Lorem", rows[0]["name"])
             self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
+            self.assertEqual(4, rows[0]["key_stage_id"])
+            self.assertEqual("KS4", rows[0]["key_stage_name"])
+            self.assertEqual(56, rows[0]["department_id"])
+            self.assertEqual("sit dolor amet", rows[0]["department_name"])
 
 
 
@@ -86,9 +90,9 @@ class test_db__get_all(TestCase):
         # arrange
 
         expected_result = [
-            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 30),
-            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 20),
-            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 34)]
+            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 54, "Computer Science Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 30),
+            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", 56, "IT Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 20),
+            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA",  4, "KS4", 56, "IT Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 34)]
 
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
@@ -119,7 +123,9 @@ class test_db__get_all(TestCase):
             self.assertEqual(6, rows[0]["id"])
             self.assertEqual("Lorem", rows[0]["name"])
             self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
+            self.assertEqual("Computer Science Dept", rows[0]["department_name"])
 
             self.assertEqual(8, rows[2]["id"])
             self.assertEqual("Nulla", rows[2]["name"])
             self.assertEqual("Tristique pharetra nisi. Sed", rows[2]["description"])
+            self.assertEqual("IT Dept", rows[2]["department_name"])

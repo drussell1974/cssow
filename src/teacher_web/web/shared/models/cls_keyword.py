@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 from uuid import uuid1
-from .core.basemodel import BaseModel, try_int
-from .core.db_helper import ExecHelper, sql_safe, to_empty
-from .core.log import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
+from shared.models.core.basemodel import BaseModel, try_int
+from shared.models.core.db_helper import ExecHelper, sql_safe, to_empty
+from shared.models.core.log_handlers import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
 
 
 class KeywordModel(BaseModel):
@@ -20,6 +20,7 @@ class KeywordModel(BaseModel):
     info_handler=None
     
     def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, all_terms = []):
+
         super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.term = term
@@ -118,8 +119,10 @@ class KeywordModel(BaseModel):
 
         data = []
         for row in rows:
-            item = KeywordModel(row[0], row[1], row[2], row[3], row[4])
+            item = KeywordModel(row[0], term=row[1], definition=row[2], scheme_of_work_id=row[3], published=row[4])
             item.number_of_lessons = row[5]
+            item.created = row[6]
+
             data.append(item)
             
         return data
@@ -147,7 +150,7 @@ class KeywordModel(BaseModel):
         data = []
 
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], row[2], row[3], row[4]))
+            data.append(KeywordModel(row[0], term=row[1], definition=row[2], scheme_of_work_id=row[3], published=row[4], created=row[5]))
 
         return data
 
@@ -176,8 +179,8 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
-        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
         return rows
 
 
@@ -268,7 +271,6 @@ class KeywordDataAccess:
 
         select_sql = "lesson__get_all_keywords"
 
-        # TODO: get by lesson id optional
         params = (lesson_id, auth_user)
         
         rows = []
@@ -359,14 +361,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id):
-        """ Delete all unpublished keywords """
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+        """ Delete all unpublished keywords for the scheme of work"""
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete_unpublished"
         params = (scheme_of_work_id, auth_user_id)
-            
+    
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
 

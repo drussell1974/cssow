@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 from app.eventlogs.viewmodels import EventLogDeleteOldViewModel as ViewModel
 from shared.models.cls_eventlog import EventLogModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
@@ -45,7 +45,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
 
             #with self.assertRaises(KeyError):
                 # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
 
             self.assertEqual("'There was an error executing the stored procedure'", self.viewmodel.error_message)
 
@@ -63,7 +63,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             mock_request.POST = { "days": 30 }
 
             # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
 
             # assert
             Model.delete.assert_not_called()
@@ -84,7 +84,7 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             
             #with self.assertRaises(Exception):
                 # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
 
             # assert
             Model.delete.assert_not_called()
@@ -108,10 +108,10 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=66, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 7, 6079)
+            Model.delete.assert_called_with(db, 66, 7, 6079)
 
             self.assertEqual([], self.viewmodel.model)
 
@@ -132,10 +132,10 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=63, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 14, 6079)
+            Model.delete.assert_called_with(db, 63, 14, 6079)
             self.assertEqual("1 event logs deleted", self.viewmodel.alert_message)
             self.assertEqual([], self.viewmodel.model)
 
@@ -156,9 +156,9 @@ class test_viewmodel_DeleteOldViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, mock_request, self.fake_settings, auth_user=6079)
+            self.viewmodel = ViewModel(db=db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
 
             # assert functions was called
-            Model.delete.assert_called_with(db, 28, 6079)
+            Model.delete.assert_called_with(db, 13, 28, 6079)
             self.assertEqual("3 event logs deleted", self.viewmodel.alert_message)
             self.assertEqual([], self.viewmodel.model)

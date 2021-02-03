@@ -1,3 +1,5 @@
+from django.conf import settings
+
 class ViewModel:
     active_model__id = 0
     active_model__display_name = ""
@@ -38,7 +40,7 @@ class ViewModel:
             "auth": {
                 "user":False,
                 "settings": {
-                    "actions_disabled":["retrieve_password"],
+                    "actions_disabled": settings.ACTIONS_DISABLED
                 }
             },
             "session": {

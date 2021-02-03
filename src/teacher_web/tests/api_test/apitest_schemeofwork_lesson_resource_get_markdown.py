@@ -2,7 +2,7 @@ import json
 from django.test import tag
 from api_testcase import APITestCase
 
-class apitest_schemeofwork_resource_get_markdown(APITestCase):
+class apitest_schemeofwork_lesson_resource_get_markdown(APITestCase):
 
 
     def setUp(self):
@@ -10,6 +10,7 @@ class apitest_schemeofwork_resource_get_markdown(APITestCase):
         #TODO: #254 get ids from settings 
         uri = "/api/schemesofwork/{}/lessons/{}/resources/{}/markdown/{}?format=json".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_md_document_resource_id, self.test_md_document_name)
         self.get(uri)
+        
         
     def tearDown(self):
         pass

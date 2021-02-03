@@ -6,10 +6,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id)
-
-        self.test_context.get(self.root_uri + self.test_path)
-        self.test_context.implicitly_wait(4)
+        self.do_log_in("/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -38,7 +35,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def test_page__submenu__navigate_to_lesson_new(self):
         # setup
-        self.do_log_in(self.test_path)
 
         # test
         self.test_context.find_element_by_id('btn-new').click()
@@ -63,7 +59,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # array of expected items per pages
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """
@@ -88,6 +84,11 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
 
 
+    def test_page__should_have_sidenav__showing_administrator_links(self):
+        # arrange
+        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Administrator", expected_no_of_items=1)
+
+        
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
         # setup
         elem = self.test_context.find_element_by_id('btn-lesson-learningobjectives--{}'.format(self.test_lesson_id))

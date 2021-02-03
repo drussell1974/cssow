@@ -70,9 +70,10 @@ class uitest_schemeofwork_content_edit_create_new(UITestCase):
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
+        
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
 
         # teardown
 
-        self.delete_unpublished_item(".unpublished .edit .post-title")
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit")

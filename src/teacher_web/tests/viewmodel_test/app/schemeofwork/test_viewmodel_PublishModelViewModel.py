@@ -29,7 +29,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, 7839, auth_user=99)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=7839, auth_user=99)
 
             # assert functions was called
             Model.publish_by_id.assert_called()

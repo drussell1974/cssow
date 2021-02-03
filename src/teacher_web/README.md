@@ -10,17 +10,23 @@ See ../README.md
 
 > add-apt-repository ppa:deadsnakes/ppa
 
-> sudo apt-get update
+> apt-get update
 
-> sudo apt-get install python3.5
+> apt-get install python3.7
 
-> apt-get install python3.6
+> apt-get install python3.7
 
-> apt-get install python3.6-dev
+> apt-get install python3.7-dev
 
 > apt-get install default-libmysqlclient-dev
 
 > apt-get install python3-pip
+
+### Windows
+
+Download the installer
+
+https://www.python.org/downloads/release/python-379/
 
 ## virtualenv
 
@@ -28,7 +34,11 @@ Install virtual environment
 
 > pip install virtualenv
 
-Create a virtual environment
+### Windows
+
+Select pip when installing python using the installer
+
+### Create a virtual environment
 
 > cd <root>/src/teacher_web/
 
@@ -37,6 +47,16 @@ Create a virtual environment
 > virtualenv -p [executable] .venv/django
 
 > source .venv/django/bin/activate
+
+### Windows
+
+> cd <root>/src/teacher_web/
+
+> mkdir -p .venv/django
+
+> python -m venv c:\path\to\myenv
+
+> source .venv/django/Scripts/activate
 
 # Prerequisites
 
@@ -49,6 +69,18 @@ Create a virtual environment
 > sudo apt-get update
 
 > sudo apt-get install yarn -y
+
+### Windows
+
+1. Install Node.js using the installer
+
+https://nodejs.org/en/
+
+2. Install Yarn using the installer
+
+https://classic.yarnpkg.com/en/docs/install/#windows-stable
+
+## use yarn to add requirement.txt to active virtual environment
 
 Use 'yarn build' from package.json to install the prerequisites, or directly from the command line...
 
@@ -91,7 +123,7 @@ use 'yarn' to run tests from package.json to run the unit tests that include tes
 2. Run api
 
 > /src/teacher-web$ source .venv/django/bin/activate 
-> /src/teacher-web$ yarn build:dev
+> /src/teacher-web$ yarn build:test
 
 Open api url in web browser http://localhost:3002/api/schemesofwork/127/lessons/64
 
@@ -114,13 +146,32 @@ NOTE: You may need to ensure driver is executable...
 
 > chmod +x /src/teacher_web/geckodriver.exe 
 
-Try...
+### Windows
 
-> cp /src/teacher_web/geckodriver.exe /usr/bin/
+1. Check your version of chrome (paste in the address bar - chrome://settings/help)
 
-Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line...
+2. Download the version of chromedriver to match the version of chrome you have installed, from https://chromedriver.chromium.org/downloads and extract to /src/teacher_web/chromedriver.exe
 
-Create a test user (see web/settings/test-ui/settings.py and respective .env file for TEST_USER_NAME and TEST_USER_PSWD to create user accordingly as a teacher for TEST_SCHEME_OF_WORK_ID). Update TEST_* variables accordingly.
+NOTE: You may need to ensure driver is not blocked...
+
+3. Open explorer /src/teacher_web/chromedriver.exe 
+
+4. Right-click chromedriver.exe
+
+5. At the bottom of the General tab tick unblock and click ok
+
+NOTE: Check Anti-virus software
+
+## Running the Selenium/UI tests
+
+Use 'yarn test-ui' from package.json to run automated browser tests (with file pattern uitest_*.py) using Selenium, or directly from the command line. e.g.
+
+1. Create a test user (see web/settings/test-ui/settings.py and respective .env file for TEST_USER_NAME and TEST_USER_PSWD to create user accordingly as a teacher for TEST_SCHEME_OF_WORK_ID). Update TEST_* variables accordingly.
+
+2. Run a single test
+
+> python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+
 
 If necessary, install a mail server to recieve reset password messages https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04 and https://help.ubuntu.com/community/Dovecot
 
@@ -229,6 +280,10 @@ Use the following guidance as the project structure...
 > cd src/teacher_web
 
 > source .venv/django/bin/activate
+
+## Windows
+
+> source .venv/django/Scripts/activate
 
 2. Run the website
 

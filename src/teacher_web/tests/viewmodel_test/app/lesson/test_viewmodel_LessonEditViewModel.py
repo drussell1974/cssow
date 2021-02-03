@@ -8,8 +8,7 @@ from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
-from shared.serializers.srl_keyword import KeywordModelSerializer
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_EditViewModel(TestCase):
 
@@ -46,7 +45,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
 
-                test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+                test_context = ViewModel(db=self.mock_db, scheme_of_work_id=12, model=mock_model, auth_user=99)
                 test_context.execute(published=1)
                                 
                 # assert functions was called
@@ -78,7 +77,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.key_stage_id = 2
                 mock_model.year_id = 10
                 
-                test_context = ViewModel(self.mock_db, mock_model, auth_user=99)
+                test_context = ViewModel(db=self.mock_db, scheme_of_work_id=12, model=mock_model, auth_user=99)
                 test_context.execute(0)
                                 
                 # assert save functions was not called

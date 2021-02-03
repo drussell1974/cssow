@@ -2,13 +2,12 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-
-from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
-
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -45,13 +44,13 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
-
-            getmodel_view = SchemeOfWorkGetModelViewModel(db, scheme_of_work_id, auth_user)
+            getmodel_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
 
             self.model = getmodel_view.model
-            
+        
         elif request.method == "POST":
             ## POST back from client ##
+
             # create instance of model from request.vars
             self.model = Model(
                 id_=request.POST.get("id", 0),
@@ -59,8 +58,9 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 description=request.POST.get("description", ""),
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
+                department_id=request.POST.get("department_id", 0),
                 created=datetime.now(),
-                created_by_id=auth_user)
+                created_by_id=self.auth_user)
         
             try:
                 self.model.validate()
@@ -73,19 +73,19 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                     self.model = data
                 else:
                     self.alert_message = "validation errors %s" % self.model.validation_errors 
-                    handle_log_warning(self.db, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
+                    handle_log_warning(self.db, scheme_of_work_id, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
                     
             except Exception as ex:
                 self.error_message = ex
-                handle_log_exception(db, "An error occurred processing key words json", ex)
-                #raise
-            
+                handle_log_exception(db, scheme_of_work_id, "An error occurred processing key words json", ex)
+                
 
     def view(self):
         
         # get options
         self.examboard_options = ExamBoardModel.get_options(self.db, self.auth_user)
         self.keystage_options = KeyStageModel.get_options(self.db, self.auth_user)
+        self.department_options = DepartmentModel.get_options(self.db, self.auth_user)
 
         # view data
         data = {
@@ -93,6 +93,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             "scheme_of_work": self.model,
             "examboard_options": self.examboard_options,
             "keystage_options": self.keystage_options,
+            "department_options": self.department_options
         }
         
         # build alert message to be displayed
@@ -107,7 +108,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
         return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
-
+ 
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, auth_user):

@@ -1,12 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
-# test context
-
 from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from app.lessons.viewmodels import LessonIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
 class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
@@ -17,7 +16,6 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
     def tearDown(self):
         pass
-
 
 
     def test_init_called_404_if_scheme_of_work_not_found(self):
@@ -37,7 +35,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
                     # act
                     with self.assertRaises(Http404):
-                        self.viewmodel = ViewModel(db, self.mock_request, page=1, pagesize=10, pagesize_options=[5,10,20,40], scheme_of_work_id=999, keyword_search="", auth_user=99)
+                        self.viewmodel = ViewModel(db=db, request=self.mock_request, page=1, pagesize=10, pagesize_options=[5,10,20,40], scheme_of_work_id=999, keyword_search="", auth_user=99)
 
                         self.assertEqual("", self.viewmodel.error_message)
                         
@@ -68,7 +66,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     self.mock_request.method = "GET"
                     
                     # act
-                    self.viewmodel = ViewModel(db, self.mock_request, 83, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
+                    self.viewmodel = ViewModel(db=db, request=self.mock_request, scheme_of_work_id=83, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
                     # assert functions was called
                     
@@ -102,7 +100,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.mock_request.method = "GET"
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_request, 75, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
+            self.viewmodel = ViewModel(db=db, request=self.mock_request, scheme_of_work_id=75, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
 
             # assert functions was called
@@ -138,7 +136,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.mock_request.method = "GET"
 
             # act
-            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
+            self.viewmodel = ViewModel(db=db, request=self.mock_request, scheme_of_work_id=96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
             # assert functions was called
             
@@ -157,6 +155,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             )
 
 
+    
     def test_init_called_fetch__should_return__multiple_rows__with_post(self):
         
         # arrange
@@ -176,7 +175,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             # act
 
-            self.viewmodel = ViewModel(db, self.mock_request, 96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
+            self.viewmodel = ViewModel(db=db, request=self.mock_request, scheme_of_work_id=96, page=1, pagesize=10, pagesize_options=[5,10,20,40], keyword_search="", auth_user=99)
 
             # assert functions was called
             

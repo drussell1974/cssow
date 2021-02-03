@@ -12,7 +12,8 @@ BEGIN
         kw.name as term,
         kw.definition as definition,
         kw.scheme_of_work_id as scheme_of_work_id,
-        kw.published as published
+        kw.published as published,
+        kw.created as created
     FROM 
         sow_key_word as kw
     WHERE 

@@ -13,7 +13,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         # setup
         #231: create a new resource
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/new".format(self.test_scheme_of_work_id))
-
+        self.wait(s=2)
         
         # arrange
         elem = self.test_context.find_element_by_tag_name("form")
@@ -87,7 +87,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         #231: items after should be less than before
         
-        expected_item_per_page = [10,10,7,0]
+        expected_item_per_page = [10,10,6,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """
@@ -119,7 +119,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         #delete
 
         ' Open edit - go to page 1 '
-        self.delete_unpublished_item(".unpublished .edit .post-title", "/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit", "/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
         
         self.wait(s=2)
 
@@ -129,7 +129,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         
         #231: items after should be less than before
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """

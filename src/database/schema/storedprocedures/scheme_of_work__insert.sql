@@ -8,6 +8,7 @@ CREATE PROCEDURE scheme_of_work__insert (
     IN p_description TEXT,
     IN p_exam_board_id INT,
     IN p_key_stage_id INT,
+    IN p_department_id INT,
     IN p_created DATETIME,
     IN p_created_by INT,
     IN p_published INT,
@@ -20,6 +21,7 @@ BEGIN
         description, 
         exam_board_id, 
         key_stage_id, 
+        department_id,
         created, 
         created_by, 
         published
@@ -30,6 +32,7 @@ BEGIN
         p_description,
         p_exam_board_id,
         p_key_stage_id,
+        p_department_id,
         p_created,
         p_created_by,
         p_published

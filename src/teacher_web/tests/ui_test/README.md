@@ -7,13 +7,11 @@
 
 > add-apt-repository ppa:deadsnakes/ppa
 
-> sudo apt-get update
+> apt-get update
 
-> sudo apt-get install python3.5
+> apt-get install python3.7
 
-> apt-get install python3.6
-
-> apt-get install python3.6-dev
+> apt-get install python3.7-dev
 
 > apt-get install default-libmysqlclient-dev
 
@@ -25,9 +23,9 @@ Install virtual environment
 
 Create a virtual environment
 
-> mkdir .venv
+> mkdir -p .venv
 
-> virtualenv -p [executable]
+> virtualenv -p /usr/bin/python3.7 django
 
 # Prerequisites
 

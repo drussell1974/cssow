@@ -32,7 +32,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -55,7 +55,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -79,8 +79,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))
+

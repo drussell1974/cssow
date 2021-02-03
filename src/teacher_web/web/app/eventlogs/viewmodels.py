@@ -3,7 +3,7 @@ View Models
 """
 import io
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception
+from shared.models.core.log_handlers import handle_log_exception
 from shared.models.core.log_type import LOG_TYPE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -12,9 +12,10 @@ from shared.models.cls_eventlog import EventLogModel, EventLogFilter
 
 class EventLogIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, request, settings, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
 
         self.db = db
+        self.scheme_of_work_id = scheme_of_work_id
         self.settings = settings
         self.auth_user = auth_user
 
@@ -40,7 +41,7 @@ class EventLogIndexViewModel(BaseViewModel):
             self.search_criteria.validate()
             
             if self.search_criteria.is_valid == True:
-                self.model = EventLogModel.get_all(self.db, self.search_criteria, self.auth_user)
+                self.model = EventLogModel.get_all(self.db, self.scheme_of_work_id, self.search_criteria, self.auth_user)
 
         except Exception as e:
             self.error_message = str(e)
@@ -49,6 +50,7 @@ class EventLogIndexViewModel(BaseViewModel):
     def view(self):
         
         data = { 
+            "scheme_of_work_id": self.scheme_of_work_id,
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },
@@ -65,10 +67,11 @@ class EventLogIndexViewModel(BaseViewModel):
 
 class EventLogDeleteOldViewModel(BaseViewModel):
     
-    def __init__(self, db, request, settings, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, settings, auth_user):
         """ delete event log on POST """
         
         self.model = []
+        self._scheme_of_work_id = scheme_of_work_id
         self.settings = settings
 
         self.search_criteria = EventLogFilter(settings.PAGER["default"]["pagesize_options"])
@@ -80,18 +83,19 @@ class EventLogDeleteOldViewModel(BaseViewModel):
                 if older_than_n_days < settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS:
                     raise Exception("events in the last %s days cannot be deleted" % settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
 
-                rows_affected = EventLogModel.delete(db, older_than_n_days, auth_user)
+                rows_affected = EventLogModel.delete(db, scheme_of_work_id, older_than_n_days, auth_user)
 
                 self.alert_message = "%s event logs deleted" % rows_affected
 
             except Exception as e:
-                handle_log_exception(db, "Error deleting old event logs", e)
+                handle_log_exception(db, scheme_of_work_id, "Error deleting old event logs", e)
                 self.error_message = str(e)
 
 
     def view(self):
 
-        data = { 
+        data = {
+            "scheme_of_work_id": self._scheme_of_work_id,
             "event_type_options": [
                 {"key": "Error", "value": LOG_TYPE.Error },
                 {"key": "Warning", "value": LOG_TYPE.Warning },

@@ -15,7 +15,6 @@ from shared.models.cls_lesson import LessonModel
 # view models
 from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 
-
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
 
@@ -24,16 +23,16 @@ class LessonViewSet(APIView):
         resource_type_id = request.GET.get("resource_type_id", 0)
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request), resource_type_id)
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request), resource_type_id=resource_type_id)
         return JsonResponse({ "lesson": get_lesson_view.model })
     
     
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
-    
+
     def get (self, request, scheme_of_work_id):
         #253 check user id
-        get_lessons_view = LessonGetAllViewModel(db, scheme_of_work_id, auth_user_id(request))
+        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
         return JsonResponse({"lessons": get_lessons_view.model})
 
 
@@ -55,6 +54,8 @@ class LessonPathwayObjectivesViewSet(APIView):
 
 
 class LessonPathwayKs123ViewSet(APIView):
+
+
     def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")

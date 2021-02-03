@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="lesson.index"),
-    path('initialise_keywords', views.initialise_keywords, name="lesson.initialise_keywords"),
     path('delete_unpublished', views.delete_unpublished, name="lesson.delete_unpublished"), 
     path('new', views.edit, name="lesson.new"),
     path('<int:lesson_id>', views.index, name="lesson.view"),

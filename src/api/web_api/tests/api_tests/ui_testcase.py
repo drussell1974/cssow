@@ -1,7 +1,13 @@
 #from unittest import TestCase
+import time
+import os
 from django.test import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+
+
+TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 
 def WebBrowserContext():
     options = webdriver.ChromeOptions();
@@ -17,8 +23,7 @@ class UITestCase(TestCase):
     test_reference = 10
     test_keyword_id = 265
 
-    def wait(self, s = 5):
-        import time
+    def wait(self, s = 3):
         time.sleep(s)
 
 
@@ -32,7 +37,7 @@ class UITestCase(TestCase):
         self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text)
 
 
-    def try_log_in(self, redirect_to_uri_on_login):
+    def try_log_in(self, redirect_to_uri_on_login, enter_username="test@localhost", enter_password="password1.", wait=0):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -40,16 +45,16 @@ class UITestCase(TestCase):
 
         ' Open uri - if authentication is required this should automatically redirect to login '
         self.test_context.get(redirect_to_uri_on_login)
+        self.test_context.implicitly_wait(wait)
 
         try:
-            self.test_context.implicitly_wait(4)
 
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys("test@localhost")
+            elem.send_keys(enter_username)
             #elem.send_keys(Keys.TAB)
 
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("password1.")
+            elem.send_keys(enter_password)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -57,11 +62,10 @@ class UITestCase(TestCase):
 
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
             pass
 
 
-    def do_log_in(self, redirect_to_uri_on_login):
+    def do_log_in(self, redirect_to_uri_on_login, wait=1, enter_username="test@localhost", enter_password="password1."):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
@@ -69,25 +73,26 @@ class UITestCase(TestCase):
         login_uri = "http://dev.computersciencesow.net:8000/schemeofwork/default/user/login"
 
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get("{}?_next={}".format(login_uri, redirect_to_uri_on_login))
-
-
+        
+        go_to_url = "{}?_next={}".format(login_uri, redirect_to_uri_on_login)
+        
+        self.test_context.get(go_to_url)
+        self.test_context.implicitly_wait(wait)
+        
         try:
-            self.test_context.implicitly_wait(4)
-
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys("test@localhost")
-            #elem.send_keys(Keys.TAB)
-
+            elem.send_keys(enter_username if None else TEST_USER_NAME)
+            
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys("password1.")
+            elem.send_keys(enter_password if None else TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
 
+            if wait > 0:
+                self.wait(s=wait)
+                
         except Exception as e:
             ' if elements are not found then this will handle the exception assuming user is already logged in '
-            print('try_login handled - already logged in (probably) - {}'.format(e.args))
+            #print('try_log_in handled - already logged in (probably) - {}'.format(e.args))
             pass
-
-

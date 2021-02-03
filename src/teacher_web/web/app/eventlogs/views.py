@@ -5,8 +5,9 @@ from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-
 from shared.models.core.django_helper import auth_user_id
+from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from .viewmodels import EventLogIndexViewModel, EventLogDeleteOldViewModel
 
@@ -14,16 +15,18 @@ from .viewmodels import EventLogIndexViewModel, EventLogDeleteOldViewModel
 
 
 @permission_required('cssow.view_eventlogs', login_url='/accounts/login/')
-def index(request):
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
+def index(request, scheme_of_work_id):
     """ view the event log """    
-    modelview = EventLogIndexViewModel(db, request, settings, auth_user=auth_user_id(request))
+    modelview = EventLogIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_user_id(request))
     
     return render(request, "eventlog/index.html", modelview.view().content)
 
 
 @permission_required('cssow.delete_eventlogs', login_url='/accounts/login/')
-def delete(request, rows = 0):
+@min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
+def delete(request, scheme_of_work_id, rows = 0):
     """ delete old logs """
-    modelview = EventLogDeleteOldViewModel(db, request, settings, auth_user_id(request))
+    modelview = EventLogDeleteOldViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_user_id(request))
 
     return render(request, "eventlog/index.html", modelview.view().content)

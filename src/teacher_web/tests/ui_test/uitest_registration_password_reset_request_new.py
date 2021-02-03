@@ -8,9 +8,17 @@ class uitest_registration_password_reset_request_new(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
+        # ensure test user is logged out for this test
+
+        try:
+            elem = self.test_context.find_element_by_id("btn-logout")
+            elem.click()
+        except:
+            pass # ignore errors as may already be logged out
+
+
         self.test_path = "/accounts/password_reset"
         self.test_context.get(self.root_uri + self.test_path)
-
         self.test_context.implicitly_wait(4)
 
 
@@ -44,8 +52,8 @@ class uitest_registration_password_reset_request_new(UITestCase):
 
         # assert
 
-        elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Password reset request sent", elem[0].text)
+        elem = self.test_context.find_element_by_css_selector(".maincontent h1")
+        self.assertEqual("Password reset request sent", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Registration', 'Reset password')
 

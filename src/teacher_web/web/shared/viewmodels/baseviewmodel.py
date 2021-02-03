@@ -12,4 +12,4 @@ class BaseViewModel:
 
     def on_not_found(self, model, *identifers):
         prefix = repr(model) if model is not None else "item"
-        raise Http404("{} {} does not exist, is currrently unavailable or you do not have permission.".format(prefix, identifers))
+        raise Http404("{} {} does not exist, is currently unavailable or you do not have permission.".format(prefix, identifers))

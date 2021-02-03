@@ -4,23 +4,19 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning, handle_log_info
-#from shared.models.core import validation_helper
-
+from shared.models.core.log_handlers import handle_log_warning, handle_log_info
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
-
-from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkPublishModelViewModel
 
 # Create your views here.
 
 def index(request):
-
     #253 check user id
-    getall_view =  SchemeOfWorkIndexViewModel(db, auth_user=auth_user_id(request))
+    getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_id(request))
     
     data = {
         "schemes_of_work":getall_view.model
@@ -32,10 +28,11 @@ def index(request):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id = 0):
     """ edit action """
     
-    save_view = SchemeOfWorkEditViewModel(db, request, scheme_of_work_id, auth_user_id(request))
+    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     
     if save_view.saved == True:
 
@@ -49,13 +46,10 @@ def edit(request, scheme_of_work_id = 0):
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+@min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
-    # TODO: Use ViewModel
+    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_id(request))
 
-    #253 check user id
-    SchemeOfWorkDeleteUnpublishedViewModel(db, auth_user=auth_user_id(request))
-
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("schemesofwork.index"))

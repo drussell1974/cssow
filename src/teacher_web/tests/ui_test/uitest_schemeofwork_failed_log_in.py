@@ -16,8 +16,6 @@ class uitest_schemeofwork_failed_log_in(UITestCase):
         except:
             pass # ignore errors as may already be logged out
 
-        self.test_context.implicitly_wait(4)
-
         self.wait(s=2)
         
 

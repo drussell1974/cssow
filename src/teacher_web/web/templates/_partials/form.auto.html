@@ -1,0 +1,32 @@
+
+{% if form.errors %}
+<div class="border-bottom rounded">
+<ul class="list-group">
+    {% for error in form.errors.items %}
+        <li class="list-group-item strong bg-danger"> 
+            {% for err in error %}
+                <small class="text-white">{{ err }}</small>
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ul>
+</div>
+{% endif %}
+{% for field in form %}
+<div class="control-group">
+    <div class="form-group form-group--auto controls">
+        {{ field.label_tag }}
+        <br/>
+        {{ field }}
+
+        {% for error in field.errors %}
+            <div class="help-block text-danger invalid-feedback">{{ error }}</div>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="help-block text-muted small">{{ field.help_text }}</div>
+        {% endif %}
+
+    </div>
+</div>
+{% endfor %}

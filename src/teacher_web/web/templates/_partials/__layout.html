@@ -35,17 +35,21 @@
         <div class="btn-group">
           {% if request.user.is_authenticated %}
           <!-- Dropdown -->
-          <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user}}</button>
+          <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
           <div class="dropdown-menu">
             {% if 'change_password' not in auth.settings.actions_disabled %}
                 <a class="dropdown-item " href="{% url 'password_change' %}" id="btn-password_change">
                   <i class="fa fa-key"></i> {{_("Change password")}}
                 </a>
             {% endif %}
+                
+            <a class="dropdown-item" href="{% url 'team-permissions.index' %}"><i class="fa fa-users"></i> 
+              {{_("Manage team permissions")}}
+            </a>
+            
             {% if request.user.is_superuser %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
-                <a class="dropdown-item" href="/event-log"><i class="fa fa-book"></i> {{_("event log")}}</a>
             {% endif %}
           </div>
           <!-- Dropdown END -->
@@ -54,10 +58,10 @@
           {% else %}
                 <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">{{_("Login")}}</a>
               {% if 'register' not in auth.settings.actions_disabled %}
-                <a class="navbar-brand" href="{% url 'default' %}">{{_("Sign up")}}</a>
+                <a class="navbar-brand" href="{% url 'accounts.register' %}">{{_("Register")}}</a>
               {% endif %}
               {% if 'retrieve_password' not in auth.settings.actions_disabled %}
-                <a class="navbar-brand" href="{% url 'default' %}">{{_("Lost password")}}</a>
+                <a class="navbar-brand" href="{% url 'password_reset' %}">{{_("Lost password")}}</a>
               {% endif %}
           {% endif %}
         </div>

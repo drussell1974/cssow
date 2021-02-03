@@ -4,15 +4,16 @@ View Models
 import io
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception, handle_log_warning, handle_log_error
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
+
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
-    # TODO: #235 Rename to {ViewName}ViewModel
+    
     def __init__(self, db, top, auth_user):
         self.model = []
         self.db = db
@@ -26,7 +27,7 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
 
 
     def view(self, main_heading, sub_heading):
-
+        
         data = {
             "latest_schemes_of_work":self.model
         }
@@ -34,43 +35,12 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
         return ViewModel("", main_heading, sub_heading, data=data, error_message=self.error_message)
 
 
-class TopicGetOptionsListViewModel(BaseViewModel):
-    #TODO: #235 Rename to {ViewName}ViewModel
-    def __init__(self, db, topic_id, auth_user, lvl=2):
-        raise DeprecationWarning("no matching view")
-        self.model = TopicModel.get_options(db, topic_id=topic_id, auth_user=auth_user, lvl=lvl)
-
-
-class KeywordGetOptionsListViewModel(BaseViewModel):
-    # TODO: #235 Depracate not a matching View
-    def __init__(self, db, scheme_of_work_id, auth_user):
-        raise DeprecationWarning("no matching view")
-        self.model = KeywordModel.get_options(db, scheme_of_work_id, auth_user)
-
-
-class KeywordGetAllListViewModel(BaseViewModel):
-    #TODO: #235 Depracate not a matching View
-    def __init__(self, db, scheme_of_work_id, auth_user):
-        raise DeprecationWarning("no matching view")
-        self.model = KeywordModel.get_all(db, scheme_of_work_id,  auth_user)
-
-
-class KeywordGetModelViewModel(BaseViewModel):
-    #TODO: #235 Depracate not a matching View
-    def __init__(self, db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
-        raise DeprecationWarning("no matching view")
-        self.db = db
-        # get model
-        data = KeywordModel.get_model(self.db, keyword_id, scheme_of_work_id, auth_user)
-        self.model = data
-        
-
 class KeywordSaveViewModel(BaseViewModel):
-    #TODO: Rename or Depracate. No matching View
-    def __init__(self, db, model):
+    
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
         self.db = db
         self.model = model
-
+        self.auth_user = auth_user
 
     def execute(self, auth_user, published=1):
 

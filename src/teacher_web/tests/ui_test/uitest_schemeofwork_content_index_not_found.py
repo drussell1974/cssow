@@ -23,9 +23,9 @@ class uitest_schemeofwork_content_index_not_found(UITestCase):
 
     """ Test edit """
 
-    def test_page_should_redirect_to_404__if_scheme_of_work_id__does_not_exist(self):
+    def test_page_should_redirect_to_login_page__if_scheme_of_work_id__does_not_exist(self):
         # act        
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content".format(999999))
 
         # assert
-        self.assertCustom404("(id=0) (999999,) does not exist, is currrently unavailable or you do not have permission.")
+        self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")

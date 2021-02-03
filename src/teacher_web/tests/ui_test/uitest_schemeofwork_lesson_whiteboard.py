@@ -1,12 +1,13 @@
 from ui_testcase import UITestCase, WebBrowserContext
+from unittest import skip
 
-class test_schemeofwork_lesson_whiteboard(UITestCase):
+class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.try_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/whiteboard".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in("/schemesofwork/{}/lessons/{}/whiteboard".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
     def tearDown(self):
         pass
@@ -52,6 +53,3 @@ class test_schemeofwork_lesson_whiteboard(UITestCase):
         # assert
         self.assertEqual("Learning materials", elem.text)
         self.assertEqual(4, len(elems))
-
-
-

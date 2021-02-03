@@ -8,7 +8,7 @@ CREATE PROCEDURE keyword__publish (
  IN p_auth_user INT)
 BEGIN
 
-    UPDATE sow_keyword 
+    UPDATE sow_key_word	
     SET 
         published = p_published
     WHERE 

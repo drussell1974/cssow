@@ -10,7 +10,7 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         # setup
         #231: open a learning objective
         self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_learning_objective_id))
-
+        self.wait(s=2)
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -44,10 +44,9 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         
         #231: then click the stay button
         elem = self.test_context.find_element_by_id("cancelModalStayButton")
+        self.wait(s=2)
         elem.click()
         
-        self.wait(s=2)
-
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
@@ -64,14 +63,15 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         ' Open Modal '
 
         #231: click the cancel button
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
 
         ' click no (finding button appears to cancel dialog) '        
         
         #231: then click the continue button
-        elem = self.test_context.find_element_by_id("cancelModalContinueButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
+        self.wait(s=2)
         elem.click()
         
         self.wait(s=2)

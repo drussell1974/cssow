@@ -43,80 +43,13 @@
   </button>
   <div class="collapse navbar-collapse" id="sidebarResponsive">
     <div class="list-group">
-          
-      <section class="card widget widget--sidebar">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-heading">{{ _("This lesson") }}</h5>
-          </div>
-          <div class="card-text widget-main">
-            <ul class="navbar-nav flex-column fillspace">
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
-                    {{_("Learning objectives")}} <div class="small"></div>
-                  </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">
-                  {{_("Keywords")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item bg-light">
-                  <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id content.data.lesson_id %}">
-                    {{_("Resources")}} <div class="small"></div>
-                  </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
 
-      <section class="card widget widget--sidebar">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
-          </div>
-          <div class="card-text widget-main">
-            <ul class="navbar-nav flex-column fillspace">
-              <li class="nav-item bg-light">
-                <a class="nav-link" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
-                  {{_("Lessons")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
-                  {{_("Keywords")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
-                    {{_("Curriculum")}} <div class="small"></div>
-                  </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      {% include '_partials/widget.sidebar.this-lesson.html'  %}        
 
-      <section class="card widget widget-sidenav d-none d-lg-block">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-title">{{_("Other lessons")}}</h5>
-          </div>
-          <div class="card-text">
-            <ul class="navbar-nav flex-column fillspace">
-              {% for opt in content.data.lesson_options %}
-              <li class="nav-item {% if opt.id == content.data.lesson_id %}bg-light{% endif %}">
-                  <a class="nav-link" href="{% url 'resource.index' content.data.scheme_of_work_id opt.id %}" id="nav-link-lesson-{{opt.id}}">
-                    {{ opt.title }} <div class="small">{{ opt.key_stage_name}}</div>
-                  </a>
-              </li>
-            {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </section>
+      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %}
 
+      {% include '_partials/widget.sidebar.other-lessons.html'  %}
+      
     </div>
   </div>
 </nav>
@@ -150,14 +83,15 @@
   {% for row in content.data.resources %}
     <div class="post-preview {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
-      <a class="edit" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
         <h3 class="post-title">
-          <i class="fa {{row.type_icon}}"></i> {{ row.title }}
+          <i class="fa {{ row.type_icon }}"></i>
+          <a class="edit float-right" href="{% url 'resource.edit' content.data.scheme_of_work_id content.data.lesson_id row.id %}">
+            <i class="far fa-edit"></i> 
+          </a> {{ row.title }}
         </h3>
         <h4 class="post-subtitle">
             {{ row.publisher }}
         </h4>
-      </a>
       <p class="post-meta">{{_("Created by")}}
         <a href="#">{{ row.created_by_name }}</a> on {{ row.created }}
         {% if request.user.is_authenticated %}

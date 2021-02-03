@@ -12,7 +12,7 @@ class KeywordsListViewSet(APIView):
     ''' API endpoint for list of keywords '''
     def get (self, request, scheme_of_work_id):
 
-        keywords = KeywordGetOptionsListViewModel(db, scheme_of_work_id, auth_user_id(request))
+        keywords = KeywordGetOptionsListViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
          
         return JsonResponse({"keywords": keywords.model }, safe = False)
 
@@ -21,7 +21,7 @@ class RelatedTopicsListViewSet(APIView):
     ''' API endpoint for list of related topics '''
     def get (self, request, topic_id):
 
-        topics_view = TopicGetOptionsListViewModel(db, topic_id, auth_user_id(request))
+        topics_view = TopicGetOptionsListViewModel(db=db, topic_id=topic_id, auth_user=auth_user_id(request))
 
         return JsonResponse({"related-topics": topics_view.model}, safe = False)
     

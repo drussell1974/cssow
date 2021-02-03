@@ -6,7 +6,7 @@ from django.http import Http404
 
 from app.learningobjectives.viewmodels import LearningObjectiveGetModelViewModel as ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 
@@ -31,7 +31,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db, 99, lesson_id=19, scheme_of_work_id=84, auth_user=99)
+                self.viewmodel = ViewModel(db=db, learning_objective_id=99, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -51,7 +51,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, 56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
+            self.viewmodel = ViewModel(db=db, learning_objective_id=56, lesson_id=19, scheme_of_work_id=84, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()

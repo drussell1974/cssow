@@ -41,7 +41,7 @@ class apitest_schemeofwork__get(APITestCase):
 
 
     def test__should_have_number_of_lessons(self):
-        self.assertEqual(26, self.payload["schemeofwork"]["number_of_lessons"])
+        self.assertEqual(25, self.payload["schemeofwork"]["number_of_lessons"])
 
 
     def test__should_have_number_of_learning_objectives(self):
@@ -49,4 +49,4 @@ class apitest_schemeofwork__get(APITestCase):
 
 
     def test__should_have_keywords(self):
-        self.assertEqual(162, self.payload["schemeofwork"]["number_of_keywords"])
+        self.assertEqual(155, self.payload["schemeofwork"]["number_of_keywords"])

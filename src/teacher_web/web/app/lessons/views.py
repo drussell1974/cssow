@@ -7,7 +7,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning, handle_log_info
+from shared.models.core.log_handlers import handle_log_warning, handle_log_info
+from shared.models.enums.permissions import LESSON
+from shared.models.decorators.permissions import min_permission_required, unauthorise_request
 from shared.view_model import ViewModel
 # view models
 from shared.models.cls_lesson import LessonModel, try_int
@@ -17,12 +19,14 @@ from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonGetModelViewModel
 
 from datetime import datetime
 
 # Create your views here.        
-def index(request, scheme_of_work_id):
+
+@min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def index(request, scheme_of_work_id, lesson_id = 0):
     """ Get lessons for scheme of work """
     
     # default pager settings
@@ -35,12 +39,13 @@ def index(request, scheme_of_work_id):
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user=auth_user_id(request))
+    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_id(request))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
@@ -54,7 +59,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         
         if lesson_id > 0:
             #253 check user id
-            get_lesson_view = LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+            get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
             model = get_lesson_view.model
     
         # handle copy
@@ -90,7 +95,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db, model, auth_user=auth_user_id(request))
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
         try:
             modelviewmodel.execute(published)
@@ -106,7 +111,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
                 
                 return HttpResponseRedirect(redirect_to_url)
             else:
-                handle_log_warning(db, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
+                handle_log_warning(db, scheme_of_work, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
         
         except Exception as e:
             error_message = e
@@ -140,13 +145,14 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
 
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def publish(request, scheme_of_work_id, lesson_id):
     ''' Publish the lesson '''
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    publishlesson_view = LessonPublishViewModel(db, auth_user_id(request), lesson_id)
+    LessonPublishViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     # check for null and 404
 
@@ -156,24 +162,26 @@ def publish(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
-    
+
+    raise DeprecationWarning("remove if not longer in use")
+
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    modelviewmodel = LessonDeleteViewModel(db, auth_user_id(request), lesson_id)
+    LessonDeleteViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
 
-#TODO: #234 add permission
-#@permission_required('cssow.view_whiteboard_lessonmodel', login_url='/accounts/login/')
+@unauthorise_request
 def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
     #253 check user id
-    get_lesson_view =  LessonGetModelViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     model = get_lesson_view.model
 
     data = {
@@ -187,45 +195,11 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
-def initialise_keywords(request, scheme_of_work_id):
-    
-    raise DeprecationWarning("Not longer used.")
-
-    # default pager settings
-    
-    if page == 0:
-        page = settings.PAGER["default"]["page"]
-    pagesize = settings.PAGER["default"]["pagesize"]
-    pagesize_options = settings.PAGER["default"]["pagesize_options"]
-
-    #253 check user id
-    lessons = LessonIndexViewModel(db, request, scheme_of_work_id, page, pagesize, pagesize_options, auth_user=auth_user_id(request))
-
-
-    scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id(request))
-    #253 check user id
-    schemeofwork_options = LessonModel.get_options(db, scheme_of_work_id, auth_user=auth_user_id(request))
-    
-    data = {
-        "scheme_of_work_id":int(scheme_of_work_id),
-        "schemeofwork_options": schemeofwork_options,
-        "lessons": lessons,
-        "topic_name": "",
-    }
-
-    view_model = ViewModel("scheme_of_work_name", "scheme_of_work_name", "Lessons", data=data)
-    
-    return render(request, "lessons/index.html", view_model.content)
-
-
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
+    LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
 
-    #235 Create ViewModel
-    #253 check user id
-    LessonDeleteUnpublishedViewModel(db, scheme_of_work_id, auth_user_id(request))
-
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("lesson.index", args=[scheme_of_work_id]))

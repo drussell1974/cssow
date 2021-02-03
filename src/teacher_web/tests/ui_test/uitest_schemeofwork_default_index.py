@@ -6,8 +6,7 @@ class uitest_schemeofwork_default_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri)
-        self.test_context.implicitly_wait(4)
+        self.do_log_in(self.root_uri, wait=2)
 
 
     def tearDown(self):
@@ -36,20 +35,14 @@ class uitest_schemeofwork_default_index(UITestCase):
     def test_page__show_published_and_owned_latest_schemesofwork(self):
         # setup
         self.do_log_in(redirect_to_uri_on_login="{}/schemesofwork".format(self.root_uri))
+        self.wait(s=2)
+        
+        # act
 
         section = self.test_context.find_elements_by_class_name('post-preview')
 
-        # test
         result = len(section)
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
         self.assertEqual(3, result, "number of elements not as expected")
-
-
-
-
-
-
-
-

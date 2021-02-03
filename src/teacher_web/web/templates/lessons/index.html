@@ -33,53 +33,12 @@
   </button>
   <div class="collapse navbar-collapse" id="sidebarResponsive">
     <div class="list-group">
-                  
-      <section class="card widget widget--sidebar">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-heading">{{ _("This scheme of work") }}</h5>
-          </div>
-          <div class="card-text widget-main">
-            <ul class="navbar-nav flex-column fillspace">
-              <li class="nav-item">
-                  <a class="nav-link bg-light" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
-                    {{_("Lessons")}} <div class="small"></div>
-                  </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'keywords.index' content.data.scheme_of_work_id %}">
-                  {{_("Keywords")}} <div class="small"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'content.index' content.data.scheme_of_work_id %}">
-                    {{_("Curriculum")}} <div class="small"></div>
-                  </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
 
-      <section class="card widget widget--sidebar d-none d-lg-block">
-        <div class="card-body">
-          <div class="card-header widget-header">
-            <h5 class="card-heading">{{_("Other schemes of work")}}</h5>
-          </div>
-          <div class="card-text widget-main">
-            <ul class="navbar-nav flex-column fillspace">
-              {% for opt in content.data.schemeofwork_options %}
-                <li class="nav-item {% if opt.id == scheme_of_work_id %}bg-light{% endif %}">
-                    <a class="nav-link" href="{% url 'lesson.index' opt.id %}">
-                      {{ opt.name}} <div class="small">{{ opt.key_stage_name}}</div>
-                    </a>
-                </li>
-              {% endfor %}
-            </ul>
-            <hr>
-          </div>
-        </div>
-      </section>
+      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %}
+
+      {% include '_partials/widget.sidebar.other-schemesofwork.html' %}
+      
+      {% include '_partials/widget.sidebar.administrator.html' %}  
       
     </div>
   </div>
@@ -127,7 +86,6 @@
   {% for row in content.data.lessons %} 
   <div class="post-preview {{ row.published_state }}">
     <a name="{{row.id}}"></a>
-    <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
       <div class="float-right card">
         <div class="card-body">
         <h5 class="small text-muted">Lesson {{ row.order_of_delivery_id }}</h5>  
@@ -135,12 +93,14 @@
       </div>
       </div>
       <h3 class="post-title">
+        <a class="edit" href="{% url 'lesson.edit' row.scheme_of_work_id row.id %}?return={{request.url}}">    
+          <i class="far fa-edit"></i>
+        </a>
         {{ row.title }}
-      </h3>   
+      </h3>
       {% if row.summary != "" %}
         <h4 class="post-subtitle">{{ row.summary }}</h4>
       {% endif %}
-    </a>
     <div class="badge-group">
       {% for key_word in row.key_words %}
         <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}">{{ key_word.term }}</button>&nbsp;

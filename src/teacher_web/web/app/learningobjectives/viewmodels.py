@@ -1,7 +1,7 @@
 import json
 from django.http import Http404
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_solotaxonomy import SoloTaxonomyModel
@@ -64,7 +64,6 @@ class LearningObjectiveIndexViewModel(BaseViewModel):
 
 class LearningObjectiveGetModelViewModel(BaseViewModel):
 
-    #248 Add parameters
     def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
@@ -78,11 +77,12 @@ class LearningObjectiveGetModelViewModel(BaseViewModel):
 
 class LearningObjectiveEditViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
-        self.model = data
+        self.scheme_of_work_id = scheme_of_work_id
+        self.model = model
 
 
     def execute(self, published):
@@ -92,20 +92,20 @@ class LearningObjectiveEditViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving learning objective", "learning objective is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving learning objective", "learning objective is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
         return self.model
 
 
 class LearningObjectiveDeleteUnpublishedViewModel(BaseViewModel):
 
-    def __init__(self, db, lesson_id, auth_user):
-        data = Model.delete_unpublished(db, lesson_id, auth_user)
+    def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
+        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
         self.model = data
 
 
 class LearningObjectivePublishModelViewModel(BaseViewModel):
 
-    def __init__(self, db, learning_objective_id, scheme_of_work_id, auth_user):
+    def __init__(self, db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
         data = Model.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
         self.model = data

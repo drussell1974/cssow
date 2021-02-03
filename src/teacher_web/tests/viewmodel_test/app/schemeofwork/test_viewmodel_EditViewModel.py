@@ -7,8 +7,6 @@ from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_keyword import KeywordModel
 
-#Serializer = test_context.KeywordModelSerializer
-
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -19,6 +17,7 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
+    
     def test_execute_called_save__add_model_to_data(self):
         
         # arrange
@@ -31,6 +30,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "department_id": 68,
                     "lesson_id": 230
                 }
 
@@ -43,8 +43,9 @@ class test_viewmodel_EditViewModel(TestCase):
 
             # act
 
-            test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
-                        
+            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+            test_context.model.key_words.clear()
+            
             # assert 
 
             self.assertEqual("", test_context.error_message)
@@ -57,6 +58,7 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual([], test_context.model.key_words)
 
 
+    
     def test_execute_called_save__add_model_to_data__with_keywords(self):
         
         # arrange
@@ -68,6 +70,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "department_id": 67,
                     "lesson_id": 230
                 }
 
@@ -88,7 +91,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
                 
                 # assert 
                 self.assertEqual("", test_context.error_message)
@@ -99,6 +102,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual("Proin id massa metus. Aliqua tinciduntx.", test_context.model.name)
 
 
+    
     def test_execute_called_save__add_model_to_data__return_invalid(self):
          
         # arrange
@@ -112,6 +116,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "exam_board_id": 0,
                     "key_stage_id": 3,
                     "lesson_id": 0,
+                    "department_id": 56,
                     "key_words":  '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
                 }
 
@@ -129,7 +134,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(mock_db, mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
 
                 # assert 
 

@@ -2,7 +2,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 from selenium.webdriver.support.select import Select
 
-class uitest_schemeofwork_resource_edit_existing(UITestCase):
+class uitest_schemeofwork_resources_edit_existing(UITestCase):
 
     test_context = WebBrowserContext()
 

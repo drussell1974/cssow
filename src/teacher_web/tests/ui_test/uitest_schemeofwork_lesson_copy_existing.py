@@ -8,8 +8,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.test_path = '/schemesofwork/{}/lessons/{}/copy'.format(self.test_scheme_of_work_id, self.test_lesson_id)
-        self.do_log_in(self.root_uri + self.test_path)
+        self.do_log_in('/schemesofwork/{}/lessons/{}/copy'.format(self.test_scheme_of_work_id, self.test_lesson_id))
 
         self.wait(s=2)
 
@@ -27,7 +26,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST@LOCALHOST')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST USER')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")

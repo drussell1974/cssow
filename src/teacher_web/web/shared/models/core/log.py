@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from .db_helper import ExecHelper, sql_safe
+from shared.models.core.db_helper import ExecHelper, sql_safe
 import logging # django logging
 from django.conf import settings
 from .log_type import LOG_TYPE
@@ -24,14 +24,14 @@ class Log:
         self.logging_level = log_level_setting
 
 
-    def write(self, msg, details, log_type, category = "", subcategory = ""):
+    def write(self, scheme_of_work_id, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
         
         if (self.logging_level % log_type) == 0:
             
             # write to sql custom log table
             
-            self._write_to_sql(msg, log_type, details, category, subcategory)
+            self._write_to_sql(msg, log_type, scheme_of_work_id, details, category, subcategory)
             
             # write to the django log
             
@@ -48,7 +48,7 @@ class Log:
                 self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
-    def _write_to_sql(self, msg, event_type, details="", category = "", subcategory = ""):
+    def _write_to_sql(self, msg, scheme_of_work_id, event_type, details="", category = "", subcategory = ""):
         """ inserts the detail into the sow_logging table """
         if settings.LOG_TO_SQL == True:
             try:
@@ -58,7 +58,7 @@ class Log:
 
                 # NOTE: limit values to prevent stored proecudure failing
                 
-                params =  (msg[0:199], details, int(event_type), category[0:69], subcategory[0:69])
+                params =  (scheme_of_work_id, msg[0:199], details, int(event_type), category[0:69], subcategory[0:69])
                 
                 execHelper.insert(self.db, str_insert, params)
 
@@ -86,28 +86,3 @@ class Log:
         """
         if settings.LOG_TO_CONSOLE == True:
             print("\n{}message:'{}', details: {}{}".format(style, msg, details, CONSOLE_STYLE.ENDC))
-
-
-def handle_log_verbose(db, msg, details = "", log_type = LOG_TYPE.Verbose):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, details, log_type)
-    
-    
-def handle_log_info(db, msg, details = "", log_type = LOG_TYPE.Information):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, details, log_type)
-    
-
-def handle_log_warning(db, msg, details = "", log_type = LOG_TYPE.Warning):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, details, log_type)
-
-    
-def handle_log_error(db, msg, details = "", log_type = LOG_TYPE.Error):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, details, log_type)
-
-
-def handle_log_exception(db, msg, ex, log_type = LOG_TYPE.Error):
-    logger = Log(db, settings.LOGGING_LEVEL)
-    logger.write(msg, "{}".format(ex), log_type)

@@ -10,7 +10,7 @@ A django web application for administering computer science schemes of work and 
 
 A. Python
 ---------
-apt-get install python3
+apt-get install python3.7
 apt-get install python3-pip
 
 B. Yarn
@@ -70,6 +70,10 @@ Unit tests
 or everything
 
 > yarn test:all
+
+Test on commit - see package.json for solution
+
+> yarn add husky
 
 Create and Publish Deployment
 -----------------------------

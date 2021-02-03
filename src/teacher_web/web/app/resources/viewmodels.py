@@ -2,14 +2,14 @@ import json
 from django.http import Http404
 from django.urls import reverse
 from rest_framework import serializers, status
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
-class ResourceGetAllViewModel(BaseViewModel):
+class ResourceIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
@@ -41,7 +41,7 @@ class ResourceGetAllViewModel(BaseViewModel):
             raise e
 
         except Exception as e:
-            handle_log_exception(self.db, "An error occured viewing resources", e)
+            handle_log_exception(self.db, scheme_of_work_id, "An error occured viewing resources", e)
             self.error_message = repr(e)
             raise e
 
@@ -56,10 +56,6 @@ class ResourceGetAllViewModel(BaseViewModel):
         }
 
         return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, data=data, active_model=self.lesson, error_message=self.error_message)
-
-
-
-
 
 
 class ResourceGetModelViewModel(BaseViewModel):
@@ -98,7 +94,7 @@ class ResourceGetModelViewModel(BaseViewModel):
 
         except Exception as e:
             self.error_message = repr(e)
-            handle_log_exception(db, "An error occurred viewing resources", e)
+            handle_log_exception(db, scheme_of_work_id, "An error occurred viewing resources", e)
             #TODO: REMOVE swallow up and handle on form
             raise e
 
@@ -119,11 +115,13 @@ class ResourceGetModelViewModel(BaseViewModel):
 
 class ResourceSaveViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
-        self.model = data
+        self.scheme_of_work_id = scheme_of_work_id
+        self.lesson_id = lesson_id
+        self.model = model
 
 
     def execute(self, published):
@@ -133,7 +131,7 @@ class ResourceSaveViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
         return self.model
 

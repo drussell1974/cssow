@@ -13,7 +13,8 @@ BEGIN
         kw.definition as definition,
         kw.scheme_of_work_id as scheme_of_work_id,
         kw.published as published,
-        count(lkw.lesson_id) as number_of_lessons
+        count(lkw.lesson_id) as number_of_lessons, 
+        kw.created
     FROM 
         sow_key_word as kw 
         LEFT JOIN sow_lesson__has__key_words as lkw ON lkw.key_word_id = kw.id

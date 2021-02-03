@@ -40,6 +40,8 @@ INTERNAL_IPS = [
 
 # Application definition
 
+
+
 INSTALLED_APPS = [
     'app.default',
     'shared.models',
@@ -64,7 +66,6 @@ MIDDLEWARE = [
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
-
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
@@ -188,8 +189,8 @@ MARKDOWN_TYPE_ID = 10
 # Information = 4
 # Warning = 2
 # Error = 1
-LOGGING_LEVEL = 1
-LOG_TO_SQL = True
+LOGGING_LEVEL = 2
+LOG_TO_SQL = False
 LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
 
@@ -211,3 +212,5 @@ PAGER = {
 }
 
 STUDENT_WEB__WEB_SERVER_WWW = os.environ['STUDENT_WEB__WEB_SERVER_WWW']
+
+ACTIONS_DISABLED = os.environ['TEACHER_WEB__ACTIONS_DISABLED'].split(",")

@@ -35,6 +35,28 @@
         </div>
         <div class="control-group">
             <div class="form-group controls">
+                <label>{{_("Description")}}</label>
+                <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" value="{{content.data.scheme_of_work.description}}" />
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Department")}}</label>
+                <select class="form-control" name="department_id" id="ctl-department_id">
+                    {% for opt in content.data.department_options %}
+                        {% if opt.id == content.data.scheme_of_work.department_id %}
+                            <option value="{{opt.id}}" selected>{{opt.name}}</option>
+                        {% else %}
+                            <option value="{{opt.id}}">{{opt.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>        
+        <div class="control-group">
+            <div class="form-group controls">
                 <label>{{_("Exam board")}}</label>
                 <select class="form-control" name="exam_board_id" id="ctl-exam_board_id">
                     <option value="">- {{_("Select an option")}}</option>
@@ -62,13 +84,6 @@
                         {% endif %}
                     {% endfor %}
                 </select>
-                <div class="help-block text-danger invalid-feedback"></div>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="form-group controls">
-                <label>{{_("Description")}}</label>
-                <input type="text" class="form-control" name="description" placeholder="{{_('Enter a description')}}" id="ctl-description" maxlength="1500" value="{{content.data.scheme_of_work.description}}" />
                 <div class="help-block text-danger invalid-feedback"></div>
             </div>
         </div>

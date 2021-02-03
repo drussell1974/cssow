@@ -33,6 +33,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual("", test.exam_board_name, "exam_board_name should be ''")
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
+        self.assertEqual(0, test.department_id)
+        self.assertEqual("", test.department_name)
         self.assertTrue(test.published)
         self.assertFalse(test.is_recent)
         self.assertFalse(test.is_valid, "is_valid should be False")
@@ -48,6 +50,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
                                  exam_board_name="test exam board",
                                  key_stage_id=2,
                                  key_stage_name="test key stage",
+                                 department_id=3,
+                                 department_name="test department",
                                  published=0)
 
         # test
@@ -55,12 +59,14 @@ class Test_SchemeOfWork_Constructor(TestCase):
 
         # assert
         self.assertEqual(99, test.id)
-        self.assertEqual("test name", test.name, "name should be ''")
-        self.assertEqual("test description", test.description, "description should be ''")
-        self.assertEqual(1, test.exam_board_id, "exam_board_id should be 0")
-        self.assertEqual("test exam board", test.exam_board_name, "exam_board_name should be ''")
-        self.assertEqual(2, test.key_stage_id, "key_stage_id should be 0")
-        self.assertEqual("test key stage", test.key_stage_name, "key_stage_name should be ''")
-        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertEqual("test name", test.name)
+        self.assertEqual("test description", test.description)
+        self.assertEqual(1, test.exam_board_id)
+        self.assertEqual("test exam board", test.exam_board_name)
+        self.assertEqual(2, test.key_stage_id)
+        self.assertEqual("test key stage", test.key_stage_name)
+        self.assertEqual(3, test.department_id)
+        self.assertEqual("test department", test.department_name)
+        self.assertTrue(test.is_valid)
         self.assertFalse(test.is_recent)
         self.assertFalse(test.published)

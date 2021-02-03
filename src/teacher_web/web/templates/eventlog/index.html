@@ -13,7 +13,7 @@
   </header>
   <!-- Pager Header END -->
 
-    <form id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' %}#main">
+    <form id="form" method="post" class="needs-validation" action="{% url 'eventlog.index' content.data.scheme_of_work_id %}#main">
       {% csrf_token %}
 
       <div class="form-group controls row stackable-group stackable-group-sm">
@@ -100,7 +100,7 @@
     <footer class="widget widget--articlefooter">
       {% if request.user.is_superuser %}
       <div class="row float-right">
-        <form action="{% url 'eventlog.delete' %}" method="POST" class="needs-validation">
+        <form action="{% url 'eventlog.delete' content.data.scheme_of_work_id %}" method="POST" class="needs-validation">
           {% csrf_token %}
           <div class="form-group ">
             <div class="control-group controls row">

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe, to_empty
-from shared.models.core.log import handle_log_info
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
-
+from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -16,7 +16,7 @@ class SchemeOfWorkModel(BaseModel):
     number_of_keywords = 0
     key_words = []
     
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.name = name
@@ -25,9 +25,12 @@ class SchemeOfWorkModel(BaseModel):
         self.exam_board_name = exam_board_name
         self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
+        self.department_id = try_int(department_id)
+        self.department_name = department_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
+        self.teacher_permissions = []
 
 
     @property
@@ -49,6 +52,8 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
+        # Validate key stage
+        self._validate_required_integer("department_id", self.department_id, 1, BaseModel.MAX_INT)
 
         self.on_after_validate()
 
@@ -69,7 +74,10 @@ class SchemeOfWorkModel(BaseModel):
         if self.exam_board_name is not None:
             self.exam_board_name = sql_safe(self.exam_board_name)
 
-   
+        if self.department_name is not None:
+            self.department_name = sql_safe(self.department_name)
+
+
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
         rows = SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
@@ -82,10 +90,12 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    created=row[7],                                                                                                                                                                                                                         
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10])
+                                    department_id=row[7],
+                                    department_name=row[8],
+                                    created=row[9],                                                                                                                                                                                                                         
+                                    created_by_id=row[10],
+                                    created_by_name=row[11],
+                                    published=row[12])
 
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
@@ -111,10 +121,12 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    created=row[7],
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10])
+                                    department_id=row[7],
+                                    department_name=row[8],
+                                    created=row[9],
+                                    created_by_id=row[10],
+                                    created_by_name=row[11],
+                                    published=row[12])
 
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
@@ -208,7 +220,9 @@ class SchemeOfWorkModel(BaseModel):
         rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2]), row[3], row[4]))
+            model = KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4])
+            model.created = row[5]
+            data.append(model)
         return data
 
 
@@ -221,7 +235,7 @@ class SchemeOfWorkModel(BaseModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user, is_authorised=True)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
 
@@ -312,6 +326,7 @@ class SchemeOfWorkDataAccess:
             model.description,
             model.exam_board_id,
             model.key_stage_id,
+            model.department_id,
             published,
             auth_user)
 
@@ -333,24 +348,27 @@ class SchemeOfWorkDataAccess:
             model.description,
             model.exam_board_id,
             model.key_stage_id,
-            model.created,model.
-            created_by_id,
+            model.department_id,
+            model.created,
+            model.created_by_id,
             published,
             auth_user)
     
         results = execHelper.insert(db, str_insert, params, handle_log_info)
         
-        model.id = results
+        if len(results) > 0:
+            model.id = results[0]
 
         return model
 
 
     @staticmethod
-    def _insert_as__teacher(db, model, auth_user):
+    def _insert_as__teacher(db, model, auth_user, is_authorised):
         execHelper = ExecHelper()
         
-        str_insert = "scheme_of_work__has__teacher__insert"
-        params = (model.id, auth_user)
+        str_insert = "scheme_of_work__has__teacher_permission__insert"
+        
+        params = (model.id, auth_user, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user, is_authorised)
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         

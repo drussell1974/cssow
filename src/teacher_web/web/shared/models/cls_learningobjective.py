@@ -3,7 +3,7 @@ from datetime import datetime
 from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 
 
 class LearningObjectiveModel (BaseModel):
@@ -233,8 +233,8 @@ class LearningObjectiveModel (BaseModel):
 
 
     @staticmethod
-    def delete_unpublished(db, lesson_id, auth_user):
-        return LearningObjectiveDataAccess.delete_unpublished(db, lesson_id, auth_user)
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
+        return LearningObjectiveDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
 
 
 class LearningObjectiveDataAccess:
@@ -363,14 +363,14 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, lesson_id, auth_user):
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
         """ Delete all unpublished learning objectives """
 
         execHelper = ExecHelper()
 
         str_delete = "lesson_learning_objective__delete_unpublished"
 
-        params = (lesson_id, auth_user)
+        params = (scheme_of_work_id, lesson_id, auth_user)
             
         row_count = execHelper.delete(db, str_delete, params, handle_log_info)        
         

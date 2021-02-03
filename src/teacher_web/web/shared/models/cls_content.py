@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .core.basemodel import BaseModel, BaseDataAccess, try_int
-from .core.db_helper import ExecHelper, sql_safe
-from .core.log import handle_log_info
+from .core.basemodel import BaseModel, try_int
+from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
+from shared.models.core.log_handlers import handle_log_info
 
 
 class ContentModel(BaseModel):
@@ -38,8 +38,6 @@ class ContentModel(BaseModel):
 
     def from_post(self, mvdict_obj):
         """ Transform multi-value dictionary to object """
-
-        #self.on__from_post(mvdict_obj)
 
         self.id = mvdict_obj["id"]
         self.description = mvdict_obj["description"]
@@ -110,6 +108,10 @@ class ContentModel(BaseModel):
                 model = ContentDataAccess._update(db, model, published, auth_user)
 
         return model
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
 
 
 class ContentDataAccess(BaseDataAccess):
@@ -225,4 +227,26 @@ class ContentDataAccess(BaseDataAccess):
 
         rows = execHelper.delete(db, stored_procedure, params, handle_log_info)
 
+        return rows
+
+
+    @staticmethod
+    def delete_unpublished(db, scheme_of_work_id, auth_user):
+        """ 
+        Delete all unpublished content 
+
+        :param db: the database context
+        :param scheme_of_work_id: the scheme of work identifier
+        :param auth_user: the user executing the command
+        :return: the rows
+        """
+
+        execHelper = ExecHelper()
+        
+        str_delete = "content__delete_unpublished"
+        params = (scheme_of_work_id, auth_user)
+        
+        rows = []
+        rows = execHelper.delete(db, str_delete, params, handle_log_info)
+        
         return rows

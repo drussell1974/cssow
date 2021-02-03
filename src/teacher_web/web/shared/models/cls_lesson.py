@@ -2,7 +2,7 @@
 from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
-from .core.log import handle_log_info, handle_log_error
+from shared.models.core.log_handlers import handle_log_info, handle_log_error
 from .utils.pager import Pager
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -162,7 +162,7 @@ class LessonModel (BaseModel):
         """ clean up properties by casting and ensuring safe for inserting etc """
 
         self.id = int(self.id)
-
+    
         if self.title is not None:
             self.title = sql_safe(self.title)
 
@@ -339,9 +339,9 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def get_by_keyword(db, key_word_id, scheme_of_work_id, auth_user, parent_only = True):
+    def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user, parent_only = True):
         rows = LessonDataAccess.get_by_keyword(db, 
-            key_word_id,
+            keyword_id,
             scheme_of_work_id, 
             auth_user)
 
@@ -394,7 +394,7 @@ class LessonModel (BaseModel):
         rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user)
         data = []
         for row in rows:
-            data.append(KeywordModel(row[0], row[1], to_empty(row[2]), row[3], row[4]))
+            data.append(KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4], created=row[5]))
         return data
 
 
@@ -459,8 +459,8 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
-    def publish(db, auth_user, lesson_id):
-        return LessonDataAccess.publish(db, auth_user, lesson_id)
+    def publish(db, auth_user, lesson_id, scheme_of_work_id):
+        return LessonDataAccess.publish(db, lesson_id, scheme_of_work_id, auth_user)
     
 
     @staticmethod
@@ -679,7 +679,7 @@ class LessonDataAccess:
         get lessons using this key word
 
         :param db:database context
-        :param key_word_id: the key word identifier
+        :param keyword_id: the key word identifier
         :param scheme_of_work_id: the scheme of work identifier
         :return: list of lessons for the key word
         """
@@ -933,7 +933,7 @@ class LessonDataAccess:
     @staticmethod
     def _upsert_key_words(db, model, results, auth_user):
         """ 
-        inserts sow_lesson__has__keywords if key_word_id does not exist in table
+        inserts sow_lesson__has__keywords if keyword_id does not exist in table
         :param db: the database context
         :param model: the lesson model
         :param results: results to be appended
@@ -979,7 +979,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def publish(db, id_, auth_user):
+    def publish(db, lesson_id, scheme_of_work_id, auth_user):
         """ 
         set the lesson to published state
 
@@ -991,7 +991,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         str_publish = "lesson__publish"
-        params = (id_, 1, auth_user)
+        params = (lesson_id, 1, auth_user)
         
         rval = []
         rval = execHelper.update(db, str_publish, params, rval)

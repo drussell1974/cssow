@@ -1,7 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_resource import ResourceModel as Model
 
 # create test context
@@ -72,6 +72,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
+        model.created = "2021-01-24 07:14:04"
 
         expected_result = (102,)
 
@@ -85,7 +86,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson_resource__insert'
-                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '', 0, 1, 99)
+                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, 99)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)

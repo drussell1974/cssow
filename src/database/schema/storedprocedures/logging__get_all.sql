@@ -3,6 +3,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS logging__get_all;
 
 CREATE PROCEDURE logging__get_all (
+ IN p_scheme_of_work_id INT,
  IN p_page INT,
  IN p_pagesize INT, 
  IN p_start DATETIME,
@@ -25,7 +26,8 @@ BEGIN
     FROM 
         sow_logging
     WHERE
-        event_type <= p_event_type 
+        event_type <= p_event_type
+        AND scheme_of_work_id = p_scheme_of_work_id
         AND created BETWEEN p_start AND p_end
         AND category LIKE CONCAT('%', p_category, '%')
         AND subcategory LIKE CONCAT('%', p_subcategory, '%')

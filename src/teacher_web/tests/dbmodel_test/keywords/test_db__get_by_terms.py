@@ -89,7 +89,7 @@ class test_db__get_by_terms(TestCase):
     
     def test__should_call_select___with__key_words_list__and__allow_all__True__return_single_item(self):
         # arrange
-        expected_result = [(702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2)]
+        expected_result = [(702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2, '2020-01-24 07:59.01')]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -115,9 +115,9 @@ class test_db__get_by_terms(TestCase):
     def test__should_call_select___with__key_words_list__and__allow_all__True__return_multiple_items(self):
         # arrange
         expected_result = [
-            (67, "Vestibulum", "nec arcu nec dolor vehicula ornare non.", 133, 1),
-            (68, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 133, 1),
-            (69, "Lorem", "rutrum a arcu ultrices, id mollis", 133, 2)
+            (67, "Vestibulum", "nec arcu nec dolor vehicula ornare non.", 133, 1, '2020-01-24 07:41.01'),
+            (68, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 133, 1, '2020-01-24 07:41.02'),
+            (69, "Lorem", "rutrum a arcu ultrices, id mollis", 133, 1, '2020-01-24 07:41.03')
         ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):

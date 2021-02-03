@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 
 delete_unpublished = KeywordModel.delete_unpublished
@@ -29,9 +29,9 @@ class test_db__deleteunpublished(TestCase):
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
-            with self.assertRaises(Exception):
+            with self.assertRaises(KeyError):
                 # act 
-                delete_unpublished(self.fake_db, 1)
+                delete_unpublished(self.fake_db, scheme_of_work_id=1, auth_user=6079)
 
 
     def test_should_call__delete(self):
@@ -40,7 +40,7 @@ class test_db__deleteunpublished(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = delete_unpublished(self.fake_db, 13, 123, auth_user=6079)
+            actual_result = delete_unpublished(self.fake_db, scheme_of_work_id=13, auth_user=6079)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,

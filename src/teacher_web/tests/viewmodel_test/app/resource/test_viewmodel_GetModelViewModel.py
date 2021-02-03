@@ -6,7 +6,7 @@ from django.http import Http404
 from app.resources.viewmodels import ResourceGetModelViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 
@@ -20,6 +20,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         pass
 
 
+    
     def test_init_called_fetch__no_return(self):
         
         # arrange
@@ -30,13 +31,14 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(self.fake_db, 99, lesson_id=12, scheme_of_work_id=934, auth_user=99)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=99, lesson_id=12, scheme_of_work_id=934, auth_user=99)
 
                 # assert functions was called
                 Model.get_model.assert_called()
                 self.assertEqual(0, len(self.viewmodel.model))
 
 
+    
     def test_init_called_fetch__single_row(self):
         
         # arrange
@@ -58,7 +60,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.mock_model = Mock()
 
                 # act
-                self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
             
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -67,7 +69,8 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
                 self.assertEqual("http://bbc.co.uk/xxou343hhYY", self.viewmodel.model.page_uri)
 
-    
+
+        
     def test_init_called_override_return_url(self):
         # arrange
         
@@ -89,7 +92,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.mock_model = Mock()
 
                 # act
-                self.viewmodel = ViewModel(self.fake_db, 34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=99)
                 
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -97,3 +100,4 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.assertEqual(34, self.viewmodel.model.id)
                 self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
                 self.assertEqual("/api/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)
+

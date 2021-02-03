@@ -2,7 +2,7 @@ import json
 from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
-from shared.models.core.log import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_keyword import KeywordModel
@@ -47,7 +47,7 @@ class LessonIndexViewModel(BaseViewModel):
             raise notfound        
         except Exception as e:
             self.error_message = repr(e)
-            handle_log_exception(db, "Error initialising LessonIndexViewModel", e)
+            handle_log_exception(db, scheme_of_work_id, "Error initialising LessonIndexViewModel", e)
             
 
     def view(self):
@@ -78,16 +78,29 @@ class LessonGetModelViewModel(BaseViewModel):
         self.model = model
 
 
+class LessonWhiteboardViewModel(BaseViewModel):
+    
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
+        self.db = db
+        # get model
+        model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+
+        #248 Http404
+        if lesson_id > 0:
+            if model is None or model.is_from_db == False:
+                self.on_not_found(model, lesson_id, scheme_of_work_id)
+
+        self.model = model
+
+
 class LessonEditViewModel(BaseViewModel):
 
-    def __init__(self, db, data, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user):
         
         self.db = db
         self.auth_user = auth_user
-
-        # assign data directly to the model
-
-        self.model = data
+        self.model = model
+        self.scheme_of_work_id = scheme_of_work_id
 
 
     def execute(self, published):
@@ -97,15 +110,16 @@ class LessonEditViewModel(BaseViewModel):
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:
-            handle_log_warning(self.db, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
 
         return self.model
 
 
 class LessonPublishViewModel(BaseViewModel):
 
-    def __init__(self, db, auth_user, lesson_id):
-        self.model = Model.publish(db, auth_user, lesson_id)
+
+    def __init__(self, db, auth_user, lesson_id, scheme_of_work_id):
+        self.model = Model.publish(db, auth_user, lesson_id, scheme_of_work_id)
     
 
 class LessonDeleteViewModel(BaseViewModel):
@@ -116,5 +130,5 @@ class LessonDeleteViewModel(BaseViewModel):
 
 class LessonDeleteUnpublishedViewModel(BaseViewModel):
     
-    def __init__(self, db, auth_user, lesson_id):
-        self.model = Model.delete_unpublished(db, auth_user, lesson_id)
+    def __init__(self, db, auth_user, scheme_of_work_id):
+        self.model = Model.delete_unpublished(db, auth_user=auth_user, scheme_of_work_id=scheme_of_work_id)

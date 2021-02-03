@@ -8,9 +8,17 @@ class uitest_registration_password_reset_cancel(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
+        # ensure test user is logged out for this test
+
+        try:
+            elem = self.test_context.find_element_by_id("btn-logout")
+            elem.click()
+        except:
+            pass # ignore errors as may already be logged out
+        
+        
         self.test_path = "/accounts/password_reset"
         self.test_context.get(self.root_uri + self.test_path)
-
         self.test_context.implicitly_wait(4)
 
 
@@ -34,7 +42,12 @@ class uitest_registration_password_reset_cancel(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-        ' Open Modal '
+        ' enter something before cancelling '
+        elem = self.test_context.find_element_by_id("id_email")
+        elem.clear()
+        elem.send_keys("test@loca...")
+
+        ' cancel '
 
         elem = self.test_context.find_element_by_id("cancelButton")
         elem.click()

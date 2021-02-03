@@ -2,13 +2,15 @@
 <input type="hidden" name="validation_errors" value="{{ content.validation_errors }}" id="hdn-validation_errors" />
 
 {% if content.validation_errors %}
-    <ul class="list-group alaert alert-danger">
+<div class="border-bottom rounded">
+    <ul class="list-group">
         {% for key, value in content.validation_errors.items %}
-            <li class="list-group-item strong"> 
-                <small>{{ key }}: {{ value }}</small>
-            </li>
+            <li class="list-group-item strong bg-danger"> 
+                <small class="text-white">{{ key }}: {{ value }}</small>
+            </li>   
         {% endfor %}
     </ul>
+</div>
 {% endif %}
 
 <!-- BUTTONS -->

@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from django.conf import settings
-from .core.log import handle_log_info
-from shared.models.core.basemodel import BaseModel, BaseDataAccess
+from shared.models.core.log_handlers import handle_log_info
+from shared.models.core.basemodel import BaseModel
+from shared.models.core.db_helper import BaseDataAccess
 from shared.models.utils.pager import Pager
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.db_helper import ExecHelper
@@ -53,17 +54,19 @@ class EventLogModel(BaseModel):
 
 
     @staticmethod
-    def get_all(db, search_criteria, auth_user):
+    def get_all(db, scheme_of_work_id, search_criteria, auth_user):
 
-        rows = EventLogDataAccess.get_all(db, 
-            search_criteria.page, 
-            search_criteria.pagesize,
-            search_criteria.date_from, 
-            search_criteria.date_to, 
-            search_criteria.event_type,  
-            search_criteria.category,  
-            search_criteria.subcategory,  
-            auth_user)
+        rows = EventLogDataAccess.get_all(
+            db=db, 
+            scheme_of_work_id=scheme_of_work_id, 
+            page=search_criteria.page, 
+            pagesize=search_criteria.pagesize, 
+            date_from=search_criteria.date_from, 
+            date_to=search_criteria.date_to, 
+            event_type=search_criteria.event_type, 
+            category=search_criteria.category, 
+            subcategory=search_criteria.subcategory, 
+            auth_user=auth_user)
         
         data = []
         for row in rows:
@@ -75,20 +78,20 @@ class EventLogModel(BaseModel):
 
 
     @staticmethod
-    def delete(db, older_than_n_days, auth_user):
-        res = EventLogDataAccess.delete(db, older_than_n_days, auth_user)
+    def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
+        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user)
         return res
 
 
 class EventLogDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_all(db, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
+    def get_all(db, scheme_of_work_id, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
-        params = (page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
+        params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
@@ -97,12 +100,12 @@ class EventLogDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete(db, older_than_n_days, auth_user):
+    def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         
-        params = (older_than_n_days, auth_user)
+        params = (scheme_of_work_id, older_than_n_days, auth_user)
         
         rows = []
         rows = execHelper.delete(db, "logging__delete", params, handle_log_info)

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_resource import ResourceModel as Model, handle_log_info
 
 publish_item = Model.publish_item
@@ -44,7 +44,7 @@ class test_db__publish_item(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = publish_item(self.fake_db, model, 78, 99)
+            actual_result = publish_item(self.fake_db, model.id, 78, 99)
             
             # assert
 

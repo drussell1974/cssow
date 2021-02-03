@@ -1,3 +1,4 @@
+
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 
@@ -5,6 +6,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
@@ -17,6 +19,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         pass
 
 
+    
     def test_should_call_delete_unpublished(self):
         
         # arrange
@@ -29,7 +32,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=99)
 
             # assert functions was called
             Model.delete_unpublished.assert_called()

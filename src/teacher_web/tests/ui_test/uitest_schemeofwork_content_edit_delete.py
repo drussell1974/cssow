@@ -8,8 +8,6 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
     test_context = WebBrowserContext()
     
     def setUp(self):
-        #self.test_context.implicitly_wait(10)
-        
         # setup
 
         self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content/new".format(self.test_scheme_of_work_id))
@@ -55,7 +53,7 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        self.delete_unpublished_item(".unpublished .edit .post-title")
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit")
         
         self.wait(s=2)
 

@@ -106,7 +106,6 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.assertEqual("/api/schemesofwork/90/lessons/18/resources/456/markdown/TESTME.md", self.viewmodel.model["page_uri"])
 
 
-    @skip("Not implemented")
     def test_init_called_fetch__return_page_uri_for_non_markdown_document(self):
         
         # arrange

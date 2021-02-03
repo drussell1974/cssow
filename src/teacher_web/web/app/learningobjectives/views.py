@@ -4,7 +4,8 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-
+from shared.models.enums.permissions import LESSON
+from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 
@@ -26,33 +27,34 @@ from shared.models.cls_examboard import ExamBoardModel
 from shared.models.core.basemodel import try_int
 from shared.models.core import validation_helper
 from shared.models.core.django_helper import auth_user_id
-from shared.models.core.log import handle_log_warning
+from shared.models.core.log_handlers import handle_log_warning
 
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel
 
-
+@min_permission_required(LESSON.VIEWER, login_url="/accounts/login")
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
     #253 check user id
-    learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db, lesson_id, scheme_of_work_id, auth_user_id(request))
+    learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     
     return render(request, "learningobjectives/index.html", learningobjectivesviewmodel.view().content)
 
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def new(request, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
 
     # check if an existing_learning_objective_id has been passed
      
-    #253 check user id
-    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db, 0, scheme_of_work_id, lesson_id, auth_user_id(request))
+    #253 check user id 
+    get_lessonobjective_view = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=0, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
     model = get_lessonobjective_view.model
     
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -95,6 +97,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 
 @permission_required('cssow.change_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
     ''' Edit an existing learning objective '''
     
@@ -102,7 +105,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         ## GET request from client ##
     
         #253 check user id
-        get_model_viewmodel = LearningObjectiveGetModelViewModel(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id(request))
+        get_model_viewmodel = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=learning_objective_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
         model = get_model_viewmodel.model
 
 
@@ -129,7 +132,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
         redirect_to_url = ""
 
         #253 check user id
-        viewmodel = LearningObjectiveEditViewModel(db, model, auth_user_id(request))
+        viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
         
         viewmodel.execute(int(request.POST["published"]))
         model = viewmodel.model
@@ -143,11 +146,11 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
             return HttpResponseRedirect(redirect_to_url)
         else:
-            handle_log_warning(db, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
+            handle_log_warning(db, self.scheme_of_work_id, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
             
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db, int(lesson_id), scheme_of_work_id, auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -192,6 +195,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
 
@@ -216,7 +220,7 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     redirect_to_url = ""
 
     #253 check user id
-    viewmodel = LearningObjectiveEditViewModel(db, model, auth_user_id(request))
+    viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
     
     model = viewmodel.model
 
@@ -236,32 +240,27 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
     else:
         """ redirect back to page and show message """
         
-        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
+        request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors)
         redirect_to_url = reverse('learningobjective.edit', args=(scheme_of_work_id,lesson_id,learning_objective_id))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    redirect_to_url = request.META.get('HTTP_REFERER')
+    LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user_id(request))
 
-    #253 check user id
-    LearningObjectiveDeleteUnpublishedViewModel(db, lesson_id, auth_user_id(request))
-
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
-    #231: published item     
-    redirect_to_url = request.META.get('HTTP_REFERER')
+    
+    LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_user_id(request))
 
-    #253 check user id
-    LearningObjectivePulishModelViewModel(db, learning_objective_id, auth_user_id(request))
-
-    # redirect
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))

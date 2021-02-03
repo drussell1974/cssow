@@ -1,7 +1,7 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.core.log import handle_log_info
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
 
@@ -144,6 +144,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, "")
+        model.created = '2021-01-24 07:18:18.677084'
         
 
         # mock functions not being tested    
@@ -165,7 +166,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson__insert'
-                , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '')
+                , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '2021-01-24 07:18:18.677084')
                 , handle_log_info)
 
             # check subsequent functions where called

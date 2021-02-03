@@ -26,8 +26,7 @@
     "test": "jest --coverage",
     "start:dev": "webpack --mode development && webpack-dev-server",
     "start:test": "webpack --mode development && serve build -l 3001",
-    "start:test--flask": "webpack --mode production && export FLASK_APP=entrypoint.py && flask run -p 3001",
-    "start": "webpack --mode production && serve build -l 3001"
+    "start:test--flask": "webpack --mode production && export FLASK_APP=entrypoint.py && flask run -p 3001"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-bridge.0",

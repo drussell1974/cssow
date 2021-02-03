@@ -9,10 +9,9 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.test_path = '/schemesofwork/{}/lessons/new'.format(self.test_scheme_of_work_id)
-        self.do_log_in(self.root_uri + self.test_path)
+        self.do_log_in('/schemesofwork/{}/lessons/new'.format(self.test_scheme_of_work_id))
         # TODO: improve performance
-        self.wait()
+        self.wait(s=2)
 
 
     def tearDown(self):
@@ -29,7 +28,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
     def test_page__should_has_correct_element(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST@LOCALHOST')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Create new lesson for A-Level Computer Science', 'TEST USER')
     
         ' topic dropdown '
         elems = self.test_context.find_elements_by_xpath(".//*[@id='ctl-topic_id']/option")

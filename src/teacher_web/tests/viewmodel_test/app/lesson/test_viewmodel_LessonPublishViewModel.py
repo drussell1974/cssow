@@ -1,12 +1,9 @@
 import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.lessons.viewmodels import LessonPublishViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
-
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonPublishViewModel(TestCase):
 
@@ -18,6 +15,7 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
         pass
 
 
+    
     def test_init_called_publish__with_exception(self):
         
         # arrange        
@@ -30,14 +28,10 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
 
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, auth_user=99, lesson_id=999)
-            #TODO: #233 remove self.assertRaises
-             
-            # assert
-            #TODO: #233 assert error_message
-            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
+                self.viewmodel = ViewModel(db, scheme_of_work_id=101, auth_user=99, lesson_id=999)
 
 
+    
     def test_init_called_publish__no_return_rows(self):
         
         # arrange
@@ -52,13 +46,14 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99, lesson_id=101)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=13, auth_user=99, lesson_id=101)
 
             # assert functions was called
             Model.publish.assert_called()
             self.assertIsNone(self.viewmodel.model)
 
 
+    
     def test_init_called_publish__return_item(self):
         
         # arrange
@@ -75,11 +70,10 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=99, lesson_id=912)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=13, auth_user=99, lesson_id=912)
 
             # assert functions was called
             Model.publish.assert_called()
             self.assertEqual(912, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
             self.assertEqual(1, self.viewmodel.model.published)
-

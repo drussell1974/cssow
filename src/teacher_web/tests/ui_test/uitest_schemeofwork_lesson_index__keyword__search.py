@@ -6,10 +6,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_path = "/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id)
-
-        self.test_context.get(self.root_uri + self.test_path)
-        self.test_context.implicitly_wait(4)
+        self.do_log_in("/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
 
 
     def tearDown(self):
@@ -26,7 +23,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
         # array of expected items per pages
 
-        expected_item_per_page = [10,10,6,0]
+        expected_item_per_page = [10,10,5,0]
 
         # act
 
@@ -46,7 +43,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
-            self.wait()
+            self.wait(s=2)
 
 
     def test_page__should__show_only_show_lessons_with_keyword_in_title__no_results(self):
@@ -64,7 +61,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
         elem_search = self.test_context.find_element_by_id("btn-search")
         elem_search.click()
 
-        self.wait()
+        self.wait(s=5)
 
         for expected_elems in expected_item_per_page: # cycle pages
             """ cycle each page """
@@ -72,11 +69,11 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
             section = self.test_context.find_elements_by_class_name('post-preview')
             # assert
             result = len(section)
-            self.assertEqual(expected_elems, result, "number of elements not as expected")
+            self.assertEqual(expected_elems, result, "number of elements {} is not as expected".format(expected_elems))
 
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
-            self.wait()
+            self.wait(s=5)
 
 
     def test_page__should__show_only_show_lessons_with_keyword_in_title_and_keywords_find_results(self):
@@ -84,7 +81,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
         # array of expected items per pages
 
-        expected_item_per_page = [3]
+        expected_item_per_page = [2]
 
         # act
 
@@ -102,7 +99,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
             section = self.test_context.find_elements_by_class_name('post-preview')
             # assert
             result = len(section)
-            self.assertEqual(expected_elems, result, "number of elements not as expected")
+            self.assertEqual(expected_elems, result, "number of elements {} is not as expected".format(expected_elems))
 
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()

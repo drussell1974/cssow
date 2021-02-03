@@ -20,7 +20,6 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
     def tearDown(self):
         pass
 
-
     def test_init_called_404_if_scheme_of_work_not_found(self):
         
         # arrange
@@ -46,7 +45,6 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                         self.assertEqual(0, len(self.viewmodel.model))
 
 
-
     def test_init_called_404_if_scheme_of_work_not_found(self):
         
         # arrange
@@ -62,7 +60,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
 
                     # act
                     with self.assertRaises(Http404):
-                        self.viewmodel = ViewModel(db, scheme_of_work_id = 999, auth_user=99)
+                        self.viewmodel = ViewModel(db=db, scheme_of_work_id = 999, auth_user=99)
 
                         # assert functions was called
                         Model.get_all.assert_called()
@@ -86,7 +84,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     db.cursor = MagicMock()
 
                     # act
-                    self.viewmodel = ViewModel(db, scheme_of_work_id = 999, auth_user=99)
+                    self.viewmodel = ViewModel(db=db, scheme_of_work_id=999, auth_user=99)
 
                     # assert functions was called
                     Model.get_all.assert_called()
@@ -111,7 +109,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     db.cursor = MagicMock()
 
                     # act
-                    self.viewmodel = ViewModel(db, scheme_of_work_id = 101, auth_user=99)
+                    self.viewmodel = ViewModel(db=db, scheme_of_work_id=101, auth_user=99)
 
                     # assert functions was called
                     Model.get_all.assert_called()
@@ -136,7 +134,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     db.cursor = MagicMock()
 
                     # act
-                    self.viewmodel = ViewModel(db, scheme_of_work_id = 103, auth_user=99)
+                    self.viewmodel = ViewModel(db=db, scheme_of_work_id=103, auth_user=99)
 
                     # assert functions was called
                     Model.get_all.assert_called()
@@ -144,4 +142,4 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(3, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
+                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})

@@ -7,7 +7,6 @@ from django.http import Http404
 from app.schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
-
 class test_viewmodel_GetModelViewModel(TestCase):
 
     def setUp(self):        
@@ -31,12 +30,6 @@ class test_viewmodel_GetModelViewModel(TestCase):
             with self.assertRaises(KeyError):
                 # act
                 self.viewmodel = ViewModel(db, 99, auth_user=99)
-            #TODO: #233 remove self.assertRaises
-             
-            # assert
-            #TODO: #233 assert error_message
-            #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
-            
             
 
     def test_init_called_fetch__no_return_rows(self):
@@ -54,7 +47,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db, 123, auth_user=99)
+                self.viewmodel = ViewModel(db=db, scheme_of_work_id=123, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -75,9 +68,11 @@ class test_viewmodel_GetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, 456, auth_user=99)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=456, auth_user=99)
 
             # assert functions was called
             Model.get_model.assert_called()
             self.assertEqual(99, self.viewmodel.model.id)
             self.assertEqual("Duis diam arcu, rhoncus ac", self.viewmodel.model.name)
+
+

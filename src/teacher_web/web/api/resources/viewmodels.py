@@ -12,7 +12,6 @@ class ResourceGetModelViewModel(BaseViewModel):
         model = ResourceModel.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         
         if model is not None:
-            #model.key_words = list(map(lambda x: x.toJSON(), model.key_words))
             #TODO: #254: check for markdown to override page_uri
             if ResourceModel.is_markdown(model):
                 model.page_uri = reverse("api.resource.markdown", args=[scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 

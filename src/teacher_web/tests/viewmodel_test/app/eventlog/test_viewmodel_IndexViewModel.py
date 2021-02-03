@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.eventlogs.viewmodels import EventLogIndexViewModel as ViewModel
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.cls_eventlog import EventLogModel as Model, EventLogFilter
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
@@ -66,12 +67,12 @@ class test_viewmodel_IndexViewModel(TestCase):
 
                 # act
 
-                test_context = ViewModel(self.mock_db, mock_request, self.fake_settings, 6079)
+                test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
                 test_context.view()
                             
                 # assert functions was called
                 
-                Model.get_all.assert_called_with(self.mock_db, test_context.search_criteria, 6079)
+                Model.get_all.assert_called_with(self.mock_db, 13, test_context.search_criteria, 6079)
 
                 self.assertEqual(3, len(test_context.model))
 
@@ -137,12 +138,12 @@ class test_viewmodel_IndexViewModel(TestCase):
 
                 # act
 
-                test_context = ViewModel(self.mock_db, mock_request, self.fake_settings, 6079)
+                test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=15, settings=self.fake_settings, auth_user=6079)
                 test_context.view()
                             
                 # assert functions was called
                 
-                Model.get_all.assert_called_with(self.mock_db, test_context.search_criteria, 6079)
+                Model.get_all.assert_called_with(self.mock_db, 15, test_context.search_criteria, 6079)
 
                 self.assertEqual(3, len(test_context.model))
 
@@ -186,15 +187,14 @@ class test_viewmodel_IndexViewModel(TestCase):
 
                 # act
 
-                test_context = ViewModel(self.mock_db, mock_request, self.fake_settings, 6079)
+                test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=12, settings=self.fake_settings, auth_user=6079)
                 test_context.view()
                             
                 # assert functions was called
                 
-                Model.get_all.assert_called_with(self.mock_db, test_context.search_criteria, 6079)
+                Model.get_all.assert_called_with(self.mock_db, 12, test_context.search_criteria, 6079)
 
                 self.assertEqual(0, len(test_context.model))
-
 
 
     def test_view__request_method__should_have__settings(self):
@@ -216,18 +216,15 @@ class test_viewmodel_IndexViewModel(TestCase):
 
         on_get_all__data_to_return = []
         
-        
         with patch.object(EventLogFilter, "is_valid", return_value=True):
             with patch.object(Model, "get_all", return_value=on_get_all__data_to_return):
 
                 # act
 
-                test_context = ViewModel(self.mock_db, mock_request, self.fake_settings, 6079)
+                test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
                 test_context.view()
                             
                 # assert settings (from fake settings)
 
                 self.assertEqual(7, test_context.settings.MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS)
                 self.assertEqual(30, test_context.settings.MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS)
-
-                

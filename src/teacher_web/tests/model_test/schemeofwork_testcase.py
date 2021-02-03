@@ -12,6 +12,8 @@ class SchemeOfWork_TestCase(TestCase):
                                      exam_board_name="test exam board",
                                      key_stage_id=2,
                                      key_stage_name="test key stage",
+                                     department_id=3,
+                                     department_name="test department",
                                      published=1)
         test.key_words = []
         
