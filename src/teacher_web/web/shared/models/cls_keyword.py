@@ -103,7 +103,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user)
+        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.id)
         
         model = KeywordModel(0, "", "")
         for row in rows:
@@ -115,7 +115,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
-        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user, exclude_id)
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.id, exclude_id=exclude_id)
 
         data = []
         for row in rows:
@@ -134,9 +134,9 @@ class KeywordModel(BaseModel):
         rows = []
 
         if lesson_id > 0:
-            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user)
+            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.id)
         else:
-            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user)
+            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.id)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], row[2], row[3], published=row[4]))
@@ -145,7 +145,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user)
+        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user_id=auth_user.id)
 
         data = []
 
@@ -159,58 +159,59 @@ class KeywordModel(BaseModel):
     def save(db, model, auth_user):
         """ save model """
         if model.published == 2:
-            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
+            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.id)
         else:
             if model.is_new():
-                data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user)
+                data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.id)
                 model.id = data[0]
             else:
-                data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user)
+                data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.id)
             
             for lesson_id in model.belongs_to_lessons:
-                KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user)
+                KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user_id=auth_user.id)
 
         return model
 
 
     @staticmethod
     def delete(db, model, auth_user):
-        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user)
+        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.id)
 
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.id)
         return rows
 
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return KeywordDataAccess.publish(db, auth_user, id)        
+        return KeywordDataAccess.publish(db, auth_user_id=auth_user.id, id_=id)        
         
+
     @staticmethod
     def merge_duplicates(db, id, scheme_of_work_id, auth_user):
-        merged_model = KeywordModel.get_model(db, id, scheme_of_work_id, auth_user)
-        KeywordDataAccess.merge_duplicates(db, merged_model, scheme_of_work_id, auth_user)
+        merged_model = KeywordModel.get_model(db, id, scheme_of_work_id, auth_user=auth_user)
+        KeywordDataAccess.merge_duplicates(db, merged_model, scheme_of_work_id, auth_user_id=auth_user.id)
         return merged_model
 
 
 class KeywordDataAccess:
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
+    def get_options(db, scheme_of_work_id, auth_user_id, exclude_id = 0):
         """
         Get list of options
         :param db:
         :scheme_of_work_id: scheme of work
-        :auth_user: authorised user id
+        :auth_user_id: authorised user id
         :exclude_id: used to excluce current option
         :return: term and definition
         """
         execHelper = ExecHelper()
         
         select_sql = "keyword__get_options"
-        params = (scheme_of_work_id, exclude_id, auth_user)
+        params = (scheme_of_work_id, exclude_id, auth_user_id)
         rows = []
         #271 Stored procedure (get_options)
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -218,7 +219,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_model(db, id, scheme_of_work_id, auth_user):
+    def get_model(db, id, scheme_of_work_id, auth_user_id):
         """
         Get a full list of terms and definitions
         :param db:
@@ -229,7 +230,7 @@ class KeywordDataAccess:
 
         select_sql = "keyword__get"
         
-        params = (id, scheme_of_work_id, auth_user)
+        params = (id, scheme_of_work_id, auth_user_id)
 
         rows = []
 
@@ -240,7 +241,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, auth_user):
+    def get_all(db, scheme_of_work_id, auth_user_id):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -250,7 +251,7 @@ class KeywordDataAccess:
 
         select_sql = "scheme_of_work__get_all_keywords"
 
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
         
         rows = []
         
@@ -261,7 +262,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user):
+    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -271,7 +272,7 @@ class KeywordDataAccess:
 
         select_sql = "lesson__get_all_keywords"
 
-        params = (lesson_id, auth_user)
+        params = (lesson_id, auth_user_id)
         
         rows = []
         
@@ -282,7 +283,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user):
+    def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user_id):
         """
         Get a full list of terms and definitions
         :param db:
@@ -296,13 +297,13 @@ class KeywordDataAccess:
     
 
         select_sql = "keyword__get_by_term"
-        params = ("", scheme_of_work_id, auth_user)
+        params = ("", scheme_of_work_id, auth_user_id)
 
         ' remove whitespace and use lower'
         key_words_list = key_words_list.replace(' , ', ',').replace(', ', ',').replace(' ,', ',').lower()
 
         if len(key_words_list) > 0:
-            params = ("','".join(sql_safe(key_words_list).split(',')), scheme_of_work_id, auth_user)
+            params = ("','".join(sql_safe(key_words_list).split(',')), scheme_of_work_id, auth_user_id)
     
     
         rows = []
@@ -313,14 +314,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def _insert(db, model, scheme_of_work_id, published, auth_user):
+    def _insert(db, model, scheme_of_work_id, published, auth_user_id):
         """ Inserts key word and definition """
 
         execHelper = ExecHelper()
 
         stored_procedure = "keyword__insert"
 
-        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user, published)    
+        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user_id, published)    
     
         new_id = execHelper.insert(db,
             stored_procedure
@@ -332,14 +333,14 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def _update(db, model, scheme_of_work_id, published, auth_user):
+    def _update(db, model, scheme_of_work_id, published, auth_user_id):
         """ Inserts key word and definition """
         
         execHelper = ExecHelper()
         
         str_update = "keyword__update"
         
-        params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user)
+        params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user_id)
         
         execHelper.update(db, str_update, params, handle_log_info)
 
@@ -347,14 +348,14 @@ class KeywordDataAccess:
  
 
     @staticmethod
-    def delete(db, id, scheme_of_work_id, auth_user):
+    def delete(db, id, scheme_of_work_id, auth_user_id):
         """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete"
             
-        params = (id, scheme_of_work_id, auth_user)
+        params = (id, scheme_of_work_id, auth_user_id)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
@@ -374,7 +375,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def publish(db, auth_user, id_):
+    def publish(db, auth_user_id, id_):
         
         model = KeywordModel(id_)
         model.publish = True
@@ -383,7 +384,7 @@ class KeywordDataAccess:
 
         str_update = "keyword__publish"
         
-        params = (model.id, model.published, auth_user)
+        params = (model.id, model.published, auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_update, params, handle_log_info)
@@ -392,13 +393,13 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def upsert_lesson(db, keyword_id, lesson_id, scheme_of_work_id, auth_user):
+    def upsert_lesson(db, keyword_id, lesson_id, scheme_of_work_id, auth_user_id):
         """ Checks if the keyword already belongs to the lesson and inserts accordingly """
         execHelper = ExecHelper()
             
         str_upsert = "lesson__insert_keywords"
         
-        params = (keyword_id, lesson_id, scheme_of_work_id, auth_user)
+        params = (keyword_id, lesson_id, scheme_of_work_id, auth_user_id)
 
         rval = []
         rval = execHelper.insert(db, str_upsert, params, handle_log_info)
@@ -408,13 +409,13 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def merge_duplicates(db, model, scheme_of_work_id, auth_user):
+    def merge_duplicates(db, model, scheme_of_work_id, auth_user_id):
         """ Inserts key word and definition """
 
         execHelper = ExecHelper()
 
         stored_procedure = "keyword__merge_duplicates"
-        params = (model.id, scheme_of_work_id, auth_user)
+        params = (model.id, scheme_of_work_id, auth_user_id)
         execHelper.add_custom(stored_procedure, params)
     
         rval = execHelper.custom(db,

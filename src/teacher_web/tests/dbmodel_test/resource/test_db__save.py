@@ -3,11 +3,10 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-# create test context
-
-save = Model.save
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__save(TestCase):
 
 
@@ -20,7 +19,7 @@ class test_db__save(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,10 +30,10 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                save(self.fake_db, model, auth_user=99)
+                Model.save(self.fake_db, model, auth_user=99)
 
 
-    def test_should_call__update_with_exception(self):
+    def test_should_call__update_with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -45,10 +44,10 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                save(self.fake_db, model, auth_user=99)
+                Model.save(self.fake_db, model, auth_user=mock_auth_user)
 
 
-    def test_should_call__update_with__is_new__false(self):
+    def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
         model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
         
@@ -56,19 +55,19 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user)
             
             # assert
             
             ExecHelper.update.assert_called_with(self.fake_db, 
              'lesson_resource__update'
-             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, 99)
+             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, mock_auth_user.id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
 
 
-    def test_should_call__insert__when__is_new__true(self):
+    def test_should_call__insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
         model = Model(0, title="How to make more unit tests", publisher="Unit test",  lesson_id=15, scheme_of_work_id=115)
@@ -79,20 +78,20 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=99)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user)
 
             # assert
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson_resource__insert'
-                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, 99)
+                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, mock_auth_user.id)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)
 
 
-    def test_should_call__delete(self):
+    def test_should_call__delete(self, mock_auth_user):
          # arrange
         model = Model(23, title="How to make unit tests", publisher="Unit test",  lesson_id=13, scheme_of_work_id=115)
         
@@ -100,13 +99,13 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=model):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=6079, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
             
             # assert
             
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'lesson_resource__delete'
-             , (23, 6079)
+             , (23, mock_auth_user.id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)

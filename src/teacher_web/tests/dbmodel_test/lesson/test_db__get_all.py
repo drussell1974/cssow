@@ -1,13 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
 from shared.models.cls_lesson import LessonModel, LessonFilter,  handle_log_info 
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-get_all = LessonModel.get_all
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_all(TestCase):
 
 
@@ -45,7 +45,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -53,30 +53,30 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_all(self.fake_db, 4)
+                LessonModel.get_all(self.fake_db, 4)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(self.fake_db, 5, auth_user=6079)
+            rows = LessonModel.get_all(self.fake_db, 5, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all'
-                , (5, 6079)
+                , (5, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(
             321, 
@@ -108,13 +108,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 3, auth_user=6079)
+            actual_results = LessonModel.get_all(self.fake_db, 3, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all'
-                , (3, 6079)
+                , (3, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -137,7 +137,7 @@ class test_db__get_all(TestCase):
             LessonModel.get_number_of_learning_objectives.assert_called()
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
             35, "Multistructural",
@@ -170,13 +170,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, 3, auth_user=6079)
+            actual_results = LessonModel.get_all(self.fake_db, 3, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson__get_all'
-                 , (3, 6079)
+                 , (3, mock_auth_user.id)
                  , []
                  , handle_log_info)
 

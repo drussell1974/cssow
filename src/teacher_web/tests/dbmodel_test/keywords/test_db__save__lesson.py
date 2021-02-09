@@ -2,15 +2,11 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
-import shared.models.cls_keyword as test_context
+from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-# create test context
-
-Model = test_context.KeywordModel
-save = test_context.KeywordModel.save
-handle_log_info = test_context.handle_log_info
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__save__lesson(TestCase):
     
 
@@ -24,7 +20,7 @@ class test_db__save__lesson(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -37,10 +33,10 @@ class test_db__save__lesson(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                save(self.fake_db, model, 6079)
+                Model.save(self.fake_db, model, mock_auth_user)
 
 
-    def test_should_call__upsert__when__is_new__true(self):
+    def test_should_call__upsert__when__is_new__true(self, mock_auth_user):
         # arrange
 
         model = Model(0, term="Mauris", definition="Mauris ac velit ultricies, vestibulum.", scheme_of_work_id=13)
@@ -55,14 +51,14 @@ class test_db__save__lesson(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, 6079)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user)
 
             # assert
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
                 'lesson__insert_keywords'
-                , ([], 10, 13, 6079)
+                , ([], 10, 13, mock_auth_user.id)
                 , handle_log_info)
                 
             self.assertNotEqual(0, actual_result.id)

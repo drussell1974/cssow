@@ -32,7 +32,7 @@ class SoloTaxonomyModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = SoloTaxonomyDataAccess.get_options(db, auth_user)
+        rows = SoloTaxonomyDataAccess.get_options(db, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = SoloTaxonomyModel(row[0], row[1], row[2])
@@ -43,11 +43,11 @@ class SoloTaxonomyModel(BaseModel):
 class SoloTaxonomyDataAccess:
 
     @staticmethod
-    def get_options(db, auth_user):
+    def get_options(db, auth_user_id):
     
         execHelper = ExecHelper()
         
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "solotaxonomy__get_options", (auth_user,), rows, handle_log_info)
+        rows = execHelper.select(db, "solotaxonomy__get_options", (auth_user_id,), rows, handle_log_info)
         return rows

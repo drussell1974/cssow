@@ -2,7 +2,10 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_DepartmentDataAccess___delete(TestCase):
 
     def setUp(self):
@@ -15,7 +18,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__save__with_exception(self):
+    def test__should_call__save__with_exception(self, mock_auth_user):
 
         # arrange
         expected_result = Exception('Bang')
@@ -26,7 +29,7 @@ class test_DepartmentDataAccess___delete(TestCase):
                 Model.save(self.fake_db, Mock(id=99, name="Casey Jones", published=2), "Lorum ipsum", auth_user = 6079)
             
 
-    def test__should_call__delete__if_valid(self):
+    def test__should_call__delete__if_valid(self, mock_auth_user):
         # arrange
         expected_result = [99]
 

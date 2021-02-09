@@ -6,7 +6,9 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 # test context
 
 from app.teampermissions.viewmodels import TeamPermissionDeleteViewModel as ViewModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 
 
@@ -21,7 +23,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
     def test_init_called_delete__with_exception(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
         # arrange        
@@ -44,7 +46,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=None)
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
     def test_init_raise_Http404__when_scheme_of_work_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
         # arrange        
@@ -65,7 +67,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
         
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False))
     def test_init_raise_Http404__when_permission_model_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
     
         db = MagicMock()
@@ -84,7 +86,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
     def test_init_called_delete__no_return_rows(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
         # arrange
@@ -109,12 +111,12 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
     def test_init_called_delete__return_item(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
         # arrange
         
-        data_to_return = Model(79, "Igor Stranvinsky", SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
+        data_to_return = Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return.published = 2
 
         
@@ -133,4 +135,4 @@ class test_viewmodel_DeleteViewModel(TestCase):
             SchemeOfWorkModel_get_model.assert_called()
             TeacherPermissionModel_get_model.assert_called()
             Model.delete.assert_called()
-            self.assertEqual(79, self.viewmodel.model.id)
+            self.assertEqual(24, self.viewmodel.model.id)

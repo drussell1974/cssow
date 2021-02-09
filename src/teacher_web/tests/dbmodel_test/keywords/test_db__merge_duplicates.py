@@ -3,10 +3,10 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel, KeywordDataAccess
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-merge_duplicates = KeywordModel.merge_duplicates
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__merge_duplicates(TestCase):
 
 
@@ -20,7 +20,7 @@ class test_db__merge_duplicates(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,10 +29,10 @@ class test_db__merge_duplicates(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                merge_duplicates(self.fake_db, 1, 123, 1069)
+                KeywordModel.merge_duplicates(self.fake_db, 1, 123, mock_auth_user)
 
 
-    def test_should_call_merge_duplicates(self):
+    def test_should_call_merge_duplicates(self, mock_auth_user):
         # arrange
         
         expected_result = [(1,)]
@@ -40,7 +40,7 @@ class test_db__merge_duplicates(TestCase):
             with patch.object(ExecHelper, 'custom', return_value=expected_result):
                 # act
 
-                actual_result = merge_duplicates(self.fake_db, 12, 123, 1069)
+                actual_result = KeywordModel.merge_duplicates(self.fake_db, 12, 123, mock_auth_user)
                 
                 # assert
                 ExecHelper.custom.assert_called_with(self.fake_db, "keyword__merge_duplicates", handle_log_info)

@@ -24,7 +24,7 @@ class KS123PathwayModel(BaseModel):
     
     @staticmethod
     def get_options(db, year_id, topic_id, auth_user):
-        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user)
+        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1])
@@ -34,7 +34,7 @@ class KS123PathwayModel(BaseModel):
 
     @staticmethod
     def get_linked_pathway_ks123(db, lesson_id, auth_user):
-        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id, auth_user)
+        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             data.append([int(row[0]), row[1]])
@@ -44,12 +44,12 @@ class KS123PathwayModel(BaseModel):
 class KS123PathwayDataAccess:
 
     @staticmethod
-    def get_options(db, year_id, topic_id, auth_user):
+    def get_options(db, year_id, topic_id, auth_user_id):
 
         execHelper = ExecHelper()
 
         str_select = "ks123_pathway__get_options"
-        params = (year_id, topic_id, auth_user)
+        params = (year_id, topic_id, auth_user_id)
 
         rows = []
 
@@ -60,14 +60,14 @@ class KS123PathwayDataAccess:
 
 
     @staticmethod
-    def get_linked_pathway_ks123(db, lesson_id, auth_user):
+    def get_linked_pathway_ks123(db, lesson_id, auth_user_id):
 
         execHelper = ExecHelper()
         
 
         select_sql = "ks123_pathway__get_linked_pathway"
 
-        params = (lesson_id, auth_user)
+        params = (lesson_id, auth_user_id)
 
         rows = []
         #271 Stored procedure

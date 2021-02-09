@@ -3,11 +3,12 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 
 from shared.models.core.log_type import LOG_TYPE
-from shared.models.cls_eventlog import EventLogModel, EventLogFilter
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.cls_eventlog import EventLogModel, EventLogFilter
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-get_all = EventLogModel.get_all
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_all(TestCase):
 
 
@@ -20,7 +21,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select_with_exception(self):
+    def test__should_call_select_with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,7 +32,7 @@ class test_db__get_all(TestCase):
                 get_all(self.fake_db)
 
 
-    def test__should_call_select_return_no_items(self):
+    def test__should_call_select_return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
@@ -40,20 +41,20 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all(db=self.fake_db, scheme_of_work_id=69, search_criteria=search_criteria, auth_user=6079)
+            rows = EventLogModel.get_all(db=self.fake_db, scheme_of_work_id=69, search_criteria=search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (69, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", 6079)
+                , (69, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select_return_single_item(self):
+    def test__should_call_select_return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (1029, "2020-08-23 03:49:56", LOG_TYPE.Error, "An error occured doing some stuff", "nec arcu nec dolor vehicula ornare non.", "A", "B"),
@@ -64,13 +65,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(self.fake_db, scheme_of_work_id=68, search_criteria=search_criteria, auth_user=6079)
+            actual_results = EventLogModel.get_all(self.fake_db, scheme_of_work_id=68, search_criteria=search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (68, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", 6079)
+                , (68, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", mock_auth_user.id)
                 , []
                 , handle_log_info)                
 
@@ -86,7 +87,7 @@ class test_db__get_all(TestCase):
 
 
 
-    def test__should_call_select_return_multiple_item(self):
+    def test__should_call_select_return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (1021, "2020-07-27 15:48:40", LOG_TYPE.Error, "An error occured doing stuff", "nec arcu nec dolor vehicula ornare non.", "X", "Y"),
@@ -99,13 +100,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all(db=self.fake_db, scheme_of_work_id=67, search_criteria=search_criteria, auth_user=6079)
+            actual_results = EventLogModel.get_all(db=self.fake_db, scheme_of_work_id=67, search_criteria=search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (67, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", 6079)
+                , (67, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", mock_auth_user.id)
                 , []
                 , handle_log_info)
 

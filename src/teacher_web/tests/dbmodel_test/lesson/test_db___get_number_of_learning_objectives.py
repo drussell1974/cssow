@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_teacher import TeacherModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_lesson import LessonModel as Model, handle_log_info
 
-from shared.models.cls_lesson import LessonModel, handle_log_info
-
-
-get_number_of_learning_objectives = LessonModel.get_number_of_learning_objectives
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_number_of_learning_objectives(TestCase):
     
     def setUp(self):
@@ -20,7 +18,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mockauth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,52 +26,52 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
+                Model.get_number_of_learning_objectives(self.fake_db, 21, auth_user=6079)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = [(0,)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_number_of_learning_objectives(self.fake_db, 67, auth_user=99)
+            actual_results = Model.get_number_of_learning_objectives(self.fake_db, 67, auth_user=mock_auth_user)
 
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (67,99)
+                , (67, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, actual_results)
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(1,)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_number_of_learning_objectives(self.fake_db, 87, auth_user=99)
+            actual_results = Model.get_number_of_learning_objectives(self.fake_db, 87, auth_user=mock_auth_user)
 
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
             "lesson__get_number_of_learning_objectives"
-            , (87,99)
+            , (87, mock_auth_user.id)
             , []
             , handle_log_info)
 
             self.assertEqual(1, actual_results)
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [(3,)]
 
@@ -81,14 +79,14 @@ class test_db__get_number_of_learning_objectives(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_number_of_learning_objectives(self.fake_db, 21, auth_user=99)
+            actual_results = Model.get_number_of_learning_objectives(self.fake_db, 21, auth_user=mock_auth_user)
 
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (21,99)
+                , (21,mock_auth_user.id)
                 , []
                 , handle_log_info)
             

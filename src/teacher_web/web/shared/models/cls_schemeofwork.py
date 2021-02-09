@@ -16,7 +16,7 @@ class SchemeOfWorkModel(BaseModel):
     number_of_keywords = 0
     key_words = []
     
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", school_id = 0, created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.name = name
@@ -27,6 +27,7 @@ class SchemeOfWorkModel(BaseModel):
         self.key_stage_name = key_stage_name
         self.department_id = try_int(department_id)
         self.department_name = department_name
+        self.school_id = school_id
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
@@ -52,8 +53,10 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
-        # Validate key stage
+        # Validate department
         self._validate_required_integer("department_id", self.department_id, 1, BaseModel.MAX_INT)
+        # Validate school_id
+        #self._validate_required_integer("school_id", self.school_id, 1, BaseModel.MAX_INT)
 
         self.on_after_validate()
 
@@ -80,7 +83,8 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
-        rows = SchemeOfWorkDataAccess.get_all(db, auth_user, key_stage_id)
+        
+        rows = SchemeOfWorkDataAccess.get_all(db, auth_user_id=auth_user.id, key_stage_id=key_stage_id)
         data = []
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -109,10 +113,10 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user)
+    def get_model(db, id, auth_user):   
+        rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user_id=auth_user.id)
         #TODO: start as none None
-        model = SchemeOfWorkModel(0)
+        model = SchemeOfWorkModel(0, department_id=auth_user.department)
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
@@ -139,7 +143,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = SchemeOfWorkDataAccess.get_options(db, auth_user)
+        rows = SchemeOfWorkDataAccess.get_options(db, auth_user_id=auth_user.id)
         data = []
 
         for row in rows:
@@ -151,7 +155,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_latest_schemes_of_work(db, top, auth_user):
-        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user)
+        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -171,7 +175,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id=auth_user.id)
         scheme_of_work_name = ""
         for row in rows:
             scheme_of_work_name = row[0]
@@ -181,7 +185,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_key_stage_id_only(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id, auth_user_id=auth_user.id)
         key_stage_id = 0
         for row in rows:
             key_stage_id = row[0]
@@ -191,7 +195,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_lessons(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, scheme_of_work_id, auth_user_id=auth_user.id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -200,7 +204,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_learning_objectives(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_number_of_learning_objectives(db, scheme_of_work_id, auth_user_id=auth_user.id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -209,7 +213,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_resources(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_reources(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_number_of_reources(db, scheme_of_work_id, auth_user_id=auth_user.id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -217,7 +221,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_all_keywords(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user)
+        rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4])
@@ -230,39 +234,39 @@ class SchemeOfWorkModel(BaseModel):
     def save(db, model, auth_user, published=1):
         
         if try_int(published) == 2:
-            rval = SchemeOfWorkDataAccess._delete(db, model, auth_user)
+            rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.id)
             model.published = 2
         else:
             if model.is_new() == True:
-                model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user, is_authorised=True)
+                model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user_id=auth_user.id, is_authorised=True)
             else:
-                model = SchemeOfWorkDataAccess._update(db, model, published, auth_user)
+                model = SchemeOfWorkDataAccess._update(db, model, published, auth_user_id=auth_user.id)
 
         return model
 
 
     @staticmethod
     def delete_unpublished(db, auth_user):
-        rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user)
+        rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user_id=auth_user.id)
         return rows
 
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return SchemeOfWorkDataAccess.publish(db, auth_user, id)        
+        return SchemeOfWorkDataAccess.publish(db=db, auth_user_id=auth_user.id, id_=id)        
 
 
 class SchemeOfWorkDataAccess:
     
     @staticmethod
-    def get_model(db, id_, auth_user):
+    def get_model(db, id_, auth_user_id):
         """
         get scheme of work
 
         :param db: database context
         :param id_: scheme of work identifier
-        :param auth_user: the user executing the command
+        :param auth_user_id: the user executing the command
         """
 
         execHelper = ExecHelper()
@@ -270,7 +274,7 @@ class SchemeOfWorkDataAccess:
         execHelper.begin(db)
 
         select_sql = "scheme_of_work__get"
-        params = (id_, auth_user)
+        params = (id_, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -278,7 +282,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, auth_user, key_stage_id=0):
+    def get_all(db, auth_user_id, key_stage_id=0):
         """
         get all scheme of work
         """
@@ -286,7 +290,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, auth_user)
+        params = (key_stage_id, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -295,7 +299,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_latest_schemes_of_work(db, top = 5, auth_user = 0):
+    def get_latest_schemes_of_work(db, top = 5, auth_user_id = 0):
         """
         Gets the latest schemes of work with learning objectives
         :param db: the database context
@@ -305,7 +309,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_latest"
-        params = (top, auth_user)
+        params = (top, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -314,7 +318,7 @@ class SchemeOfWorkDataAccess:
         
 
     @staticmethod
-    def _update(db, model, published, auth_user):
+    def _update(db, model, published, auth_user_id):
         execHelper = ExecHelper()
 
         # 1. update scheme of work 
@@ -328,7 +332,7 @@ class SchemeOfWorkDataAccess:
             model.key_stage_id,
             model.department_id,
             published,
-            auth_user)
+            auth_user_id)
 
         execHelper.update(db, str_update, params, handle_log_info)
 
@@ -336,7 +340,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user):
+    def _insert(db, model, published, auth_user_id):
         execHelper = ExecHelper()
 
         # 1. insert scheme of work
@@ -352,7 +356,7 @@ class SchemeOfWorkDataAccess:
             model.created,
             model.created_by_id,
             published,
-            auth_user)
+            auth_user_id)
     
         results = execHelper.insert(db, str_insert, params, handle_log_info)
         
@@ -363,22 +367,22 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def _insert_as__teacher(db, model, auth_user, is_authorised):
+    def _insert_as__teacher(db, model, auth_user_id, is_authorised):
         execHelper = ExecHelper()
         
         str_insert = "scheme_of_work__has__teacher_permission__insert"
         
-        params = (model.id, auth_user, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user, is_authorised)
+        params = (model.id, auth_user_id, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user_id, is_authorised)
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         
 
     @staticmethod
-    def _delete(db, model, auth_user):
+    def _delete(db, model, auth_user_id):
         execHelper = ExecHelper()
         
         str_delete = "scheme_of_work__delete"
-        params = (model.id, auth_user)
+        params = (model.id, auth_user_id)
         
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
@@ -386,13 +390,13 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_key_stage_id_only(db, scheme_of_work_id, auth_user):
+    def get_key_stage_id_only(db, scheme_of_work_id, auth_user_id):
 
         execHelper = ExecHelper()
         
         #271 Create StoredProcedure
         select_sql = "scheme_of_work__get_key_stage_id_only"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -415,7 +419,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def publish(db, auth_user, id_):
+    def publish(db, auth_user_id, id_):
         
         model = SchemeOfWorkModel(id_)
         model.publish = True
@@ -423,7 +427,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         #271 Create StoredProcedure
         str_update = "scheme_of_work__publish"
-        params = (model.id, model.published, auth_user)
+        params = (model.id, model.published, auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_update, params, handle_log_info)
@@ -432,12 +436,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_options(db, auth_user = 0):
+    def get_options(db, auth_user_id = 0):
 
         execHelper = ExecHelper()
         
         str_select = "scheme_of_work__get_options"
-        params = (auth_user,)
+        params = (auth_user_id,)
         
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -446,12 +450,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
+    def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id):
         
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_schemeofwork_name_only"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -460,12 +464,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_number_of_lessons(db, scheme_of_work_id, auth_user):
+    def get_number_of_lessons(db, scheme_of_work_id, auth_user_id):
         execHelper = ExecHelper()
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_lessons"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -476,12 +480,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
+    def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user_id):
         execHelper = ExecHelper()
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_learning_objectives"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -490,11 +494,11 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_number_of_reources(db, scheme_of_work_id, auth_user):
+    def get_number_of_reources(db, scheme_of_work_id, auth_user_id):
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_number_of_resources"
-        params = (scheme_of_work_id,auth_user)
+        params = (scheme_of_work_id,auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -502,7 +506,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all_keywords(db, scheme_of_work_id, auth_user):
+    def get_all_keywords(db, scheme_of_work_id, auth_user_id):
         """
         Get a full list of terms and definitions
 
@@ -514,7 +518,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "scheme_of_work__get_all_keywords"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         

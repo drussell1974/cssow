@@ -6,12 +6,11 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required, unauthorise_request
 from shared.view_model import ViewModel
-# view models
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
@@ -39,7 +38,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_id(request))
+    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_model(db, request))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 
@@ -52,14 +51,14 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     error_message = ""
     
     #253 check user id
-    scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_id(request))
+    scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_model(db, request))
 
     if request.method == "GET":
         ## GET request from client ##
         
         if lesson_id > 0:
             #253 check user id
-            get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+            get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
             model = get_lesson_view.model
     
         # handle copy
@@ -89,13 +88,13 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
             summary = request.POST["summary"],
             created = datetime.now(),
             #253 check user id
-            created_by_id = auth_user_id(request)
+            created_by_id = auth_user_model(db, request)
         )
 
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
 
         try:
             modelviewmodel.execute(published)
@@ -119,10 +118,10 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
     # render view
     
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
-    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_id(request), scheme_of_work.id)
-    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_id(request))
-    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user = auth_user_id(request))
-    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_id(request))
+    content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_user_model(db, request), scheme_of_work.id)
+    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_user_model(db, request))
+    year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user = auth_user_model(db, request))
+    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_user_model(db, request))
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -152,7 +151,7 @@ def publish(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LessonPublishViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request), lesson_id=lesson_id)
+    LessonPublishViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request), lesson_id=lesson_id)
 
     # check for null and 404
 
@@ -171,7 +170,7 @@ def delete(request, scheme_of_work_id, lesson_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LessonDeleteViewModel(db=db, auth_user=auth_user_id(request), lesson_id=lesson_id)
+    LessonDeleteViewModel(db=db, auth_user=auth_user_model(db, request), lesson_id=lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     
@@ -181,7 +180,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
     ''' Display the lesson plan on the whiteboard '''
 
     #253 check user id
-    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     model = get_lesson_view.model
 
     data = {
@@ -200,6 +199,6 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("lesson.index", args=[scheme_of_work_id]))

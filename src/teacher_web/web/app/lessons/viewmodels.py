@@ -48,7 +48,7 @@ class LessonIndexViewModel(BaseViewModel):
         except Exception as e:
             self.error_message = repr(e)
             handle_log_exception(db, scheme_of_work_id, "Error initialising LessonIndexViewModel", e)
-            
+            raise e
 
     def view(self):
 

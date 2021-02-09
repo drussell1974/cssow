@@ -1,9 +1,11 @@
 from unittest import TestCase, skip
-from shared.models.cls_learningobjective import LearningObjectiveModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, handle_log_info
+from shared.models.cls_teacher import TeacherModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db_learning_objective__get_pathway_objectives(TestCase):
 
     def setUp(self):
@@ -17,7 +19,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,26 +30,26 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
                 Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 0)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             test_keywords = "algorithms,abstract"
-            result = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = 6079)
+            result = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_learning_objective__get_linked_pathway_objectives'
-                , (72, 6079)
+                , (72, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(result))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange    
         expected_result = [(1, "a", 2, "b", 3, 4, "c" ,5 , "d" ,"e" ,"f" ,"g" ,6 ,"h")]
 
@@ -55,12 +57,12 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
             
             # test
             test_keywords = "algorithms,abstract"
-            rows = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = 6079)
+            rows = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson_learning_objective__get_linked_pathway_objectives'
-                , (72, 6079)
+                , (72, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -70,7 +72,7 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
             self.assertEqual("a", rows[0].description)
          
 
-    def test__should_call_select__return_mutliple_items(self):
+    def test__should_call_select__return_mutliple_items(self, mock_auth_user):
         # arrange
         expected_result = [(1, "a", 2, "b", 3, 4, "c" ,5 , "d" ,"e" ,"f" ,"g" ,6 ,"h"),
                        (7, "aa", 8, "ab", 9, 10, "ac" ,11 , "ad" ,"ae" ,"af" ,"ag" ,12 ,"ah"),
@@ -80,12 +82,12 @@ class test_db_learning_objective__get_pathway_objectives(TestCase):
             
             # act
             test_keywords = "algorithms,abstract"
-            result = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = 6079)
+            result = Model.get_linked_pathway_objectives(self.fake_db, lesson_id = 72, auth_user = mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_learning_objective__get_linked_pathway_objectives'
-                , (72, 6079)
+                , (72, mock_auth_user.id)
                 , []
                 , handle_log_info)
 

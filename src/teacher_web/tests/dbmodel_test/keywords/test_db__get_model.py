@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_keyword import KeywordModel, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-import shared.models.cls_keyword as test_context 
-
-get_model = test_context.KeywordModel.get_model
-handle_log_info = test_context.handle_log_info
-Model = test_context.KeywordModel
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_model(TestCase):
 
 
@@ -20,7 +18,7 @@ class test_db__get_model(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,30 +26,30 @@ class test_db__get_model(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_model(self.fake_db, 4)
+                KeywordModel.get_model(self.fake_db, 4)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_model(self.fake_db, 22, 11, auth_user=6079)
+            actual_results = KeywordModel.get_model(self.fake_db, 22, 11, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get'
-                , (22, 11, 6079)
+                , (22, 11, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, actual_results.id)
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 1)
@@ -60,13 +58,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 702, 11, auth_user=6079)
+            actual_results = KeywordModel.get_model(self.fake_db, 702, 11, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "keyword__get"
-                , (702, 11, 6079)
+                , (702, 11, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 

@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_learningobjective import LearningObjectiveModel as Model, handle_log_info 
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-import shared.models.cls_learningobjective as test_context 
-
-get_all_pathway_objectives = test_context.LearningObjectiveModel.get_all_pathway_objectives
-handle_log_info = test_context.handle_log_info
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_all_pathway_objectives(TestCase):
 
 
@@ -20,7 +18,7 @@ class test_db__get_all_pathway_objectives(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,30 +26,30 @@ class test_db__get_all_pathway_objectives(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                get_all_pathway_objectives(self.fake_db, key_stage_id=4, key_words="", auth_user = 6079)
+                Model.get_all_pathway_objectives(self.fake_db, key_stage_id=4, key_words="", auth_user = mock_auth_user)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_all_pathway_objectives(self.fake_db, key_stage_id=5, key_words="", auth_user = 6079)
+            rows = Model.get_all_pathway_objectives(self.fake_db, key_stage_id=5, key_words="", auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_learning_objective__get_all_pathway_objectives'
-                , (5, 6079)
+                , (5, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         
         expected_result = [(
@@ -74,13 +72,13 @@ class test_db__get_all_pathway_objectives(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=3, key_words="CPU", auth_user = 6079)
+            actual_results = Model.get_all_pathway_objectives(self.fake_db, key_stage_id=3, key_words="CPU", auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_learning_objective__get_all_pathway_objectives'
-                 , (3, 6079)
+                 , (3, mock_auth_user.id)
                  , []
                  , handle_log_info)
                 
@@ -92,7 +90,7 @@ class test_db__get_all_pathway_objectives(TestCase):
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
 
         expected_result = [(
@@ -133,13 +131,13 @@ class test_db__get_all_pathway_objectives(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_all_pathway_objectives(self.fake_db, key_stage_id=20, key_words="congue", auth_user = 6079)
+            actual_results = Model.get_all_pathway_objectives(self.fake_db, key_stage_id=20, key_words="congue", auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_learning_objective__get_all_pathway_objectives'
-                 , (20, 6079)
+                 , (20, mock_auth_user.id)
                  , []
                  , handle_log_info)
 

@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
 from django.urls import reverse_lazy
 from django.views import generic
-from shared.models.core.django_helper import auth_user_id
 from shared.view_model import ViewModel
 
 from .viewmodels import RegisterTeacherForm

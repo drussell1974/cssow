@@ -3,9 +3,14 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info 
 
+# TODO: #329 - remove global references
 get_related_topic_ids = LessonModel.get_related_topic_ids
 
 
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
+
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_related_topics(TestCase):
 
     def setUp(self):
@@ -18,7 +23,7 @@ class test_db__get_related_topics(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,37 +34,37 @@ class test_db__get_related_topics(TestCase):
                 get_related_topic_ids(self.fake_db, 0, 1)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
 
-            rows = get_related_topic_ids(self.fake_db, 0, 2, 6079)
+            rows = get_related_topic_ids(self.fake_db, 0, 2, mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 2, 6079)
+                , (0, 2, mock_auth_user.id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(2,"Image","x",13)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
-            rows = get_related_topic_ids(self.fake_db, 0, 3, 6079)
+            rows = get_related_topic_ids(self.fake_db, 0, 3, mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 3, 6079)
+                , (0, 3, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -69,19 +74,19 @@ class test_db__get_related_topics(TestCase):
             self.assertEqual("Image", rows[0]["name"])
 
 
-    def test__should_call_select__return_multiple_items(self):
+    def test__should_call_select__return_multiple_items(self, mock_auth_user):
         # arrange
         expected_result = [(58,"Binary","x",24),(2,"Image","x",13),(64,"Sound","x",17)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
-            rows = get_related_topic_ids(self.fake_db, 0, 3, 6079)
+            rows = get_related_topic_ids(self.fake_db, 0, 3, mock_auth_user)
 
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 3, 6079)
+                , (0, 3, mock_auth_user.id)
                 , []
                 , handle_log_info)
 

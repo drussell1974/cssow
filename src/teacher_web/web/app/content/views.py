@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.models.core.log_handlers import handle_log_warning
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 # TODO: remove after creating view model
 from shared.view_model import ViewModel
 from shared.models.enums.permissions import SCHEMEOFWORK
@@ -21,7 +21,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 def index(request, scheme_of_work_id):
 
     #253 check user id
-    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     
     return render(request, "content/index.html", view_model.view().content)
 
@@ -33,7 +33,7 @@ def edit(request, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 
     #253 check user id
-    view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_user_id(request))
+    view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_user_model(db, request))
 
     if view_model.is_content_ready:
         
@@ -53,6 +53,6 @@ def edit(request, scheme_of_work_id, content_id=0):
 def delete_unpublished(request, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("content.index", args=[scheme_of_work_id]))

@@ -2,7 +2,10 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_DepartmentDataAccess___insert(TestCase):
 
     def setUp(self):
@@ -15,7 +18,7 @@ class test_DepartmentDataAccess___insert(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__save__with_exception(self):
+    def test__should_call__save__with_exception(self, mock_auth_user):
 
         # arrange
         expected_result = Exception('Bang')
@@ -23,10 +26,10 @@ class test_DepartmentDataAccess___insert(TestCase):
         with patch.object(ExecHelper, "insert", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = 6079)
+                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = mock_auth_user)
             
 
-    def test__should_call__save__if_valid(self):
+    def test__should_call__save__if_valid(self, mock_auth_user):
         # arrange
         expected_result = [99]
 
@@ -38,19 +41,19 @@ class test_DepartmentDataAccess___insert(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = 6079)
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'department__insert'
-                , (0, "Lorum ipsum", 6080, 0, "2021-01-24 07:20:01.907507", 6079)
+                , (0, "Lorum ipsum", 6080, 0, "2021-01-24 07:20:01.907507", mock_auth_user.id)
                 , handle_log_info)
 
             self.assertEqual(99, result.id)
 
 
-    def test__should_not_call__save__if_not_valid(self):
+    def test__should_not_call__save__if_not_valid(self, mock_auth_user):
         # arrange
         expected_result = [99]
 
@@ -63,7 +66,7 @@ class test_DepartmentDataAccess___insert(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = 6079)
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = mock_auth_user)
             
             # assert
 

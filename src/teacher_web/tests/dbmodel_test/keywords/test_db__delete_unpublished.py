@@ -3,10 +3,10 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-delete_unpublished = KeywordModel.delete_unpublished
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__deleteunpublished(TestCase):
 
 
@@ -20,7 +20,7 @@ class test_db__deleteunpublished(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,21 +31,21 @@ class test_db__deleteunpublished(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                delete_unpublished(self.fake_db, scheme_of_work_id=1, auth_user=6079)
+                KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=1, auth_user=mock_auth_user)
 
 
-    def test_should_call__delete(self):
+    def test_should_call__delete(self, mock_auth_user):
          # arrange
 
         with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = delete_unpublished(self.fake_db, scheme_of_work_id=13, auth_user=6079)
+            actual_result = KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=13, auth_user=mock_auth_user)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
                 'keyword__delete_unpublished'
-                , (13, 6079)
+                , (13, mock_auth_user.id)
                 , handle_log_info)
 
             self.assertEqual(5, actual_result)

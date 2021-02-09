@@ -1,11 +1,11 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
 from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-get_pathway_objective_ids = LessonModel.get_pathway_objective_ids
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_pathway_objective_ids(TestCase):
     
     def setUp(self):
@@ -17,7 +17,7 @@ class test_db__get_pathway_objective_ids(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -25,41 +25,41 @@ class test_db__get_pathway_objective_ids(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_pathway_objective_ids(self.fake_db, 21)
+                LessonModel.get_pathway_objective_ids(self.fake_db, 21)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_pathway_objective_ids(self.fake_db, 67, 6079)
+            rows = LessonModel.get_pathway_objective_ids(self.fake_db, 67, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_pathway_objective_ids'
-                , (67, 6079)
+                , (67, mock_auth_user.id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[("87",)]):
             # act
 
-            actual_results = get_pathway_objective_ids(self.fake_db, 87, 6079)
+            actual_results = LessonModel.get_pathway_objective_ids(self.fake_db, 87, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
             'lesson__get_pathway_objective_ids'
-            , (87, 6079)
+            , (87, mock_auth_user.id)
             , []
             , handle_log_info)
 
@@ -68,19 +68,19 @@ class test_db__get_pathway_objective_ids(TestCase):
             self.assertEqual(87, actual_results[0])
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[("1034",),("1045",),("12",) ]):
             # act
 
-            actual_results = get_pathway_objective_ids(self.fake_db, 21, 6079)
+            actual_results = LessonModel.get_pathway_objective_ids(self.fake_db, 21, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_pathway_objective_ids'
-                , (21, 6079)
+                , (21, mock_auth_user.id)
                 , []
                 , handle_log_info)
             

@@ -6,7 +6,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
@@ -24,7 +24,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
     #253 check user id
-    getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
+    getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))  
     
     return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
 
@@ -36,7 +36,7 @@ def select(request, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
     #253 check user id
-    keywords_select = LessonKeywordSelectViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
+    keywords_select = LessonKeywordSelectViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))  
     
     if request.method == "POST":
         
@@ -63,10 +63,10 @@ def new(request, scheme_of_work_id, lesson_id):
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     lesson = get_lesson_view.model
 
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -86,7 +86,7 @@ def new(request, scheme_of_work_id, lesson_id):
 def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     model = get_model_view.model
     
     if model == None:
@@ -99,7 +99,7 @@ def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
     lesson = get_lesson_view.model
 
     #253 check user id
@@ -137,7 +137,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
         definition=request.POST.get("definition", ""),
         created=datetime.now(),
         #253 check user id
-        created_by_id=auth_user_id(request),
+        created_by_id=auth_user_model(db, request),
         published=request.POST.get("published", 0)
     )
     # 299 must ensure other lessons are not deleted during save
@@ -147,7 +147,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_id(request))
+    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_model(db, request))
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -166,7 +166,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
         """ redirect back to page and show message """
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
         lesson = get_lesson_view.model
         
         data = {
@@ -197,7 +197,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    KeywordModel.delete(db, keyword_id, auth_user_id(request))
+    KeywordModel.delete(db, keyword_id, auth_user_model(db, request))
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -206,7 +206,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, keyword_id):
 def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
-    KeywordModel.publish_by_id(db, keyword_id, auth_user_id(request))
+    KeywordModel.publish_by_id(db, keyword_id, auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[scheme_of_work_id, lesson_id]))
 
@@ -216,6 +216,6 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[scheme_of_work_id, lesson_id]))

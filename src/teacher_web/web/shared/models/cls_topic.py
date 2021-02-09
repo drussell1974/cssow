@@ -28,7 +28,7 @@ class TopicModel(models.Model):
 
     @staticmethod
     def get_options(db, lvl, auth_user, topic_id = 0):
-        rows = TopicDataAccess.get_options(db, lvl, auth_user, topic_id)
+        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.id, topic_id=topic_id)
         data = []
         
         for row in rows:
@@ -41,12 +41,12 @@ class TopicModel(models.Model):
 class TopicDataAccess:
     
     @staticmethod
-    def get_options(db, lvl, user_auth, topic_id = 0):
+    def get_options(db, lvl, auth_user_id, topic_id = 0):
         
         execHelper = ExecHelper()
 
         str_select = "topic__get_options"
-        params = (topic_id, lvl, user_auth)
+        params = (topic_id, lvl, auth_user_id)
 
         try:
             rows = []

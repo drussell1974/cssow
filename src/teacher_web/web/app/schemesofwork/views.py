@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
@@ -16,7 +16,7 @@ from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 
 def index(request):
     #253 check user id
-    getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_id(request))
+    getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_model(db, request))
     
     data = {
         "schemes_of_work":getall_view.model
@@ -32,7 +32,7 @@ def index(request):
 def edit(request, scheme_of_work_id = 0):
     """ edit action """
     
-    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     
     if save_view.saved == True:
 
@@ -50,6 +50,6 @@ def edit(request, scheme_of_work_id = 0):
 def delete_unpublished(request):
     """ delete item and redirect back to referer """
 
-    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_id(request))
+    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("schemesofwork.index"))

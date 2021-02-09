@@ -24,7 +24,7 @@ class KeyStageModel(BaseModel):
     @staticmethod
     def get_options(db, auth_user):
         
-        rows = KeyStageDataAccess.get_options(db, auth_user)
+        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.id)
         data = []
 
         for row in rows:
@@ -37,11 +37,11 @@ class KeyStageModel(BaseModel):
 class KeyStageDataAccess:
 
     @staticmethod
-    def get_options(db, auth_user):
+    def get_options(db, auth_user_id):
 
         execHelper = ExecHelper()
 
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "keystage__get_options", (auth_user,), rows, handle_log_info)
+        rows = execHelper.select(db, "keystage__get_options", (auth_user_id,), rows, handle_log_info)
         return rows

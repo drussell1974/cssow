@@ -1,11 +1,12 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess, handle_log_info
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_all(TestCase):
     
     def setUp(self):
@@ -19,7 +20,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self):
+    def test__should_call__select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -30,26 +31,26 @@ class test_db__get_all(TestCase):
                 SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=4)
 
 
-    def test__should_call__select__return_no_items(self):
+    def test__should_call__select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=5)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, mock_auth_user, key_stage_id=5)
             
             # assert
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (5, 99)
+                , (5, mock_auth_user.id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__return_single_item(self):
+    def test__should_call__select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "sit dolor amet", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
 
@@ -60,13 +61,13 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
-            rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=3)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, mock_auth_user, key_stage_id=3)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 99)
+                , (3, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -86,7 +87,7 @@ class test_db__get_all(TestCase):
 
 
 
-    def test__should_call__select__return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self, mock_auth_user):
         # arrange
 
         expected_result = [
@@ -102,14 +103,14 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkModel.get_all(self.fake_db, 99, key_stage_id=3)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, mock_auth_user, key_stage_id=3)
             
             # assert
 
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 99)
+                , (3, mock_auth_user.id)
                 , []
                 , handle_log_info)
 

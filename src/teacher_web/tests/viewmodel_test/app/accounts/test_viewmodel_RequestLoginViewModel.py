@@ -6,8 +6,10 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 # test context
 
 from app.teampermissions.viewmodels import TeamPermissionRequestLoginViewModel as ViewModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
+from shared.models.cls_teacher import TeacherModel
+from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, DepartmentModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON 
 
 
@@ -22,7 +24,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(7089, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_authorised=False, is_from_db=False))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_authorised=False, is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
     def test_init_raise_exception_when_missing__scheme_of_work_id(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
         
@@ -58,13 +60,13 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True))
     @patch.object(Model, "validate", return_value=True)
     def test_init_when_permssion_requested__return_true(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
         
         # arrange
         
-        data_to_return = Model(79, "Igor Stranvinsky", SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
+        data_to_return = Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return.published = 2
 
         db = Mock()
@@ -105,13 +107,13 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=Model(24, "Jane Doe", SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False))
+    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
     def test_init_when_permssion_requested__return_false(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
         
         # arrange
         
-        data_to_return = Model(79, "Igor Stranvinsky", SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
+        data_to_return = Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return.published = 2
 
         db = Mock()

@@ -1,11 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from app.keywords.viewmodels import KeywordMergeViewModel as ViewModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_viewmodel_MergeViewModel(TestCase):
 
     def setUp(self):
@@ -16,7 +18,7 @@ class test_viewmodel_MergeViewModel(TestCase):
         pass
 
 
-    def test_execute_called_save__with_exception(self):
+    def test_execute_called_save__with_exception(self, mock_auth_user):
 
         # arrange
         mock_request = Mock()
@@ -30,12 +32,12 @@ class test_viewmodel_MergeViewModel(TestCase):
             # act
             
             with self.assertRaises(KeyError):
-                test_context = ViewModel(db=self.mock_db, keyword_id=15, scheme_of_work_id=13, auth_user=99)
+                test_context = ViewModel(db=self.mock_db, keyword_id=15, scheme_of_work_id=13, auth_user=mock_auth_user)
         
                 test_context.execute(mock_request)
 
     
-    def test_execute_called_merge_duplicates(self):
+    def test_execute_called_merge_duplicates(self, mock_auth_user):
 
         # arrange
         
@@ -49,12 +51,12 @@ class test_viewmodel_MergeViewModel(TestCase):
             "next":"/"
         }
 
-        # act
+        # act6079
 
         with patch.object(Model, "merge_duplicates", return_value=data_to_return):
             
 
-            test_context = ViewModel(db=self.mock_db, keyword_id=112, scheme_of_work_id=13, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, keyword_id=112, scheme_of_work_id=13, auth_user=mock_auth_user)
         
             test_context.execute(mock_request)
             
@@ -69,14 +71,14 @@ class test_viewmodel_MergeViewModel(TestCase):
     
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(92, "Lo Hecho Esta Hecho", is_from_db=True))
     @patch.object(Model, "get_model", return_value=Model(365, "Me Enamore", is_from_db=True))
-    def test_execute_not_called_save__add_model_to_data__when_not_valid(self, SchemeOfWorkModel_get_model, KeywordModel_get_model):
+    def test_execute_not_called_save__add_model_to_data__when_not_valid(self, SchemeOfWorkModel_get_model, KeywordModel_get_model, mock_auth_user):
     
         mock_request = Mock()
 
         with patch.object(Model, "merge_duplicates"):
             # act
 
-            test_context = ViewModel(db=self.mock_db, keyword_id=29, scheme_of_work_id=13, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, keyword_id=29, scheme_of_work_id=13, auth_user=mock_auth_user)
             
             test_context.execute(mock_request)
             
@@ -85,4 +87,3 @@ class test_viewmodel_MergeViewModel(TestCase):
             Model.merge_duplicates.assert_not_called()
             SchemeOfWorkModel_get_model.assert_called()
             KeywordModel_get_model.assert_called()
-            

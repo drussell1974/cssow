@@ -8,7 +8,7 @@ CREATE TABLE `sow_department` (
   `created` datetime NOT NULL DEFAULT '1999-12-31 23:59:59',
   `created_by` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
+  UNIQUE KEY `name_UNIQUE` (`name`, `school_id`)
 );
 
 ALTER TABLE `sow_department` 
@@ -17,6 +17,7 @@ ADD CONSTRAINT `sow_department__has__teacher`
   REFERENCES `auth_user` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
-  
-INSERT INTO `sow_department` (`name`, `head_id`) 
-SELECT `username`, `id` FROM `auth_user`;
+
+ALTER TABLE `sow_department`
+   DROP INDEX name_UNIQUE, 
+   ADD UNIQUE KEY `name_UNIQUE` (`name`, `school_id`)

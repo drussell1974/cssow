@@ -6,12 +6,10 @@ from shared.models.cls_lesson import LessonModel, handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_keyword import KeywordModel
-# test context
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-get_model = LessonModel.get_model
-#handle_log_info = shared.models.cls_lesson.handle_log_info
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_model(TestCase):
     
 
@@ -42,7 +40,7 @@ class test_db__get_model(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -50,23 +48,23 @@ class test_db__get_model(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_model(self.fake_db, 4)
+                LessonModel.get_model(self.fake_db, 4)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
          
-            actual_results = get_model(self.fake_db, 101, scheme_of_work_id=34, auth_user=99)
+            actual_results = LessonModel.get_model(self.fake_db, 101, scheme_of_work_id=34, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
-                , (101,34,99)
+                , (101,34,mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -78,7 +76,7 @@ class test_db__get_model(TestCase):
             self.assertIsNone(actual_results)        
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(
             321,"Understanding numbering systems",1,5,"Computer Science", 13, "Abstract",
@@ -89,17 +87,17 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_model(self.fake_db, 321, scheme_of_work_id=909, auth_user=6079)
+            actual_results = LessonModel.get_model(self.fake_db, 321, scheme_of_work_id=909, auth_user=mock_auth_user)
 
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
-                , (321,909,6079)
+                , (321,909,mock_auth_user.id)
                 , []
                 , handle_log_info)
             
-            LessonModel.get_all_keywords.assert_called_with(self.fake_db, 321, 6079)
+            LessonModel.get_all_keywords.assert_called_with(self.fake_db, 321, mock_auth_user)
 
             self.assertEqual(3, len(actual_results.key_words))
             
