@@ -1,13 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
 from shared.models.cls_lesson import LessonModel, LessonFilter,  handle_log_info 
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-get_filtered = LessonModel.get_filtered
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_filtered(TestCase):
 
 
@@ -43,7 +43,7 @@ class test_db__get_filtered(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -51,10 +51,10 @@ class test_db__get_filtered(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_filtered(self.fake_db, 4)
+                LessonModel.get_filtered(self.fake_db, 4)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
@@ -63,20 +63,20 @@ class test_db__get_filtered(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_filtered(self.fake_db, 5, fake_search_criteria, auth_user=6079)
+            rows = LessonModel.get_filtered(self.fake_db, 5, fake_search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (5, "Lorum ipsum", 0, 20, 6079)
+                , (5, "Lorum ipsum", 0, 20, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(
             321, 
@@ -110,13 +110,13 @@ class test_db__get_filtered(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=6079)
+            actual_results = LessonModel.get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (3, "", 0, 20, 6079)
+                , (3, "", 0, 20, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -139,7 +139,7 @@ class test_db__get_filtered(TestCase):
             LessonModel.get_number_of_learning_objectives.assert_called()
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
             35, "Multistructural",
@@ -174,13 +174,13 @@ class test_db__get_filtered(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=6079)
+            actual_results = LessonModel.get_filtered(self.fake_db, 3, fake_search_criteria, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson__get_filtered'
-                 , (3, "", 1, 10, 6079)
+                 , (3, "", 1, 10, mock_auth_user.id)
                  , []
                  , handle_log_info)
 

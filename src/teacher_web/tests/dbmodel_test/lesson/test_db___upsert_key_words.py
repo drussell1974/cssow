@@ -2,10 +2,11 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel
-from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
+from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-_save_keywords = LessonModel.save_keywords
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db___save_keywords(TestCase):
 
 
@@ -20,23 +21,23 @@ class test_db___save_keywords(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = LessonModel(0, "")
+        model = Model(0, "")
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                _save_keywords(self.fake_db, model, auth_user_id=99)
+                Model._save_keywords(self.fake_db, model, auth_user_id=99)
     
     
-    def test_should_call__reinsert__key_words(self):
+    def test_should_call__reinsert__key_words(self, mock_auth_user):
          # arrange
-        model = LessonModel(10, "", scheme_of_work_id = 14)
+        model = Model(10, "", scheme_of_work_id = 14)
         
         model.key_words = [
             KeywordModel(id_=12, term="CPU", definition="", scheme_of_work_id=14), 
@@ -48,23 +49,23 @@ class test_db___save_keywords(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_rows):
             # act
 
-            actual_result = _save_keywords(self.fake_db, model, auth_user=6079)
+            actual_result = Model.save_keywords(self.fake_db, model, auth_user=mock_auth_user)
             
             # assert
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (13, 10, 14, 6079)
+             , (13, 10, 14, mock_auth_user.id)
              , handle_log_info)
 
         self.assertEqual([], actual_result)
 
     
     
-    def test_should_call__reinsert__key_words__insert_new(self):
+    def test_should_call__reinsert__key_words__insert_new(self, mock_auth_user):
          # arrange
-        model = LessonModel(79, "", scheme_of_work_id = 13)
+        model = Model(79, "", scheme_of_work_id = 13)
         
         model.key_words = [KeywordModel(id_ = 12, term="CPU", definition="", scheme_of_work_id=13)]
         
@@ -73,14 +74,14 @@ class test_db___save_keywords(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[]):
             # act
 
-            actual_result = _save_keywords(self.fake_db, model, auth_user=6079)
+            actual_result = Model.save_keywords(self.fake_db, model, auth_user=mock_auth_user)
             
             # assert
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (12, 79, 13, 6079)
+             , (12, 79, 13, mock_auth_user.id)
              , handle_log_info)
 
         self.assertEqual(actual_result, expected_result)

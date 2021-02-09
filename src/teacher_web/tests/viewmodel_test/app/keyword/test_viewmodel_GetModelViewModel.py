@@ -1,14 +1,14 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
-
-# test context
-
 from app.keywords.viewmodels import KeywordGetModelViewModel as ViewModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_viewmodel_KeywordGetModelViewModel(TestCase):
     
     fake_schemeofwork = SchemeOfWorkModel(22)
@@ -23,7 +23,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=fake_schemeofwork)
-    def test_init_called_fetch__no_return_rows(self, SchemeOfWorkModel__get_model):
+    def test_init_called_fetch__no_return_rows(self, SchemeOfWorkModel__get_model, mock_auth_user):
         
         # arrange
 
@@ -39,7 +39,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
             with self.assertRaises(Http404):
 
                 # act
-                self.viewmodel = ViewModel(db=db, scheme_of_work_id=22, keyword_id=33, auth_user=99)
+                self.viewmodel = ViewModel(db=db, scheme_of_work_id=22, keyword_id=33, auth_user=mock_auth_user)
 
                 # assert functions was called
                 Model.get_model.assert_not_called()
@@ -48,7 +48,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=fake_schemeofwork)
-    def test_init_called_fetch__return_item(self, SchemeOfWorkModel__get_model):
+    def test_init_called_fetch__return_item(self, SchemeOfWorkModel__get_model, mock_auth_user):
         
         # arrange
         data_to_return = Model(101, "Abstraction")
@@ -63,7 +63,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db=db, scheme_of_work_id=23, keyword_id=101, auth_user=99)
+            self.viewmodel = ViewModel(db=db, scheme_of_work_id=23, keyword_id=101, auth_user=mock_auth_user)
 
             # assert functions was called
             Model.get_model.assert_called()

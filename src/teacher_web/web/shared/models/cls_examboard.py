@@ -23,19 +23,19 @@ class ExamBoardModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        return ExamBoardDataAccess.get_options(db, auth_user)
+        return ExamBoardDataAccess.get_options(db, auth_user_id=auth_user.id)
 
 
 class ExamBoardDataAccess:
 
     @staticmethod
-    def get_options(db, auth_user):
+    def get_options(db, auth_user_id):
 
         execHelper = ExecHelper()
         
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "examboard__get_options", (auth_user,), rows, handle_log_info)
+        rows = execHelper.select(db, "examboard__get_options", (auth_user_id,), rows, handle_log_info)
 
         data = []
 

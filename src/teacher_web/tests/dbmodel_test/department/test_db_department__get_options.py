@@ -2,7 +2,10 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_DepartmentDataAccess__get_options(TestCase):
 
     def setUp(self):
@@ -15,7 +18,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self):
+    def test__should_call__select__with_exception(self, mock_auth_user):
 
         # arrange
         expected_result = Exception('Bang')
@@ -26,7 +29,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
                 Model.get_options(self.fake_db, key_stage_id = 4)
             
 
-    def test__should_call__select__no_items(self):
+    def test__should_call__select__no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
@@ -34,20 +37,20 @@ class test_DepartmentDataAccess__get_options(TestCase):
                 
             # act
             
-            rows = Model.get_options(self.fake_db, auth_user = 6079)
+            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self):
+    def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
         expected_result = [(1,"Computer Science")]
         
@@ -55,13 +58,13 @@ class test_DepartmentDataAccess__get_options(TestCase):
             
             # act
 
-            rows = Model.get_options(self.fake_db, auth_user = 6079)
+            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
@@ -69,19 +72,19 @@ class test_DepartmentDataAccess__get_options(TestCase):
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self):
+    def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
         expected_result = [(1,"Computer Science"), (2, "Business"), (3, "IT")]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_options(self.fake_db, auth_user = 6079)
+            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

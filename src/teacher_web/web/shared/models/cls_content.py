@@ -65,7 +65,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_model(db, content_id, scheme_of_work_id, auth_user):
-        rows = ContentDataAccess.get_model(db, content_id, scheme_of_work_id, auth_user)
+        rows = ContentDataAccess.get_model(db, content_id, scheme_of_work_id, auth_user_id=auth_user.id)
         model = None
         for row in rows:
             model = ContentModel(row[0], row[1], row[2], published=row[3])
@@ -75,7 +75,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_options(db, key_stage_id, auth_user, scheme_of_work_id = 0):
-        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user, scheme_of_work_id)
+        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user_id=auth_user.id, scheme_of_work_id=scheme_of_work_id)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2])
@@ -85,7 +85,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, key_stage_id, auth_user):
-        rows = ContentDataAccess.get_all(db, scheme_of_work_id, key_stage_id, auth_user)
+        rows = ContentDataAccess.get_all(db, scheme_of_work_id, key_stage_id, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2], published=row[3])
@@ -103,27 +103,27 @@ class ContentModel(BaseModel):
             model.published = 2
         else:
             if model.is_new() == True:
-                model = ContentDataAccess._insert(db, model, published, auth_user)
+                model = ContentDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
             else:
-                model = ContentDataAccess._update(db, model, published, auth_user)
+                model = ContentDataAccess._update(db, model, published, auth_user_id=auth_user.id)
 
         return model
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user)
+        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.id)
 
 
 class ContentDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_options(db, key_stage_id, auth_user, scheme_of_work_id = 0):
+    def get_options(db, key_stage_id, auth_user_id, scheme_of_work_id = 0):
 
         execHelper = ExecHelper()
 
         #TODO: #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
         str_select = "content__get_options"
-        params = (scheme_of_work_id, key_stage_id, auth_user)
+        params = (scheme_of_work_id, key_stage_id, auth_user_id)
 
         rows = []
         #271 Stored procedure (get_options)
@@ -133,7 +133,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def get_model(db, content_id, scheme_of_work_id, auth_user):
+    def get_model(db, content_id, scheme_of_work_id, auth_user_id):
         """
         Get a full list of terms and definitions
         :param db:
@@ -144,7 +144,7 @@ class ContentDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
 
         select_sql = "content__get"
-        params = (content_id, scheme_of_work_id, auth_user)
+        params = (content_id, scheme_of_work_id, auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -154,7 +154,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, key_stage_id, auth_user):
+    def get_all(db, scheme_of_work_id, key_stage_id, auth_user_id):
         """
         Get a full list of content
         :param db: database context
@@ -163,7 +163,7 @@ class ContentDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
 
         select_sql = "content__get_all"
-        params = (scheme_of_work_id, key_stage_id, auth_user)
+        params = (scheme_of_work_id, key_stage_id, auth_user_id)
             
         rows = []
         #271 Stored procedure
@@ -173,7 +173,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user):
+    def _insert(db, model, published, auth_user_id):
         """ Inserts content description and letter_prefix """
         
         execHelper = ExecHelper()
@@ -186,7 +186,7 @@ class ContentDataAccess(BaseDataAccess):
             model.key_stage_id,
             model.scheme_of_work_id,
             published,
-            auth_user
+            auth_user_id
         )
     
         new_id = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -195,7 +195,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def _update(db, model, published, auth_user):
+    def _update(db, model, published, auth_user_id):
         """ Updates content description and letter_prefix """
         
         execHelper = ExecHelper()
@@ -208,7 +208,7 @@ class ContentDataAccess(BaseDataAccess):
             model.key_stage_id,
             model.scheme_of_work_id,
             published,
-            auth_user
+            auth_user_id
         )
 
         rows = execHelper.update(db, stored_procedure, params, handle_log_info)
@@ -217,13 +217,13 @@ class ContentDataAccess(BaseDataAccess):
  
 
     @staticmethod
-    def _delete(db, model, auth_user):
+    def _delete(db, model, auth_user_id):
         """ Delete the content """
 
         execHelper = ExecHelper()
 
         stored_procedure = "content__delete"
-        params = (model.id, model.scheme_of_work_id, auth_user)
+        params = (model.id, model.scheme_of_work_id, auth_user_id)
 
         rows = execHelper.delete(db, stored_procedure, params, handle_log_info)
 
@@ -231,20 +231,20 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user):
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
         """ 
         Delete all unpublished content 
 
         :param db: the database context
         :param scheme_of_work_id: the scheme of work identifier
-        :param auth_user: the user executing the command
+        :param auth_user_id: the user executing the command
         :return: the rows
         """
 
         execHelper = ExecHelper()
         
         str_delete = "content__delete_unpublished"
-        params = (scheme_of_work_id, auth_user)
+        params = (scheme_of_work_id, auth_user_id)
         
         rows = []
         rows = execHelper.delete(db, str_delete, params, handle_log_info)

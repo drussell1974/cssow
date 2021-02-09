@@ -3,10 +3,10 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_lesson import LessonDataAccess, LessonModel, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-publish = LessonDataAccess.publish
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__publish(TestCase):
 
 
@@ -20,7 +20,7 @@ class test_db__publish(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,10 +31,10 @@ class test_db__publish(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                publish(self.fake_db, 1, 123, 99)
+                LessonDataAccess.publish(self.fake_db, 1, 123, 99)
 
 
-    def test_should_call__update(self):
+    def test_should_call__update(self, mock_auth_user):
          # arrange
         model = LessonModel(123, "CPU, RAM and ")
         
@@ -43,7 +43,7 @@ class test_db__publish(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = publish(self.fake_db, 56, 13, 99)
+            actual_result = LessonDataAccess.publish(self.fake_db, 56, 13, 99)
             
             # assert
 

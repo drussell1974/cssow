@@ -1,9 +1,11 @@
-from shared.models.cls_keyword import KeywordModel, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_keyword import KeywordModel, handle_log_info
+from shared.models.cls_teacher import TeacherModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db_keyword__get_options(TestCase):
     
     def setUp(self):
@@ -16,7 +18,7 @@ class test_db_keyword__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -27,38 +29,38 @@ class test_db_keyword__get_options(TestCase):
                 KeywordModel.get_options(self.fake_db)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, mock_auth_user)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 0, 6079)
+                , (13, 0, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(123, "Binary", "Donec porta efficitur metus, eget consequat ligula maximus eget. Nunc imperdiet sapien sit amet arcu fermentum maximus.", 13, 1, 2, '2020-01-24 07:30:01')]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 13, 6079, 777)
+            rows = KeywordModel.get_options(self.fake_db, 13, mock_auth_user, 777)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 777, 6079)
+                , (13, 777, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
@@ -69,7 +71,7 @@ class test_db_keyword__get_options(TestCase):
             self.assertEqual(2, rows[0].number_of_lessons)            
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
                 (1, "Binary", "Phasellus vitae pretium neque, ut mattis mi.", 13, 0, [], '2020-01-24')
@@ -80,11 +82,11 @@ class test_db_keyword__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = KeywordModel.get_options(self.fake_db, 13, 6079)
+            rows = KeywordModel.get_options(self.fake_db, 13, mock_auth_user)
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 0, 6079)
+                , (13, 0, mock_auth_user.id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

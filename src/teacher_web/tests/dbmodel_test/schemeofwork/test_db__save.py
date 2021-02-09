@@ -3,11 +3,10 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
-# create test context
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-save = Model.save
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__save(TestCase):
 
 
@@ -20,7 +19,7 @@ class test_db__save(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,10 +30,10 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                save(self.fake_db, model)
+                Model.save(self.fake_db, model)
 
 
-    def test_should_call__update_with_exception(self):
+    def test_should_call__update_with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -46,10 +45,10 @@ class test_db__save(TestCase):
             with self.assertRaises(Exception):
                 # act 
                 
-                save(self.fake_db, model)
+                Model.save(self.fake_db, model)
 
 
-    def test_should_call__update_with__is_new__false(self):
+    def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
         model = Model(89, department_id=43)
         model.is_new = Mock(return_value=False)
@@ -57,18 +56,18 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
-            actual_result = save(self.fake_db, model, 6079)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user)
             
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 0, 43, 1, 6079)
+                , (89, '', '', 0, 0, 43, 1, mock_auth_user.id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
 
 
-    def test_should_call__scheme_of_work__insert__when__is_new__true(self):
+    def test_should_call__scheme_of_work__insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
         model = Model(0, department_id=45)
@@ -79,13 +78,13 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=(101,)):
             # act
 
-            actual_result = save(self.fake_db, model, 6079)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user)
 
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, 6079)
+                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -93,7 +92,7 @@ class test_db__save(TestCase):
             self.assertEqual(101, actual_result.id)
 
 
-    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self):
+    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
         model = Model(0)
@@ -101,19 +100,19 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
 
-            actual_result = save(self.fake_db, model, 6079)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user)
 
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__has__teacher_permission__insert'
-                 , (101, 6079, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, 6079, True)
+                 , (101, mock_auth_user.id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.id, True)
                  , handle_log_info)
 
             self.assertEqual(101, actual_result.id)
 
 
-    def test_should_call__delete_when_published_is_delete(self):
+    def test_should_call__delete_when_published_is_delete(self, mock_auth_user):
         # arrange
 
         model = Model(99)
@@ -122,13 +121,13 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=([], 101)):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=6079, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
 
             # assert
 
             ExecHelper.delete.assert_called_with(self.fake_db,
             'scheme_of_work__delete'
-            , (99, 6079)
+            , (99, mock_auth_user.id)
             , handle_log_info)
 
             self.assertEqual(99, actual_result.id)

@@ -1,15 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_lesson import LessonModel
+from shared.models.cls_lesson import LessonModel as Model, handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-import shared.models.cls_lesson as test_context 
-
-get_by_keyword = test_context.LessonModel.get_by_keyword
-handle_log_info = test_context.handle_log_info
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_by_keyword(TestCase):
 
 
@@ -22,7 +20,7 @@ class test_db__get_by_keyword(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -30,30 +28,30 @@ class test_db__get_by_keyword(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_by_keyword(self.fake_db, 999, 99, 6079)
+                Model.get_by_keyword(self.fake_db, 999, 99, 6079)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_by_keyword(self.fake_db, 222, 13, 6079)
+            rows = Model.get_by_keyword(self.fake_db, 222, 13, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (222, 13, 6079) 
+                , (222, 13, mock_auth_user.id) 
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(
             321, 
@@ -85,13 +83,13 @@ class test_db__get_by_keyword(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_keyword(self.fake_db, 223, 13, 6079)
+            actual_results = Model.get_by_keyword(self.fake_db, 223, 13, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, 6079) 
+                , (223, 13, mock_auth_user.id) 
                 , []
                 , handle_log_info)
                 
@@ -106,15 +104,15 @@ class test_db__get_by_keyword(TestCase):
             self.assertEqual("Data representation", actual_results[0].parent_topic_name),
             self.assertEqual("Understand common numbering systems", actual_results[0].summary)
             
-            LessonModel.get_all_keywords.assert_not_called()        
+            #Model.get_all_keywords.assert_not_called()        
             LearningObjectiveModel.get_all.assert_not_called()
             ResourceModel.get_number_of_resources.assert_not_called()
-            LessonModel.get_related_topic_ids.assert_not_called()
-            LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
-            LessonModel.get_number_of_learning_objectives.assert_not_called()
+            Model.get_related_topic_ids.assert_not_called()
+            Model.get_ks123_pathway_objective_ids.assert_not_called()
+            Model.get_number_of_learning_objectives.assert_not_called()
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
             35, "Multistructural",
@@ -147,13 +145,13 @@ class test_db__get_by_keyword(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_keyword(self.fake_db, 224, 13, 6079)
+            actual_results = Model.get_by_keyword(self.fake_db, 224, 13, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (224, 13, 6079)
+                , (224, 13, mock_auth_user.id)
                 , []
                 , handle_log_info)
 
@@ -182,12 +180,12 @@ class test_db__get_by_keyword(TestCase):
 
             LearningObjectiveModel.get_all.assert_not_called()
             ResourceModel.get_number_of_resources.assert_not_called()
-            LessonModel.get_related_topic_ids.assert_not_called()
-            LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
-            LessonModel.get_number_of_learning_objectives.assert_not_called()
+            Model.get_related_topic_ids.assert_not_called()
+            Model.get_ks123_pathway_objective_ids.assert_not_called()
+            Model.get_number_of_learning_objectives.assert_not_called()
 
 
-    def test__should_call_select__when_parent_only_is_false(self):
+    def test__should_call_select__when_parent_only_is_false(self, mock_auth_user):
         # arrange
         expected_result = [(
             321, 
@@ -219,13 +217,13 @@ class test_db__get_by_keyword(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_keyword(self.fake_db, 223, 13, 6079, parent_only = False)
+            actual_results = Model.get_by_keyword(self.fake_db, 223, 13, mock_auth_user, parent_only = False)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, 6079) 
+                , (223, 13, mock_auth_user.id) 
                 , []
                 , handle_log_info)
                 
@@ -239,12 +237,12 @@ class test_db__get_by_keyword(TestCase):
             self.assertEqual(3, actual_results[0].parent_topic_id),
             self.assertEqual("Data representation", actual_results[0].parent_topic_name),
             self.assertEqual("Understand common numbering systems", actual_results[0].summary)
-            LessonModel.get_all_keywords.assert_called()        
+            Model.get_all_keywords.assert_called()        
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0].key_words)
 
             LearningObjectiveModel.get_all.assert_called()
             ResourceModel.get_number_of_resources.assert_called()
-            LessonModel.get_related_topic_ids.assert_called()
-            LessonModel.get_ks123_pathway_objective_ids.assert_called()
-            LessonModel.get_number_of_learning_objectives.assert_called()
+            Model.get_related_topic_ids.assert_called()
+            Model.get_ks123_pathway_objective_ids.assert_called()
+            Model.get_number_of_learning_objectives.assert_called()
 

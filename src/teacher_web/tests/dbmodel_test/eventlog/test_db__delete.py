@@ -3,9 +3,11 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_eventlog import EventLogModel as Model, EventLogDataAccess, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-delete = Model.delete
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__delete(TestCase):
 
 
@@ -19,7 +21,7 @@ class test_db__delete(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,7 +33,7 @@ class test_db__delete(TestCase):
                 delete(self.fake_db, 0, 99)
 
 
-    def test_should_call__delete(self):
+    def test_should_call__delete(self, mock_auth_user):
         # arrange
         
         expected_result = 2001
@@ -39,14 +41,14 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=6079)
+            actual_result = Model.delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=mock_auth_user)
 
             # assert
 
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 "logging__delete"
-                , (69, 31, 6079)
+                , (69, 31, mock_auth_user.id)
                 , handle_log_info)
 
             # check subsequent functions where called

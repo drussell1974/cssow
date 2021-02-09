@@ -8,6 +8,10 @@ get_options = test_context.SoloTaxonomyModel.get_options
 handle_log_info = test_context.handle_log_info
 
 
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
+
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_options(TestCase):
     
     def setUp(self):
@@ -20,7 +24,7 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self):
+    def test__should_call__select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -31,27 +35,27 @@ class test_db__get_options(TestCase):
                 get_options(self.fake_db)
 
 
-    def test__should_call__select__return_no_items(self):
+    def test__should_call__select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, 6079)
+            rows = get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__return_single_item(self):
+    def test__should_call__select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (34, "Extended Abstract", 4)
@@ -60,13 +64,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 6079)
+            rows = get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             
@@ -77,7 +81,7 @@ class test_db__get_options(TestCase):
             self.assertEqual(4, rows[0].lvl)
 
 
-    def test__should_call__select__return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (45, "Prestructural", 1),
@@ -90,13 +94,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 6079)
+            rows = get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             

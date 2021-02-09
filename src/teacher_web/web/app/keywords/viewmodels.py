@@ -50,6 +50,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             self.error_message = repr(e)
             raise e
 
+
     def view(self):
 
         data = {

@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_keystage import KeyStageModel, handle_log_info
+from shared.models.cls_teacher import TeacherModel
 
-import shared.models.cls_keystage as testcontext 
-
-get_options = testcontext.KeyStageModel.get_options
-handle_log_info = testcontext.handle_log_info
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_options(TestCase):
     
     def setUp(self):
@@ -20,7 +18,7 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,30 +26,30 @@ class test_db__get_options(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_options(self.fake_db)
+                KeyStageModel.get_options(self.fake_db)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_options(self.fake_db, 6079)
+            rows = KeyStageModel.get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self):
+    def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (4, "KS4")
@@ -60,13 +58,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 6079)
+            rows = KeyStageModel.get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             
@@ -76,7 +74,7 @@ class test_db__get_options(TestCase):
             self.assertEqual("KS4", rows[0].name)
 
 
-    def test__should_call_select__return_multiple_item(self):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (3, "KS3"),
@@ -87,13 +85,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_options(self.fake_db, 6079)
+            rows = KeyStageModel.get_options(self.fake_db, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             

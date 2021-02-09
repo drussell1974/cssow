@@ -9,7 +9,7 @@ from shared.models.decorators.permissions import min_permission_required
 from django.db import connection as db
 from django.urls import reverse_lazy
 from django.views import generic
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import DEPARTMENT
 from shared.view_model import ViewModel
 from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewModel, TeamPermissionDeleteViewModel, TeamPermissionRequestAccessViewModel, TeamPermissionRequestLoginViewModel
@@ -20,7 +20,7 @@ def index(request):
     
     # TODO: #316 permissions_required decorator
 
-    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_user_id(request))
+    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_user_model(db, request))
     
     return render(request, "teampermissions/index.html", myTeamPermssionsViewModel.view().content)    
 
@@ -29,7 +29,7 @@ def index(request):
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
 def edit(request, scheme_of_work_id, teacher_id):
 
-    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_id(request))
+    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_model(db, request))
     
     if request.method == "POST":
         save_view.execute()
@@ -51,7 +51,7 @@ def delete(request, scheme_of_work_id, teacher_id):
     
     """ delete item and redirect back to index """
 
-    delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_id(request))
+    delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_model(db, request))
     delete_viewmodel.execute()
 
     return HttpResponseRedirect(reverse("team-permissions.index"))
@@ -67,7 +67,7 @@ def request_access(request, scheme_of_work_id, permission):
         teacher_id = request.user.id, 
         teacher_name=request.user.get_username(),
         permission=permission,
-        auth_user=auth_user_id(request))
+        auth_user=auth_user_model(db, request))
 
     request_access_view.execute()
     
@@ -85,7 +85,7 @@ class TeamPermissionRequestLoginView(auth_views.LoginView):
         
         func =super(TeamPermissionRequestLoginView, self).get_context_data
 
-        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_id(request), **kwargs)
+        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request), **kwargs)
         
         return render(request, "registration/login.html", request_login.view())
 

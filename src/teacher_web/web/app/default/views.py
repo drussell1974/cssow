@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 
 from shared.view_model import ViewModel
 from .viewmodels import SchemeOfWorkGetLatestViewModel
@@ -12,7 +12,7 @@ def index(request):
 
     # get the schemes of work
     #253 check user id
-    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_user_id(request))
+    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_user_model(db, request))
     
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 

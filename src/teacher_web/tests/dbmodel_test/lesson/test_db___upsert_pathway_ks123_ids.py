@@ -2,10 +2,10 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, LessonDataAccess, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-_upsert_pathway_ks123_ids = LessonDataAccess._upsert_pathway_ks123_ids
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__upsert_pathway_ks123_ids(TestCase):
 
 
@@ -19,7 +19,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -30,10 +30,10 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                _upsert_pathway_ks123_ids(self.fake_db, model, auth_user_id=99)
+                LessonDataAccess._upsert_pathway_ks123_ids(self.fake_db, model, auth_user_id=99)
     
     
-    def test_should_call__reinsert__pathway_ks123_ids(self):
+    def test_should_call__reinsert__pathway_ks123_ids(self, mock_auth_user):
          # arrange
         model = LessonModel(10, "")
         model.pathway_ks123_ids = ["201","202"]
@@ -42,7 +42,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = _upsert_pathway_ks123_ids(self.fake_db, model, [], auth_user=6079)
+            actual_result = LessonDataAccess._upsert_pathway_ks123_ids(self.fake_db, model, [], auth_user_id=6079)
             
             # assert
             ExecHelper.insert.assert_called()

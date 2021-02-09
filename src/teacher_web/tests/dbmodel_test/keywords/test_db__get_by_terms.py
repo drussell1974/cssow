@@ -1,13 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_keyword import KeywordModel, handle_log_info
+from shared.models.cls_teacher import TeacherModel
 
-import shared.models.cls_keyword as test_context 
-
-get_by_terms = test_context.KeywordModel.get_by_terms
-handle_log_info = test_context.handle_log_info
-Model = test_context.KeywordModel
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_by_terms(TestCase):
 
 
@@ -20,7 +18,7 @@ class test_db__get_by_terms(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self):
+    def test__should_call_select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -28,37 +26,37 @@ class test_db__get_by_terms(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_by_terms(self.fake_db, 4)
+                KeywordModel.get_by_terms(self.fake_db, 4)
 
 
-    def test__should_call_select__return_no_items(self):
+    def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_results = get_by_terms(self.fake_db, "", True, 13, 6079)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "", True, 13, mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, 6079)
+                , ('', 13, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(actual_results))
 
 
-    def test__should_call_select___with_empty__key_words_list__and__allow_all__False(self):
+    def test__should_call_select___with_empty__key_words_list__and__allow_all__False(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", False, 13, 6079)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "", False, 13, mock_auth_user.id)
             
             # assert
             
@@ -67,40 +65,40 @@ class test_db__get_by_terms(TestCase):
             self.assertEqual(0, len(actual_results))
 
 
-    def test__should_call_select___with_empty__key_words_list__and__allow_all__True(self):
+    def test__should_call_select___with_empty__key_words_list__and__allow_all__True(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", True, 13, 6079)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "", True, 13, mock_auth_user)
             
             # assert
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, 6079)
+                , ('', 13, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(actual_results))
     
     
-    def test__should_call_select___with__key_words_list__and__allow_all__True__return_single_item(self):
+    def test__should_call_select___with__key_words_list__and__allow_all__True__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [(702, "Fringilla", "purus lacus, ut volutpat nibh euismod.", 13, 2, '2020-01-24 07:59.01')]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "", True, 13, 6079)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "", True, 13, mock_auth_user)
             
             # assert
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, 6079)
+                , ('', 13, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 
@@ -112,7 +110,7 @@ class test_db__get_by_terms(TestCase):
             self.assertEqual(13, actual_results[0].scheme_of_work_id)
 
 
-    def test__should_call_select___with__key_words_list__and__allow_all__True__return_multiple_items(self):
+    def test__should_call_select___with__key_words_list__and__allow_all__True__return_multiple_items(self, mock_auth_user):
         # arrange
         expected_result = [
             (67, "Vestibulum", "nec arcu nec dolor vehicula ornare non.", 133, 1, '2020-01-24 07:41.01'),
@@ -123,13 +121,13 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_by_terms(self.fake_db, "ullamcorper, dolor, odio", True, 133, 6079)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "ullamcorper, dolor, odio", True, 133, mock_auth_user)
             
             # assert
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ("ullamcorper','dolor','odio", 133, 6079)
+                , ("ullamcorper','dolor','odio", 133, mock_auth_user.id)
                 , []
                 , handle_log_info)
                 

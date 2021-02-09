@@ -104,7 +104,7 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
-        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user)
+        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
         #TODO: return None
         model = LearningObjectiveModel(0)
         
@@ -131,9 +131,10 @@ class LearningObjectiveModel (BaseModel):
 
         return model
 
+
     @staticmethod
     def get_all(db, lesson_id, scheme_of_work_id, auth_user):
-        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user)
+        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             model = LearningObjectiveModel(
@@ -163,7 +164,7 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def get_all_pathway_objectives(db, key_stage_id, key_words, auth_user):
-        rows = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id, key_words, auth_user)
+        rows = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id, key_words, auth_user_id=auth_user.id)
         data = []
         for row in rows:
             if len(row[9]) > 0 and key_words is not None:
@@ -195,46 +196,46 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     def get_linked_pathway_objectives(db, lesson_id, auth_user):
         # TODO: verify use
-        return LearningObjectiveDataAccess.get_linked_pathway_objectives(db, lesson_id, auth_user)
+        return LearningObjectiveDataAccess.get_linked_pathway_objectives(db, lesson_id, auth_user_id=auth_user.id)
 
 
     @staticmethod
     def save(db, model, auth_user, published):
 
         if published == 2:
-            LearningObjectiveDataAccess._delete(db, model, auth_user)
+            LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.id)
         else:
             model.validate()
 
             if model.is_valid == True:
                 if model.is_new() == True:
-                    model = LearningObjectiveDataAccess._insert(db, model, published, auth_user)
+                    model = LearningObjectiveDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
                 else:
-                    LearningObjectiveDataAccess._update(db, model, published, auth_user)
+                    LearningObjectiveDataAccess._update(db, model, published, auth_user_id=auth_user.id)
         return model
 
 
     @staticmethod
     def publish_item(db, learning_objective_id, scheme_of_work_id, auth_user):
-        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user)
+        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user_id=auth_user.id)
 
 
     @staticmethod
     def delete(db, model, auth_user):
         """ Delete learning objective """
-        model = LearningObjectiveDataAccess._delete(db, model, auth_user)
+        model = LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.id)
         return model
 
 
     @staticmethod
     def publish(db, model, scheme_of_work_id, auth_user):
         #TODO: verify usage
-        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user)
+        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user_id=auth_user.id)
 
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
-        return LearningObjectiveDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user)
+        return LearningObjectiveDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.id)
 
 
 class LearningObjectiveDataAccess:
@@ -242,7 +243,7 @@ class LearningObjectiveDataAccess:
 
     @staticmethod
     #248 Added parameters
-    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user):
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id):
 
         execHelper = ExecHelper()
         
@@ -250,7 +251,7 @@ class LearningObjectiveDataAccess:
 
         select_sql = "lesson_learning_objective__get"
 
-        params = (id_, auth_user)
+        params = (id_, auth_user_id)
 
         rows = []
 
@@ -261,7 +262,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_all(db, lesson_id, scheme_of_work_id, auth_user):
+    def get_all(db, lesson_id, scheme_of_work_id, auth_user_id):
 
         execHelper = ExecHelper()
 
@@ -269,7 +270,7 @@ class LearningObjectiveDataAccess:
 
         select_sql = "lesson_learning_objective__get_all"
 
-        params = (lesson_id, scheme_of_work_id, auth_user)
+        params = (lesson_id, scheme_of_work_id, auth_user_id)
 
         rows = []
         
@@ -280,7 +281,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_all_pathway_objectives(db, key_stage_id, key_words, auth_user):
+    def get_all_pathway_objectives(db, key_stage_id, key_words, auth_user_id):
 
         execHelper = ExecHelper()
 
@@ -288,7 +289,7 @@ class LearningObjectiveDataAccess:
 
         select_sql = "lesson_learning_objective__get_all_pathway_objectives"
         
-        params = (key_stage_id, auth_user)
+        params = (key_stage_id, auth_user_id)
 
         rows = []
         
@@ -299,13 +300,13 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_linked_pathway_objectives(db, lesson_id, auth_user):
+    def get_linked_pathway_objectives(db, lesson_id, auth_user_id):
 
         execHelper = ExecHelper()
     
         select_sql = "lesson_learning_objective__get_linked_pathway_objectives"
             
-        params = (lesson_id, auth_user)
+        params = (lesson_id, auth_user_id)
         
         rows = []
 
@@ -338,15 +339,15 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def publish_item(db, id_, scheme_of_work_id, auth_user):
+    def publish_item(db, id_, scheme_of_work_id, auth_user_id):
         #231: publish item
         model = LearningObjectiveModel(id_=id_)
         model.publish = True
-        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user)
+        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user_id)
 
 
     @staticmethod
-    def _delete(db, model, auth_user):
+    def _delete(db, model, auth_user_id):
 
         execHelper = ExecHelper()
 
@@ -355,7 +356,7 @@ class LearningObjectiveDataAccess:
 
         str_delete = "lesson_learning_objective__delete"
 
-        params = (model.id, auth_user)
+        params = (model.id, auth_user_id)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
@@ -363,14 +364,14 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id):
         """ Delete all unpublished learning objectives """
 
         execHelper = ExecHelper()
 
         str_delete = "lesson_learning_objective__delete_unpublished"
 
-        params = (scheme_of_work_id, lesson_id, auth_user)
+        params = (scheme_of_work_id, lesson_id, auth_user_id)
             
         row_count = execHelper.delete(db, str_delete, params, handle_log_info)        
         
@@ -378,7 +379,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def _update(db, model, published, auth_user):
+    def _update(db, model, published, auth_user_id):
         execHelper = ExecHelper()
         rows = []
         
@@ -386,7 +387,7 @@ class LearningObjectiveDataAccess:
         #269 create learning_objective__update stored procedure
         str_update = "lesson_learning_objective__update"
         
-        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, published, auth_user)
+        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, published, auth_user_id)
         
         rows = execHelper.update(db, str_update, params, handle_log_info)
 
@@ -394,7 +395,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user):
+    def _insert(db, model, published, auth_user_id):
         execHelper = ExecHelper()
         
         #TODO: #269 create learning_objective__insert stored procedure (1 of 2 insert sow_learning_objective)
@@ -414,7 +415,7 @@ class LearningObjectiveDataAccess:
             model.created,
             model.created_by_id,
             published,
-            auth_user
+            auth_user_id
         )
         
         results = execHelper.insert(db, str_insert, params, handle_log_info)
@@ -426,14 +427,14 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def _publish(db, model, scheme_of_work_id, auth_user):
+    def _publish(db, model, scheme_of_work_id, auth_user_id):
     
         execHelper = ExecHelper()
 
         #269 create lesson_learning_objective__publish stored procedure
 
         str_publish = "lesson_learning_objective__publish_item"
-        params = (model.id, model.lesson_id, scheme_of_work_id, 1 if model.published else 0, auth_user)
+        params = (model.id, model.lesson_id, scheme_of_work_id, 1 if model.published else 0, auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_publish, params)

@@ -6,9 +6,10 @@ from shared.models.core.db_helper import ExecHelper
 
 from shared.models.cls_resource import ResourceModel, handle_log_info
 
-get_resource_type_options = ResourceModel.get_resource_type_options
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db__get_resource_type_options(TestCase):
     
     def setUp(self):
@@ -21,7 +22,7 @@ class test_db__get_resource_type_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self):
+    def test__should_call__select__with_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,29 +30,29 @@ class test_db__get_resource_type_options(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_resource_type_options(self.fake_db, auth_user=1)
+                ResourceModel.get_resource_type_options(self.fake_db, auth_user=1)
 
 
-    def test__should_call__select__return_no_items(self):
+    def test__should_call__select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_resource_type_options(self.fake_db, auth_user=6079)
+            rows = ResourceModel.get_resource_type_options(self.fake_db, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'resource_type__get_options', (6079,)
+                'resource_type__get_options', (mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__return_single_item(self):
+    def test__should_call__select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (4345, "Markdown")
@@ -60,13 +61,13 @@ class test_db__get_resource_type_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=6079)
+            rows = ResourceModel.get_resource_type_options(self.fake_db, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'resource_type__get_options'
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             
@@ -76,7 +77,7 @@ class test_db__get_resource_type_options(TestCase):
             self.assertEqual("Markdown", rows[0].name)
 
 
-    def test__should_call__select__return_multiple_item(self):
+    def test__should_call__select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
             (934, "Book"),
@@ -87,13 +88,13 @@ class test_db__get_resource_type_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = get_resource_type_options(self.fake_db, auth_user=6079)
+            rows = ResourceModel.get_resource_type_options(self.fake_db, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'resource_type__get_options' 
-                , (6079,)
+                , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
             

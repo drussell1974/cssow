@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class DepartmentModel(BaseModel):
 
@@ -23,6 +21,8 @@ class DepartmentModel(BaseModel):
         # Validate name
         self._validate_required_string("name", self.name, 1, 70)
 
+        self.on_after_validate()
+
 
     def _clean_up(self):
         """ clean up properties by removing by casting and ensuring safe for inserting etc """
@@ -37,7 +37,7 @@ class DepartmentModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = DepartmentDataAccess.get_options(db, auth_user)
+        rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.id)
         data = []
         
         for row in rows:
@@ -53,23 +53,23 @@ class DepartmentModel(BaseModel):
             data = DepartmentDataAccess._delete(db, model, auth_user)
         elif model.is_valid == True:
             if model.is_new():
-                data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user)
+                data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.id)
                 model.id = data[0]
             else:
-                data = DepartmentDataAccess._update(db, model, teacher_id, auth_user)
-    
+                data = DepartmentDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.id)
+
         return model
 
 
 class DepartmentDataAccess:
     
     @staticmethod
-    def get_options(db, user_auth):
+    def get_options(db, auth_user_id):
         
         execHelper = ExecHelper()
 
         str_select = "department__get_options"
-        params = (user_auth,)
+        params = (auth_user_id,)
 
         try:
             rows = []
@@ -82,7 +82,7 @@ class DepartmentDataAccess:
         
 
     @staticmethod
-    def _insert(db, model, teacher_id, auth_user):
+    def _insert(db, model, teacher_id, auth_user_id):
         """ inserts the sow_department """
         execHelper = ExecHelper()
 
@@ -93,7 +93,7 @@ class DepartmentDataAccess:
             teacher_id,
             model.school_id,
             model.created,
-            auth_user,
+            auth_user_id,
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -102,7 +102,7 @@ class DepartmentDataAccess:
 
 
     @staticmethod
-    def _update(db, model, teacher_id, auth_user):
+    def _update(db, model, teacher_id, auth_user_id):
         """ updates the sow_department """
         
         execHelper = ExecHelper()
@@ -112,7 +112,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             teacher_id,
-            auth_user
+            auth_user_id
         )
         
         result = execHelper.update(db, str_update, params, handle_log_info)
@@ -121,12 +121,12 @@ class DepartmentDataAccess:
 
 
     @staticmethod
-    def _delete(db, model, auth_user):
+    def _delete(db, model, auth_user_id):
 
         execHelper = ExecHelper()
 
         sql = "department__delete"
-        params = (model.id, auth_user)
+        params = (model.id, auth_user_id)
     
         #271 Stored procedure
         rows = execHelper.delete(db, sql, params, handle_log_info)

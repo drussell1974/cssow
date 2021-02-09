@@ -112,7 +112,7 @@ class ResourceModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -138,7 +138,7 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
-        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id)
+        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.id, resource_type_id=resource_type_id)
         data = []
         for row in rows:
             model = ResourceModel(
@@ -164,57 +164,57 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_number_of_resources(db, lesson_id, auth_user):
-        value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user)
+        value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user_id=auth_user.id)
         return value
 
     @staticmethod
     def get_resource_type_options(db, auth_user):
-        rows = ResourceDataAccess.get_resource_type_options(db, auth_user)
+        rows = ResourceDataAccess.get_resource_type_options(db, auth_user_id=auth_user.id)
         return rows
 
 
     @staticmethod
     def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
-            rval = ResourceDataAccess._delete(db, model, auth_user)
+            rval = ResourceDataAccess._delete(db, model, auth_user.id)
             #TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:
-                new_id = ResourceDataAccess._insert(db, model, published, auth_user)
+                new_id = ResourceDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
                 model.id = new_id[0]
             else:
-                rows = ResourceDataAccess._update(db, model, published, auth_user)
+                rows = ResourceDataAccess._update(db, model, published, auth_user_id=auth_user.id)
 
         return model
 
 
     @staticmethod
     def publish_item(db, resource_id, scheme_of_work_id, auth_user):
-        return ResourceDataAccess.publish_item(db, resource_id, scheme_of_work_id, auth_user)
+        return ResourceDataAccess.publish_item(db, resource_id, scheme_of_work_id, auth_user_id=auth_user.id)
 
 
     @staticmethod
     def delete(db, resource_id, auth_user):
-        return ResourceDataAccess.delete(db, resource_id, auth_user)
+        return ResourceDataAccess.delete(db, resource_id, auth_user.id)
 
 
     @staticmethod
     def delete_unpublished(db, lesson_id, auth_user):
-        return ResourceDataAccess.delete_unpublished(db, lesson_id, auth_user)
+        return ResourceDataAccess.delete_unpublished(db, lesson_id, auth_user_id=auth_user.id)
 
 
 class ResourceDataAccess:
 
     @staticmethod
     #248 Added parameters
-    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user):
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id):
         """ Get Resource """
 
         execHelper = ExecHelper()
         
         str_select = "lesson_resource__get"
-        params = (id_, auth_user)
+        params = (id_, auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -223,13 +223,13 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id = 0):
+    def get_all(db, scheme_of_work_id, lesson_id, auth_user_id, resource_type_id = 0):
         """ Get resources for lesson """
 
         execHelper = ExecHelper()
 
         str_select = "lesson_resource__get_all"
-        params = (lesson_id, resource_type_id, auth_user)
+        params = (lesson_id, resource_type_id, auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -238,7 +238,7 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def delete(db, id_, auth_user):
+    def delete(db, id_, auth_user_id):
         """
         :param db: the database context
         :param id_: the id of the record to delete
@@ -247,11 +247,11 @@ class ResourceDataAccess:
 
         model = ResourceModel(id_)
         
-        return ResourceDataAccess._delete(db, model, auth_user);
+        return ResourceDataAccess._delete(db, model, auth_user_id);
 
 
     @staticmethod
-    def _insert(db, model, published, auth_user):
+    def _insert(db, model, published, auth_user_id):
         """ inserts the sow_resource and sow_scheme_of_work__has__reference """
         execHelper = ExecHelper()
 
@@ -269,7 +269,7 @@ class ResourceDataAccess:
             model.created,
             model.created_by_id,
             published,
-            auth_user
+            auth_user_id
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -278,7 +278,7 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def _update(db, model, published, auth_user):
+    def _update(db, model, published, auth_user_id):
         """ updates the sow_lesson and sow_lesson__has__topics """
         
         execHelper = ExecHelper()
@@ -295,7 +295,7 @@ class ResourceDataAccess:
             model.is_expired,
             model.lesson_id,
             published,
-            auth_user
+            auth_user_id
         )
         
         result = execHelper.update(db, str_update, params, handle_log_info)
@@ -304,12 +304,12 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def _delete(db, model, auth_user):
+    def _delete(db, model, auth_user_id):
 
         execHelper = ExecHelper()
 
         sql = "lesson_resource__delete"
-        params = (model.id, auth_user)
+        params = (model.id, auth_user_id)
     
         #271 Stored procedure
         rows = execHelper.delete(db, sql, params, handle_log_info)
@@ -318,12 +318,12 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def get_resource_type_options(db, auth_user):
+    def get_resource_type_options(db, auth_user_id):
         
         execHelper = ExecHelper()
 
         str_select = "resource_type__get_options"
-        params = (auth_user,)
+        params = (auth_user_id,)
 
         data = []
 
@@ -338,7 +338,7 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def get_number_of_resources(db, lesson_id, auth_user):
+    def get_number_of_resources(db, lesson_id, auth_user_id):
         """
         get the number of resources for the lesson
         :param db: database context
@@ -351,7 +351,7 @@ class ResourceDataAccess:
         
         select_sql = "lesson__get_number_of_resources"
 
-        params = (lesson_id, 1, auth_user)
+        params = (lesson_id, 1, auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -362,13 +362,13 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, lesson_id, auth_user):
+    def delete_unpublished(db, lesson_id, auth_user_id):
         """ Delete all unpublished resources """
         
         execHelper = ExecHelper()
         
         str_delete = "lesson_resource__delete_unpublished"
-        params = (lesson_id, auth_user)
+        params = (lesson_id, auth_user_id)
         rows = []
         #271 Stored procedure
 
@@ -377,12 +377,12 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def publish_item(db, resource_id, scheme_of_work_id, auth_user):
+    def publish_item(db, resource_id, scheme_of_work_id, auth_user_id):
         
         execHelper = ExecHelper()
 
         str_publish = "lesson_resource__publish_item"
-        params = (resource_id, scheme_of_work_id, 1, auth_user)
+        params = (resource_id, scheme_of_work_id, 1, auth_user_id)
         
         rval = execHelper.update(db, str_publish, params)
 

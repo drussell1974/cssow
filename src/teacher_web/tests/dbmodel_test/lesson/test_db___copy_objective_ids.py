@@ -2,10 +2,10 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_teacher import TeacherModel
 
-_copy_objective_ids = LessonDataAccess._copy_objective_ids
-
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_db___upsert_related_topic_ids(TestCase):
 
 
@@ -19,7 +19,7 @@ class test_db___upsert_related_topic_ids(TestCase):
         pass
 
 
-    def test_should_raise_exception(self):
+    def test_should_raise_exception(self, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -30,11 +30,11 @@ class test_db___upsert_related_topic_ids(TestCase):
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                _copy_objective_ids(self.fake_db, model, auth_user=6079)
+                LessonDataAccess._copy_objective_ids(self.fake_db, model, auth_user_id=6079)
 
     
     
-    def test_should_call_insert__to_copy_objectives_ids(self):
+    def test_should_call_insert__to_copy_objectives_ids(self, mock_auth_user):
          # arrange
         model = Model(10, "")
         expected_result = []
@@ -43,7 +43,7 @@ class test_db___upsert_related_topic_ids(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = _copy_objective_ids(self.fake_db, model, [], auth_user=6079)
+            actual_result = LessonDataAccess._copy_objective_ids(self.fake_db, model, [], auth_user_id=6079)
             
             # assert
 

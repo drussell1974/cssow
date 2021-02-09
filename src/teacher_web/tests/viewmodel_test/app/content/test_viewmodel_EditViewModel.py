@@ -2,15 +2,15 @@ import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from django.http import Http404
-
-# test context
 from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
-from shared.models.cls_content import ContentModel as Model
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.models.cls_keystage import KeyStageModel
 from app.content.viewmodels import ContentEditViewModel as ViewModel
+from shared.models.cls_content import ContentModel as Model
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_keystage import KeyStageModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 
-
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_viewmodel_EditViewModel(ViewModelTestCase):
 
     def setUp(self):
@@ -22,7 +22,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         pass
 
 
-    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self):
+    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self, mock_auth_user):
         
         # arrange
 
@@ -38,13 +38,13 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
         with self.assertRaises(Http404):
             # act
-            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=mock_auth_user)
 
             # assert functions was to return data called
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self):
+    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=None)
@@ -55,16 +55,16 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         mock_post = Mock(
             method = "POST"
         )
-
+        
         with self.assertRaises(Http404):
             # act
-            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=mock_auth_user)
 
             # assert functions was to return data called
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    def test_init_on_GET__edit_new_model(self):
+    def test_init_on_GET__edit_new_model(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -78,7 +78,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
         # act
-        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=0, auth_user=99)
+        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=0, auth_user=mock_auth_user)
         
         # assert 
 
@@ -93,7 +93,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    def test_init_on_GET__edit_existing_model(self):
+    def test_init_on_GET__edit_existing_model(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -107,7 +107,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
         # act
-        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=101, auth_user=99)
+        viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=101, auth_user=mock_auth_user)
         
         # assert 
         
@@ -122,7 +122,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self):
+    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -140,7 +140,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # call view
         with self.assertRaises(Http404):
             # act
-            viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=67, auth_user=99)
+            viewmodel = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=234, content_id=67, auth_user=mock_auth_user)
         
             # assert 
             
@@ -150,7 +150,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             viewmodel.view()
             
 
-    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self):
+    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -166,7 +166,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
                 method = "POST"
             )
             
-            test_context = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id = 703, auth_user=99)
+            test_context = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id = 703, auth_user=mock_auth_user)
                                         
             # assert 
         
@@ -178,7 +178,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             Model.save.assert_called()
 
             
-    def test_init_on_POST__invalid_model_is_content_ready__false(self):
+    def test_init_on_POST__invalid_model_is_content_ready__false(self, mock_auth_user):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
@@ -195,7 +195,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
             #"", "Vivamus venenatis interdum sem.", "Quisque imperdiet lectus efficitur enim porttitor, vel iaculis ligula ullamcorper"
 
-            viewmodel = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=99)
+            viewmodel = ViewModel(db=self.mock_db, request=mock_post, scheme_of_work_id=234, content_id=67, auth_user=mock_auth_user)
             
             # assert 
         

@@ -66,7 +66,7 @@ class EventLogModel(BaseModel):
             event_type=search_criteria.event_type, 
             category=search_criteria.category, 
             subcategory=search_criteria.subcategory, 
-            auth_user=auth_user)
+            auth_user_id=auth_user.id)
         
         data = []
         for row in rows:
@@ -79,19 +79,19 @@ class EventLogModel(BaseModel):
 
     @staticmethod
     def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
-        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user)
+        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user_id=auth_user.id)
         return res
 
 
 class EventLogDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user):
+    def get_all(db, scheme_of_work_id, page, pagesize, date_from, date_to, event_type, category, subcategory, auth_user_id):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
-        params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user)
+        params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user_id)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
@@ -100,12 +100,12 @@ class EventLogDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
+    def delete(db, scheme_of_work_id, older_than_n_days, auth_user_id):
         """ get event logs by criteria """
 
         execHelper = ExecHelper()
         
-        params = (scheme_of_work_id, older_than_n_days, auth_user)
+        params = (scheme_of_work_id, older_than_n_days, auth_user_id)
         
         rows = []
         rows = execHelper.delete(db, "logging__delete", params, handle_log_info)

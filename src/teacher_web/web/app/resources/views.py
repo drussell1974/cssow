@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.filehandler import handle_uploaded_markdown
 from shared.models.core import validation_helper
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
@@ -23,7 +23,7 @@ from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewM
 def index(request, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
     #253 check user id
-    getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))  
+    getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))  
         
     return render(request, "resources/index.html", getall_resources.view().content)
 
@@ -42,11 +42,11 @@ def new(request, scheme_of_work_id, lesson_id):
         lesson_id=lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     lesson = get_lesson_view.model
 
     #253 check user id
-    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_model(db, request))
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -68,7 +68,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
     
     #253 check user id
-    get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))
+    get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
     model = get_model_view.model
 
     if model == None:
@@ -81,11 +81,11 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
 
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
     lesson = get_lesson_view.model
 
     #253 check user id
-    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
+    get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_model(db, request))
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -130,7 +130,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
         #253 check user id
-        created_by_id=auth_user_id(request),
+        created_by_id=auth_user_model(db, request),
         published=request.POST.get("published", 0)
     )
 
@@ -144,7 +144,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_resource_view = ResourceSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_user_id(request))
+    save_resource_view = ResourceSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_user_model(db, request))
     
     save_resource_view.execute(int(request.POST["published"]))
 
@@ -172,11 +172,11 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_id,resource_id))
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_id(request))    
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
         lesson = get_lesson_view.model
             
         #253 check user id
-        get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_id(request))
+        get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user_model(db, request))
 
         data = {
             "scheme_of_work_id": scheme_of_work_id,
@@ -201,7 +201,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    ResourceModel.delete(db, resource_id, auth_user_id(request))
+    ResourceModel.delete(db, resource_id, auth_user_model(db, request))
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -212,7 +212,7 @@ def delete_item(request, scheme_of_work_id, lesson_id, resource_id):
 def delete_unpublished(request, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    ResourceModel.delete_unpublished(db, lesson_id, auth_user_id(request))
+    ResourceModel.delete_unpublished(db, lesson_id, auth_user_model(db, request))
 
     return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))
 
@@ -223,6 +223,6 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 def publish_item(request, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
 
-    ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_user_id(request))
+    ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_user_model(db, request))
     
     return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))

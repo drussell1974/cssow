@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
-from shared.models.core.django_helper import auth_user_id
+from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_content import ContentModel as Model
@@ -74,7 +74,7 @@ class ContentEditViewModel(BaseViewModel):
                     key_stage_id=self.scheme_of_work.key_stage_id,
                     created = datetime.now(),
                     #253 check user id
-                    created_by_id = auth_user_id(request))
+                    created_by_id = auth_user)
 
         elif request.method == "POST":
             
