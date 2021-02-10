@@ -52,6 +52,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
                                  key_stage_name="test key stage",
                                  department_id=3,
                                  department_name="test department",
+                                 institute_id=4,
+                                 school_name="test school",
                                  published=0)
 
         # test
@@ -67,6 +69,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual("test key stage", test.key_stage_name)
         self.assertEqual(3, test.department_id)
         self.assertEqual("test department", test.department_name)
+        self.assertEqual(4, test.institute_id)
+        self.assertEqual("test school", test.school_name)
         self.assertTrue(test.is_valid)
         self.assertFalse(test.is_recent)
         self.assertFalse(test.published)

@@ -45,6 +45,10 @@ div.progress--css-animated {
     animation: progressbar 5s forwards 1s;
 }
 
+.float-right {
+    float: right;
+}
+
 @keyframes progressbar {
     0%   { width: 10% }
     20%  { width: 20% }

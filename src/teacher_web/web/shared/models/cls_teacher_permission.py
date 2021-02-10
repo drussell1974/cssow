@@ -84,7 +84,7 @@ class TeacherPermissionModel(BaseModel):
     @staticmethod
     def get_model(db, scheme_of_work, teacher, auth_user):
         ''' get permission for the teacher '''
-        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher.id, scheme_of_work.department_id, scheme_of_work.school_id, auth_user_id=auth_user.id)
+        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher.id, scheme_of_work.department_id, scheme_of_work.institute_id, auth_user_id=auth_user.id)
 
         model = TeacherPermissionModel(teacher=teacher, scheme_of_work=scheme_of_work) # Default
         model.is_from_db = False
@@ -110,7 +110,7 @@ class TeacherPermissionModel(BaseModel):
                 cur_scheme_of_work = SchemeOfWorkModel(row[2], name=row[3])
                 data.append(cur_scheme_of_work)
 
-            #329 create TeacherModel?
+            #329 TODO: get by teacher_id only #create TeacherModel
             
             teacher_model = TeacherModel.get_model(teacher_id) # TeacherModel(row[0], name=row[1], department=DepartmentModel(0,name=""))
 
@@ -163,13 +163,13 @@ class TeacherPermissionModel(BaseModel):
 class TeacherPermissionDataAccess:
 
     @staticmethod
-    def get_model(db, scheme_of_work_id, teacher_id, department_id, school_id, auth_user_id):
+    def get_model(db, scheme_of_work_id, teacher_id, department_id, institute_id, auth_user_id):
         ''' gets the current users permissions for the scheme of work  '''
         
         helper = ExecHelper()
 
         str_select = "scheme_of_work__get_teacher_permissions"
-        params = (scheme_of_work_id, teacher_id, department_id, school_id, auth_user_id)
+        params = (scheme_of_work_id, teacher_id, department_id, institute_id, auth_user_id)
         
         #raise KeyError(params)
 

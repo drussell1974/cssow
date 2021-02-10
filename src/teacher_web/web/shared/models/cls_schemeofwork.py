@@ -5,6 +5,7 @@ from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
+from shared.models.base.context import SchemeOfWorkContext
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -16,7 +17,7 @@ class SchemeOfWorkModel(BaseModel):
     number_of_keywords = 0
     key_words = []
     
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", school_id = 0, created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", institute_id = 0, school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.name = name
@@ -27,7 +28,8 @@ class SchemeOfWorkModel(BaseModel):
         self.key_stage_name = key_stage_name
         self.department_id = try_int(department_id)
         self.department_name = department_name
-        self.school_id = school_id
+        self.institute_id = institute_id
+        self.school_name = school_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
@@ -55,8 +57,8 @@ class SchemeOfWorkModel(BaseModel):
         self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
         # Validate department
         self._validate_required_integer("department_id", self.department_id, 1, BaseModel.MAX_INT)
-        # Validate school_id
-        #self._validate_required_integer("school_id", self.school_id, 1, BaseModel.MAX_INT)
+        # Validate institute_id
+        self._validate_required_integer("institute_id", self.institute_id, 1, BaseModel.MAX_INT)
 
         self.on_after_validate()
 
@@ -79,6 +81,9 @@ class SchemeOfWorkModel(BaseModel):
 
         if self.department_name is not None:
             self.department_name = sql_safe(self.department_name)
+
+        if self.school_name is not None:
+            self.school_name = sql_safe(self.school_name)
 
 
     @staticmethod
@@ -169,6 +174,9 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10])
+
+            model.context = SchemeOfWorkContext(institute_id=row[11], department_id=row[12])
+
             data.append(model)
         return data
 

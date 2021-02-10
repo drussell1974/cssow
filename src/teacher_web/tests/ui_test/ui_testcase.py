@@ -22,6 +22,9 @@ TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 
 class UITestCase(TestCase):
     root_uri = os.environ["TEST_URI"]
+
+    test_institute_id = os.environ["TEST_INSTITUTE_ID"]
+    test_department_id = os.environ["TEST_DEPARTMENT_ID"]
     test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
     test_content_id = os.environ["TEST_CONTENT_ID"]
     test_lesson_id = os.environ["TEST_LESSON_ID"] 

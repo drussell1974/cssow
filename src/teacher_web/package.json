@@ -10,6 +10,7 @@
     "create-admin": "python3.7 ./web/manage.py createsuperuser --username=dave --email=dave@jazzthecat.co.uk --settings=web.settings.development.settings",
     "make-migrations": "env-cmd -f ../../dotenv/.env.development python3.7 ./web/manage.py makemigrations models --settings=web.settings.development.settings",
     "migrate": "env-cmd -f ../../dotenv/.env.development python3.7 ./web/manage.py migrate --settings=web.settings.development.settings",
+    "check": "env-cmd -f ../../dotenv/.env.development python3.7 ./web/manage.py check --settings=web.settings.development.settings",
     "install:":"pip3 install -r requirements.txt && yarn build",
     "install:dev":"pip3 install -r requirements.dev.txt && yarn build:dev",
     "install:test":"pip3 install -r requirements.dev.txt && yarn build:test",

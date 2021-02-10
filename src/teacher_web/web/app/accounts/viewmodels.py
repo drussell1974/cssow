@@ -50,7 +50,7 @@ class RegisterTeacherForm(UserCreationForm):
                 ''' default department name to username and school id to user id '''
                 department_name = user.department_name if len(user.department_name) > 0 else user.username
 
-                model = DepartmentModel(0, name=department_name, school_id=user.id)
+                model = DepartmentModel(0, name=department_name, institute_id=user.id)
 
                 model.validate()
                 

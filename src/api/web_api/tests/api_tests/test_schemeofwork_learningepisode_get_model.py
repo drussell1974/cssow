@@ -10,7 +10,7 @@ class test_schemeofwork_learningepsiode_get(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://localhost:8000/api/schemeofwork/{}/lessons/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.test_context.get(f"http://localhost:8000/api/schemeofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}")
         self.test_context.implicitly_wait(4)
         
         #arrange

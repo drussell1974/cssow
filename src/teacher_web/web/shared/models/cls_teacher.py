@@ -44,10 +44,10 @@ class TeacherModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, teacher_id, department_id, school_id = 0):
-        model = TeacherModel(0, "", department=DepartmentModel(0, "", is_from_db=False), is_authorised=False, is_from_db=True)
+    def get_model(db, teacher_id, department_id, institute_id = 0):
+        model = TeacherModel(0, "", department=DepartmentModel(0, "", is_from_db=False), is_authorised=False, is_from_db=False)
         
-        rows = TeacherDataAccess.get_model(db, teacher_id, department_id, school_id)
+        rows = TeacherDataAccess.get_model(db, teacher_id, department_id, institute_id)
         
         for row in rows:
             model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], is_from_db=True), is_authorised=row[4], is_from_db=True)
@@ -56,11 +56,11 @@ class TeacherModel(BaseModel):
 class TeacherDataAccess:
 
     @staticmethod
-    def get_model(db, teacher_id, department_id, school_id):
+    def get_model(db, teacher_id, department_id = 0, institute_id = 0):
         execHelper = ExecHelper()
 
         str_select = "teacher__get"
-        params = (teacher_id, department_id)
+        params = (teacher_id, department_id, institute_id)
 
         try:
             rows = []

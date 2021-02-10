@@ -16,7 +16,8 @@
       <header class="widget widget--articleheader">
         {% if request.user.is_authenticated %}
         <span class="float-right">
-            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' %}#main">{{_('add')}}</a>
+            <!-- # TODO: #329 get context for institute_id and department_id -->
+            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' 99 99 %}#main">{{_('add')}}</a>
         </span>
         {% endif %}
         <h2 class="group-heading">{{_("Schemes of work")}}</h2>
@@ -38,7 +39,8 @@
         {% for row in content.data.schemes_of_work %}
         <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
             <h3 class="post-title">
-              <a class="edit float-right" href="{% url 'schemesofwork.edit' row.id %}?next={{ request.path }}">
+              <!-- # TODO: #329 get context for institute_id and department_id -->
+              <a class="edit float-right" href="{% url 'schemesofwork.edit' 99 99 row.id %}?next={{ request.path }}">
                 <i class="far fa-edit"></i>
               </a>
                 {{ row.name }}
@@ -47,13 +49,16 @@
               {{ row.key_stage_name }} {{ row.description }}
             </h4>
           <div class="card-body stackable-group-sm">
-            <a id="lnk-schemeofwork-lessons--{{row.id}}" href="{% url 'lesson.index' row.id %}" class="btn btn-outline-dark stackable">
+            <!-- # TODO: #329 get context for institute_id and department_id -->
+            <a id="lnk-schemeofwork-lessons--{{row.id}}" href="{% url 'lesson.index' 99 99 row.id %}" class="btn btn-outline-dark stackable">
               {{_("Lessons")}} <span class="badge badge-light">{{row.number_of_lessons}}</span>
             </a>
-            <a id="lnk-schemeofwork-curriculum--{{row.id}}" href="{% url 'content.index' row.id %}" class="btn btn-outline-dark stackable">
+            <!-- # TODO: #329 get context for institute_id and department_id -->
+            <a id="lnk-schemeofwork-curriculum--{{row.id}}" href="{% url 'content.index' 99 99 row.id %}" class="btn btn-outline-dark stackable">
               {{_("Curriculum")}} <span class="badge badge-light"></span>
             </a>
-            <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'keywords.index' row.id %}" class="btn btn-outline-dark stackable">
+            <!-- # TODO: #329 get context for institute_id and department_id -->
+            <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'keywords.index' 99 99 row.id %}" class="btn btn-outline-dark stackable">
               {{_("Keywords")}} <span class="badge badge-light">{{row.number_of_keywords}}</span>
             </a>
           </div>
@@ -66,7 +71,8 @@
               
               {% if request.user.is_authenticated %}
                 {% if row.published == False %}
-                <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+                <!-- # TODO: #329 get context for institute_id and department_id -->
+                <a href="{% url 'schemesofwork.publish_item' 99 99 row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
                 {% endif %}
               {% endif %}</p>
         </div>
@@ -75,7 +81,8 @@
       <!-- Scheme of works END -->
 
       {% if request.user.is_authenticated %}
-        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' %}#main">{{_('Clean')}}</a>
+        <!-- # TODO: #329 get context for institute_id and department_id -->
+        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' 99 99 %}#main">{{_('Clean')}}</a>
       {% endif %}
     </article>
 

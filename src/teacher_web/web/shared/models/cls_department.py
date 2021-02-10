@@ -7,11 +7,11 @@ class DepartmentModel(BaseModel):
 
     name = ""
     
-    def __init__(self, id_, name, school_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, name, institute_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         #self.id = id_
         self.name = name
-        self.school_id = school_id
+        self.institute_id = institute_id
 
 
     def validate(self, skip_validation = []):
@@ -50,7 +50,7 @@ class DepartmentModel(BaseModel):
     def save(db, model, teacher_id, auth_user):
         """ save model """
         if model.published == 2:
-            data = DepartmentDataAccess._delete(db, model, auth_user)
+            data = DepartmentDataAccess._delete(db, model, auth_user.id)
         elif model.is_valid == True:
             if model.is_new():
                 data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.id)
@@ -91,7 +91,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.school_id,
+            model.institute_id,
             model.created,
             auth_user_id,
         )

@@ -1,12 +1,12 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel as ViewModel
-from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_teacher import TeacherModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
+@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -18,7 +18,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data(self):
+    def test_execute_called_save__add_model_to_data(self, mock_auth_user):
         
         # arrange
 
@@ -30,6 +30,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "institute_id": 49,
                     "department_id": 68,
                     "lesson_id": 230
                 }
@@ -43,7 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
             # act
 
-            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
             test_context.model.key_words.clear()
             
             # assert 
@@ -59,7 +60,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data__with_keywords(self):
+    def test_execute_called_save__add_model_to_data__with_keywords(self, mock_auth_user):
         
         # arrange
         mock_request = Mock()
@@ -70,6 +71,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
+                    "institute_id": 48,
                     "department_id": 67,
                     "lesson_id": 230
                 }
@@ -91,10 +93,11 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
                 
                 # assert 
                 self.assertEqual("", test_context.error_message)
+                self.assertEqual({}, test_context.model.validation_errors)
 
                 Model.save.assert_called()
 
@@ -103,7 +106,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data__return_invalid(self):
+    def test_execute_called_save__add_model_to_data__return_invalid(self, mock_auth_user):
          
         # arrange
 
@@ -117,7 +120,8 @@ class test_viewmodel_EditViewModel(TestCase):
                     "key_stage_id": 3,
                     "lesson_id": 0,
                     "department_id": 56,
-                    "key_words":  '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
+                    "institute_id": 49,
+                    #"key_words":  '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
                 }
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
@@ -134,7 +138,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=99)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
 
                 # assert 
 

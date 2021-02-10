@@ -442,3 +442,85 @@ class test_SchemeOfWork_validate__department_id(SchemeOfWork_TestCase):
         # assert
         self.assertFalse(test.is_valid, "is_valid should be False")
         self.assertTrue("department_id" in test.validation_errors, "department_id should have validation error %s" % test.validation_errors)
+
+
+class test_SchemeOfWork_validate__institute_id(SchemeOfWork_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.institute_id = 1
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("institute_id" in test.validation_errors, "institute_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.institute_id = 0 # values should not be negative
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "should not be is_valid")
+        self.assertTrue("institute_id" in test.validation_errors, "institute_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_min__valid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.institute_id = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be True")
+        self.assertTrue("institute_id" in test.validation_errors, "institute_id should have validation error %s" % test.validation_errors)
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.department_Id = BaseModel.MAX_INT 
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue(test.is_valid, "is_valid should be True")
+        self.assertFalse("institute_id" in test.validation_errors, "institute_id should not have validation error %s" % test.validation_errors)
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.institute_id = BaseModel.MAX_INT + 1 # too far out of possible range
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse(test.is_valid, "is_valid should be False")
+        self.assertTrue("institute_id" in test.validation_errors, "institute_id should have validation error %s" % test.validation_errors)

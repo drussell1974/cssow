@@ -49,7 +49,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
     def test__should_call__select__return_single_item(self, auth_user_model):
         # arrange
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -75,9 +75,9 @@ class test_db__get_latest_schemes_of_work(TestCase):
         # arrange
 
         expected_result = [
-            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1),
-            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1),
-            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1)]
+            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176),
+            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176),
+            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act

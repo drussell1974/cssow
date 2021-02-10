@@ -1,0 +1,14 @@
+<div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-home">Home</a>
+      </li>
+      <li class="nav-item">
+        <!-- TODO: #329 check content for content.data.institute_id and content.data.department_id -->
+        <a class="nav-link" href="{% url 'schemesofwork.index' 99 99 %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-about">About</a>
+      </li>
+    </ul>
+  </div>

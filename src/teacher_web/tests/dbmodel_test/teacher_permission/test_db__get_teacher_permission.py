@@ -28,7 +28,7 @@ class test_db__get_teacher_permission(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce", department_id=45, school_id=74), mock_teacher_model, auth_user=mock_auth_user)
+                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce", department_id=45, institute_id=74), mock_teacher_model, auth_user=mock_auth_user)
 
     
     def test__should_call__select__return_no_permissions(self, mock_teacher_model, mock_auth_user):
@@ -39,7 +39,7 @@ class test_db__get_teacher_permission(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Ulysses", department_id=45, school_id=74), mock_teacher_model, auth_user=mock_auth_user)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Ulysses", department_id=45, institute_id=74), mock_teacher_model, auth_user=mock_auth_user)
             
             # assert
 
@@ -65,7 +65,7 @@ class test_db__get_teacher_permission(TestCase):
             
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(14, name="Dune", department_id=45, school_id=74), mock_teacher_model, auth_user=mock_auth_user)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(14, name="Dune", department_id=45, institute_id=74), mock_teacher_model, auth_user=mock_auth_user)
             
             # assert
             

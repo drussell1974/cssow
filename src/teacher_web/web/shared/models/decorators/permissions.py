@@ -7,10 +7,12 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-UNAUTHORISED_USER_ID = None
+DEFAULT_INSTITUTE_ID = 0
+DEFAULT_DEPARTMENT_ID = 0
 DEFAULT_SCHEME_OF_WORK_ID = 0
 DEFAULT_LESSON_ID = 0
-DEFAULT_DEPARTMENT_ID = 0
+UNAUTHORISED_USER_ID = None
+
 
 def unauthorise_request(func):
     """
@@ -47,8 +49,13 @@ class min_permission_required:
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
             
-            self._auth_user = TeacherModel.get_model(db, args[0].user.id, DEFAULT_DEPARTMENT_ID)
-            if self._auth_user is None:
+            #329 get department and school context and persist in auth_user
+            
+            self._auth_user = TeacherModel.get_model(db, args[0].user.id, 
+                department_id=self.getkeyargs("department_id", default_value=DEFAULT_DEPARTMENT_ID),
+                institute_id=self.getkeyargs("institute_id", default_value=DEFAULT_INSTITUTE_ID))
+            
+            if self._auth_user is None or self._auth_user.is_authorised == False:
                 return self.redirect_handler(str_err, 0, permission=self._permission) 
             
             ''' scheme_of_work_id must be included in the view function or default '''
@@ -58,7 +65,7 @@ class min_permission_required:
             
             scheme_of_work = SchemeOfWorkModel.get_model(db, self._scheme_of_work_id, self._auth_user)
 
-            ''' teacher_id and auth_user are the same in this call'''
+            ''' teacher_id and auth_user are the same in this call '''
             
             model = TeacherPermissionModel.get_model(db, scheme_of_work, teacher=self._auth_user, auth_user=self._auth_user)
             

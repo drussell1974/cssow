@@ -15,6 +15,7 @@ const BreadcrumbWidget = ({activePageName, breadcrumbItems = []}) => {
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{activePageName}</li>
             </ul>
+            <Link className="float-right" to={'/login'}>Login</Link>
         </nav>
     )
 };

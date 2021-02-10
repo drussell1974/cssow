@@ -31,6 +31,7 @@ class BaseModel(models.Model):
         self.set_published_state()
         self.is_from_db = is_from_db
         self.skip_validation = []
+        self.context = None
 
 
     def __repr__(self):

@@ -59,6 +59,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
                 department_id=request.POST.get("department_id", 0),
+                institute_id=request.POST.get("institute_id", 0),
                 created=datetime.now(),
                 created_by_id=self.auth_user)
         
