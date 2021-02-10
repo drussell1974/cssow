@@ -45,6 +45,8 @@ class min_permission_required:
         def inner(*args, **kwargs):
             ''' request must be the first argument in the view function '''
 
+            self.kwargs = kwargs
+
             self._return_url = args[0].path
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
@@ -60,7 +62,6 @@ class min_permission_required:
             
             ''' scheme_of_work_id must be included in the view function or default '''
             
-            self.kwargs = kwargs
             self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
             
             scheme_of_work = SchemeOfWorkModel.get_model(db, self._scheme_of_work_id, self._auth_user)

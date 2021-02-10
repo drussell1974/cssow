@@ -14,7 +14,7 @@ from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 
 # Create your views here.
 
-def index(request):
+def index(request, institute_id, department_id):
     #253 check user id
     getall_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_model(db, request))
     
