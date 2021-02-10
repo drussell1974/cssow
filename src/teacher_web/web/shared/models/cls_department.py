@@ -36,6 +36,43 @@ class DepartmentModel(BaseModel):
 
 
     @staticmethod
+    def get_all(db, institute_id, auth_user):
+        
+        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.id)
+        data = []
+        for row in rows: 
+            model = DepartmentModel(id_=row[0],
+                                    name=row[1],
+                                    created=row[3],                                                                                                                                                                                                                         
+                                    created_by_id=row[4],
+                                    created_by_name=row[5],
+                                    published=row[6])
+
+            model.institute_id = row[2]
+
+            data.append(model)
+        return data
+
+
+    @staticmethod
+    def get_model(db, id, auth_user):   
+        rows = DepartmentDataAccess.get_model(db, id, auth_user_id=auth_user.id)
+
+        model = DepartmentModel(0, "")
+        for row in rows:
+            model = DepartmentModel(id_=row[0],
+                                    name=row[1],
+                                    created=row[3],
+                                    created_by_id=row[4],
+                                    created_by_name=row[5],
+                                    published=row[6])
+            model.institute_id = row[2]
+
+            model.on_fetched_from_db()         
+        return model
+
+
+    @staticmethod
     def get_options(db, auth_user):
         rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.id)
         data = []
@@ -61,8 +98,56 @@ class DepartmentModel(BaseModel):
         return model
 
 
+    @staticmethod
+    def delete_unpublished(db, institute_id, auth_user):
+        rows = DepartmentDataAccess.delete_unpublished(db, institute_id, auth_user_id=auth_user.id)
+        return rows
+
+
+    @staticmethod
+    def publish_by_id(db, department_id, auth_user):
+        return DepartmentDataAccess.publish(db=db, auth_user_id=auth_user.id, id_=department_id)      
+
+
 class DepartmentDataAccess:
     
+    @staticmethod
+    def get_model(db, id_, auth_user_id):
+        """
+        get scheme of work
+
+        :param db: database context
+        :param id_: department identifier
+        :param auth_user_id: the user executing the command
+        """
+
+        execHelper = ExecHelper()
+
+        select_sql = "department__get"
+        params = (id_, auth_user_id)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        return rows
+
+
+    @staticmethod
+    def get_all(db, institute_id, auth_user_id):
+        """
+        get all inistutions
+        """
+        
+        execHelper = ExecHelper()
+        
+        select_sql = "department__get_all" 
+        params = (institute_id, auth_user_id,)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+
+        return rows
+
+
     @staticmethod
     def get_options(db, auth_user_id):
         
@@ -132,3 +217,33 @@ class DepartmentDataAccess:
         rows = execHelper.delete(db, sql, params, handle_log_info)
         
         return rows
+
+
+    @staticmethod
+    def delete_unpublished(db, institute_id, auth_user_id):
+        """ Delete all unpublished departments """
+
+        execHelper = ExecHelper()
+        
+        str_delete = "department__delete_unpublished"
+        params = (institute_id, auth_user_id)
+            
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval
+
+
+    @staticmethod
+    def publish(db, auth_user_id, id_):
+        
+        model = DepartmentModel(id_, "")
+        model.publish = True
+
+        execHelper = ExecHelper()
+
+        str_update = "department__publish"
+        params = (model.id, model.published, auth_user_id)
+
+        rval = []
+        rval = execHelper.update(db, str_update, params, handle_log_info)
+
+        return rval

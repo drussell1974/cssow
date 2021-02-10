@@ -70,7 +70,7 @@ class LessonGetModelViewModel(BaseViewModel):
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
 
-        #248 Http404
+        # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:
                 self.on_not_found(model, lesson_id, scheme_of_work_id)
@@ -85,7 +85,7 @@ class LessonWhiteboardViewModel(BaseViewModel):
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
 
-        #248 Http404
+        # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:
                 self.on_not_found(model, lesson_id, scheme_of_work_id)

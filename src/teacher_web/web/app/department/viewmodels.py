@@ -12,29 +12,46 @@ from shared.view_model import ViewModel
 
 class DepartmentIndexViewModel(BaseViewModel):
     
-    def __init__(self, db, auth_user, key_stage_id=0):
+    def __init__(self, db, institute_id, auth_user):
         self.model = []
 
         self.db = db
-        # get model
-        data = Model.get_all(self.db, auth_user, key_stage_id)
+        self.institute_id = institute_id
+        
+        self.institute = InstituteModel.get_model(db, id=institute_id, auth_user=auth_user)
+        
+        # if not found then raise error
+        if self.institute_id > 0:
+            if self.institute is None or self.institute.is_from_db == False:
+                self.on_not_found(self.institute, self.institute_id)
+
+        # get data
+        data = Model.get_all(self.db, self.institute_id, auth_user)
         self.model = data
+
+
+    def view(self):
+        data = {
+            "institute_id": self.institute_id,
+            "institute": self.institute,
+            "departments": self.model
+        }
+        # TODO: #329 active_model = institue
+        return ViewModel("", self.institute.name, "Departments", data=data, active_model=self.institute)
 
 
 class DepartmentEditViewModel(BaseViewModel):
 
-    def __init__(self, db, request, scheme_of_work_id, auth_user):
+    def __init__(self, db, request, auth_user):
         
-        self.db = db
-        self.auth_user = auth_user
-        self.model = Model(id_=scheme_of_work_id)
+        self.model = Model(id_=auth_user.department.id)
 
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
                 
-            model = Model.get_model(self.db, scheme_of_work_id, auth_user)
+            model = Model.get_model(self.db, auth_user)
             if model is None or model.is_from_db == False:
-                self.on_not_found(model, scheme_of_work_id) 
+                self.on_not_found(model, auth_user.department.id) 
             
             self.model = model
         
@@ -45,9 +62,6 @@ class DepartmentEditViewModel(BaseViewModel):
             self.model = Model(
                 id_=request.POST.get("id", 0),
                 name=request.POST.get("name", ""),
-                description=request.POST.get("description", ""),
-                exam_board_id=request.POST.get("exam_board_id", 0),
-                key_stage_id=request.POST.get("key_stage_id", 0),
                 department_id=request.POST.get("department_id", 0),
                 institute_id=request.POST.get("institute_id", 0),
                 created=datetime.now(),
@@ -64,27 +78,22 @@ class DepartmentEditViewModel(BaseViewModel):
                     self.model = data
                 else:
                     self.alert_message = "validation errors %s" % self.model.validation_errors 
-                    handle_log_warning(self.db, scheme_of_work_id, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
+                    handle_log_warning(self.db, context.department_id, "saving department", "department is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
                     
             except Exception as ex:
                 self.error_message = ex
-                handle_log_exception(db, scheme_of_work_id, "An error occurred processing key words json", ex)
+                handle_log_exception(db, context.department_id, "An error occurred processing department", ex)
                 
 
     def view(self):
         
         # get options
-        self.examboard_options = ExamBoardModel.get_options(self.db, self.auth_user)
-        self.keystage_options = KeyStageModel.get_options(self.db, self.auth_user)
-        self.department_options = DepartmentModel.get_options(self.db, self.auth_user)
-
+        self.institute_options = InstituteModel.get_options(self.db, self.auth_user)
+        
         # view data
         data = {
-            "scheme_of_work_id": self.model.id,
-            "scheme_of_work": self.model,
-            "examboard_options": self.examboard_options,
-            "keystage_options": self.keystage_options,
-            "department_options": self.department_options
+            "department_id": self.model.id,
+            "department": self.model,
         }
         
         # build alert message to be displayed
@@ -109,6 +118,6 @@ class DepartmentDeleteUnpublishedViewModel(BaseViewModel):
 
 class DepartmentPublishModelViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, auth_user):
-        data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
+    def __init__(self, db, auth_user):
+        data = Model.publish_by_id(db, auth_user, auth_user.department_id)
         self.model = data

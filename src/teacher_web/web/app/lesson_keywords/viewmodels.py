@@ -28,7 +28,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
             self.lesson = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
-            #248 Http404
+            # if not found then raise error
             if self.lesson_id > 0:
                 if self.lesson is None or self.lesson.is_from_db == False:
                     self.on_not_found(self.lesson, self.lesson_id, self.scheme_of_work_id)
@@ -100,7 +100,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
             self.model = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
-            #248 Http404
+            # if not found then raise error
             if self.lesson_id > 0:
                 if self.model is None or self.model.is_from_db == False:
                     self.on_not_found(self.model, self.lesson_id, self.scheme_of_work_id)
@@ -144,7 +144,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
             # get model
             self.lesson = LessonModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
 
-            #248 Http404
+            # if not found then raise error
             if lesson_id > 0:
                 if self.lesson is None or self.lesson.is_from_db == False:
                     self.on_not_found(self.lesson, lesson_id, scheme_of_work_id)

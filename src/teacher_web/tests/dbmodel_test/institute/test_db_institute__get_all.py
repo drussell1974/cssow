@@ -6,7 +6,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 
 @patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
-class test_db_institute__get_options(TestCase):
+class test_db_institute__get_all(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -26,7 +26,7 @@ class test_db_institute__get_options(TestCase):
         with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.get_options(self.fake_db, key_stage_id = 4)
+                Model.get_all(self.fake_db, key_stage_id = 4)
             
 
     def test__should_call__select__no_items(self, mock_auth_user):
@@ -37,12 +37,12 @@ class test_db_institute__get_options(TestCase):
                 
             # act
             
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'institute__get_options'
+                'institute__get_all'
                 , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
@@ -52,18 +52,18 @@ class test_db_institute__get_options(TestCase):
 
     def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
-        expected_result = [(1,"Computer Science")]
+        expected_result = [(1,"Computer Science", "2020-07-21 17:09:34", 1, "test_user", 0)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
             # act
 
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'institute__get_options'
+                'institute__get_all'
                 , (mock_auth_user.id,)
                 , []
                 , handle_log_info)
@@ -74,16 +74,19 @@ class test_db_institute__get_options(TestCase):
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
-        expected_result = [(1,"Computer Science"), (2, "Business"), (3, "IT")]
+        expected_result = [
+            (1,"Computer Science",  "2020-07-21 17:09:34", 1, "test_user", 0),
+            (2, "Business",  "2020-07-21 17:09:34", 1, "test_user", 1), 
+            (3, "IT",  "2020-07-21 17:09:34", 1, "test_user", 1)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'institute__get_options'
+                'institute__get_all'
                 , (mock_auth_user.id,)
                 , []
                 , handle_log_info)

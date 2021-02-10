@@ -2,7 +2,6 @@ from unittest import TestCase, skip
 from shared.models.cls_institute import InstituteModel
 
 
-@skip("not implemented")
 class test_cls_institute__constructor(TestCase):
 
     def setUp(self):
@@ -22,7 +21,7 @@ class test_cls_institute__constructor(TestCase):
         self.assertEqual("Lorem ipsum", self.test.name)
         self.assertFalse(self.test.is_valid)
         self.assertTrue(self.test.is_new())
-
+        
 
     def test_constructor_set_valid_values(self):
 

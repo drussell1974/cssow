@@ -20,6 +20,15 @@ class InstituteIndexViewModel(BaseViewModel):
         self.model = data
 
 
+    def view(self):
+        
+        data = {
+            "institutes": self.model
+        }
+        # TODO: #329 active_model = institue
+        return ViewModel("", "Schemes of Work", "Institutes", data=data, active_model=None)
+
+
 class InstituteEditViewModel(BaseViewModel):
 
     def __init__(self, db, request, auth_user):

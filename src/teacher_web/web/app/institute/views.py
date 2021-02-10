@@ -15,16 +15,10 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 # Create your views here.
 
 def index(request):
-    #253 check user id
-    getall_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request))
     
-    data = {
-        "institutes":getall_view.model
-    }
-
-    view_model = ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", data=data)
-
-    return render(request, "institute/index.html", view_model.content)
+    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request))
+    
+    return render(request, "institute/index.html", index_view.view().content)
 
 
 @permission_required('cssow.change_institutemodel', login_url='/accounts/login/')

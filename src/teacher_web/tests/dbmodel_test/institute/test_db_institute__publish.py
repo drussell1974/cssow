@@ -7,7 +7,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 
 @patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
-class test_db__publish_by_id(TestCase):
+class test_db_institute__publish_by_id(TestCase):
 
 
     def setUp(self):

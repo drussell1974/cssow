@@ -26,7 +26,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             # get model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
-            #248 Http404
+            # if not found then raise error
             if scheme_of_work_id > 0:
                 if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                     self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
@@ -76,7 +76,7 @@ class KeywordGetModelViewModel(BaseViewModel):
             # get model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, scheme_of_work_id, auth_user)
             
-            #248 Http404
+            # if not found then raise error
             if scheme_of_work_id > 0:
                 if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                     self.on_not_found(self.scheme_of_work, scheme_of_work_id)
@@ -198,7 +198,7 @@ class KeywordMergeViewModel(BaseViewModel):
             
             self.schemeofwork_options = SchemeOfWorkModel.get_options(self.db, self.auth_user) 
 
-            #248 Http404
+            # if not found then raise error
             if self.scheme_of_work_id > 0:
                 if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                     self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
@@ -206,7 +206,7 @@ class KeywordMergeViewModel(BaseViewModel):
             data = Model.get_model(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
             self.model = data
             
-            #248 Http404
+            # if not found then raise error
             if self.keyword_id > 0:
                 if self.model is None or self.model.is_from_db == False:
                     self.on_not_found(self.model, self.keyword_id)
