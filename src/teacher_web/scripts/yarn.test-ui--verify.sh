@@ -7,9 +7,7 @@ echo "yarn.test-ui--verify.sh:\e[1;33m Use virtualenv 'source .venv/django/bin/a
 echo "yarn.test-ui--verify.sh:\e[1;33m Run task build:test ensure web server is running and http://${TEST_HOST}:${TEST_PORT} is available \e[0m"
 echo "yarn.test-ui--verify.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting process using port 3002 \e[0m"
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
-
-
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_edit_delete.py
