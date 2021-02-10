@@ -25,11 +25,10 @@ class ResourceIndexViewModel(BaseViewModel):
             self.lesson = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
             # get model
             
-            #248 Http404
+            # if not found then raise error
             if self.lesson_id > 0:
                 if self.lesson is None or self.lesson.is_from_db == False:
                     self.on_not_found(self.lesson, self.lesson_id, self.scheme_of_work_id)
-
 
             self.lesson_options = LessonModel.get_options(self.db, self.scheme_of_work_id, self.auth_user)  
 
@@ -71,7 +70,8 @@ class ResourceGetModelViewModel(BaseViewModel):
         try:
             # get model
             self.lesson = LessonModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-            #248 Http404
+            
+            # if not found then raise error
             if lesson_id > 0:
                 if self.lesson is None or self.lesson.is_from_db == False:
                     self.on_not_found(self.lesson, lesson_id, scheme_of_work_id)

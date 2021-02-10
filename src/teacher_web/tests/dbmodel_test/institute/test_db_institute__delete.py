@@ -5,9 +5,8 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 
-@skip("not implemented")
 @patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
-class test_InstituteDataAccess___delete(TestCase):
+class test_db_institute___delete(TestCase):
 
     def setUp(self):
         ' fake database context '

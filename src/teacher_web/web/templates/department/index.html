@@ -16,29 +16,29 @@
       <header class="widget widget--articleheader">
         {% if request.user.is_authenticated %}
         <span class="float-right">
-            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'institute.new' %}#main">{{_('add')}}</a>
+            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'department.new' content.data.institute_id %}#main">{{_('add')}}</a>
         </span>
         {% endif %}
-        <h2 class="group-heading">{{_("Institutions")}}</h2>
+        <h2 class="group-heading">{{_("Departments")}}</h2>
         <hr />
       </header>
       <!-- Pager Header END -->
 
       <!-- Institutes -->
       
-        {% if content.data.institutes|length == 0 %}
+        {% if content.data.departments|length == 0 %}
           <div class="alert alert-warning" role="alert">
-            <span class="large">{{_("There are no institutions")}}</span>
+            <span class="large">{{_("There are no departments ")}}</span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
         {% endif %}
 
-        {% for row in content.data.institutes %}
+        {% for row in content.data.departments %}
         <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
             <h3 class="post-title">
-              <a class="edit float-right" href="{% url 'institute.edit' row.id %}?next={{ request.path }}">
+              <a class="edit float-right" href="{% url 'department.edit' row.institute_id row.id %}?next={{ request.path }}">
                 <i class="far fa-edit"></i>
               </a>
                 {{ row.name }}
@@ -47,8 +47,8 @@
               <!-- -->
             </h4>
           <div class="card-body stackable-group-sm">
-            <a id="lnk-institute-departments--{{row.id}}" href="{% url 'department.index' row.id %}" class="btn btn-outline-dark stackable">
-              {{_("Departments")}} <span class="badge badge-light">{{row.number_of_departments}}</span>
+            <a id="lnk-schemesofwork--{{row.id}}" href="{% url 'schemesofwork.index' row.institute_id row.id %}" class="btn btn-outline-dark stackable">
+              {{_("Schemes of work")}} <span class="badge badge-light">{{row.number_of_schemesofwork}}</span>
             </a>
           </div>
             <p class="post-meta">{{_("Created by")}}
@@ -61,7 +61,7 @@
               {% if request.user.is_authenticated %}
                 {% if row.published == False %}
                 <!-- # TODO: #329 get institute_id  -->
-                <a href="{% url 'institute.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+                <a href="{% url 'department.publish_item' row.institute_id row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
                 {% endif %}
               {% endif %}</p>
         </div>

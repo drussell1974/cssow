@@ -1,12 +1,12 @@
-from unittest import TestCase, skip
-from shared.models.cls_institute import InstituteModel as Model, handle_log_info
+from unittest import TestCase
+from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 
 @patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
-class test_db_institute__get_options(TestCase):
+class test_DepartmentDataAccess__get_all(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -26,7 +26,7 @@ class test_db_institute__get_options(TestCase):
         with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.get_options(self.fake_db, key_stage_id = 4)
+                Model.get_all(self.fake_db, key_stage_id = 4)
             
 
     def test__should_call__select__no_items(self, mock_auth_user):
@@ -37,13 +37,13 @@ class test_db_institute__get_options(TestCase):
                 
             # act
             
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'institute__get_options'
-                , (mock_auth_user.id,)
+                'department__get_all'
+                , (12776111277611, mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
@@ -52,19 +52,19 @@ class test_db_institute__get_options(TestCase):
 
     def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
-        expected_result = [(1,"Computer Science")]
+        expected_result = [(1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
             # act
 
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'institute__get_options'
-                , (mock_auth_user.id,)
+                'department__get_all'
+                , (12776111277611, mock_auth_user.id,)
                 , []
                 , handle_log_info)
 
@@ -74,20 +74,23 @@ class test_db_institute__get_options(TestCase):
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
-        expected_result = [(1,"Computer Science"), (2, "Business"), (3, "IT")]
+        expected_result = [
+            (1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0),
+            (2, "Business", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0), 
+            (3, "IT", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)
+        ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_options(self.fake_db, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'institute__get_options'
-                , (mock_auth_user.id,)
+                'department__get_all'
+                , (12776111277611, mock_auth_user.id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             self.assertEqual("IT", rows[len(rows)-1].name, "Last item not as expected")
-

@@ -39,7 +39,7 @@ class InstituteModel(BaseModel):
         
         rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.id)
         data = []
-        for row in rows:
+        for row in rows: 
             model = InstituteModel(id_=row[0],
                                     name=row[1],
                                     created=row[2],                                                                                                                                                                                                                         
@@ -47,9 +47,25 @@ class InstituteModel(BaseModel):
                                     created_by_name=row[4],
                                     published=row[5])
 
-            # TODO: remove __dict__ . The object should be serialised to json further up the stack
-            data.append(model.__dict__)
+            data.append(model)
         return data
+
+
+    @staticmethod
+    def get_model(db, id, auth_user):   
+        rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.id)
+        #TODO: start as none None
+        model = InstituteModel(0, "")
+        for row in rows:
+            model = InstituteModel(id_=row[0],
+                                    name=row[1],
+                                    created=row[2],
+                                    created_by_id=row[3],
+                                    created_by_name=row[4],
+                                    published=row[5])
+            
+            model.on_fetched_from_db()         
+        return model
 
 
     @staticmethod
@@ -92,15 +108,35 @@ class InstituteModel(BaseModel):
 class InstituteDataAccess:
     
     @staticmethod
-    def get_all(db, auth_user_id, key_stage_id=0):
+    def get_model(db, id_, auth_user_id):
         """
-        get all scheme of work
+        get institution
+
+        :param db: database context
+        :param id_: institution identifier
+        :param auth_user_id: the user executing the command
         """
-    
+
+        execHelper = ExecHelper()
+
+        select_sql = "institute__get"
+        params = (id_, auth_user_id)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        return rows
+
+
+    @staticmethod
+    def get_all(db, auth_user_id):
+        """
+        get all inistutions
+        """
+        
         execHelper = ExecHelper()
         
-        select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, auth_user_id)
+        select_sql = "institute__get_all" 
+        params = (auth_user_id,)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
