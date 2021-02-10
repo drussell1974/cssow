@@ -35,13 +35,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            actual_result = Model.get_model(self.fake_db, 999, 45)
+            actual_result = Model.get_model(self.fake_db, 999, 45, 59)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'teacher__get'
-                , (999, 45)
+                , (999, 45, 59)
                 , []
                 , handle_log_info)
 
@@ -56,13 +56,13 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            model = Model.get_model(self.fake_db, 6, 34)
+            model = Model.get_model(self.fake_db, 6, 34, 90)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'teacher__get'
-                , (6, 34)
+                , (6, 34, 90)
                 , []
                 , handle_log_info)
 

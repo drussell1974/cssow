@@ -1,0 +1,76 @@
+{% extends '_partials/__layout.onecolumn.html' %}
+{% load student_uri %}
+
+
+{% block head_js %} 
+  <!-- #295: Google Analytics script.googleanalytics.html partial -->
+  {% include '_partials/script.googleanalytics.html' %}
+  <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block maincontent %}
+
+    <article class="widget widget--schemeofwork--listing">
+      <!-- Pager Header -->      
+      <header class="widget widget--articleheader">
+        {% if request.user.is_authenticated %}
+        <span class="float-right">
+            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'institute.new' %}#main">{{_('add')}}</a>
+        </span>
+        {% endif %}
+        <h2 class="group-heading">{{_("Institutions")}}</h2>
+        <hr />
+      </header>
+      <!-- Pager Header END -->
+
+      <!-- Institutes -->
+      
+        {% if content.data.institutes|length == 0 %}
+          <div class="alert alert-warning" role="alert">
+            <span class="large">{{_("There are no institutions")}}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
+
+        {% for row in content.data.institutes %}
+        <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
+            <h3 class="post-title">
+              <a class="edit float-right" href="{% url 'institute.edit' row.id %}?next={{ request.path }}">
+                <i class="far fa-edit"></i>
+              </a>
+                {{ row.name }}
+            </h3>
+            <h4 class="post-subtitle">
+              <!-- -->
+            </h4>
+          <div class="card-body stackable-group-sm">
+            <a id="lnk-institute-departments--{{row.id}}" href="{% url 'department.index' row.id %}" class="btn btn-outline-dark stackable">
+              {{_("Departments")}} <span class="badge badge-light">{{row.number_of_departments}}</span>
+            </a>
+          </div>
+            <p class="post-meta">{{_("Created by")}}
+              <a href="{% student_uri row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
+              <a href="#">{{ row.created_by_name }}</a>
+              {% if row.created == True %}
+                on {{ row.get_ui_created }}
+              {% endif %}
+              
+              {% if request.user.is_authenticated %}
+                {% if row.published == False %}
+                <a href="{% url 'schemesofwork.publish_item' row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
+                {% endif %}
+              {% endif %}</p>
+        </div>
+        <hr>
+        {% endfor %}
+      <!-- Institute END -->
+
+      {% if request.user.is_authenticated %}
+        <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'institute.delete_unpublished' %}#main">{{_('Clean')}}</a>
+      {% endif %}
+    </article>
+
+{% endblock %}

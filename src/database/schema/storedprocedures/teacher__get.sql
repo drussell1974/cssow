@@ -4,7 +4,8 @@ DROP PROCEDURE IF EXISTS teacher__get;
 
 CREATE PROCEDURE teacher__get (
  IN p_teacher_id INT,
- IN p_department_id INT)
+ IN p_department_id INT,
+ IN p_institute_id INT)
 BEGIN
     SELECT 
       user.id as teacher_id,
@@ -20,11 +21,9 @@ BEGIN
     INNER JOIN sow_department as dep
     LEFT JOIN sow_department__has__teacher as teach_dep 
 		ON teach_dep.auth_user_id = user.id and teach_dep.department_id = dep.id
-	WHERE user.id = p_teacher_id and (teach_dep.department_id = p_department_id or dep.head_id = p_teacher_id);
+	WHERE user.id = p_teacher_id and dep.institute_id = p_institute_id and (teach_dep.department_id = p_department_id or dep.id = p_teacher_id);
     
 END;
 //
 
 DELIMITER ;
-
-CALL teacher__get(0, 0);

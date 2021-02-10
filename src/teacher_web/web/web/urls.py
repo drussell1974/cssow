@@ -35,10 +35,8 @@ urlpatterns = [
     path('accounts/team-permissions', include('app.teampermissions.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('schemesofwork/<int:scheme_of_work_id>/event-log/', include('app.eventlogs.urls')),
-    path('schemesofwork/<int:scheme_of_work_id>/curriculum-content/', include('app.content.urls')),
-    path('schemesofwork/<int:scheme_of_work_id>/lessons/', include('app.lessons.urls')),
-    path('schemesofwork/', include('app.schemesofwork.urls')),
+    path('institute/', include('app.institute.urls')),
+    
     path('', include('app.default.urls')),    
 ]
 

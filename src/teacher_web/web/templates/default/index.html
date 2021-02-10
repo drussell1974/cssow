@@ -16,7 +16,7 @@
       <!-- Scheme of works -->
       {% for row in content.data.latest_schemes_of_work %}
         <div class="post-preview post-preview-schemeofwork">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id %}">
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute_id row.context.department_id row.id %}">
             <h2 class="post-title">
                 {{ row.name }}
             </h2>
@@ -30,17 +30,12 @@
               on {{ row.created }}
             {% endif %}
             {% if auth.user %}
-                - <a href="{% url 'schemesofwork.delete_item' row.id }">Delete</a>
-                - <a href="{% url 'schemesofwork.edit' row.id }">Edit</a>
+                - <a href="{% url 'schemesofwork.delete_item'  row.context.institute_id row.context.department_id row.id }">Delete</a>
+                - <a href="{% url 'schemesofwork.edit'  row.context.institute_id row.context.department_id row.id }">Edit</a>
             {% endif %}</p>
         </div>
         <hr>
       {% endfor %}
-
-      <!-- Pager -->
-      <div class="clearfix">
-        <a class="btn btn-primary float-right" href="{% url 'schemesofwork.index' %}" id="btn-all-schemes-of-work">Show all &rarr;</a>
-      </div>
       <!-- Scheme of works END -->
     </section>
   {% endblock %}

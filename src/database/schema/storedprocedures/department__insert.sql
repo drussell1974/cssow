@@ -6,7 +6,7 @@ CREATE PROCEDURE department__insert (
     OUT p_department_id INT,
     IN p_name VARCHAR(70),
     IN p_teacher_id INT,
-    IN p_school_id INT,
+    IN p_institute_id INT,
     IN p_created DATETIME,
     IN p_created_by INT)
 BEGIN
@@ -15,7 +15,7 @@ BEGIN
     (
         name, 
         head_id, 
-        school_id,
+        institute_id,
         created, 
         created_by
     )
@@ -23,7 +23,7 @@ BEGIN
     (
         p_name,
         p_teacher_id,
-        p_school_id,
+        p_institute_id,
         p_created,
         p_created_by
     );

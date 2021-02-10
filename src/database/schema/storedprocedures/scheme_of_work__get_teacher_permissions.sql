@@ -6,7 +6,7 @@ CREATE PROCEDURE scheme_of_work__get_teacher_permissions (
  IN p_scheme_of_work_id INT,
  IN p_teacher_id INT,
  IN p_department_id INT,
- IN p_school_id INT,
+ IN p_institute_id INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
