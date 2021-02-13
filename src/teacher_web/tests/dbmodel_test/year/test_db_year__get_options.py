@@ -3,9 +3,11 @@ from shared.models.cls_year import YearModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", is_from_db=True, department=DepartmentModel(67, "Computer Science", is_from_db=True)))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_YearDataAccess__get_options(TestCase):
 
     def setUp(self):

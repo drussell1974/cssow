@@ -1,7 +1,9 @@
 {% if content.alert_message.error_message is not None %}
 <div class="alert alert-danger">
-    <i class="fa fa-exclamation-triangle"></i> {{ content.alert_message.error_message }} {{ content.alert_message.error_id }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <i class="fa fa-exclamation-triangle"></i> 
+        {{ content.alert_message.error_message }} {{ content.alert_message.error_id }}
+        {{ content.stack_trace }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

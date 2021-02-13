@@ -14,6 +14,7 @@ class BaseModel(models.Model):
     is_valid = False
     validation_errors = {}
     error_message = ""
+    stack_trace = ""
     published = 0
     is_from_db = False
     skip_validation = []
@@ -21,7 +22,7 @@ class BaseModel(models.Model):
     # Data type ranges
     MAX_INT = 2147483647
 
-    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db):
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db, ctx=None):
         self.id = try_int(id_)
         self.display_name = display_name
         self.created = created if len(str(created)) > 0 else str(datetime.now())
@@ -31,12 +32,21 @@ class BaseModel(models.Model):
         self.set_published_state()
         self.is_from_db = is_from_db
         self.skip_validation = []
-        self.context = None
-
+        self.auth_user_id = 0
+        self.institute_id = 0
+        self.department_id = 0
+        self.scheme_of_work_id = 0
+        
+        if ctx is not None:
+            #self.auth_user_id = ctx.auth_user_id
+            self.institute_id = ctx.institute_id
+            self.department_id = ctx.department_id
+            self.scheme_of_work_id = ctx.scheme_of_work_id
+            
 
     def __repr__(self):
-        return "{} (id={})".format(self.display_name, self.id)
-
+        return f"{self.display_name} (id={self.id}, is_from_db={self.is_from_db}"
+    
 
     def set_published_state(self):
         if self.published == 0:
@@ -77,7 +87,7 @@ class BaseModel(models.Model):
 
     def validate(self, skip_validation):
         self._on_before_validate(skip_validation)
-
+        
 
     def _on_before_validate(self, skip_validation = []):
         # clean properties before validation
@@ -95,7 +105,7 @@ class BaseModel(models.Model):
         self.skip_validation = []
         if any(self.validation_errors.values()):
             self.error_message = next(iter(self.validation_errors.values()))
-
+            
 
     def _validate_required_string(self, name_of_property, value_to_validate, min_value, max_value, match_regular_expression=(None,None)):
         if name_of_property not in self.skip_validation:
@@ -206,6 +216,7 @@ class BaseModel(models.Model):
 
     @staticmethod
     def depreciation_notice(msg="Deprecated"):
+        raise DeprecationWarning()
         warnings.warn(msg, DeprecationWarning)
 
 

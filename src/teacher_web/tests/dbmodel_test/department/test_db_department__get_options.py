@@ -3,9 +3,9 @@ from shared.models.cls_department import DepartmentModel as Model, handle_log_in
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_DepartmentDataAccess__get_options(TestCase):
 
     def setUp(self):
@@ -43,7 +43,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_options'
-                , (mock_auth_user.id,)
+                , (mock_auth_user.user_id,)
                 , []
                 , handle_log_info)
 
@@ -64,7 +64,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (mock_auth_user.id,)
+                , (mock_auth_user.user_id,)
                 , []
                 , handle_log_info)
 
@@ -84,7 +84,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (mock_auth_user.id,)
+                , (mock_auth_user.user_id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

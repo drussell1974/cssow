@@ -2,10 +2,9 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_content import ContentModel, handle_log_info
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_all(TestCase):
 
 
@@ -18,7 +17,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select_with_exception(self, mock_auth_user):
+    def test__should_call_select_with_exception(self, mock_ctx):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,27 +28,27 @@ class test_db__get_all(TestCase):
                 ContentModel.get_all(self.fake_db)
 
 
-    def test__should_call_select_return_no_items(self, mock_auth_user):
+    def test__should_call_select_return_no_items(self, mock_ctx):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=mock_auth_user)
+            rows = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'content__get_all'
-                , (34, 7, mock_auth_user.id)
+                , (34, 7, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select_return_single_item(self, mock_auth_user):
+    def test__should_call_select_return_single_item(self, mock_ctx):
         # arrange
         expected_result = [
             (702, "purus lacus, ut volutpat nibh euismod.", "A",0)
@@ -58,13 +57,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=mock_auth_user)
+            actual_results = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'content__get_all'
-                , (34, 5, mock_auth_user.id)
+                , (34, 5, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 
@@ -76,7 +75,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("A", actual_results[0].letter_prefix),
 
 
-    def test__should_call_select_return_multiple_item(self, mock_auth_user):
+    def test__should_call_select_return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [
             (1021, "nec arcu nec dolor vehicula ornare non.", "X", 0),
@@ -87,13 +86,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = ContentModel.get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=mock_auth_user)
+            actual_results = ContentModel.get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'content__get_all'
-                , (34, 5, mock_auth_user.id)
+                , (34, 5, mock_ctx.user_id)
                 , []
                 , handle_log_info)
 

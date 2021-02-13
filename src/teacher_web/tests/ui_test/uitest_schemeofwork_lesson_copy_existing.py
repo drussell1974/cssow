@@ -8,7 +8,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
 
     def setUp(self):
         # setup
-        self.do_log_in('/schemesofwork/{}/lessons/{}/copy'.format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/copy".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
         self.wait(s=2)
 

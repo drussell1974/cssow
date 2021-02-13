@@ -39,7 +39,7 @@ class ContentIndexViewModel(BaseViewModel):
             "schemeofwork_options": self.scheme_of_work_options
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Curriculum", data=data)
+        return ViewModel("", self.scheme_of_work.name, "Curriculum", ctx=self.auth_user, data=data)
         
 
 class ContentEditViewModel(BaseViewModel):
@@ -113,7 +113,7 @@ class ContentEditViewModel(BaseViewModel):
             "model":self.model
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, data=data, active_model=self.model, error_message=self.error_message)
+        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=None, data=data, active_model=self.model, error_message=self.error_message)
 
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):

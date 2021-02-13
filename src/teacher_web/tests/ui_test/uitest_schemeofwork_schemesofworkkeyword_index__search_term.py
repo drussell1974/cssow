@@ -9,7 +9,7 @@ class uitest_schemeofwork_schemesofworkkeyword_index__search_term(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in("/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/keywords".format(self.test_scheme_of_work_id))
         
 
     def tearDown(self):

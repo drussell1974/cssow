@@ -17,6 +17,7 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
     def __init__(self, db, top, auth_user):
         self.model = []
         self.db = db
+        self.auth_user = auth_user
 
         try:
             # get model
@@ -32,7 +33,7 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
             "latest_schemes_of_work":self.model
         }
         
-        return ViewModel("", main_heading, sub_heading, data=data, error_message=self.error_message)
+        return ViewModel("", main_heading, sub_heading, ctx=None, data=data, error_message=self.error_message)
 
 
 class KeywordSaveViewModel(BaseViewModel):

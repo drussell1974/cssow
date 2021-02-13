@@ -1,15 +1,23 @@
-from django.http import Http404
+from django.conf import settings
+from shared.models.core.django_helper import on_not_found
+import traceback
 
 class BaseViewModel:
     model = None
     error_message = ""
     alert_message = ""
     saved = False
+    stack_trace = ""
+
+    def on_exception(self, ex):
+        self.error_message = ex
+        if int(settings.SHOW_STACK_TRACE) > 0:
+            self.stack_trace = traceback.format_exc()
+        
 
     def on_post_complete(self, saved = False):
         self.saved = saved    
 
 
     def on_not_found(self, model, *identifers):
-        prefix = repr(model) if model is not None else "item"
-        raise Http404("{} {} does not exist, is currently unavailable or you do not have permission.".format(prefix, identifers))
+        on_not_found(model, identifers)

@@ -6,6 +6,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
@@ -22,17 +23,17 @@ from shared.filehandler import handle_uploaded_markdown
 
 
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, scheme_of_work_id):
+def index(request, institute_id, department_id, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
     #253 check user id
-    getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))  
+    getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))  
     
     return render(request, "keywords/index.html", getall_keywords.view().content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def new(request, scheme_of_work_id):
+def new(request, institute_id, department_id, scheme_of_work_id):
     ''' Create a new keyword '''
 
     model = KeywordModel(
@@ -50,14 +51,14 @@ def new(request, scheme_of_work_id):
         "keyword": model
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=None, data=data)
     
     return render(request, "keywords/edit.html", view_model.content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, scheme_of_work_id, keyword_id):
+def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
     get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
@@ -81,14 +82,14 @@ def edit(request, scheme_of_work_id, keyword_id):
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), data=data, active_model=model, alert_message="")
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=None, data=data, active_model=model, alert_message="")
     
     return render(request, "keywords/edit.html", view_model.content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def save(request, scheme_of_work_id, keyword_id):
+def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     
     def upload_error_handler(e, msg):
         print(msg, e)
@@ -144,7 +145,7 @@ def save(request, scheme_of_work_id, keyword_id):
             "validation_errors":model.validation_errors
         }
         
-        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, data=data, active_model=model, alert_message="", error_message=error_message)        
+        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)        
         
         return render(request, "keywords/edit.html", view_model.content)
         
@@ -153,7 +154,7 @@ def save(request, scheme_of_work_id, keyword_id):
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_item(request, scheme_of_work_id, keyword_id):
+def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
     redirect_to_url = request.META.get('HTTP_REFERER')
@@ -166,7 +167,7 @@ def delete_item(request, scheme_of_work_id, keyword_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
     KeywordModel.publish_by_id(db, keyword_id, auth_user_model(db, request))
@@ -176,7 +177,7 @@ def publish_item(request, scheme_of_work_id, lesson_id, keyword_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, scheme_of_work_id):
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
     KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
@@ -186,7 +187,7 @@ def delete_unpublished(request, scheme_of_work_id):
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def merge_duplicates(request, scheme_of_work_id, keyword_id):
+def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
     merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))

@@ -7,11 +7,10 @@ from app.department.viewmodels import DepartmentIndexViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_institute import InstituteModel
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
 @patch.object(InstituteModel, "get_model", return_value=InstituteModel(534, "Lorum Ipsum", is_from_db=True))
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):
@@ -47,7 +46,7 @@ class test_viewmodel_IndexViewModel(TestCase):
     def test_init_called_fetch__single_row(self, mock_auth_user, InstituteModel_get_model):
         
         # arrange
-        model = Model(56, "Lorum")
+        model = Model(56, "Lorum", InstituteModel(12767111276711, "Ipsum"))
         
         data_to_return = [model]
         
@@ -73,8 +72,12 @@ class test_viewmodel_IndexViewModel(TestCase):
     def test_init_called_fetch__multiple_rows(self, mock_auth_user, InstituteModel_get_model):
         
         # arrange
-        
-        data_to_return = [Model(56, "Tic"),Model(57, "Tac"),Model(58, "Toe")]
+        fake_institute = InstituteModel(12767111276711, "Ipsum")
+        data_to_return = [
+            Model(56, "Tic", fake_institute),
+            Model(57, "Tac", fake_institute),
+            Model(58, "Toe", fake_institute)
+        ]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
 

@@ -62,7 +62,7 @@ class EventLogIndexViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", data=data, error_message=self.error_message)
+        return ViewModel("", "Event Log", "view event logs", ctx=None, data=data, error_message=self.error_message)
 
 
 class EventLogDeleteOldViewModel(BaseViewModel):
@@ -107,4 +107,4 @@ class EventLogDeleteOldViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", data=data, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel("", "Event Log", "view event logs", ctx=None, data=data, error_message=self.error_message, alert_message=self.alert_message)

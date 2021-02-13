@@ -37,7 +37,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def get_all(db, auth_user):
         
-        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.id)
+        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.user_id)
         data = []
         for row in rows: 
             model = InstituteModel(id_=row[0],
@@ -53,7 +53,7 @@ class InstituteModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, auth_user):   
-        rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.id)
+        rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.user_id)
         #TODO: start as none None
         model = InstituteModel(0, "")
         for row in rows:

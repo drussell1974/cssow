@@ -4,10 +4,9 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel as Model, handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_by_keyword(TestCase):
 
 
@@ -44,7 +43,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (222, 13, mock_auth_user.id) 
+                , (222, 13, mock_auth_user.user_id) 
                 , []
                 , handle_log_info)
                 
@@ -89,7 +88,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, mock_auth_user.id) 
+                , (223, 13, mock_auth_user.user_id) 
                 , []
                 , handle_log_info)
                 
@@ -151,7 +150,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (224, 13, mock_auth_user.id)
+                , (224, 13, mock_auth_user.user_id)
                 , []
                 , handle_log_info)
 
@@ -223,7 +222,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, mock_auth_user.id) 
+                , (223, 13, mock_auth_user.user_id) 
                 , []
                 , handle_log_info)
                 

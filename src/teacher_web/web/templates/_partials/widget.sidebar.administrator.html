@@ -8,7 +8,7 @@
             <div class="card-text widget-main">
               <ul class="navbar-nav flex-column fillspace">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'eventlog.index' content.data.scheme_of_work_id %}">
+                  <a class="nav-link" href="{% url 'eventlog.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
                     {{_("Event log")}} <div class="small"></div>
                   </a>
                 </li>

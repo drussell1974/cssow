@@ -6,7 +6,6 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.eventlogs.viewmodels import EventLogIndexViewModel as ViewModel
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.cls_eventlog import EventLogModel as Model, EventLogFilter
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7

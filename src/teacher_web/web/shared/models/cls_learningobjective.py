@@ -134,7 +134,7 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def get_all(db, lesson_id, scheme_of_work_id, auth_user):
-        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.user_id)
         data = []
         for row in rows:
             model = LearningObjectiveModel(

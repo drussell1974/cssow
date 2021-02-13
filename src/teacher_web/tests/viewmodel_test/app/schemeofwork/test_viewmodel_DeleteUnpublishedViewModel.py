@@ -6,7 +6,6 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):

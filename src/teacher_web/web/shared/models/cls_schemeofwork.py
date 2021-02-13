@@ -5,7 +5,6 @@ from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
-from shared.models.base.context import SchemeOfWorkContext
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -17,6 +16,12 @@ class SchemeOfWorkModel(BaseModel):
     number_of_keywords = 0
     key_words = []
     
+
+    @staticmethod
+    def empty(institute_id, department_id, scheme_of_work_id, auth_user_id):
+        return SchemeOfWorkModel(0, institute_id=institute_id, department_id=department_id) # Default
+
+
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", institute_id = 0, school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
         #231: implement across all classes
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
@@ -28,7 +33,7 @@ class SchemeOfWorkModel(BaseModel):
         self.key_stage_name = key_stage_name
         self.department_id = try_int(department_id)
         self.department_name = department_name
-        self.institute_id = institute_id
+        self.institute_id = try_int(institute_id)
         self.school_name = school_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
@@ -89,7 +94,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
         
-        rows = SchemeOfWorkDataAccess.get_all(db, auth_user_id=auth_user.id, key_stage_id=key_stage_id)
+        rows = SchemeOfWorkDataAccess.get_all(db, auth_user_id=auth_user.user_id, key_stage_id=key_stage_id)
         data = []
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -119,9 +124,11 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, auth_user):   
-        rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user_id=auth_user.id)
-        #TODO: start as none None
-        model = SchemeOfWorkModel(0, department_id=auth_user.department)
+        rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user_id=auth_user.user_id)
+        
+        # start as none None
+        model = SchemeOfWorkModel(0, department_id=auth_user.department_id)
+        
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
@@ -148,7 +155,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = SchemeOfWorkDataAccess.get_options(db, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_options(db, auth_user_id=auth_user.user_id)
         data = []
 
         for row in rows:
@@ -160,7 +167,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_latest_schemes_of_work(db, top, auth_user):
-        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, auth_user_id=auth_user.user_id)
         data = []
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -175,7 +182,8 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_name=row[9],
                                     published=row[10])
 
-            model.context = SchemeOfWorkContext(institute_id=row[11], department_id=row[12])
+            model.institute_id=row[11] 
+            model.department_id=row[12]
 
             data.append(model)
         return data
@@ -183,7 +191,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
         scheme_of_work_name = ""
         for row in rows:
             scheme_of_work_name = row[0]
@@ -203,7 +211,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_lessons(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_number_of_lessons(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -212,7 +220,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_learning_objectives(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_learning_objectives(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_number_of_learning_objectives(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -221,7 +229,7 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def get_number_of_resources(db, scheme_of_work_id, auth_user):
         number_of_lessons = 0
-        rows = SchemeOfWorkDataAccess.get_number_of_reources(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_number_of_reources(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
@@ -229,7 +237,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_all_keywords(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
         data = []
         for row in rows:
             model = KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4])
@@ -242,21 +250,21 @@ class SchemeOfWorkModel(BaseModel):
     def save(db, model, auth_user, published=1):
         
         if try_int(published) == 2:
-            rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.id)
+            rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.user_id)
             model.published = 2
         else:
             if model.is_new() == True:
-                model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user_id=auth_user.id, is_authorised=True)
+                model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user_id=auth_user.user_id)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user_id=auth_user.user_id, is_authorised=True)
             else:
-                model = SchemeOfWorkDataAccess._update(db, model, published, auth_user_id=auth_user.id)
+                model = SchemeOfWorkDataAccess._update(db, model, published, auth_user_id=auth_user.user_id)
 
         return model
 
 
     @staticmethod
     def delete_unpublished(db, auth_user):
-        rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.delete_unpublished(db, auth_user_id=auth_user.user_id)
         return rows
 
 

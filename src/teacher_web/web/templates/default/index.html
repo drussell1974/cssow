@@ -16,7 +16,7 @@
       <!-- Scheme of works -->
       {% for row in content.data.latest_schemes_of_work %}
         <div class="post-preview post-preview-schemeofwork">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute_id row.context.department_id row.id %}">
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute_id row.department_id row.id %}">
             <h2 class="post-title">
                 {{ row.name }}
             </h2>
@@ -30,7 +30,7 @@
               on {{ row.created }}
             {% endif %}
             {% if auth.user %}
-                - <a href="{% url 'schemesofwork.delete_item'  row.context.institute_id row.context.department_id row.id }">Delete</a>
+                - <a href="{% url 'schemesofwork.delete_item' row.context.institute_id row.context.department_id row.id }">Delete</a>
                 - <a href="{% url 'schemesofwork.edit'  row.context.institute_id row.context.department_id row.id }">Edit</a>
             {% endif %}</p>
         </div>

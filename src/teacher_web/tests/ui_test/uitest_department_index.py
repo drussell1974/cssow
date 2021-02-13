@@ -43,7 +43,7 @@ class uitest_department_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
 
-
+    @unittest.skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         self.test_context.find_element_by_id('btn-topnav-schemes_of_work').click()

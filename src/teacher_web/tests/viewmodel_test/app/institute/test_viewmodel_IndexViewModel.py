@@ -1,16 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-
-# test context
-
 from app.institute.viewmodels import InstituteIndexViewModel as ViewModel
 from shared.models.cls_institute import InstituteModel as Model
 from shared.models.cls_keyword import KeywordModel
+from tests.test_helpers.mocks import *
 
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
-
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):        

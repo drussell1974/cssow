@@ -59,7 +59,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
         
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, data=data, active_model=self.lesson, error_message=self.error_message)
+        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=None, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
 class LessonKeywordSelectViewModel(BaseViewModel):
@@ -127,7 +127,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
             "keyword_options": self.keyword_options
         }
         
-        return ViewModel(self.model.title, self.model.title, "Select keywords for {}".format(self.model.title), data=data, active_model=self.model, error_message=self.error_message)
+        return ViewModel(self.model.title, self.model.title, "Select keywords for {}".format(self.model.title), ctx=None, data=data, active_model=self.model, error_message=self.error_message)
 
 
 class LessonKeywordGetModelViewModel(BaseViewModel):
@@ -182,7 +182,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, data=data, active_model=self.lesson)
+        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=None, data=data, active_model=self.lesson)
         
 
 class LessonKeywordSaveViewModel(BaseViewModel):

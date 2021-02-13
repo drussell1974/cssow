@@ -6,7 +6,6 @@ from django.http import Http404
 from app.lessons.viewmodels import LessonWhiteboardViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonWhiteboardViewModel(TestCase):
     

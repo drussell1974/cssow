@@ -3,7 +3,6 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.lessons.viewmodels import LessonDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
 

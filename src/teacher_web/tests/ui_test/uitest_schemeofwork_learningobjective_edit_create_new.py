@@ -10,7 +10,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/learning-objectives/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.wait(s=4)
 
     def tearDown(self):

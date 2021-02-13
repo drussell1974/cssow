@@ -6,9 +6,10 @@ class ViewModel:
     active_model__validation_errors = {}
     active_model__published_state = "unknown-state"
 
-    def __init__(self, page_prefix, main_heading, sub_heading, data = None, active_model = None, error_message = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = ""):
+    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = ""):
         """ Create View Model """
         self.data = data
+        self.ctx = ctx
 
         ui_messages = { 
             "alert_message": alert_message if len(alert_message) > 0 else None,
@@ -35,7 +36,9 @@ class ViewModel:
                     "display_name": self.active_model__display_name,
                     "published_state": self.active_model__published_state
                 },
-                "alert_message": ui_messages
+                "ctx": ctx,
+                "alert_message": ui_messages,
+                "stack_trace": stack_trace
             },
             "auth": {
                 "user":False,
@@ -44,6 +47,7 @@ class ViewModel:
                 }
             },
             "session": {
+                # TODO: #306 stock persisting alert_message
                 "alert_message": ""
             }
         }

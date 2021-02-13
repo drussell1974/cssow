@@ -22,9 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 #SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY'],
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug or stack trace turned on in production!
 DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'],
-
 
 ALLOWED_HOSTS = [
         "127.0.0.1",
@@ -189,6 +188,7 @@ LOGGING_LEVEL = 1
 LOG_TO_SQL = True
 LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
+SHOW_STACK_TRACE = os.environ['TEACHER_WEB__WEB_SERVER_SHOW_STACK_TRACE']
 
 # number of days to keep log
 MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7

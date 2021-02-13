@@ -1,13 +1,11 @@
 from unittest import TestCase
 from shared.models.cls_department import DepartmentModel
-
-from unittest import TestCase
+from shared.models.cls_institute import InstituteModel
 
 class test_cls_department__clean_up(TestCase):
 
     def setUp(self):
-        self.test = DepartmentModel(1, name="")
-
+        self.test = DepartmentModel(1, "", institute=InstituteModel(2, ""))
 
     # title
 

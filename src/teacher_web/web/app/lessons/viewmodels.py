@@ -20,10 +20,9 @@ class LessonIndexViewModel(BaseViewModel):
         self.model = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
-        #page_direction = 0
-        # create pager
         self.search_criteria = LessonFilter(keyword_search, pagesize_options, page, pagesize, 0)
-    
+        self.auth_user = auth_user
+
         try:
             # name to appear
             self.scheme_of_work_name = SchemeOfWorkModel.get_schemeofwork_name_only(db, scheme_of_work_id, auth_user)
@@ -60,7 +59,7 @@ class LessonIndexViewModel(BaseViewModel):
             "search_criteria": self.search_criteria,
         }
 
-        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", data=data, error_message=self.error_message)
+        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class LessonGetModelViewModel(BaseViewModel):

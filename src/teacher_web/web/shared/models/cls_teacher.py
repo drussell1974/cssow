@@ -4,20 +4,21 @@ from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
+from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+
 
 class TeacherModel(BaseModel):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #department = models.ForeignKey(DepartmentModel, on_delete=models.CASCADE)
-    department = models.CharField(max_length=100, null=True)
 
     def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=False):
+        
+        TeacherModel.depreciation_notice("use TeacherPermissionModel")
+
         super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=is_from_db)
         self.id = id
         self.name = name
         self.department = department
-        self.is_authorised = is_authorised
-
-
+        
     def validate(self, skip_validation = []):
         """ clean up and validate model """
         super().validate(skip_validation)
@@ -44,24 +45,24 @@ class TeacherModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, teacher_id, department_id, institute_id = 0):
-        model = TeacherModel(0, "", department=DepartmentModel(0, "", is_from_db=False), is_authorised=False, is_from_db=False)
+    def get_model(db, teacher_id, ctx):
+        model = TeacherModel(0, "", department=DepartmentModel(0, "", institute=InstituteModel(0, "", is_from_db=False), is_from_db=False), is_authorised=False, is_from_db=False)
         
-        rows = TeacherDataAccess.get_model(db, teacher_id, department_id, institute_id)
+        rows = TeacherDataAccess.get_model(db, teacher_id, ctx.department_id, ctx.institute_id)
         
         for row in rows:
-            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], is_from_db=True), is_authorised=row[4], is_from_db=True)
+            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], institute=InstituteModel(row[4], name=row[5], is_from_db=False), is_from_db=True), is_authorised=row[6], is_from_db=True)
         return model
 
 class TeacherDataAccess:
 
     @staticmethod
-    def get_model(db, teacher_id, department_id = 0, institute_id = 0):
+    def get_model(db, teacher_id, department_id, institute_id):
         execHelper = ExecHelper()
 
         str_select = "teacher__get"
         params = (teacher_id, department_id, institute_id)
-
+        
         try:
             rows = []
             rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -69,7 +70,7 @@ class TeacherDataAccess:
             return rows
             
         except Exception as e:
-            raise Exception("Error getting departments", e)
+            raise Exception("Error getting teacher model", e)
 
 
 '''

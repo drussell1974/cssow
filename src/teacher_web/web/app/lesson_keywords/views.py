@@ -76,7 +76,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "keyword": model
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new keyword for %s" % lesson.title, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new keyword for %s" % lesson.title, ctx=None, data=data)
     
     return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -112,7 +112,7 @@ def edit(request, scheme_of_work_id, lesson_id, keyword_id):
     }
 
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), data=data, active_model=model, alert_message="")
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), ctx=None, data=data, active_model=model, alert_message="")
 
     return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -182,7 +182,7 @@ def save(request, scheme_of_work_id, lesson_id, keyword_id):
         if model.id > 0:
             sub_heading = "Edit: {} for {}".format(model.term, lesson.title)
 
-        view_model = ViewModel(lesson.title, lesson.title, sub_heading, data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.title, sub_heading, ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)
     
         return render(request, "lesson_keywords/edit.html", view_model.content)
 

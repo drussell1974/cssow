@@ -9,7 +9,7 @@ class uitest_schemeofwork_lesson_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.do_log_in('/schemesofwork/{}/lessons/new'.format(self.test_scheme_of_work_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/new".format(self.test_scheme_of_work_id))
         # TODO: improve performance
         self.wait(s=2)
 

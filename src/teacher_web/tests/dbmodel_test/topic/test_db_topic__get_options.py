@@ -2,10 +2,9 @@ from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_teacher_permission_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", is_from_db=True, department=DepartmentModel(67, "Computer Science", is_from_db=True)))
+@patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
 class test_db_topic__get_options__level_1(TestCase):
 
     def setUp(self):

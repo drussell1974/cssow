@@ -2,10 +2,11 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_DepartmentDataAccess___delete(TestCase):
 
     def setUp(self):
@@ -33,7 +34,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         # arrange
         expected_result = [99]
 
-        fake_model = Model(101, "Lorum ipsum")
+        fake_model = Model(101, "Lorum ipsum", institute=InstituteModel(1271124, "Lorum Ipsum"))
         fake_model.published = 2
         fake_model.created = "2021-01-24 07:20:01.907507"
     

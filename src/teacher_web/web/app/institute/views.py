@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
@@ -14,9 +15,12 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 # Create your views here.
 
-def index(request):
+def index(request, ctx=None):
+
+    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
+    # NOTE: #329 Check value can be set in decorator
     
-    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request))
+    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=0, department_id=0, scheme_of_work_id=0)))
     
     return render(request, "institute/index.html", index_view.view().content)
 
@@ -26,7 +30,10 @@ def index(request):
 def edit(request, institute_id = 0):
     """ edit action """
     
-    save_view = InstituteEditViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_user_model(db, request))
+    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
+    # NOTE: #329 Check value can be set in decorator
+    
+    save_view = InstituteEditViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=institute_id, department_id=0, scheme_of_work_id=0)))
     
     if save_view.saved == True:
 
@@ -41,9 +48,12 @@ def edit(request, institute_id = 0):
 
 @permission_required('cssow.delete_institutemodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request):
+def delete_unpublished(request, ctx=None):
     """ delete item and redirect back to referer """
 
-    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request))
+    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
+    # NOTE: #329 Check value can be set in decorator
+    
+    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=0, department_id=0, scheme_of_work_id=0)))
 
     return HttpResponseRedirect(reverse("institute.index"))

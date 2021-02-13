@@ -7,7 +7,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(self.root_uri + "/schemesofwork")
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork")
         self.wait()
 
     def tearDown(self):

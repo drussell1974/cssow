@@ -12,7 +12,6 @@ from django.db import connection as db
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 

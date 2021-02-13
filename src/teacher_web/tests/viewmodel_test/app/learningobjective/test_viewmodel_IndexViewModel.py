@@ -4,14 +4,12 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.learningobjectives.viewmodels import LearningObjectiveIndexViewModel as ViewModel
-from shared.models.cls_department import DepartmentModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
 from shared.models.cls_solotaxonomy import SoloTaxonomyModel
-from shared.models.cls_teacher import TeacherModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):        

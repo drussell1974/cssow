@@ -1,5 +1,6 @@
 from unittest import TestCase
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 
 
 class test_cls_department__constructor(TestCase):
@@ -13,8 +14,9 @@ class test_cls_department__constructor(TestCase):
 
     def test_constructor_default(self):
 
-        # self.test
-        self.test = DepartmentModel(0, name="Lorem ipsum")
+        # arrangee
+
+        self.test = DepartmentModel(0, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
 
         # assert
         self.assertEqual(0, self.test.id)
@@ -25,9 +27,9 @@ class test_cls_department__constructor(TestCase):
 
     def test_constructor_set_valid_values(self):
 
-        # setup
+        # arrange
 
-        self.test = DepartmentModel(1, name="Sor shurem")
+        self.test = DepartmentModel(1, "Sor shurem", institute=InstituteModel(2, "Lorem Ipsum"))
 
         # self.test
         self.test.validate()

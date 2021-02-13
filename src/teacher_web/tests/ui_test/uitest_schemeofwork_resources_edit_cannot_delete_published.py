@@ -9,7 +9,7 @@ class uitest_schemeofwork_resources__cannot_delete_published(UITestCase):
     def setUp(self):
         # setUp use existing
         #231 TODO: open an existing resource
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/resources/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_reference))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/resources/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_reference))
 
 
     def tearDown(self):

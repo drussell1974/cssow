@@ -9,8 +9,8 @@ class uitest_schemeofwork_schemesofwork_edit_cannot_delete_published(UITestCase)
     def setUp(self):
         # setUp use existing
         #231 TODO: open an existing resource
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/edit".format(self.test_scheme_of_work_id))
-        #raise PermissionError("delete test schemes of work without clean button")
+
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/edit")
 
     def tearDown(self):
         pass

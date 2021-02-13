@@ -2,13 +2,15 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-@patch.object(TeacherModel, "get_model", return_value=TeacherModel(0, "", department=DepartmentModel(0, "")))
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Jane Doe", department=DepartmentModel(67, "Computer Science")))
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(9999, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
+
+# TODO: #329 Do not use mock for testing object
+@patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_team_permissions(TestCase):
 
     def setUp(self):
@@ -21,7 +23,7 @@ class test_db__get_team_permissions(TestCase):
         pass
 
         
-    def test__should_call__select__with_exception(self, TeacherModel_get_model, mock_teacher_model, mock_auth_user):
+    def test__should_call__select__with_exception(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
 
         # arrange
         expected_result = Exception('Bang')
@@ -32,7 +34,7 @@ class test_db__get_team_permissions(TestCase):
                 Model.get_all(self.fake_db, key_stage_id = 4)
             
 
-    def test__should_call__select__no_items(self, TeacherModel_get_model, mock_teacher_model, mock_auth_user):
+    def test__should_call__select__no_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
         # arrange
         expected_result = []
 
@@ -54,7 +56,7 @@ class test_db__get_team_permissions(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_model, mock_auth_user):
+    def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
         # arrange
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
@@ -78,7 +80,7 @@ class test_db__get_team_permissions(TestCase):
             #self.assertEqual("John Doe", rows[0].teacher_permissions[0].teacher.name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_model, mock_auth_user):
+    def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
         # arrange
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),

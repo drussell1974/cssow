@@ -1,15 +1,11 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-
-# create test context
-
 from shared.models.cls_resource import ResourceModel, handle_log_info
+from tests.test_helpers.mocks import *
 
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_resource_type_options(TestCase):
     
     def setUp(self):

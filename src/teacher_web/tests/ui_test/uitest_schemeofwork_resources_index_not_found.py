@@ -25,7 +25,7 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
 
     def test_page_should_redirect_to_login_page__if_scheme_of_work_id__does_not_exist(self):
         # act        
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/resources".format(999999, self.test_lesson_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/resources".format(999999, self.test_lesson_id))
         self.wait(s=2)
 
         # assert
@@ -34,7 +34,7 @@ class uitest_schemeofwork_resource_index_not_found(UITestCase):
 
     def test_page_should_redirect_to_404__if_lesson_id__does_not_exist(self):
         # act        
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, 999999))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/resources".format(self.test_scheme_of_work_id, 999999))
         self.wait(s=2)
 
         # assert

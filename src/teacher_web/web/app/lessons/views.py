@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
@@ -25,7 +26,7 @@ from datetime import datetime
 # Create your views here.        
 
 @min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, scheme_of_work_id, lesson_id = 0):
+def index(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0):
     """ Get lessons for scheme of work """
     
     # default pager settings
@@ -38,7 +39,7 @@ def index(request, scheme_of_work_id, lesson_id = 0):
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
     #253 check user id
-    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_model(db, request))
+    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
 
@@ -138,7 +139,7 @@ def edit(request, scheme_of_work_id, lesson_id = 0, is_copy = False):
         "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, data=data, active_model=model, alert_message="", error_message=error_message)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -189,7 +190,7 @@ def whiteboard(request, scheme_of_work_id, lesson_id):
         "resources": model.resources,
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, data=data)
+    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=None, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
