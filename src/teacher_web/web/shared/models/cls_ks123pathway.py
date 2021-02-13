@@ -24,7 +24,7 @@ class KS123PathwayModel(BaseModel):
     
     @staticmethod
     def get_options(db, year_id, topic_id, auth_user):
-        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user_id=auth_user.id)
+        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1])

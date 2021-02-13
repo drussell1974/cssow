@@ -6,7 +6,7 @@ class uitest_schemeofwork_lesson_index__keyword__search(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons")
 
 
     def tearDown(self):

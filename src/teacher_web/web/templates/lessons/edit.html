@@ -6,17 +6,17 @@
     <div class="container">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+            <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
               {{_("Schemes of Work")}}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">
+            <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
               {{_("Lessons")}}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.data.scheme_of_work_id content.data.lesson_id %}">
+            <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
               {{_("Objectives")}}
             </a>
           </li>
@@ -39,7 +39,7 @@
   </div>
   {% endif %}
 
-  <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.data.scheme_of_work_id content.data.lesson_id %}">
+  <form name="edit-lesson" id="form" method="post" class="needs-validation" action="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
     {% csrf_token %}
 
     <!-- show error_message -->
@@ -93,7 +93,7 @@
           <option value="">- {{_("Select an option")}} -</option>
           {% for opt in content.data.content_options %}
           <option value="{{opt.id}}" {% if opt.id == content.data.lesson.content_id %} selected {% endif %}>{{opt.description}}</option>
-          {% endfor %}
+          {% endfor %}  
       </select>
       <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
       </div>
@@ -163,7 +163,7 @@
     <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}" id="hdn-scheme_of_work_id">
     <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
     <input type="hidden" name="related_topic_ids" value="{{ content.data.lesson.related_top }} {{ ic_ids }}" id="hdn-related_topic_ids">
-    <input type="hidden" name="next" value="{% url 'lesson.index' content.data.scheme_of_work_id %}" > 
+    <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" > 
   </form>
 </article>
 {% endblock %}

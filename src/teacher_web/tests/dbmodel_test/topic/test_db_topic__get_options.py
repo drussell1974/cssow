@@ -41,7 +41,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'topic__get_options'
-                , (1, 2, mock_auth_user.id)
+                , (1, 2, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -60,7 +60,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options'
-                , (2, 2, mock_auth_user.id)
+                , (2, 2, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, len(rows))
@@ -82,7 +82,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options'
-                , (3, 2, mock_auth_user.id)
+                , (3, 2, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

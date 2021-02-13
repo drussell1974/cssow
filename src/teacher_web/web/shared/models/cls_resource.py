@@ -138,7 +138,7 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
-        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.id, resource_type_id=resource_type_id)
+        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id)
         data = []
         for row in rows:
             model = ResourceModel(
@@ -191,17 +191,17 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def publish_item(db, resource_id, scheme_of_work_id, auth_user):
-        return ResourceDataAccess.publish_item(db, resource_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        return ResourceDataAccess.publish_item(db, resource_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def delete(db, resource_id, auth_user):
-        return ResourceDataAccess.delete(db, resource_id, auth_user.id)
+        return ResourceDataAccess.delete(db, resource_id, auth_user.auth_user_id)
 
 
     @staticmethod
     def delete_unpublished(db, lesson_id, auth_user):
-        return ResourceDataAccess.delete_unpublished(db, lesson_id, auth_user_id=auth_user.id)
+        return ResourceDataAccess.delete_unpublished(db, lesson_id, auth_user_id=auth_user.auth_user_id)
 
 
 class ResourceDataAccess:

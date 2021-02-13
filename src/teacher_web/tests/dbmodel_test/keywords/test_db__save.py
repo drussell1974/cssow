@@ -73,7 +73,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                 'keyword__update'
-                , (1, 'Lorem Ipsum', 'Mauris ac velit ultricies, vestibulum.', 13, 1, mock_auth_user.id)
+                , (1, 'Lorem Ipsum', 'Mauris ac velit ultricies, vestibulum.', 13, 1, mock_auth_user.auth_user_id)
                 ,  handle_log_info)
 
             self.assertEqual(expected_result, actual_result.id)
@@ -99,7 +99,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
                 'keyword__insert'
-                , (0, 'Mauris', 'Mauris ac velit ultricies, vestibulum.', 13, mock_auth_user.id, 1)
+                , (0, 'Mauris', 'Mauris ac velit ultricies, vestibulum.', 13, mock_auth_user.auth_user_id, 1)
                 , handle_log_info)
                 
             self.assertNotEqual(0, actual_result.id)

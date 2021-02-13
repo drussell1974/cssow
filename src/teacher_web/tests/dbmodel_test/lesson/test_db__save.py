@@ -127,7 +127,7 @@ class test_db__save(TestCase):
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
                 'lesson__update'
-                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, mock_auth_user.id)
+                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, mock_auth_user.auth_user_id)
                 ,handle_log_info)
 
             # check subsequent functions where called
@@ -195,14 +195,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=99, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
 
             # assert
 
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 'lesson__delete'
-                , (23, 99)
+                , (23, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             # check subsequent functions where called

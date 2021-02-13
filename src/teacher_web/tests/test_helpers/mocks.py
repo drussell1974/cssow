@@ -16,15 +16,16 @@ def fake_ctx_model(auth_user_id = 6079, department_permission=DEPARTMENT.HEAD, s
     
     scheme_of_work = SchemeOfWorkModel(12323232, name="GCSE Computer Science")
 
-    ctx = TeacherPermissionModel(teacher_id=9999, teacher_name="Dave Russell", scheme_of_work=scheme_of_work, is_from_db=True, ctx=Ctx(institute.id, department.id, scheme_of_work.id))
+    ctx = Ctx(institute_id=institute.id, department_id=department.id, scheme_of_work_id=scheme_of_work.id)
+    permission_ctx = TeacherPermissionModel(teacher_id=9999, teacher_name="Dave Russell", scheme_of_work=scheme_of_work, is_from_db=True, ctx=ctx)
     
-    ctx.is_authorised = is_authorised
-    ctx.department_permission = department_permission
-    ctx.scheme_of_work_permission = scheme_of_work_permission
-    ctx.lesson_permission = lesson_permission
-    ctx.auth_user_id = auth_user_id
+    permission_ctx.is_authorised = is_authorised
+    permission_ctx.department_permission = department_permission
+    permission_ctx.scheme_of_work_permission = scheme_of_work_permission
+    permission_ctx.lesson_permission = lesson_permission
+    permission_ctx.auth_user_id = auth_user_id
     
-    return ctx
+    return permission_ctx
 
 
 def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
@@ -35,4 +36,4 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
 
     scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", department_id = department.id, institute_id = institute.id, is_from_db=is_from_db)
     
-    return TeacherPermissionModel(teacher_id=56, teacher_name="Jane Mellor" , scheme_of_work=scheme_of_work, is_from_db=is_from_db, ctx=Ctx(127671276711, 34, 14), scheme_of_work_permission=SCHEMEOFWORK.OWNER, lesson_permission=LESSON.OWNER, department_permission=DEPARTMENT.HEAD, is_authorised=is_authorised)
+    return TeacherPermissionModel(teacher_id=56, teacher_name="Jane Mellor" , scheme_of_work=scheme_of_work, is_from_db=is_from_db, ctx=Ctx(institute_id=127671276711, department_id=34, scheme_of_work_id=14), scheme_of_work_permission=SCHEMEOFWORK.OWNER, lesson_permission=LESSON.OWNER, department_permission=DEPARTMENT.HEAD, is_authorised=is_authorised)

@@ -192,7 +192,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
-        rows = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
@@ -204,7 +204,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id=0):
-        rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id, resource_type_id=resource_type_id)
+        rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id)
         model = None
         for row in rows:
             model = LessonModel(
@@ -239,7 +239,7 @@ class LessonModel (BaseModel):
     def get_all(db, scheme_of_work_id, auth_user):
         rows = LessonDataAccess.get_all(db, 
             scheme_of_work_id, 
-            auth_user_id=auth_user.id)
+            auth_user_id=auth_user.auth_user_id)
 
         data = []
         for row in rows:
@@ -425,7 +425,7 @@ class LessonModel (BaseModel):
     
     @staticmethod
     def get_pathway_objective_ids(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.id)
+        rows = LessonDataAccess.get_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             data.append(int(row[0]))
@@ -437,11 +437,11 @@ class LessonModel (BaseModel):
         """ Save Lesson """
         try:     
             if model.is_new() == True:
-                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
+                model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
             elif published == 2:
-                model = LessonDataAccess._delete(db, auth_user, model)
+                model = LessonDataAccess._delete(db, auth_user.auth_user_id, model)
             else:
-                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user.id)
+                model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
             return model
         except:
             handle_log_error(db, 0, "error saving lesson")
@@ -455,23 +455,23 @@ class LessonModel (BaseModel):
 
         LessonDataAccess._delete_keywords(db, model, results, auth_user)
         
-        return LessonDataAccess._upsert_key_words(db, model, results, auth_user_id=auth_user.id)
+        return LessonDataAccess._upsert_key_words(db, model, results, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def publish(db, auth_user, lesson_id, scheme_of_work_id):
-        return LessonDataAccess.publish(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        return LessonDataAccess.publish(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
     
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        return LessonDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        return LessonDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def delete(db, auth_user, lesson_id):
         model = LessonModel(lesson_id)
-        LessonDataAccess._delete(db, auth_user_id=auth_user.id, model=model)
+        LessonDataAccess._delete(db, auth_user_id=auth_user.auth_user_id, model=model)
         return model
 
 
@@ -813,7 +813,7 @@ class LessonDataAccess:
         
         str_delete = "lesson__delete"
         params = (model.id, auth_user_id)
-
+        
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
         return model

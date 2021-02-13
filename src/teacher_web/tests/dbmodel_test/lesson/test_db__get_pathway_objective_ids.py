@@ -40,7 +40,7 @@ class test_db__get_pathway_objective_ids(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_pathway_objective_ids'
-                , (67, mock_auth_user.id)
+                , (67, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -58,7 +58,7 @@ class test_db__get_pathway_objective_ids(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
             'lesson__get_pathway_objective_ids'
-            , (87, mock_auth_user.id)
+            , (87, mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
 
@@ -73,13 +73,13 @@ class test_db__get_pathway_objective_ids(TestCase):
         with patch.object(ExecHelper, 'select', return_value=[("1034",),("1045",),("12",) ]):
             # act
 
-            actual_results = LessonModel.get_pathway_objective_ids(self.fake_db, 21, mock_auth_user)
+            actual_results = LessonModel.get_pathway_objective_ids(self.fake_db, 21, fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_pathway_objective_ids'
-                , (21, mock_auth_user.id)
+                , (21, 6079)
                 , []
                 , handle_log_info)
             
