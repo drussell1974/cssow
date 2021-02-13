@@ -41,7 +41,7 @@ class test_db__get_by_terms(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, mock_auth_user.id)
+                , ('', 13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -77,7 +77,7 @@ class test_db__get_by_terms(TestCase):
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, mock_auth_user.id)
+                , ('', 13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -97,7 +97,7 @@ class test_db__get_by_terms(TestCase):
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ('', 13, mock_auth_user.id)
+                , ('', 13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -126,7 +126,7 @@ class test_db__get_by_terms(TestCase):
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_by_term'
-                , ("ullamcorper','dolor','odio", 133, mock_auth_user.id)
+                , ("ullamcorper','dolor','odio", 133, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 

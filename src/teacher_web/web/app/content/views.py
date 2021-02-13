@@ -21,8 +21,13 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id):
 
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
     #253 check user id
-    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
+    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     return render(request, "content/index.html", view_model.view().content)
 
@@ -32,13 +37,18 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
+    
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
 
     #253 check user id
-    view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_user_model(db, request))
+    view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_ctx)
 
     if view_model.is_content_ready:
         
-        redirect_to_url = reverse('content.index', args=[scheme_of_work_id])
+        redirect_to_url = reverse('content.index', args=[institute_id, department_id, scheme_of_work_id])
 
         if request.POST["next"] != "None"  and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
@@ -53,7 +63,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id, content_id=0):
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
     """ delete item and redirect back to referer """
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
+    ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("content.index", args=[institute_id, department_id, scheme_of_work_id]))

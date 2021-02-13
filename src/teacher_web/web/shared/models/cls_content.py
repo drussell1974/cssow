@@ -65,7 +65,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_model(db, content_id, scheme_of_work_id, auth_user):
-        rows = ContentDataAccess.get_model(db, content_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = ContentDataAccess.get_model(db, content_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         model = None
         for row in rows:
             model = ContentModel(row[0], row[1], row[2], published=row[3])
@@ -96,16 +96,16 @@ class ContentModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
-            rval = ContentDataAccess._delete(db, model, auth_user)
+            rval = ContentDataAccess._delete(db, model, auth_user.auth_user_id)
             if rval == 0:
                 raise Exception("The item is either in use or you are not permitted to perform this action.")
             #TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:
-                model = ContentDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
+                model = ContentDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
             else:
-                model = ContentDataAccess._update(db, model, published, auth_user_id=auth_user.id)
+                model = ContentDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
 
         return model
 
