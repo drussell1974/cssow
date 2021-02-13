@@ -20,7 +20,7 @@ class TeacherPermissionModel(BaseModel):
     def empty(institute_id, department_id, scheme_of_work_id, auth_user_id):
         scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id, scheme_of_work_id, auth_user_id)
         
-        ctx = Ctx(institute_id, department_id, scheme_of_work_id)
+        ctx = Ctx(institude_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         return TeacherPermissionModel(teacher_id=0, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx = ctx) # Default
 

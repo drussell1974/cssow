@@ -37,9 +37,6 @@ class min_permission_required:
         """ SCHEMEOFWORK_ACCESS and LESSON_ACCESS decorator argument """
         self._permission = permission
         self._auth_user = 0
-        self._institute_id = 0
-        self._department_id = 0
-        self._scheme_of_work_id = 0
         self._redirect_to_url = login_url
         self._redirect_to_route_name = login_route_name
 
@@ -49,44 +46,53 @@ class min_permission_required:
 
         def inner(*args, **kwargs):
             ''' request must be the first argument in the view function '''
-
+            request = args[0]
+            
             self.kwargs = kwargs
 
-            self._return_url = args[0].path
-            auth_user = args[0].user
+            self._return_url = request.path
+            auth_user = request.user
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
             
             ''' TODO: #329 get permission from context from database (handle DEFAULT values) '''
             
-            self._department_id = self.getkeyargs("department_id", default_value=DEFAULT_DEPARTMENT_ID)
-            self._institute_id = self.getkeyargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
-            self._scheme_of_work_id = self.getkeyargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
+            department_id = self.getkwargs("department_id", default_value=DEFAULT_DEPARTMENT_ID)
+            institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
+            scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
+
+            view_params_ctx = Ctx(**kwargs)
+
+            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_model(db, request, ctx=view_params_ctx))
             
-            scheme_of_work = SchemeOfWorkModel.get_model(db, self._scheme_of_work_id, auth_user_model(db, args[0], Ctx(self._institute_id, self._department_id, self._scheme_of_work_id)))
             
             if scheme_of_work is None:
-                scheme_of_work = SchemeOfWorkModel.empty(self._institute_id, self._department_id, scheme_of_work_id=0, auth_user_id=auth_user.id)
+                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id, scheme_of_work_id=0, auth_user_id=auth_user.id)
                 
-                #return self.redirect_handler(str_err, scheme_of_work_id=self._scheme_of_work_id, permission=self._permission) 
-
             ''' teacher_id and auth_user are the same in this call '''
             
-            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_user_model(db, args[0], Ctx(self._institute_id, self._department_id, self._scheme_of_work_id)))
-            
+            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_user_model(db, request, ctx=view_params_ctx))
+                            
             if model.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
-                str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({self._scheme_of_work_id}) redirect to {self._redirect_to_url}."
+                str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."
                 
-                return self.redirect_handler(str_err, scheme_of_work_id=self._scheme_of_work_id, permission=self._permission) 
+                return self.redirect_handler(str_err, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 
+            self.setkwargs("ctx", value=auth_user_model(db, request, ctx=view_params_ctx))
+            
             # call decorated function
             return func(*args, **kwargs)
             
         return inner
-        
 
-    def getkeyargs(self, key, default_value = None):
+
+    def setkwargs(self, key, value):
+        if key in self.kwargs.keys():
+            self.kwargs[key] = value
+
+
+    def getkwargs(self, key, default_value = None):
         if key in self.kwargs.keys():
             return self.kwargs[key]
         elif default_value is not None:
@@ -96,7 +102,7 @@ class min_permission_required:
 
 
     def redirect_handler(self, error_message, scheme_of_work_id, permission):
-        handle_log_warning(db, self._scheme_of_work_id, msg="permission denied", details=error_message)
+        handle_log_warning(db, scheme_of_work_id, msg="permission denied", details=error_message)
         if self._redirect_to_route_name is not None and scheme_of_work_id > 0:
             self._redirect_to_url = reverse("team-permissions.login-as", args=[scheme_of_work_id, str(permission)])
         

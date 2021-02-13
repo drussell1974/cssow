@@ -28,7 +28,7 @@ class TopicModel(models.Model):
 
     @staticmethod
     def get_options(db, lvl, auth_user, topic_id = 0):
-        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.id, topic_id=topic_id)
+        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.auth_user_id, topic_id=topic_id)
         data = []
         
         for row in rows:

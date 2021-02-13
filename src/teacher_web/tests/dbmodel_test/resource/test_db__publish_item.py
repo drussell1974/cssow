@@ -49,7 +49,7 @@ class test_db__publish_item(TestCase):
 
             ExecHelper.update.assert_called_with(self.fake_db, 
             'lesson_resource__publish_item'
-            , (123, 78, 1, mock_auth_user.id)
+            , (123, 78, 1, mock_auth_user.auth_user_id)
             )
             
             self.assertEqual(len(expected_result), len(actual_result))

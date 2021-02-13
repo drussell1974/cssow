@@ -15,12 +15,11 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 # Create your views here.
 
-def index(request, ctx=None):
+def index(request):
 
-    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
-    # NOTE: #329 Check value can be set in decorator
+    ctx = auth_user_model(db, request, ctx=Ctx())
     
-    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=0, department_id=0, scheme_of_work_id=0)))
+    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=ctx))
     
     return render(request, "institute/index.html", index_view.view().content)
 
@@ -30,10 +29,12 @@ def index(request, ctx=None):
 def edit(request, institute_id = 0):
     """ edit action """
     
-    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
-    # NOTE: #329 Check value can be set in decorator
+    view_ctx = Ctx(institute_id=institute_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
     
-    save_view = InstituteEditViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=institute_id, department_id=0, scheme_of_work_id=0)))
+    save_view = InstituteEditViewModel(db=db, request=request, auth_user=auth_user_model(db, request, ctx=auth_ctx))
     
     if save_view.saved == True:
 
@@ -48,12 +49,14 @@ def edit(request, institute_id = 0):
 
 @permission_required('cssow.delete_institutemodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, ctx=None):
+def delete_unpublished(request, institute_id):
     """ delete item and redirect back to referer """
 
-    # TODO: #329 move Ctx to decorator and add ctx=None to view function 
-    # NOTE: #329 Check value can be set in decorator
+    view_ctx = Ctx(institute_id=institute_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
     
-    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=0, department_id=0, scheme_of_work_id=0)))
+    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=auth_ctx))
 
     return HttpResponseRedirect(reverse("institute.index"))

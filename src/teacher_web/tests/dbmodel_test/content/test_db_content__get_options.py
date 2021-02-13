@@ -41,7 +41,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (0, 1, mock_auth_user.id)
+            , (0, 1, mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             
@@ -60,7 +60,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (0, 2, mock_auth_user.id)
+            , (0, 2, mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             
@@ -84,7 +84,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (563, 3, mock_auth_user.id)
+            , (563, 3, mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             

@@ -6,16 +6,16 @@
         <div class="container">
             <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link parent" id="btn-bc-lessons" href="{% url 'lesson.index' content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+                    <a class="nav-link parent" id="btn-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-keywords" href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Keywords")}}</a>
+                    <a class="nav-link" id="btn-bc-keywords" href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Keywords")}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-keywords-select" href="{% url 'lesson_keywords.select' content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Select")}}</a>
+                    <a class="nav-link" id="btn-bc-keywords-select" href="{% url 'lesson_keywords.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Select")}}</a>
                     </li>
                 </ul>
         </div>
@@ -26,7 +26,7 @@
 {% block maincontent %}
 
 <article class="widget widget-form widget-keyword-form">
-    <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.save' content.data.scheme_of_work_id content.data.lesson_id content.data.keyword.id %}">
+    <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.save' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.keyword.id %}">
         {% csrf_token %}
 
         <!-- show error_message -->
@@ -63,7 +63,7 @@
         <input type="hidden" name="id" value="{{content.data.keyword.id}}">
         <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
         <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'lesson_keywords.index' content.data.scheme_of_work_id content.data.lesson_id %}" >
+        <input type="hidden" name="next" value="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" >
         <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
     </form>
 <hr>

@@ -103,7 +103,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         
         model = KeywordModel(0, "", "")
         for row in rows:
@@ -115,7 +115,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
-        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.id, exclude_id=exclude_id)
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, exclude_id=exclude_id)
 
         data = []
         for row in rows:
@@ -145,7 +145,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = KeywordDataAccess.get_by_terms(db, key_words_list, allow_all, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
         data = []
 
@@ -159,40 +159,40 @@ class KeywordModel(BaseModel):
     def save(db, model, auth_user):
         """ save model """
         if model.published == 2:
-            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.id)
+            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         else:
             if model.is_new():
-                data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.id)
+                data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.auth_user_id)
                 model.id = data[0]
             else:
-                data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.id)
+                data = KeywordDataAccess._update(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.auth_user_id)
             
             for lesson_id in model.belongs_to_lessons:
-                KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user_id=auth_user.id)
+                KeywordDataAccess.upsert_lesson(db, model.id, lesson_id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
         return model
 
 
     @staticmethod
     def delete(db, model, auth_user):
-        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.id)
+        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         return rows
 
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return KeywordDataAccess.publish(db, auth_user_id=auth_user.id, id_=id)        
+        return KeywordDataAccess.publish(db, auth_user_id=auth_user.auth_user_id, id_=id)        
         
 
     @staticmethod
     def merge_duplicates(db, id, scheme_of_work_id, auth_user):
         merged_model = KeywordModel.get_model(db, id, scheme_of_work_id, auth_user=auth_user)
-        KeywordDataAccess.merge_duplicates(db, merged_model, scheme_of_work_id, auth_user_id=auth_user.id)
+        KeywordDataAccess.merge_duplicates(db, merged_model, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         return merged_model
 
 

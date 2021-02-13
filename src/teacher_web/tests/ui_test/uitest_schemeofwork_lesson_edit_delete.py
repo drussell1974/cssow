@@ -12,7 +12,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         #self.test_context.implicitly_wait(10)
         # setup
         #231: create a new resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/new".format(self.test_scheme_of_work_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/new")
         self.wait(s=2)
         
         # arrange
@@ -119,7 +119,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
         #delete
 
         ' Open edit - go to page 1 '
-        self.delete_unpublished_item(".unpublished a.edit .fa-edit", "/schemesofwork/{}/lessons/?page=1".format(self.test_scheme_of_work_id))
+        self.delete_unpublished_item(".unpublished a.edit .fa-edit", f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/?page=1")
         
         self.wait(s=2)
 

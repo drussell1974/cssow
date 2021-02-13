@@ -57,7 +57,7 @@ class test_db__save__lesson(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
                 'lesson__insert_keywords'
-                , ([], 10, 13, mock_auth_user.id)
+                , ([], 10, 13, mock_auth_user.auth_user_id)
                 , handle_log_info)
                 
             self.assertNotEqual(0, actual_result.id)

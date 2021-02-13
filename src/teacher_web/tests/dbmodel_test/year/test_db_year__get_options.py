@@ -45,7 +45,7 @@ class test_YearDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'year__get_options'
-                , (1, mock_auth_user.id)
+                , (1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -60,13 +60,13 @@ class test_YearDataAccess__get_options(TestCase):
             
             # act
 
-            rows = Model.get_options(self.fake_db, key_stage_id = 2, auth_user = mock_auth_user)
+            rows = Model.get_options(self.fake_db, key_stage_id = 2, auth_user = fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'year__get_options'
-                , (2, mock_auth_user.id)
+                , (2, 6079)
                 , []
                 , handle_log_info)
 
@@ -80,13 +80,13 @@ class test_YearDataAccess__get_options(TestCase):
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_options(self.fake_db, key_stage_id = 3, auth_user = mock_auth_user)
+            rows = Model.get_options(self.fake_db, key_stage_id = 3, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'year__get_options'
-                , (3, mock_auth_user.id)
+                , (3, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

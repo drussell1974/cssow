@@ -7,7 +7,8 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/whiteboard".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard")
+
 
     def tearDown(self):
         pass

@@ -55,7 +55,7 @@ class test_db___save_keywords(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (13, 10, 14, mock_auth_user.id)
+             , (13, 10, 14, mock_auth_user.auth_user_id)
              , handle_log_info)
 
         self.assertEqual([], actual_result)
@@ -73,14 +73,14 @@ class test_db___save_keywords(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=[]):
             # act
 
-            actual_result = Model.save_keywords(self.fake_db, model, auth_user=mock_auth_user)
+            actual_result = Model.save_keywords(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
             ExecHelper.insert.assert_called()
 
             ExecHelper.insert.assert_called_with(self.fake_db, 
              'lesson__insert_keywords'
-             , (12, 79, 13, mock_auth_user.id)
+             , (12, 79, 13, 6079)
              , handle_log_info)
 
         self.assertEqual(actual_result, expected_result)

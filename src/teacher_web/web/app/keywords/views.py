@@ -25,8 +25,14 @@ from shared.filehandler import handle_uploaded_markdown
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id):
     ''' Get keywords for scheme of work '''
+
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
     #253 check user id
-    getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))  
+    getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     return render(request, "keywords/index.html", getall_keywords.view().content)
 
@@ -180,9 +186,14 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
-    KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    return HttpResponseRedirect(reverse("schemesofwork.index"))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
+    KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+
+    return HttpResponseRedirect(reverse("schemesofwork.index", args=[institute_id, department_id]))
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')

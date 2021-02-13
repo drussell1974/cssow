@@ -32,7 +32,7 @@ class SoloTaxonomyModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = SoloTaxonomyDataAccess.get_options(db, auth_user_id=auth_user.id)
+        rows = SoloTaxonomyDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             model = SoloTaxonomyModel(row[0], row[1], row[2])

@@ -41,7 +41,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (21, mock_auth_user.id)
+                , (21, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -55,13 +55,13 @@ class test_db__get_options(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = LessonModel.get_options(self.fake_db, 12, auth_user=mock_auth_user)
+            rows = LessonModel.get_options(self.fake_db, 12, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (12, mock_auth_user.id)
+                , (12, 6079)
                 , []
                 , handle_log_info)
 
@@ -93,7 +93,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (214, mock_auth_user.id)
+                , (214, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

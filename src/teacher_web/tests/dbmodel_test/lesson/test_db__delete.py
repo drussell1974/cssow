@@ -36,14 +36,14 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=Model(102)):
             # act
 
-            actual_result = Model.delete(self.fake_db, mock_auth_user, lesson_id=102)
+            actual_result = Model.delete(self.fake_db, fake_ctx_model(), lesson_id=102)
             
             # assert
             ExecHelper.delete.assert_called()
 
             ExecHelper.delete.assert_called_with(self.fake_db, 
                 'lesson__delete'
-                , (102, mock_auth_user.id)
+                , (102, 6079)
                 , handle_log_info)
             
             self.assertEqual(102, actual_result.id)

@@ -45,7 +45,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (mock_auth_user.id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -67,7 +67,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (mock_auth_user.id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             
@@ -97,7 +97,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "solotaxonomy__get_options"
-                , (mock_auth_user.id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             

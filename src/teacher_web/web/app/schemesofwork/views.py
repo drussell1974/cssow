@@ -18,7 +18,12 @@ from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
 def index(request, institute_id, department_id):
     """ show schemes of work """
     
-    index_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id=0)))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    index_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=auth_ctx))
     
     return render(request, "schemesofwork/index.html", index_view.view().content)
 
@@ -27,7 +32,12 @@ def index(request, institute_id, department_id):
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id = 0):
     """ edit action """
-    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     if save_view.saved == True:
 
@@ -44,7 +54,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id = 0):
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, institute_id, department_id):
     """ delete item and redirect back to referer """
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
 
-    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, 0)))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
+    SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=auth_ctx))
 
     return HttpResponseRedirect(reverse("schemesofwork.index", args=[institute_id, department_id]))

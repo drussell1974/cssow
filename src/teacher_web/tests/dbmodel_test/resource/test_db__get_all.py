@@ -45,7 +45,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_resource__get_all'
-                , (5, 0, mock_auth_user.id)
+                , (5, 0, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -80,7 +80,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_resource__get_all'
-                , (3, 0, mock_auth_user.id)
+                , (3, 0, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -161,7 +161,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_resource__get_all'
-                 , (3, 0, mock_auth_user.id)
+                 , (3, 0, mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
 

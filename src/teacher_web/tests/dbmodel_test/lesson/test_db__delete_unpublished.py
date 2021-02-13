@@ -48,7 +48,7 @@ class test_db__delete_unpublished(TestCase):
 
             ExecHelper.delete.assert_called_with(self.fake_db, 
                 'lesson__delete_unpublished'
-                , (12, mock_auth_user.id)
+                , (12, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(expected_result, actual_result)

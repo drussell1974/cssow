@@ -68,7 +68,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all'
-                , (5, mock_auth_user.id)
+                , (5, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -107,13 +107,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = LessonModel.get_all(self.fake_db, 3, auth_user=mock_auth_user)
+            actual_results = LessonModel.get_all(self.fake_db, 3, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all'
-                , (3, mock_auth_user.id)
+                , (3, 6079)
                 , []
                 , handle_log_info)
 
@@ -175,7 +175,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson__get_all'
-                 , (3, mock_auth_user.id)
+                 , (3, mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
 
