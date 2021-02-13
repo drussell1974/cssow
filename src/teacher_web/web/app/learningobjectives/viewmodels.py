@@ -87,7 +87,7 @@ class LearningObjectiveEditViewModel(BaseViewModel):
 
     def execute(self, published):
         self.model.validate()
-
+        
         if self.model.is_valid == True:
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   

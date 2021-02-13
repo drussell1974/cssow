@@ -41,7 +41,7 @@ class test_db__get_all_pathway_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_learning_objective__get_all_pathway_objectives'
-                , (5, mock_auth_user.id)
+                , (5, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -77,7 +77,7 @@ class test_db__get_all_pathway_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_learning_objective__get_all_pathway_objectives'
-                 , (3, mock_auth_user.id)
+                 , (3, mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
                 
@@ -136,7 +136,7 @@ class test_db__get_all_pathway_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_learning_objective__get_all_pathway_objectives'
-                 , (20, mock_auth_user.id)
+                 , (20, mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
 

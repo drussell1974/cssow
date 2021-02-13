@@ -201,7 +201,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_key_stage_id_only(db, scheme_of_work_id, auth_user):
-        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = SchemeOfWorkDataAccess.get_key_stage_id_only(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         key_stage_id = 0
         for row in rows:
             key_stage_id = row[0]
@@ -270,7 +270,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return SchemeOfWorkDataAccess.publish(db=db, auth_user_id=auth_user.id, id_=id)        
+        return SchemeOfWorkDataAccess.publish(db=db, auth_user_id=auth_user.auth_user_id, id_=id)        
 
 
 class SchemeOfWorkDataAccess:

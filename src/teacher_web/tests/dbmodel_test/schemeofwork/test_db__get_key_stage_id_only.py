@@ -40,7 +40,7 @@ class test_db__get_key_stage_id_only(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_key_stage_id_only"
-                , (101, mock_auth_user.id)
+                , (101, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, actual_result)
@@ -59,7 +59,7 @@ class test_db__get_key_stage_id_only(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_key_stage_id_only"
-                , (6, mock_auth_user.id)
+                , (6, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, actual_result)

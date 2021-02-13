@@ -42,7 +42,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson_learning_objective__get"
-                , (99, mock_auth_user.id)
+                , (99, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -70,7 +70,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson_learning_objective__get"
-                , (321, mock_auth_user.id)
+                , (321, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

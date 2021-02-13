@@ -45,7 +45,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def new(request, scheme_of_work_id, lesson_id):
+def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
     view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
@@ -83,9 +83,9 @@ def new(request, scheme_of_work_id, lesson_id):
     get_lessonobjective_view.model.lesson_id = lesson.id
     get_lessonobjective_view.model.key_stage_id = key_stage_id
 
-    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_user_model(db, request))
+    solo_taxonomy_options = SoloTaxonomyModel.get_options(db, auth_ctx)
 
-    content_options = ContentModel.get_options(db, key_stage_id, auth_user_model(db, request))
+    content_options = ContentModel.get_options(db, key_stage_id, auth_ctx)
     
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -103,7 +103,7 @@ def new(request, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.change_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
+def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id = 0):
     ''' Edit an existing learning objective '''
     view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
@@ -134,12 +134,12 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
             group_name = request.POST.get("group_name", ""),
             created=datetime.now(),
             #253 check user id
-            created_by_id=auth_user_model(db, request)
+            created_by_id=auth_ctx.auth_user_id
         )
 
         # validate the model and save if valid otherwise redirect to default invalid
         redirect_to_url = ""
-
+    
         #253 check user id
         viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
         
@@ -148,18 +148,18 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
             
         if model.is_valid == True:
             
-            redirect_to_url = reverse('learningobjective.index', args=(scheme_of_work_id, model.id))
+            redirect_to_url = reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, model.id))
             
             if request.POST["next"] != None and request.POST["next"] != "":
                 redirect_to_url = request.POST["next"]
 
             return HttpResponseRedirect(redirect_to_url)
         else:
-            handle_log_warning(db, self.scheme_of_work_id, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
+            handle_log_warning(db, scheme_of_work_id, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))
             
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     lesson = get_lesson_view.model
 
     if scheme_of_work_id is not None:
@@ -205,7 +205,7 @@ def edit(request, scheme_of_work_id, lesson_id, learning_objective_id = 0):
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
+def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
     view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
@@ -225,13 +225,12 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         notes = request.POST.get("notes", ""),
         group_name = request.POST.get("group_name", ""),
         created=datetime.now(),
-        #253 check user id
-        created_by_id=auth_user_model(db, request)
+        created_by_id=auth_ctx
     )
 
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
-
+    
     #253 check user id
     viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
     
@@ -249,19 +248,19 @@ def save(request, scheme_of_work_id, lesson_id, learning_objective_id):
         if request.POST["next"] != None and request.POST["next"] != "":
             redirect_to_url = request.POST["next"]
         else:
-            redirect_to_url = reverse('learningobjective.edit', args=(scheme_of_work_id, model.id))
+            redirect_to_url = reverse('learningobjective.edit', args=(institute_id, department_id, scheme_of_work_id, model.id))
     else:
         """ redirect back to page and show message """
         
         request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors)
-        redirect_to_url = reverse('learningobjective.edit', args=(scheme_of_work_id,lesson_id,learning_objective_id))
+        redirect_to_url = reverse('learningobjective.edit', args=(institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id))
 
     return HttpResponseRedirect(redirect_to_url)
 
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
-def delete_unpublished(request, scheme_of_work_id, lesson_id):
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
     view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
@@ -270,12 +269,12 @@ def delete_unpublished(request, scheme_of_work_id, lesson_id):
 
     LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
-    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
-def publish_item(request, scheme_of_work_id, lesson_id, learning_objective_id):
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
     view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
