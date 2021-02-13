@@ -5,7 +5,6 @@ from unittest.mock import MagicMock, Mock, patch
 
 from app.default.viewmodels import KeywordSaveViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
 class test_viewmodel_SaveListViewModel(TestCase):

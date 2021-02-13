@@ -1,11 +1,10 @@
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(9999, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_latest_schemes_of_work(TestCase):
     
     def setUp(self):
@@ -17,7 +16,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self, auth_user_model):
+    def test__should_call__select__with_exception(self, mock_ctx):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -25,42 +24,42 @@ class test_db__get_latest_schemes_of_work(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 4, auth_user=auth_user_model)
+                SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 4, auth_user=mock_ctx)
 
 
-    def test__should_call__select__return_no_items(self, auth_user_model):
+    def test__should_call__select__return_no_items(self, mock_ctx):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 4, auth_user=auth_user_model)
+            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 4, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (4, auth_user_model.id)
+                , (4, mock_ctx.user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__return_single_item(self, auth_user_model):
+    def test__should_call__select__return_single_item(self, mock_ctx):
         # arrange
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 3, auth_user=auth_user_model)
+            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 3, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3, auth_user_model.id)
+                , (3, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 
@@ -71,7 +70,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
 
 
-    def test__should_call__select__return_multiple_item(self, auth_user_model):
+    def test__should_call__select__return_multiple_item(self, mock_ctx):
         # arrange
 
         expected_result = [
@@ -82,13 +81,13 @@ class test_db__get_latest_schemes_of_work(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 3, auth_user=auth_user_model)
+            rows = SchemeOfWorkModel.get_latest_schemes_of_work(self.fake_db, 3, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3, auth_user_model.id)
+                , (3, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 

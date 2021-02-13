@@ -10,7 +10,7 @@ class uitest_schemeofwork_content_edit_existing(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/curriculum-content/{}/edit".format(self.test_scheme_of_work_id, self.test_content_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit")
 
 
     def tearDown(self):

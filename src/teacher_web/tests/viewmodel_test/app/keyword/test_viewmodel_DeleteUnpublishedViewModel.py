@@ -4,7 +4,6 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.keywords.viewmodels import KeywordDeleteUnpublishedViewModel  as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_keyword import KeywordModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
 

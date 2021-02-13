@@ -3,7 +3,6 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.keywords.viewmodels import KeywordPublishModelViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_PublishViewModel(TestCase):
 

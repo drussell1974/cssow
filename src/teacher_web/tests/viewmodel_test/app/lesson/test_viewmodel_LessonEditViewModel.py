@@ -8,7 +8,6 @@ from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_EditViewModel(TestCase):
 

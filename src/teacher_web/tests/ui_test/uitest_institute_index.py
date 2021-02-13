@@ -24,7 +24,7 @@ class uitest_institute_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Institutes')
 
 
     @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
@@ -43,7 +43,7 @@ class uitest_institute_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
 
-
+    @unittest.skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         self.test_context.find_element_by_id('btn-topnav-schemes_of_work').click()
@@ -65,7 +65,7 @@ class uitest_institute_index(UITestCase):
         self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_institute_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Play School ', 'Departments')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Test User', 'Departments')
                 
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):

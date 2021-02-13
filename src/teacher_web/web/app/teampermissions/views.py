@@ -9,6 +9,7 @@ from shared.models.decorators.permissions import min_permission_required
 from django.db import connection as db
 from django.urls import reverse_lazy
 from django.views import generic
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import DEPARTMENT
 from shared.view_model import ViewModel
@@ -16,11 +17,11 @@ from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewMode
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
-def index(request):
+def index(request, institute_id, department_id, scheme_of_work_id):
     
-    # TODO: #316 permissions_required decorator
+    # TODO: #329 Create Ctx object
 
-    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_user_model(db, request))
+    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
     
     return render(request, "teampermissions/index.html", myTeamPermssionsViewModel.view().content)    
 
@@ -58,7 +59,7 @@ def delete(request, scheme_of_work_id, teacher_id):
 
 
 @login_required
-def request_access(request, scheme_of_work_id, permission):
+def request_access(request, institute_id, department_id, scheme_of_work_id, permission):
 
     request_access_view = TeamPermissionRequestAccessViewModel(
         db=db,
@@ -67,7 +68,7 @@ def request_access(request, scheme_of_work_id, permission):
         teacher_id = request.user.id, 
         teacher_name=request.user.get_username(),
         permission=permission,
-        auth_user=auth_user_model(db, request))
+        auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id) ))
 
     request_access_view.execute()
     
@@ -85,7 +86,7 @@ class TeamPermissionRequestLoginView(auth_views.LoginView):
         
         func =super(TeamPermissionRequestLoginView, self).get_context_data
 
-        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request), **kwargs)
+        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request, ctx=Ctx(kwargs.get("institute_id"), kwargs.get("department_id"), kwargs.get("scheme_of_work_id"))), **kwargs)
         
         return render(request, "registration/login.html", request_login.view())
 

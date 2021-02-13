@@ -4,9 +4,10 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+#@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__save(TestCase):
 
 
@@ -61,7 +62,7 @@ class test_db__save(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 0, 43, 1, mock_auth_user.id)
+                , (89, '', '', 0, 0, 43, 1, mock_auth_user.user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -84,7 +85,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.id)
+                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -106,7 +107,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__has__teacher_permission__insert'
-                 , (101, mock_auth_user.id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.id, True)
+                 , (101, mock_auth_user.user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.user_id, True)
                  , handle_log_info)
 
             self.assertEqual(101, actual_result.id)
@@ -127,7 +128,8 @@ class test_db__save(TestCase):
 
             ExecHelper.delete.assert_called_with(self.fake_db,
             'scheme_of_work__delete'
-            , (99, mock_auth_user.id)
+            
+            , (99, mock_auth_user.user_id)
             , handle_log_info)
 
             self.assertEqual(99, actual_result.id)

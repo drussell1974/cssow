@@ -25,7 +25,7 @@ class uitest_schemeofwork_lesson_index_not_found(UITestCase):
 
     def test_page_should_redirect_to_login_page__if_scheme_of_work_id__does_not_exist(self):
         # act        
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons".format(999999))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons".format(999999))
 
         # assert
         self.assertLoginPage(login_message="The item is currently unavailable or you do not have permission.")

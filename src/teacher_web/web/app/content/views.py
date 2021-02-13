@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from shared.models.core.log_handlers import handle_log_warning
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 # TODO: remove after creating view model
 from shared.view_model import ViewModel
@@ -18,10 +19,10 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, scheme_of_work_id):
+def index(request, institute_id, department_id, scheme_of_work_id):
 
     #253 check user id
-    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
     
     return render(request, "content/index.html", view_model.view().content)
 
@@ -29,7 +30,7 @@ def index(request, scheme_of_work_id):
 #234 add permission
 @permission_required('models.change_contentmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, scheme_of_work_id, content_id=0):
+def edit(request, institute_id, department_id, scheme_of_work_id, content_id=0):
     """ edit curriculum content """
 
     #253 check user id
@@ -50,9 +51,9 @@ def edit(request, scheme_of_work_id, content_id=0):
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, scheme_of_work_id):
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
     """ delete item and redirect back to referer """
 
     ContentDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
 
-    return HttpResponseRedirect(reverse("content.index", args=[scheme_of_work_id]))
+    return HttpResponseRedirect(reverse("content.index", args=[institute_id, department_id, scheme_of_work_id]))

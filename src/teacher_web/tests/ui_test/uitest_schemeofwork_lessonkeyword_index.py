@@ -6,7 +6,7 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in( "/schemesofwork/{}/lessons/{}/keywords".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/keywords".format(self.test_scheme_of_work_id, self.test_lesson_id))
 
 
     def tearDown(self):
@@ -83,7 +83,6 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
     def test_page__show_published_and_owned(self):
         # setup
-        #self.do_log_in(redirect_to_uri_on_login=self.test_path)
         
         section = self.test_context.find_elements_by_class_name('card-keyword')
 

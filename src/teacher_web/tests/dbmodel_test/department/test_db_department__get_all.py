@@ -2,10 +2,9 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_DepartmentDataAccess__get_all(TestCase):
 
     def setUp(self):
@@ -18,7 +17,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self, mock_auth_user):
+    def test__should_call__select__with_exception(self, mock_ctx):
 
         # arrange
         expected_result = Exception('Bang')
@@ -29,7 +28,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
                 Model.get_all(self.fake_db, key_stage_id = 4)
             
 
-    def test__should_call__select__no_items(self, mock_auth_user):
+    def test__should_call__select__no_items(self, mock_ctx):
         # arrange
         expected_result = []
 
@@ -37,20 +36,20 @@ class test_DepartmentDataAccess__get_all(TestCase):
                 
             # act
             
-            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_all'
-                , (12776111277611, mock_auth_user.id,)
+                , (12776111277611, mock_ctx.user_id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self, mock_auth_user):
+    def test__should_call__select__single_items(self, mock_ctx):
         # arrange
         expected_result = [(1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)]
         
@@ -58,13 +57,13 @@ class test_DepartmentDataAccess__get_all(TestCase):
             
             # act
 
-            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_all'
-                , (12776111277611, mock_auth_user.id,)
+                , (12776111277611, mock_ctx.user_id,)
                 , []
                 , handle_log_info)
 
@@ -72,7 +71,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self, mock_auth_user):
+    def test__should_call__select__multiple_items(self, mock_ctx):
         # arrange
         expected_result = [
             (1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0),
@@ -82,13 +81,13 @@ class test_DepartmentDataAccess__get_all(TestCase):
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_all'
-                , (12776111277611, mock_auth_user.id,)
+                , (12776111277611, mock_ctx.user_id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

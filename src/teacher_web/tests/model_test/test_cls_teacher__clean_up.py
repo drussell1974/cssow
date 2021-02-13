@@ -1,15 +1,17 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher import TeacherModel
 
 
 from unittest import TestCase
 
-class test_cls_department__clean_up(TestCase):
+@skip("Depreciate TeacherModel and use TeacherPermissionModel")
+class test_cls_teacher__clean_up(TestCase):
 
     def setUp(self):
-        self.test = TeacherModel(1, name="", department=DepartmentModel(0, ""))
-
+        self.test = TeacherModel(1, "", department=DepartmentModel(0, "", institute = InstituteModel(0, name="")))
+        
 
     # title
 

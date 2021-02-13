@@ -14,7 +14,7 @@
   <div class="container">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
             {{_("Schemes of Work")}}
           </a>
         </li>
@@ -51,7 +51,7 @@
 <header class="widget widget-artilceheader">
 {% if request.user.is_authenticated %}
   <span class="float-right">
-    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
+    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Curriculum")}}</h2>
@@ -70,7 +70,7 @@
   <ul class="list-group list-group-flush">
     {% for row in content.data.curriculum_content %}
     <li class="list-group-item post-preview {{ row.published_state }}">
-      <a class="edit float-right" href="{% url 'content.edit' content.data.scheme_of_work_id row.id %}?return={{request.url}}">
+      <a class="edit float-right" href="{% url 'content.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id row.id %}?return={{request.url}}">
         <i class="far fa-edit"></i>
       </a>
       <span class="post-title post-title--long-text">{{ row.letter_prefix }} - {{ row.description }}</span>
@@ -83,7 +83,7 @@
 
 <footer class="widget widget--article-footer">
   {% if request.user.is_authenticated %}
-    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'content.delete_unpublished' content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
+    <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'content.delete_unpublished' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
   {% endif %}
 </footer>
 

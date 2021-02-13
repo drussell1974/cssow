@@ -2,16 +2,17 @@ from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
+from shared.models.cls_institute import InstituteModel
 
 class DepartmentModel(BaseModel):
 
     name = ""
     
-    def __init__(self, id_, name, institute_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, name, institute, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         #self.id = id_
         self.name = name
-        self.institute_id = institute_id
+        self.institute = institute
 
 
     def validate(self, skip_validation = []):
@@ -38,47 +39,56 @@ class DepartmentModel(BaseModel):
     @staticmethod
     def get_all(db, institute_id, auth_user):
         
-        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.id)
+        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.user_id)
         data = []
         for row in rows: 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
+                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #329 use institute name
                                     created=row[3],                                                                                                                                                                                                                         
                                     created_by_id=row[4],
                                     created_by_name=row[5],
                                     published=row[6])
 
             model.institute_id = row[2]
-
+        
             data.append(model)
         return data
 
 
     @staticmethod
-    def get_model(db, id, auth_user):   
-        rows = DepartmentDataAccess.get_model(db, id, auth_user_id=auth_user.id)
+    def get_model(db, department_id, auth_user):   
+        
+        # TODO: #329 check id
+        # TODO: #329 add context
+        
+        rows = DepartmentDataAccess.get_model(db, department_id, auth_user_id=auth_user.user_id)
 
-        model = DepartmentModel(0, "")
+        model = DepartmentModel(0, "", institute=InstituteModel(0, ""))
         for row in rows:
+
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
+                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #329 use institute name
                                     created=row[3],
                                     created_by_id=row[4],
                                     created_by_name=row[5],
                                     published=row[6])
-            model.institute_id = row[2]
-
+                                    
+            
+        
             model.on_fetched_from_db()         
         return model
-
+    
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.id)
+        rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.user_id)
         data = []
         
         for row in rows:
-            model = DepartmentModel(row[0], row[1])
+            # TODO: #329 get institute_name
+            model = DepartmentModel(row[0], row[1], institute=InstituteModel(auth_user.institute_id, name=""))
             data.append(model)
         return data
 
@@ -176,7 +186,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.institute_id,
+            model.institute.id,
             model.created,
             auth_user_id,
         )
@@ -235,7 +245,7 @@ class DepartmentDataAccess:
     @staticmethod
     def publish(db, auth_user_id, id_):
         
-        model = DepartmentModel(id_, "")
+        model = DepartmentModel(id_, "", institute=InstituteModel(0, ""))
         model.publish = True
 
         execHelper = ExecHelper()

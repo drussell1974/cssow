@@ -11,7 +11,7 @@ class uitest_schemeofwork_lessonkeyword_select_edit_existing(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
         self.wait(2)
 
 
@@ -22,7 +22,7 @@ class uitest_schemeofwork_lessonkeyword_select_edit_existing(UITestCase):
         # if the test has left less than 3 items then restore test_keyword_id
         if len(elem) < 3:           
     
-            self.do_log_in(self.root_uri + "/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
+            self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
             self.wait(2)
 
             elem = self.test_context.find_element_by_id("chk-term--{}".format(self.test_keyword_id))

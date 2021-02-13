@@ -13,7 +13,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         #self.test_context.implicitly_wait(10)
         # setup
         #231: create a new resource
-        self.do_log_in(self.root_uri + "/schemesofwork/new")
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/new")
         self.wait(s=2)
         
         # setup

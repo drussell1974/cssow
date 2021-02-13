@@ -1,11 +1,13 @@
 <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-home">Home</a>
+        <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-home">{{_("Home")}}</a>
       </li>
       <li class="nav-item">
         <!-- TODO: #329 check content for content.data.institute_id and content.data.department_id -->
-        <a class="nav-link" href="{% url 'schemesofwork.index' 99 99 %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
+        {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
+        <a class="nav-link" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
+        {% endif %}
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'default' %}" id="btn-topnav-about">About</a>

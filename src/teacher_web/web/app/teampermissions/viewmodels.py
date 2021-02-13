@@ -11,9 +11,10 @@ from django.db import connection as db
 from django.http import Http404
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
-from shared.models.cls_teacher import TeacherModel
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON, parse_enum
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -35,7 +36,7 @@ class TeamPermissionIndexViewModel(BaseViewModel):
                 "my_team_permissions": departments,
             }
 
-        return ViewModel("Account", "Account", "Team Permissions", data=data)
+        return ViewModel("Account", "Account", "Team Permissions", ctx=None, data=data)
 
 
 class TeamPermissionEditViewModel(BaseViewModel):
@@ -47,32 +48,28 @@ class TeamPermissionEditViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
         
-        department = DepartmentModel(0, "")
-        teacher = TeacherModel(0, "", department)
-
         # Http404
         '''
         if self.scheme_of_work_id > 0:
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         '''
-        # TODO: #329 pass e.g. teacher=TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science"))
-        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, teacher=teacher, auth_user=auth_user)
+        self.model = TeacherPermissionModel.get_model(db, scheme_of_work=self.scheme_of_work, auth_user=auth_user)
         '''
         if self.scheme_of_work_id > 0 and teacher_id > 0:
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         '''
-        
         self.auth_user = auth_user
         
+
     def view(self):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
             "scheme_of_work_name":self.scheme_of_work.name,
             "teacher_id": self.model.teacher_id,
-            "teacher_name": self.model.teacher.get_name(),
+            "teacher_name": self.model.teacher_name,
             "department_permission": self.model.department_permission,
             "scheme_of_work_permission": self.model.scheme_of_work_permission,
             "lesson_permission": self.model.lesson_permission,
@@ -82,7 +79,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
             "model": self.model
         }
 
-        return ViewModel("Account", "Account", "Team Permissions", data=data, active_model=self.model)
+        return ViewModel("Account", "Account", "Team Permissions", ctx=None, data=data, active_model=self.model)
 
 
     def execute(self):
@@ -129,7 +126,7 @@ class TeamPermissionDeleteViewModel(BaseViewModel):
         # Http404
         if self.scheme_of_work_id > 0 and teacher_id > 0:
             if self.model is None or self.model.is_from_db == False:
-                self.on_not_found(self.model, self.teacher_id)
+                self.on_not_found(self.model, self.scheme_of_work_id, self.teacher_id)
 
 
     def execute(self):
@@ -164,13 +161,14 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
                 raise PermissionError(f"{teacher_name} has already been granted access to this scheme of work.")
 
         self.model = TeacherPermissionModel(
+            teacher_id=self.model.teacher_id,
+            teacher_name=self.model.teacher_name,
             scheme_of_work=self.scheme_of_work, 
-            # TODO: #329 pass e.g. teacher=TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science"))
-            teacher=self.model.teacher,
-            is_authorised=False,
+            ctx=auth_user,
             department_permission = self.permission if type(self.permission) is DEPARTMENT else DEPARTMENT.NONE,
             scheme_of_work_permission = self.permission if type(self.permission) is SCHEMEOFWORK else SCHEMEOFWORK.NONE,
-            lesson_permission = self.permission if type(self.permission) is LESSON else LESSON.NONE
+            lesson_permission = self.permission if type(self.permission) is LESSON else LESSON.NONE,
+            is_authorised=False
         )
         
 
@@ -188,7 +186,7 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
         super().__init__(request)
         
         self.scheme_of_work_id = kwargs["scheme_of_work_id"] 
-        self.teacher_id = auth_user
+        self.teacher_id = auth_user.user_id
         self.request_made = False
         
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
@@ -197,9 +195,9 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
-        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, teacher=auth_user, auth_user=auth_user)    
+        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, auth_user=auth_user)    
         # Check if permission has already been granted
-        if self.model.teacher.id is not None and self.model.teacher.id > 0:
+        if self.model.teacher_id > 0:
             self.model.validate()
             if self.model is not None and self.model.is_from_db == True and self.model.is_authorised is False:
                 self.request_made = True

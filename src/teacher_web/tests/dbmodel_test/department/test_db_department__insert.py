@@ -2,10 +2,11 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_DepartmentDataAccess___insert(TestCase):
 
     def setUp(self):
@@ -33,7 +34,7 @@ class test_DepartmentDataAccess___insert(TestCase):
         # arrange
         expected_result = [99]
 
-        fake_model = Model(0, "Lorum ipsum")
+        fake_model = Model(0, "Lorum ipsum", institute = InstituteModel(12767111276711, "Lorum ipsum"))
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = True
 
@@ -44,10 +45,10 @@ class test_DepartmentDataAccess___insert(TestCase):
             result = Model.save(self.fake_db, fake_model, 6080, auth_user = mock_auth_user)
             
             # assert
-
+             
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'department__insert'
-                , (0, "Lorum ipsum", 6080, 0, "2021-01-24 07:20:01.907507", mock_auth_user.id)
+                , (0, "Lorum ipsum", 6080, 12767111276711, "2021-01-24 07:20:01.907507", mock_auth_user.id)
                 , handle_log_info)
 
             self.assertEqual(99, result.id)
@@ -57,7 +58,7 @@ class test_DepartmentDataAccess___insert(TestCase):
         # arrange
         expected_result = [99]
 
-        fake_model = Model(0, "Lorum ipsum")
+        fake_model = Model(0, "Lorum ipsum", institute = InstituteModel(12767111276711, "Lorum ipsum"))
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = False
 

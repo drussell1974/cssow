@@ -2,10 +2,9 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, handle_log_info
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import *
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_all(TestCase):
 
 
@@ -18,7 +17,7 @@ class test_db__get_all(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_ctx):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -26,30 +25,30 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                Model.get_all(self.fake_db, 4, scheme_of_work_id=30, auth_user=mock_auth_user)
+                Model.get_all(self.fake_db, 4, scheme_of_work_id=30, auth_user=mock_ctx)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_ctx):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = Model.get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=mock_auth_user)
+            rows = Model.get_all(self.fake_db, lesson_id=5, scheme_of_work_id=30, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson_learning_objective__get_all"
-                , (5, 30, mock_auth_user.id)
+                , (5, 30, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_ctx):
         # arrange
         expected_result = [(
             934, "Sed at arcu in leo vestibulum dapibus. Suspendisse",
@@ -64,13 +63,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = Model.get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=mock_auth_user)
+            actual_results = Model.get_all(self.fake_db, lesson_id=3, scheme_of_work_id=30, auth_user=mock_ctx)
             
             # assert
             
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson_learning_objective__get_all"
-                , (3, 30, mock_auth_user.id)
+                , (3, 30, mock_ctx.user_id)
                 , []
                 , handle_log_info)
                 
@@ -83,7 +82,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
 
 
-    def test__should_call_select__return_multiple_item(self, mock_auth_user):
+    def test__should_call_select__return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [(
             934, "Etiam eu efficitur ante. Nunc justo turpis, finibus.",
@@ -117,13 +116,13 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = Model.get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=mock_auth_user)
+            actual_results = Model.get_all(self.fake_db, lesson_id=20, scheme_of_work_id=30, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  "lesson_learning_objective__get_all"
-                 , (20,30,mock_auth_user.id)
+                 , (20,30,mock_ctx.user_id)
                  , []
                  , handle_log_info)
 

@@ -3,11 +3,11 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.teampermissions.viewmodels import TeamPermissionEditViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -20,7 +20,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing"))
-    @patch.object(Model, "get_model", return_value=Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing")))
+    @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_execute_should_call_save__when_model_is_valid(self, mock_auth_user, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
         # arrange

@@ -4,9 +4,9 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db_institute__deleteunpublished(TestCase):
 
 
@@ -20,32 +20,32 @@ class test_db_institute__deleteunpublished(TestCase):
         pass
 
 
-    def test_should_raise_exception(self, mock_auth_user):
+    def test_should_raise_exception(self, mock_ctx):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = InstituteModel(0, "")
+        InstituteModel(0, "")
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
             with self.assertRaises(Exception):
                 # act 
-                InstituteModel.delete_unpublished(self.fake_db, mock_auth_user)
+                InstituteModel.delete_unpublished(self.fake_db, mock_ctx)
 
 
-    def test_should_call__delete(self, mock_auth_user):
+    def test_should_call__delete(self, mock_ctx):
          # arrange
 
         with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = InstituteModel.delete_unpublished(self.fake_db, auth_user=mock_auth_user)
+            actual_result = InstituteModel.delete_unpublished(self.fake_db, auth_user=mock_ctx)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
                 'institute__delete_unpublished'
-                , (0, mock_auth_user.id)
+                , (0, mock_ctx.id)
                 , handle_log_info)
 
             self.assertEqual(5, actual_result)

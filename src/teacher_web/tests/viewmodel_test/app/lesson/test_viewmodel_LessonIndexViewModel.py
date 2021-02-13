@@ -5,7 +5,6 @@ from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from app.lessons.viewmodels import LessonIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 
 class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):

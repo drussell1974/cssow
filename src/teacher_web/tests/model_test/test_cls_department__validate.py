@@ -1,6 +1,7 @@
 from unittest import TestCase
 from tests.model_test.learningobjective_testcase import LearningObjective_TestCase
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 
 class test_Department_validate__name(TestCase):
 
@@ -16,8 +17,8 @@ class test_Department_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
-
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        
         test.name = "A"
 
         # act
@@ -30,7 +31,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = " x "
 
@@ -45,7 +46,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__invalid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = ""
 
@@ -59,7 +60,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__invalid_extreme_when_None(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = None
 
@@ -73,7 +74,7 @@ class test_Department_validate__name(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
         
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse e" # length 70 characters
 
@@ -87,7 +88,7 @@ class test_Department_validate__name(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum")
+        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse el"  # length 71 characters
 

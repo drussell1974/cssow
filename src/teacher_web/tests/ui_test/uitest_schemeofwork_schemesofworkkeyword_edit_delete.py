@@ -12,7 +12,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
         
         # setup
 
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/keywords/new".format(self.test_scheme_of_work_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/keywords/new".format(self.test_scheme_of_work_id))
 
         # create content
         

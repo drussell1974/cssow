@@ -60,7 +60,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
         
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
+        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=self.auth_user, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
 
 
 class KeywordGetModelViewModel(BaseViewModel):
@@ -112,7 +112,7 @@ class KeywordGetModelViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
 
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, data=data, active_model=self.scheme_of_work)
+        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=None, data=data, active_model=self.scheme_of_work)
         
 
 class KeywordSaveViewModel(BaseViewModel):
@@ -230,5 +230,5 @@ class KeywordMergeViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
 
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {} for {}".format(self.model.term, self.scheme_of_work.name), data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {} for {}".format(self.model.term, self.scheme_of_work.name), ctx=None, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
         

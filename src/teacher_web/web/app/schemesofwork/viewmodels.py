@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import traceback
 from rest_framework import serializers, status
 from django.http.response import Http404
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
@@ -16,11 +17,21 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
     
     def __init__(self, db, auth_user, key_stage_id=0):
         self.model = []
-
         self.db = db
+        self.auth_user = auth_user
         # get model
+
         data = Model.get_all(self.db, auth_user, key_stage_id)
         self.model = data
+
+
+    def view(self):
+
+        data = {
+            "schemes_of_work":self.model
+        }
+        
+        return ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", ctx=self.auth_user, data=data)
 
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
@@ -50,7 +61,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         
         elif request.method == "POST":
             ## POST back from client ##
-
+            
             # create instance of model from request.vars
             self.model = Model(
                 id_=request.POST.get("id", 0),
@@ -61,8 +72,8 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 department_id=request.POST.get("department_id", 0),
                 institute_id=request.POST.get("institute_id", 0),
                 created=datetime.now(),
-                created_by_id=self.auth_user)
-        
+                created_by_id=self.auth_user.user_id)
+
             try:
                 self.model.validate()
                 
@@ -77,8 +88,9 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                     handle_log_warning(self.db, scheme_of_work_id, "saving scheme of work", "scheme of work is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.name, len(self.model.validation_errors)))
                     
             except Exception as ex:
-                self.error_message = ex
-                handle_log_exception(db, scheme_of_work_id, "An error occurred processing key words json", ex)
+                # TODO: use this in other ViewModels
+                self.on_exception(ex)
+                handle_log_exception(db, scheme_of_work_id, "An error occurred processing scheme of work", ex)
                 
 
     def view(self):
@@ -107,7 +119,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):

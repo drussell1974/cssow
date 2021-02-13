@@ -24,7 +24,7 @@ class KeyStageModel(BaseModel):
     @staticmethod
     def get_options(db, auth_user):
         
-        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.id)
+        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.user_id)
         data = []
 
         for row in rows:

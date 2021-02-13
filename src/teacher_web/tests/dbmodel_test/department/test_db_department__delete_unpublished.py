@@ -3,9 +3,9 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
+from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db_department__delete_unpublished(TestCase):
 
     def setUp(self):
@@ -22,7 +22,6 @@ class test_db_department__delete_unpublished(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = DepartmentModel(0, "")
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             

@@ -9,7 +9,7 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
 
     def setUp(self):
         self.test_context.implicitly_wait(10)
-        self.do_log_in(self.root_uri + "/schemesofwork/{}/edit".format(self.test_scheme_of_work_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/edit")
 
 
     def tearDown(self):

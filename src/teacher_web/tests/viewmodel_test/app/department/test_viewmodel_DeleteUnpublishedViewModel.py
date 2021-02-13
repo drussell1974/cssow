@@ -3,12 +3,9 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from app.department.viewmodels import DepartmentDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
+from tests.test_helpers.mocks import *
 
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
-
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
 
     def setUp(self):        
@@ -23,7 +20,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(56, "Lorem Ipsum")
+        data_to_return = Model(56, "Lorem Ipsum", InstituteModel(12767111276711, "Lorem Ipsum"))
         
         with patch.object(Model, "delete_unpublished", return_value=data_to_return):
 

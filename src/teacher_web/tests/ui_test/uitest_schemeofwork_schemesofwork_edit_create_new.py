@@ -11,7 +11,7 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.do_log_in(self.root_uri + "/schemesofwork/new")
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/new")
         self.wait(s=2)
 
     def tearDown(self):

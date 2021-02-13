@@ -56,7 +56,7 @@ def new(request, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=None, data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -96,7 +96,7 @@ def edit(request, scheme_of_work_id, lesson_id, resource_id):
     }
     
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), data=data, active_model=model, alert_message="")
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), ctx=None, data=data, active_model=model, alert_message="")
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -186,7 +186,7 @@ def save(request, scheme_of_work_id, lesson_id, resource_id):
             "get_resource_type_options": get_resource_type_options,
             "validation_errors":model.validation_errors
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)
         
         return render(request, "resources/edit.html", view_model.content)
 

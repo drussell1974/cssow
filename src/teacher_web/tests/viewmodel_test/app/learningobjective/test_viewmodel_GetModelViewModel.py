@@ -6,7 +6,6 @@ from django.http import Http404
 
 from app.learningobjectives.viewmodels import LearningObjectiveGetModelViewModel as ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_GetModelViewModel(TestCase):
 

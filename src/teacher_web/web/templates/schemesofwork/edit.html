@@ -7,7 +7,7 @@
         <div class="container">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_('Schemes of Work')}}</a>
+                    <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_('Schemes of Work')}}</a>
                 </li>
             </ul>
         </div>
@@ -18,7 +18,7 @@
 
 {% block maincontent %}
 <article class="widget widget-form widget-schemeofwork-form">
-    <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.data.scheme_of_work_id %}">
+    <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
         {% csrf_token %}
 
         <!-- show error_message -->
@@ -95,7 +95,8 @@
             {% include '_partials/form.buttons.validation.html' %}
         </div>
         <input type="hidden" name="id" value="{{content.data.scheme_of_work.id}}">
-        <input type="hidden" name="next" value="{% url 'schemesofwork.index' %}">
+        <input type="hidden" name="institute_id" value="{{content.ctx.institute_id}}">
+        <input type="hidden" name="next" value="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
     </form>
 </article>
 {% endblock %}

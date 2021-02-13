@@ -2,7 +2,6 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.learningobjectives.viewmodels import LearningObjectiveEditViewModel as ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_EditViewModel(TestCase):
 

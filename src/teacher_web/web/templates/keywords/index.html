@@ -14,7 +14,7 @@
     <div class="container">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">{{_("Schemes of Work")}}</a>
+          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
         </li>
       </ul>
     </div>
@@ -54,7 +54,7 @@
 <!-- Pager Header -->      
 {% if request.user.is_authenticated %}
   <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'keywords.new' content.data.scheme_of_work_id %}#main">{{_("add")}}</a>
+    <a class="btn btn-warning" id="btn-new" href="{% url 'keywords.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_("add")}}</a>
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Keywords")}}</h2>
@@ -81,16 +81,16 @@
         <a name="{{ row.id }}"></a>
         <div class="card-body">
           <h5 class="card-title">  
-            <a class="edit float-right" href="{% url 'keywords.edit' content.data.scheme_of_work_id row.id %}">
+            <a class="edit float-right" href="{% url 'keywords.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id row.id %}">
               <i class="far fa-edit"></i>
             </a>{{ row.term }}</h5>
           <p class="card-text small preserve-linebreak">{{ row.definition }}</p>
           <hr>
           <span class="small">{{_('Lessons:')}}
           {% for lesson in row.belongs_to_lessons %}
-            <a href="{% url 'lesson_keywords.index' content.data.scheme_of_work_id lesson.id %}" class="card-link card-keyword--lessons">{{ lesson.title }}</a> &nbsp;
+            <a href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id lesson.id %}" class="card-link card-keyword--lessons">{{ lesson.title }}</a> &nbsp;
           {% endfor %}
-          <a href="{% url 'keywords.merge_duplicates' content.data.scheme_of_work_id row.id %}#main" class="float-right" title="{{_('This will merge duplicates with this key word. Replaces this version of the key word with the lesson')}}"><i class="fa fa-object-group"></i></a> &nbsp;
+          <a href="{% url 'keywords.merge_duplicates' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id row.id %}#main" class="float-right" title="{{_('This will merge duplicates with this key word. Replaces this version of the key word with the lesson')}}"><i class="fa fa-object-group"></i></a> &nbsp;
           </span>
         </div>
       </div>
@@ -101,7 +101,7 @@
 
   <footer class="widget widget--article-footer">
     {% if request.user.is_authenticated %}
-      <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'keywords.delete_unpublished' content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
+      <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'keywords.delete_unpublished' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
     {% endif %}
   </footer>
 

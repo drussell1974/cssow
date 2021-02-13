@@ -1,9 +1,10 @@
 from unittest import TestCase, skip
 from tests.model_test.learningobjective_testcase import LearningObjective_TestCase
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher import TeacherModel
 
-
+@skip("depreciate TeacherModel and use TeacherPermissionModel")
 class test_cls_teacher_validate__name(TestCase):
 
     test = None
@@ -18,8 +19,8 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
-
+        test = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        
         test.name = "A"
 
         # act
@@ -32,8 +33,8 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
-
+        test = TeacherModel(1, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        
         test.name = " x "
 
         # act
@@ -47,8 +48,8 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_min__invalid_extreme(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
-
+        test = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        
         test.name = ""
 
         # act
@@ -61,8 +62,8 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_min__invalid_extreme_when_None(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
-
+        test = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        
         test.name = None
 
         # act
@@ -75,7 +76,7 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
+        test = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
         
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse e" # length 70 characters
 
@@ -89,8 +90,8 @@ class test_cls_teacher_validate__name(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = TeacherModel(1, "Lorem ipsum", department=DepartmentModel(15, "Computer Science"))
-
+        test = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse el"  # length 71 characters
 
         # act

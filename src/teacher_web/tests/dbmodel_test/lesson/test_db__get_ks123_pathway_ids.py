@@ -2,15 +2,13 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info 
+from tests.test_helpers.mocks import *
 
 # TODO: #329 - remove global references
 get_ks123_pathway_objective_ids = LessonModel.get_ks123_pathway_objective_ids
 
 
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_teacher import TeacherModel
-
-@patch("shared.models.cls_teacher.TeacherModel", return_value=TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science")))
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_ks123_pathway_ids(TestCase):
     
     def setUp(self):
@@ -23,7 +21,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_ctx):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -34,40 +32,40 @@ class test_db__get_ks123_pathway_ids(TestCase):
                 get_ks123_pathway_objective_ids(self.fake_db, 21)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_ctx):
         # arrange
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = get_ks123_pathway_objective_ids(self.fake_db, 67, mock_auth_user)
+            rows = get_ks123_pathway_objective_ids(self.fake_db, 67, mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (67, mock_auth_user.id)
+                , (67, mock_ctx.user_id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_ctx):
         # arrange
         expected_result = [("87",)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 87, mock_auth_user)
+            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 87, mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (87, mock_auth_user.id)
+                , (87, mock_ctx.user_id)
                 , []
                 , handle_log_info)
 
@@ -76,7 +74,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
             self.assertEqual(87, actual_results[0])
 
 
-    def test__should_call_select__return_multiple_item(self, mock_auth_user):
+    def test__should_call_select__return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [("1034",),("1045",),("12",)]
 
@@ -84,13 +82,13 @@ class test_db__get_ks123_pathway_ids(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 21, mock_auth_user)
+            actual_results = get_ks123_pathway_objective_ids(self.fake_db, 21, mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (21, mock_auth_user.id)
+                , (21, mock_ctx.user_id)
                 , []
                 , handle_log_info)
             

@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
 from app.resources.viewmodels import ResourceSaveViewModel as ViewModel
 from shared.models.cls_resource import ResourceModel as Model
-from shared.models.cls_teacher_permission import TeacherPermissionModel
 
 class test_viewmodel_SaveViewModel(TestCase):
 
@@ -34,7 +33,7 @@ class test_viewmodel_SaveViewModel(TestCase):
 
             test_context = ViewModel(db=self.mock_db, scheme_of_work_id=99, lesson_id=13, model=mock_model, auth_user=99)
             test_context.execute(published=1)
-                   
+            
             # assert functions was called
             
             Model.save.assert_called()
