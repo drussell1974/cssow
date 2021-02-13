@@ -6,12 +6,12 @@
   <div class="container">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' %}">
+          <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
             {{_("Schemes of Work")}}
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="btn-bc-lessons" href="{% url 'content.index' content.data.scheme_of_work_id %}">
+          <a class="nav-link" id="btn-bc-lessons" href="{% url 'content.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
             {{_("Curriculum")}}
           </a>
         </li>
@@ -24,7 +24,7 @@
 
 {% block maincontent %}
 
-<form name="edit-content" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.data.scheme_of_work_id content.data.content_id %}">
+<form name="edit-content" id="form" method="post" class="needs-validation" action="{% url 'content.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.content_id %}">
     {% csrf_token %}
    
     <!-- show error_message -->
@@ -60,6 +60,6 @@
     <input type="hidden" name="id" value="{{content.data.model.id}}" id="hdn-lesson_id">
     <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
     <input type="hidden" name="key_stage_id" value="{{content.data.key_stage_id}}">
-    <input type="hidden" name="next" value="{% url 'content.index' content.data.scheme_of_work_id %}" > 
+    <input type="hidden" name="next" value="{% url 'content.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" > 
   </form><!-- form#form -->
 {% endblock %}

@@ -54,7 +54,7 @@ class ContentEditViewModel(BaseViewModel):
         self.content_id = content_id
         self.auth_user = auth_user
         
-        self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
+        self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, self.auth_user)
         #248 check associated schemeofwork 
         if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
             self.on_not_found(self.scheme_of_work, content_id, scheme_of_work_id)
@@ -113,7 +113,7 @@ class ContentEditViewModel(BaseViewModel):
             "model":self.model
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=None, data=data, active_model=self.model, error_message=self.error_message)
+        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user.view_ctx, data=data, active_model=self.model, error_message=self.error_message)
 
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):

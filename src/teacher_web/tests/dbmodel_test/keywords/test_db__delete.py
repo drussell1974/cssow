@@ -46,7 +46,7 @@ class test_db__delete(TestCase):
 
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'keyword__delete'
-             , (797, 12, mock_auth_user.id)
+             , (797, 12, mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(expected_result, actual_result)
