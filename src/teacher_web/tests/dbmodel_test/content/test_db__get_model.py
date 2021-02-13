@@ -40,7 +40,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'content__get'
-                , (99, 54, mock_auth_user.id)
+                , (99, 54, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -60,7 +60,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'content__get'
-                , (6, 30, mock_auth_user.id)
+                , (6, 30, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

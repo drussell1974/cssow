@@ -46,7 +46,7 @@ class test_db__publish_by_id(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 "scheme_of_work__publish"
-                , (123, 1, mock_auth_user.id)
+                , (123, 1, mock_auth_user.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(1, len(actual_result))

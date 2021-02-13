@@ -104,7 +104,7 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
-        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         #TODO: return None
         model = LearningObjectiveModel(0)
         
@@ -164,7 +164,7 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def get_all_pathway_objectives(db, key_stage_id, key_words, auth_user):
-        rows = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id, key_words, auth_user_id=auth_user.id)
+        rows = LearningObjectiveDataAccess.get_all_pathway_objectives(db, key_stage_id, key_words, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             if len(row[9]) > 0 and key_words is not None:
@@ -196,46 +196,46 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     def get_linked_pathway_objectives(db, lesson_id, auth_user):
         # TODO: verify use
-        return LearningObjectiveDataAccess.get_linked_pathway_objectives(db, lesson_id, auth_user_id=auth_user.id)
+        return LearningObjectiveDataAccess.get_linked_pathway_objectives(db, lesson_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def save(db, model, auth_user, published):
 
         if published == 2:
-            LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.id)
+            LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
         else:
             model.validate()
 
             if model.is_valid == True:
                 if model.is_new() == True:
-                    model = LearningObjectiveDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
+                    model = LearningObjectiveDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
                 else:
-                    LearningObjectiveDataAccess._update(db, model, published, auth_user_id=auth_user.id)
+                    LearningObjectiveDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
         return model
 
 
     @staticmethod
     def publish_item(db, learning_objective_id, scheme_of_work_id, auth_user):
-        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        return LearningObjectiveDataAccess.publish_item(db, learning_objective_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def delete(db, model, auth_user):
         """ Delete learning objective """
-        model = LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.id)
+        model = LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
         return model
 
 
     @staticmethod
     def publish(db, model, scheme_of_work_id, auth_user):
         #TODO: verify usage
-        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user_id=auth_user.id)
+        return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
-        return LearningObjectiveDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.id)
+        return LearningObjectiveDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id)
 
 
 class LearningObjectiveDataAccess:
@@ -357,7 +357,7 @@ class LearningObjectiveDataAccess:
         str_delete = "lesson_learning_objective__delete"
 
         params = (model.id, auth_user_id)
-
+        
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
 
         return rval
