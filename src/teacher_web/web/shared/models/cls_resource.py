@@ -112,7 +112,7 @@ class ResourceModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.id)
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -169,22 +169,22 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_resource_type_options(db, auth_user):
-        rows = ResourceDataAccess.get_resource_type_options(db, auth_user_id=auth_user.id)
+        rows = ResourceDataAccess.get_resource_type_options(db, auth_user_id=auth_user.auth_user_id)
         return rows
 
 
     @staticmethod
     def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
-            rval = ResourceDataAccess._delete(db, model, auth_user.id)
+            rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
             #TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:
-                new_id = ResourceDataAccess._insert(db, model, published, auth_user_id=auth_user.id)
+                new_id = ResourceDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
                 model.id = new_id[0]
             else:
-                rows = ResourceDataAccess._update(db, model, published, auth_user_id=auth_user.id)
+                rows = ResourceDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
 
         return model
 

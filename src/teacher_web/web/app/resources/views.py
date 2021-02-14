@@ -210,6 +210,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 
 #234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
+@min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
     """ delete item and redirect back to referer """
 
@@ -239,7 +240,7 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 
     ResourceModel.delete_unpublished(db, lesson_id, auth_user=auth_ctx)
 
-    return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))
+    return HttpResponseRedirect(reverse("resource.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
 
 
 #234 add permission
@@ -255,4 +256,4 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 
     ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_ctx)
     
-    return HttpResponseRedirect(reverse("resource.index", args=[scheme_of_work_id, lesson_id]))
+    return HttpResponseRedirect(reverse("resource.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))

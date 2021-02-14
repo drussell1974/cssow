@@ -41,7 +41,7 @@ class test_db__get_resource_type_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'resource_type__get_options', (mock_auth_user.id,)
+                'resource_type__get_options', (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -63,7 +63,7 @@ class test_db__get_resource_type_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'resource_type__get_options'
-                , (mock_auth_user.id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             
@@ -90,7 +90,7 @@ class test_db__get_resource_type_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'resource_type__get_options' 
-                , (mock_auth_user.id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             

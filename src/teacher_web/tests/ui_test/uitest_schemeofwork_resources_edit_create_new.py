@@ -9,7 +9,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
     def setUp(self):
         # setup
         self.test_context.implicitly_wait(20)
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/resources/new".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/new")
 
 
     def tearDown(self):

@@ -10,7 +10,7 @@ class uitest_schemeofwork_resources_edit_cancel(UITestCase):
     def setUp(self):
         self.test_context.implicitly_wait(10)
         #231: TODO: open existing resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/resources/{}/edit".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_reference))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/edit")
 
 
     def tearDown(self):
