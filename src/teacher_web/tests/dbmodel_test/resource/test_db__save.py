@@ -60,7 +60,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
              'lesson_resource__update'
-             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, mock_auth_user.id)
+             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
@@ -84,7 +84,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson_resource__insert'
-                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, mock_auth_user.id)
+                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)
@@ -104,7 +104,7 @@ class test_db__save(TestCase):
             
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'lesson_resource__delete'
-             , (23, mock_auth_user.id)
+             , (23, mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)

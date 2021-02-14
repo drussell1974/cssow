@@ -61,17 +61,18 @@ class min_permission_required:
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
 
-            view_params_ctx = Ctx(**kwargs)
+            view_ctx = Ctx(**kwargs)
+            auth_ctx = auth_user_model(db, request, view_ctx)
 
-            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_model(db, request, ctx=view_params_ctx))
-            
+            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_model(db, request, ctx=auth_ctx))
             
             if scheme_of_work is None:
-                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id, scheme_of_work_id=0, auth_user_id=auth_user.id)
+                # create empty scheme of work with scheme_of_work_id = 0
+                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id, scheme_of_work_id=0, auth_user_id=auth_ctx.auth_user_id)
                 
             ''' teacher_id and auth_user are the same in this call '''
             
-            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_user_model(db, request, ctx=view_params_ctx))
+            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_user_model(db, request, ctx=auth_ctx))
                             
             if model.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
@@ -79,7 +80,7 @@ class min_permission_required:
                 
                 return self.redirect_handler(str_err, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 
-            self.setkwargs("ctx", value=auth_user_model(db, request, ctx=view_params_ctx))
+            self.setkwargs("ctx", value=auth_ctx)
             
             # call decorated function
             return func(*args, **kwargs)

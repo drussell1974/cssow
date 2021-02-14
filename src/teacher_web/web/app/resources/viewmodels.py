@@ -13,12 +13,12 @@ class ResourceIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
-        self.model = []
-        self.auth_user = auth_user
         self.db = db
         self.request = request
         self.scheme_of_work_id = scheme_of_work_id
         self.lesson_id = lesson_id
+        self.auth_user = auth_user
+        self.model = []
         self.lesson_options = []
         
         try:
@@ -63,9 +63,9 @@ class ResourceGetModelViewModel(BaseViewModel):
 
         self.model = None
         self.db = db
-        self.auth_user = auth_user
         self.lesson_id = lesson_id
         self.scheme_of_work_id = scheme_of_work_id
+        self.auth_user = auth_user
 
         try:
             # get model
@@ -109,7 +109,7 @@ class ResourceGetModelViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=None, data=data, active_model=self.lesson)
+        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson)
         
 
 
