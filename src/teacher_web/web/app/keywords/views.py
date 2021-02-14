@@ -42,13 +42,18 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 def new(request, institute_id, department_id, scheme_of_work_id):
     ''' Create a new keyword '''
 
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     model = KeywordModel(
         id_=0,
         term="",
         definition="",
         scheme_of_work_id=scheme_of_work_id)
     
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -57,7 +62,7 @@ def new(request, institute_id, department_id, scheme_of_work_id):
         "keyword": model
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=None, data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=view_ctx, data=data)
     
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -67,7 +72,12 @@ def new(request, institute_id, department_id, scheme_of_work_id):
 def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
     
     if model == None:
@@ -79,7 +89,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
 
     #253 check user id
 
-    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     scheme_of_work = get_scheme_of_work_view.model
 
     data = {
@@ -88,7 +98,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=None, data=data, active_model=model, alert_message="")
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=view_ctx, data=data, active_model=model, alert_message="")
     
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -103,6 +113,11 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     def upload_success_handler(f, msg):
         print(msg, f)
         
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     error_message = ""
 
     """ save_item non-view action """
@@ -113,7 +128,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
         definition=request.POST.get("definition", ""),
         created=datetime.now(),
         #253 check user id
-        created_by_id=auth_user_model(db, request),
+        created_by_id=auth_ctx,
         published=request.POST.get("published", 0)
     )
     
@@ -123,7 +138,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_model(db, request))
+    save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -141,7 +156,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     else:
         """ redirect back to page and show message """
 
-        get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+        get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
         scheme_of_work = get_scheme_of_work_view.model
 
         data = {
@@ -151,7 +166,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
             "validation_errors":model.validation_errors
         }
         
-        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)        
+        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=view_ctx, data=data, active_model=model, alert_message="", error_message=error_message)        
         
         return render(request, "keywords/edit.html", view_model.content)
         
@@ -163,10 +178,15 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
 def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    KeywordModel.delete(db, keyword_id, auth_user_model(db, request))
+    KeywordModel.delete(db, keyword_id, auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -176,9 +196,14 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword
 def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
-    KeywordModel.publish_by_id(db, keyword_id, auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
 
-    return HttpResponseRedirect(reverse("keywords.index", args=[scheme_of_work_id, lesson_id]))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    KeywordModel.publish_by_id(db, keyword_id, auth_ctx)
+
+    return HttpResponseRedirect(reverse("keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
@@ -201,7 +226,12 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
 def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     """ delete item and redirect back to referer """
 
-    merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
     merge_viewmodel.execute(request)
 

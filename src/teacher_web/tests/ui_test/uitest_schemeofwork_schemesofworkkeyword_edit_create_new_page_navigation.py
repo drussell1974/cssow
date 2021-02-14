@@ -6,7 +6,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new_page_navigation(U
 
     def setUp(self):
         # setup
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/keywords/new".format(self.test_scheme_of_work_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/new")
         # TODO: improve performance
         self.wait()
 
