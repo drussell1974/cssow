@@ -55,7 +55,7 @@ class test_db__get_by_terms(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = KeywordModel.get_by_terms(self.fake_db, "", False, 13, mock_auth_user.id)
+            actual_results = KeywordModel.get_by_terms(self.fake_db, "", False, 13, mock_auth_user.auth_user_id)
             
             # assert
             
