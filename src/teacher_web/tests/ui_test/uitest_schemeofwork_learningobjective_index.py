@@ -7,6 +7,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
     def setUp(self):
         # set up
         self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives")
+        self.wait()
 
 
     def tearDown(self):
@@ -46,7 +47,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
         # setup
         self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
-
+        
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
@@ -55,6 +56,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # setup
 
         self.test_context.find_element_by_id('lnk-bc-lessons').click()
+        self.wait(s=1)
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')

@@ -283,4 +283,4 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 
     LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_ctx)
 
-    return HttpResponseRedirect(reverse("learningobjective.index", args=[scheme_of_work_id, lesson_id]))
+    return HttpResponseRedirect(reverse("learningobjective.index", args=[institute_id, department_id,scheme_of_work_id, lesson_id]))
