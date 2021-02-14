@@ -42,7 +42,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_all'
-                , (12776111277611, mock_ctx.user_id,)
+                , (12776111277611, mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -63,7 +63,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_all'
-                , (12776111277611, mock_ctx.user_id,)
+                , (12776111277611, mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -87,7 +87,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_all'
-                , (12776111277611, mock_ctx.user_id,)
+                , (12776111277611, mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

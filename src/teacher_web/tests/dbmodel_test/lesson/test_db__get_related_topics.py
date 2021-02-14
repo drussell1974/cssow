@@ -43,7 +43,7 @@ class test_db__get_related_topics(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 2, mock_ctx.user_id)
+                , (0, 2, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -61,7 +61,7 @@ class test_db__get_related_topics(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 3, mock_ctx.user_id)
+                , (0, 3, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -83,7 +83,7 @@ class test_db__get_related_topics(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'lesson__get_related_topic_ids'
-                , (0, 3, mock_ctx.user_id)
+                , (0, 3, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 

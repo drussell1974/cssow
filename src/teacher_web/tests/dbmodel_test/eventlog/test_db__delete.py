@@ -47,7 +47,7 @@ class test_db__delete(TestCase):
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 "logging__delete"
-                , (69, 31, mock_ctx.id)
+                , (69, 31, mock_ctx.auth_user_id)
                 , handle_log_info)
 
             # check subsequent functions where called

@@ -10,7 +10,6 @@ from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_mod
 
 # TODO: #329 Do not use mock for testing object
 @patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
-@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_team_permissions(TestCase):
 
     def setUp(self):
@@ -23,7 +22,7 @@ class test_db__get_team_permissions(TestCase):
         pass
 
         
-    def test__should_call__select__with_exception(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
+    def test__should_call__select__with_exception(self, TeacherModel_get_model, mock_teacher_permission_model):
 
         # arrange
         expected_result = Exception('Bang')
@@ -34,7 +33,7 @@ class test_db__get_team_permissions(TestCase):
                 Model.get_all(self.fake_db, key_stage_id = 4)
             
 
-    def test__should_call__select__no_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
+    def test__should_call__select__no_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
         expected_result = []
 
@@ -42,21 +41,21 @@ class test_db__get_team_permissions(TestCase):
                 
             # act
             
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=mock_auth_user)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
             
             # assert
             TeacherModel_get_model.assert_not_called()
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_team_permissions'
-                , (6079, mock_auth_user.id)
+                , (6079, 6079)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
+    def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
@@ -66,13 +65,13 @@ class test_db__get_team_permissions(TestCase):
             
             # act
 
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=mock_auth_user)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079, mock_auth_user.id)
+                , (6079, 6079)
                 , []
                 , handle_log_info)
 
@@ -80,7 +79,7 @@ class test_db__get_team_permissions(TestCase):
             #self.assertEqual("John Doe", rows[0].teacher_permissions[0].teacher.name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_permission_model, mock_auth_user):
+    def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
@@ -90,13 +89,13 @@ class test_db__get_team_permissions(TestCase):
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=mock_auth_user)
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079, mock_auth_user.id)
+                , (6079, 6079)
                 , []
                 , handle_log_info)
 

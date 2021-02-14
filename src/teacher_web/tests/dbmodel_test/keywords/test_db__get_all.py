@@ -43,7 +43,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id) 
+                , (13, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -66,7 +66,7 @@ class test_db__get_all(TestCase):
 
                 ExecHelper.select.assert_called_with(self.fake_db,
                     'scheme_of_work__get_all_keywords'
-                    , (13, mock_auth_user.user_id) 
+                    , (13, mock_auth_user.auth_user_id) 
                     , []
                     , handle_log_info)
                     
@@ -99,7 +99,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -133,7 +133,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id) 
+                , (13, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -161,7 +161,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -190,7 +190,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -225,7 +225,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

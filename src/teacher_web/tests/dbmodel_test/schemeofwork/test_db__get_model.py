@@ -40,7 +40,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (99, mock_ctx.user_id)
+                , (99, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, model.id)
@@ -67,7 +67,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (6, mock_ctx.user_id)
+                , (6, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                  

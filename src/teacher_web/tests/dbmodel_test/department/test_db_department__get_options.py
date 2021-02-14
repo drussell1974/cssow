@@ -43,7 +43,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get_options'
-                , (mock_auth_user.user_id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -64,7 +64,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (mock_auth_user.user_id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -84,7 +84,7 @@ class test_DepartmentDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get_options'
-                , (mock_auth_user.user_id,)
+                , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

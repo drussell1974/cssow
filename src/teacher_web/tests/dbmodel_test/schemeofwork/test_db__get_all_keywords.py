@@ -45,7 +45,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (12, mock_auth_user.user_id)
+                , (12, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -63,7 +63,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -91,7 +91,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.user_id)
+                , (13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

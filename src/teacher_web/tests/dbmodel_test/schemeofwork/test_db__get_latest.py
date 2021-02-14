@@ -40,7 +40,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (4, mock_ctx.user_id)
+                , (4, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -59,7 +59,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3, mock_ctx.user_id)
+                , (3, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -87,7 +87,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3, mock_ctx.user_id)
+                , (3, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 

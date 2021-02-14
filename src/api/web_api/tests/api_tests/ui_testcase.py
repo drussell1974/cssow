@@ -26,6 +26,14 @@ class UITestCase(TestCase):
         time.sleep(s)
 
 
+    def assertWebPageFooter(self, institute_name, department_name):
+
+        # test - institute name
+        self.assertEqual(institute_name, self.test_context.find_element_by_id("footer_institute-name").text)
+        # test - department name
+        self.assertEqual(department_name, self.test_context.find_element_by_id("footer_department-name").text)
+
+
     def assertWebPageTitleAndHeadings(self, title, h1, subheading):
 
         # test - subheading

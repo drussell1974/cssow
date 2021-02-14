@@ -47,7 +47,7 @@ class test_db_institute__insert(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'institute__insert'
-                , (0, "Lorum ipsum", 6080, "2021-01-24 07:20:01.907507", mock_auth_user.id)
+                , (0, "Lorum ipsum", 6080, "2021-01-24 07:20:01.907507", mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(99, result.id)

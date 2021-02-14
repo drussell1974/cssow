@@ -34,7 +34,7 @@ class KS123PathwayModel(BaseModel):
 
     @staticmethod
     def get_linked_pathway_ks123(db, lesson_id, auth_user):
-        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id, auth_user_id=auth_user.id)
+        rows = KS123PathwayDataAccess.get_linked_pathway_ks123(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             data.append([int(row[0]), row[1]])

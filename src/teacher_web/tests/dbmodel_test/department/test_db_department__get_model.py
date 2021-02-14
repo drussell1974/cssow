@@ -43,7 +43,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get'
-                , (999, mock_auth_user.user_id,)
+                , (999, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -65,7 +65,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get'
-                , (593, mock_auth_user.user_id,)
+                , (593, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 

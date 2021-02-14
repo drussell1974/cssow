@@ -43,7 +43,7 @@ class test_db_institute__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'institute__get'
-                , (5034, mock_auth_user.user_id,)
+                , (5034, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -65,7 +65,7 @@ class test_db_institute__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'institute__get'
-                , (5034, mock_auth_user.user_id,)
+                , (5034, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 

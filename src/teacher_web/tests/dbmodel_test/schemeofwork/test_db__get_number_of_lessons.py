@@ -43,7 +43,7 @@ class test_db__get_number_of_lessons(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_number_of_lessons'
-                , (101, mock_auth_user.user_id)
+                , (101, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, actual_result)
@@ -62,7 +62,7 @@ class test_db__get_number_of_lessons(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_number_of_lessons'
-                , (6, mock_auth_user.user_id)
+                , (6, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, actual_result)

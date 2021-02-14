@@ -62,7 +62,7 @@ class test_db__save(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 0, 43, 1, mock_auth_user.user_id)
+                , (89, '', '', 0, 0, 43, 1, mock_auth_user.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -85,7 +85,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.user_id)
+                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.auth_user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -107,7 +107,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__has__teacher_permission__insert'
-                 , (101, mock_auth_user.user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.user_id, True)
+                 , (101, mock_auth_user.auth_user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.auth_user_id, True)
                  , handle_log_info)
 
             self.assertEqual(101, actual_result.id)
@@ -129,7 +129,7 @@ class test_db__save(TestCase):
             ExecHelper.delete.assert_called_with(self.fake_db,
             'scheme_of_work__delete'
             
-            , (99, mock_auth_user.user_id)
+            , (99, mock_auth_user.auth_user_id)
             , handle_log_info)
 
             self.assertEqual(99, actual_result.id)

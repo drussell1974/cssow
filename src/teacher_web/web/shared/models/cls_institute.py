@@ -37,7 +37,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def get_all(db, auth_user):
         
-        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.user_id)
+        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows: 
             model = InstituteModel(id_=row[0],
@@ -53,7 +53,7 @@ class InstituteModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, auth_user):   
-        rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.user_id)
+        rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.auth_user_id)
         #TODO: start as none None
         model = InstituteModel(0, "")
         for row in rows:
@@ -70,7 +70,7 @@ class InstituteModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = InstituteDataAccess.get_options(db, auth_user_id=auth_user.id)
+        rows = InstituteDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
         data = []
         
         for row in rows:
@@ -83,26 +83,26 @@ class InstituteModel(BaseModel):
     def save(db, model, teacher_id, auth_user):
         """ save model """
         if model.published == 2:
-            data = InstituteDataAccess._delete(db, model, auth_user.id)
+            data = InstituteDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
-                data = InstituteDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.id)
+                data = InstituteDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
                 model.id = data[0]
             else:
-                data = InstituteDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.id)
+                data = InstituteDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
 
         return model
 
 
     @staticmethod
     def delete_unpublished(db, auth_user):
-        rows = InstituteDataAccess.delete_unpublished(db, auth_user_id=auth_user.id)
+        rows = InstituteDataAccess.delete_unpublished(db, auth_user_id=auth_user.auth_user_id)
         return rows
 
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return InstituteDataAccess.publish(db=db, auth_user_id=auth_user.id, id_=id)        
+        return InstituteDataAccess.publish(db=db, auth_user_id=auth_user.auth_user_id, id_=id)        
 
 
 class InstituteDataAccess:

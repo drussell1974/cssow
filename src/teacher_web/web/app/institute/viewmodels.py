@@ -15,6 +15,7 @@ class InstituteIndexViewModel(BaseViewModel):
         self.model = []
 
         self.db = db
+        self.auth_user = auth_user
         # get model
         data = Model.get_all(self.db, auth_user)
         self.model = data
@@ -26,7 +27,7 @@ class InstituteIndexViewModel(BaseViewModel):
             "institutes": self.model
         }
         # TODO: #329 active_model = institue
-        return ViewModel("", "Schemes of Work", "Institutes", ctx=None, data=data, active_model=None)
+        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data, active_model=None)
 
 
 class InstituteEditViewModel(BaseViewModel):
@@ -92,7 +93,7 @@ class InstituteEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=None, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
  
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):

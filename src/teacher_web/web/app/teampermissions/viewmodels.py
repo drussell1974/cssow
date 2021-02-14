@@ -36,7 +36,7 @@ class TeamPermissionIndexViewModel(BaseViewModel):
                 "my_team_permissions": departments,
             }
 
-        return ViewModel("Account", "Account", "Team Permissions", ctx=None, data=data)
+        return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data)
 
 
 class TeamPermissionEditViewModel(BaseViewModel):
@@ -47,6 +47,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
         self.request = request
         self.scheme_of_work_id = scheme_of_work_id
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
+        self.auth_user = auth_user
         
         # Http404
         '''
@@ -79,7 +80,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
             "model": self.model
         }
 
-        return ViewModel("Account", "Account", "Team Permissions", ctx=None, data=data, active_model=self.model)
+        return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data, active_model=self.model)
 
 
     def execute(self):
@@ -186,7 +187,7 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
         super().__init__(request)
         
         self.scheme_of_work_id = kwargs["scheme_of_work_id"] 
-        self.teacher_id = auth_user.user_id
+        self.teacher_id = auth_user.auth_user_id
         self.request_made = False
         
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)

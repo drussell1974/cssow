@@ -45,7 +45,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (69, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", mock_auth_user.id)
+                , (69, 1, 100, '2020-08-23 00:00:00', '2020-08-23 00:00:01', 1, "volutpat", "dolor", mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -69,7 +69,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (68, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", mock_auth_user.id)
+                , (68, -1, 0, '25-07-2020T06:30', '25-08-2020T06:30', 2, "nec", "", mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)                
 
@@ -104,7 +104,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_all'
-                , (67, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", mock_auth_user.id)
+                , (67, 0, 20, '04-07-2020T16:13', '21-07-2020T00:00', 1, "nec", "volutpat", mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

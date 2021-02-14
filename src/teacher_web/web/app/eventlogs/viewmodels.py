@@ -62,7 +62,7 @@ class EventLogIndexViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", ctx=None, data=data, error_message=self.error_message)
+        return ViewModel("", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class EventLogDeleteOldViewModel(BaseViewModel):
@@ -73,6 +73,7 @@ class EventLogDeleteOldViewModel(BaseViewModel):
         self.model = []
         self._scheme_of_work_id = scheme_of_work_id
         self.settings = settings
+        self.auth_user = auth_user
 
         self.search_criteria = EventLogFilter(settings.PAGER["default"]["pagesize_options"])
 
@@ -107,4 +108,4 @@ class EventLogDeleteOldViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", ctx=None, data=data, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel("", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)

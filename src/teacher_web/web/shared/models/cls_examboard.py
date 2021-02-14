@@ -23,7 +23,7 @@ class ExamBoardModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        return ExamBoardDataAccess.get_options(db, auth_user_id=auth_user.user_id)
+        return ExamBoardDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
 
 
 class ExamBoardDataAccess:

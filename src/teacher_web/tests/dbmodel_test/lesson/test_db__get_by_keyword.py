@@ -43,7 +43,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (222, 13, mock_auth_user.user_id) 
+                , (222, 13, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -88,7 +88,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, mock_auth_user.user_id) 
+                , (223, 13, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -150,7 +150,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (224, 13, mock_auth_user.user_id)
+                , (224, 13, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -222,7 +222,7 @@ class test_db__get_by_keyword(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_by_keyword'
-                , (223, 13, mock_auth_user.user_id) 
+                , (223, 13, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 

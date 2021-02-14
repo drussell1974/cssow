@@ -48,7 +48,7 @@ class test_DepartmentDataAccess___delete(TestCase):
 
             ExecHelper.delete.assert_called_with(self.fake_db,
                 'department__delete'
-                , (101, mock_auth_user.id)
+                , (101, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(101, result.id)

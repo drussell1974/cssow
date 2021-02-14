@@ -41,7 +41,7 @@ class test_db__get_linked_pathway_ks123(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_linked_pathway'
-                , (67, mock_auth_user.id)
+                , (67, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -63,7 +63,7 @@ class test_db__get_linked_pathway_ks123(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_linked_pathway'
-                , (236, mock_auth_user.id)
+                , (236, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             
@@ -90,7 +90,7 @@ class test_db__get_linked_pathway_ks123(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_linked_pathway'
-                , (403, mock_auth_user.id)
+                , (403, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

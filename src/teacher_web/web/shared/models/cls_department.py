@@ -39,7 +39,7 @@ class DepartmentModel(BaseModel):
     @staticmethod
     def get_all(db, institute_id, auth_user):
         
-        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.user_id)
+        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows: 
             model = DepartmentModel(id_=row[0],
@@ -62,7 +62,7 @@ class DepartmentModel(BaseModel):
         # TODO: #329 check id
         # TODO: #329 add context
         
-        rows = DepartmentDataAccess.get_model(db, department_id, auth_user_id=auth_user.user_id)
+        rows = DepartmentDataAccess.get_model(db, department_id, auth_user_id=auth_user.auth_user_id)
 
         model = DepartmentModel(0, "", institute=InstituteModel(0, ""))
         for row in rows:
@@ -83,7 +83,7 @@ class DepartmentModel(BaseModel):
 
     @staticmethod
     def get_options(db, auth_user):
-        rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.user_id)
+        rows = DepartmentDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
         data = []
         
         for row in rows:
@@ -97,26 +97,26 @@ class DepartmentModel(BaseModel):
     def save(db, model, teacher_id, auth_user):
         """ save model """
         if model.published == 2:
-            data = DepartmentDataAccess._delete(db, model, auth_user.id)
+            data = DepartmentDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
-                data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.id)
+                data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
                 model.id = data[0]
             else:
-                data = DepartmentDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.id)
+                data = DepartmentDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
 
         return model
 
 
     @staticmethod
     def delete_unpublished(db, institute_id, auth_user):
-        rows = DepartmentDataAccess.delete_unpublished(db, institute_id, auth_user_id=auth_user.id)
+        rows = DepartmentDataAccess.delete_unpublished(db, institute_id, auth_user_id=auth_user.auth_user_id)
         return rows
 
 
     @staticmethod
     def publish_by_id(db, department_id, auth_user):
-        return DepartmentDataAccess.publish(db=db, auth_user_id=auth_user.id, id_=department_id)      
+        return DepartmentDataAccess.publish(db=db, auth_user_id=auth_user.auth_user_id, id_=department_id)      
 
 
 class DepartmentDataAccess:

@@ -85,7 +85,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, key_stage_id, auth_user):
-        rows = ContentDataAccess.get_all(db, scheme_of_work_id, key_stage_id, auth_user_id=auth_user.user_id)
+        rows = ContentDataAccess.get_all(db, scheme_of_work_id, key_stage_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2], published=row[3])
@@ -111,7 +111,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def delete_unpublished(db, scheme_of_work_id, auth_user):
-        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.user_id)
+        return ContentDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
 class ContentDataAccess(BaseDataAccess):

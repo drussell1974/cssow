@@ -181,10 +181,13 @@ def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
     raise DeprecationWarning("remove if not longer in use")
 
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    LessonDeleteViewModel(db=db, auth_user=auth_user_model(db, request), lesson_id=lesson_id)
+    LessonDeleteViewModel(db=db, auth_user=auth_ctx, lesson_id=lesson_id)
 
     return HttpResponseRedirect(redirect_to_url)
     

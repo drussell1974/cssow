@@ -26,7 +26,6 @@ class auth_user_model:
         self.scheme_of_work_id = ctx.scheme_of_work_id
 
         # TODO: #329 set auth_user_id or user_id
-        self.user_id = request.user.id
         self.auth_user_id = request.user.id
 
         if request.user.id is not None:

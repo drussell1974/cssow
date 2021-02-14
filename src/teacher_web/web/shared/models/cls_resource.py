@@ -164,7 +164,7 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_number_of_resources(db, lesson_id, auth_user):
-        value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user_id=auth_user.user_id)
+        value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         return value
 
     @staticmethod
