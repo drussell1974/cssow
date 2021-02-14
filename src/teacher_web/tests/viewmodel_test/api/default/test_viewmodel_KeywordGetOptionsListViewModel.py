@@ -6,8 +6,10 @@ from unittest.mock import MagicMock, Mock, patch
 from api.default.viewmodels import KeywordGetOptionsListViewModel as ViewModel
 
 from shared.models.cls_keyword import KeywordModel as Model
+from tests.test_helpers.mocks import fake_ctx_model
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_KeywordGetOptionsListViewModel(TestCase):
 
     def setUp(self):        
@@ -18,7 +20,7 @@ class test_viewmodel_KeywordGetOptionsListViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -39,7 +41,7 @@ class test_viewmodel_KeywordGetOptionsListViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_ctx_model):
         
         # arrange
         
@@ -60,7 +62,7 @@ class test_viewmodel_KeywordGetOptionsListViewModel(TestCase):
             self.assertEqual(1, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_ctx_model):
         
         # arrange
         

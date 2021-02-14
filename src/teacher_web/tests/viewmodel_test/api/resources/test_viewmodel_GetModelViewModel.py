@@ -5,8 +5,10 @@ from unittest.mock import MagicMock, Mock, patch
 
 from api.resources.viewmodels import ResourceGetModelViewModel as ViewModel
 from shared.models.cls_resource import ResourceModel as Model
+from tests.test_helpers.mocks import fake_ctx_model
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_ResourceGetModelViewModel(TestCase):
 
     def setUp(self):        
@@ -17,7 +19,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__with_exception(self):
+    def test_init_called_fetch__with_exception(self, mock_ctx_model):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -29,7 +31,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db, resource_id=999, lesson_id=34, scheme_of_work_id=90, auth_user=99)
+                self.viewmodel = ViewModel(db, resource_id=999, lesson_id=34, scheme_of_work_id=90, auth_user=mock_ctx_model)
             #TODO: #233 remove self.assertRaises
              
             # assert
@@ -37,7 +39,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -49,14 +51,14 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             db.cursor = MagicMock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=123, lesson_id=74, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=123, lesson_id=74, scheme_of_work_id=90, auth_user=mock_ctx_model)
 
             # assert functions was called
             Model.get_model.assert_called()
             self.assertIsNone(self.viewmodel.model)
 
 
-    def test_init_called_fetch__return_item(self):
+    def test_init_called_fetch__return_item(self, mock_ctx_model):
         
         # arrange
         
@@ -70,7 +72,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=mock_ctx_model)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -79,7 +81,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             #self.assertEqual("", self.viewmodel.model["markdown"])
 
 
-    def test_init_called_fetch__return_overridden_page_uri_for_markdown_document(self):
+    def test_init_called_fetch__return_overridden_page_uri_for_markdown_document(self, mock_ctx_model):
         
         # arrange
         
@@ -98,7 +100,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=mock_ctx_model)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -106,7 +108,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.assertEqual("/api/schemesofwork/90/lessons/18/resources/456/markdown/TESTME.md", self.viewmodel.model["page_uri"])
 
 
-    def test_init_called_fetch__return_page_uri_for_non_markdown_document(self):
+    def test_init_called_fetch__return_page_uri_for_non_markdown_document(self, mock_ctx_model):
         
         # arrange
         
@@ -123,7 +125,7 @@ class test_viewmodel_ResourceGetModelViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=99)
+            self.viewmodel = ViewModel(db, resource_id=456, lesson_id=18, scheme_of_work_id=90, auth_user=mock_ctx_model)
 
             # assert functions was called
             Model.get_model.assert_called()

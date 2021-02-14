@@ -1,12 +1,12 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-
-# test context
-
 from api.lessons.viewmodels import LessonGetAllViewModel as ViewModel
+from shared.models.core.context import Ctx
 from shared.models.cls_lesson import LessonModel as Model
+from tests.test_helpers.mocks import fake_ctx_model
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_LessonGetModelViewModel(TestCase):
 
     def setUp(self):        
@@ -17,7 +17,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -38,7 +38,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_ctx_model):
         
         # arrange
         
@@ -59,7 +59,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.assertEqual(1, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_ctx_model):
         
         # arrange
         
