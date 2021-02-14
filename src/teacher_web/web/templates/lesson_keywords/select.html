@@ -63,6 +63,12 @@
         <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
         <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
         <input type="hidden" name="next" value="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" >
+    
+
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            {% include '_partials/form.validation.html' %}
+        </div>
     </form>
 <hr>
 </article>

@@ -6,7 +6,7 @@ class uitest_schemeofwork_lessonkeyword_select_page_navigation(UITestCase):
 
     def setUp(self):
         # setup
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{}/lessons/{}/keywords/select".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/select")
         # TODO: improve performance
         self.wait()
 
