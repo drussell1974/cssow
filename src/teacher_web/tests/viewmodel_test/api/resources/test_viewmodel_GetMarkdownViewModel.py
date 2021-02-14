@@ -5,8 +5,10 @@ from unittest.mock import MagicMock, Mock, patch
 
 from api.resources.viewmodels import ResourceGetMarkdownViewModel as ViewModel
 from shared.models.cls_resource import ResourceModel as Model
+from tests.test_helpers.mocks import fake_ctx_model
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_ResourceGetMarkdownViewModel(TestCase):
 
     def setUp(self):        
@@ -17,7 +19,7 @@ class test_viewmodel_ResourceGetMarkdownViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__with_exception(self):
+    def test_init_called_fetch__with_exception(self, mock_ctx_model):
         
         # arrange        
         self.mock_model = Mock()
@@ -28,7 +30,7 @@ class test_viewmodel_ResourceGetMarkdownViewModel(TestCase):
             self.assertEqual("Document could not be retrieved at this time. Try refreshing the page..", markdown_viewmodel.model)
         
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -44,7 +46,7 @@ class test_viewmodel_ResourceGetMarkdownViewModel(TestCase):
         self.assertEqual("", self.viewmodel.model)
 
 
-    def test_init_called_fetch__return_item(self):
+    def test_init_called_fetch__return_item(self, mock_ctx_model):
         
         # arrange
         

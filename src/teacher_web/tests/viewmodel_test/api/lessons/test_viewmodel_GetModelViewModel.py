@@ -1,14 +1,14 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
-
-# test context
-
 from api.lessons.viewmodels import LessonGetModelViewModel as ViewModel
+from shared.models.core.context import Ctx
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
+from tests.test_helpers.mocks import fake_ctx_model
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_LessonGetModelViewModel(TestCase):
 
     def setUp(self):        
@@ -19,7 +19,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__with_exception(self):
+    def test_init_called_fetch__with_exception(self, mock_ctx_model):
         
         # arrange        
         with patch.object(Model, "get_model", side_effect=KeyError):
@@ -38,7 +38,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             #self.assertEqual("ERROR MESSAGE HERE!!!", self.viewmodel.error_message)
 
 
-    def test_init_called_fetch__no_return(self):
+    def test_init_called_fetch__no_return(self, mock_ctx_model):
         
         # arrange
         
@@ -58,7 +58,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
                 self.assertIsNone(self.viewmodel.model)
 
 
-    def test_init_called_fetch__return_item(self):
+    def test_init_called_fetch__return_item(self, mock_ctx_model):
         
         # arrange
         
@@ -81,7 +81,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model["key_words"]))
 
 
-    def test_init_called_fetch__return_item__with__key_words(self):
+    def test_init_called_fetch__return_item__with__key_words(self, mock_ctx_model):
         
         # arrange
 

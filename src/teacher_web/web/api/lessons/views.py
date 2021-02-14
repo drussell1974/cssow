@@ -5,6 +5,7 @@ from django.db import connection as db
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from shared.models.core.context import Ctx
 from shared.models.core.django_helper import auth_user_model
 
 # TODO: use view models
@@ -20,10 +21,16 @@ class LessonViewSet(APIView):
 
     def get(self, request, scheme_of_work_id, lesson_id):
         
+        
+        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
+
+        # TODO: #329 move to view model
+        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+        
         resource_type_id = request.GET.get("resource_type_id", 0)
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request), resource_type_id=resource_type_id)
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, resource_type_id=resource_type_id)
         return JsonResponse({ "lesson": get_lesson_view.model })
     
     
@@ -31,8 +38,14 @@ class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
 
     def get (self, request, scheme_of_work_id):
+
+        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
+
+        # TODO: #329 move to view model
+        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+
         #253 check user id
-        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+        get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
         return JsonResponse({"lessons": get_lessons_view.model})
 
 
@@ -43,9 +56,14 @@ class LessonPathwayObjectivesViewSet(APIView):
 
         raise DeprecationWarning("verify usage")
     
+        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
+
+        # TODO: #329 move to view model
+        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+        
         ''' get the pathway objectives '''
-        pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words, auth_user = auth_user_model(db, request))
-        should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id, auth_user_model(db, request))
+        pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words, auth_user = auth_ctx)
+        should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id, auth_ctx)
 
         return JsonResponse({
             "pathway-objectives": pathwayobjectives, 
@@ -59,9 +77,14 @@ class LessonPathwayKs123ViewSet(APIView):
     def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")
+        
+        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
 
-        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id, auth_user=auth_user_model(db, request))
-        should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id, auth_user=auth_user_model(db, request))
+        # TODO: #329 move to view model
+        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+        
+        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id, auth_user=auth_ctx)
+        should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id, auth_user=auth_ctx)
 
         ks123pathway = []
         for item in data:

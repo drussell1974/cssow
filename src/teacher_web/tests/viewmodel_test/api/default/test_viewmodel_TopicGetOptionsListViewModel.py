@@ -8,6 +8,10 @@ from api.default.viewmodels import TopicGetOptionsListViewModel as ViewModel
 from shared.models.cls_topic import TopicModel as Model
 
 
+from tests.test_helpers.mocks import fake_ctx_model
+
+
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
 
     def setUp(self):        
@@ -18,7 +22,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -39,7 +43,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_ctx_model):
         
         # arrange
         
@@ -60,7 +64,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
             self.assertEqual(1, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_ctx_model):
         
         # arrange
         

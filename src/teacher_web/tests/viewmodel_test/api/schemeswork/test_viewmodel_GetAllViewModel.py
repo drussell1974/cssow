@@ -7,6 +7,10 @@ from api.schemesofwork.viewmodels import SchemeOfWorkGetAllViewModel as ViewMode
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 
 
+from tests.test_helpers.mocks import fake_ctx_model
+
+
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_SchemeOfWorkGetAllViewModel(TestCase):
 
     def setUp(self):        
@@ -17,7 +21,7 @@ class test_viewmodel_SchemeOfWorkGetAllViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_ctx_model):
         
         # arrange
         
@@ -38,7 +42,7 @@ class test_viewmodel_SchemeOfWorkGetAllViewModel(TestCase):
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_ctx_model):
         
         # arrange
         
@@ -59,7 +63,7 @@ class test_viewmodel_SchemeOfWorkGetAllViewModel(TestCase):
             self.assertEqual(1, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_ctx_model):
         
         # arrange
         
