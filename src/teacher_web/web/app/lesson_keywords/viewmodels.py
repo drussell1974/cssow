@@ -16,11 +16,11 @@ class LessonKeywordIndexViewModel(BaseViewModel):
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
         
         self.model = []
-        self.auth_user = auth_user
         self.db = db
         self.request = request
         self.scheme_of_work_id = scheme_of_work_id
         self.lesson_id = lesson_id
+        self.auth_user = auth_user
         self.lesson_options = []
         
         try:
@@ -66,11 +66,11 @@ class LessonKeywordSelectViewModel(BaseViewModel):
     
     def __init__(self, db, request, lesson_id, scheme_of_work_id, auth_user):
             
-        self.auth_user = auth_user
         self.db = db
         self.request = request
         self.scheme_of_work_id = scheme_of_work_id
         self.lesson_id = lesson_id
+        self.auth_user = auth_user
         
 
     def execute(self, request):
@@ -82,6 +82,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
         
         try:
             LessonModel.save_keywords(self.db, self.model, self.auth_user)    
+            self.on_post_complete(saved=True)
         except Exception as ex:
             self.error_message = ex
             handle_log_exception(self.db, self.scheme_of_work_id, "An error occurred saving lesson keywords", ex)
@@ -182,7 +183,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=None, data=data, active_model=self.lesson)
+        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson)
         
 
 class LessonKeywordSaveViewModel(BaseViewModel):

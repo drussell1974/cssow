@@ -122,7 +122,7 @@ class TeacherPermissionModel(BaseModel):
 
         cur_scheme_of_work = SchemeOfWorkModel(0)
 
-        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, auth_user_id=auth_user.id)
+        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             
@@ -133,12 +133,11 @@ class TeacherPermissionModel(BaseModel):
 
             #329 TODO: get by teacher_id only #create TeacherModel
             
-            teacher_model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, ctx=auth_user) 
             # TeacherModel(row[0], name=row[1], department=DepartmentModel(0,name=""))
 
             model = TeacherPermissionModel(
-                teacher_id=teacher_model.id,
-                teacher_name=teacher_model.name,
+                teacher_id=auth_user.auth_user_id,
+                teacher_name=auth_user.user_name,
                 scheme_of_work=cur_scheme_of_work,
                 department_permission=DEPARTMENT(row[4]),
                 scheme_of_work_permission=SCHEMEOFWORK(row[5]),

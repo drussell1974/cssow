@@ -453,7 +453,7 @@ class LessonModel (BaseModel):
         
         results = []
 
-        LessonDataAccess._delete_keywords(db, model, results, auth_user)
+        LessonDataAccess._delete_keywords(db, model, results, auth_user.auth_user_id)
         
         return LessonDataAccess._upsert_key_words(db, model, results, auth_user_id=auth_user.auth_user_id)
 
@@ -942,7 +942,7 @@ class LessonDataAccess:
         """
 
         execHelper = ExecHelper()
-        
+
         for key_word in model.key_words:
             
             str_insert = "lesson__insert_keywords"

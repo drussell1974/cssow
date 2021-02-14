@@ -53,10 +53,11 @@ def select(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     if request.method == "POST":
         
         keywords_select.execute(request)
-
-        if request.POST["next"] != "None" and request.POST["next"] != "":
-            redirect_to_url = request.POST["next"]
-            return HttpResponseRedirect(redirect_to_url)
+    
+        if keywords_select.saved == True:
+            if request.POST["next"] != "None" and request.POST["next"] != "":        
+                redirect_to_url = request.POST["next"]
+                return HttpResponseRedirect(redirect_to_url)
     
     return render(request, "lesson_keywords/select.html", keywords_select.view(request).content)
 
@@ -103,7 +104,12 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
     
     if model == None:
@@ -116,7 +122,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     model.belongs_to_lessons.append(lesson_id)
 
     #253 check user id
-    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
+    get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
     lesson = get_lesson_view.model
 
     #253 check user id
@@ -129,7 +135,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     }
 
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), ctx=None, data=data, active_model=model, alert_message="")
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), ctx=view_ctx, data=data, active_model=model, alert_message="")
 
     return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -144,6 +150,11 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     def upload_success_handler(f, msg):
         print(msg, f)
         
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     error_message = ""
 
     """ save_item non-view action """
@@ -154,7 +165,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         definition=request.POST.get("definition", ""),
         created=datetime.now(),
         #253 check user id
-        created_by_id=auth_user_model(db, request),
+        created_by_id=auth_ctx,
         published=request.POST.get("published", 0)
     )
     # 299 must ensure other lessons are not deleted during save
@@ -164,7 +175,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_user_model(db, request))
+    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(int(request.POST["published"]))
 
@@ -183,7 +194,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         """ redirect back to page and show message """
 
         #253 check user id
-        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))    
+        get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
         lesson = get_lesson_view.model
         
         data = {
@@ -199,7 +210,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         if model.id > 0:
             sub_heading = "Edit: {} for {}".format(model.term, lesson.title)
 
-        view_model = ViewModel(lesson.title, lesson.title, sub_heading, ctx=None, data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.title, sub_heading, ctx=view_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
     
         return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -211,10 +222,16 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
 def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     """ delete item and redirect back to referer """
 
+
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    KeywordModel.delete(db, keyword_id, auth_user_model(db, request))
+    KeywordModel.delete(db, keyword_id, auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -223,9 +240,14 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
 def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
-    KeywordModel.publish_by_id(db, keyword_id, auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    return HttpResponseRedirect(reverse("lesson_keywords.index", args=[scheme_of_work_id, lesson_id]))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    KeywordModel.publish_by_id(db, keyword_id, auth_ctx)
+
+    return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
@@ -233,6 +255,11 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    return HttpResponseRedirect(reverse("lesson_keywords.index", args=[scheme_of_work_id, lesson_id]))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+
+    return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
