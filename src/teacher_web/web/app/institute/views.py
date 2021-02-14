@@ -19,6 +19,7 @@ def index(request):
 
     ctx = auth_user_model(db, request, ctx=Ctx())
     
+    # TODO: #329 move to view model
     index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=ctx))
     
     return render(request, "institute/index.html", index_view.view().content)

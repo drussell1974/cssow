@@ -42,7 +42,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (67, mock_ctx.user_id)
+                , (67, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -63,7 +63,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
             "lesson__get_number_of_learning_objectives"
-            , (87, mock_ctx.user_id)
+            , (87, mock_ctx.auth_user_id)
             , []
             , handle_log_info)
 
@@ -85,7 +85,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (21, mock_ctx.user_id)
+                , (21, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             

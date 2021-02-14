@@ -45,7 +45,7 @@ class test_db__get_teacher_permission(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_teacher_permissions"
-                , (99, mock_auth_user.user_id, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.user_id)
+                , (99, mock_auth_user.auth_user_id, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -70,7 +70,7 @@ class test_db__get_teacher_permission(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_teacher_permissions"
-                , (14, mock_auth_user.user_id, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.user_id)
+                , (14, mock_auth_user.auth_user_id, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

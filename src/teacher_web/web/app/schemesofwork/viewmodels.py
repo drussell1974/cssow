@@ -72,7 +72,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 department_id=request.POST.get("department_id", 0),
                 institute_id=request.POST.get("institute_id", 0),
                 created=datetime.now(),
-                created_by_id=self.auth_user.user_id)
+                created_by_id=self.auth_user.auth_user_id)
 
             try:
                 self.model.validate()

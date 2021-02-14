@@ -134,9 +134,9 @@ class KeywordModel(BaseModel):
         rows = []
 
         if lesson_id > 0:
-            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.user_id)
+            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id)
         else:
-            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.user_id)
+            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.auth_user_id)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], row[2], row[3], published=row[4]))

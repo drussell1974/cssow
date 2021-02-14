@@ -28,9 +28,12 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
-def edit(request, scheme_of_work_id, teacher_id):
+def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 
-    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_model(db, request))
+    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    
+    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     
     if request.method == "POST":
         save_view.execute()
@@ -48,11 +51,11 @@ def edit(request, scheme_of_work_id, teacher_id):
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login", login_route_name="team-permissions.login-as")
-def delete(request, scheme_of_work_id, teacher_id):
+def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id):
     
     """ delete item and redirect back to index """
 
-    delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_user_model(db, request))
+    delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     delete_viewmodel.execute()
 
     return HttpResponseRedirect(reverse("team-permissions.index"))
@@ -72,7 +75,7 @@ def request_access(request, institute_id, department_id, scheme_of_work_id, perm
 
     request_access_view.execute()
     
-    uri = reverse("team-permissions.login-as", args=[scheme_of_work_id, permission])
+    uri = reverse("team-permissions.login-as", args=[institute_id, department_id, scheme_of_work_id, permission])
     next = request.GET['next']
 
     return HttpResponseRedirect(f"{uri}?next={next}")
@@ -86,7 +89,7 @@ class TeamPermissionRequestLoginView(auth_views.LoginView):
         
         func =super(TeamPermissionRequestLoginView, self).get_context_data
 
-        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request, ctx=Ctx(kwargs.get("institute_id"), kwargs.get("department_id"), kwargs.get("scheme_of_work_id"))), **kwargs)
+        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request, ctx=Ctx(institute_id=kwargs.get("institute_id"), department_id=kwargs.get("department_id"), scheme_of_work_id=kwargs.get("scheme_of_work_id"))), **kwargs)
         
         return render(request, "registration/login.html", request_login.view())
 

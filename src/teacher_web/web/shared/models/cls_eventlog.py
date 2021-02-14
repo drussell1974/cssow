@@ -66,7 +66,7 @@ class EventLogModel(BaseModel):
             event_type=search_criteria.event_type, 
             category=search_criteria.category, 
             subcategory=search_criteria.subcategory, 
-            auth_user_id=auth_user.id)
+            auth_user_id=auth_user.auth_user_id)
         
         data = []
         for row in rows:
@@ -79,7 +79,7 @@ class EventLogModel(BaseModel):
 
     @staticmethod
     def delete(db, scheme_of_work_id, older_than_n_days, auth_user):
-        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user_id=auth_user.id)
+        res = EventLogDataAccess.delete(db, scheme_of_work_id, older_than_n_days, auth_user_id=auth_user.auth_user_id)
         return res
 
 

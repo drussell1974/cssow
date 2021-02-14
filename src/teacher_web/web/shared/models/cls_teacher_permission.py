@@ -105,14 +105,14 @@ class TeacherPermissionModel(BaseModel):
     def get_model(db, scheme_of_work, auth_user):
         ''' get permission for the teacher '''
         
-        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, auth_user.user_id, auth_user.department_id, auth_user.institute_id, auth_user_id=auth_user.user_id)
+        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, auth_user.auth_user_id, auth_user.department_id, auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
         
-        model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work.id, auth_user.user_id) # Default
+        model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work.id, auth_user.auth_user_id) # Default
         model.is_from_db = False
         model.is_authorised = False
         
         for row in rows:
-            model = TeacherPermissionModel(teacher_id=auth_user.user_id, teacher_name=auth_user.user_name, scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[0], lesson_permission=row[1], department_permission=row[2], is_from_db=True, is_authorised=row[4], ctx=auth_user)
+            model = TeacherPermissionModel(teacher_id=auth_user.auth_user_id, teacher_name=auth_user.user_name, scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[0], lesson_permission=row[1], department_permission=row[2], is_from_db=True, is_authorised=row[4], ctx=auth_user)
             return model
         return model
 
@@ -137,7 +137,7 @@ class TeacherPermissionModel(BaseModel):
 
             model = TeacherPermissionModel(
                 teacher_id=auth_user.auth_user_id,
-                teacher_name=auth_user.user_name,
+                teacher_name="",
                 scheme_of_work=cur_scheme_of_work,
                 department_permission=DEPARTMENT(row[4]),
                 scheme_of_work_permission=SCHEMEOFWORK(row[5]),

@@ -5,7 +5,6 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
 from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db_institute__update(TestCase):
 
     def setUp(self):
@@ -18,7 +17,7 @@ class test_db_institute__update(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__save__with_exception(self, mock_auth_user):
+    def test__should_call__save__with_exception(self):
 
         # arrange
         expected_result = Exception('Bang')
@@ -26,10 +25,10 @@ class test_db_institute__update(TestCase):
         with patch.object(ExecHelper, "insert", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = mock_auth_user)
+                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = fake_ctx_model())
             
 
-    def test__should_call__save__if_valid(self, mock_auth_user):
+    def test__should_call__save__if_valid(self):
         # arrange
         expected_result = [101]
 
@@ -41,19 +40,19 @@ class test_db_institute__update(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = mock_auth_user)
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx_model())
             
             # assert
 
             ExecHelper.update.assert_called_with(self.fake_db,
                 'institute__update'
-                , (101, 'Lorum ipsum', 6080, mock_auth_user.id)
+                , (101, 'Lorum ipsum', 6080, 6079)
                 , handle_log_info)
 
             self.assertEqual(101, result.id)
 
 
-    def test__should_not_call__save__if_not_valid(self, mock_auth_user):
+    def test__should_not_call__save__if_not_valid(self):
         # arrange
         expected_result = [99]
 
@@ -65,7 +64,7 @@ class test_db_institute__update(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = mock_auth_user)
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx_model())
             
             # assert
 

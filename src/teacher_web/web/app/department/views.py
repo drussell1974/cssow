@@ -17,8 +17,10 @@ from app.department.viewmodels import DepartmentDeleteUnpublishedViewModel
 
 def index(request, institute_id):
     #253 check user id
+    ctx = Ctx(institute_id=institute_id)
 
-    auth_ctx = auth_user_model(db, request, ctx=Ctx(institute_id=institute_id))
+    # TODO: #329 move to view model
+    auth_ctx = auth_user_model(db, request, ctx=ctx)
     
     getall_view =  DepartmentIndexViewModel(db=db, institute_id=institute_id, auth_user=auth_user_model(db, request, ctx=auth_ctx))
     

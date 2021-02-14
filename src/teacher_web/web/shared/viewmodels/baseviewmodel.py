@@ -16,7 +16,7 @@ class BaseViewModel:
         
 
     def on_post_complete(self, saved = False):
-        self.saved = saved    
+        self.saved = saved  
 
 
     def on_not_found(self, model, *identifers):

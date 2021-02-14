@@ -292,7 +292,7 @@ class LessonModel (BaseModel):
             search_criteria.keyword_search,
             search_criteria.page,
             search_criteria.pagesize,
-            auth_user_id=auth_user.user_id)
+            auth_user_id=auth_user.auth_user_id)
 
         data = []
         for row in rows:
@@ -343,7 +343,7 @@ class LessonModel (BaseModel):
         rows = LessonDataAccess.get_by_keyword(db, 
             keyword_id,
             scheme_of_work_id, 
-            auth_user_id=auth_user.user_id)
+            auth_user_id=auth_user.auth_user_id)
 
         data = []
         for row in rows:
@@ -391,7 +391,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_all_keywords(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user_id=auth_user.user_id)
+        rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4], created=row[5]))
@@ -400,7 +400,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_ks123_pathway_objective_ids(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.user_id)
+        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             data.append(try_int(row[0]))
@@ -409,7 +409,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
-        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id=auth_user.user_id)
+        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id=auth_user.auth_user_id)
         serializable_list = []
         for row in rows:
             serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
@@ -418,7 +418,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_number_of_learning_objectives(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user_id=auth_user.user_id)
+        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         
         return rows[0][0]
 

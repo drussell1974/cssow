@@ -46,7 +46,7 @@ class test_DepartmentDataAccess___update(TestCase):
 
             ExecHelper.update.assert_called_with(self.fake_db,
                 'department__update'
-                , (101, 'Lorum ipsum', 6080, mock_ctx.id)
+                , (101, 'Lorum ipsum', 6080, mock_ctx.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(101, result.id)

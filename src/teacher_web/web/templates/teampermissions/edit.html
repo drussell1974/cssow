@@ -20,7 +20,7 @@
 {% block maincontent %}
 
 <article class="widget widget-form widget-keyword-form">
-    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.data.scheme_of_work_id content.data.teacher_id %}">
+    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.teacher_id %}">
         {% csrf_token %}
 
         <!-- show error_message -->
