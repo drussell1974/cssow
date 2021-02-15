@@ -69,7 +69,7 @@
                   <td>{{member.scheme_of_work_permission.name}}</td>
                   <td>{{member.lesson_permission.name}}</td>
                   <td>
-                    <a href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                    <a href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                       <i class="far fa-edit"></i>
                     </a>
                   </td>
@@ -83,17 +83,17 @@
                   <td class="text-white">{{member.scheme_of_work_permission.name}}</td>
                   <td class="text-white">{{member.lesson_permission.name}}</td>
                   <td>
-                    <a href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                    <a href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                       <i class="far fa-w-edit"></i>
                     </a>
                   </td>
                 </tr>
                 <tr class="bg-info">
                   <th scope="row" colspan="5">
-                    <a class="btn btn-danger float-right" href="{% url 'team-permissions.delete' scheme_of_work.id member.teacher_id %}" >
+                    <a class="btn btn-danger float-right" href="{% url 'team-permissions.delete' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                       {{_("Reject")}}
                     </a>
-                    <a class="btn btn-warning float-right" href="{% url 'team-permissions.edit' scheme_of_work.id member.teacher_id %}" >
+                    <a class="btn btn-warning float-right" href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                       {{_("Approve")}}
                     </a>
                   </td>

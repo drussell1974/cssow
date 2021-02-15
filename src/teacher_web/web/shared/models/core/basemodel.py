@@ -4,6 +4,7 @@ import json
 import re
 from django.db import models
 import warnings
+from shared.models.core.db_helper import ExecHelper, sql_safe
 
 class BaseModel(models.Model):
     id = 0
@@ -164,20 +165,6 @@ class BaseModel(models.Model):
                         self.validation_errors[name_of_property] = "{} is not a valid url".format(value_to_validate)
                         self.is_valid = False
 
-    '''
-    def _validate_children(self, name_of_property, parent, children_to_validate, skip_validation=[]):
-        if name_of_property not in self.skip_validation:
-            if parent.is_valid and children_to_validate is not None:
-                all_errors = ""
-                for value in children_to_validate:
-                    value.validate(skip_validation)
-                    if value.is_valid == False:
-                        all_errors = all_errors + "|{}(id:{}):{}|".format(name_of_property, value.id, value.validation_errors)
-                        self.is_valid = False
-                # add errors to property only if there are errors
-                if len(all_errors) > 0:
-                    self.validation_errors[name_of_property] = all_errors
-    '''
 
     def _validate_duplicate(self, name_of_property, value_to_validate, duplicate_checklist, friendly_message):
         """ check if a value already exists in the duplicate_checklist property """
@@ -194,10 +181,6 @@ class BaseModel(models.Model):
                     self.validation_errors[name_of_property] = "{} is not valid. {}".format(value_to_validate, friendly_message)
                     self.is_valid = False
 
-    '''
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-    '''
 
     def _validate_required_string_if(self, name_of_property, value_to_validate, min_value, max_value, func):
         if func(self) == True:
@@ -247,6 +230,20 @@ class BaseModel(models.Model):
             else:
                 DataAccess._update(db, model, auth_user)
         return model
+
+
+    # TODO: move to DataModel
+    @staticmethod
+    def get_context_name(db, get_context_scalar_sp_name, handle_log_info, *lookup_args):
+        ''' Call stored procedure get_context_scalar_sp_name with parameters to include unique identifiers and auth_user_id '''
+        execHelper = ExecHelper()
+        
+        result = []
+        
+        result = execHelper.scalar(db, get_context_scalar_sp_name, result, handle_log_info, lookup_args)
+        if result is not None and len(result) > 0:
+            result = result[0]
+        return result
 
 
 def try_int(val, return_value=None):

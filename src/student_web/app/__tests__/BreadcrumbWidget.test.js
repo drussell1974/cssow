@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MemoryRouter } from 'react-router-dom';
-
+import { MemoryRouter as Router } from 'react-router-dom';
 import { createContainer } from '../helpers/domManipulators';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 
@@ -15,7 +14,10 @@ describe('SpinnerWidget', () => {
     })
 
     it('renders empty model', () => {
-        render(<BreadcrumbWidget />);
+        render(
+            <Router>
+                <BreadcrumbWidget />
+            </Router>);
 
         expect(
             container.textContent
@@ -24,7 +26,11 @@ describe('SpinnerWidget', () => {
 
     it('renders with current page only', () => {
         
-        render(<BreadcrumbWidget activePageName="Resources" />);
+        render(
+            <Router>
+                <BreadcrumbWidget activePageName="Resources" />
+            </Router>
+        );
 
         expect(
             container.querySelector("nav ul.breadcrumb li.active").textContent
@@ -36,9 +42,9 @@ describe('SpinnerWidget', () => {
         let fake_breadcrumbItems = [{text:"Home", url:"/"}]
 
         render(
-        <MemoryRouter>
+        <Router>
             <BreadcrumbWidget breadcrumbItems = {fake_breadcrumbItems} activePageName="Resources" />
-        </MemoryRouter>);
+        </Router>);
 
         // Home Link
 
@@ -65,9 +71,10 @@ describe('SpinnerWidget', () => {
         ]
 
         render(
-        <MemoryRouter>
-            <BreadcrumbWidget breadcrumbItems = {fake_breadcrumbItems} activePageName="Resources" />
-        </MemoryRouter>);
+            <Router>
+                <BreadcrumbWidget breadcrumbItems = {fake_breadcrumbItems} activePageName="Resources" />
+            </Router>
+        );
 
         // Home Link
 

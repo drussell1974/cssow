@@ -35,14 +35,14 @@ class uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users(U
         testcases = [
             {
                 "route":"eventlog.index as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"eventlog.delete as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -51,7 +51,7 @@ class uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users(U
 
             {
                 "route":"eventlog.index as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -60,7 +60,7 @@ class uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users(U
 
             {
                 "route":"eventlog.index as drussell1974",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/event-log",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username":"drussell1974",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",

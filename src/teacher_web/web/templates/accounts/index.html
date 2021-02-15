@@ -17,7 +17,7 @@
             </a>
         </div>
         <div>
-          <a class="btn" href="{% url 'team-permissions.index' %}" id="btn-password_change">
+          <a class="btn" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-password_change">
             <i class="fa fa-users"></i> {{_("Team permissions")}}
           </a>
       </div>

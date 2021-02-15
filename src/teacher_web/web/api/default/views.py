@@ -1,21 +1,15 @@
 from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
-
-# view models
+from shared.models.core.context import AuthCtx
 from api.default.viewmodels import KeywordGetOptionsListViewModel, TopicGetOptionsListViewModel
 
 
 class KeywordsListViewSet(APIView):
     ''' API endpoint for list of keywords '''
-    def get (self, request, scheme_of_work_id):
+    def get (self, request, institute_id, department_id, scheme_of_work_id):
 
-        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
-
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         keywords = KeywordGetOptionsListViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
         
@@ -24,12 +18,9 @@ class KeywordsListViewSet(APIView):
 
 class RelatedTopicsListViewSet(APIView):
     ''' API endpoint for list of related topics '''
-    def get (self, request, topic_id):
-
-        view_ctx = Ctx(topic_id=topic_id)
-
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    def get (self, request, institute_id, department_id, topic_id):
+        
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, topic_id=topic_id)
 
         topics_view = TopicGetOptionsListViewModel(db=db, topic_id=topic_id, auth_user=auth_ctx)
 

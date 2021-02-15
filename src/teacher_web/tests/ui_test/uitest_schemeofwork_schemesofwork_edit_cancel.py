@@ -10,6 +10,7 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
     def setUp(self):
         self.test_context.implicitly_wait(10)
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/edit")
+        self.wait()
 
 
     def tearDown(self):
@@ -35,11 +36,13 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
         ' Open Modal '
 
         elem = self.test_context.find_element_by_id("cancelButton")
+        self.wait(s=1)
         elem.click()
-
+        
         ' click no '        
         
         elem = self.test_context.find_element_by_id("cancelModalStayButton")
+        self.wait(s=1)
         elem.click()
         
         self.wait()
@@ -58,17 +61,13 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
+        self.wait(s=1)
         elem.click()
 
-
-        
         ' click yes, cancel (finding button appears to cancel dialog) '        
         
         elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
-        
-        self.wait(s=5)
 
         # assert
         ' should be redirected '

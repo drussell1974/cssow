@@ -36,7 +36,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
         testcases = [           
             {
                 "route":"resource.index as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -45,7 +45,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
             },
             {
                 "route":"resource.index as lesson-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -54,42 +54,42 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
             },
             {
                 "route":"resource.delete_unpublished as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/delete_unpublished",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"resource.new as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/new",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/new",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"resource.edit as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/edit",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"resource.delete as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/delete",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/delete",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"resource.publish_item as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/publish_item",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/publish_item",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"resource.save as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/save",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/99999999/resources/99999999/save",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -98,7 +98,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
 
             {
                 "route":"resource.edit as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/edit",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": True,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -108,7 +108,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
             },
             {
                 "route":"resource.delete_unpublished as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/delete_unpublished",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -117,7 +117,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
 
             {
                 "route":"resource.publish_item as schemeofwork-owner@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/publish_item",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_reference}/publish_item",
                 "enter_username": "schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",

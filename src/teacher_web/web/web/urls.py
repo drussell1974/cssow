@@ -25,10 +25,10 @@ urlpatterns = [
     
     ### api ##
     
-    path('api/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/resources/', include('api.resources.urls')),
-    path('api/schemesofwork/<int:scheme_of_work_id>/lessons/', include('api.lessons.urls')),
-    path('api/schemesofwork/', include('api.schemesofwork.urls')),
-    path('api/', include('api.default.urls')),
+    path('api/institute/<int:institute_id>/department/<int:department_id>/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/resources/', include('api.resources.urls')),
+    path('api/institute/<int:institute_id>/department/<int:department_id>/schemesofwork/<int:scheme_of_work_id>/lessons/', include('api.lessons.urls')),
+    path('api/institute/<int:institute_id>/department/<int:department_id>/schemesofwork/', include('api.schemesofwork.urls')),
+    path('api/institute/<int:institute_id>/department/<int:department_id>/', include('api.default.urls')),
     
     ### app ###
 

@@ -3,8 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
@@ -17,10 +16,10 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 def index(request):
 
-    ctx = auth_user_model(db, request, ctx=Ctx())
+    auth_ctx = AuthCtx(db, request, institute_id=0, department_id=0)
     
     # TODO: #329 move to view model
-    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_user_model(db, request, ctx=ctx))
+    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_ctx)
     
     return render(request, "institute/index.html", index_view.view().content)
 
@@ -30,12 +29,9 @@ def index(request):
 def edit(request, institute_id = 0):
     """ edit action """
     
-    view_ctx = Ctx(institute_id=institute_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
     
-    save_view = InstituteEditViewModel(db=db, request=request, auth_user=auth_user_model(db, request, ctx=auth_ctx))
+    save_view = InstituteEditViewModel(db=db, request=request, auth_user=auth_ctx)
     
     if save_view.saved == True:
 
@@ -53,11 +49,8 @@ def edit(request, institute_id = 0):
 def delete_unpublished(request, institute_id):
     """ delete item and redirect back to referer """
 
-    view_ctx = Ctx(institute_id=institute_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
     
-    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_user_model(db, request, ctx=auth_ctx))
+    InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("institute.index"))

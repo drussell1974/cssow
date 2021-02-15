@@ -8,7 +8,7 @@ class apitest_related_topics__get(APITestCase):
 
     def setUp(self):
         # set up
-        self.get("/api/related-topics/2")
+        self.get("/api/institute/{}/department/{}/related-topics/2".format(self.test_institute_id, self.test_department_id))
         
         self.last_item_index = len(self.payload["related-topics"]) - 1
 

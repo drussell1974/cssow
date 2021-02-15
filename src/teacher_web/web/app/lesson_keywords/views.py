@@ -6,8 +6,7 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
@@ -25,10 +24,7 @@ from shared.filehandler import handle_uploaded_markdown
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     #253 check user id
     getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
@@ -42,10 +38,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 def select(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Get keywords for lesson '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     #253 check user id
     keywords_select = LessonKeywordSelectViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
@@ -67,10 +60,7 @@ def select(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     model = KeywordModel(
         id_=0,
@@ -94,7 +84,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
         "keyword": model
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new keyword for %s" % lesson.title, ctx=view_ctx, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new keyword for %s" % lesson.title, ctx=auth_ctx, data=data)
     
     return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -104,10 +94,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Edit an existing keyword '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
@@ -135,7 +122,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     }
 
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), ctx=view_ctx, data=data, active_model=model, alert_message="")
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {} for {}".format(model.term, lesson.title), ctx=auth_ctx, data=data, active_model=model, alert_message="")
 
     return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -150,11 +137,8 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     def upload_success_handler(f, msg):
         print(msg, f)
         
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
-    
     error_message = ""
 
     """ save_item non-view action """
@@ -210,7 +194,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         if model.id > 0:
             sub_heading = "Edit: {} for {}".format(model.term, lesson.title)
 
-        view_model = ViewModel(lesson.title, lesson.title, sub_heading, ctx=view_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.title, sub_heading, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
     
         return render(request, "lesson_keywords/edit.html", view_model.content)
 
@@ -222,11 +206,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
 def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     """ delete item and redirect back to referer """
 
-
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
@@ -240,11 +220,8 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
 def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
     ''' Publish the keyword '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
-    
     KeywordModel.publish_by_id(db, keyword_id, auth_ctx)
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
@@ -255,10 +232,7 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 

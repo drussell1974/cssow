@@ -36,7 +36,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
         testcases = [            
             {
                 "route":"keywords.index as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -45,35 +45,35 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
             },
             {
                 "route":"keywords.delete_unpublished as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.new as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/new",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/new",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.edit as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.save as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"keywords.merge as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -82,7 +82,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
 
             {
                 "route":"keywords.edit as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -92,7 +92,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
             },
             {
                 "route":"keywords.delete_unpublished as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -101,7 +101,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
 
             {
                 "route":"keywords.delete_unpublished as schemeofwork-owner@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished",
                 "enter_username":"schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",

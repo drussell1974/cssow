@@ -9,9 +9,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.filehandler import handle_uploaded_markdown
-from shared.models.core.context import Ctx
+from shared.models.core.context import AuthCtx
 from shared.models.core import validation_helper
-from shared.models.core.django_helper import auth_user_model
 from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
@@ -23,10 +22,7 @@ from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewM
 @min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
@@ -38,10 +34,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Create a new resource '''
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     model = ResourceModel(
         id_=0,
@@ -65,7 +58,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=view_ctx, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=auth_ctx, data=data)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -75,10 +68,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
     ''' Edit an existing resource '''
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     #253 check user id
     get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
@@ -109,7 +99,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
     }
     
     #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), ctx=view_ctx, data=data, active_model=model, alert_message="")
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="")
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -119,10 +109,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
     
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     def upload_error_handler(e, msg):
         print(msg, e)
@@ -201,7 +188,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             "get_resource_type_options": get_resource_type_options,
             "validation_errors":model.validation_errors
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=view_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
         
         return render(request, "resources/edit.html", view_model.content)
 
@@ -214,10 +201,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
     """ delete item and redirect back to referer """
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     redirect_to_url = request.META.get('HTTP_REFERER')
 
@@ -233,10 +217,7 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     ResourceModel.delete_unpublished(db, lesson_id, auth_user=auth_ctx)
 
@@ -249,10 +230,7 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
     ''' Publish the learningobjective '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
     ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_ctx)
     

@@ -78,17 +78,18 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
         self.mock_model = Mock()
 
-        fake_kwargs = {'scheme_of_work_id': 11, 'permission': DEPARTMENT.TEACHER}
+        fake_kwargs = {'institute_id':12776111277611,'department_id':67, 'scheme_of_work_id': 11, 'permission': DEPARTMENT.TEACHER}
         
         # act
 
         mock_get_context_data = MagicMock(return_value=fake_kwargs)
-
         self.viewmodel = ViewModel(
             db, 
             request=mock_request, 
             get_context_data = mock_get_context_data,
             auth_user=mock_ctx_model,
+            institute_id=12727111272711,
+            department_id=67,
             scheme_of_work_id=11,
             permission=DEPARTMENT.TEACHER
         )
@@ -126,7 +127,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
         self.mock_model = Mock()
 
-        fake_kwargs = {'scheme_of_work_id': 11, 'permission': DEPARTMENT.TEACHER}
+        fake_kwargs = {'institute_id':12776111277611,'department_id':67, 'scheme_of_work_id': 11, 'permission': DEPARTMENT.TEACHER}
         
         # act
 
@@ -137,6 +138,8 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
             request=mock_request, 
             get_context_data = mock_get_context_data,
             auth_user=mock_ctx_model,
+            institute_id=12727111272711,
+            department_id=67,
             scheme_of_work_id=11,
             permission=DEPARTMENT.TEACHER
         )

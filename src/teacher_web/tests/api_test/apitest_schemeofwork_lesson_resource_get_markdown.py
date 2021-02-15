@@ -8,7 +8,7 @@ class apitest_schemeofwork_lesson_resource_get_markdown(APITestCase):
     def setUp(self):
         # set up
         #TODO: #254 get ids from settings 
-        uri = "/api/schemesofwork/{}/lessons/{}/resources/{}/markdown/{}?format=json".format(self.test_scheme_of_work_id, self.test_lesson_id, self.test_md_document_resource_id, self.test_md_document_name)
+        uri = f"/api/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/{self.test_md_document_resource_id}/markdown/{self.test_md_document_name}?format=json"
         self.get(uri)
         
         

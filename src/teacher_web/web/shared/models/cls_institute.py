@@ -35,6 +35,12 @@ class InstituteModel(BaseModel):
 
 
     @staticmethod
+    def get_context_name(db, institude_id, auth_user_id):
+        result = BaseModel.get_context_name(db, "institute__get_context_name", handle_log_info, institude_id, auth_user_id)
+        return result
+
+
+    @staticmethod
     def get_all(db, auth_user):
         
         rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.auth_user_id)
@@ -107,6 +113,7 @@ class InstituteModel(BaseModel):
 
 class InstituteDataAccess:
     
+
     @staticmethod
     def get_model(db, id_, auth_user_id):
         """

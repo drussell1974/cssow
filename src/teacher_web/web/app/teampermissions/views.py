@@ -9,8 +9,7 @@ from shared.models.decorators.permissions import min_permission_required
 from django.db import connection as db
 from django.urls import reverse_lazy
 from django.views import generic
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import DEPARTMENT
 from shared.view_model import ViewModel
 from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewModel, TeamPermissionDeleteViewModel, TeamPermissionRequestAccessViewModel, TeamPermissionRequestLoginViewModel
@@ -19,9 +18,9 @@ from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewMode
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id):
     
-    # TODO: #329 Create Ctx object
-
-    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id)))
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    
+    myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_ctx)
     
     return render(request, "teampermissions/index.html", myTeamPermssionsViewModel.view().content)    
 
@@ -30,8 +29,7 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     
@@ -53,8 +51,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login", login_route_name="team-permissions.login-as")
 def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id):
     
-    """ delete item and redirect back to index """
-
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    
     delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     delete_viewmodel.execute()
 
@@ -64,14 +62,16 @@ def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 @login_required
 def request_access(request, institute_id, department_id, scheme_of_work_id, permission):
 
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    
     request_access_view = TeamPermissionRequestAccessViewModel(
         db=db,
         request=request, 
         scheme_of_work_id=scheme_of_work_id, 
-        teacher_id = request.user.id, 
-        teacher_name=request.user.get_username(),
+        teacher_id=auth_ctx.auth_user_id, 
+        teacher_name=auth_ctx.user_name,
         permission=permission,
-        auth_user=auth_user_model(db, request, ctx=Ctx(institute_id, department_id, scheme_of_work_id) ))
+        auth_user=auth_ctx)
 
     request_access_view.execute()
     
@@ -87,9 +87,11 @@ class TeamPermissionRequestLoginView(auth_views.LoginView):
     def get(self, request, *args, **kwargs):
         ''' override the get function '''
         
+        auth_ctx = AuthCtx(db, request, kwargs["institute_id"], kwargs["department_id"])
+    
         func =super(TeamPermissionRequestLoginView, self).get_context_data
-
-        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_user_model(db=db, request=request, ctx=Ctx(institute_id=kwargs.get("institute_id"), department_id=kwargs.get("department_id"), scheme_of_work_id=kwargs.get("scheme_of_work_id"))), **kwargs)
+        
+        request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_ctx, **kwargs)
         
         return render(request, "registration/login.html", request_login.view())
 

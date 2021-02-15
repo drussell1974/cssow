@@ -18,7 +18,7 @@ class SchemeOfWorkModel(BaseModel):
     
 
     @staticmethod
-    def empty(institute_id, department_id, scheme_of_work_id, auth_user_id):
+    def empty(institute_id, department_id):
         return SchemeOfWorkModel(0, institute_id=institute_id, department_id=department_id) # Default
 
 

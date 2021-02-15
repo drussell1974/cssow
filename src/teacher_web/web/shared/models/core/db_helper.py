@@ -119,7 +119,7 @@ class ExecHelper:
         return result
 
 
-    def scalar(self, db, sql, params, result, log_info=None):
+    def scalar(self, db, sql, result, log_info, params):
         
         ''' run the sql statement '''
         self.begin(db)

@@ -34,8 +34,8 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
 
         testcases = [
             {
-                "route":"learningobjective.index as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives",
+                "route":"learningobjective.index as     ",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -44,35 +44,35 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
             },
             {
                 "route":"learningobjective.new as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/new",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/new",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.delete_unpublished as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.edit as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/edit",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.save as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/save",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/save",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"learningobjective.publish as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/publish",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/99999999/publish",
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -81,7 +81,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
 
             {
                 "route":"learningobjective.edit as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/edit",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow":True,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -91,7 +91,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
             },
             {
                 "route":"learningobjective.delete_unpublished as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/delete_unpublished",
                 "enter_username": "schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -100,7 +100,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
 
             {
                 "route": "learningobjective.publish as schemeofwork-owner@localhost",
-                "uri": f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/publish",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/publish",
                 "enter_username": "schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title": "Dave Russell - Teach Computer Science",

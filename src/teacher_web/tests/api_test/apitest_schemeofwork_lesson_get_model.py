@@ -7,7 +7,7 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
 
     def setUp(self):
         # set up
-        self.get("/api/schemesofwork/{}/lessons/{}".format(self.test_scheme_of_work_id, self.test_lesson_id))
+        self.get("/api/institute/{}/department/{}/schemesofwork/{}/lessons/{}".format(self.test_institute_id, self.test_department_id, self.test_scheme_of_work_id, self.test_lesson_id))
         
 
     def tearDown(self):

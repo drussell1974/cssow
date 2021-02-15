@@ -21,8 +21,7 @@ from shared.models.cls_content import ContentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.core import validation_helper
 from shared.models.core.basemodel import try_int
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning
 
 # view models
@@ -32,11 +31,8 @@ from app.lessons.viewmodels import LessonGetModelViewModel
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Get learning objectives for lesson '''
 
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
-    
     #253 check user id
     learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
@@ -47,10 +43,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     ''' Create a new learning objective '''
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     # check if an existing_learning_objective_id has been passed
      
@@ -96,7 +89,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=view_ctx, data=data)
+    view_model = ViewModel("", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -105,10 +98,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id = 0):
     ''' Edit an existing learning objective '''
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     if request.method == "GET":
         ## GET request from client ##
@@ -198,7 +188,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
         "content_options": content_options,
     }
     #231: pass the active model to ViewModel
-    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "Create new learning objective for %s" % lesson.title, ctx=view_ctx, data=data, active_model=model, alert_message="")
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, active_model=model, alert_message="")
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -207,10 +197,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
     """ save_item non-view action """
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     # create instance of model from request
 
@@ -262,10 +249,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     """ delete item and redirect back to referer """
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
@@ -276,10 +260,7 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
 def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
     ''' Publish the learningobjective '''
-    view_ctx = Ctx(institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    # TODO: #329 move to view model
-    auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
 
     LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_ctx)
 

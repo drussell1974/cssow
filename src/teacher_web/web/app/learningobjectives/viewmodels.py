@@ -59,7 +59,7 @@ class LearningObjectiveIndexViewModel(BaseViewModel):
             "lesson_options": self.lesson_options,
         }
 
-        return ViewModel("", self.lesson.title, self.lesson.summary, ctx=self.auth_user.view_ctx, data=data)
+        return ViewModel("", self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data)
         
 
 class LearningObjectiveGetModelViewModel(BaseViewModel):

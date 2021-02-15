@@ -18,7 +18,7 @@
                     <p id="login_error">{{_("Your username and password didn't match. Please try again.")}}</p>
                 {% endif %}   
                 {% if next %}
-                    {% if user.is_authenticated and scheme_of_work_id is not None %}
+                    {% if user.is_authenticated %}
                         {% if request_made %}
                             <p class="alert alert-info" id="login_message">{{_("You have requested permisson to access the resource.")}}</p>
                         {% else %}
@@ -38,11 +38,11 @@
             <div class="control-group">
                 <br> 
                 <input type="submit" value="login" class="btn btn-primary stackable">
-                <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}}</a>
-                {% if user.is_authenticated and scheme_of_work_id is not None and permission is not None %}
+                <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}} {{ institute_id }} {{ department_id }} {{ scheme_of_work_id }}</a>
+                {% if user.is_authenticated and institute_id is not None and department_id is not None and scheme_of_work_id is not None and permission is not None %}
                     <!-- #318 get values from view or querystring -->
                     <!-- TODO: # 329 get institute_id department_id - create parameters in view -->
-                    <a href="{% url 'team-permissions.request-access' scheme_of_work_id permission %}?next={{next}}" class="btn btn-warning stackable">{{_('Request access')}}</a>
+                    <a href="{% url 'team-permissions.request-access' institute_id department_id scheme_of_work_id permission %}?next={{next}}" class="btn btn-warning stackable">{{_('Request access')}}</a>
                 {% endif %}
 
                 {% if 'register' not in auth.settings.actions_disabled %}
