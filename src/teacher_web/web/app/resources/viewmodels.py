@@ -79,7 +79,7 @@ class ResourceGetModelViewModel(BaseViewModel):
             # get model
             model = Model.get_model(self.db, resource_id, lesson_id, scheme_of_work_id, auth_user)
             if model is not None and Model.is_markdown(model):
-                model.page_uri = reverse("api.resource.markdown", args=[scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 
+                model.page_uri = reverse("api.resource.markdown", args=[auth_user.institute_id, auth_user.department_id, scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 
 
             if model is None or model.is_from_db == False:
                 self.on_not_found(model, resource_id, lesson_id, scheme_of_work_id) 

@@ -230,7 +230,7 @@ class UITestCase(TestCase):
                 
                 # assert
                 if testcase["allow"] == False:
-                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {{testcase['route']}} failed.")
+                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
                 else:
-                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {{testcase['route']}} failed.")
+                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
                 

@@ -9,7 +9,7 @@
           <a class="nav-link" id="lnk-bc-my_account" href="{% url 'accounts.index' %}">{{_("My account")}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-my_account" href="{% url 'team-permissions.index' %}">{{_("Team Permissions")}}</a>
+          <a class="nav-link" id="lnk-bc-my_account" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Team Permissions")}}</a>
         </li>
       </ul>
     </div>
@@ -20,7 +20,7 @@
 {% block maincontent %}
 
 <article class="widget widget-form widget-keyword-form">
-    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.teacher_id %}">
+    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.teacher_id %}">
         {% csrf_token %}
 
         <!-- show error_message -->
@@ -80,7 +80,7 @@
         
         <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
         <input type="hidden" name="teacher_id" value={{content.data.teacher_id}}>
-        <input type="hidden" name="next" value="{% url 'team-permissions.index' %}" >
+        <input type="hidden" name="next" value="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" >
         <input type="hidden" name="is_from_db" value="{{content.data.model.is_from_db}}" >
     </form>
 <hr>

@@ -4,8 +4,7 @@ from django.urls import reverse
 from shared.models.core.django_helper import on_not_found
 from shared.models.core.log_handlers import handle_log_info, handle_log_warning, handle_log_error
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
@@ -61,24 +60,23 @@ class min_permission_required:
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
 
-            view_ctx = Ctx(**kwargs)
-            auth_ctx = auth_user_model(db, request, view_ctx)
-
-            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user_model(db, request, ctx=auth_ctx))
+            auth_ctx = AuthCtx(db, request, **kwargs)
+            
+            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_ctx)
             
             if scheme_of_work is None:
                 # create empty scheme of work with scheme_of_work_id = 0
-                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id, scheme_of_work_id=0, auth_user_id=auth_ctx.auth_user_id)
+                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id)
                 
             ''' teacher_id and auth_user are the same in this call '''
             
-            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_user_model(db, request, ctx=auth_ctx))
+            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_ctx)
                             
             if model.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."
                 
-                return self.redirect_handler(str_err, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
+                return self.redirect_handler(str_err, institute_id, department_id, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 
             self.setkwargs("ctx", value=auth_ctx)
             
@@ -102,10 +100,10 @@ class min_permission_required:
             raise KeyError(f"'{key}' value must be passed as a keyword argument")
 
 
-    def redirect_handler(self, error_message, scheme_of_work_id, permission):
+    def redirect_handler(self, error_message, institute_id, department_id, scheme_of_work_id, permission):
         handle_log_warning(db, scheme_of_work_id, msg="permission denied", details=error_message)
         if self._redirect_to_route_name is not None and scheme_of_work_id > 0:
-            self._redirect_to_url = reverse("team-permissions.login-as", args=[scheme_of_work_id, str(permission)])
+            self._redirect_to_url = reverse("team-permissions.login-as", args=[institute_id, department_id, scheme_of_work_id, str(permission)])
         
         return redirect(f"{self._redirect_to_url}?next={self._return_url}")
         

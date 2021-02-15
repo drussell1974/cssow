@@ -35,6 +35,12 @@ class DepartmentModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+    
+    @staticmethod
+    def get_context_name(db, institude_id, department_id, auth_user_id):
+        result = BaseModel.get_context_name(db, "department__get_context_name", handle_log_info, institude_id, department_id, auth_user_id)
+        return result
+
 
     @staticmethod
     def get_all(db, institute_id, auth_user):

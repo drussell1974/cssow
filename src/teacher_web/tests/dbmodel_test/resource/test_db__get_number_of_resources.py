@@ -44,9 +44,9 @@ class test_db__get_resource_type_options(TestCase):
 
             ExecHelper.scalar.assert_called_with(self.fake_db,
                 'lesson__get_number_of_resources'
-                , (677,1,mock_ctx.auth_user_id)
                 , []
-                , handle_log_info)
+                , handle_log_info
+                , (677,1,mock_ctx.auth_user_id))
 
             self.assertEqual(0, actual_results)
 
@@ -64,9 +64,10 @@ class test_db__get_resource_type_options(TestCase):
 
             ExecHelper.scalar.assert_called_with(self.fake_db,
                 "lesson__get_number_of_resources"
-                , (12,1,mock_ctx.auth_user_id)
                 , []
-                , handle_log_info)
+                , handle_log_info
+                , (12,1,mock_ctx.auth_user_id)
+                )
             
             self.assertEqual(1, actual_results)
 
@@ -84,8 +85,9 @@ class test_db__get_resource_type_options(TestCase):
 
             ExecHelper.scalar.assert_called_with(self.fake_db,
                 "lesson__get_number_of_resources"
-                , (22, 1, mock_ctx.auth_user_id)
                 , []
-                , handle_log_info)
+                , handle_log_info
+                , (22, 1, mock_ctx.auth_user_id)
+                )
             
             self.assertEqual(3, actual_results)

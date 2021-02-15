@@ -25,7 +25,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('', views.index, name="lesson_keywords.index"),
         
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -36,7 +36,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('delete_unpublished', views.delete_unpublished, name="lesson_keywords.delete_unpublished"), 
         
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/delete_unpublished")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/delete_unpublished")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -47,7 +47,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('select', views.select, name="lesson_keywords.select"),
         
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/select")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/select")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -58,7 +58,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('new', views.new, name="lesson_keywords.new"),
         
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/new")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/new")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -69,7 +69,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('<int:keyword_id>/edit', views.edit, name="lesson_keywords.edit"),
     
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/edit")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/edit")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -80,7 +80,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('<int:keyword_id>/delete', views.delete_item, name="lesson_keywords.delete_item"), 
     
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/delete")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/delete")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -91,7 +91,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('<int:keyword_id>/publish_item', views.publish_item, name="lesson_keywords.publish_item"), 
     
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/publish_item")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/publish_item")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -102,7 +102,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_vistor(UITestCase):
         #path('<int:keyword_id>/save', views.save, name="lesson_keywords.save")    
     
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/save")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/99999999/save")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")

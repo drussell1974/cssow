@@ -32,7 +32,7 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
         testcases = [
             {
                 "route":"content.index as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -41,21 +41,21 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
             },
             {
                 "route":"content.new as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
                 "route":"content.edit as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },       
             {
                 "route":"content.delete_unpublished as schemeofwork-viewer@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/99999999/edit",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
@@ -64,7 +64,7 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
 
             {
                 "route":"content.edit as schemeofwork-editor@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/{self.test_content_id}/edit",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
@@ -74,7 +74,7 @@ class uitest_permissions_schemeofwork_content__when_different_logged_in_users(UI
 
             {
                 "route":"content.delete_unpublished as schemeofwork-owner@localhost",
-                "uri":f"/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/delete_unpublished",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/delete_unpublished",
                 "enter_username":"schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",

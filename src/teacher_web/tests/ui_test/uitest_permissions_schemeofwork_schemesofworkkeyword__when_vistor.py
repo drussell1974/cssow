@@ -26,7 +26,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('', views.index, name="keywords.index"),
 
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -37,7 +37,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('new', views.new, name="keywords.new"),
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/new")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/new")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -48,7 +48,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('<int:keyword_id>/edit', views.edit, name="keywords.edit"),
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/edit")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -59,7 +59,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('delete_unpublished', views.delete_unpublished, name="keywords.delete_unpublished"), 
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/delete_unpublished")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError")
@@ -70,7 +70,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('<int:keyword_id>/delete', views.delete_item, name="keywords.delete_item"), 
 
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/delete")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/delete")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError")
@@ -81,7 +81,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('<int:keyword_id>/publish_item', views.publish_item, name="keywords.publish_item"), 
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/publish_item")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/publish_item")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -91,7 +91,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('<int:keyword_id>/save', views.save, name="keywords.save"),
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/save")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -101,7 +101,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_vistor(UITestCa
         #path('<int:keyword_id>/merge', views.merge_duplicates, name="keywords.merge_duplicates")  
         
         # act
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/99999999/merge")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")      

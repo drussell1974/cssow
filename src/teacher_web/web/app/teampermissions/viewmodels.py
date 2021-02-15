@@ -153,7 +153,7 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
 
-        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, teacher=auth_user, auth_user=auth_user)
+        self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, auth_user=auth_user)
     
         # Check if permission has already been granted
         if self.teacher_id > 0:
@@ -186,6 +186,8 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
     def __init__(self, db, request, get_context_data, auth_user, **kwargs):
         super().__init__(request)
         
+        self.institute_id = kwargs["institute_id"] 
+        self.department_id = kwargs["department_id"] 
         self.scheme_of_work_id = kwargs["scheme_of_work_id"] 
         self.teacher_id = auth_user.auth_user_id
         self.request_made = False

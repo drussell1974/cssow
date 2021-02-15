@@ -6,7 +6,6 @@ from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
 from tests.test_helpers.mocks import *
 
-@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_GetModelViewModel(TestCase):
 
     def setUp(self):        
@@ -20,7 +19,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
 
     
-    def test_init_called_fetch__no_return(self, mock_auth_user):
+    def test_init_called_fetch__no_return(self):
         
         # arrange
         
@@ -30,7 +29,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db=self.fake_db, resource_id=99, lesson_id=12, scheme_of_work_id=934, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=99, lesson_id=12, scheme_of_work_id=934, auth_user=fake_ctx_model())
 
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -38,7 +37,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
 
     
-    def test_init_called_fetch__single_row(self, mock_auth_user):
+    def test_init_called_fetch__single_row(self):
         
         # arrange
         
@@ -59,7 +58,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.mock_model = Mock()
 
                 # act
-                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=fake_ctx_model())
             
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -70,7 +69,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
 
 
         
-    def test_init_called_override_return_url(self, mock_auth_user):
+    def test_init_called_override_return_url(self):
         # arrange
         
         data_to_return = Model(34, title="How to save the world in a day")
@@ -91,12 +90,12 @@ class test_viewmodel_GetModelViewModel(TestCase):
                 self.mock_model = Mock()
 
                 # act
-                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db=self.fake_db, resource_id=34, lesson_id=10, scheme_of_work_id=109, auth_user=fake_ctx_model())
                 
                 # assert functions was called
                 Model.get_model.assert_called()
 
                 self.assertEqual(34, self.viewmodel.model.id)
                 self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
-                self.assertEqual("/api/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)
+                self.assertEqual("/api/institute/127671276711/department/67/schemesofwork/109/lessons/10/resources/34/markdown/TESTME.md", self.viewmodel.model.page_uri)
 

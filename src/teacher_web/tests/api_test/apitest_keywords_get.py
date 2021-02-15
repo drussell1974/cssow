@@ -9,7 +9,7 @@ class apitest_keywords_get(APITestCase):
 
     def setUp(self):
         # set up
-        self.get("/api/keywords/11")
+        self.get("/api/institute/{}/department/{}/keywords/11".format(self.test_institute_id, self.test_department_id))
         
         self.last_item_index = len(self.payload["keywords"]) - 1
 

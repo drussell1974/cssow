@@ -33,7 +33,7 @@ class SchemeOfWorkGetLatestViewModel(BaseViewModel):
             "latest_schemes_of_work":self.model
         }
         
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user.view_ctx, data=data, error_message=self.error_message)
+        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class KeywordSaveViewModel(BaseViewModel):

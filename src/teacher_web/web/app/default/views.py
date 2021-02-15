@@ -2,18 +2,18 @@ import os
 from django.shortcuts import render
 from django.db import connection as db
 from django.http import HttpResponse
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
-
+from shared.models.core.context import AuthCtx
 from shared.view_model import ViewModel
 from .viewmodels import SchemeOfWorkGetLatestViewModel
 
 # Create your views here.
 def index(request):
 
+    auth_ctx = AuthCtx(db, request, 0, 0)
+    
     # get the schemes of work
     #253 check user id
-    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_user_model(db, request, ctx=Ctx(institute_id=0, department_id=0, scheme_of_work_id=0)))
+    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_ctx)
     
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 

@@ -43,9 +43,11 @@
                 </a>
             {% endif %}
                 
-            <a class="dropdown-item" href="{% url 'team-permissions.index' %}"><i class="fa fa-users"></i> 
+            {% if content.ctx.institute_id > 0 or content.ctx.department_id > 0 %}
+            <a class="dropdown-item" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}"><i class="fa fa-users"></i> 
               {{_("Manage team permissions")}}
             </a>
+            {% endif %}
             
             {% if request.user.is_superuser %}
                 <div class="dropdown-divider"></div>
@@ -129,7 +131,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <p class="text-center text-muted hide" hidden>{{ content.ctx.institute_id }} {{ content.ctx.department_id }}</p>
+            <p class="text-center text-muted">{{ content.ctx.institute_name }} - {{ content.ctx.department_name }}</p>
             <ul class="list-inline text-center">
               <li class="list-inline-item">
                 <a href="#">

@@ -2,7 +2,6 @@ import json
 from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
-from shared.models.core.django_helper import auth_user_model
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_content import ContentModel as Model
@@ -113,7 +112,7 @@ class ContentEditViewModel(BaseViewModel):
             "model":self.model
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user.view_ctx, data=data, active_model=self.model, error_message=self.error_message)
+        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message)
 
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):

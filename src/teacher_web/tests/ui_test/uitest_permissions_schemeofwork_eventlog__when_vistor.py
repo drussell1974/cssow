@@ -25,7 +25,7 @@ class uitest_permissions_schemeofwork_eventlog__when_vistor(UITestCase):
         #path("", views.index, name="eventlog.index"),
         
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/event-log")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")
@@ -36,7 +36,7 @@ class uitest_permissions_schemeofwork_eventlog__when_vistor(UITestCase):
         #path("delete", views.delete, name="eventlog.delete")
                 
         # test
-        self.try_log_out(f"/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete")
         
         # assert
         self.assertLoginPage(login_message="Enter your email and password", exception_message="PermissionError at")

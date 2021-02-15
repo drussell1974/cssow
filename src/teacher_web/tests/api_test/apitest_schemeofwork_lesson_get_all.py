@@ -9,7 +9,7 @@ class apitest_schemeofwork_lesson_get_all(APITestCase):
     
     def setUp(self):
         # set up
-        self.get("/api/schemesofwork/{}/lessons".format(self.test_scheme_of_work_id))
+        self.get("/api/institute/{}/department/{}/schemesofwork/{}/lessons".format(self.test_institute_id, self.test_department_id, self.test_scheme_of_work_id))
         
         self.last_item_index = len(self.payload["lessons"]) - 1
 

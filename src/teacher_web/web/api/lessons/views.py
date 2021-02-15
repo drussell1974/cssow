@@ -5,8 +5,7 @@ from django.db import connection as db
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from shared.models.core.context import Ctx
-from shared.models.core.django_helper import auth_user_model
+from shared.models.core.context import AuthCtx
 
 # TODO: use view models
 from shared.models.cls_learningobjective import LearningObjectiveModel
@@ -19,13 +18,9 @@ from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
 
-    def get(self, request, scheme_of_work_id, lesson_id):
-        
-        
-        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
-
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id):
+                
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
         
         resource_type_id = request.GET.get("resource_type_id", 0)
 
@@ -37,12 +32,9 @@ class LessonViewSet(APIView):
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
 
-    def get (self, request, scheme_of_work_id):
+    def get (self, request, institute_id, department_id, scheme_of_work_id):
 
-        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
-
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         #253 check user id
         get_lessons_view = LessonGetAllViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
@@ -52,15 +44,12 @@ class LessonListViewSet(APIView):
 class LessonPathwayObjectivesViewSet(APIView):
     ''' API endpoint for list of lessons pathway objectives'''
 
-    def get(self, request, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
 
         raise DeprecationWarning("verify usage")
     
-        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
-        
         ''' get the pathway objectives '''
         pathwayobjectives = LearningObjectiveModel.get_all_pathway_objectives(db, key_stage_id = key_stage_id, key_words = key_words, auth_user = auth_ctx)
         should_be_checked = LessonModel.get_pathway_objective_ids(db, lesson_id, auth_ctx)
@@ -74,15 +63,12 @@ class LessonPathwayObjectivesViewSet(APIView):
 class LessonPathwayKs123ViewSet(APIView):
 
 
-    def get(self, request, scheme_of_work_id, lesson_id, year_id, topic_id):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, year_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")
-        
-        view_ctx = Ctx(scheme_of_work_id=scheme_of_work_id)
 
-        # TODO: #329 move to view model
-        auth_ctx = auth_user_model(db, request, ctx=view_ctx)
-        
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
         data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id, auth_user=auth_ctx)
         should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id, auth_user=auth_ctx)
 

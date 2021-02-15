@@ -356,7 +356,7 @@ class ResourceDataAccess:
         rows = []
         #271 Stored procedure
  
-        rows = execHelper.scalar(db, select_sql, params, rows, handle_log_info)
+        rows = execHelper.scalar(db, select_sql, rows, handle_log_info, params)
 
         return rows[0]
 

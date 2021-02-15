@@ -14,7 +14,7 @@ class ResourceGetModelViewModel(BaseViewModel):
         if model is not None:
             #TODO: #254: check for markdown to override page_uri
             if ResourceModel.is_markdown(model):
-                model.page_uri = reverse("api.resource.markdown", args=[scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 
+                model.page_uri = reverse("api.resource.markdown", args=[auth_user.institute_id, auth_user.department_id, scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 
 
             srl = ResourceSerializer(model)
             self.model = srl.data
