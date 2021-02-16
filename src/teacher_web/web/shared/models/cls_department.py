@@ -6,13 +6,19 @@ from shared.models.cls_institute import InstituteModel
 
 class DepartmentModel(BaseModel):
 
+    # default values for api
     name = ""
+    description = ""
+    number_of_schemes_of_work = 0
     
-    def __init__(self, id_, name, institute, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+
+    def __init__(self, id_, name, institute, description = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         #self.id = id_
         self.name = name
+        self.description = description
         self.institute = institute
+        self.number_of_schemes_of_work = 0
 
 
     def validate(self, skip_validation = []):
@@ -21,6 +27,7 @@ class DepartmentModel(BaseModel):
 
         # Validate name
         self._validate_required_string("name", self.name, 1, 70)
+        self._validate_optional_string("description", self.description, 5000)
 
         self.on_after_validate()
 
@@ -35,11 +42,15 @@ class DepartmentModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+        # description
+        if self.description is not None:
+            self.description = sql_safe(self.description)
+
     
     @staticmethod
     def get_context_name(db, institude_id, department_id, auth_user_id):
         result = BaseModel.get_context_name(db, "department__get_context_name", handle_log_info, institude_id, department_id, auth_user_id)
-        return result
+        return result if result is not None else ""
 
 
     @staticmethod
@@ -57,7 +68,9 @@ class DepartmentModel(BaseModel):
                                     published=row[6])
 
             model.institute_id = row[2]
-        
+
+            model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
+
             data.append(model)
         return data
 
@@ -81,6 +94,7 @@ class DepartmentModel(BaseModel):
                                     created_by_name=row[5],
                                     published=row[6])
                                     
+            model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             
         
             model.on_fetched_from_db()         
@@ -97,6 +111,12 @@ class DepartmentModel(BaseModel):
             model = DepartmentModel(row[0], row[1], institute=InstituteModel(auth_user.institute_id, name=""))
             data.append(model)
         return data
+
+
+    @staticmethod
+    def get_number_of_schemes_of_work(db, department_id, auth_user):
+        scalar_result = DepartmentDataAccess.get_number_of_schemes_of_work(db, department_id, auth_user.auth_user_id)
+        return scalar_result
 
 
     @staticmethod
@@ -180,7 +200,22 @@ class DepartmentDataAccess:
 
         except Exception as e:
             raise Exception("Error getting departments", e)
+          
+    @staticmethod
+    def get_number_of_schemes_of_work(db, department_id, auth_user_id):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
         
+        select_sql = "department__get_number_of_schemes_of_work"
+        params = (department_id, auth_user_id)
+
+        result = []
+        result = execHelper.scalar(db, select_sql, result, handle_log_info, params)
+
+        if result is not None and len(result) > 0:
+            result = result[0]
+        return result
+
 
     @staticmethod
     def _insert(db, model, teacher_id, auth_user_id):

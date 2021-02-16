@@ -29,6 +29,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
+        self.assertFooterContextText("dave Test User")
         
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):

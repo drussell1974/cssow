@@ -22,6 +22,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertFooterContextText("dave Test User")
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):

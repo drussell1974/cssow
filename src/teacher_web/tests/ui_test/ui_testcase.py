@@ -59,21 +59,28 @@ class UITestCase(TestCase):
         self.assertGreaterEqual(len(list_item_elems), expected_no_of_items, "number of items not as expected")
 
 
+    def assertFooterContextText(self, context_text):
+        # assert - context_text
+        self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")
+        
+
     def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed"):
 
         # test - subheading
         self.assertEqual(title, self.test_context.title, f"title not as expected ({failed_message})")
         # assert - site-heading
-        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, f"main_heading not as expected ({failed_message})")
+        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, f".main_heading not as expected ({failed_message})")
         # assert - title
-        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text, f"subheading not as expected ({failed_message})")
+        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text, f".subheading not as expected ({failed_message})")
+        
+        
         # assert - username
         if should_be_logged_in == True and username != None:
             profile = self.test_context.find_element_by_id("btn-profile")
-            self.assertEqual(username.upper(), profile.text.upper(), f"username not as expected ({failed_message})")
+            self.assertEqual(username.upper(), profile.text.upper(), f"#btn-profile (username button) not as expected ({failed_message})")
         elif should_be_logged_in == False:
             profile = self.test_context.find_element_by_id("btn-login")
-            self.assertEqual("Login", profile.text, f"Login button text not as expected ({failed_message})")
+            self.assertEqual("Login", profile.text, f"#btn-login (Login button) text not as expected ({failed_message})")
 
 
     def assertCustom404(self, info_message):

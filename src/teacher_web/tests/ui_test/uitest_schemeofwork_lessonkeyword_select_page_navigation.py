@@ -28,6 +28,7 @@ class uitest_schemeofwork_lessonkeyword_select_page_navigation(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select keywords for Types of CPU architecture')
+        self.assertFooterContextText("dave Test User")
 
 
     """ Breadcrumb """
