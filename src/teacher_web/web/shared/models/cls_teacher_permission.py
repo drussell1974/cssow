@@ -120,7 +120,7 @@ class TeacherPermissionModel(BaseModel):
 
         cur_scheme_of_work = SchemeOfWorkModel(0)
 
-        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, auth_user_id=auth_user.auth_user_id)
+        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id.auth_user_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             
@@ -141,7 +141,8 @@ class TeacherPermissionModel(BaseModel):
                 scheme_of_work_permission=SCHEMEOFWORK(row[5]),
                 lesson_permission=LESSON(row[6]),
                 is_authorised=row[7],
-                is_from_db = True
+                is_from_db = True,
+                ctx=auth_user
             )
 
             cur_scheme_of_work.teacher_permissions.append(model)
