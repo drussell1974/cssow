@@ -9,6 +9,7 @@ const onProgress = (reactComponent) => {
 };
 
 const getInstitutes = (reactComponent) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/?format=json`;
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -35,7 +36,7 @@ const getInstitutes = (reactComponent) => {
 
 
 const getInstitute = (reactComponent, institute_id) => {
-    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}?format=json`
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}?format=json`;
     fetch(uri)
         .then(res => { 
             return res.json();
