@@ -2,22 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { MemoryRouter } from 'react-router-dom';
 
-import { LessonsBoxMenuItem } from '../widgets/LessonsBoxMenuWidget';
+import { CourseBoxMenuItem } from '../widgets/CourseBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
 
-let lesson = {
-    id: 1,
-    institute_id: 5,
-    department_id: 2,
-    title: "Curabitur id purus feugiat, porttitor.",
-    summary: "In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus",
-    image_url: "images/pic01.jpg",
-    url: "https://youtu.be/s6zR2T9vn2a",
-    number_of_learning_objectives:5,
-    number_of_resources:2
+let schemeofwork = {
+    id: 76,
+    name: "KS3 Computing",
+    description: "Lorem ipsum dolor sit amet.",
+    number_of_lessons: 67,
+    number_of_learning_objectives: 285,
+    number_of_resources: 132,
+    image_url: "images/pic03.jpg",
+    url: "https://youtu.be/s6zR2er9vn2a",
 }
 
-describe ('LessonsBoxMenuItem', () => {
+describe ('CourseBoxMenuItem', () => {
     let render, container;
 
     beforeEach(() => {
@@ -27,7 +26,7 @@ describe ('LessonsBoxMenuItem', () => {
     it('renders empty model', () => {
         render(
             <MemoryRouter>
-                <LessonsBoxMenuItem />
+                <CourseBoxMenuItem />
             </MemoryRouter>
             );
 
@@ -37,55 +36,59 @@ describe ('LessonsBoxMenuItem', () => {
     it('has a link from image', () => {
         render(
             <MemoryRouter>
-                <LessonsBoxMenuItem data={lesson} />
+                <CourseBoxMenuItem data={schemeofwork} />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.box a').getAttribute('href')
-        ).toMatch('https://youtu.be/s6zR2T9vn2a');
+        ).toMatch('https://youtu.be/s6zR2er9vn2a');
     })
 
     it('has a image', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem  data={lesson} />
+            <CourseBoxMenuItem  data={schemeofwork} />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.box a img').getAttribute('src')
-        ).toMatch('images/pic01.jpg');
+        ).toMatch('images/pic03.jpg');
     })
 
     it('has a title', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem  data={lesson} />
+            <CourseBoxMenuItem  data={schemeofwork} />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.inner h3').textContent
-        ).toMatch('Curabitur id purus feugiat, porttitor.');
+        ).toMatch('KS3 Computing');
     })
 
     it('has a summary', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem  data={lesson} />
+            <CourseBoxMenuItem  data={schemeofwork} />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.inner p').textContent
-        ).toMatch('In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus');
+        ).toMatch('Lorem ipsum dolor sit amet.');
     })
 
     it('has a view button', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem data={lesson} typeButtonText='View' typeButtonClass="button style2 fit" />
+            <CourseBoxMenuItem 
+                data={schemeofwork} 
+                uri='/Course/'
+                typeButtonText='View'
+                typeButtonClass='button fit' />
             </MemoryRouter>
             );
 
@@ -95,18 +98,38 @@ describe ('LessonsBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('/lesson');
+        ).toMatch('/course');
+    })
+
+    it('has a disabled view button', () => {
+        // arrange zero lessons for this test
+        schemeofwork.number_of_lessons = 0;
+
+        render(
+            <MemoryRouter>
+            <CourseBoxMenuItem 
+                data={schemeofwork} 
+                typeButtonText='View' 
+                typeButtonClass='button fit'
+                typeDisabledButtonText='Coming soon' 
+                typeDisabledButtonClass='button fit disabled'/>
+            </MemoryRouter>
+            );
+
+        expect(
+            container.querySelector('div.inner button.button').textContent
+        ).toMatch('Coming soon');
     })
 
     it('has type label heading', () => {
         render(
             <MemoryRouter>
-            <LessonsBoxMenuItem data={lesson} typeLabelText="lesson" />
+            <CourseBoxMenuItem data={schemeofwork} typeLabelText="scheme of work" />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.inner label.label').textContent
-        ).toMatch('lesson');
+        ).toMatch('scheme of work');
     })
 })

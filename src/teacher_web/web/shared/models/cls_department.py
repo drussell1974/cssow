@@ -10,6 +10,7 @@ class DepartmentModel(BaseModel):
     name = ""
     description = ""
     number_of_schemes_of_work = 0
+    institute_id = 0
     
 
     def __init__(self, id_, name, institute, description = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
@@ -93,7 +94,7 @@ class DepartmentModel(BaseModel):
                                     created_by_id=row[4],
                                     created_by_name=row[5],
                                     published=row[6])
-                                    
+            model.institute_id = row[2]
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             
         

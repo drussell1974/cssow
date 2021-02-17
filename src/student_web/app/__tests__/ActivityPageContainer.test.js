@@ -12,12 +12,16 @@ describe("ActivityPageContainer", () =>{
 
     let schemesofwork = {
         id: 1,
+        institute_id: 5,
+        department_id: 2,
         name: "CPU Architecture",
         description: "CPU components: ALU, Control Unit, Registers and Buses",
     };
 
     let lesson = {
         id: 1,
+        institute_id: 5,
+        department_id: 2,
         title: "Types of CPU Architecture",
     };
 
@@ -33,7 +37,7 @@ describe("ActivityPageContainer", () =>{
         "type_name": "Markdown",
         "type_icon": "fa-book",
         "lesson_id": 220,
-        "scheme_of_work_id": 11,
+        "course_id": 11,
         "last_accessed": "",
         "created": "2020-02-17T06:48:00",
         "created_by_id": 2,
@@ -114,7 +118,7 @@ describe("ActivityPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/course/1');
+            ).toEqual('/course/');
         })
 
         it('with Lesson link', () => {

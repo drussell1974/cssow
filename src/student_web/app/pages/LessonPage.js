@@ -6,7 +6,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getSchemeOfWork, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getCourse, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
 
 class LessonPage extends React.Component {
    
@@ -17,14 +17,15 @@ class LessonPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            SchemeOfWork: {},
             Lesson: {},
             hasError: false,
             loading: 0,
             socialmediadata: []
         }
     
-        this.scheme_of_work_id = props.match.params.scheme_of_work_id;
+        this.institute_id = props.match.params.institute_id;
+        this.department_id = props.match.params.department_id;
+        this.course_id = props.match.params.course_id;
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
         this.md_document_name = props.match.params.md_document_name;
@@ -34,9 +35,13 @@ class LessonPage extends React.Component {
 
         this.NO_OF_COMPONENTS_TO_LOAD = 3;
 
-        getSchemeOfWork(this, this.scheme_of_work_id);
+        getInstitute(this, this.institute_id);
 
-        getLesson(this, this.scheme_of_work_id, this.lesson_id);   
+        getDepartment(this, this.institute_id, this.department_id);
+
+        getCourse(this, this.institute_id, this.department_id, this.course_id);
+
+        getLesson(this, this.institute_id, this.department_id, this.course_id, this.lesson_id);   
 
         getSocialMediaLinks(this);
     }
@@ -59,16 +64,15 @@ class LessonPage extends React.Component {
         return (
             <LessonPageContainer 
                 lesson={this.state.Lesson}
-                keywords={this.state.Lesson.keywords}
-                schemeofwork={this.state.SchemeOfWork}
+                course={this.state.Course}
                 socialmediadata={this.state.socialmediadata}
             />
         )
     }
 };
 
-export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, loading = 0}) => {
-    if (lesson === undefined || schemeofwork === undefined) {
+export const LessonPageContainer = ({lesson, course, department, institute, site, socialmediadata, loading = 0}) => {
+    if (lesson === undefined || course === undefined || department === undefined || institute === undefined || site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
@@ -76,8 +80,9 @@ export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, load
 
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
-            {text:schemeofwork.name, url:`/course/${schemeofwork.id}`},
-
+            {text:institute.name, url:`/institute/`},
+            {text:department.name, url:`/institute/${institute.id}/department/`},
+            {text:course.name, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}`},
         ]
 
         return (
@@ -100,7 +105,7 @@ export const LessonPageContainer = ({schemeofwork, lesson, socialmediadata, load
                     </div>
                 </div>
                 
-                <FooterWidget heading={schemeofwork.name} summary={schemeofwork.description} socialmedia={socialmediadata} />
+                <FooterWidget heading={course.name} summary={course.description} socialmedia={socialmediadata} />
 
             </React.Fragment>
         )

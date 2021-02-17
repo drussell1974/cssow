@@ -3,7 +3,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
+import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class ActivityPage extends React.Component {
@@ -15,7 +15,7 @@ class ActivityPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            SchemeOfWork: {},
+            Course: {},
             Lesson: {},
             hasError: false,
             loading: 0,
@@ -23,7 +23,9 @@ class ActivityPage extends React.Component {
             socialmediadata: []
         }
 
-        this.scheme_of_work_id = props.match.params.scheme_of_work_id;
+        this.institute_id = props.match.params.institute_id;
+        this.department_id = props.match.params.department_id;
+        this.course_id = props.match.params.course_id;
         this.lesson_id = props.match.params.lesson_id;
         this.resource_id = props.match.params.resource_id;
         this.md_document_name = props.match.params.md_document_name;
@@ -35,13 +37,13 @@ class ActivityPage extends React.Component {
 
         getSiteConfig(this);
 
-        getSchemeOfWork(this, this.scheme_of_work_id);
+        getCourse(this, this.institute_id, this.department_id, this.course_id);
 
-        getLesson(this, this.scheme_of_work_id, this.lesson_id);
+        getLesson(this, this.institute_id, this.department_id, this.course_id, this.lesson_id);
 
-        getResource(this, this.scheme_of_work_id, this.lesson_id, this.resource_id)
+        getResource(this, this.institute_id, this.department_id, this.course_id, this.lesson_id, this.resource_id)
 
-        getMarkdown(this, this.scheme_of_work_id, this.lesson_id, this.resource_id, this.md_document_name);
+        getMarkdown(this, this.institute_id, this.department_id, this.course_id, this.lesson_id, this.resource_id, this.md_document_name);
 
         getSocialMediaLinks(this);
     }
@@ -67,7 +69,7 @@ class ActivityPage extends React.Component {
             <React.Fragment>
                 <ActivityPageContainer 
                     resource={this.state.Resource}
-                    schemeofwork={this.state.SchemeOfWork}
+                    schemeofwork={this.state.Course}
                     lesson={this.state.Lesson}
                     markdown_html={this.state.markdown_html}
                     socialmediadata={this.state.socialmediadata}
@@ -87,7 +89,7 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
         
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
-            {text:schemeofwork.name, url:`/course/${schemeofwork.id}`},
+            {text:schemeofwork.name, url:`/course/`},
             {text:lesson.title, url:`/course/${schemeofwork.id}/lesson/${lesson.id}`}
 
         ]

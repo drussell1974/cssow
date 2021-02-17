@@ -11,8 +11,8 @@ class InstituteViewSet(APIView):
 
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
 
-        department_view = InstituteGetModelViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
-        return JsonResponse({"departments":department_view.model})
+        institute_view = InstituteGetModelViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
+        return JsonResponse({"institute":institute_view.model})
 
 
 class InstituteListViewSet(APIView):
@@ -23,5 +23,5 @@ class InstituteListViewSet(APIView):
         auth_ctx = AuthCtx(db, request, institute_id=0, department_id=0)
 
         #253 check user id
-        departments_view = InstituteGetAllViewModel(db=db, auth_user=auth_ctx)
-        return JsonResponse({"departments": departments_view.model})
+        institutes_view = InstituteGetAllViewModel(db=db, auth_user=auth_ctx)
+        return JsonResponse({"institutes": institutes_view.model})

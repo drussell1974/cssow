@@ -3,7 +3,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getMarkdown, getSchemeOfWork, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
+import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 import { LoginWidget } from '../widgets/LoginWidget';
 

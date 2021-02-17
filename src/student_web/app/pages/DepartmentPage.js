@@ -1,18 +1,19 @@
 import React from 'react';
-import { CourseBoxMenuWidget } from '../widgets/CourseBoxMenuWidget';
+import { DepartmentBoxMenuWidget } from '../widgets/DepartmentBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getCourses, getSocialMediaLinks, getSiteConfig, getInstitute, getDepartment } from '../services/apiReactServices';
+import { getDepartments, getInstitute, getCourses, getSiteConfig, getSocialMediaLinks } from '../services/apiReactServices';
 
-
-class CoursePage extends React.Component {
-
+class DepartmentPage extends React.Component {
+    
     constructor(props){
         super(props);
         this.state = {
-            Courses: [],
+            // Site: {}, TODO: Check if this needs resetting here 
+            // Institute: {}, TODO: Check if this needs resetting here
+            Departments: [],
             hasError: false,
             loading: 0,
             socialmediadata: []
@@ -24,15 +25,13 @@ class CoursePage extends React.Component {
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 5;
+        this.NO_OF_COMPONENTS_TO_LOAD = 4;
 
         getSiteConfig(this);
 
         getInstitute(this, this.institute_id);
 
-        getDepartment(this, this.institute_id, this.department_id);
-
-        getCourses(this, this.institute_id, this.department_id);
+        getDepartments(this, this.institute_id);
 
         getSocialMediaLinks(this);
     }
@@ -44,19 +43,19 @@ class CoursePage extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log(error, errorInfo);
+        console.log(`error:${error} ${errorInfo}`);
         
         this.state = {
             hasError: true,
-            loading: 50,
+            loading: 50
         }
       }
       
     render() {
         return (
-            <CoursePageContainer
-                courses={this.state.Courses}
-                department={this.state.Department}
+
+            <DepartmentPageContainer 
+                departments={this.state.Departments}
                 institute={this.state.Institute}
                 site={this.state.Site}
                 socialmediadata={this.state.socialmediadata}
@@ -66,42 +65,32 @@ class CoursePage extends React.Component {
     }
 };
 
-export const CoursePageContainer = ({courses, department, institute, site, socialmediadata, loading = 0}) => {
-    if (courses === undefined || department === undefined || institute === undefined || site === undefined) {
+export const DepartmentPageContainer = ({departments, institute, site, socialmediadata, loading = 0}) => {
+    if (departments === undefined || institute === undefined || site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
-
-        console.log(courses.length)
-        
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
             {text:institute.name, url:`/institute/`},
-            {text:department.name, url:`/institute/${institute.id}/department/`},
         ]
 
         return (
             <React.Fragment>
-                 
-                <BannerWidget heading={department.name} description={department.description} />
+                <BannerWidget heading={institute.name} description={institute.description} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
                     <div className="inner clearfix">
-                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={department.name} />   
-                        <CourseBoxMenuWidget data={courses} typeLabelText="Course" 
-                            typeButtonText="View Course" 
-                            typeButtonClass="button style2 fit"
-                            typeDisabledButtonText="Coming soon"
-                            typeDisabledButtonClass="button style2 fit disabled"
-                        />
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={institute.name} />    
+                        <DepartmentBoxMenuWidget data={departments} typeLabelText="Department" typeButtonText="View Department" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                     </div>
                 </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
-
             </React.Fragment>
         )
     }
 }
 
-export default CoursePage;
+
+export default DepartmentPage;

@@ -5,4 +5,4 @@ from django.db import models
 class DepartmentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepartmentModel
-        fields = ["id", "name", "description", "number_of_schemes_of_work"]
+        fields = ["id", "name", "description", "number_of_schemes_of_work", "institute_id"]

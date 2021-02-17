@@ -12,7 +12,7 @@ class DepartmentViewSet(APIView):
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
 
         department_view = DepartmentGetModelViewModel(db=db, department_id=department_id, auth_user=auth_ctx)
-        return JsonResponse({"departments":department_view.model})
+        return JsonResponse({"department":department_view.model})
 
 
 class DepartmentListViewSet(APIView):

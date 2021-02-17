@@ -15,6 +15,8 @@ class SchemeOfWorkModel(BaseModel):
     number_of_resources = 0
     number_of_keywords = 0
     key_words = []
+    department_id = 0
+    institute_id = 0
     
 
     @staticmethod
@@ -110,7 +112,7 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[10],
                                     created_by_name=row[11],
                                     published=row[12])
-
+            model.institute_id = row[13]
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
@@ -143,7 +145,7 @@ class SchemeOfWorkModel(BaseModel):
                                     created_by_id=row[10],
                                     created_by_name=row[11],
                                     published=row[12])
-
+            model.institute_id = row[13]
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)

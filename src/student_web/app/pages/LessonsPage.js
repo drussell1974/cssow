@@ -1,30 +1,34 @@
 import React from 'react';
-import { CourseBoxMenuWidget } from '../widgets/CourseBoxMenuWidget';
+import { LessonsBoxMenuWidget } from '../widgets/LessonsBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getCourses, getSocialMediaLinks, getSiteConfig, getInstitute, getDepartment } from '../services/apiReactServices';
+import { getInstitute, getDepartment, getCourse, getLessons, getSocialMediaLinks, getSiteConfig } from '../services/apiReactServices';
 
-
-class CoursePage extends React.Component {
+class LessonsPage extends React.Component {
+   
+    onProgress() {
+        return this.state.loading + 100 / 3;
+    }
 
     constructor(props){
         super(props);
         this.state = {
-            Courses: [],
+            Lessons: [],
             hasError: false,
             loading: 0,
             socialmediadata: []
         }
-
+    
         this.institute_id = props.match.params.institute_id;
         this.department_id = props.match.params.department_id;
+        this.course_id = props.match.params.course_id;
     }
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 5;
+        this.NO_OF_COMPONENTS_TO_LOAD = 6;
 
         getSiteConfig(this);
 
@@ -32,7 +36,9 @@ class CoursePage extends React.Component {
 
         getDepartment(this, this.institute_id, this.department_id);
 
-        getCourses(this, this.institute_id, this.department_id);
+        getCourse(this, this.institute_id, this.department_id, this.course_id);
+
+        getLessons(this, this.institute_id, this.department_id, this.course_id);   
 
         getSocialMediaLinks(this);
     }
@@ -47,61 +53,54 @@ class CoursePage extends React.Component {
         console.log(error, errorInfo);
         
         this.state = {
-            hasError: true,
-            loading: 50,
+            hasError: true
         }
       }
       
     render() {
         return (
-            <CoursePageContainer
-                courses={this.state.Courses}
+            <LessonsPageContainer 
+                lessons={this.state.Lessons}
+                course={this.state.Course}
                 department={this.state.Department}
                 institute={this.state.Institute}
                 site={this.state.Site}
                 socialmediadata={this.state.socialmediadata}
-                loading={this.state.loading}
             />
         )
     }
 };
 
-export const CoursePageContainer = ({courses, department, institute, site, socialmediadata, loading = 0}) => {
-    if (courses === undefined || department === undefined || institute === undefined || site === undefined) {
+export const LessonsPageContainer = ({lessons, course, department, institute, site, socialmediadata, loading = 0}) => {
+    if (lessons === undefined || course === undefined || department === undefined || institute === undefined || site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
-
-        console.log(courses.length)
         
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
             {text:institute.name, url:`/institute/`},
             {text:department.name, url:`/institute/${institute.id}/department/`},
+            {text:course.name, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}`},
         ]
-
+        
         return (
             <React.Fragment>
-                 
-                <BannerWidget heading={department.name} description={department.description} />
+                <BannerWidget heading={course.name} description={course.description} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
                     <div className="inner clearfix">
-                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={department.name} />   
-                        <CourseBoxMenuWidget data={courses} typeLabelText="Course" 
-                            typeButtonText="View Course" 
-                            typeButtonClass="button style2 fit"
-                            typeDisabledButtonText="Coming soon"
-                            typeDisabledButtonClass="button style2 fit disabled"
-                        />
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={course.name} />
+                        <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" typeButtonText="View Lesson" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                     </div>
                 </div>
-                <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
+                
+                <FooterWidget heading={course.name} summary={course.description} socialmedia={socialmediadata} />
 
             </React.Fragment>
         )
     }
 }
 
-export default CoursePage;
+export default LessonsPage;
