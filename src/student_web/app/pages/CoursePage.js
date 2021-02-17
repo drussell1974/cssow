@@ -72,8 +72,6 @@ export const CoursePageContainer = ({courses, department, institute, site, socia
             <React.Fragment></React.Fragment>
         )
     } else {
-
-        console.log(courses.length)
         
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
@@ -90,7 +88,7 @@ export const CoursePageContainer = ({courses, department, institute, site, socia
                     <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={department.name} />   
                         <CourseBoxMenuWidget data={courses} typeLabelText="Course" 
-                            typeButtonText="View Course" 
+                            typeButtonText="View Lesson" 
                             typeButtonClass="button style2 fit"
                             typeDisabledButtonText="Coming soon"
                             typeDisabledButtonClass="button style2 fit disabled"

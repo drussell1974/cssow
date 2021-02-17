@@ -9,16 +9,12 @@ const onProgress = (reactComponent) => {
 };
 
 const getInstitutes = (reactComponent) => {
-    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/?format=json`;
-    console.log('getInstitutes:' + uri);
     fetch(uri)
         .then(res => { 
-            console.log(`apiReactServices.getInstitutes:res.json():${res}`);
             return res.json();
         })
         .then(
         (data) => {
-            console.log(`apiReactServices.getInstitutes:res.json():${data}`);
             reactComponent.setState({
                 Institutes: data.institutes, 
                 hasError: false,
@@ -27,7 +23,6 @@ const getInstitutes = (reactComponent) => {
             });
         },  
         (error) => {
-            console.log(`apiReactServices.getInstitutes:error:${error}`);
             reactComponent.setState({
                 Institutes: [],
                 hasError: true,
@@ -41,7 +36,6 @@ const getInstitutes = (reactComponent) => {
 
 const getInstitute = (reactComponent, institute_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}?format=json`
-    console.log('getInstitute:' + uri);
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -69,15 +63,12 @@ const getInstitute = (reactComponent, institute_id) => {
 
 const getDepartments = (reactComponent, institute_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/?format=json`;
-    console.log('getDepartments:' + uri);
     fetch(uri)
         .then(res => { 
-            console.log(`apiReactServices.getDepartments:res.json():${res}`);
             return res.json();
         })
         .then(
         (data) => {
-            console.log(`apiReactServices.getDepartments:data.departments:${data.departments}`);
             reactComponent.setState({
                 Departments: data.departments,
                 hasError: false,
@@ -86,7 +77,6 @@ const getDepartments = (reactComponent, institute_id) => {
             });
         },  
         (error) => {
-            console.log(`apiReactServices.getDepartments:error:${error}`);
             reactComponent.setState({
                 Departments: [],
                 hasError: true,
@@ -100,7 +90,6 @@ const getDepartments = (reactComponent, institute_id) => {
 
 const getDepartment = (reactComponent, institute_id, department_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}?format=json`;
-    console.log('getDepartment:'+uri)
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -128,7 +117,6 @@ const getDepartment = (reactComponent, institute_id, department_id) => {
 
 const getCourses = (reactComponent, institute_id, department_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/?format=json`;
-    console.log('getCourses:' + uri);
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -156,7 +144,6 @@ const getCourses = (reactComponent, institute_id, department_id) => {
 
 const getCourse = (reactComponent, institute_id, department_id, course_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}?format=json`;
-    console.log('getCourse:' + uri);
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -184,7 +171,6 @@ const getCourse = (reactComponent, institute_id, department_id, course_id) => {
 
 const getLessons = (reactComponent, institute_id, department_id, course_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/?format=json`;
-    console.log('getLessons:' + uri);
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -212,7 +198,6 @@ const getLessons = (reactComponent, institute_id, department_id, course_id) => {
 
 const getLesson = (reactComponent, institute_id, department_id, course_id, lesson_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/${lesson_id}?format=json`;
-    console.log('getLesson:' + uri);
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -240,7 +225,6 @@ const getLesson = (reactComponent, institute_id, department_id, course_id, lesso
 
 const getResource = (reactComponent, institute_id, department_id, course_id, lesson_id, resource_id) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}?format=json`;
-    console.log('getResource:' + uri)
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -268,7 +252,6 @@ const getResource = (reactComponent, institute_id, department_id, course_id, les
 
 const getMarkdown = (reactComponent, institute_id, department_id, course_id, lesson_id, resource_id, md_document_name) => {
     let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}//institute/${institute_id}/department/${department_id}schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`;
-    console.log('getMarkdown:' + uri)
     fetch(uri)
       .then(res => res.json())
       .then(
