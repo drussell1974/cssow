@@ -16,9 +16,9 @@ from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewMode
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id):
+def index(request, institute_id, department_id):
     
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
     
     myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_ctx)
     

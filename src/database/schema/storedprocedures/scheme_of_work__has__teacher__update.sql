@@ -19,7 +19,8 @@ BEGIN
 			department_permission = p_department_permission,
 			scheme_of_work_permission = p_scheme_of_work_permission,
 			lesson_permission = p_lesson_permission,
-            is_authorised = p_is_authorised
+            is_authorised = p_is_authorised,
+        	modified_by = p_auth_user
 		WHERE
 			scheme_of_work_id = p_scheme_of_work_id and
 			auth_user_id = p_teacher_id;

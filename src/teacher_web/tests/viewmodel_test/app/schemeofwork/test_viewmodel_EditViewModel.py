@@ -7,7 +7,6 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from tests.test_helpers.mocks import fake_ctx_model
 
-@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -19,7 +18,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data(self, mock_auth_user):
+    def test_execute_called_save__add_model_to_data(self):
         
         # arrange
 
@@ -45,7 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
             # act
 
-            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
+            test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
             test_context.model.key_words.clear()
             
             # assert 
@@ -61,7 +60,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data__with_keywords(self, mock_auth_user):
+    def test_execute_called_save__add_model_to_data__with_keywords(self):
         
         # arrange
         mock_request = Mock()
@@ -72,13 +71,13 @@ class test_viewmodel_EditViewModel(TestCase):
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
                     "key_stage_id": 5,
-                    "institute_id": 48,
-                    "department_id": 67,
+                    #"institute_id": 48,
+                    #"department_id": 67,
                     "lesson_id": 230
                 }
 
 
-        on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tinciduntx.")
+        on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tinciduntx.", auth_user=fake_ctx_model())
         
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
             with patch.object(Model, "save", return_value=on_save__data_to_return):
@@ -94,7 +93,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
                 
                 # assert 
                 self.assertEqual("", test_context.error_message)
@@ -107,7 +106,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
     
-    def test_execute_called_save__add_model_to_data__return_invalid(self, mock_auth_user):
+    def test_execute_called_save__add_model_to_data__return_invalid(self):
          
         # arrange
 
@@ -139,7 +138,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_db = MagicMock()
                 mock_db.cursor = MagicMock()
 
-                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=mock_auth_user)
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
 
                 # assert 
 

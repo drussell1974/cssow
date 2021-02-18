@@ -10,9 +10,9 @@ class ContentModel(BaseModel):
         permissions = [('publish_contentmodel', 'Can pubish Curriculum Content')]
 
 
-    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
         #231: implement across all classes
-        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)
+        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.id = id_
         self.description = description
         self.letter_prefix = letter_prefix

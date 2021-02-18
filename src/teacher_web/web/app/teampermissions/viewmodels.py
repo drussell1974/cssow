@@ -23,19 +23,19 @@ from shared.view_model import ViewModel
 class TeamPermissionIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, auth_user):
+        #super().__init__(ctx=auth_user)
         self.db = db
         self.request = request
         self.auth_user = auth_user
 
-
     def view(self):
 
-        departments = TeacherPermissionModel.get_team_permissions(self.db, self.auth_user, self.auth_user)
+        permissions = TeacherPermissionModel.get_team_permissions(self.db, self.auth_user.auth_user_id, self.auth_user)
 
         data = {
-                "my_team_permissions": departments,
+                "my_team_permissions": permissions,
             }
-
+        
         return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data)
 
 
@@ -97,12 +97,11 @@ class TeamPermissionEditViewModel(BaseViewModel):
 
             self.model.is_authorised = True
 
-            data = TeacherPermissionModel.save(self.db, self.model, self.auth_user)
+            TeacherPermissionModel.save(self.db, self.model, self.auth_user)
 
             self.on_post_complete(True)
         else:
-            # TODO: #318 - log by department/user_
-            #handle_log_warning(self.db, self.scheme_of_work_id, "saving learning objective", "permission settings are not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
+            handle_log_warning(self.db, self.scheme_of_work_id, "saving team permission", "permission settings are not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
             pass
         
         return self.view()
@@ -139,7 +138,7 @@ class TeamPermissionDeleteViewModel(BaseViewModel):
 class TeamPermissionRequestAccessViewModel(BaseViewModel):
 
     def __init__(self, db, request, scheme_of_work_id, teacher_id, teacher_name, permission, auth_user):
-        
+        super().__init__(auth_user)
         self.scheme_of_work_id = scheme_of_work_id
         self.teacher_id = teacher_id
         self.teacher_name = teacher_name
@@ -152,7 +151,7 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
         if self.scheme_of_work_id > 0:
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
-
+        
         self.model = TeacherPermissionModel.get_model(db, self.scheme_of_work, auth_user=auth_user)
     
         # Check if permission has already been granted

@@ -19,7 +19,8 @@ BEGIN
         exam_board_id = p_exam_board_id,
         key_stage_id = p_key_stage_id, 
         department_id = p_department_id,
-        published = p_published
+        published = p_published,
+        modified_by = p_auth_user
     WHERE id =  p_scheme_of_work_id 
         AND p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 

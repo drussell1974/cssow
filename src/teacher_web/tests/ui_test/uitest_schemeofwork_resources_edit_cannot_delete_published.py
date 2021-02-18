@@ -1,8 +1,8 @@
 from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
-
-class uitest_schemeofwork_resources__cannot_delete_published(UITestCase):
+      
+class uitest_schemeofwork_resources_edit_cannot_delete_published(UITestCase):
 
     test_context = WebBrowserContext()
     

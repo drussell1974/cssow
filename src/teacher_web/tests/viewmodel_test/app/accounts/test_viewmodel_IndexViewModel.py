@@ -8,7 +8,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_teacher_permission_model
 
 
 class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
@@ -35,7 +35,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             fake_request = Mock()
             
             # act
-            viewmodel = ViewModel(db=db, request=fake_request, auth_user=6079)
+            viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
             actual_result = viewmodel.view()
             
             # assert functions was called
@@ -67,7 +67,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             fake_request = Mock()
             
             # act
-            viewmodel = ViewModel(db=db, request=fake_request, auth_user=6079)
+            viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
             actual_result = viewmodel.view()
             
             # assert functions was called
@@ -123,7 +123,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             fake_request = Mock()
             
             # act
-            viewmodel = ViewModel(db=db, request=fake_request, auth_user=6079)
+            viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
             actual_result = viewmodel.view()
             
             # assert

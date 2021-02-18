@@ -26,7 +26,8 @@ BEGIN
         md_document_name = p_md_document_name,
         is_expired = p_is_expired,
         lesson_id = p_lesson_id, 
-        published = p_published 
+        published = p_published,
+        modified_by = p_auth_user
     WHERE 
         id = p_resource_id;
 END;

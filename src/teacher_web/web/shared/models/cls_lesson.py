@@ -45,10 +45,12 @@ class LessonModel (BaseModel):
     number_of_resources = 0
     number_of_learning_objectives = 0
     number_of_keywords = 0
+    department_id = 0
+    institute_id = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, auth_user = None):
         #231: implement across all classes
-        super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db)
+        super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
@@ -74,8 +76,13 @@ class LessonModel (BaseModel):
         #self.published=published
         self.orig_id = orig_id
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
+        if auth_user is not None:
+            self.department_id = auth_user.department_id # TODO: #329 use auth_user context
+            self.institute_id = auth_user.institute_id # TODO: #329 use auth_user context
+        else:
+            self.department_id = 0
+            self.institute_id = 0        
 
-        
     def from_json(self, str_json, encoding="utf8"):
         try:
             import json
@@ -225,7 +232,8 @@ class LessonModel (BaseModel):
                 created=row[14],
                 created_by_id=row[15],
                 created_by_name=row[16],
-                published=row[17])
+                published=row[17],
+                auth_user=auth_user)
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
@@ -262,7 +270,8 @@ class LessonModel (BaseModel):
                 created=row[15],
                 created_by_id=row[16],
                 created_by_name=row[17],
-                published = row[18]
+                published = row[18],
+                auth_user=auth_user
             )
             
             ' get the key words from the learning objectives '

@@ -27,7 +27,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(fake_ctx_model().teacher_id, fake_ctx_model().teacher_name, scheme_of_work = mock_scheme_of_work, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work, ctx=fake_ctx_model())
         model.is_valid = True
         
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -41,9 +41,9 @@ class test_db__save(TestCase):
     def test_should_not_call__insert__when_not_valid(self):
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science")
+        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
 
-        model = Model(fake_ctx_model().teacher_id, fake_ctx_model().teacher_name, fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         
@@ -64,11 +64,11 @@ class test_db__save(TestCase):
     def test_should_not_call__insert__when_access_already_granted(self):
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science")
+        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
 
         ''' set is_authorised/permission granted on model '''
 
-        model = Model(fake_ctx_model().teacher_id, fake_ctx_model().teacher_name, fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model()) 
+        model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model()) 
         model.created = '2021-01-24 07:18:18.677084'
 
 
@@ -87,9 +87,9 @@ class test_db__save(TestCase):
         ''' NOTE: mock @patch.object insert_department__has__teacher to only test scheme_of_work__has__teacher_permission__insert ''' 
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", department_id = 34)
+        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
 
-        model = Model(fake_ctx_model().teacher_id, fake_ctx_model().teacher_name, fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -108,13 +108,13 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__insert'
-                , (14, 9999, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079, False)
+                , (14, 56, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079, False)
                 , handle_log_info)
 
             TeacherPermissionDataAccess_insert_department__has__teacher.assert_called()
             
             self.assertEqual(14, actual_result.scheme_of_work_id)
-            self.assertEqual("Dave Russell", actual_result.teacher_name)
+            self.assertEqual("Jane Mellor", actual_result.teacher_name)
             ''' is_authorised must be explicitly set to false '''
             self.assertFalse(actual_result.is_authorised)
 
@@ -125,7 +125,7 @@ class test_db__save(TestCase):
         
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", department_id=67)
+        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
         
         
         model = Model(343080834, "Lorem Ipsum", fake_scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.EDITOR, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
@@ -149,7 +149,7 @@ class test_db__save(TestCase):
                 , (343080834, 67, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.VIEWER), int(LESSON.EDITOR), 6079)
                 , handle_log_info)
             
-            #TeacherPermissionDataAccess_insert_access_request.assert_called_with(self.fake_db, model, fake_teacher_permission_model.iteacher_idd)
+            #TeacherPermissionDataAccess_insert_access_request.assert_called_with(self.fake_db, model, fake_teacher_permission_model().teacher_id)
 
             #self.assertEqual(14, actual_result.scheme_of_work.id)
             ''' is_authorised must be explicitly set to false '''

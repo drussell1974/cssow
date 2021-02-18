@@ -8,10 +8,11 @@ CREATE PROCEDURE institute__update (
  IN p_published INT,
  IN p_auth_user INT)
 BEGIN
-    UPDATE sow_key_word 
+    UPDATE sow_institute
     SET
         name = p_name, 
-        published = p_published
+        published = p_published,
+        modified_by = p_auth_user
     WHERE id = p_institute_id;
 END;
 //

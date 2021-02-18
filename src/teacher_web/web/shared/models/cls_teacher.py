@@ -10,14 +10,15 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 
 class TeacherModel(BaseModel):
 
-    def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=False):
+    def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=False, ctx=None):
         
         TeacherModel.depreciation_notice("use TeacherPermissionModel")
 
-        super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=is_from_db)
+        super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=is_from_db, ctx=ctx)
         self.id = id
         self.name = name
         self.department = department
+
         
     def validate(self, skip_validation = []):
         """ clean up and validate model """

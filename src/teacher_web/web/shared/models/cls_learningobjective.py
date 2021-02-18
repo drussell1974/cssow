@@ -8,9 +8,9 @@ from shared.models.core.log_handlers import handle_log_info
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
         #231: implement across all classes
-        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)
+        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         
         self.id = int(id_)
         self.description = description

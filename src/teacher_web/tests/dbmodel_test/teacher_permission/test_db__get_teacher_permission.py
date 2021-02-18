@@ -7,7 +7,6 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-#@patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_teacher_permission(TestCase):
     
@@ -28,7 +27,7 @@ class test_db__get_teacher_permission(TestCase):
             # act and assert
 
             with self.assertRaises(KeyError):
-                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce", department_id=45, institute_id=74), auth_user=mock_auth_user)
+                Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Computer Sciemce", auth_user=mock_auth_user), auth_user=mock_auth_user)
 
     
     def test__should_call__select__return_no_permissions(self, mock_auth_user):
@@ -39,7 +38,7 @@ class test_db__get_teacher_permission(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Ulysses", department_id=45, institute_id=74), auth_user=mock_auth_user)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(99, name="Ulysses", auth_user=fake_ctx_model()), auth_user=mock_auth_user)
             
             # assert
 
@@ -65,7 +64,7 @@ class test_db__get_teacher_permission(TestCase):
             
             # act
             
-            model = Model.get_model(self.fake_db, SchemeOfWorkModel(14, name="Dune", department_id=45, institute_id=74), auth_user=mock_auth_user)
+            model = Model.get_model(self.fake_db, SchemeOfWorkModel(14, name="Dune", auth_user=fake_ctx_model()), auth_user=mock_auth_user)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,

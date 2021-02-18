@@ -26,7 +26,7 @@ class LoginPage extends React.Component {
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 6;
+        this.NO_OF_COMPONENTS_TO_LOAD = 2;
         
         getSiteConfig(this);
 

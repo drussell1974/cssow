@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+import sys
 from datetime import datetime
 import json
 import re
@@ -19,9 +19,11 @@ class BaseModel(models.Model):
     published = 0
     is_from_db = False
     skip_validation = []
+    department_id = 0
+    institute_id = 0
 
     # Data type ranges
-    MAX_INT = 2147483647
+    MAX_INT = sys.maxsize
 
     def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db, ctx=None):
         self.id = try_int(id_)
@@ -34,16 +36,14 @@ class BaseModel(models.Model):
         self.is_from_db = is_from_db
         self.skip_validation = []
         self.auth_user_id = 0
-        self.institute_id = 0
         self.department_id = 0
-        self.scheme_of_work_id = 0
+        self.institute_id = 0
         
         if ctx is not None:
-            #self.auth_user_id = ctx.auth_user_id
-            self.institute_id = ctx.institute_id
-            self.department_id = ctx.department_id
-            self.scheme_of_work_id = ctx.scheme_of_work_id
-            
+            self.ctx = ctx
+            self.department_id = ctx.department_id #329 use auth_user context
+            self.institute_id = ctx.institute_id #329 use auth_user context
+
 
     def __repr__(self):
         return f"{self.display_name} (id={self.id}, is_from_db={self.is_from_db}"

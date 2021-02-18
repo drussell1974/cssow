@@ -76,7 +76,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
             self.viewmodel = ViewModel(
                 db, 
                 request=mock_request, 
-                auth_user=99, 
+                auth_user=fake_ctx_model(), 
                 scheme_of_work_id=999, 
                 teacher_id=78, 
                 teacher_name="Suenos Blancos",
@@ -119,7 +119,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
                 self.viewmodel = ViewModel(
                     db, 
                     request=mock_request, 
-                    auth_user=99, 
+                    auth_user=fake_ctx_model(), 
                     scheme_of_work_id=999, 
                     teacher_id=24, 
                     teacher_name="Pies Descalzos",

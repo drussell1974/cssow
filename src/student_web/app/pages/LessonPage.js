@@ -6,7 +6,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getCourse, getLesson, getSocialMediaLinks } from '../services/apiReactServices';
+import { getLesson, getCourse, getDepartment, getInstitute, getSiteConfig, getSocialMediaLinks } from '../services/apiReactServices';
 
 class LessonPage extends React.Component {
    
@@ -17,7 +17,6 @@ class LessonPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            Lesson: {},
             hasError: false,
             loading: 0,
             socialmediadata: []
@@ -33,7 +32,9 @@ class LessonPage extends React.Component {
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 3;
+        this.NO_OF_COMPONENTS_TO_LOAD = 6;
+
+        getSiteConfig(this);
 
         getInstitute(this, this.institute_id);
 
@@ -65,7 +66,11 @@ class LessonPage extends React.Component {
             <LessonPageContainer 
                 lesson={this.state.Lesson}
                 course={this.state.Course}
+                department={this.state.Department}
+                institute={this.state.Institute}
+                site={this.state.Site}
                 socialmediadata={this.state.socialmediadata}
+                loading={this.state.loading}
             />
         )
     }
@@ -87,7 +92,6 @@ export const LessonPageContainer = ({lesson, course, department, institute, site
 
         return (
             <React.Fragment>
-                
                 <BannerWidget heading={lesson.title} description={lesson.summary} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">

@@ -22,7 +22,8 @@ BEGIN
         content_id = p_content_id,
         topic_id = p_topic_id, 
         year_id = p_year_id, 
-        published = p_published
+        published = p_published,
+        modified_by = p_auth_user
     WHERE 
         id =  p_lesson_id;
 END;

@@ -8,8 +8,6 @@ from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-#@patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
-#@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__delete(TestCase):
 
 
