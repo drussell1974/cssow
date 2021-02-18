@@ -7,8 +7,6 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
 @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
-
-# TODO: #329 Do not use mock for testing object
 @patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
 class test_db__get_team_permissions(TestCase):
 

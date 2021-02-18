@@ -24,7 +24,7 @@ def index(request):
     return render(request, "institute/index.html", index_view.view().content)
 
 
-@permission_required('cssow.change_institutemodel', login_url='/accounts/login/')
+@permission_required("cssow.change_institutemodel", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id = 0):
     """ edit action """
@@ -38,13 +38,13 @@ def edit(request, institute_id = 0):
         if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
             redirect_to_url = request.POST.get("next", None)
         else:
-            redirect_to_url = reverse('institute.edit', args=[save_view.model.id])
+            redirect_to_url = reverse("institute.edit", args=[save_view.model.id])
         return HttpResponseRedirect(redirect_to_url)
     
     return render(request, "institute/edit.html", save_view.view().content)
 
 
-@permission_required('cssow.delete_institutemodel', login_url='/accounts/login/')
+@permission_required("cssow.delete_institutemodel", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, institute_id):
     """ delete item and redirect back to referer """

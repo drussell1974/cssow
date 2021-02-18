@@ -18,9 +18,9 @@ class TeacherPermissionModel(BaseModel):
 
     @staticmethod
     def empty(institute_id, department_id, scheme_of_work_id, ctx):
-        scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id)
+        scheme_of_work = SchemeOfWorkModel.empty(ctx=ctx)
         
-        return TeacherPermissionModel(teacher_id=0, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx = ctx) # Default
+        return TeacherPermissionModel(teacher_id=0, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx=ctx) # Default
 
 
     def __init__(self, teacher_id, teacher_name, scheme_of_work, scheme_of_work_permission=SCHEMEOFWORK.NONE, lesson_permission=LESSON.NONE, department_permission=DEPARTMENT.NONE, created=None, auth_user=None, created_by_name=None, published=None, is_from_db=False, is_authorised = False, ctx = None):
@@ -29,7 +29,7 @@ class TeacherPermissionModel(BaseModel):
         if ctx is None:
             raise KeyError(f"ctx cannot be {ctx}")
         
-        super().__init__(teacher_id, teacher_name, created=created, created_by_id=auth_user, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        super().__init__(teacher_id, teacher_name, created=created, created_by_id=auth_user, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=auth_user)
         
         self.teacher_id = teacher_id
         self.teacher_name = teacher_name
@@ -118,15 +118,15 @@ class TeacherPermissionModel(BaseModel):
     @staticmethod
     def get_team_permissions(db, teacher_id, auth_user):
 
-        cur_scheme_of_work = SchemeOfWorkModel(0)
+        cur_scheme_of_work = SchemeOfWorkModel(0, auth_user=auth_user)
 
-        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id.auth_user_id, auth_user_id=auth_user.auth_user_id)
+        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             
             # check for changed scheme of work
             if cur_scheme_of_work.id != row[2]:
-                cur_scheme_of_work = SchemeOfWorkModel(row[2], name=row[3])
+                cur_scheme_of_work = SchemeOfWorkModel(row[2], name=row[3], auth_user=auth_user)
                 data.append(cur_scheme_of_work)
 
             #329 TODO: get by teacher_id only #create TeacherModel
@@ -135,14 +135,14 @@ class TeacherPermissionModel(BaseModel):
 
             model = TeacherPermissionModel(
                 teacher_id=auth_user.auth_user_id,
-                teacher_name="",
+                teacher_name=row[1], #319 get teacher name
                 scheme_of_work=cur_scheme_of_work,
                 department_permission=DEPARTMENT(row[4]),
                 scheme_of_work_permission=SCHEMEOFWORK(row[5]),
                 lesson_permission=LESSON(row[6]),
                 is_authorised=row[7],
                 is_from_db = True,
-                ctx=auth_user
+                ctx = auth_user
             )
 
             cur_scheme_of_work.teacher_permissions.append(model)
@@ -213,7 +213,7 @@ class TeacherPermissionDataAccess:
             return rows
 
         except Exception as e:
-            raise Exception("Error getting departments", e)
+            raise Exception("Error getting team permissions", e)
 
 
     @staticmethod
@@ -229,7 +229,7 @@ class TeacherPermissionDataAccess:
             DEPARTMENT(department_permission).value,
             SCHEMEOFWORK(scheme_of_work_permission).value,
             LESSON(lesson_permission).value,
-            ctx.id,
+            ctx.auth_user_id,
             is_authorised
         )
                
@@ -248,11 +248,11 @@ class TeacherPermissionDataAccess:
         params = (
             ctx.scheme_of_work_id,
             teacher_id,
-            DEPARTMENT(ctx.department_permission).value,
-            SCHEMEOFWORK(ctx.scheme_of_work_permission).value,
-            LESSON(ctx.lesson_permission).value,
-            ctx.teacher_id,
-            ctx.is_authorised
+            DEPARTMENT(department_permission).value,
+            SCHEMEOFWORK(scheme_of_work_permission).value,
+            LESSON(lesson_permission).value,
+            ctx.auth_user_id,
+            is_authorised
         )
         
         result = execHelper.update(db, str_update, params, handle_log_info)

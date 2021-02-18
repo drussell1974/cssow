@@ -66,7 +66,7 @@ class min_permission_required:
             
             if scheme_of_work is None:
                 # create empty scheme of work with scheme_of_work_id = 0
-                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id)
+                scheme_of_work = SchemeOfWorkModel.empty(ctx=auth_ctx)
                 
             ''' teacher_id and auth_user are the same in this call '''
             

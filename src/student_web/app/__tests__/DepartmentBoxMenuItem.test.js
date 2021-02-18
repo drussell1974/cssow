@@ -2,21 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { MemoryRouter } from 'react-router-dom';
 
-import { SchemeOfWorkBoxMenuItem } from '../widgets/SchemeOfWorkBoxMenuWidget';
+import { DepartmentBoxMenuItem } from '../widgets/DepartmentBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
 
-let schemeofwork = {
+let department = {
     id: 76,
     name: "KS3 Computing",
     description: "Lorem ipsum dolor sit amet.",
-    number_of_lessons: 67,
-    number_of_learning_objectives: 285,
-    number_of_resources: 132,
+    number_of_schemes_of_work: 12,
     image_url: "images/pic03.jpg",
     url: "https://youtu.be/s6zR2er9vn2a",
+    institute_id: 1277611,
 }
 
-describe ('SchemeOfWorkBoxMenuItem', () => {
+describe ('DepartmentBoxMenuItem', () => {
     let render, container;
 
     beforeEach(() => {
@@ -26,7 +25,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('renders empty model', () => {
         render(
             <MemoryRouter>
-                <SchemeOfWorkBoxMenuItem />
+                <DepartmentBoxMenuItem />
             </MemoryRouter>
             );
 
@@ -36,7 +35,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a link from image', () => {
         render(
             <MemoryRouter>
-                <SchemeOfWorkBoxMenuItem data={schemeofwork} />
+                <DepartmentBoxMenuItem data={department} />
             </MemoryRouter>
             );
 
@@ -48,7 +47,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a image', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem  data={schemeofwork} />
+            <DepartmentBoxMenuItem  data={department} />
             </MemoryRouter>
             );
 
@@ -60,7 +59,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a title', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem  data={schemeofwork} />
+            <DepartmentBoxMenuItem  data={department} />
             </MemoryRouter>
             );
 
@@ -72,7 +71,7 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a summary', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem  data={schemeofwork} />
+            <DepartmentBoxMenuItem  data={department} />
             </MemoryRouter>
             );
 
@@ -84,9 +83,9 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has a view button', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem 
-                data={schemeofwork} 
-                uri='/Course/'
+            <DepartmentBoxMenuItem 
+                data={department} 
+                uri='/Institute/99/Department/99/Course/'
                 typeButtonText='View'
                 typeButtonClass='button fit' />
             </MemoryRouter>
@@ -98,17 +97,17 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
 
         expect(
             container.querySelector('div.inner a.button').getAttribute('href')
-        ).toMatch('/course');
+        ).toMatch('/institute/1277611/department/76');
     })
 
     it('has a disabled view button', () => {
         // arrange zero lessons for this test
-        schemeofwork.number_of_lessons = 0;
+        department.number_of_schemes_of_work = 0;
 
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem 
-                data={schemeofwork} 
+            <DepartmentBoxMenuItem 
+                data={department} 
                 typeButtonText='View' 
                 typeButtonClass='button fit'
                 typeDisabledButtonText='Coming soon' 
@@ -124,12 +123,12 @@ describe ('SchemeOfWorkBoxMenuItem', () => {
     it('has type label heading', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuItem data={schemeofwork} typeLabelText="scheme of work" />
+            <DepartmentBoxMenuItem data={department} typeLabelText="Department" />
             </MemoryRouter>
             );
 
         expect(
             container.querySelector('div.inner label.label').textContent
-        ).toMatch('scheme of work');
+        ).toMatch('Department');
     })
 })

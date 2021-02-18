@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MemoryRouter } from 'react-router-dom';
-import { SchemeOfWorkBoxMenuWidget } from '../widgets/SchemeOfWorkBoxMenuWidget';
+import { CourseBoxMenuWidget } from '../widgets/CourseBoxMenuWidget';
 import { createContainer } from '../helpers/domManipulators';
 
 let schemesofwork = [{
@@ -52,29 +52,29 @@ describe('SchemesOfWorkBoxMenu', () => {
     it('renders empty model', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget data={schemesofwork} />
+            <CourseBoxMenuWidget data={schemesofwork} />
             </MemoryRouter>
             );
         
         expect(container.textContent).toMatch('');
     })
 
-    it('renders lessons container', () => {    
+    it('renders courses container', () => {    
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget data={schemesofwork} />
+            <CourseBoxMenuWidget data={schemesofwork} />
             </MemoryRouter>
             );
         
         expect(
-            container.querySelector('.lessons').getAttribute('class')
+            container.querySelector('.courses').getAttribute('class')
         ).toMatch('');
     })
 
     it('has a heading', () => {
         render(
             <MemoryRouter>
-                <SchemeOfWorkBoxMenuWidget data={schemesofwork} />
+                <CourseBoxMenuWidget data={schemesofwork} />
             </MemoryRouter>
         )
 
@@ -86,7 +86,7 @@ describe('SchemesOfWorkBoxMenu', () => {
     it('has a single box', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget data={schemesofwork.slice(0,1)} />
+            <CourseBoxMenuWidget data={schemesofwork.slice(0,1)} />
             </MemoryRouter>);
 
         expect(
@@ -98,7 +98,7 @@ describe('SchemesOfWorkBoxMenu', () => {
     it('has a multiple boxes', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget data={schemesofwork} />
+            <CourseBoxMenuWidget data={schemesofwork} />
             </MemoryRouter>);
 
         expect(
@@ -109,7 +109,7 @@ describe('SchemesOfWorkBoxMenu', () => {
     it('renders buttons with typeLabelText', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="lesson" />
+            <CourseBoxMenuWidget data={schemesofwork} typeLabelText="lesson" />
             </MemoryRouter>);
 
         expect(
@@ -120,7 +120,7 @@ describe('SchemesOfWorkBoxMenu', () => {
     it('renders buttons with link', () => {
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget
+            <CourseBoxMenuWidget
                 data={schemesofwork}
                 typeButtonText="View" 
                 typeButtonClass='button fit'
@@ -144,7 +144,7 @@ describe('SchemesOfWorkBoxMenu', () => {
 
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget
+            <CourseBoxMenuWidget
                 data={schemesofwork}
                 typeButtonText="View" 
                 typeButtonClass='button fit'
@@ -170,7 +170,7 @@ describe('SchemesOfWorkBoxMenu', () => {
 
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget
+            <CourseBoxMenuWidget
                 data={schemesofwork}
                 typeButtonText="View" 
                 typeButtonClass='button fit'
@@ -198,7 +198,7 @@ describe('SchemesOfWorkBoxMenu', () => {
 
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget
+            <CourseBoxMenuWidget
                 data={schemesofwork}
                 typeButtonText="View" 
                 typeButtonClass='button fit'
@@ -225,7 +225,7 @@ describe('SchemesOfWorkBoxMenu', () => {
 
         render(
             <MemoryRouter>
-            <SchemeOfWorkBoxMenuWidget
+            <CourseBoxMenuWidget
                 data={schemesofwork}
                 typeButtonText="View" 
                 typeButtonClass='button fit'

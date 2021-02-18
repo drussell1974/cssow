@@ -51,7 +51,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         
         self.db = db
         self.auth_user = auth_user
-        self.model = Model(id_=scheme_of_work_id)
+        self.model = Model(id_=scheme_of_work_id, auth_user=auth_user)
 
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
@@ -69,10 +69,11 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 description=request.POST.get("description", ""),
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
-                department_id=request.POST.get("department_id", 0),
-                institute_id=request.POST.get("institute_id", 0),
+                #department_id=request.POST.get("department_id", 0),
+                #institute_id=request.POST.get("institute_id", 0),
                 created=datetime.now(),
-                created_by_id=self.auth_user.auth_user_id)
+                created_by_id=self.auth_user.auth_user_id,
+                auth_user=auth_user)
 
             try:
                 self.model.validate()

@@ -23,7 +23,7 @@ export const LoginWidget = ({redirect}) => {
                         </div>
                     </div>
                     <input type="hidden" name="redirect_url" value={redirect.url} />
-                    <input type="submit" value="login" class="btn btn-primary"></input>
+                    <input type="submit" value="login" className="btn btn-primary"></input>
                     <Link className="btn btn-secondary" to={redirect.url}>Cancel</Link>
                 </form>
             </Fragment>

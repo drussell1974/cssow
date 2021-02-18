@@ -67,6 +67,8 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
+        '127.0.0.1',
+        'localhost',
         os.environ['STUDENT_WEB__WEB_SERVER_WWW'],
     ]
 

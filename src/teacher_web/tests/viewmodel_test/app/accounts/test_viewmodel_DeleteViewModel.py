@@ -23,7 +23,6 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_init_called_delete__with_exception(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
@@ -47,7 +46,6 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=None)
-    # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_init_raise_Http404__when_scheme_of_work_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
@@ -69,7 +67,6 @@ class test_viewmodel_DeleteViewModel(TestCase):
         
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     def test_init_raise_Http404__when_permission_model_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
     

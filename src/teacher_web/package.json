@@ -26,7 +26,6 @@
     "test-routes":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/route_test --settings=web.settings.test-ui.settings",
     "test-viewmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/viewmodel_test --settings=web.settings.test-ui.settings",
     "test-models":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/model_test --settings=web.settings.test-ui.settings",
-    "test-models--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-models--verify.sh",
     "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",

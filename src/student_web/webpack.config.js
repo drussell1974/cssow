@@ -9,6 +9,8 @@ require('dotenv').config()
 const {
    STUDENT_WEB__WEB_SERVER_PORT_INT: port_int, /* replace port in devserver */
    STUDENT_WEB__CSSOW_API_URI: api_uri, /* uri for accessing cssow json api*/
+   STUDENT_WEB__DEFAULT_INSTITUTE: default_institute, /* default institute */
+   STUDENT_WEB__DEFAULT_DEPARTMENT: default_department, /* default department */
    STUDENT_WEB__DEFAULT_SCHEMEOFWORK: default_schemeofwork, /* default scheme of work */
 } = process.env
 

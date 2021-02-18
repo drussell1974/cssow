@@ -7,6 +7,7 @@ class uitest_schemeofwork_content_edit_create_new_page_navigation(UITestCase):
     def setUp(self):
         # setup
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/new")
+        self.wait()
 
 
     def tearDown(self):
@@ -26,6 +27,7 @@ class uitest_schemeofwork_content_edit_create_new_page_navigation(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
+        self.assertFooterContextText("dave Test User")
 
 
     """ Breadcrumb """

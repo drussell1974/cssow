@@ -9,8 +9,8 @@ const BreadcrumbWidget = ({activePageName, breadcrumbItems = []}) => {
         <nav id="breadcrumb-nav" aria-label="breadcrumb">
             <ul className="breadcrumb">
                 { breadcrumbItems.map(item => 
-                    <li key={item.text} className="breadcrumb-item">
-                        <Link key={item.text}  to={item.url}>{item.text}</Link>
+                    <li key={item.url} className="breadcrumb-item">
+                        <Link key={item.url} to={item.url}>{item.text}</Link>
                     </li>
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{activePageName}</li>

@@ -4,10 +4,8 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.cls_department import DepartmentModel
-from tests.test_helpers.mocks import *
+from tests.test_helpers.mocks import fake_ctx_model
 
-#@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__save(TestCase):
 
 
@@ -20,11 +18,11 @@ class test_db__save(TestCase):
         pass
 
 
-    def test_should_raise_exception(self, mock_auth_user):
+    def test_should_raise_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(0)
+        model = Model(0, auth_user=fake_ctx_model())
 
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -34,11 +32,11 @@ class test_db__save(TestCase):
                 Model.save(self.fake_db, model)
 
 
-    def test_should_call__update_with_exception(self, mock_auth_user):
+    def test_should_call__update_with_exception(self):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1)
+        model = Model(1, auth_user=fake_ctx_model())
     
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -49,29 +47,31 @@ class test_db__save(TestCase):
                 Model.save(self.fake_db, model)
 
 
-    def test_should_call__update_with__is_new__false(self, mock_auth_user):
+    def test_should_call__update_with__is_new__false(self):
          # arrange
-        model = Model(89, department_id=43)
+        model = Model(89, auth_user=fake_ctx_model())
+        model.key_stage_id = 4
         model.is_new = Mock(return_value=False)
 
         with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user)
+            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 0, 43, 1, mock_auth_user.auth_user_id)
+                , (89, '', '', 0, 4, 67, 1, fake_ctx_model().auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
 
 
-    def test_should_call__scheme_of_work__insert__when__is_new__true(self, mock_auth_user):
+    def test_should_call__scheme_of_work__insert__when__is_new__true(self):
         # arrange
 
-        model = Model(0, department_id=45)
+        model = Model(0, auth_user=fake_ctx_model())
+        model.exam_board_id = 2
         model.created = "2021-01-24 07:13:09.681409"
 
         DataAccess._insert_as__teacher = Mock(return_value=1)
@@ -79,13 +79,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=(101,)):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user)
+
+            actual_result = Model.save(self.fake_db, model, fake_ctx_model())
 
             # assert
-
+            
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 0, 0, 45, '2021-01-24 07:13:09.681409', 0, 1, mock_auth_user.auth_user_id)
+                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, 1, fake_ctx_model().auth_user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -93,43 +94,43 @@ class test_db__save(TestCase):
             self.assertEqual(101, actual_result.id)
 
 
-    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self, mock_auth_user):
+    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self):
         # arrange
 
-        model = Model(0)
+        model = Model(0, auth_user=fake_ctx_model())
 
         with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user)
+            actual_result = Model.save(self.fake_db, model, fake_ctx_model())
 
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__has__teacher_permission__insert'
-                 , (101, mock_auth_user.auth_user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, mock_auth_user.auth_user_id, True)
+                 , (101, fake_ctx_model().auth_user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, fake_ctx_model().auth_user_id, True)
                  , handle_log_info)
 
             self.assertEqual(101, actual_result.id)
 
 
-    def test_should_call__delete_when_published_is_delete(self, mock_auth_user):
+    def test_should_call__delete_when_published_is_delete(self):
         # arrange
 
-        model = Model(99)
+        model = Model(99, auth_user=fake_ctx_model())
 
 
         with patch.object(ExecHelper, 'delete', return_value=([], 101)):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model(), published=2)
 
             # assert
 
             ExecHelper.delete.assert_called_with(self.fake_db,
             'scheme_of_work__delete'
             
-            , (99, mock_auth_user.auth_user_id)
+            , (99, fake_ctx_model().auth_user_id)
             , handle_log_info)
 
             self.assertEqual(99, actual_result.id)

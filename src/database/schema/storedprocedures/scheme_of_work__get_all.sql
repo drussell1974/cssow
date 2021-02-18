@@ -36,3 +36,5 @@ END;
 //
 
 DELIMITER ;
+
+CALL scheme_of_work__get_all(0,5);

@@ -15,31 +15,35 @@ class SchemeOfWorkModel(BaseModel):
     number_of_resources = 0
     number_of_keywords = 0
     key_words = []
+    department_id = 0
+    institute_id = 0
     
 
     @staticmethod
-    def empty(institute_id, department_id):
-        return SchemeOfWorkModel(0, institute_id=institute_id, department_id=department_id) # Default
+    def empty(ctx):
+        return SchemeOfWorkModel(0, auth_user=ctx) # Default
 
 
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_id=0, department_name="", institute_id = 0, school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False, auth_user=None):
         #231: implement across all classes
-        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
+        
+        #assert auth_user is not None
+
+        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
+
         self.name = name
         self.description = description
         self.exam_board_id = try_int(exam_board_id)
         self.exam_board_name = exam_board_name
         self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
-        self.department_id = try_int(department_id)
         self.department_name = department_name
-        self.institute_id = try_int(institute_id)
         self.school_name = school_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
         self.teacher_permissions = []
-
+        
 
     @property
     def key_words_str(self):
@@ -104,13 +108,15 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    department_id=row[7],
+                                    #department_id=row[7], # TODO: get from ctx/auth_user
                                     department_name=row[8],
                                     created=row[9],                                                                                                                                                                                                                         
                                     created_by_id=row[10],
                                     created_by_name=row[11],
-                                    published=row[12])
+                                    published=row[12],
+                                    auth_user=auth_user)
 
+            #model.institute_id = row[13]
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
@@ -127,7 +133,7 @@ class SchemeOfWorkModel(BaseModel):
         rows = SchemeOfWorkDataAccess.get_model(db, id, auth_user_id=auth_user.auth_user_id)
         
         # start as none None
-        model = SchemeOfWorkModel(0, department_id=auth_user.department_id)
+        model = SchemeOfWorkModel(0, auth_user=auth_user)
         
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -137,13 +143,16 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    department_id=row[7],
-                                    department_name=row[8],
+                                    #department_id=row[7],
+                                    department_name=row[8], # TODO: get from ctx/auth_user
                                     created=row[9],
                                     created_by_id=row[10],
                                     created_by_name=row[11],
-                                    published=row[12])
+                                    published=row[12],
+                                    auth_user=auth_user)
 
+            #model.institute_id = row[13] # TODO: #329 use auth_user context
+        
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
@@ -159,7 +168,7 @@ class SchemeOfWorkModel(BaseModel):
         data = []
 
         for row in rows:
-            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2])
+            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2], auth_user=auth_user)
             data.append(model)
 
         return data
@@ -180,10 +189,11 @@ class SchemeOfWorkModel(BaseModel):
                                     created=row[7],
                                     created_by_id=row[8],
                                     created_by_name=row[9],
-                                    published=row[10])
+                                    published=row[10],
+                                    auth_user=auth_user)
 
             model.institute_id=row[11] 
-            model.department_id=row[12]
+            model.department_id=row[12] 
 
             data.append(model)
         return data
@@ -247,8 +257,11 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
+    def save(db, model, auth_user, published=1, trace=False):
         
+        if trace:
+            raise KeyError(auth_user.department_id)
+
         if try_int(published) == 2:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
             model.published = 2
@@ -270,7 +283,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def publish_by_id(db, id, auth_user):
-        return SchemeOfWorkDataAccess.publish(db=db, auth_user_id=auth_user.auth_user_id, id_=id)        
+        return SchemeOfWorkDataAccess.publish(db=db, auth_user=auth_user, id_=id)        
 
 
 class SchemeOfWorkDataAccess:
@@ -435,15 +448,15 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def publish(db, auth_user_id, id_):
+    def publish(db, auth_user, id_):
         
-        model = SchemeOfWorkModel(id_)
+        model = SchemeOfWorkModel(id_, auth_user=auth_user)
         model.publish = True
 
         execHelper = ExecHelper()
         #271 Create StoredProcedure
         str_update = "scheme_of_work__publish"
-        params = (model.id, model.published, auth_user_id)
+        params = (model.id, model.published, auth_user.auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_update, params, handle_log_info)

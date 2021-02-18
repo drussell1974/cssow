@@ -1,10 +1,10 @@
 import React from 'react';
-import { LessonsBoxMenuWidget } from '../widgets/LessonsBoxMenuWidget';
+import { CourseBoxMenuWidget } from '../widgets/CourseBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getSchemeOfWork, getLessons, getSocialMediaLinks, getSiteConfig } from '../services/apiReactServices';
+import { getCourses, getSocialMediaLinks, getSiteConfig, getInstitute, getDepartment } from '../services/apiReactServices';
 
 
 class CoursePage extends React.Component {
@@ -12,29 +12,27 @@ class CoursePage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            Site: {},
-            SchemeOfWork: {},
-            Lessons: [],
-            Lesson: {
-                Markup: "",
-            },
+            Courses: [],
             hasError: false,
             loading: 0,
             socialmediadata: []
         }
-    
-        this.scheme_of_work_id = props.match.params.scheme_of_work_id;
+
+        this.institute_id = props.match.params.institute_id;
+        this.department_id = props.match.params.department_id;
     }
 
     componentDidMount() {
 
-        this.NO_OF_COMPONENTS_TO_LOAD = 4;
+        this.NO_OF_COMPONENTS_TO_LOAD = 5;
 
         getSiteConfig(this);
-                        
-        getSchemeOfWork(this, this.scheme_of_work_id);
 
-        getLessons(this, this.scheme_of_work_id);
+        getInstitute(this, this.institute_id);
+
+        getDepartment(this, this.institute_id, this.department_id);
+
+        getCourses(this, this.institute_id, this.department_id);
 
         getSocialMediaLinks(this);
     }
@@ -57,8 +55,9 @@ class CoursePage extends React.Component {
     render() {
         return (
             <CoursePageContainer
-                lessons={this.state.Lessons}
-                schemeofwork={this.state.SchemeOfWork}
+                courses={this.state.Courses}
+                department={this.state.Department}
+                institute={this.state.Institute}
                 site={this.state.Site}
                 socialmediadata={this.state.socialmediadata}
                 loading={this.state.loading}
@@ -67,22 +66,28 @@ class CoursePage extends React.Component {
     }
 };
 
-export const CoursePageContainer = ({lessons, schemeofwork, site, socialmediadata, loading = 0}) => {
-    if (lessons === undefined || schemeofwork === undefined || site === undefined) {
+export const CoursePageContainer = ({courses, department, institute, site, socialmediadata, loading = 0}) => {
+    if (courses === undefined || department === undefined || institute === undefined || site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
         )
     } else {
+        
+        let breadcrumbItems = [
+            {text:"Home", url:"/"}, 
+            {text:institute.name, url:`/institute/`},
+            {text:department.name, url:`/institute/${institute.id}/department/`},
+        ]
 
         return (
             <React.Fragment>
                  
-                <BannerWidget heading={schemeofwork.name} description={schemeofwork.description} />
+                <BannerWidget heading={department.name} description={department.description} />
                 <SpinnerWidget loading={loading} />
                 <div id="main">
                     <div className="inner clearfix">
-                        <BreadcrumbWidget breadcrumbItems={[{text:"Home", url:"/"}]} activePageName={schemeofwork.name} />
-                        <LessonsBoxMenuWidget data={lessons} typeLabelText="Lesson" 
+                        <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={department.name} />   
+                        <CourseBoxMenuWidget data={courses} typeLabelText="Course" 
                             typeButtonText="View Lesson" 
                             typeButtonClass="button style2 fit"
                             typeDisabledButtonText="Coming soon"

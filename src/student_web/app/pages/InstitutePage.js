@@ -1,22 +1,25 @@
 import React from 'react';
-import { SchemeOfWorkBoxMenuWidget } from '../widgets/SchemeOfWorkBoxMenuWidget';
+import { InstituteBoxMenuWidget } from '../widgets/InstituteBoxMenuWidget';
 import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getSchemesOfWork, getSiteConfig, getSocialMediaLinks } from '../services/apiReactServices';
+import { getInstitutes, getSiteConfig, getSocialMediaLinks } from '../services/apiReactServices';
 
-class SchemeOfWorkPage extends React.Component {
+class InstitutePage extends React.Component {
     
     constructor(props){
         super(props);
         this.state = {
             Site: {},
-            SchemesOfWork: [],
-            hasError: false,
+            Institutes: [],
             loading: 0,
-            socialmediadata: []
+            socialmediadata: [],
+            hasError: false,
+            error: {}
         }
+
+        this.institute_id = 2; //props.match.params.institute_id;
     }
 
     componentDidMount() {
@@ -25,7 +28,7 @@ class SchemeOfWorkPage extends React.Component {
 
         getSiteConfig(this);
         
-        getSchemesOfWork(this);
+        getInstitutes(this);
 
         getSocialMediaLinks(this);
     }
@@ -48,9 +51,9 @@ class SchemeOfWorkPage extends React.Component {
     render() {
         return (
 
-            <SchemeOfWorkPageContainer 
+            <InstitutePageContainer 
                 site={this.state.Site}
-                schemesofwork={this.state.SchemesOfWork}
+                institutes={this.state.Institutes}
                 socialmediadata={this.state.socialmediadata}
                 loading={this.state.loading}
             />
@@ -58,12 +61,16 @@ class SchemeOfWorkPage extends React.Component {
     }
 };
 
-export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata, loading = 0}) => {
-    if (schemesofwork === undefined || site === undefined) {
+export const InstitutePageContainer = ({institutes, site, socialmediadata, loading = 0}) => {
+    if (institutes === undefined || site === undefined) {
         return ( 
-            <React.Fragment></React.Fragment>
+            <React.Fragment><center>institute could not be loaded</center></React.Fragment>
         )
     } else {
+
+        let breadcrumbItems = [
+            {text:"Home", url:"/"},
+        ]
 
         return (
             <React.Fragment>
@@ -72,8 +79,8 @@ export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata,
                 <SpinnerWidget loading={loading} />
                 <div id="main">
                     <div className="inner clearfix">
-                        <BreadcrumbWidget activePageName={"Home"} />    
-                        <SchemeOfWorkBoxMenuWidget data={schemesofwork} typeLabelText="Course" typeButtonText="View Course" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
+                        <BreadcrumbWidget activePageName={"Institutes"} breadcrumbItems={breadcrumbItems} />   
+                        <InstituteBoxMenuWidget data={institutes} typeLabelText="Institutes" typeButtonText="View Institute" typeButtonClass="button fit" typeDisabledButtonText="Coming Soon" typeDisabledButtonClass="button fit disabled" />
                     </div>
                 </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
@@ -84,4 +91,4 @@ export const SchemeOfWorkPageContainer = ({schemesofwork, site, socialmediadata,
 }
 
 
-export default SchemeOfWorkPage;
+export default InstitutePage;
