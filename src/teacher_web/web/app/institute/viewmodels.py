@@ -18,6 +18,12 @@ class InstituteIndexViewModel(BaseViewModel):
         self.auth_user = auth_user
         # get model
         data = Model.get_all(self.db, auth_user)
+
+        # if not found then raise error
+        if auth_user.institute_id > 0:
+            if data is None:
+                self.on_not_found(data)
+
         self.model = data
 
 

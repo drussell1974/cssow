@@ -1,12 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
+from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from app.resources.viewmodels import ResourceIndexViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_GetAllViewModel(TestCase):
+class test_viewmodel_GetAllViewModel(ViewModelTestCase):
 
     def setUp(self):        
         pass
@@ -40,9 +41,16 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 # assert functions was called
                 Model.get_all.assert_called()
                 self.assertEqual(0, len(self.viewmodel.model))
+                
+                self.assertViewModelContent(self.viewmodel
+                    , ""
+                    , ""
+                    , ""
+                    , {}
+                )
 
 
-    
+
     def test_init_called_fetch__single_row(self, mock_auth_user):
         
         # arrange
@@ -67,6 +75,13 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 # assert functions was called
                 Model.get_all.assert_called()
                 self.assertEqual(1, len(self.viewmodel.model))
+
+                self.assertViewModelContent(self.viewmodel
+                    , ""
+                    , ""
+                    , ""
+                    , {}
+                )
 
 
     
@@ -94,3 +109,9 @@ class test_viewmodel_GetAllViewModel(TestCase):
                 Model.get_all.assert_called()
                 self.assertEqual(3, len(self.viewmodel.model))
 
+                self.assertViewModelContent(self.viewmodel
+                    , ""
+                    , ""
+                    , ""
+                    , {}
+                )

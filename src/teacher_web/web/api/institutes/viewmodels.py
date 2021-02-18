@@ -21,9 +21,9 @@ class InstituteGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
         model = InstituteModel.get_model(self.db, institute_id, auth_user)
-
-        if model is not None:
-
+        if model is None or model.is_from_db == False:
+            self.on_not_found(model, institute_id)
+        else:
             srl = InstituteModelSerializer(model)
             self.model = srl.data
 

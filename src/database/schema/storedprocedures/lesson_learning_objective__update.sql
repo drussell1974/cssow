@@ -24,7 +24,8 @@ BEGIN
         key_words = p_key_words,
         solo_taxonomy_id = p_solo_taxonomy_id, 
         content_id = p_content_id, 
-        parent_id = p_parent_id
+        parent_id = p_parent_id,
+        modified_by = p_auth_user
     WHERE id = p_learning_objective_id;
 
     UPDATE sow_learning_objective__has__lesson
