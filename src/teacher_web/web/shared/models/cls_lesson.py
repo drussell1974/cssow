@@ -77,8 +77,8 @@ class LessonModel (BaseModel):
         self.orig_id = orig_id
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
         if auth_user is not None:
-            self.department_id = auth_user.department_id # TODO: #329 use auth_user context
-            self.institute_id = auth_user.institute_id # TODO: #329 use auth_user context
+            self.department_id = auth_user.department_id #329 use auth_user context
+            self.institute_id = auth_user.institute_id
         else:
             self.department_id = 0
             self.institute_id = 0        

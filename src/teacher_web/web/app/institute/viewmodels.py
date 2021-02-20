@@ -32,8 +32,8 @@ class InstituteIndexViewModel(BaseViewModel):
         data = {
             "institutes": self.model
         }
-        # TODO: #329 active_model = institue
-        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data, active_model=None)
+        
+        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data)
 
 
 class InstituteEditViewModel(BaseViewModel):

@@ -239,7 +239,10 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
     else:
         """ redirect back to page and show message """
         
+        # TODO: #306 fix: set viewmodel.error_message and render view to prevent request.session["alert_message"]
+
         request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors)
+        
         redirect_to_url = reverse('learningobjective.edit', args=(institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id))
 
     return HttpResponseRedirect(redirect_to_url)

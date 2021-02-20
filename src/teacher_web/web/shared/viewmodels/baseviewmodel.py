@@ -12,8 +12,8 @@ class BaseViewModel:
     def __init__(self, ctx):
         
         if ctx is not None:
-            self.department_id = ctx.department_id # TODO: #329 use auth_user context
-            self.institute_id = ctx.institute_id # TODO: #329 use auth_user context
+            self.department_id = ctx.department_id
+            self.institute_id = ctx.institute_id #329 use auth_user context
         else:
             self.department_id = 0
             self.institute_id = 0 

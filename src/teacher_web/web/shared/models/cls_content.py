@@ -99,7 +99,7 @@ class ContentModel(BaseModel):
             rval = ContentDataAccess._delete(db, model, auth_user.auth_user_id)
             if rval == 0:
                 raise Exception("The item is either in use or you are not permitted to perform this action.")
-            #TODO: check row count before updating
+            # TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:
@@ -121,7 +121,7 @@ class ContentDataAccess(BaseDataAccess):
 
         execHelper = ExecHelper()
 
-        #TODO: #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
+        #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
         str_select = "content__get_options"
         params = (scheme_of_work_id, key_stage_id, auth_user_id)
 

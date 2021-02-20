@@ -49,6 +49,9 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
+    
+    # TODO: # use/create LessonEditViewModel
+    
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)

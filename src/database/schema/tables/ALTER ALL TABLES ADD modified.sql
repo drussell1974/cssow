@@ -99,3 +99,14 @@ ALTER TABLE sow_year
 MODIFY COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP,
 ADD COLUMN modified DATETIME ON UPDATE CURRENT_TIMESTAMP after created_by,
 ADD COLUMN modified_by INT DEFAULT 0 after modified;
+
+ALTER TABLE sow_department__has__teacher
+MODIFY COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP,
+MODIFY COLUMN modified DATETIME ON UPDATE CURRENT_TIMESTAMP after created_by,
+ADD COLUMN modified_by INT DEFAULT 0 after modified;
+
+ALTER TABLE sow_scheme_of_work__has__teacher
+MODIFY COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN created_by INT DEFAULT 0 after modified,
+MODIFY COLUMN modified DATETIME ON UPDATE CURRENT_TIMESTAMP after created_by,
+ADD COLUMN modified_by INT DEFAULT 0 after modified;

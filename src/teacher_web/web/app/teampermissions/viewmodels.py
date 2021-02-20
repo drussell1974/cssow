@@ -51,10 +51,11 @@ class TeamPermissionEditViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.teacher_id = teacher_id
         self.auth_user = auth_user
-        
+
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
-        # Http404
         
+        # Http404
         if self.scheme_of_work_id > 0:
             if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
@@ -115,6 +116,7 @@ class TeamPermissionDeleteViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.auth_user = auth_user
 
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
         
         # Http404
@@ -147,6 +149,7 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
         self.permission = parse_enum(permission)
         self.auth_user = auth_user
 
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
         
         # Http404
@@ -192,6 +195,7 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
         self.teacher_id = auth_user.auth_user_id
         self.request_made = False
         
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
         
         # Http404

@@ -177,7 +177,7 @@ class ResourceModel (BaseModel):
     def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
             rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
-            #TODO: check row count before updating
+            # TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:

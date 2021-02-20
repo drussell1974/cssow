@@ -18,7 +18,6 @@ def index(request):
 
     auth_ctx = AuthCtx(db, request, institute_id=0, department_id=0)
     
-    # TODO: #329 move to view model
     index_view =  InstituteIndexViewModel(db=db, auth_user=auth_ctx)
     
     return render(request, "institute/index.html", index_view.view().content)

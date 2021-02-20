@@ -172,8 +172,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
     else:
         """ redirect back to page and show message """
 
-        #request.session["alert_message"] = validation_helper.html_validation_message(model.validation_errors) #model.validation_errors
-        
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_ischemesofwork.index scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
         lesson = get_lesson_view.model
             

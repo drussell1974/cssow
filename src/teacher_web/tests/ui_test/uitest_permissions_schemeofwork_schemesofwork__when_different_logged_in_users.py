@@ -97,8 +97,10 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "route":"schemesofwork.delete_unpublished as schemeofwork-editor@localhost",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/delete_unpublished",
                 "enter_username":"schemeofwork-editor@localhost",
-                "allow": False,
-                "exp__login_message":"Enter your email and password",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"Our shared schemes of work by key stage",
             },
 
 

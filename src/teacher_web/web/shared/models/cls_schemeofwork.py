@@ -197,8 +197,8 @@ class SchemeOfWorkModel(BaseModel):
                                     published=row[10],
                                     auth_user=auth_user)
 
-            model.institute_id=row[11] 
-            model.department_id=row[12] 
+            model.department_id=row[11] 
+            model.institute_id=row[12] 
 
             data.append(model)
         return data

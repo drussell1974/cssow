@@ -30,7 +30,7 @@ class LearningObjectiveModel (BaseModel):
         self.parent_id = try_int(parent_id)
         self.key_words = key_words
         self.group_name = group_name
-        self.is_key_objective = True #TODO: calculate based on whether objective is a top level course objective
+        self.is_key_objective = True # TODO: calculate based on whether objective is a top level course objective
 
         self.set_published_state()  
             
@@ -105,7 +105,7 @@ class LearningObjectiveModel (BaseModel):
     #248 Added parameters
     def get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user):
         rows =  LearningObjectiveDataAccess.get_model(db, learning_objective_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
-        #TODO: return None
+        # TODO: return None
         model = LearningObjectiveModel(0)
         
         for row in rows:
@@ -229,7 +229,7 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def publish(db, model, scheme_of_work_id, auth_user):
-        #TODO: verify usage
+        # TODO: verify usage
         return LearningObjectiveDataAccess._publish(db, model, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
 
@@ -398,7 +398,7 @@ class LearningObjectiveDataAccess:
     def _insert(db, model, published, auth_user_id):
         execHelper = ExecHelper()
         
-        #TODO: #269 create learning_objective__insert stored procedure (1 of 2 insert sow_learning_objective)
+        #269 create learning_objective__insert stored procedure (1 of 2 insert sow_learning_objective)
 
         str_insert = "lesson_learning_objective__insert"
         

@@ -19,7 +19,8 @@ BEGIN
 		department_permission,
 		scheme_of_work_permission,
 		lesson_permission,
-        is_authorised
+        is_authorised,
+        created_by
 	)
 	VALUES 
 	(
@@ -28,7 +29,8 @@ BEGIN
 		p_department_permission,
 		p_scheme_of_work_permission,
 		p_lesson_permission,
-        p_is_authorised
+        p_is_authorised,
+        p_auth_user
 	);
 END;
 //

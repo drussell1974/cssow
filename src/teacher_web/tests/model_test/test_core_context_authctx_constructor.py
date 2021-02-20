@@ -66,7 +66,7 @@ class test_core_context_authctx_constructor(TestCase):
     def test_constructor_with_multiple_args(self):
         # arrange
 
-        fake_kw_args = {"scheme_of_work_id":13, "institute_id":1276711, "department_id":67 }
+        fake_kw_args = {"scheme_of_work_id":13, "institute_id":1276711, "department_id":67, "auth_user_id":6078 }
 
         # act
         test = AuthCtx(self.mock_db, self.mock_request, **fake_kw_args)
@@ -76,3 +76,4 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(13, test.scheme_of_work_id)
         self.assertEqual(1276711, test.institute_id)
         self.assertEqual(67, test.department_id)
+        self.assertEqual(6079, test.auth_user_id)

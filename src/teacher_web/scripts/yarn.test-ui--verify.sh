@@ -9,7 +9,7 @@ echo "yarn.test-ui--verify.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting p
 
 
 ## start test
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_edit_create_existing.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_not_found.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py

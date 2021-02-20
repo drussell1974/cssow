@@ -8,7 +8,7 @@ CREATE PROCEDURE institute__insert (
  IN p_auth_user INT,
  IN p_published INT)
 BEGIN
-    INSERT INTO sow_key_word 
+    INSERT INTO sow_institute
     (
         name, 
         created,

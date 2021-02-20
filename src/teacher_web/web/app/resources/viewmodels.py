@@ -95,7 +95,7 @@ class ResourceGetModelViewModel(BaseViewModel):
         except Exception as e:
             self.error_message = repr(e)
             handle_log_exception(db, scheme_of_work_id, "An error occurred viewing resources", e)
-            #TODO: REMOVE swallow up and handle on form
+            # TODO: REMOVE swallow up and handle on form
             raise e
 
 

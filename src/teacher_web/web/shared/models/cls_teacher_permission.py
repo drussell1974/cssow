@@ -263,7 +263,7 @@ class TeacherPermissionDataAccess:
             ctx.auth_user_id,
             is_authorised
         )
-        
+
         result = execHelper.update(db, str_update, params, handle_log_info)
 
         return result

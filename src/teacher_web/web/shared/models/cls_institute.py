@@ -72,7 +72,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def get_model(db, id, auth_user):   
         rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.auth_user_id)
-        #TODO: start as none None
+        # TODO: start as none None
         model = InstituteModel(0, "")
         for row in rows:
             model = InstituteModel(id_=row[0],
@@ -214,9 +214,8 @@ class InstituteDataAccess:
         params = (
             model.id,
             model.name,
-            teacher_id,
-            model.created,
             auth_user_id,
+            model.published
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)

@@ -127,7 +127,7 @@ class DepartmentModel(BaseModel):
             data = DepartmentDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
-                data = DepartmentDataAccess._insert(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
+                data = DepartmentDataAccess._insert(db, model, teacher_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
                 model.id = data[0]
             else:
                 data = DepartmentDataAccess._update(db, model, teacher_id, auth_user_id=auth_user.auth_user_id)
@@ -219,7 +219,7 @@ class DepartmentDataAccess:
 
 
     @staticmethod
-    def _insert(db, model, teacher_id, auth_user_id):
+    def _insert(db, model, teacher_id, institute_id, auth_user_id):
         """ inserts the sow_department """
         execHelper = ExecHelper()
 
@@ -228,7 +228,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.institute.id,
+            institute_id,
             model.created,
             auth_user_id,
         )
