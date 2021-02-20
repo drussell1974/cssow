@@ -37,6 +37,14 @@
           <!-- Dropdown -->
           <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
           <div class="dropdown-menu">
+
+            {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
+              <!-- Button trigger modal -->
+              <button type="button" class="dropdown-item "  data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-lock"></i> {{_("My permissions")}}
+              </button>
+            {% endif %}
+
             {% if 'change_password' not in auth.settings.actions_disabled %}
                 <a class="dropdown-item " href="{% url 'password_change' %}" id="btn-password_change">
                   <i class="fa fa-key"></i> {{_("Change password")}}
@@ -156,6 +164,8 @@
       </div>
     </footer>
     {% endblock %}
+
+
     <!-- The javascript =============================== -->
 
     <!-- Bootstrap core JavaScript -->
@@ -169,8 +179,11 @@
     <!-- Custom scripts for this template -->
     <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
 
+
   <!-- Keep modal above page_js -->
-  {% block page_js %}{% endblock %}
+  {% block page_js %}
+  {% endblock %}
+
     {% if ga %}
     <!-- Analytics ==================================== -->
     <script src="{% static 'default/js/analytics.min.js' %}"></script>
@@ -181,7 +194,34 @@
     </script>
   {% endif %}
 
+    
   {% block modal %}{% endblock %}
+
+  {% if request.user.is_authenticated and content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item">{{content.ctx.department_permission}}</li>
+              <li class="list-group-item">{{content.ctx.scheme_of_work_permission}}</li>
+              <li class="list-group-item">{{content.ctx.lesson_permission}}</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 
   </body>
 </html>

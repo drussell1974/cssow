@@ -32,6 +32,8 @@ class AuthCtx(Ctx):
         
         key = str((name, lookup_args)) # create unique key from name and lookup_id
         
+        # TODO: ensure value is stored in cache to prevent calling scalar_fnc each time
+
         #if key not in self.request.session:
         self.request.session[key] = scalar_fnc(db, *lookup_args)
         return self.request.session[key]

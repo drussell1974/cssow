@@ -29,16 +29,102 @@
   <hr />
   <!-- Pager Header END -->      
 
-  {% if content.data.my_team_permissions|length == 0 %}
-  <div class="alert alert-warning" role="alert">
-      <span class="large">{{_('You do not own any schemes of work.')}}</span>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-{% else %}
 
-      {% for scheme_of_work in content.data.my_team_permissions %}
+      <h3 class="group-heading">{{_("Your permissions")}}</h3>        
+
+      <h3 class="group-heading">{{_("Pending requests")}}</h3>
+      {% if content.data.pending_permissions|length == 0 %}
+        <div class="alert alert-warning" role="alert">
+            <span class="large">{{_('There are no pending requests.')}}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      {% endif %}
+      {% for scheme_of_work in content.data.pending_permissions %}
+            
+        <div class="card card-team">
+          <a name="{{ row.id }}"></a>
+          <div class="card-body">
+            <h5 class="card-title">
+                {{ scheme_of_work.name }}
+            </h5>
+            <hr>
+            <span class="small">
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{_("Teacher")}}</th>
+                    <th scope="col">{{_("Department")}}</th>
+                    <th scope="col">{{_("Scheme of work")}} </th>
+                    <th scope="col" colspan="2">{{_("Lesson")}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+              {% for member in scheme_of_work.teacher_permissions %}
+
+                {% if member.is_authorised %}
+                
+                <tr>
+                  <th scope="row">{{member.teacher_name}}</th>
+                  <td>{{member.department_permission.name}}</td>
+                  <td>{{member.scheme_of_work_permission.name}}</td>
+                  <td>{{member.lesson_permission.name}}</td>
+                  <td>
+                    <a href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                      <i class="far fa-edit"></i>
+                    </a>
+                  </td>
+                </tr>
+
+                {% else %}
+                
+                <tr class="bg-info">
+                  <th class="text-white" scope="row">{{member.teacher_name}}</th>
+                  <td class="text-white">{{member.department_permission.name}}</td>
+                  <td class="text-white">{{member.scheme_of_work_permission.name}}</td>
+                  <td class="text-white">{{member.lesson_permission.name}}</td>
+                  <td>
+                    <a href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                      <i class="far fa-w-edit"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr class="bg-info">
+                  <th scope="row" colspan="5">
+                    <a class="btn btn-danger float-right" href="{% url 'team-permissions.delete' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                      {{_("Reject")}}
+                    </a>
+                    <a class="btn btn-warning float-right" href="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                      {{_("Approve")}}
+                    </a>
+                  </td>
+                </tr>
+                
+                {% endif %}
+                
+              {% endfor %}
+                </tbody>
+              </table>
+
+          </span>
+        </div>
+      </div>
+
+      {% endfor %}
+
+      <h3>{{_("Authorised")}}</h3>
+      {% if content.data.authorised_permissions|length == 0 and content.data.pending_permissions|length == 0 %}
+        <div class="alert alert-warning" role="alert">
+          <span class="large">{{_('There are no permissions or you are not permitted to view permissions.')}}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      {% endif %}
+      
+      {% for scheme_of_work in content.data.authorised_permissions %}
         
         <div class="card card-team">
           <a name="{{ row.id }}"></a>
@@ -111,6 +197,5 @@
 
     {% endfor %}
 
-{% endif %}
 
 {% endblock %}

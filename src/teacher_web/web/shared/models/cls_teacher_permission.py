@@ -20,7 +20,7 @@ class TeacherPermissionModel(BaseModel):
     def empty(institute_id, department_id, scheme_of_work_id, ctx):
         scheme_of_work = SchemeOfWorkModel.empty(ctx=ctx)
         
-        return TeacherPermissionModel(teacher_id=0, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx=ctx) # Default
+        return TeacherPermissionModel(teacher_id=ctx.auth_user_id, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx=ctx) # Default
 
 
     def __init__(self, teacher_id, teacher_name, scheme_of_work, scheme_of_work_permission=SCHEMEOFWORK.NONE, lesson_permission=LESSON.NONE, department_permission=DEPARTMENT.NONE, created=None, auth_user=None, created_by_name=None, published=None, is_from_db=False, is_authorised = False, ctx = None):
@@ -100,27 +100,35 @@ class TeacherPermissionModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, scheme_of_work, auth_user):
+    def get_model(db, teacher_id, scheme_of_work, auth_user, show_authorised=True, trace=False):
         ''' get permission for the teacher '''
         
-        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, auth_user.auth_user_id, auth_user.department_id, auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
+        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
         
         model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work.id, auth_user) # Default
-        model.is_from_db = False
-        model.is_authorised = False
+        
+        # NOTE: default valid if scheme of work is 0
+        model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
+        model.scheme_of_work_permission = SCHEMEOFWORK.OWNER if scheme_of_work.id == 0 else SCHEMEOFWORK.NONE
+        model.lesson_permission = LESSON.OWNER if scheme_of_work.id == 0 else LESSON.NONE
+        model.is_from_db = (scheme_of_work.id == 0)
+        model.is_authorised = (scheme_of_work.id == 0)
         
         for row in rows:
-            model = TeacherPermissionModel(teacher_id=auth_user.auth_user_id, teacher_name=auth_user.user_name, scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[0], lesson_permission=row[1], department_permission=row[2], is_from_db=True, is_authorised=row[4], ctx=auth_user)
-            return model
+            # returns only the matching row
+            # TODO: Cache
+            if auth_user.scheme_of_work_id == int(row[2]) and auth_user.department_id == int(row[4]) and auth_user.institute_id == int(row[6]):
+                model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[3], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=bool(row[11]), ctx=auth_user)
+                return model
         return model
 
 
     @staticmethod
-    def get_team_permissions(db, teacher_id, auth_user):
+    def get_team_permissions(db, teacher_id, auth_user, show_authorised=True):
 
         cur_scheme_of_work = SchemeOfWorkModel(0, auth_user=auth_user)
 
-        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, auth_user_id=auth_user.auth_user_id)
+        rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, show_authorised=show_authorised, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows:
             
@@ -134,13 +142,13 @@ class TeacherPermissionModel(BaseModel):
             # TeacherModel(row[0], name=row[1], department=DepartmentModel(0,name=""))
 
             model = TeacherPermissionModel(
-                teacher_id=auth_user.auth_user_id,
+                teacher_id=row[0],
                 teacher_name=row[1], #319 get teacher name
                 scheme_of_work=cur_scheme_of_work,
-                department_permission=DEPARTMENT(row[4]),
-                scheme_of_work_permission=SCHEMEOFWORK(row[5]),
-                lesson_permission=LESSON(row[6]),
-                is_authorised=row[7],
+                department_permission=DEPARTMENT(row[6]),
+                scheme_of_work_permission=SCHEMEOFWORK(row[7]),
+                lesson_permission=LESSON(row[8]),
+                is_authorised=row[9],
                 is_from_db = True,
                 ctx = auth_user
             )
@@ -152,6 +160,7 @@ class TeacherPermissionModel(BaseModel):
 
     @staticmethod
     def request_access(db, model, auth_user):
+        
         if model.is_valid:
             TeacherPermissionDataAccess.insert_department__has__teacher(db, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, ctx=auth_user)
             data = TeacherPermissionDataAccess.insert_access_request(db, model.scheme_of_work_id, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, auth_user)
@@ -160,7 +169,7 @@ class TeacherPermissionModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):
+    def save(db, model, auth_user, is_pending = False):
         """ save model """
         if model.is_new() == False and model.published == 2:
             data = TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, ctx=auth_user)
@@ -184,13 +193,13 @@ class TeacherPermissionModel(BaseModel):
 class TeacherPermissionDataAccess:
 
     @staticmethod
-    def get_model(db, scheme_of_work_id, teacher_id, department_id, institute_id, auth_user_id):
+    def get_model(db, scheme_of_work_id, teacher_id, department_id, institute_id, show_authorised, auth_user_id):
         ''' gets the current users permissions for the scheme of work  '''
         
         helper = ExecHelper()
 
         str_select = "scheme_of_work__get_teacher_permissions"
-        params = (scheme_of_work_id, teacher_id, department_id, institute_id, auth_user_id)
+        params = (teacher_id, department_id, institute_id, show_authorised, auth_user_id)
         
         rows = []
         rows = helper.select(db, str_select, params, rows, handle_log_info)
@@ -198,14 +207,14 @@ class TeacherPermissionDataAccess:
 
 
     @staticmethod
-    def get_team_permissions(db, head_id, auth_user_id):
+    def get_team_permissions(db, head_id, show_authorised, department_id, institute_id, auth_user_id):
         ''' gets the team permission for the current user '''
 
         execHelper = ExecHelper()
 
         str_select = "scheme_of_work__get_team_permissions"
-        params = (head_id, auth_user_id)
-
+        params = (head_id, department_id, institute_id, show_authorised, auth_user_id)
+        
         try:
             rows = []
             rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -218,7 +227,7 @@ class TeacherPermissionDataAccess:
 
     @staticmethod
     def _insert(db, teacher_id, department_permission, scheme_of_work_permission, lesson_permission, is_authorised, ctx):
-        """ inserts the sow_scheme_of_work__has__teacher """
+        """ inserts the teacher permissions request """
     
         execHelper = ExecHelper()
 
@@ -292,21 +301,21 @@ class TeacherPermissionDataAccess:
             ctx.auth_user_id,
             is_authorised
         )
-               
+        
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
-
+        
         return result
 
-    
+
     @staticmethod
     def insert_department__has__teacher(db, teacher_id, department_permission, scheme_of_work_permission, lesson_permission, is_authorised, ctx):
         """ inserts the sow_department__has__teacher """
     
         execHelper = ExecHelper()
-
+        
         sql_insert_statement = "department__has__teacher__insert"
         params = (
-            teacher_id,
+            ctx.auth_user_id,
             ctx.department_id,
             DEPARTMENT(department_permission).value,
             SCHEMEOFWORK(scheme_of_work_permission).value,

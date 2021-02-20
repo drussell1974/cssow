@@ -4,6 +4,8 @@ DROP PROCEDURE IF EXISTS scheme_of_work__get;
 
 CREATE PROCEDURE scheme_of_work__get (
  IN p_scheme_of_work_id INT,
+ IN p_department_id INT,
+ IN p_institute_id INT,
  IN p_auth_user INT)
 BEGIN
     SELECT
@@ -25,7 +27,8 @@ BEGIN
         LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id
         INNER JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id
         INNER JOIN auth_user as user ON user.id = sow.created_by   
-    WHERE sow.id = p_scheme_of_work_id 
+    WHERE sow.department_id = p_department_id
+        AND sow.id = p_scheme_of_work_id 
         AND (sow.published = 1 
                 or p_auth_user IN (SELECT auth_user_id 
                                 FROM sow_teacher 

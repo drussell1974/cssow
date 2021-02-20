@@ -1,8 +1,4 @@
 from django.http import Http404
-from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.cls_institute import InstituteModel
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 
 def on_not_found(self, model, *identifers):

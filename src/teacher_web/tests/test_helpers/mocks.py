@@ -9,7 +9,7 @@ from shared.models.core.context import AuthCtx, Ctx
 
 mock_scheme_of_work = SchemeOfWorkModel(99, name="A-Level Computer Science", auth_user=Ctx(1276711, 826))
 
-def fake_ctx_model(trace=False):
+def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, trace=False):
     
     mock_request = MagicMock()
     mock_request.user = MagicMock(id=6079)
@@ -28,7 +28,10 @@ def fake_ctx_model(trace=False):
     scheme_of_work = SchemeOfWorkModel(12323232, name="GCSE Computer Science", auth_user=Ctx(1276711, 826))
 
     auth_ctx = AuthCtx(mock_db, mock_request, institute_id=institute.id, department_id=department.id, scheme_of_work_id=scheme_of_work.id)
-    
+    auth_ctx.department_permission = dep
+    auth_ctx.scheme_of_work_permission = sow
+    auth_ctx.lesson_permission = les
+
     return auth_ctx
 
 '''

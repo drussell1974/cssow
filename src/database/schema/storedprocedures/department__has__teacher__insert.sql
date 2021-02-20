@@ -33,3 +33,5 @@ END;
 //
 
 DELIMITER ;
+
+CALL department__has__teacher__insert(2, 5, 1, 1, 2, 2);

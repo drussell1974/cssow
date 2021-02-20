@@ -73,7 +73,9 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             # assert functions was called
             TeacherPermissionModel.get_team_permissions.assert_called()
 
-            self.assertEqual(1, len(actual_result.content["content"]["data"]["my_team_permissions"]))        
+            self.assertEqual(1, len(actual_result.content["content"]["data"]["authorised_permissions"]))     
+            # NOTE: uses same mock
+            self.assertEqual(1, len(actual_result.content["content"]["data"]["pending_permissions"]))           
             
 
 
@@ -130,4 +132,6 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
 
             TeacherPermissionModel.get_team_permissions.assert_called()
             
-            self.assertEqual(3, len(actual_result.content["content"]["data"]["my_team_permissions"]))              
+            self.assertEqual(3, len(actual_result.content["content"]["data"]["authorised_permissions"])) 
+            # NOTE: uses same mock
+            self.assertEqual(3, len(actual_result.content["content"]["data"]["pending_permissions"]))              

@@ -42,7 +42,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
                     db, 
                     request=mock_request, 
                     scheme_of_work_id=999, 
-                    teacher_id=7089, 
+                    #teacher_id=7089, 
                     teacher_name="Bill Gates",
                     permission="LESSON.NONE",
                     auth_user=fake_ctx_model()
@@ -78,7 +78,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
                 request=mock_request, 
                 auth_user=fake_ctx_model(), 
                 scheme_of_work_id=999, 
-                teacher_id=78, 
+                #teacher_id=78, 
                 teacher_name="Suenos Blancos",
                 permission = "LESSON.VIEWER"
             )
@@ -121,7 +121,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
                     request=mock_request, 
                     auth_user=fake_ctx_model(), 
                     scheme_of_work_id=999, 
-                    teacher_id=24, 
+                    #teacher_id=24, 
                     teacher_name="Pies Descalzos",
                     permission = "DEPARTMENT.STUDENT"
                 )
@@ -161,7 +161,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
                     db=db,
                     request=mock_request,
                     scheme_of_work_id=101,
-                    teacher_id=7039,
+                    #teacher_id=7039,
                     teacher_name="Igor Stravinsky",
                     permission = "DEPARTMENT.TEACHER",
                     auth_user=fake_ctx_model()

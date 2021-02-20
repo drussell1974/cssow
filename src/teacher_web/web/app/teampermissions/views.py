@@ -32,7 +32,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
-    
+    #raise KeyError(save_view.view().content )
     if request.method == "POST":
         save_view.execute()
 
@@ -68,7 +68,7 @@ def request_access(request, institute_id, department_id, scheme_of_work_id, perm
         db=db,
         request=request, 
         scheme_of_work_id=scheme_of_work_id, 
-        teacher_id=auth_ctx.auth_user_id, 
+        #teacher_id=auth_ctx.auth_user_id, 
         teacher_name=auth_ctx.user_name,
         permission=permission,
         auth_user=auth_ctx)

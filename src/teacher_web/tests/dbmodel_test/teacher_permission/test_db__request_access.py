@@ -146,7 +146,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'department__has__teacher__insert'
-                , (343080834, 67, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.VIEWER), int(LESSON.EDITOR), 6079)
+                , (6079, 67, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.VIEWER), int(LESSON.EDITOR), 6079)
                 , handle_log_info)
             
             #TeacherPermissionDataAccess_insert_access_request.assert_called_with(self.fake_db, model, fake_teacher_permission_model().teacher_id)
