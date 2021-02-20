@@ -38,7 +38,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.assertEqual("Schemes of Work", elem.text)
 
         # test
-        elem.click().
+        elem.click()
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')

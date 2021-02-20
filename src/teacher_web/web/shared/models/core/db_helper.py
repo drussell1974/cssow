@@ -5,6 +5,7 @@ helper routines for retrieving and saving values in the database
 import mysql.connector
 from shared.models.core.log_type import LOG_TYPE
 #import handle_log_info
+from shared.models.decorators.profiler import running_time
 
 
 class TRANSACTION_STATE:
@@ -91,6 +92,7 @@ class ExecHelper:
         self.end_transaction()
 
 
+    @running_time(max_benchmark_ms=10000, arg_idx=2)
     def select(self, db, sql, params, result, log_info=None):
         ''' run the sql statement '''
         self.begin(db)

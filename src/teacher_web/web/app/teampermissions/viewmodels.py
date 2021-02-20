@@ -203,10 +203,11 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
         self.model = TeacherPermissionModel.get_model(db, teacher_id=self.teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user)    
         
         # Check if permission has already been granted
-        if self.model.teacher_id > 0:
-            self.model.validate()
-            if self.model is not None and self.model.is_from_db == True and self.model.is_authorised is False:
-                self.request_made = True
+        if self.model.teacher_id is not None:
+            if self.model.teacher_id > 0:
+                self.model.validate()
+                if self.model is not None and self.model.is_from_db == True and self.model.is_authorised is False:
+                    self.request_made = True
         
         kwargs = dict(**kwargs, request_made=self.request_made)
 

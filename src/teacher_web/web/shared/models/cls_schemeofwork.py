@@ -117,6 +117,9 @@ class SchemeOfWorkModel(BaseModel):
                                     auth_user=auth_user)
 
             #model.institute_id = row[13]
+            
+            # TODO: #323 improve performance for the following calls
+            
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
@@ -152,7 +155,9 @@ class SchemeOfWorkModel(BaseModel):
                                     auth_user=auth_user)
 
             #model.institute_id = row[13] # TODO: #329 use auth_user context
-        
+            
+            # TODO: #323 improve performance for the following calls
+
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
             model.number_of_learning_objectives = SchemeOfWorkModel.get_number_of_learning_objectives(db, model.id, auth_user)
             model.number_of_resources = SchemeOfWorkModel.get_number_of_resources(db, model.id, auth_user)
