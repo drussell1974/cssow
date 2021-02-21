@@ -26,7 +26,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        scheme_of_work = MagicMock(id=99, name="A-Level Computer Science")
+        scheme_of_work = MagicMock(id=99, name="A-Level Computer Science", auth_user=fake_ctx_model())
 
         model = Model(343430908034, "Loren Ipsum", scheme_of_work, ctx = fake_ctx_model()) # ADD ctx
         model.is_valid = True
@@ -43,7 +43,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        scheme_of_work = MagicMock(id=1, name="A-Level Computer Science")
+        scheme_of_work = MagicMock(id=1, name="A-Level Computer Science", auth_user=fake_ctx_model())
         
         model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.EDITOR, LESSON.EDITOR, DEPARTMENT.TEACHER, is_authorised=True, ctx=fake_ctx_model())
         model.is_new = Mock(return_value=False)
@@ -61,23 +61,23 @@ class test_db__save(TestCase):
     def test_should_call__update_with__is_new__false(self):
          # arrange
 
-        scheme_of_work = MagicMock(id=11, name="A-Level Computer Science")
+        scheme_of_work = MagicMock(id=11, name="A-Level Computer Science", auth_user=fake_ctx_model())
         
-        model = Model(343430908034, "Loren Ipsum",scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT, is_authorised=False, ctx=fake_ctx_model())
         model.is_new = Mock(return_value=False)
         model.is_valid = True
         
         with patch.object(ExecHelper, 'update', return_value=(1,)):
             # act
 
-            actual_result = save(db=self.fake_db, model=model, auth_user=fake_ctx_model(6079, DEPARTMENT.STUDENT, SCHEMEOFWORK.VIEWER, LESSON.VIEWER))
+            actual_result = save(db=self.fake_db, model=model, auth_user=fake_ctx_model())
             
             # assert
             
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__update'
-                , (12323232, 343430908034, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 9999, False)
+                , (12323232, 343430908034, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 6079, False)
                 ,handle_log_info)
 
             self.assertEqual(11, actual_result.scheme_of_work_id)
@@ -87,7 +87,7 @@ class test_db__save(TestCase):
     def test_should_call__insert__when__is_new__true(self):
         # arrange
 
-        scheme_of_work = MagicMock(id=14, name="A-Level Computer Science")
+        scheme_of_work = MagicMock(id=14, name="A-Level Computer Science", auth_user=fake_ctx_model())
         # 56, "Jane Mellor"
 
         model = Model(343430908034, "Loren Ipsum",scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model())
@@ -102,14 +102,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = save(self.fake_db, model, auth_user=fake_ctx_model(DEPARTMENT.HEAD, SCHEMEOFWORK.OWNER, LESSON.OWNER, True))
+            actual_result = save(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__insert'
-                , (12323232, 343430908034, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), fake_ctx_model().id, True)
+                , (12323232, 343430908034, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), fake_ctx_model().auth_user_id, True)
                 , handle_log_info)
             
             self.assertEqual(14, actual_result.scheme_of_work_id)
@@ -119,7 +119,7 @@ class test_db__save(TestCase):
     def test_should_call__delete__when__is_new__is_false__and__published_is_2(self):
         # arrange
 
-        scheme_of_work = MagicMock(id=19, name="A-Level Computer Science")
+        scheme_of_work = MagicMock(id=19, name="A-Level Computer Science", auth_user=fake_ctx_model())
         #
         model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'

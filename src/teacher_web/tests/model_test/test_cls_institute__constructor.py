@@ -19,6 +19,7 @@ class test_cls_institute__constructor(TestCase):
         # assert
         self.assertEqual(0, self.test.id)
         self.assertEqual("Lorem ipsum", self.test.name)
+        self.assertEqual("", self.test.description)
         self.assertFalse(self.test.is_valid)
         self.assertTrue(self.test.is_new())
         
@@ -27,7 +28,7 @@ class test_cls_institute__constructor(TestCase):
 
         # setup
 
-        self.test = InstituteModel(1, name="Sor shurem")
+        self.test = InstituteModel(1, name="Sor shurem", description="Maecenas molestie ligula eget molestie dapibus.")
 
         # self.test
         self.test.validate()
@@ -35,6 +36,7 @@ class test_cls_institute__constructor(TestCase):
         # assert
         self.assertEqual(1, self.test.id)
         self.assertEqual("Sor shurem", self.test.name)
+        self.assertEqual("Maecenas molestie ligula eget molestie dapibus.", self.test.description)
         self.assertEqual({}, self.test.validation_errors)
         self.assertTrue(self.test.is_valid)
         self.assertFalse(self.test.is_new())

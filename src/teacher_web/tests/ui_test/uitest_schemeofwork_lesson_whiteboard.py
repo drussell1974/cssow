@@ -8,6 +8,8 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
     def setUp(self):
         # set up
         self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard")
+        self.wait(s=1)
+
 
 
     def tearDown(self):

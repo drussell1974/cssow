@@ -10,9 +10,9 @@ class ContentModel(BaseModel):
         permissions = [('publish_contentmodel', 'Can pubish Curriculum Content')]
 
 
-    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
         #231: implement across all classes
-        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db)
+        super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.id = id_
         self.description = description
         self.letter_prefix = letter_prefix
@@ -99,7 +99,7 @@ class ContentModel(BaseModel):
             rval = ContentDataAccess._delete(db, model, auth_user.auth_user_id)
             if rval == 0:
                 raise Exception("The item is either in use or you are not permitted to perform this action.")
-            #TODO: check row count before updating
+            # TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:
@@ -121,7 +121,7 @@ class ContentDataAccess(BaseDataAccess):
 
         execHelper = ExecHelper()
 
-        #TODO: #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
+        #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
         str_select = "content__get_options"
         params = (scheme_of_work_id, key_stage_id, auth_user_id)
 

@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.teampermissions.views import index, edit, delete, request_access, TeamPermissionRequestLoginView
+from app.teampermissions.views import index, edit, delete, request_access, approve, reject, TeamPermissionRequestLoginView
 
 # Create your tests here.
 class test_app_route_team_permissions_page(TestCase):
@@ -58,3 +58,25 @@ class test_app_route_team_permissions_page(TestCase):
     def test_login_url_resolves_to_account_team_permissions_login__reverse(self):
         url = reverse("team-permissions.login-as", args=[127671276711, 67, 56, "SCHEMEOFWORK.EDITOR"])
         self.assertEqual("/accounts/team-permissions/institute/127671276711/department/67/schemeofwork/56/teacher/SCHEMEOFWORK.EDITOR/login", url)
+
+
+    def test_edit_url_resolves_to_account__team_permissions_approve(self):
+        url = resolve('/accounts/team-permissions/institute/127671276711/department/67/schemeofwork/56/teacher/6069/approve')
+        self.assertEqual("team-permissions.approve", url.url_name)
+        self.assertEquals(url.func, approve)
+
+    
+    def test_edit_url_resolves_to_account_team_permissions_approve__reverse(self):
+        url = reverse("team-permissions.approve", args=[127671276711, 67, 56, 6069])
+        self.assertEqual("/accounts/team-permissions/institute/127671276711/department/67/schemeofwork/56/teacher/6069/approve", url)
+
+
+    def test_edit_url_resolves_to_account__team_permissions_reject(self):
+        url = resolve('/accounts/team-permissions/institute/127671276711/department/67/schemeofwork/56/teacher/6069/reject')
+        self.assertEqual("team-permissions.reject", url.url_name)
+        self.assertEquals(url.func, reject)
+
+    
+    def test_edit_url_resolves_to_account_team_permissions_reject__reverse(self):
+        url = reverse("team-permissions.reject", args=[127671276711, 67, 56, 6069])
+        self.assertEqual("/accounts/team-permissions/institute/127671276711/department/67/schemeofwork/56/teacher/6069/reject", url)

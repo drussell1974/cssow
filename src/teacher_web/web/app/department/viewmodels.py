@@ -37,7 +37,7 @@ class DepartmentIndexViewModel(BaseViewModel):
             "institute": self.institute,
             "departments": self.model
         }
-        # TODO: #329 active_model = institue
+        #329 active_model = institue
         return ViewModel("", self.institute.name, "Departments", ctx=self.auth_user, data=data, active_model=self.institute)
 
 

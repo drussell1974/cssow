@@ -1,4 +1,4 @@
- //scheme_of_work_id, 
+ //course_id, 
 const md_document_control_group = document.querySelector("#md_document--control-group");
 const md_file_control = document.querySelector("#ctl-md_file");
 const page_uri_control_group = document.querySelector("#page_uri--control-group");

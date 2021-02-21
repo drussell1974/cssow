@@ -18,8 +18,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def tearDown(self):
         pass
 
-
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing"))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_execute_should_call_save__when_model_is_valid(self, mock_auth_user, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
@@ -35,7 +34,7 @@ class test_viewmodel_EditViewModel(TestCase):
             "lesson_permission": int(LESSON.VIEWER), 
         }
     
-        with patch.object(Model, "save", return_value = SchemeOfWorkModel_get_model):
+        with patch.object(Model, "save", return_value = TeacherPermissionModel_get_model):
 
             # act
 
@@ -45,6 +44,7 @@ class test_viewmodel_EditViewModel(TestCase):
             # assert
 
             Model.save.assert_called()
+            SchemeOfWorkModel_get_model.assert_called()
 
             # return the valid object
 
@@ -53,9 +53,10 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual(22, test_context.scheme_of_work.id)
             
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing"))
-    def test_execute_should_not_call_save__when_return_invalid(self, mock_auth_user, SchemeOfWorkModel_get_model):
-         
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_authorised=False))
+    def test_execute_should_not_call_save__when_return_invalid(self, mock_auth_user, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
+        
         # arrange
         
         mock_request = Mock()
@@ -69,7 +70,6 @@ class test_viewmodel_EditViewModel(TestCase):
             "scheme_of_work_permission": int(SCHEMEOFWORK.EDITOR),
             "lesson_permission": int(LESSON.EDITOR),
         }
-
         with patch.object(Model, "save", return_value=None):
             
             # act
@@ -80,3 +80,5 @@ class test_viewmodel_EditViewModel(TestCase):
             # assert
             
             Model.save.assert_not_called()
+            
+            SchemeOfWorkModel_get_model.assert_called()

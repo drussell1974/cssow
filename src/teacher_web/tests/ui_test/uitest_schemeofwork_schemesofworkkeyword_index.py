@@ -23,6 +23,7 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        self.assertFooterContextText("dave Test User")
 
 
     def test_page__should_have__sidebar_and_selected_scheme_of_work(self):

@@ -24,12 +24,18 @@ BEGIN
 	(
 		p_teacher_id, 
 		p_department_id, 
-        IF (p_department_permission > 1, p_department_permission, department_permission), 
-        IF (p_scheme_of_work_permission > 1, p_scheme_of_work_permission, scheme_of_work_permission), 
-        IF (p_lesson_permission > 1, p_lesson_permission, lesson_permission), 
+        p_department_permission, -- IF (p_department_permission > 1, p_department_permission, department_permission), 
+        p_scheme_of_work_permission, -- IF (p_scheme_of_work_permission > 1, p_scheme_of_work_permission, scheme_of_work_permission), 
+        p_lesson_permission, -- IF (p_lesson_permission > 1, p_lesson_permission, lesson_permission), 
         p_created_by
 	);
 END;
 //
 
 DELIMITER ;
+
+DELETE FROM sow_department__has__teacher WHERE auth_user_id = 83;
+
+CALL department__has__teacher__insert(83, 5, 0, 0, 0, 2);
+
+SELECT * FROM sow_department__has__teacher WHERE auth_user_id = 83;

@@ -19,3 +19,13 @@ class test_cls_department__clean_up(TestCase):
         # assert
         self.assertEqual("x", self.test.name)
 
+
+    def test_description__trim_whitespace(self):
+
+        self.test.description = " x "
+
+        # test
+        self.test._clean_up()
+
+        # assert
+        self.assertEqual("x", self.test.description)

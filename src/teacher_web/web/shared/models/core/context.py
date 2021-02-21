@@ -4,19 +4,18 @@ from shared.models.cls_department import DepartmentModel
 class Ctx:
     
     def __init__(self, institute_id, department_id, **view_params):
-        self.institute_id = 0
-        self.department_id = 0
+        self.institute_id = institute_id
+        self.department_id = department_id
         self.scheme_of_work_id = view_params.get("scheme_of_work_id",0)
+        self.auth_user_id = view_params.get("auth_user_id",0)
         
 
 class AuthCtx(Ctx):
     
     def __init__(self, db, request, institute_id, department_id, **view_params):
-        super().__init__(institute_id, department_id, **view_params)
+        super().__init__(institute_id=institute_id, department_id=department_id, **view_params)
         
         self.request = request
-        self.institute_id = institute_id
-        self.department_id = department_id
         self.auth_user_id = request.user.id
 
         if request.user.id is not None:
@@ -34,6 +33,8 @@ class AuthCtx(Ctx):
         
         key = str((name, lookup_args)) # create unique key from name and lookup_id
         
+        # TODO: ensure value is stored in cache to prevent calling scalar_fnc each time
+
         #if key not in self.request.session:
         self.request.session[key] = scalar_fnc(db, *lookup_args)
         return self.request.session[key]

@@ -46,7 +46,7 @@ class test_db_institute__update(TestCase):
 
             ExecHelper.update.assert_called_with(self.fake_db,
                 'institute__update'
-                , (101, 'Lorum ipsum', 6080, 6079)
+                , (101, 'Lorum ipsum', 6080, 1, 6079)
                 , handle_log_info)
 
             self.assertEqual(101, result.id)

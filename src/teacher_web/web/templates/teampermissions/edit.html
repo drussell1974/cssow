@@ -20,13 +20,13 @@
 {% block maincontent %}
 
 <article class="widget widget-form widget-keyword-form">
-    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.teacher_id %}">
+    <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.model.teacher_id %}">
         {% csrf_token %}
 
         <!-- show error_message -->
             {% include '_partials/form.viewmodel.alert_message.html' %}
         <!-- show error_message END -->
-        <h1>{{ content.data.teacher_name }}</h1>
+        <h1>{{ content.data.model.teacher_name }} {{ content.data.authorised_status }}</h1>
         <h2>{{ _("Permissions for")}} {{ content.data.scheme_of_work_name }}</h2>
         <hr>
 
@@ -36,7 +36,7 @@
                 <label>{{_("Department")}}</label>
                 <select class="form-control" name="department_permission" id="ctl-type_id" required>
                     {% for opt in content.data.department_permission_options %}
-                    <option value="{{opt.name}}" {% if opt.value == content.data.department_permission %} selected {% endif %}>{{opt.name}}</option>
+                    <option value="{{opt.name}}" {% if opt.value == content.data.model.department_permission %} selected {% endif %}>{{opt.name}}</option>
                     {% endfor %}
                 </select>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
@@ -50,7 +50,7 @@
                 <label>{{_("Scheme of work")}}</label>
                 <select class="form-control" name="scheme_of_work_permission" id="ctl-type_id" required>
                     {% for opt in content.data.scheme_of_work_permission_options %}
-                    <option value="{{opt.name}}" {% if opt.value == content.data.scheme_of_work_permission %} selected {% endif %}>{{opt.name}}</option>
+                    <option value="{{opt.name}}" {% if opt.value == content.data.model.scheme_of_work_permission %} selected {% endif %}>{{opt.name}}</option>
                     {% endfor %}
                 </select>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
@@ -59,12 +59,12 @@
         <!-- Scheme of work Permissions END -->
 
         <!-- Lesson Permissions START -->
-        <div class="control-group">
+        <div class="control-group"> 
             <div class="form-group controls">
                 <label>{{_("Lesson")}}</label>
                 <select class="form-control" name="lesson_permission" id="ctl-type_id" required>
                     {% for opt in content.data.lesson_permission_options %}
-                    <option value="{{opt.name}}" {% if opt.value == content.data.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
+                    <option value="{{opt.name}}" {% if opt.value == content.data.model.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
                     {% endfor %}
                 </select>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
@@ -78,8 +78,8 @@
             {% include '_partials/form.buttons.validation.save_and_delete.html' %}
         </div>
         
-        <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}">
-        <input type="hidden" name="teacher_id" value={{content.data.teacher_id}}>
+        <input type="hidden" name="scheme_of_work_id" value="{{content.data.model.scheme_of_work_id}}">
+        <input type="hidden" name="teacher_id" value={{content.data.model.teacher_id}}>
         <input type="hidden" name="next" value="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" >
         <input type="hidden" name="is_from_db" value="{{content.data.model.is_from_db}}" >
     </form>

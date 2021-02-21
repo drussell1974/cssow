@@ -16,7 +16,7 @@ describe("LoginPageContainer", () =>{
     }
     
     // TODO: read from query string
-    let redirect = { url:"http://localhost/course/11" };
+    let redirect = { url:"http://localhost/institute/2/department/5/course/11" };
 
     beforeEach(() => {
         (
@@ -88,7 +88,7 @@ describe("LoginPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/course/1');
+            ).toEqual('/course/');
         })
 
         it.skip('with Lesson link', () => {
@@ -103,7 +103,7 @@ describe("LoginPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
-            ).toEqual('/course/1/lesson/1');
+            ).toEqual('/course/1/lesson/');
 
         })
 

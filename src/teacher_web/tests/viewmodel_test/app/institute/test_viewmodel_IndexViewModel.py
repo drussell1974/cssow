@@ -30,7 +30,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=fake_ctx_model())
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -41,7 +41,6 @@ class test_viewmodel_IndexViewModel(TestCase):
         
         # arrange
         model = Model(56, "Lorum")
-        model.key_words = [KeywordModel(), KeywordModel()]
 
         data_to_return = [model]
         
@@ -53,14 +52,13 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=fake_ctx_model())
 
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(1, len(self.viewmodel.model))
 
             self.assertEqual("Lorum", self.viewmodel.model[0].name)
-            self.assertEqual(2, len(self.viewmodel.model[0].key_words))
 
 
     def test_init_called_fetch__multiple_rows(self, mock_auth_user):
@@ -77,7 +75,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=fake_ctx_model())
 
             # assert functions was called
             Model.get_all.assert_called()

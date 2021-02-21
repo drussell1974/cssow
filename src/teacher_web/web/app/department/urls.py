@@ -9,5 +9,5 @@ urlpatterns = [
     path('<int:department_id>/schemesofwork/', include('app.schemesofwork.urls')),
     path('<int:department_id>', views.index, name='department.view'),    
     path('<int:department_id>/edit', views.edit, name='department.edit'),
-    path('<int:department_id>/publish', views.index, name='department.publish_item'),
+    #path('<int:department_id>/publish', views.publish, name='department.publish_item'),
 ]

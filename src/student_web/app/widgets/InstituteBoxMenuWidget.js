@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-const SchemeOfWorkBoxLinkButton = ({data, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
-    if (data.number_of_lessons === 0 || (data.number_of_learning_objectives === 0 && data.number_of_resources === 0)) {
+const InstituteBoxLinkButton = ({data, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
+    if (data.number_of_departments === 0) {
         return ( <button className={typeDisabledButtonClass} data-poptrox="youtube,800x400" >{typeDisabledButtonText}</button>)
     } else {
-        return ( <Link to={`/course/${data.id}`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
+        return ( <Link to={`/institute/${data.id}/department`} className={typeButtonClass} data-poptrox="youtube,800x400" >{typeButtonText}</Link>)
     }
 }
 
-export const SchemeOfWorkBoxMenuItem = ({data, typeLabelText, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
+export const InstituteBoxMenuItem = ({data, typeLabelText, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
-        if (data.number_of_lessons === 0 || (data.number_of_learning_objectives === 0 && data.number_of_resources === 0)) {
+        if (data.number_of_departments === 0) {
             // disable
             typeButtonText = typeDisabledButtonText;
             typeButtonClass = typeDisabledButtonClass;
@@ -27,23 +27,23 @@ export const SchemeOfWorkBoxMenuItem = ({data, typeLabelText, typeButtonText, ty
                     <label className="label"><u>{typeLabelText}</u></label>
                     <h3>{data.name}</h3>
                     <p>{data.description}</p>
-                    <SchemeOfWorkBoxLinkButton data={data} typeButtonClass={typeButtonClass} typeButtonText={typeButtonText} typeDisabledButtonClass={typeDisabledButtonClass} typeDisabledButtonText={typeDisabledButtonText}/>
+                    <InstituteBoxLinkButton data={data} typeButtonClass={typeButtonClass} typeButtonText={typeButtonText} typeDisabledButtonClass={typeDisabledButtonClass} typeDisabledButtonText={typeDisabledButtonText}/>
                 </div>
             </div>
         )
     }
 }
 
-export const SchemeOfWorkBoxMenuWidget = ({data, typeLabelText, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
+export const InstituteBoxMenuWidget = ({data, typeLabelText, typeButtonText, typeButtonClass, typeDisabledButtonText, typeDisabledButtonClass}) => {
     if(data === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
         return (
             <Fragment>
-                <h2>Courses</h2>
-                <div className="thumbnails lessons">
+                <h2>Institutes</h2>
+                <div className="thumbnails institutes">
                     {data.map(item => (
-                        <SchemeOfWorkBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText}
+                        <InstituteBoxMenuItem key={item.id} data={item} typeLabelText={typeLabelText}
                             typeButtonText={typeButtonText} typeButtonClass={typeButtonClass} 
                             typeDisabledButtonText={typeDisabledButtonText} typeDisabledButtonClass={typeDisabledButtonClass}
                         />

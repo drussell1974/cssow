@@ -5,12 +5,17 @@ from shared.models.core.basemodel import BaseModel
 
 class InstituteModel(BaseModel):
 
+    # default values for api
     name = ""
+    description = ""
+    number_of_departments = 0
     
-    def __init__(self, id_, name, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.name = name
+        self.description = description
+        self.number_of_departments = 0
 
 
     def validate(self, skip_validation = []):
@@ -19,6 +24,7 @@ class InstituteModel(BaseModel):
 
         # Validate name
         self._validate_required_string("name", self.name, 1, 70)
+        self._validate_optional_string("description", self.description, 5000)
 
         self.on_after_validate()
 
@@ -33,11 +39,15 @@ class InstituteModel(BaseModel):
         if self.name is not None:
             self.name = sql_safe(self.name)
 
+        # description
+        if self.description is not None:
+            self.description = sql_safe(self.description)
+
 
     @staticmethod
     def get_context_name(db, institude_id, auth_user_id):
         result = BaseModel.get_context_name(db, "institute__get_context_name", handle_log_info, institude_id, auth_user_id)
-        return result
+        return result if result is not None else ""
 
 
     @staticmethod
@@ -53,6 +63,8 @@ class InstituteModel(BaseModel):
                                     created_by_name=row[4],
                                     published=row[5])
 
+            model.number_of_departments = InstituteModel.get_number_of_departments(db, model.id, auth_user)
+            
             data.append(model)
         return data
 
@@ -60,7 +72,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def get_model(db, id, auth_user):   
         rows = InstituteDataAccess.get_model(db, id, auth_user_id=auth_user.auth_user_id)
-        #TODO: start as none None
+        # TODO: start as none None
         model = InstituteModel(0, "")
         for row in rows:
             model = InstituteModel(id_=row[0],
@@ -69,7 +81,9 @@ class InstituteModel(BaseModel):
                                     created_by_id=row[3],
                                     created_by_name=row[4],
                                     published=row[5])
-            
+
+            model.number_of_departments = InstituteModel.get_number_of_departments(db, id, auth_user)
+
             model.on_fetched_from_db()         
         return model
 
@@ -84,6 +98,12 @@ class InstituteModel(BaseModel):
             data.append(model)
         return data
 
+
+    @staticmethod
+    def get_number_of_departments(db, institute_id, auth_user):
+        result = InstituteDataAccess.get_number_of_departments(db, institute_id, auth_user.auth_user_id)
+        return result
+        
 
     @staticmethod
     def save(db, model, teacher_id, auth_user):
@@ -167,7 +187,23 @@ class InstituteDataAccess:
 
         except Exception as e:
             raise Exception("Error getting institutes", e)
+
+    
+    @staticmethod
+    def get_number_of_departments(db, institute_id, auth_user_id):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
         
+        select_sql = "institute__get_number_of_departments"
+        params = (institute_id, auth_user_id)
+
+        result = []
+        result = execHelper.scalar(db, select_sql, result, handle_log_info, params)
+
+        if result is not None and len(result) > 0:
+            result = result[0]
+        return result
+
 
     @staticmethod
     def _insert(db, model, teacher_id, auth_user_id):
@@ -179,8 +215,8 @@ class InstituteDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.created,
             auth_user_id,
+            model.published
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -199,6 +235,7 @@ class InstituteDataAccess:
             model.id,
             model.name,
             teacher_id,
+            model.published,
             auth_user_id
         )
         

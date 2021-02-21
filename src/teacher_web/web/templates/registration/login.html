@@ -38,7 +38,7 @@
             <div class="control-group">
                 <br> 
                 <input type="submit" value="login" class="btn btn-primary stackable">
-                <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}} {{ institute_id }} {{ department_id }} {{ scheme_of_work_id }}</a>
+                <a href="{% url 'default' %}" type="submit" class="btn btn-secondary stackable">{{_('Cancel')}}</a>
                 {% if user.is_authenticated and institute_id is not None and department_id is not None and scheme_of_work_id is not None and permission is not None %}
                     <!-- #318 get values from view or querystring -->
                     <!-- TODO: # 329 get institute_id department_id - create parameters in view -->

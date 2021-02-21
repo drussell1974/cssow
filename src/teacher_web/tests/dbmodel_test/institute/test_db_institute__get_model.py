@@ -3,6 +3,7 @@ from shared.models.cls_institute import InstituteModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteModel
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -50,8 +51,9 @@ class test_db_institute__get_model(TestCase):
             self.assertFalse(act_result.is_from_db)
             self.assertFalse(act_result.is_valid)
             
-
-    def test__should_call__select__item(self, mock_auth_user):
+            
+    @patch.object(InstituteModel, "get_number_of_departments", return_value=12)
+    def test__should_call__select__item(self, InstituteModel_get_number_of_departments, mock_auth_user):
         # arrange
         expected_result = [(1, "Computer Science", 539, "2020-07-21 17:09:34", 1, "test_user", 0)]
         
@@ -68,5 +70,7 @@ class test_db_institute__get_model(TestCase):
                 , (5034, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
+
+            InstituteModel_get_number_of_departments.assert_called_with(self.fake_db, 5034, mock_auth_user)
 
             self.assertEqual("Computer Science", act_result.name, "First item not as expected")

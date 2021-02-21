@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { MemoryRouter as Router } from 'react-router-dom';
 
 import { createContainer } from '../helpers/domManipulators';
-import { SchemeOfWorkPageContainer } from '../pages/SchemeOfWorkPage';
+import { InstitutePageContainer } from '../pages/InstitutePage';
 
-describe("SchemeOfWorkPageContainer", () =>{
+describe("InstitutePageContainer", () =>{
     let render, container;
 
     let socialmediadata = undefined;
@@ -15,21 +15,21 @@ describe("SchemeOfWorkPageContainer", () =>{
         description:"Eu hendrerit felis rhoncus vel. In hac habitasse"
     }
 
-    let schemesofwork = [
+    let institutes = [
         {
-            id: 76,
-            name: "KS3 Computing",
-            description: "Lorem ipsum dolor sit amet."
+            id: 10343434075976,
+            name: "Lorem Ipsum",
+            description: "Lorem ipsum, Lorem Ipsum"
         },
         {
-            id: 127,
-            name: "GCSE Computer Science 9-1",
+            id: 1034343127,
+            name: "Sit Amet",
             description: " "
         },
         {
-            id: 11,
-            name: "A-Level Computer Science",
-            description: "Computing curriculum for A-Level"
+            id: 1099742911,
+            name: "Dolor sit Amet",
+            description: "Lorem Ipsum, Dolor sit Amet"
         }
     ]
     
@@ -40,7 +40,7 @@ describe("SchemeOfWorkPageContainer", () =>{
     })
 
     it('renders empty model', () => {
-        render(<SchemeOfWorkPageContainer />);
+        render(<InstitutePageContainer />);
         
         expect(container.textContent).toMatch('');
     })
@@ -48,7 +48,7 @@ describe("SchemeOfWorkPageContainer", () =>{
     describe('has a banner', () => {
         
         it('with heading', () => {
-            render(<Router><SchemeOfWorkPageContainer site={site} schemesofwork={schemesofwork} socialmediadata /></Router>);
+            render(<Router><InstitutePageContainer site={site} institutes={institutes} socialmediadata /></Router>);
 
             expect(
                 container.querySelector('section#banner .inner header h1').textContent
@@ -56,7 +56,7 @@ describe("SchemeOfWorkPageContainer", () =>{
         })
 
         it('with description', () => {
-            render(<Router><SchemeOfWorkPageContainer site={site} schemesofwork={schemesofwork} socialmediadata /></Router>);
+            render(<Router><InstitutePageContainer site={site} institutes={institutes} socialmediadata /></Router>);
 
             expect(
                 container.querySelector('section#banner .inner header p').textContent
@@ -68,7 +68,7 @@ describe("SchemeOfWorkPageContainer", () =>{
     describe('has breadcrumb', () => {
 
         it('with current page text only', () => {
-            render(<Router><SchemeOfWorkPageContainer site={site} schemesofwork={schemesofwork} socialmediadata /></Router>);
+            render(<Router><InstitutePageContainer site={site} institutes={institutes} socialmediadata /></Router>);
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(1)').textContent
@@ -79,7 +79,7 @@ describe("SchemeOfWorkPageContainer", () =>{
     describe('has footer', () => {
 
         it('with scheme of work name as heading', () => {
-            render(<Router><SchemeOfWorkPageContainer schemesofwork={schemesofwork} site={site} socialmediadata /></Router>);
+            render(<Router><InstitutePageContainer institutes={institutes} site={site} socialmediadata /></Router>);
 
             expect(
                 container.querySelector('footer#footer h2').textContent
@@ -87,7 +87,7 @@ describe("SchemeOfWorkPageContainer", () =>{
         })
 
         it('with scheme of work overview summary', () => {
-            render(<Router><SchemeOfWorkPageContainer schemesofwork={schemesofwork} site={site} socialmedia /></Router>);
+            render(<Router><InstitutePageContainer institutes={institutes} site={site} socialmedia /></Router>);
 
             expect(
                 container.querySelector('footer#footer p').textContent
@@ -95,33 +95,33 @@ describe("SchemeOfWorkPageContainer", () =>{
         })
     })
 
-    describe('has schemeofwork widget', () => {
+    describe('has institute widget', () => {
 
-        it('with courses', () => {
-            render(<Router><SchemeOfWorkPageContainer schemesofwork={schemesofwork} site={site} socialmedia /></Router>);
+        it('with institutes', () => {
+            render(<Router><InstitutePageContainer institutes={institutes} site={site} socialmedia /></Router>);
 
             // Heading
             expect(
                 container.querySelector("#main .inner h2").textContent
-            ).toMatch('Courses');
+            ).toMatch('Institutes');
 
             // First
             expect(
-                container.querySelector("#main .inner div.lessons > .box:nth-child(1) .inner label.label u").textContent
-            ).toMatch("Course");
+                container.querySelector("#main .inner div.institutes > .box:nth-child(1) .inner label.label u").textContent
+            ).toMatch("Institute");
 
             expect(
-                container.querySelector("#main .inner div.lessons > .box:nth-child(1) .inner h3").textContent
-            ).toMatch("KS3 Computing");
+                container.querySelector("#main .inner div.institutes > .box:nth-child(1) .inner h3").textContent
+            ).toMatch("Lorem Ipsum");
 
             // Last
             expect(
-                container.querySelector("#main .inner div.lessons > .box:nth-last-child(1) .inner label.label u").textContent
-            ).toMatch("Course");
+                container.querySelector("#main .inner div.institutes > .box:nth-last-child(1) .inner label.label u").textContent
+            ).toMatch("Institute");
 
             expect(
-                container.querySelector("#main .inner div.lessons > .box:nth-last-child(1) .inner h3").textContent
-            ).toMatch("A-Level Computer Science");
+                container.querySelector("#main .inner div.institutes > .box:nth-last-child(1) .inner h3").textContent
+            ).toMatch("Dolor sit Amet");
 
         })
     })

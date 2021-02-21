@@ -64,11 +64,12 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
-        self.wait(s=3)
+        self.wait()
 
         ' click no (finding button appears to cancel dialog) '        
         
         elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
+        self.wait()
         elem.click()
         
         self.wait(s=2)

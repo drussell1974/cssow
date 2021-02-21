@@ -47,7 +47,7 @@ class ViewModel:
                 }
             },
             "session": {
-                # TODO: #306 stock persisting alert_message
+                # TODO: #306 stock persisting alert_message - remove this
                 "alert_message": ""
             }
         }

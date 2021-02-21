@@ -7,7 +7,7 @@ export const LessonActivityWidgetItem = ({lesson, resource}) => {
     } else {
         return(
             <li>
-                <Link to={`/course/${lesson.scheme_of_work_id}/lesson/${lesson.id}/activity/${resource.id}/${resource.md_document_name}`} className="button fit activity-link activity-link--markdown">{resource.title}</Link> 
+                <Link to={`/institute/${lesson.institute_id}/department/${lesson.department_id}/course/${lesson.course_id}/lesson/${lesson.id}/activity/${resource.id}/${resource.md_document_name}`} className="button fit activity-link activity-link--markdown">{resource.title}</Link> 
             </li>
         )
     }

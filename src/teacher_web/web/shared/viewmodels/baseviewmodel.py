@@ -9,6 +9,15 @@ class BaseViewModel:
     saved = False
     stack_trace = ""
 
+    def __init__(self, ctx):
+        
+        if ctx is not None:
+            self.department_id = ctx.department_id
+            self.institute_id = ctx.institute_id #329 use auth_user context
+        else:
+            self.department_id = 0
+            self.institute_id = 0 
+
     def on_exception(self, ex):
         self.error_message = ex
         if int(settings.SHOW_STACK_TRACE) > 0:

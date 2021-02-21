@@ -26,6 +26,7 @@ class uitest_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
+        self.assertFooterContextText("dave Test User")
 
 
     """ Breadcrumb """

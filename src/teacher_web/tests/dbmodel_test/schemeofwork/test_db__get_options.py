@@ -42,7 +42,7 @@ class test_db__get_options(TestCase):
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 "scheme_of_work__get_options"
-                , (mock_auth_user.auth_user_id,)
+                , (mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -61,7 +61,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_options"
-                , (mock_auth_user.auth_user_id,)
+                , (mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             
@@ -89,7 +89,7 @@ class test_db__get_options(TestCase):
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 "scheme_of_work__get_options"
-                , (mock_auth_user.auth_user_id,)
+                , (mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
