@@ -100,7 +100,7 @@ class TeacherPermissionModel(BaseModel):
 
 
     @staticmethod
-    def get_model(db, teacher_id, scheme_of_work, auth_user, show_authorised=True, trace=False):
+    def get_model(db, teacher_id, scheme_of_work, auth_user, show_authorised=True):
         ''' get permission for the teacher '''
         
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
@@ -113,12 +113,15 @@ class TeacherPermissionModel(BaseModel):
         model.lesson_permission = LESSON.OWNER if scheme_of_work.id == 0 else LESSON.NONE
         model.is_from_db = (scheme_of_work.id == 0)
         model.is_authorised = (scheme_of_work.id == 0)
-        
+
         for row in rows:
             # returns only the matching row
             # TODO: Cache
-            if auth_user.scheme_of_work_id == int(row[2]) and auth_user.department_id == int(row[4]) and auth_user.institute_id == int(row[6]):
-                model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[3], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=bool(row[11]), ctx=auth_user)
+            if auth_user.scheme_of_work_id == row[2] and auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
+                
+                is_authorised = True if row[11] == 1 else False
+
+                model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[3], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=is_authorised, ctx=auth_user)
                 return model
         return model
 
@@ -160,7 +163,7 @@ class TeacherPermissionModel(BaseModel):
 
     @staticmethod
     def request_access(db, model, auth_user):
-        
+
         if model.is_valid:
             TeacherPermissionDataAccess.insert_department__has__teacher(db, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, ctx=auth_user)
             data = TeacherPermissionDataAccess.insert_access_request(db, model.scheme_of_work_id, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, auth_user)
@@ -199,10 +202,12 @@ class TeacherPermissionDataAccess:
         helper = ExecHelper()
 
         str_select = "scheme_of_work__get_teacher_permissions"
+        
         params = (teacher_id, department_id, institute_id, show_authorised, auth_user_id)
         
         rows = []
         rows = helper.select(db, str_select, params, rows, handle_log_info)
+        
         return rows
 
 
@@ -300,7 +305,7 @@ class TeacherPermissionDataAccess:
             LESSON(lesson_permission).value, # GET PERMISSION FROM MODEL
             ctx.auth_user_id,
             is_authorised
-        )
+        )    
         
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
         

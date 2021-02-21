@@ -10,7 +10,7 @@ from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from tests.test_helpers.mocks import fake_ctx_model, fake_teacher_permission_model, mock_scheme_of_work
 
 
-class test_db__save(TestCase):
+class test_db__request_access(TestCase):
 
 
     def setUp(self):

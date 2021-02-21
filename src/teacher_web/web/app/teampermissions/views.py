@@ -32,7 +32,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
-    #raise KeyError(save_view.view().content )
+    
     if request.method == "POST":
         save_view.execute()
 
@@ -56,7 +56,7 @@ def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id):
     delete_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     delete_viewmodel.execute()
 
-    return HttpResponseRedirect(reverse("team-permissions.index"))
+    return HttpResponseRedirect(reverse("team-permissions.index", args=[institute_id, department_id]))
 
 
 @login_required

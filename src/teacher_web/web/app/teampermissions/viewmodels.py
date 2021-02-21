@@ -61,7 +61,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
         # get the permissions for the selected teacher
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=1)
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)
     
         if self.teacher_id > 0:
             if self.model is None or self.model.is_from_db == False:
@@ -125,7 +125,7 @@ class TeamPermissionDeleteViewModel(BaseViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
 
         # get the permissions for the selected teacher
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=1)
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=False)
 
         # Http404
         if self.scheme_of_work_id > 0 and teacher_id > 0:
@@ -158,7 +158,7 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
         # get the permissions for the current user
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=auth_user.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user)
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=auth_user.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)
 
         # Check if permission has already been granted
         self.model.validate()
@@ -204,7 +204,7 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
         # get the permissions for the selected teacher
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=self.teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user)    
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=self.teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)    
         
         # Check if permission has already been granted
         if self.model.teacher_id is not None:

@@ -9,7 +9,7 @@ CREATE PROCEDURE scheme_of_work__has__teacher_permission__insert (
  IN p_scheme_of_work_permission INT,
  IN p_lesson_permission INT, 
  IN p_auth_user INT,
- IN p_is_authorised BIT
+ IN p_is_authorised BOOLEAN
  )
 BEGIN
 	INSERT IGNORE INTO sow_scheme_of_work__has__teacher 
