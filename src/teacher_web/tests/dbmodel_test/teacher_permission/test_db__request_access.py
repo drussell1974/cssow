@@ -43,10 +43,11 @@ class test_db__request_access(TestCase):
 
         fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
 
-        model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(0, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         
+
         # mock functions not being tested
 
         expected_result = (14,)
@@ -54,13 +55,14 @@ class test_db__request_access(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            Model.request_access(self.fake_db, model, auth_user=99)
+            model.validate()
+            Model.request_access(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
 
             ExecHelper.insert.assert_not_called()
 
-
+    @skip("no longer applicable - review")
     def test_should_not_call__insert__when_access_already_granted(self):
         # arrange
 
@@ -71,11 +73,13 @@ class test_db__request_access(TestCase):
         model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model()) 
         model.created = '2021-01-24 07:18:18.677084'
 
-
         with patch.object(ExecHelper, 'insert', return_value=0):
             # act
 
-            Model.request_access(self.fake_db, model, auth_user=99)
+            model.validate()
+            self.assertTrue(model.is_valid, "pre-checks failed")
+
+            Model.request_access(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
 
@@ -143,10 +147,11 @@ class test_db__request_access(TestCase):
             actual_result = Model.request_access(self.fake_db, model, auth_user=fake_ctx_model())
             
             # assert
+            # NOTE: department__has__teacher__insert has no access for request access
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'department__has__teacher__insert'
-                , (6079, 67, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.VIEWER), int(LESSON.EDITOR), 6079)
+                , (6079, 67, int(DEPARTMENT.NONE), int(SCHEMEOFWORK.NONE), int(LESSON.NONE), 6079)
                 , handle_log_info)
             
             #TeacherPermissionDataAccess_insert_access_request.assert_called_with(self.fake_db, model, fake_teacher_permission_model().teacher_id)

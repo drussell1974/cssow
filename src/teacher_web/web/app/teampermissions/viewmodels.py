@@ -44,7 +44,7 @@ class TeamPermissionIndexViewModel(BaseViewModel):
 
 class TeamPermissionEditViewModel(BaseViewModel):
     
-    def __init__(self, db, request, scheme_of_work_id, teacher_id, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, teacher_id, auth_user, show_authorised=False):
     
         self.db = db
         self.request = request
@@ -61,8 +61,8 @@ class TeamPermissionEditViewModel(BaseViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
         # get the permissions for the selected teacher
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)
-    
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=show_authorised)
+        
         if self.teacher_id > 0:
             if self.model is None or self.model.is_from_db == False:
                 self.on_not_found(self.model, teacher_id)
@@ -107,6 +107,41 @@ class TeamPermissionEditViewModel(BaseViewModel):
             pass
         
         return self.view()
+
+
+class TeamPermissionApproveViewModel(BaseViewModel):
+
+    def __init__(self, db, scheme_of_work_id, teacher_id, auth_user):
+        self.teacher_id = teacher_id
+        self.scheme_of_work_id = scheme_of_work_id
+        self.auth_user = auth_user
+
+        # TODO: #323 call read only model
+        self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
+        
+        # Http404
+        if self.scheme_of_work_id > 0:
+            if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
+                self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
+
+        # get the permissions for the selected teacher
+        self.model = TeacherPermissionModel.get_model(db, teacher_id=teacher_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=False)
+
+        # Http404
+        if self.scheme_of_work_id > 0 and teacher_id > 0:
+            if self.model is None or self.model.is_from_db == False:
+                self.on_not_found(self.model, self.scheme_of_work_id, self.teacher_id)
+
+
+    def execute(self):
+        if self.model is not None:
+            # can now approve
+            
+            self.model.is_authorised = True
+            
+            self.model.validate()
+
+            self.model = TeacherPermissionModel.save(db, self.model, self.auth_user)
 
 
 class TeamPermissionDeleteViewModel(BaseViewModel):

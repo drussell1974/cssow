@@ -12,7 +12,7 @@ from django.views import generic
 from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import DEPARTMENT
 from shared.view_model import ViewModel
-from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewModel, TeamPermissionDeleteViewModel, TeamPermissionRequestAccessViewModel, TeamPermissionRequestLoginViewModel
+from .viewmodels import TeamPermissionIndexViewModel, TeamPermissionEditViewModel, TeamPermissionApproveViewModel, TeamPermissionDeleteViewModel, TeamPermissionRequestAccessViewModel, TeamPermissionRequestLoginViewModel
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
@@ -31,20 +31,40 @@ def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
-    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
+    save_view = TeamPermissionEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx, show_authorised=True)
     
     if request.method == "POST":
         save_view.execute()
 
         if save_view.saved == True:
-
-            if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
-                redirect_to_url = request.POST.get("next", None)
-            else:
-                redirect_to_url = reverse('team-permissions.index')
+            redirect_to_url = reverse('team-permissions.index', args=[institute_id, department_id])
             return HttpResponseRedirect(redirect_to_url)
-        
+       
     return render(request, "teampermissions/edit.html", save_view.view().content)
+
+
+@permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
+@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login", login_route_name="team-permissions.login-as")
+def approve(request, institute_id, department_id, scheme_of_work_id, teacher_id):
+
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    
+    approve_viewmodel = TeamPermissionApproveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
+    approve_viewmodel.execute()
+
+    return HttpResponseRedirect(reverse("team-permissions.index", args=[institute_id, department_id]))
+
+
+@permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
+@min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login", login_route_name="team-permissions.login-as")
+def reject(request, institute_id, department_id, scheme_of_work_id, teacher_id):
+    
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    
+    reject_viewmodel = TeamPermissionDeleteViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
+    reject_viewmodel.execute()
+
+    return HttpResponseRedirect(reverse("team-permissions.index", args=[institute_id, department_id]))
 
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
@@ -60,6 +80,7 @@ def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id):
 
 
 @login_required
+@permission_required('cssow.can_request_team_permissions', login_url="/accounts/login")
 def request_access(request, institute_id, department_id, scheme_of_work_id, permission):
 
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)

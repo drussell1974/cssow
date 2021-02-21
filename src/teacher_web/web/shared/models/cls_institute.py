@@ -214,6 +214,7 @@ class InstituteDataAccess:
         params = (
             model.id,
             model.name,
+            teacher_id,
             auth_user_id,
             model.published
         )
@@ -234,6 +235,7 @@ class InstituteDataAccess:
             model.id,
             model.name,
             teacher_id,
+            model.published,
             auth_user_id
         )
         

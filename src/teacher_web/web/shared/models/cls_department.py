@@ -231,6 +231,7 @@ class DepartmentDataAccess:
             institute_id,
             model.created,
             auth_user_id,
+            model.published,
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -248,7 +249,8 @@ class DepartmentDataAccess:
         params = (
             model.id,
             model.name,
-            teacher_id,
+            model.institute.id,
+            model.published,
             auth_user_id
         )
         

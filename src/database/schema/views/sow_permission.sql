@@ -15,7 +15,7 @@ SELECT
         COALESCE(sow_teach.department_permission, dep_teach.department_permission, inst.department_permission, inst.department_permission, 0) as department_permission,
 		COALESCE(sow_teach.scheme_of_work_permission, dep_teach.scheme_of_work_permission, inst.scheme_of_work_permission, inst.scheme_of_work_permission, 0) as scheme_of_work_permission,
         COALESCE(sow_teach.lesson_permission, dep_teach.lesson_permission, inst.lesson_permission, inst.lesson_permission, 0) as lesson_permission,
-		IF(dep.head_id = teach.id, True, sow_teach.is_authorised) as is_authorised -- the head of department is authorised
+        IF(dep.head_id = teach.id, True, sow_teach.is_authorised) as is_authorised -- the head of department is authorised
     FROM sow_institute as inst 
     LEFT JOIN sow_department as dep ON dep.institute_id = inst.id
 		LEFT JOIN sow_department__has__teacher as dep_teach
@@ -29,5 +29,4 @@ SELECT
 				ON teach.id = sow_teach.auth_user_id -- get teacher details from auth_user
 	WHERE teach.is_active = True and hod.is_active = True;
 
-CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
-CALL scheme_of_work__get_teacher_permissions(83, 5, 2, False, 2);
+SELECT * FROM sow_permission;

@@ -47,7 +47,7 @@ class test_DepartmentDataAccess___insert(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'department__insert'
-                , (0, "Lorum ipsum", 6080, 127671276711, "2021-01-24 07:20:01.907507", 6079)
+                , (0, "Lorum ipsum", 6080, 127671276711, "2021-01-24 07:20:01.907507", 6079, 1)
                 , handle_log_info)
 
             self.assertEqual(99, result.id)

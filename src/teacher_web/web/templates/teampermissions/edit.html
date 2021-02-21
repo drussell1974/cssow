@@ -26,7 +26,7 @@
         <!-- show error_message -->
             {% include '_partials/form.viewmodel.alert_message.html' %}
         <!-- show error_message END -->
-        <h1>{{ content.data.model.teacher_name }}</h1>
+        <h1>{{ content.data.model.teacher_name }} {{ content.data.authorised_status }}</h1>
         <h2>{{ _("Permissions for")}} {{ content.data.scheme_of_work_name }}</h2>
         <hr>
 
@@ -59,7 +59,7 @@
         <!-- Scheme of work Permissions END -->
 
         <!-- Lesson Permissions START -->
-        <div class="control-group">
+        <div class="control-group"> 
             <div class="form-group controls">
                 <label>{{_("Lesson")}}</label>
                 <select class="form-control" name="lesson_permission" id="ctl-type_id" required>

@@ -8,7 +8,8 @@ CREATE PROCEDURE department__insert (
     IN p_teacher_id INT,
     IN p_institute_id INT,
     IN p_created DATETIME,
-    IN p_created_by INT)
+    IN p_created_by INT,
+	IN p_published INT)
 BEGIN
     -- CHECK sow_department
     INSERT INTO sow_department 
@@ -17,7 +18,8 @@ BEGIN
         head_id, 
         institute_id,
         created, 
-        created_by
+        created_by,
+        published
     )
     VALUES
     (
@@ -25,12 +27,10 @@ BEGIN
         p_teacher_id,
         p_institute_id,
         p_created,
-        p_created_by
+        p_created_by,
+        p_published
     );
 
-	INSERT INTO sow_department__has__teacher (auth_user_id, department_id) 
-	VALUES (p_teacher_id, LAST_INSERT_ID());
-    
     SELECT LAST_INSERT_ID();
 END;
 //
