@@ -13,6 +13,6 @@ omit =
    *cls_reference*
 
 [coverage:report]
-fail_under = 92
+fail_under = 85
 show_missing = True
 skip_covered = False

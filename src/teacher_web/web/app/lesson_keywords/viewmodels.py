@@ -25,7 +25,9 @@ class LessonKeywordIndexViewModel(BaseViewModel):
         
         try:
             # get model
+            # TODO: #323 call read only model
             self.lesson = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
+            # TODO: #323 call read only model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
             # if not found then raise error
@@ -98,7 +100,9 @@ class LessonKeywordSelectViewModel(BaseViewModel):
 
         try:
             # get model
+            # TODO: #323 call read only model
             self.model = LessonModel.get_model(self.db, self.lesson_id, self.scheme_of_work_id, self.auth_user)
+            # TODO: #323 call read only model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
             # if not found then raise error
@@ -168,7 +172,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
         except Exception as e:
             self.error_message = repr(e)
             handle_log_exception(db, scheme_of_work_id, "An error occurred viewing keywords", e)
-            #TODO: REMOVE swallow up and handle on form
+            # TODO: REMOVE swallow up and handle on form
             raise e
 
 

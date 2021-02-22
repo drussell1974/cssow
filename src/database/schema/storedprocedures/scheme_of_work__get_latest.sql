@@ -4,6 +4,8 @@ DROP PROCEDURE IF EXISTS scheme_of_work__get_latest;
 
 CREATE PROCEDURE scheme_of_work__get_latest (
  IN p_top_n INT,
+ IN p_department_id INT,
+ IN p_institute_id INT,
  IN p_auth_user INT)
 BEGIN
     SELECT DISTINCT
@@ -28,7 +30,7 @@ BEGIN
     LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
     LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
     LEFT JOIN auth_user as user ON user.id = sow.created_by 
-    WHERE sow.published = 1 
+    WHERE sow.department_id = p_department_id AND sow.published = 1 
         or p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 
                             WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
@@ -38,4 +40,4 @@ END;
 
 DELIMITER ;
 
-CALL scheme_of_work__get_latest(5, 2);
+#CALL scheme_of_work__get_latest(5, 2);

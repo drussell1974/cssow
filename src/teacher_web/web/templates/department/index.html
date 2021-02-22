@@ -48,7 +48,7 @@
             </h4>
           <div class="card-body stackable-group-sm">
             <a id="lnk-schemesofwork--{{row.id}}" href="{% url 'schemesofwork.index' row.institute_id row.id %}" class="btn btn-outline-dark stackable">
-              {{_("Schemes of work")}} <span class="badge badge-light">{{row.number_of_schemesofwork}}</span>
+              {{_("Schemes of work")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
             </a>
           </div>
             <p class="post-meta">{{_("Created by")}}
@@ -56,14 +56,8 @@
               <a href="#">{{ row.created_by_name }}</a>
               {% if row.created == True %}
                 on {{ row.get_ui_created }}
-              {% endif %}
-              
-              {% if request.user.is_authenticated %}
-                {% if row.published == False %}
-                <!-- # TODO: #329 get institute_id  -->
-                <a href="{% url 'department.publish_item' row.institute_id row.id %}" class="small badge badge-danger">{{_("not published")}}</a> 
-                {% endif %}
-              {% endif %}</p>
+              {% endif %}  
+            </p>
         </div>
         <hr>
         {% endfor %}

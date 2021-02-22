@@ -8,15 +8,16 @@ const onProgress = (reactComponent) => {
         return progress;
 };
 
-const getSchemesOfWork = (reactComponent) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/?format=json`)
+const getInstitutes = (reactComponent) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/?format=json`;
+    fetch(uri)
         .then(res => { 
             return res.json();
         })
         .then(
         (data) => {
             reactComponent.setState({
-                SchemesOfWork: data.schemesofwork, 
+                Institutes: data.institutes, 
                 hasError: false,
                 loading: onProgress(reactComponent),
                 isLoaded: true,
@@ -24,7 +25,7 @@ const getSchemesOfWork = (reactComponent) => {
         },  
         (error) => {
             reactComponent.setState({
-                SchemesOfWork: [],
+                Institutes: [],
                 hasError: true,
                 isLoaded: true,
                 onerror: onProgress(reactComponent),
@@ -34,15 +35,124 @@ const getSchemesOfWork = (reactComponent) => {
 }
 
 
-const getSchemeOfWork = (reactComponent, scheme_of_work_id) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}?format=json`)
+const getInstitute = (reactComponent, institute_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}?format=json`;
+    fetch(uri)
         .then(res => { 
             return res.json();
         })
         .then(
         (data) => {
             reactComponent.setState({
-                SchemeOfWork: data.schemeofwork,
+                Institute: data.institute,
+                hasError: false,
+                loading: onProgress(reactComponent),
+                isLoaded: true,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Institute: {},
+                hasError: true,
+                isLoaded: true,
+                onerror: onProgress(reactComponent),
+            });
+        }
+    )
+}
+
+
+const getDepartments = (reactComponent, institute_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/?format=json`;
+    fetch(uri)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Departments: data.departments,
+                hasError: false,
+                loading: onProgress(reactComponent),
+                isLoaded: true,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Departments: [],
+                hasError: true,
+                isLoaded: true,
+                onerror: onProgress(reactComponent),
+            });
+        }
+    )
+}
+
+
+const getDepartment = (reactComponent, institute_id, department_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}?format=json`;
+    fetch(uri)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Department: data.department,
+                hasError: false,
+                loading: onProgress(reactComponent),
+                isLoaded: true,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Department: [],
+                hasError: true,
+                isLoaded: true,
+                onerror: onProgress(reactComponent),
+            });
+        }
+    )
+}
+
+
+const getCourses = (reactComponent, institute_id, department_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/?format=json`;
+    fetch(uri)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Courses: data.schemesofwork, 
+                hasError: false,
+                loading: onProgress(reactComponent),
+                isLoaded: true,
+            });
+        },  
+        (error) => {
+            reactComponent.setState({
+                Courses: [],
+                hasError: true,
+                isLoaded: true,
+                onerror: onProgress(reactComponent),
+            });
+        }
+    )
+}
+
+
+const getCourse = (reactComponent, institute_id, department_id, course_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}?format=json`;
+    fetch(uri)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            reactComponent.setState({
+                Course: data.schemeofwork,
                 loading: onProgress(reactComponent), 
                 hasError: false,
                 isLoaded: true,
@@ -50,18 +160,19 @@ const getSchemeOfWork = (reactComponent, scheme_of_work_id) => {
         },  
         (error) => {
             reactComponent.setState({
-                SchemeOfWork: {},
+                Course: {},
                 hasError: true,
                 isLoaded: true,
-                onerror: reactComponent.onError(error),
+                onerror: onProgress(reactComponent),
             });
         }
     )
 }
 
 
-const getLessons = (reactComponent, scheme_of_work_id) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/?format=json`)
+const getLessons = (reactComponent, institute_id, department_id, course_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/?format=json`;
+    fetch(uri)
         .then(res => { 
             return res.json();
         })
@@ -79,15 +190,16 @@ const getLessons = (reactComponent, scheme_of_work_id) => {
                 Lessons: [],
                 hasError: true,
                 isLoaded: true,
-                onerror: reactComponent.onError(error),
+                onerror: onProgress(reactComponent),
             });
         }
     )
 }
 
 
-const getLesson = (reactComponent, scheme_of_work_id, lesson_id) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}?format=json`)
+const getLesson = (reactComponent, institute_id, department_id, course_id, lesson_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/${lesson_id}?format=json`;
+    fetch(uri)
         .then(res => { 
             return res.json();
         })
@@ -105,15 +217,16 @@ const getLesson = (reactComponent, scheme_of_work_id, lesson_id) => {
                 Lesson: {},
                 hasError: true,
                 isLoaded: true,
-                onerror: reactComponent.onError(error),
+                onerror: onProgress(reactComponent),
             });
         }
     )
 }
 
 
-const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}/resources/${resource_id}?format=json`)
+const getResource = (reactComponent, institute_id, department_id, course_id, lesson_id, resource_id) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}?format=json`;
+    fetch(uri)
         .then(res => { 
             return res.json();
         })
@@ -131,15 +244,16 @@ const getResource = (reactComponent, scheme_of_work_id, lesson_id, resource_id) 
                 Resource: {},
                 hasError: true,
                 isLoaded: true,
-                onerror: reactComponent.onError(error),
+                onerror: onProgress(reactComponent),
             });
         }
     )
 }
 
 
-const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, md_document_name) => {
-    fetch(`${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schemesofwork/${scheme_of_work_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`)
+const getMarkdown = (reactComponent, institute_id, department_id, course_id, lesson_id, resource_id, md_document_name) => {
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}//institute/${institute_id}/department/${department_id}schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`;
+    fetch(uri)
       .then(res => res.json())
       .then(
         (result) => {
@@ -158,7 +272,7 @@ const getMarkdown = (reactComponent, scheme_of_work_id, lesson_id, resource_id, 
             isLoaded: true,
             markdown_html: error,
             error,
-            onerror: reactComponent.onError(error),
+            onerror: onProgress(reactComponent),
           });
         }
       )
@@ -209,4 +323,4 @@ const getSiteConfig = (reactComponent) => {
 }
 
 
-export { getSchemesOfWork, getSchemeOfWork, getLessons, getLesson, getResource, getMarkdown, getSocialMediaLinks, getSiteConfig };
+export { getInstitutes, getInstitute, getDepartments, getDepartment, getCourses, getCourse, getLessons, getLesson, getResource, getMarkdown, getSocialMediaLinks, getSiteConfig };

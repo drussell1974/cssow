@@ -28,9 +28,9 @@ class ResourceModel (BaseModel):
     # default Get this from settings
     MARKDOWN_TYPE_ID = 10 # default
 
-    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
         
-        super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db)
+        super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.title = title
         self.publisher = publisher
         self.page_note = page_note
@@ -177,7 +177,7 @@ class ResourceModel (BaseModel):
     def save(db, model, auth_user, published=1):
         if try_int(published) == 2:
             rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
-            #TODO: check row count before updating
+            # TODO: check row count before updating
             model.published = 2
         else:
             if model.is_new() == True:

@@ -15,7 +15,8 @@ BEGIN
         name = p_name, 
         definition = p_defintion,
         scheme_of_work_id = p_scheme_of_work_id,
-        published = p_published
+        published = p_published,
+        modified_by = p_auth_user
     WHERE id = p_keyword_id;
 END;
 //

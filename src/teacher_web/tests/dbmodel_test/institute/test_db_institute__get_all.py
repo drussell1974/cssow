@@ -49,7 +49,8 @@ class test_db_institute__get_all(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self, mock_auth_user):
+    @patch.object(InstituteModel, "get_number_of_departments", return_value=12)
+    def test__should_call__select__single_items(self, InstituteModel_get_number_of_departments, mock_auth_user):
         # arrange
         expected_result = [(1,"Computer Science", "2020-07-21 17:09:34", 1, "test_user", 0)]
         
@@ -67,11 +68,14 @@ class test_db_institute__get_all(TestCase):
                 , []
                 , handle_log_info)
 
+            InstituteModel_get_number_of_departments.assert_called_with(self.fake_db, 1, mock_auth_user)
+
             self.assertEqual(1, len(rows))
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self, mock_auth_user):
+    @patch.object(InstituteModel, "get_number_of_departments", return_value=12)
+    def test__should_call__select__multiple_items(self, InstituteModel_get_number_of_departments, mock_auth_user):
         # arrange
         expected_result = [
             (1,"Computer Science",  "2020-07-21 17:09:34", 1, "test_user", 0),
@@ -89,6 +93,9 @@ class test_db_institute__get_all(TestCase):
                 , (mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
+
+            InstituteModel_get_number_of_departments.assert_called()
+
             self.assertEqual(3, len(rows))
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             self.assertEqual("IT", rows[len(rows)-1].name, "Last item not as expected")

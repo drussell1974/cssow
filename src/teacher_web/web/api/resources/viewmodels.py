@@ -12,7 +12,7 @@ class ResourceGetModelViewModel(BaseViewModel):
         model = ResourceModel.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user)
         
         if model is not None:
-            #TODO: #254: check for markdown to override page_uri
+            # TODO: #254: check for markdown to override page_uri
             if ResourceModel.is_markdown(model):
                 model.page_uri = reverse("api.resource.markdown", args=[auth_user.institute_id, auth_user.department_id, scheme_of_work_id, lesson_id, resource_id, model.md_document_name]) 
 
@@ -24,7 +24,7 @@ class ResourceGetMarkdownViewModel(BaseViewModel):
     
     def __init__(self, MARKDOWN_STORAGE, resource_id, lesson_id, scheme_of_work_id, document_name, auth_user):
         
-        #TODO: #254 use python-markdown api to get md_document_name from MEDIA_ROOT - see https://python-markdown.github.io/reference/#markdown
+        # TODO: #254 use python-markdown api to get md_document_name from MEDIA_ROOT - see https://python-markdown.github.io/reference/#markdown
         html = ""
         try:
             document_path = "{root}/{sow}/{lesson}/{resource}/{document}".format(root=MARKDOWN_STORAGE, sow=scheme_of_work_id, lesson=lesson_id, resource=resource_id, document=document_name) 

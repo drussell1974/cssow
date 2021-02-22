@@ -50,7 +50,7 @@ class min_permission_required:
             self.kwargs = kwargs
 
             self._return_url = request.path
-            auth_user = request.user
+            #auth_user = request.user
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
             
@@ -59,19 +59,21 @@ class min_permission_required:
             department_id = self.getkwargs("department_id", default_value=DEFAULT_DEPARTMENT_ID)
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
-
+            
             auth_ctx = AuthCtx(db, request, **kwargs)
             
+            ''' TODO: get light weight '''
+
             scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_ctx)
             
             if scheme_of_work is None:
                 # create empty scheme of work with scheme_of_work_id = 0
-                scheme_of_work = SchemeOfWorkModel.empty(institute_id, department_id)
+                scheme_of_work = SchemeOfWorkModel.empty(ctx=auth_ctx)
                 
             ''' teacher_id and auth_user are the same in this call '''
-            
-            model = TeacherPermissionModel.get_model(db, scheme_of_work, auth_user=auth_ctx)
-                            
+            # get the permissions for the current user
+            model = TeacherPermissionModel.get_model(db, teacher_id=auth_ctx.auth_user_id, scheme_of_work=scheme_of_work, auth_user=auth_ctx)
+
             if model.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."

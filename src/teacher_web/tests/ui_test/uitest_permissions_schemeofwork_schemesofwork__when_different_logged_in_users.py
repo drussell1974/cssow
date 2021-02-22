@@ -47,6 +47,7 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
+                "always_skip": True,
                 "skip": True,
                 "route":"schemesofwork.view as schemeofwork-viewer@localhost --- NOT IMPLEMENT",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}",
@@ -64,6 +65,7 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
             },
             {
+                "always_skip": True,
                 "skip": True,
                 "route":"schemesofwork.publish_item as schemeofwork-viewer@localhost ---- publish view NOT IMPLEMENTED",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/999999999/publish",
@@ -95,8 +97,10 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "route":"schemesofwork.delete_unpublished as schemeofwork-editor@localhost",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/delete_unpublished",
                 "enter_username":"schemeofwork-editor@localhost",
-                "allow": False,
-                "exp__login_message":"The item is currently unavailable or you do not have permission.",
+                "allow": True,
+                "exp__title":"Dave Russell - Teach Computer Science",
+                "exp__h1":"Schemes of Work",
+                "exp__subheading":"Our shared schemes of work by key stage",
             },
 
 

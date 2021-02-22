@@ -49,7 +49,8 @@ class test_DepartmentDataAccess__get_all(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self, mock_ctx):
+    @patch.object(DepartmentModel, "get_number_of_schemes_of_work", return_value=3)
+    def test__should_call__select__single_items(self, DepartmentModel_get_number_of_schemes_of_work, mock_ctx):
         # arrange
         expected_result = [(1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)]
         
@@ -67,11 +68,14 @@ class test_DepartmentDataAccess__get_all(TestCase):
                 , []
                 , handle_log_info)
 
+            DepartmentModel_get_number_of_schemes_of_work.assert_called_with(self.fake_db, 1, mock_ctx)
+
             self.assertEqual(1, len(rows))
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self, mock_ctx):
+    @patch.object(DepartmentModel, "get_number_of_schemes_of_work", return_value=10)
+    def test__should_call__select__multiple_items(self, DepartmentModel_get_number_of_schemes_of_work, mock_ctx):
         # arrange
         expected_result = [
             (1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0),
@@ -90,6 +94,9 @@ class test_DepartmentDataAccess__get_all(TestCase):
                 , (12776111277611, mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
+
+            DepartmentModel_get_number_of_schemes_of_work.assert_called_with(self.fake_db, 3, mock_ctx)
+            
             self.assertEqual(3, len(rows))
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             self.assertEqual("IT", rows[len(rows)-1].name, "Last item not as expected")

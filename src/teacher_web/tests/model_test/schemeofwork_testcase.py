@@ -1,4 +1,5 @@
 from unittest import TestCase
+from shared.models.core.context import Ctx
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
 class SchemeOfWork_TestCase(TestCase):
@@ -12,11 +13,12 @@ class SchemeOfWork_TestCase(TestCase):
                                      exam_board_name="test exam board",
                                      key_stage_id=2,
                                      key_stage_name="test key stage",
-                                     department_id=3,
+                                     #department_id=3,
                                      department_name="test department",
-                                     institute_id=4,
+                                     #institute_id=4,
                                      school_name="test school",
-                                     published=1)
+                                     published=1,
+                                     auth_user = Ctx(4,3))
         test.key_words = []
         
         # test

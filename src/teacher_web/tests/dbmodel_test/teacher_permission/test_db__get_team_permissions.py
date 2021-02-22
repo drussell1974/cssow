@@ -7,8 +7,6 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
 @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
-
-# TODO: #329 Do not use mock for testing object
 @patch("shared.models.cls_teacher_permission.TeacherPermissionModel", return_value=fake_teacher_permission_model())
 class test_db__get_team_permissions(TestCase):
 
@@ -48,7 +46,7 @@ class test_db__get_team_permissions(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_team_permissions'
-                , (6079, 6079)
+                , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
 
@@ -58,7 +56,7 @@ class test_db__get_team_permissions(TestCase):
     def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
         ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -71,7 +69,7 @@ class test_db__get_team_permissions(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079, 6079)
+                , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
 
@@ -82,9 +80,9 @@ class test_db__get_team_permissions(TestCase):
     def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
-            (2, "Jane Rogers", 68,  "Information Technology", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
-            (3, "Bill Gates", 68,  "A-Level Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
+            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
+            (3, "Bill Gates", 68,  "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
         ]
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -95,7 +93,33 @@ class test_db__get_team_permissions(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'scheme_of_work__get_team_permissions'
-                , (6079, 6079)
+                , (6079, 67, 127671276711, True, 6079)
+                , []
+                , handle_log_info)
+
+            self.assertEqual(2, len(rows)) # NOTE: there are two schemes of work and 3 teachers
+            #self.assertEqual("John Doe", rows[0].teacher_permissions[0].teacher_id, "First item not as expected")
+            #self.assertEqual("Jane Rogers", rows[len(rows)-1].teacher_permissions[0].teacher_id, "Last item not as expected")
+            #self.assertEqual("Bill Gates", rows[len(rows)-1].teacher_permissions[1].teacher_id, "Last item not as expected")
+
+
+    def test__should_call__select__multiple_items___show_unauthorised(self, TeacherModel_get_model, mock_teacher_permission_model):
+        # arrange
+        expected_result = [
+            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
+            (3, "Bill Gates", 68,  "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
+        ]
+
+        with patch.object(ExecHelper, "select", return_value=expected_result):
+            # act
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, show_authorised=False, auth_user=fake_ctx_model())
+            
+            # assert
+
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'scheme_of_work__get_team_permissions'
+                , (6079, 67, 127671276711, False, 6079)
                 , []
                 , handle_log_info)
 

@@ -41,7 +41,7 @@ class test_db__get_schemeofwork_name_only(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_schemeofwork_name_only"
-                , (101, mock_auth_user.auth_user_id)
+                , (101, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -61,7 +61,7 @@ class test_db__get_schemeofwork_name_only(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_schemeofwork_name_only"
-                , (6, mock_auth_user.auth_user_id)
+                , (6, mock_auth_user.department_id, mock_auth_user.institute_id, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual("ipsum dolor sit amet.", actual_result)

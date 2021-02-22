@@ -37,13 +37,21 @@
           <!-- Dropdown -->
           <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
           <div class="dropdown-menu">
+
+            {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
+              <!-- Button trigger modal -->
+              <button type="button" class="dropdown-item "  data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-lock"></i> {{_("My permissions")}}
+              </button>
+            {% endif %}
+
             {% if 'change_password' not in auth.settings.actions_disabled %}
                 <a class="dropdown-item " href="{% url 'password_change' %}" id="btn-password_change">
                   <i class="fa fa-key"></i> {{_("Change password")}}
                 </a>
             {% endif %}
                 
-            {% if content.ctx.institute_id > 0 or content.ctx.department_id > 0 %}
+            {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
             <a class="dropdown-item" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}"><i class="fa fa-users"></i> 
               {{_("Manage team permissions")}}
             </a>
@@ -56,7 +64,7 @@
           </div>
           <!-- Dropdown END -->
           <a class="btn navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">{{_("Logout")}}</a>
-         
+          
           {% else %}
                 <a class="navbar-brand" id="btn-login" href="{% url 'login' %}?next={{ request.path }}">{{_("Login")}}</a>
               {% if 'register' not in auth.settings.actions_disabled %}
@@ -131,7 +139,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <p class="text-center text-muted">{{ content.ctx.institute_name }} - {{ content.ctx.department_name }}</p>
+            <p class="text-center text-muted"><span id="footer-context--text">{{ content.ctx.department_name }} {{ content.ctx.institute_name }}</span></p>
             <ul class="list-inline text-center">
               <li class="list-inline-item">
                 <a href="#">
@@ -156,6 +164,8 @@
       </div>
     </footer>
     {% endblock %}
+
+
     <!-- The javascript =============================== -->
 
     <!-- Bootstrap core JavaScript -->
@@ -169,8 +179,11 @@
     <!-- Custom scripts for this template -->
     <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
 
+
   <!-- Keep modal above page_js -->
-  {% block page_js %}{% endblock %}
+  {% block page_js %}
+  {% endblock %}
+
     {% if ga %}
     <!-- Analytics ==================================== -->
     <script src="{% static 'default/js/analytics.min.js' %}"></script>
@@ -181,7 +194,34 @@
     </script>
   {% endif %}
 
+    
   {% block modal %}{% endblock %}
+
+  {% if request.user.is_authenticated and content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item">{{content.ctx.department_permission}}</li>
+              <li class="list-group-item">{{content.ctx.scheme_of_work_permission}}</li>
+              <li class="list-group-item">{{content.ctx.lesson_permission}}</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 
   </body>
 </html>

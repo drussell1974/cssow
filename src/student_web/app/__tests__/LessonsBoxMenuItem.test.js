@@ -7,6 +7,8 @@ import { createContainer } from '../helpers/domManipulators';
 
 let lesson = {
     id: 1,
+    institute_id: 5,
+    department_id: 2,
     title: "Curabitur id purus feugiat, porttitor.",
     summary: "In vitae arcu quis dolor porttitor bibendum in eu nisl. Etiam efficitur dictum elit a tempus. Etiam feugiat acrisus",
     image_url: "images/pic01.jpg",

@@ -18,6 +18,12 @@ class InstituteIndexViewModel(BaseViewModel):
         self.auth_user = auth_user
         # get model
         data = Model.get_all(self.db, auth_user)
+
+        # if not found then raise error
+        if auth_user.institute_id > 0:
+            if data is None:
+                self.on_not_found(data)
+
         self.model = data
 
 
@@ -26,8 +32,8 @@ class InstituteIndexViewModel(BaseViewModel):
         data = {
             "institutes": self.model
         }
-        # TODO: #329 active_model = institue
-        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data, active_model=None)
+        
+        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data)
 
 
 class InstituteEditViewModel(BaseViewModel):

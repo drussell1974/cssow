@@ -18,6 +18,7 @@ class ContentIndexViewModel(BaseViewModel):
         """ determine and action request """
         self.auth_user = auth_user
         
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_user)
 
         if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
@@ -53,6 +54,7 @@ class ContentEditViewModel(BaseViewModel):
         self.content_id = content_id
         self.auth_user = auth_user
         
+        # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, self.auth_user)
         #248 check associated schemeofwork 
         if self.scheme_of_work is None or self.scheme_of_work.is_from_db == False:
@@ -92,7 +94,7 @@ class ContentEditViewModel(BaseViewModel):
 
                     self.is_content_ready = True   
                 except Exception as e:
-                    #TODO: show error message for custom exception
+                    # TODO: show error message for custom exception
                     self.error_message = repr(e)
             else:
                 handle_log_warning(self.db, scheme_of_work_id, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))

@@ -96,7 +96,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(s=2)
+        self.wait(s=5)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
 

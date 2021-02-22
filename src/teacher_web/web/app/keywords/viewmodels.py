@@ -24,6 +24,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
         
         try:
             # get model
+            # TODO: #323 call read only model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, self.scheme_of_work_id, self.auth_user)
             
             # if not found then raise error
@@ -74,6 +75,7 @@ class KeywordGetModelViewModel(BaseViewModel):
 
         try:
             # get model
+            # TODO: #323 call read only model
             self.scheme_of_work = SchemeOfWorkModel.get_model(self.db, scheme_of_work_id, auth_user)
             
             # if not found then raise error
@@ -99,7 +101,7 @@ class KeywordGetModelViewModel(BaseViewModel):
         except Exception as e:
             self.error_message = repr(e)
             handle_log_exception(db, scheme_of_work_id, "An error occurred viewing keywords", e)
-            #TODO: REMOVE swallow up and handle on form
+            # TODO: REMOVE swallow up and handle on form
             raise e
 
 
@@ -217,7 +219,7 @@ class KeywordMergeViewModel(BaseViewModel):
         except Exception as e:
             self.error_message = repr(e)
             handle_log_exception(self.db, self.scheme_of_work_id, "An error occurred viewing keywords", e)
-            #TODO: REMOVE swallow up and handle on form
+            # TODO: REMOVE swallow up and handle on form
             raise e
 
 

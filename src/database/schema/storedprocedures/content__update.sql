@@ -18,7 +18,8 @@ BEGIN
         letter = p_prefix,
         key_stage_id = p_key_stage_id,
         scheme_of_work_id = p_scheme_of_work_id,
-        published = p_published
+        published = p_published,
+        modified_by = p_auth_user
     WHERE
         id = p_content_id;
 END;

@@ -13,18 +13,19 @@ CREATE PROCEDURE scheme_of_work__has__teacher_permission__update (
  )
 BEGIN
 	-- DO NOT UPDATE ESSENTIAL USERS
-	-- IF p_teacher_id NOT IN (SELECT id FROM auth_user WHERE id < 30 or is_superuser = True) THEN
-		UPDATE sow_scheme_of_work__has__teacher 
-		SET
-			department_permission = p_department_permission,
-			scheme_of_work_permission = p_scheme_of_work_permission,
-			lesson_permission = p_lesson_permission,
-            is_authorised = p_is_authorised
-		WHERE
-			scheme_of_work_id = p_scheme_of_work_id and
-			auth_user_id = p_teacher_id;
-	-- END IF;
+	UPDATE sow_scheme_of_work__has__teacher 
+	SET
+		department_permission = p_department_permission,
+		scheme_of_work_permission = p_scheme_of_work_permission,
+		lesson_permission = p_lesson_permission,
+		modified_by = p_auth_user,
+        is_authorised = p_is_authorised
+	WHERE
+		scheme_of_work_id = p_scheme_of_work_id and
+		auth_user_id = p_teacher_id;
 END;
 //
+
+#CALL scheme_of_work__has__teacher_permission__update(11, 113, 1, 1, 1, 2, True);
 
 DELIMITER ;
