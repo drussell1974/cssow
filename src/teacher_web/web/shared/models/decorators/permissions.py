@@ -73,7 +73,7 @@ class min_permission_required:
             ''' teacher_id and auth_user are the same in this call '''
             # get the permissions for the current user
             model = TeacherPermissionModel.get_model(db, teacher_id=auth_ctx.auth_user_id, scheme_of_work=scheme_of_work, auth_user=auth_ctx)
-            
+
             if model.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."
