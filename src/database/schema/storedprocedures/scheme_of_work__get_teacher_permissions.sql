@@ -33,4 +33,4 @@ END;
 DELIMITER ;
 
 -- CALL scheme_of_work__get_team_permissions(2, 5, 2, True, 2);
-CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
+-- CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
