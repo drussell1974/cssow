@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_content import ContentModel as Model, ContentDataAccess, handle_log_info
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 
@@ -81,7 +82,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = 1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = STATE.PUBLISH)
             
             # assert
 

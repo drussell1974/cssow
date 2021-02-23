@@ -3,6 +3,7 @@ import markdown
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.enums.publlished import STATE
 from datetime import datetime
 from .core.db_helper import to_empty
 
@@ -175,10 +176,10 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def save(db, model, auth_user, published=1):
-        if try_int(published) == 2:
+        if try_int(published) == STATE.DELETE:
             rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
             # TODO: check row count before updating
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 new_id = ResourceDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)

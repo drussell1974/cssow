@@ -10,6 +10,7 @@ from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 
 class TeacherPermissionModel(BaseModel):
     
@@ -186,7 +187,7 @@ class TeacherPermissionModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user, is_pending = False):
         """ save model """        
-        if model.is_new() == False and model.published == 2:
+        if model.is_new() == False and model.published == STATE.DELETE:
             data = TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, ctx=auth_user)
         elif model.is_valid == True:
             if model.is_new() == True:

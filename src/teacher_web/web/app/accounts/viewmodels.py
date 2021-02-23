@@ -13,6 +13,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.core.context import Ctx
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
@@ -118,12 +119,12 @@ class RegisterTeacherForm(UserCreationForm):
                     
                 # delete department
                 if department_model is not None:
-                    department_model.published = 2
+                    department_model.published = STATE.DELETE
                     DepartmentModel.save(db, department_model, user.id, auth_ctx)
 
                 # delete institute
                 if institute_model is not None:
-                    institute_model.published = 2
+                    institute_model.published = STATE.DELETE
                     InstituteModel.save(db, institute_model, user.id, auth_ctx)
                 
                 raise Exception("An error occurred creating user.") from e

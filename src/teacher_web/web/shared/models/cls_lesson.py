@@ -3,6 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from shared.models.core.log_handlers import handle_log_info, handle_log_error
+from shared.models.enums.publlished import STATE
 from .utils.pager import Pager
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -38,7 +39,7 @@ class LessonModel (BaseModel):
     topic_id = None
     year_id = None
     key_stage_id = None
-    published = 1
+    published = STATE.PUBLISH
     key_words = []  
     resources = []
     learning_objectives = []
@@ -447,7 +448,7 @@ class LessonModel (BaseModel):
         try:     
             if model.is_new() == True:
                 model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
-            elif published == 2:
+            elif published == STATE.DELETE:
                 model = LessonDataAccess._delete(db, auth_user.auth_user_id, model)
             else:
                 model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)

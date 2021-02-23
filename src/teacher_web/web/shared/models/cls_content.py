@@ -2,6 +2,7 @@
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.enums.publlished import STATE
 
 
 class ContentModel(BaseModel):
@@ -95,12 +96,12 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def save(db, model, auth_user, published=1):
-        if try_int(published) == 2:
+        if try_int(published) == STATE.DELETE:
             rval = ContentDataAccess._delete(db, model, auth_user.auth_user_id)
             if rval == 0:
                 raise Exception("The item is either in use or you are not permitted to perform this action.")
             # TODO: check row count before updating
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 model = ContentDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)

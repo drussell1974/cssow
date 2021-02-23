@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess, handle_log_info
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 
@@ -43,7 +44,7 @@ class test_db__get_all(TestCase):
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (5, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (5, 67, 127671276711, fake_ctx_model().auth_user_id, STATE.PUBLISH)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -66,7 +67,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (3, 67, 127671276711, fake_ctx_model().auth_user_id, STATE.PUBLISH)
                 , []
                 , handle_log_info)
 
@@ -109,7 +110,7 @@ class test_db__get_all(TestCase):
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (3, 67, 127671276711, fake_ctx_model().auth_user_id, STATE.PUBLISH)
                 , []
                 , handle_log_info)
 

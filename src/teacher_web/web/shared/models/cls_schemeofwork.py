@@ -5,6 +5,7 @@ from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
+from shared.models.enums.publlished import STATE
 
 class SchemeOfWorkModel(BaseModel):
 
@@ -24,7 +25,7 @@ class SchemeOfWorkModel(BaseModel):
         return SchemeOfWorkModel(0, auth_user=ctx) # Default
 
 
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = 1, is_from_db=False, auth_user=None):
+    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = STATE.PUBLISH, is_from_db=False, auth_user=None):
         #231: implement across all classes
         
         #assert auth_user is not None
@@ -264,9 +265,9 @@ class SchemeOfWorkModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user, published=1):
         
-        if try_int(published) == 2:
+        if try_int(published) == STATE.DELETE:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
@@ -313,7 +314,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0):
+    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, published_status = 1):
         """
         get all scheme of work
         """
@@ -321,7 +322,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, department_id, institute_id, auth_user_id)
+        params = (key_stage_id, department_id, institute_id, auth_user_id, published_status)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

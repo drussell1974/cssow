@@ -6,6 +6,7 @@ from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 
 
 class TeacherModel(BaseModel):
@@ -78,7 +79,7 @@ class TeacherDataAccess:
     @staticmethod
     def save(db, model, teacher_id, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE
             data = DepartmentDataAccess._delete(db, model, auth_user)
         elif model.is_valid == True:
             if model.is_new():

@@ -5,6 +5,7 @@ import re
 from django.db import models
 import warnings
 from shared.models.core.db_helper import ExecHelper, sql_safe
+from shared.models.enums.publlished import STATE
 
 class BaseModel(models.Model):
     id = 0
@@ -16,7 +17,7 @@ class BaseModel(models.Model):
     validation_errors = {}
     error_message = ""
     stack_trace = ""
-    published = 0
+    published = STATE.DRAFT
     is_from_db = False
     skip_validation = []
     department_id = 0
@@ -50,11 +51,11 @@ class BaseModel(models.Model):
     
 
     def set_published_state(self):
-        if self.published == 0:
+        if self.published == STATE.DRAFT:
             self.published_state = "unpublished"
-        elif self.published == 1:
+        elif self.published == STATE.PUBLISH:
             self.published_state = "published"
-        elif self.published == 2:
+        elif self.published == STATE.DELETE:
             self.published_state = "deleting"
         else:
             self.published_state = "unknown"    
@@ -220,9 +221,9 @@ class BaseModel(models.Model):
             :return: the instance of the model being inserted/updated/deleted
         """
         model.published = int(published)
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             DataAccess._delete(db, model, auth_user)
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 rows, new_id = DataAccess._insert(db, model, auth_user)

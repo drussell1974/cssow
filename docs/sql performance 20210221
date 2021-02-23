@@ -50,7 +50,7 @@
 
 
 ('select_scheme_of_work__get_all__min', 0.010331)
-('select_scheme_of_work__get_all__max', 0.223277)  ######
+('select_scheme_of_work__get_all__max', 0.223277)  -- update subquery
 ('select_lesson__get_ks123_pathway_objective_ids__min', 0.010182)
 ('select_lesson__get_ks123_pathway_objective_ids__max', 0.017095)
 ('select_lesson__get_all_keywords__min', 0.012371)

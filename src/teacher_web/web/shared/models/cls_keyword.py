@@ -4,6 +4,7 @@ from uuid import uuid1
 from shared.models.core.basemodel import BaseModel, try_int
 from shared.models.core.db_helper import ExecHelper, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
+from shared.models.enums.publlished import STATE
 
 
 class KeywordModel(BaseModel):
@@ -63,7 +64,7 @@ class KeywordModel(BaseModel):
         super().validate(skip_validation)
 
         # do not validate deleted items
-        if self.published == 2:
+        if self.published == STATE.DELETE:
             self.is_valid = True;
             self.on_after_validate()
             return
@@ -158,7 +159,7 @@ class KeywordModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         else:
             if model.is_new():

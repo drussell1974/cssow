@@ -1,11 +1,9 @@
 import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.lessons.viewmodels import LessonDeleteViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
+from shared.models.enums.publlished import STATE
 
 
 class test_viewmodel_LessonDeleteViewModel(TestCase):
@@ -59,7 +57,7 @@ class test_viewmodel_LessonDeleteViewModel(TestCase):
         # arrange
         
         data_to_return = Model(912, "How to save the world in a day")
-        data_to_return.published = 2
+        data_to_return.published = STATE.DELETE
 
         
         with patch.object(Model, "delete", return_value=data_to_return):

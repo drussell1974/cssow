@@ -3,6 +3,7 @@ from shared.models.cls_institute import InstituteModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -34,7 +35,7 @@ class test_db_institute___delete(TestCase):
         expected_result = [99]
 
         fake_model = Model(101, "Lorum ipsum")
-        fake_model.published = 2
+        fake_model.published = STATE.DELETE       
         fake_model.created = "2021-01-24 07:20:01.907507"
     
         with patch.object(ExecHelper, "delete", return_value=expected_result):

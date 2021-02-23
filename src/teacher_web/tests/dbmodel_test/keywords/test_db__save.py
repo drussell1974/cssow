@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -24,7 +25,7 @@ class test_db__save(TestCase):
         expected_exception = KeyError("Bang!")
 
         model = Model(0, term="", definition="Mauris ac velit ultricies, vestibulum.")
-        model.published = 1
+        model.published = STATE.PUBLISH
         model.is_new = Mock(return_value=True)
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -41,7 +42,7 @@ class test_db__save(TestCase):
 
         model = Model(1, term="", definition="Mauris ac velit ultricies, vestibulum.")
         model.is_new = Mock(return_value=False)
-        model.published = 1
+        model.published = STATE.PUBLISH
         
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -58,7 +59,7 @@ class test_db__save(TestCase):
         model = Model(1, term="Lorem Ipsum", definition="Mauris ac velit ultricies, vestibulum.", scheme_of_work_id=13)
         model.is_new = MagicMock(return_value=False)
         model.is_valid = MagicMock(return_value=True)
-        model.published = 1
+        model.published = STATE.PUBLISH
 
         #test_context._update_lesson_lessonobjectives = Mock()
 
@@ -83,7 +84,7 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, term="Mauris", definition="Mauris ac velit ultricies, vestibulum.", scheme_of_work_id=13)
-        model.published = 1
+        model.published = STATE.PUBLISH
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
         

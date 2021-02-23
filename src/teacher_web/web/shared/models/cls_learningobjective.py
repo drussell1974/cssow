@@ -4,6 +4,7 @@ from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.enums.publlished import STATE
 
 
 class LearningObjectiveModel (BaseModel):
@@ -202,7 +203,7 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     def save(db, model, auth_user, published):
 
-        if published == 2:
+        if published == STATE.DELETE:
             LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
         else:
             model.validate()

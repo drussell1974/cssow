@@ -3,6 +3,7 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.lessons.viewmodels import LessonPublishViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
+from shared.models.enums.publlished import STATE
 
 class test_viewmodel_LessonPublishViewModel(TestCase):
 
@@ -58,7 +59,7 @@ class test_viewmodel_LessonPublishViewModel(TestCase):
         # arrange
         
         data_to_return = Model(912, "How to save the world in a day")
-        data_to_return.published = 1
+        data_to_return.published = STATE.PUBLISH
 
         
         with patch.object(Model, "publish", return_value=data_to_return):

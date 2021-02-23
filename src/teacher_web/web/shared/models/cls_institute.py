@@ -2,6 +2,7 @@ from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
+from shared.models.enums.publlished import STATE
 
 class InstituteModel(BaseModel):
 
@@ -108,7 +109,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def save(db, model, teacher_id, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             data = InstituteDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
