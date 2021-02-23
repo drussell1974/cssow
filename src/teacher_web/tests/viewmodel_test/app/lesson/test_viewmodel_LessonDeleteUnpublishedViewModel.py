@@ -72,7 +72,7 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             Model.delete_unpublished.assert_called()
             self.assertEqual(912, self.viewmodel.model[0].id)
             self.assertEqual("Maecenas sed urna magna", self.viewmodel.model[0].title)
-            self.assertEqual(2, self.viewmodel.model[0].published)
+            self.assertEqual(STATE.DELETE, self.viewmodel.model[0].published)
 
 
     def test_init_called_delete__return_items(self):
@@ -100,8 +100,8 @@ class test_viewmodel_LessonDeleteUnpublishedViewModel(TestCase):
             Model.delete_unpublished.assert_called()
             self.assertEqual(312, self.viewmodel.model[0].id)
             self.assertEqual("Praesent blandit est ut vestibulum", self.viewmodel.model[0].title)
-            self.assertEqual(2, self.viewmodel.model[0].published)
+            self.assertEqual(STATE.DELETE, self.viewmodel.model[0].published)
 
             self.assertEqual(414, self.viewmodel.model[2].id)
             self.assertEqual("Donec bibendum mi vitae felis", self.viewmodel.model[2].title)
-            self.assertEqual(2, self.viewmodel.model[2].published)
+            self.assertEqual(STATE.DELETE, self.viewmodel.model[2].published)

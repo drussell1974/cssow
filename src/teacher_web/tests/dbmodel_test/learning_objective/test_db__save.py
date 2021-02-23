@@ -67,7 +67,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                 "lesson_learning_objective__update"
-                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, 1, mock_auth_user.auth_user_id)
+                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
 
@@ -94,7 +94,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 "lesson_learning_objective__insert"
-                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, 1, mock_auth_user.auth_user_id)
+                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
                 
             self.assertEqual(23, actual_result.id)

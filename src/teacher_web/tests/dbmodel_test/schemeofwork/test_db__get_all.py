@@ -44,7 +44,7 @@ class test_db__get_all(TestCase):
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (5, 67, 127671276711, fake_ctx_model().auth_user_id, STATE.PUBLISH)
+                , (5, 67, 127671276711, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -67,7 +67,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 67, 127671276711, fake_ctx_model().auth_user_id, STATE.PUBLISH)
+                , (3, 67, 127671276711, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
                 , []
                 , handle_log_info)
 

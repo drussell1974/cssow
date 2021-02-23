@@ -75,4 +75,4 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual("test school", test.school_name)
         self.assertTrue(test.is_valid)
         self.assertFalse(test.is_recent)
-        self.assertFalse(test.published)
+        self.assertEqual(STATE.DRAFT, test.published)

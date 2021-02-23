@@ -2,6 +2,7 @@ from unittest import TestCase
 from shared.models.cls_department import DepartmentModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -46,7 +47,7 @@ class test_DepartmentDataAccess___update(TestCase):
 
             ExecHelper.update.assert_called_with(self.fake_db,
                 'department__update'
-                , (101, 'Lorum ipsum', 12767111276711, 1, mock_ctx.auth_user_id)
+                , (101, 'Lorum ipsum', 12767111276711, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(101, result.id)

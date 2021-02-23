@@ -74,4 +74,4 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             Model.delete_unpublished.assert_called()
             self.assertEqual(912, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.term)
-            self.assertEqual(2, self.viewmodel.model.published)
+            self.assertEqual(STATE.DELETE, self.viewmodel.model.published)

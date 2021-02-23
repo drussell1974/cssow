@@ -314,7 +314,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, published_status = 1):
+    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, published_status = STATE.PUBLISH):
         """
         get all scheme of work
         """
@@ -322,7 +322,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, department_id, institute_id, auth_user_id, published_status)
+        params = (key_stage_id, department_id, institute_id, auth_user_id, int(published_status))
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

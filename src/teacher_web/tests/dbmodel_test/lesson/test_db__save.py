@@ -128,7 +128,7 @@ class test_db__save(TestCase):
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
                 'lesson__update'
-                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, mock_auth_user.auth_user_id)
+                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 ,handle_log_info)
 
             # check subsequent functions where called
@@ -167,7 +167,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson__insert'
-                , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '2021-01-24 07:18:18.677084')
+                , (0, '', '', 1, 0, 0, 0, 0, int(STATE.PUBLISH), 0, '2021-01-24 07:18:18.677084')
                 , handle_log_info)
 
             # check subsequent functions where called

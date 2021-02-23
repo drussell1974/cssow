@@ -65,7 +65,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                  'content__update'
-                , (1, 'CPU and RAM', '', 0, None, 1, mock_auth_user.auth_user_id)
+                , (1, 'CPU and RAM', '', 0, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(1, actual_result)
@@ -88,7 +88,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
                 'content__insert'
-                , (0, '', '', 20, None, 1, mock_auth_user.auth_user_id)
+                , (0, '', '', 20, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(876, actual_result[0])
@@ -117,4 +117,4 @@ class test_db__save(TestCase):
             # check subsequent functions where called
 
             self.assertEqual(23, actual_result.id)
-            self.assertEqual(2, actual_result.published)
+            self.assertEqual(STATE.DELETE, actual_result.published)

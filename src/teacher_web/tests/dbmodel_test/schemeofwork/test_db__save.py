@@ -62,7 +62,7 @@ class test_db__save(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 4, 67, 1, fake_ctx_model().auth_user_id)
+                , (89, '', '', 0, 4, 67, STATE.PUBLISH, fake_ctx_model().auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -87,7 +87,7 @@ class test_db__save(TestCase):
             
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, 1, fake_ctx_model().auth_user_id)
+                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, STATE.PUBLISH, fake_ctx_model().auth_user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()

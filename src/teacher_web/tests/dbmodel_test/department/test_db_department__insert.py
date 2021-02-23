@@ -4,6 +4,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 class test_DepartmentDataAccess___insert(TestCase):
@@ -47,7 +48,7 @@ class test_DepartmentDataAccess___insert(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'department__insert'
-                , (0, "Lorum ipsum", 6080, 127671276711, "2021-01-24 07:20:01.907507", 6079, 1)
+                , (0, "Lorum ipsum", 6080, 127671276711, "2021-01-24 07:20:01.907507", 6079, int(STATE.PUBLISH))
                 , handle_log_info)
 
             self.assertEqual(99, result.id)
