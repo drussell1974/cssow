@@ -27,7 +27,7 @@ class test_db_institute___delete(TestCase):
         with patch.object(ExecHelper, "delete", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, Mock(id=99, name="Lorum ipsum", published=2), "Lorum ipsum", auth_user = mock_ctx)
+                Model.save(self.fake_db, Mock(id=99, name="Lorum ipsum", published=STATE.DELETE), "Lorum ipsum", auth_user = mock_ctx)
             
 
     def test__should_call__delete__if_valid(self, mock_ctx):

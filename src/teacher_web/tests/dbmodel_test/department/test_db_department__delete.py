@@ -28,7 +28,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         with patch.object(ExecHelper, "delete", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, Mock(id=99, name="Casey Jones", published=2), "Lorum ipsum", auth_user = mock_auth_user)
+                Model.save(self.fake_db, Mock(id=99, name="Casey Jones", published=STATE.DELETE), "Lorum ipsum", auth_user = mock_auth_user)
             
 
     def test__should_call__delete__if_valid(self, mock_auth_user):

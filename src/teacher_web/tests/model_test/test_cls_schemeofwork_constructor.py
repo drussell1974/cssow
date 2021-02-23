@@ -1,6 +1,7 @@
 from unittest import TestCase
 from shared.models.core.context import Ctx
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.enums.publlished import STATE
 
 
 class Test_SchemeOfWork_Constructor(TestCase):
@@ -55,7 +56,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
                                  department_name="test department",
                                  #institute_id=4,
                                  school_name="test school",
-                                 published=0,
+                                 published=STATE.DRAFT,
                                  auth_user = Ctx(4,3))
         # test
         test.validate()

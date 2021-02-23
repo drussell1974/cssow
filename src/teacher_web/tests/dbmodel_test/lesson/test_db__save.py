@@ -121,7 +121,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.PUBLISH)
             
             # assert
             
@@ -196,7 +196,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.DELETE)
 
             # assert
 

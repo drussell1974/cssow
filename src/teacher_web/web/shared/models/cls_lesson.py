@@ -49,7 +49,7 @@ class LessonModel (BaseModel):
     department_id = 0
     institute_id = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, auth_user = None):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user = None):
         #231: implement across all classes
         super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title

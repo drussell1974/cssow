@@ -11,7 +11,7 @@ class InstituteModel(BaseModel):
     description = ""
     number_of_departments = 0
     
-    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False):
         super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
         self.id = id_
         self.name = name

@@ -144,10 +144,6 @@ class TeacherPermissionModel(BaseModel):
                 cur_scheme_of_work = SchemeOfWorkModel(row[2], name=row[3], auth_user=auth_user)
                 data.append(cur_scheme_of_work)
 
-            #329 TODO: get by teacher_id only #create TeacherModel
-            
-            # TeacherModel(row[0], name=row[1], department=DepartmentModel(0,name=""))
-
             model = TeacherPermissionModel(
                 teacher_id=row[0],
                 teacher_name=row[1], #319 get teacher name

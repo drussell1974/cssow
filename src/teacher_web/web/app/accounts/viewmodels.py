@@ -17,7 +17,6 @@ from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
-
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -71,12 +70,12 @@ class RegisterTeacherForm(UserCreationForm):
                     # create institute instances
                     
                     institute_name = user.institute_name if len(user.institute_name) > 0 else user.username
-                    institute_model = InstituteModel(0, name=institute_name, published=1)
+                    institute_model = InstituteModel(0, name=institute_name, published=STATE.PUBLISH)
 
                     # create department instance
 
                     department_name = user.department_name if len(user.department_name) > 0 else user.username
-                    department_model = DepartmentModel(0, name=department_name, institute = institute_model, ctx=auth_ctx, published=1)
+                    department_model = DepartmentModel(0, name=department_name, institute = institute_model, ctx=auth_ctx, published=STATE.PUBLISH)
 
                     # create teacher permission
                     teacher_permission_model = TeacherPermissionModel(user.id, user.username, is_authorised=True, ctx=auth_ctx)

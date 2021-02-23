@@ -263,7 +263,7 @@ class SchemeOfWorkModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
+    def save(db, model, auth_user, published=STATE.PUBLISH):
         
         if try_int(published) == STATE.DELETE:
             rval = SchemeOfWorkDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)

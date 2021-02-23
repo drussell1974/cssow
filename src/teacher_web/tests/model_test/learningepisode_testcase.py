@@ -1,6 +1,7 @@
 from unittest import TestCase
 import sys
 from shared.models.cls_lesson import LessonModel
+from shared.models.enums.publlished import STATE
 
 class Lesson_TestCase(TestCase):
     """ Shared functions """
@@ -18,7 +19,7 @@ class Lesson_TestCase(TestCase):
                                  year_id=9,
                                  #key_words = "Lorem ipsum,sit amet,convallis",
                                  summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis volutpat.",
-                                 published=1,
+                                 published=STATE.PUBLISH,
                                  created = "2021-01-24 08:04:49.771575")
 
 

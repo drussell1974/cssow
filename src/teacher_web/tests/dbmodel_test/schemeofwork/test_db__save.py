@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from tests.test_helpers.mocks import fake_ctx_model
 
@@ -123,7 +124,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=([], 101)):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model(), published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model(), published=STATE.DELETE)
 
             # assert
 

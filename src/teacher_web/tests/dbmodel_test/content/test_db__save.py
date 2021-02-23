@@ -7,7 +7,6 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
-
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__save(TestCase):
 
@@ -60,7 +59,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.PUBLISH)
             
             # assert
             
@@ -105,7 +104,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.DELETE)
 
             # assert
 

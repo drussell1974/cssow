@@ -1,13 +1,11 @@
 import json
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.lessons.viewmodels import LessonEditViewModel as ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE
 
 class test_viewmodel_EditViewModel(TestCase):
 
@@ -45,7 +43,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 mock_model.year_id = 10
 
                 test_context = ViewModel(db=self.mock_db, scheme_of_work_id=12, model=mock_model, auth_user=99)
-                test_context.execute(published=1)
+                test_context.execute(published=STATE.PUBLISH)
                                 
                 # assert functions was called
                 Model.save.assert_called()

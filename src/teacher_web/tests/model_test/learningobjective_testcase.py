@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from datetime import datetime
 from shared.models.cls_learningobjective import LearningObjectiveModel
-
+from shared.models.enums.publlished import STATE
 
 class LearningObjective_TestCase(TestCase):
 
@@ -37,7 +37,7 @@ class LearningObjective_TestCase(TestCase):
                                       created = self.current_date_for_test,
                                       created_by_id = 8,
                                       created_by_name = "Dave Russell",
-                                      published=1)
+                                      published=STATE.PUBLISH)
 
 
         # test

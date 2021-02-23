@@ -7,8 +7,6 @@ from shared.models.enums.publlished import STATE
 from datetime import datetime
 from .core.db_helper import to_empty
 
-
-
 class ResourceTypeModel:
     def __init__(self, id, name):
         self.id = id
@@ -29,7 +27,7 @@ class ResourceModel (BaseModel):
     # default Get this from settings
     MARKDOWN_TYPE_ID = 10 # default
 
-    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         
         super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.title = title
@@ -175,7 +173,7 @@ class ResourceModel (BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
+    def save(db, model, auth_user, published=STATE.PUBLISH):
         if try_int(published) == STATE.DELETE:
             rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
             # TODO: check row count before updating

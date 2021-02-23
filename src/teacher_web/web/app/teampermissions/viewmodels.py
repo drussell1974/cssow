@@ -14,7 +14,6 @@ from shared.models.core.log_handlers import handle_log_exception, handle_log_war
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
-from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON, parse_enum
 from shared.viewmodels.baseviewmodel import BaseViewModel

@@ -20,7 +20,7 @@ class KeywordModel(BaseModel):
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, all_terms = [], ctx=None):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, all_terms = [], ctx=None):
 
         super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.id = id_

@@ -1,6 +1,3 @@
-"""
-View Models
-"""
 import io
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
@@ -8,9 +5,9 @@ from shared.models.core.log_handlers import handle_log_exception, handle_log_war
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
-
 
 class SchemeOfWorkGetLatestViewModel(BaseViewModel):
     
@@ -43,7 +40,7 @@ class KeywordSaveViewModel(BaseViewModel):
         self.model = model
         self.auth_user = auth_user
 
-    def execute(self, auth_user, published=1):
+    def execute(self, auth_user, published=STATE.PUBLISH):
 
         if type(self.model) is KeywordModel:
             

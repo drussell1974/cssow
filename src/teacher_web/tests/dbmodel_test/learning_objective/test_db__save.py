@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -30,7 +31,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.save(self.fake_db, model, mock_auth_user, published=1),
+                Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH),
 
 
     def test_should_call__update_with_exception(self, mock_auth_user):
@@ -45,7 +46,7 @@ class test_db__save(TestCase):
             with self.assertRaises(KeyError):
                 # act 
                 
-                Model.save(self.fake_db, model, mock_auth_user, published=1)
+                Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
 
 
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
@@ -60,7 +61,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
             
             # assert
             
@@ -86,7 +87,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
 
             # assert
 
@@ -112,7 +113,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.DELETE)
 
             # assert
 

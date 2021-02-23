@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -98,7 +99,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=model):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.DELETE)
             
             # assert
             
