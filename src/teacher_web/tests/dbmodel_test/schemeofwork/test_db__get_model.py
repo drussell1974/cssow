@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 class test_db__get_model(TestCase):
@@ -39,7 +40,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (99,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id)
+                , (99,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
                 , []
                 , handle_log_info)
             self.assertEqual(0, model.id)
@@ -66,7 +67,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (6,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id)
+                , (6,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
                 , []
                 , handle_log_info)
                  

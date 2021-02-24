@@ -185,7 +185,7 @@ class ContentDataAccess(BaseDataAccess):
             model.letter_prefix,
             model.key_stage_id,
             model.scheme_of_work_id,
-            published,
+            int(published),
             auth_user_id
         )
     
@@ -207,7 +207,7 @@ class ContentDataAccess(BaseDataAccess):
             model.letter_prefix, 
             model.key_stage_id,
             model.scheme_of_work_id,
-            published,
+            int(published),
             auth_user_id
         )
 
@@ -217,13 +217,13 @@ class ContentDataAccess(BaseDataAccess):
  
 
     @staticmethod
-    def _delete(db, model, auth_user_id):
+    def _delete(db, model, auth_user_id, remove_published_state = STATE.DRAFT):
         """ Delete the content """
 
         execHelper = ExecHelper()
 
         stored_procedure = "content__delete"
-        params = (model.id, model.scheme_of_work_id, auth_user_id)
+        params = (model.id, int(remove_published_state), auth_user_id)
 
         rows = execHelper.delete(db, stored_procedure, params, handle_log_info)
 
@@ -231,7 +231,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id, remove_published_state = STATE.DRAFT):
         """ 
         Delete all unpublished content 
 
@@ -244,7 +244,7 @@ class ContentDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
         
         str_delete = "content__delete_unpublished"
-        params = (scheme_of_work_id, auth_user_id)
+        params = (scheme_of_work_id, int(remove_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.delete(db, str_delete, params, handle_log_info)

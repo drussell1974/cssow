@@ -80,17 +80,17 @@ class ContentEditViewModel(BaseViewModel):
 
         elif request.method == "POST":
             
-            published = request.POST["published"]
+            published_state = STATE.parse(request.POST["published"])
 
             self.model = Model().from_post(request.POST)
 
             self.model.validate()
             
-            if self.model.is_valid == True or published == STATE.DELETE:
+            if self.model.is_valid == True or published_state == STATE.DELETE:
                 # save to database
                 try:
                         
-                    data = Model.save(self.db, self.model, self.auth_user, published)
+                    data = Model.save(self.db, self.model, self.auth_user, published_state)
                     self.model = data
 
                     self.is_content_ready = True   

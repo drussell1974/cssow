@@ -217,7 +217,7 @@ class InstituteDataAccess:
             model.name,
             teacher_id,
             auth_user_id,
-            model.published
+            int(model.published)
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -236,7 +236,7 @@ class InstituteDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.published,
+            int(model.published),
             auth_user_id
         )
         
@@ -267,7 +267,7 @@ class InstituteDataAccess:
         
         #271 Create StoredProcedure
         str_delete = "institute__delete_unpublished"
-        params = (0,auth_user_id)
+        params = (int(STATE.DRAFT),auth_user_id)
             
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

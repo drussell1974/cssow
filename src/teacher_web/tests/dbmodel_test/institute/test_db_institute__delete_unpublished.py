@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 class test_db_institute__deleteunpublished(TestCase):
@@ -44,7 +45,7 @@ class test_db_institute__deleteunpublished(TestCase):
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
                 'institute__delete_unpublished'
-                , (0, 6079)
+                , (int(STATE.DRAFT), 6079)
                 , handle_log_info)
 
             self.assertEqual(5, actual_result)

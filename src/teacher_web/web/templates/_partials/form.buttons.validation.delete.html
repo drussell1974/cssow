@@ -14,7 +14,7 @@
 {% endif %}
 
 <!-- BUTTONS -->
-<button type="submit" name="published" value="2" class="btn btn-danger stackable float-right" id="deleteButton">{{_("Continue")}}</button>
+<button type="submit" name="published" value="DELETE" class="btn btn-danger stackable float-right" id="deleteButton">{{_("Continue")}}</button>
 <button type="cancel" name="published" value="-1" class="btn btn-dark stackable" id="cancelButton" >{{_("Cancel")}}</button>
 
 
@@ -67,7 +67,7 @@
                 
                 <!-- get href through partial view parameters -->
 
-                <button type="submit" name="published" disabled value="2" class="btn btn-danger" id="deleteModalContinueButton" data-toggle="tooltip" title="Please confirm you understand the risk!">{{_("Yes, delete")}}</button>
+                <button type="submit" name="published" disabled value="DELETE" class="btn btn-danger" id="deleteModalContinueButton" data-toggle="tooltip" title="Please confirm you understand the risk!">{{_("Yes, delete")}}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalStayButton" >{{_("No, go back")}}</button>
             </div>
         </div>

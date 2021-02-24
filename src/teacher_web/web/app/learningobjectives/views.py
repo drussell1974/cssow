@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required
+from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from .viewmodels import LearningObjectiveEditViewModel
@@ -133,7 +134,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
         #253 check user id
         viewmodel = LearningObjectiveEditViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
         
-        viewmodel.execute(int(request.POST["published"]))
+        published_state = STATE.parse(request.POST["published"])
+
+        viewmodel.execute(published_state)
         model = viewmodel.model
             
         if model.is_valid == True:
@@ -227,8 +230,10 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
 
     if model.is_valid == True:
         
+        published_state = STATE.parse(request.POST["published"])
+
         ' save learning objectives'
-        viewmodel.execute(int(request.POST["published"]))
+        viewmodel.execute(published_state)
         model = viewmodel.model
         
         ' save keywords '

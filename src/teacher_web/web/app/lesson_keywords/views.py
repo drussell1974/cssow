@@ -9,6 +9,7 @@ from django.urls import reverse
 from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
+from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
@@ -142,6 +143,9 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     error_message = ""
 
     """ save_item non-view action """
+    
+    published_state = STATE.parse(request.POST.get("published", "DRAFT"))
+
     model = KeywordModel(
         id_=keyword_id,
         scheme_of_work_id=scheme_of_work_id,
@@ -150,7 +154,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         created=datetime.now(),
         #253 check user id
         created_by_id=auth_ctx,
-        published=request.POST.get("published", 0)
+        published=published_state
     )
     # 299 must ensure other lessons are not deleted during save
     model.belongs_to_lessons.append(lesson_id)
@@ -161,7 +165,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     #253 check user id
     save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
     
-    save_keyword_view.execute(int(request.POST["published"]))
+    save_keyword_view.execute(published_state)
 
     model = save_keyword_view.model
     

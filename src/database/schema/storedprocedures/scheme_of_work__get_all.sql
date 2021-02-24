@@ -7,7 +7,7 @@ CREATE PROCEDURE scheme_of_work__get_all (
  IN p_department_id INT,
  IN p_institute_id INT,
  IN p_auth_user INT,
- IN p_is_published INT)
+ IN p_show_published_state INT)
 BEGIN
     SELECT DISTINCT 
         sow.id as id,
@@ -30,10 +30,9 @@ BEGIN
         INNER JOIN auth_user as user ON user.id = sow.created_by
     WHERE 
 		sow.department_id = p_department_id 
-		-- AND sow.key_stage_id = p_key_stage_id or p_key_stage_id = 0
-        -- AND sow.published = p_is_published
-        AND (sow.key_stage_id = p_key_stage_id or p_key_stage_id = 0) -- AND (sow.published = 1 or user.id = auth_user)
-        AND (sow.published = 1 
+		AND (sow.key_stage_id = p_key_stage_id or p_key_stage_id = 0)
+		-- AND p_show_published_state % sow.published = 0 -- # TODO: #323 use p_show_published_state and remove subquery 
+		AND (sow.published = 1 
                 or p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 
                             WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)

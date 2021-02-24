@@ -179,7 +179,8 @@ class KeywordMergeViewModel(BaseViewModel):
             self.alert_message = "Duplicate keywords will be merged and deleted and definition lost. Click Merge to continue or click Cancel to return to the previous page."
 
             if request.method == "POST":
-                if request.POST.get("published") == "2":
+                published_state = STATE.parse(request.POST.get("published"))
+                if published_state == STATE.DELETE:
                     # 303 execute merge
                     self.model = Model.merge_duplicates(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
                     self.alert_message = "deleted!"

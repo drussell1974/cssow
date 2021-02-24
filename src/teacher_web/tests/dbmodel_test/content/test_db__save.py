@@ -97,7 +97,7 @@ class test_db__save(TestCase):
     def test_should_call__delete__when__is_new__false__and__published_is_2(self, mock_auth_user):
         # arrange
 
-        model = Model(23, "")
+        model = Model(101, "")
         
         expected_result = model.id
 
@@ -111,10 +111,10 @@ class test_db__save(TestCase):
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 "content__delete"
-                , (23, None, mock_auth_user.auth_user_id)
+                , (101, int(STATE.DRAFT), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             # check subsequent functions where called
 
-            self.assertEqual(23, actual_result.id)
+            self.assertEqual(101, actual_result.id)
             self.assertEqual(STATE.DELETE, actual_result.published)

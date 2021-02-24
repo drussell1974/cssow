@@ -26,7 +26,7 @@ BEGIN
 	-- Mark other keywords as deleted 
 	
     UPDATE sow_key_word 
-	SET published = 2 -- marked for deletion
+	SET published = 64 -- marked for deletion
     WHERE name = term and id != p_key_word_id and scheme_of_work_id = p_scheme_of_work_id;
     
 END;

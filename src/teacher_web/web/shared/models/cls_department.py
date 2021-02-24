@@ -232,7 +232,7 @@ class DepartmentDataAccess:
             institute_id,
             model.created,
             auth_user_id,
-            model.published,
+            int(model.published),
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -251,7 +251,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             model.institute.id,
-            model.published,
+            int(model.published),
             auth_user_id
         )
         

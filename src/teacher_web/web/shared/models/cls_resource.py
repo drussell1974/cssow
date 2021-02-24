@@ -267,7 +267,7 @@ class ResourceDataAccess:
             model.lesson_id,
             model.created,
             model.created_by_id,
-            published,
+            int(published),
             auth_user_id
         )
                
@@ -293,7 +293,7 @@ class ResourceDataAccess:
             model.md_document_name,
             model.is_expired,
             model.lesson_id,
-            published,
+            int(published),
             auth_user_id
         )
         

@@ -322,7 +322,7 @@ class KeywordDataAccess:
 
         stored_procedure = "keyword__insert"
 
-        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user_id, published)    
+        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user_id, int(published))    
     
         new_id = execHelper.insert(db,
             stored_procedure
@@ -341,7 +341,7 @@ class KeywordDataAccess:
         
         str_update = "keyword__update"
         
-        params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user_id)
+        params = (model.id, model.term, model.definition, scheme_of_work_id, int(published), auth_user_id)
         
         execHelper.update(db, str_update, params, handle_log_info)
 
@@ -385,7 +385,7 @@ class KeywordDataAccess:
 
         str_update = "keyword__publish"
         
-        params = (model.id, model.published, auth_user_id)
+        params = (model.id, int(model.published), auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_update, params, handle_log_info)

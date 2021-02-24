@@ -150,7 +150,7 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        
+        print(f"do_log_in: {redirect_to_uri_on_login}")
         enter_username = enter_username if enter_username is not None else TEST_USER_NAME
         enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
 

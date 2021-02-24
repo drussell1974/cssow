@@ -292,7 +292,7 @@ class SchemeOfWorkModel(BaseModel):
 class SchemeOfWorkDataAccess:
     
     @staticmethod
-    def get_model(db, id_, department_id, institute_id, auth_user_id):
+    def get_model(db, id_, department_id, institute_id, auth_user_id, show_published_state = STATE.PUBLISH):
         """
         get scheme of work
 
@@ -306,7 +306,7 @@ class SchemeOfWorkDataAccess:
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get"
-        params = (id_, department_id, institute_id, auth_user_id)
+        params = (id_, department_id, institute_id, auth_user_id, int(show_published_state))
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -314,7 +314,7 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, published_status = STATE.PUBLISH):
+    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, show_published_state = STATE.PUBLISH):
         """
         get all scheme of work
         """
@@ -322,7 +322,7 @@ class SchemeOfWorkDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, department_id, institute_id, auth_user_id, int(published_status))
+        params = (key_stage_id, department_id, institute_id, auth_user_id, int(show_published_state))
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -363,7 +363,7 @@ class SchemeOfWorkDataAccess:
             model.exam_board_id,
             model.key_stage_id,
             model.department_id,
-            published,
+            int(published),
             auth_user_id)
 
         execHelper.update(db, str_update, params, handle_log_info)
@@ -387,7 +387,7 @@ class SchemeOfWorkDataAccess:
             model.department_id,
             model.created,
             model.created_by_id,
-            published,
+            int(published),
             auth_user_id)
     
         results = execHelper.insert(db, str_insert, params, handle_log_info)
@@ -437,15 +437,15 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def delete_unpublished(db, auth_user_id):
+    def delete_unpublished(db, auth_user_id, remove_published_state = STATE.DRAFT):
         """ Delete all unpublished schemes of work """
 
         execHelper = ExecHelper()
         
         #271 Create StoredProcedure
         str_delete = "scheme_of_work__delete_unpublished"
-        params = (0,auth_user_id)
-            
+        params = (int(remove_published_state), auth_user_id)
+        
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
 

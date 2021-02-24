@@ -730,7 +730,7 @@ class LessonDataAccess:
             model.content_id,
             model.topic_id,
             model.year_id,
-            published,
+            int(published),
             auth_user_id
         )
 
@@ -778,7 +778,7 @@ class LessonDataAccess:
             model.content_id,
             model.topic_id,
             model.year_id,
-            published,
+            int(published),
             model.created_by_id,
             model.created,
         )

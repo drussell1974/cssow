@@ -9,6 +9,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -79,8 +80,9 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 self.model.validate()
                 
                 if self.model.is_valid == True:
+                    published_state = STATE.parse(request.POST.get("published", "PUBLISH"))
 
-                    data = Model.save(self.db, self.model, self.auth_user, request.POST.get("published", 1))
+                    data = Model.save(self.db, self.model, self.auth_user, published=published_state)
                     
                     self.on_post_complete(True)
                     self.model = data

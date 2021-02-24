@@ -10,6 +10,7 @@ from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required, unauthorise_request
+from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
@@ -78,8 +79,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
             
     elif request.method == "POST":
         ## POST back from client ##
-        
-        published = int(request.POST["published"] if request.POST["published"] is not None else 1)
+    
+        published_state = STATE.parse(request.POST["published"] if request.POST["published"] is not None else "PUBLISH")
         
         model = LessonModel(
             id_ = request.POST["id"],
@@ -104,7 +105,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
         modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
         try:
-            modelviewmodel.execute(published)
+            modelviewmodel.execute(published_state)
             model = modelviewmodel.model
         
 

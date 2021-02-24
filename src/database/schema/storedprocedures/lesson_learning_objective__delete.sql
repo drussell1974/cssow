@@ -12,7 +12,7 @@ BEGIN
     FROM sow_learning_objective__has__lesson 
     INNER JOIN sow_lesson AS l ON l.id = sow_learning_objective__has__lesson.lesson_id
     WHERE learning_objective_id = p_learning_objective_id
-        AND sow_learning_objective__has__lesson.published IN (0,2)
+        AND sow_learning_objective__has__lesson.published IN (32,64)
         -- delete only learning objectives from lesson owned by auth_user
         AND p_auth_user IN (SELECT auth_user_id 
                           FROM sow_teacher 
@@ -27,7 +27,7 @@ BEGIN
     IF number_of_linked_lessons = 1 THEN
         DELETE FROM sow_learning_objective 
         WHERE id = p_learning_objective_id 
-        AND published IN (0, 2)
+        AND published IN (32,64)
         -- delete only learning objectives from lesson owned by auth_user
         AND p_auth_user IN (SELECT auth_user_id 
                             FROM sow_teacher 

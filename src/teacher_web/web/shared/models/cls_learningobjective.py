@@ -388,7 +388,7 @@ class LearningObjectiveDataAccess:
         #269 create learning_objective__update stored procedure
         str_update = "lesson_learning_objective__update"
         
-        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, published, auth_user_id)
+        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, int(published), auth_user_id)
         
         rows = execHelper.update(db, str_update, params, handle_log_info)
 
@@ -415,7 +415,7 @@ class LearningObjectiveDataAccess:
             model.parent_id,
             model.created,
             model.created_by_id,
-            published,
+            int(published),
             auth_user_id
         )
         

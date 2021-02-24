@@ -9,7 +9,7 @@ echo "yarn.test-ui--verify.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting p
 
 
 ## start test
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_lessonkeyword__when_different_logged_in_users.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_existing.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
@@ -18,7 +18,7 @@ python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permiss
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_edit_cancel.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_*.py

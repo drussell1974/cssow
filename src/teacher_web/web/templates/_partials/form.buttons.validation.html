@@ -14,11 +14,11 @@
 {% endif %}
 
 <!-- BUTTONS -->
-<button type="submit" name="published" value="1" class="btn btn-primary stackable" id="saveButton">{{_("Save")}}</button>
-<button type="submit" name="published" value="0" class="btn btn-secondary stackable" id="saveDraftButton">{{_("Draft")}}</button>
+<button type="submit" name="published" value="PUBLISH" class="btn btn-primary stackable" id="saveButton">{{_("Save")}}</button>
+<button type="submit" name="published" value="DRAFT" class="btn btn-secondary stackable" id="saveDraftButton">{{_("Draft")}}</button>
 <button type="cancel" class="btn btn-dark stackable" id="cancelButton" >{{_("Cancel")}}</button>
 {% if content.active_model.id > 0 %}
-    <button type="submit" name="published" value="2"  {% if content.active_model.published_state == 'published' %}disabled data-toggle="tooltip" title="{{_('published items cannot be deleted')}}"{% endif %} class="btn btn-danger stackable float-right" id="deleteButton">{{_("Delete")}}</button>
+    <button type="submit" name="published" value="DELETE"  {% if content.active_model.published_state == 'published' %}disabled data-toggle="tooltip" title="{{_('published items cannot be deleted')}}"{% endif %} class="btn btn-danger stackable float-right" id="deleteButton">{{_("Delete")}}</button>
 {% endif %}
 
 {% load static %}    
@@ -70,7 +70,7 @@
                 
                 <!-- get href through partial view parameters -->
 
-                <button type="submit" name="published" disabled value="2" class="btn btn-danger" id="deleteModalContinueButton" data-toggle="tooltip" title="Please confirm you understand the risk!">{{_("Yes, delete")}}</button>
+                <button type="submit" name="published" disabled value="DELETE" class="btn btn-danger" id="deleteModalContinueButton" data-toggle="tooltip" title="Please confirm you understand the risk!">{{_("Yes, delete")}}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalStayButton" >{{_("No, go back")}}</button>
             </div>
         </div>
