@@ -7,7 +7,29 @@ from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 from shared.models.enums.publlished import STATE
 
-class SchemeOfWorkModel(BaseModel):
+
+class SchemeOfWorkContextModel(BaseModel):
+    
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        
+
+    @staticmethod
+    def empty(published=STATE.PUBLISH, ctx=None):
+        model = SchemeOfWorkContextModel(id_=0, name="", published=published, ctx=ctx)
+        return model
+
+
+    @staticmethod
+    def get_context_model(db, scheme_of_work_id, auth_user_id):
+        
+        empty_model = SchemeOfWorkContextModel.empty()
+
+        result = BaseModel.get_context_model(db, empty_model, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
+        return result if result is not None else None
+
+
+class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
     name = ""
     description = ""
@@ -18,11 +40,6 @@ class SchemeOfWorkModel(BaseModel):
     key_words = []
     department_id = 0
     institute_id = 0
-    
-
-    @staticmethod
-    def empty(ctx):
-        return SchemeOfWorkModel(0, auth_user=ctx) # Default
 
 
     def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = STATE.PUBLISH, is_from_db=False, auth_user=None):
@@ -30,7 +47,7 @@ class SchemeOfWorkModel(BaseModel):
         
         #assert auth_user is not None
 
-        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
+        super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=auth_user)
 
         self.name = name
         self.description = description
@@ -38,7 +55,6 @@ class SchemeOfWorkModel(BaseModel):
         self.exam_board_name = exam_board_name
         self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
-        self.department_name = department_name
         self.school_name = school_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
@@ -89,17 +105,13 @@ class SchemeOfWorkModel(BaseModel):
         if self.exam_board_name is not None:
             self.exam_board_name = sql_safe(self.exam_board_name)
 
-        if self.department_name is not None:
-            self.department_name = sql_safe(self.department_name)
-
         if self.school_name is not None:
             self.school_name = sql_safe(self.school_name)
 
 
     @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
-        
-        rows = SchemeOfWorkDataAccess.get_all(db, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, key_stage_id=key_stage_id)
+        rows = SchemeOfWorkDataAccess.get_all(db, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, key_stage_id=key_stage_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
@@ -109,9 +121,8 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    #department_id=row[7], # TODO: get from ctx/auth_user
-                                    department_name=row[8],
-                                    created=row[9],                                                                                                                                                                                                                         
+                                    #department_name=row[8],
+                                    created=row[9],                                                                                                                                                                                               
                                     created_by_id=row[10],
                                     created_by_name=row[11],
                                     published=row[12],
@@ -134,7 +145,7 @@ class SchemeOfWorkModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, auth_user):   
-        rows = SchemeOfWorkDataAccess.get_model(db, id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
+        rows = SchemeOfWorkDataAccess.get_model(db, id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         
         # start as none None
         model = SchemeOfWorkModel(0, auth_user=auth_user)
@@ -147,8 +158,8 @@ class SchemeOfWorkModel(BaseModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    #department_id=row[7],
-                                    department_name=row[8], # TODO: get from ctx/auth_user
+                                    #department_id=row[7], # TODO: #329 get from ctx/auth_user and remove from query
+                                    #department_name=row[8], # TODO: #329 get from ctx/auth_user and remove from query
                                     created=row[9],
                                     created_by_id=row[10],
                                     created_by_name=row[11],
@@ -292,7 +303,7 @@ class SchemeOfWorkModel(BaseModel):
 class SchemeOfWorkDataAccess:
     
     @staticmethod
-    def get_model(db, id_, department_id, institute_id, auth_user_id, show_published_state = STATE.PUBLISH):
+    def get_model(db, id_, department_id, institute_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get scheme of work
 
@@ -306,7 +317,7 @@ class SchemeOfWorkDataAccess:
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get"
-        params = (id_, department_id, institute_id, auth_user_id, int(show_published_state))
+        params = (id_, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -314,15 +325,15 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, show_published_state = STATE.PUBLISH):
+    def get_all(db, department_id, institute_id, auth_user_id, key_stage_id=0, show_published_state=STATE.PUBLISH):
         """
         get all scheme of work
         """
-    
+        
         execHelper = ExecHelper()
         
         select_sql = "scheme_of_work__get_all" 
-        params = (key_stage_id, department_id, institute_id, auth_user_id, int(show_published_state))
+        params = (key_stage_id, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -468,12 +479,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def get_options(db, department_id, institute_id, auth_user_id = 0):
+    def get_options(db, department_id, institute_id,  auth_user_id = 0, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
         
         str_select = "scheme_of_work__get_options"
-        params = (department_id, institute_id, auth_user_id,)
+        params = (department_id, institute_id, int(show_published_state), auth_user_id,)
         
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)

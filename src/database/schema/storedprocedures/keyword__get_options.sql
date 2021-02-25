@@ -1,10 +1,11 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS keyword__get_options;
+#DROP PROCEDURE IF EXISTS keyword__get_options;
 
 CREATE PROCEDURE keyword__get_options (
  IN p_scheme_of_work_id INT,
  IN p_exclude_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -18,15 +19,11 @@ BEGIN
     FROM 
         sow_key_word as kw 
         LEFT JOIN sow_lesson__has__key_words as lkw ON lkw.key_word_id = kw.id
-    WHERE 
+    WHERE
         kw.scheme_of_work_id = p_scheme_of_work_id
 			AND kw.id != p_exclude_id
-            AND published = 1 
-                  -- or p_auth_user IN (SELECT auth_user_id 
-                  --                   FROM sow_teacher 
-                  --                   WHERE auth_user_id = p_auth_user AND scheme_of_work_id = kw.scheme_of_work_id)
-    GROUP BY id, name, definition, scheme_of_work_id, published
-    ORDER BY name;
+            AND p_show_published_state % published = 0 #323 use p_show_published_state and remove subquery 
+    GROUP BY id, name, definition, scheme_of_work_id, published;
 END;
 //
 

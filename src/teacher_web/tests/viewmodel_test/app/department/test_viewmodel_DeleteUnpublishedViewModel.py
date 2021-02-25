@@ -3,6 +3,7 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from app.department.viewmodels import DepartmentDeleteUnpublishedViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel as Model
+from shared.models.cls_institute import InstituteModel
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())

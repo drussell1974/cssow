@@ -11,7 +11,7 @@ BEGIN
     FROM sow_department as dep
     INNER JOIN sow_department__has__teacher as dep_teach
 		ON dep_teach.department_id = dep.id
-    WHERE dep_teach.auth_user_id = p_auth_user;
+    WHERE dep_teach.created_by = p_auth_user;
 END;
 //
 

@@ -15,6 +15,10 @@ def WebBrowserContext():
     #return webdriver.Chrome()
 
     ''' Uncomment for Firefox -- geckodriver.exe '''
+    #fireFoxOptions = webdriver.FirefoxOptions()
+    #fireFoxOptions.set_headless()
+    #browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+    #return browser
     return webdriver.Firefox()
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]

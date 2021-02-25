@@ -1,9 +1,13 @@
 from unittest import skip
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock,patch
 from datetime import datetime
 from unittest import TestCase
+from shared.models.cls_department import DepartmentContextModel
+from shared.models.cls_institute import InstituteContextModel
 from shared.models.core.context import AuthCtx
 
+@patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum"))
+@patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True))
 class test_core_context_authctx_constructor(TestCase):
 
     test = None
@@ -24,7 +28,7 @@ class test_core_context_authctx_constructor(TestCase):
         pass
 
 
-    def test_constructor_default(self):
+    def test_constructor_default(self, mock_institute, mock_department):
 
         # act
         test = AuthCtx(self.mock_db, self.mock_request, 1276711, 67)
@@ -35,7 +39,7 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(6079, test.auth_user_id)
 
 
-    def test_constructor_with_scheme_of_work_id___as_param(self):
+    def test_constructor_with_scheme_of_work_id___as_param(self, mock_institute, mock_department):
 
         # act
         test = AuthCtx(self.mock_db, self.mock_request, 1276711, 67, scheme_of_work_id=11)
@@ -47,7 +51,7 @@ class test_core_context_authctx_constructor(TestCase):
 
         
 
-    def test_constructor_with_scheme_of_work_id___as_kwargs(self):
+    def test_constructor_with_scheme_of_work_id___as_kwargs(self, mock_institute, mock_department):
         # arrange
 
         fake_kw_args = {"scheme_of_work_id":13}
@@ -63,7 +67,7 @@ class test_core_context_authctx_constructor(TestCase):
 
         
 
-    def test_constructor_with_multiple_args(self):
+    def test_constructor_with_multiple_args(self, mock_institute, mock_department):
         # arrange
 
         fake_kw_args = {"scheme_of_work_id":13, "institute_id":1276711, "department_id":67, "auth_user_id":6078 }

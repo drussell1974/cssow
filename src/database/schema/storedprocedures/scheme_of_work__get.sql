@@ -6,8 +6,8 @@ CREATE PROCEDURE scheme_of_work__get (
  IN p_scheme_of_work_id INT,
  IN p_department_id INT,
  IN p_institute_id INT,
- IN p_auth_user INT,
- IN p_show_published_state INT)
+ IN p_show_published_state INT,
+ IN p_auth_user INT)
 BEGIN
     SELECT
         sow.id as id,
@@ -30,11 +30,9 @@ BEGIN
         INNER JOIN auth_user as user ON user.id = sow.created_by   
     WHERE sow.department_id = p_department_id
         AND sow.id = p_scheme_of_work_id 
-        -- AND p_show_published_state % sow.published = 0 -- # TODO: #323 use p_show_published_state and remove subquery 
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
+        AND (
+                p_show_published_state % dep.published = 0 #323 use p_show_published_state and remove subquery 
+                or sow.created_by = p_auth_user
         );
 END;
 //

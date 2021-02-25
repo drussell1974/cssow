@@ -53,7 +53,7 @@ class BaseModel(models.Model):
     def set_published_state(self):
         if self.published == STATE.DRAFT:
             self.published_state = "unpublished"
-        elif self.published == STATE.PUBLISH:
+        elif self.published == STATE.PUBLISH or self.published == STATE.PUBLISH_INTERNAL:
             self.published_state = "published"
         elif self.published == STATE.DELETE:
             self.published_state = "deleting"
@@ -232,6 +232,32 @@ class BaseModel(models.Model):
                 DataAccess._update(db, model, auth_user)
         return model
 
+    # TODO: move to DataModel
+    @staticmethod
+    def get_context_model(db, default_or_empty_context_model, get_context_model_sp_name, handle_log_info, *lookup_args):
+        ''' Call stored procedure get_context_model_sp_name with parameters to include unique identifiers and auth_user_id '''
+        execHelper = ExecHelper()
+
+        # return a default or empty        
+        model = default_or_empty_context_model
+        
+        # TODO: could raise outer exception
+
+        result = execHelper.select(db, get_context_model_sp_name, lookup_args, None, handle_log_info)
+        if result is not None and len(result) > 1:
+            # NOTE: must have 1 or none.....................
+            raise Exception(f"{get_context_model_sp_name} must returns a single row.")
+        else:
+            for row in result:
+                # NOTE: should return first item only
+                model.id = row[0]
+                model.name = row[1]
+                #model.parent_id = row[2] # TODO: create @property setter
+                model.created_by_id = row[3]
+                model.published = row[4]
+                model.set_published_state()
+                
+        return model
 
     # TODO: move to DataModel
     @staticmethod

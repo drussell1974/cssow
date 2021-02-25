@@ -6,7 +6,7 @@ from shared.models.core.log_handlers import handle_log_info, handle_log_warning,
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.core.context import AuthCtx
 from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
 
 DEFAULT_INSTITUTE_ID = 0
 DEFAULT_DEPARTMENT_ID = 0
@@ -53,7 +53,7 @@ class min_permission_required:
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
             
-            ''' TODO: #329 get permission from context from database (handle DEFAULT values) '''
+            ''' TODO: #329 get permission from context (handle DEFAULT values) '''
             
             department_id = self.getkwargs("department_id", default_value=DEFAULT_DEPARTMENT_ID)
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
@@ -61,13 +61,13 @@ class min_permission_required:
             
             auth_ctx = AuthCtx(db, request, **kwargs)
             
-            ''' TODO: get light weight '''
+            #323 get light weight context model '''
 
-            scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_ctx)
+            scheme_of_work = SchemeOfWorkContextModel.get_context_model(db, scheme_of_work_id, auth_ctx.auth_user_id)
             
             if scheme_of_work is None:
                 # create empty scheme of work with scheme_of_work_id = 0
-                scheme_of_work = SchemeOfWorkModel.empty(ctx=auth_ctx)
+                scheme_of_work = SchemeOfWorkContextModel.empty(ctx=auth_ctx)
                 
             ''' teacher_id and auth_user are the same in this call '''
             # get the permissions for the current user

@@ -27,11 +27,14 @@ class test_DepartmentDataAccess___insert(TestCase):
         with patch.object(ExecHelper, "insert", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = fake_ctx_model())
+                Model.save(self.fake_db, 99, "Lorum ipsum", auth_user = fake_ctx)
             
 
     def test__should_call__save__if_valid(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [99]
 
         fake_model = Model(0, "Lorum ipsum", institute = InstituteModel(12767111276711, "Lorum ipsum"))
@@ -42,7 +45,7 @@ class test_DepartmentDataAccess___insert(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx_model())
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx)
             
             # assert
 
@@ -58,6 +61,8 @@ class test_DepartmentDataAccess___insert(TestCase):
         # arrange
         expected_result = [99]
 
+        fake_ctx = fake_ctx_model()
+
         fake_model = Model(0, "Lorum ipsum", institute = InstituteModel(12767111276711, "Lorum ipsum"))
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = False
@@ -67,7 +72,7 @@ class test_DepartmentDataAccess___insert(TestCase):
                 
             # act
             
-            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx_model())
+            result = Model.save(self.fake_db, fake_model, 6080, auth_user = fake_ctx)
             
             # assert
 

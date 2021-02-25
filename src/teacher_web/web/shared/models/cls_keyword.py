@@ -116,7 +116,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
-        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, exclude_id=exclude_id)
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, exclude_id=exclude_id, show_published_state=auth_user.can_view)
 
         data = []
         for row in rows:
@@ -200,7 +200,7 @@ class KeywordModel(BaseModel):
 class KeywordDataAccess:
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user_id, exclude_id = 0):
+    def get_options(db, scheme_of_work_id, auth_user_id, exclude_id = 0, show_published_state=STATE.PUBLISH):
         """
         Get list of options
         :param db:
@@ -212,7 +212,7 @@ class KeywordDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "keyword__get_options"
-        params = (scheme_of_work_id, exclude_id, auth_user_id)
+        params = (scheme_of_work_id, exclude_id, int(show_published_state), auth_user_id)
         rows = []
         #271 Stored procedure (get_options)
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

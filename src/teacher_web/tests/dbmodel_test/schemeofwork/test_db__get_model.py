@@ -31,16 +31,18 @@ class test_db__get_model(TestCase):
         # arrange
         expected_result = []
 
+        fake_ctx = fake_ctx_model()
+
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = SchemeOfWorkModel.get_model(self.fake_db, 99, auth_user=fake_ctx_model())
+            model = SchemeOfWorkModel.get_model(self.fake_db, 99, auth_user=fake_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (99,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
+                , (99, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, model.id)
@@ -51,6 +53,9 @@ class test_db__get_model(TestCase):
 
     def test__should_call__select__return_single_item(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "", "2020-07-21 17:09:34", 1, "test_user", 1, 5)]
 
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
@@ -67,15 +72,13 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get"
-                , (6,  fake_ctx_model().department_id, fake_ctx_model().institute_id, fake_ctx_model().auth_user_id, int(STATE.PUBLISH))
+                , (6, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                  
             self.assertEqual(6, model.id)
             self.assertEqual("Lorem", model.name)
             self.assertEqual("ipsum dolor sit amet.", model.description)
-            #self.assertEqual(67, model.department_id)
-            self.assertEqual("", model.department_name)
             self.assertFalse(model.is_new())
             self.assertTrue(model.is_from_db)
 

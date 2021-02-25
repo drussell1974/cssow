@@ -4,16 +4,39 @@ from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.basemodel import BaseModel
 from shared.models.enums.publlished import STATE
 
-class InstituteModel(BaseModel):
+class InstituteContextModel(BaseModel):
+    
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        self.id = id_
+        self.name = name
+
+
+    @staticmethod
+    def empty(published=STATE.PUBLISH):
+        model = InstituteContextModel(id_=0, name="", published=published)
+        return model
+
+
+    @staticmethod
+    def get_context_model(db, institude_id, auth_user_id):
+        
+        empty_model = InstituteContextModel.empty()
+
+        result = BaseModel.get_context_model(db, empty_model, "institute__get_context_model", handle_log_info, institude_id)
+        return result if result is not None else None
+
+
+class InstituteModel(InstituteContextModel):
 
     # default values for api
     name = ""
     description = ""
     number_of_departments = 0
-    
-    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False):
-        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
-        self.id = id_
+
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=None)
+        #self.id = id_
         self.name = name
         self.description = description
         self.number_of_departments = 0
@@ -46,15 +69,15 @@ class InstituteModel(BaseModel):
 
 
     @staticmethod
-    def get_context_name(db, institude_id, auth_user_id):
-        result = BaseModel.get_context_name(db, "institute__get_context_name", handle_log_info, institude_id, auth_user_id)
-        return result if result is not None else ""
+    def empty():
+        model = InstituteModel(0, "")
+        return model
 
 
     @staticmethod
     def get_all(db, auth_user):
         
-        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.auth_user_id)
+        rows = InstituteDataAccess.get_all(db, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows: 
             model = InstituteModel(id_=row[0],
@@ -63,7 +86,7 @@ class InstituteModel(BaseModel):
                                     created_by_id=row[3],
                                     created_by_name=row[4],
                                     published=row[5])
-
+            
             model.number_of_departments = InstituteModel.get_number_of_departments(db, model.id, auth_user)
             
             data.append(model)
@@ -156,7 +179,7 @@ class InstituteDataAccess:
 
 
     @staticmethod
-    def get_all(db, auth_user_id):
+    def get_all(db, show_published_state, auth_user_id):
         """
         get all inistutions
         """
@@ -164,7 +187,7 @@ class InstituteDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "institute__get_all" 
-        params = (auth_user_id,)
+        params = (int(show_published_state), auth_user_id,)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

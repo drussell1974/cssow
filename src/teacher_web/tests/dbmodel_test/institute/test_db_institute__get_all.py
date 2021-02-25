@@ -1,5 +1,6 @@
 from unittest import TestCase, skip
 from shared.models.cls_institute import InstituteModel as Model, handle_log_info
+from shared.models.enums.publlished import STATE
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from tests.test_helpers.mocks import *
@@ -42,14 +43,14 @@ class test_db_institute__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'institute__get_all'
-                , (mock_auth_user.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(0, len(rows))
 
 
-    @patch.object(InstituteModel, "get_number_of_departments", return_value=12)
+    @patch.object(Model, "get_number_of_departments", return_value=12)
     def test__should_call__select__single_items(self, InstituteModel_get_number_of_departments, mock_auth_user):
         # arrange
         expected_result = [(1,"Computer Science", "2020-07-21 17:09:34", 1, "test_user", 0)]
@@ -64,7 +65,7 @@ class test_db_institute__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'institute__get_all'
-                , (mock_auth_user.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -74,7 +75,7 @@ class test_db_institute__get_all(TestCase):
             self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
             
 
-    @patch.object(InstituteModel, "get_number_of_departments", return_value=12)
+    @patch.object(Model, "get_number_of_departments", return_value=12)
     def test__should_call__select__multiple_items(self, InstituteModel_get_number_of_departments, mock_auth_user):
         # arrange
         expected_result = [
@@ -90,7 +91,7 @@ class test_db_institute__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'institute__get_all'
-                , (mock_auth_user.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 

@@ -33,13 +33,16 @@ class test_db__get_team_permissions(TestCase):
 
     def test__should_call__select__no_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = []
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
                 
             # act
             
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx)
             
             # assert
             TeacherModel_get_model.assert_not_called()
@@ -55,6 +58,9 @@ class test_db__get_team_permissions(TestCase):
 
     def test__should_call__select__single_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
         ]
@@ -63,7 +69,7 @@ class test_db__get_team_permissions(TestCase):
             
             # act
 
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx)
             
             # assert
 
@@ -79,6 +85,9 @@ class test_db__get_team_permissions(TestCase):
 
     def test__should_call__select__multiple_items(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
             (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
@@ -87,7 +96,7 @@ class test_db__get_team_permissions(TestCase):
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx_model())
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx)
             
             # assert
 
@@ -105,6 +114,9 @@ class test_db__get_team_permissions(TestCase):
 
     def test__should_call__select__multiple_items___show_unauthorised(self, TeacherModel_get_model, mock_teacher_permission_model):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [
             (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
             (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
@@ -113,7 +125,7 @@ class test_db__get_team_permissions(TestCase):
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, show_authorised=False, auth_user=fake_ctx_model())
+            rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, show_authorised=False, auth_user=fake_ctx)
             
             # assert
 

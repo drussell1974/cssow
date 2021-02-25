@@ -25,9 +25,12 @@ class test_db__request_access(TestCase):
 
     def test_should_raise_exception(self):
         # arrange
+        
+        fake_ctx = fake_ctx_model()
+        
         expected_exception = KeyError("Bang!")
 
-        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work, ctx=fake_ctx)
         model.is_valid = True
         
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -35,7 +38,7 @@ class test_db__request_access(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.request_access(self.fake_db, model, fake_ctx_model())
+                Model.request_access(self.fake_db, model, fake_ctx)
 
 
     def test_should_not_call__insert__when_not_valid(self):
@@ -129,10 +132,12 @@ class test_db__request_access(TestCase):
         
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
+        fake_ctx = fake_ctx_model()
+
+        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx)
         
         
-        model = Model(343080834, "Lorem Ipsum", fake_scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.EDITOR, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(343080834, "Lorem Ipsum", fake_scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.EDITOR, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -144,7 +149,7 @@ class test_db__request_access(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
             
-            actual_result = Model.request_access(self.fake_db, model, auth_user=fake_ctx_model())
+            actual_result = Model.request_access(self.fake_db, model, auth_user=fake_ctx)
             
             # assert
             # NOTE: department__has__teacher__insert has no access for request access
