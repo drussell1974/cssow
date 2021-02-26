@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel, handle_log_info
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -43,7 +44,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id) 
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -66,7 +67,7 @@ class test_db__get_all(TestCase):
 
                 ExecHelper.select.assert_called_with(self.fake_db,
                     'scheme_of_work__get_all_keywords'
-                    , (13, mock_auth_user.auth_user_id) 
+                    , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id) 
                     , []
                     , handle_log_info)
                     
@@ -99,7 +100,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id)
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -133,7 +134,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id) 
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 
@@ -161,7 +162,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id)
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -190,7 +191,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id)
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -225,7 +226,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all_keywords'
-                , (13, mock_auth_user.auth_user_id)
+                , (13, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

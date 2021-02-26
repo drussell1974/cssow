@@ -30,9 +30,8 @@ BEGIN
         INNER JOIN auth_user as user ON user.id = sow.created_by   
     WHERE sow.department_id = p_department_id
         AND sow.id = p_scheme_of_work_id 
-        AND (
-                p_show_published_state % dep.published = 0 #323 use p_show_published_state and remove subquery 
-                or sow.created_by = p_auth_user
+        AND (p_show_published_state % sow.published = 0 #323 use p_show_published_state and remove subquery 
+			or sow.created_by = p_auth_user
         );
 END;
 //

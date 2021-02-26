@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keystage import KeyStageModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -41,7 +42,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (mock_ctx.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -63,7 +64,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (mock_ctx.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
             
@@ -90,7 +91,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keystage__get_options'
-                , (mock_ctx.auth_user_id,)
+                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
             

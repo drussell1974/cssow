@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info 
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 # TODO: #329 - remove global references
@@ -45,7 +46,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (67, mock_ctx.auth_user_id)
+                , (67, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -65,7 +66,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (87, mock_ctx.auth_user_id)
+                , (87, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -88,7 +89,7 @@ class test_db__get_ks123_pathway_ids(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_ks123_pathway_objective_ids'
-                , (21, mock_ctx.auth_user_id)
+                , (21, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             

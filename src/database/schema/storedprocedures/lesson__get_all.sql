@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS lesson__get_all;
 
 CREATE PROCEDURE lesson__get_all (
  IN p_scheme_of_work_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT  
@@ -33,11 +34,11 @@ BEGIN
     LEFT JOIN sow_content as cnt ON cnt.id = le.content_id
     LEFT JOIN auth_user as user ON user.id = sow.created_by  
     WHERE le.scheme_of_work_id = p_scheme_of_work_id
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        )
+        AND (p_show_published_state % sow.published = 0  
+             or p_show_published_state % le.published = 0
+             or le.created_by = p_auth_user
+             or sow.created_by = p_auth_user
+		)
     ORDER BY le.year_id, le.order_of_delivery_id;
 END;
 //

@@ -7,6 +7,7 @@ CREATE PROCEDURE lesson__get_filtered (
  IN p_keyword_search VARCHAR(100),
  IN p_page INT,
  IN p_pagesize INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     DECLARE offset_n_records INT DEFAULT p_page * p_pagesize;
@@ -47,11 +48,9 @@ BEGIN
                             WHERE kw.name LIKE CONCAT('%', p_keyword_search, '%')
                         )
             )
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        )
+        AND (p_show_published_state % sow.published = 0
+                or sow.created_by = p_auth_user
+		)
     ORDER BY le.year_id, le.order_of_delivery_id
     LIMIT p_pagesize OFFSET offset_n_records;
 END;

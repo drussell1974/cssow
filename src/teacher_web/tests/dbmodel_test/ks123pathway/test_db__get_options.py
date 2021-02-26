@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_ks123pathway import KS123PathwayModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -40,7 +41,7 @@ class test_db__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_options'
-                , (1, 2, mock_auth_user.auth_user_id)
+                , (1, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -59,7 +60,7 @@ class test_db__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_options'
-                , (1, 3, 6079)
+                , (1, 3, int(STATE.PUBLISH_INTERNAL), 6079)
                 ,  []
                 , handle_log_info)
 
@@ -82,7 +83,7 @@ class test_db__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_options'
-                , (1, 4, mock_auth_user.auth_user_id)
+                , (1, 4, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

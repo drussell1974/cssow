@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS lesson_resource__get;
 
 CREATE PROCEDURE lesson_resource__get (
  IN p_resource_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -27,12 +28,9 @@ BEGIN
       LEFT JOIN sow_resource_type as res_typ ON res.type_id = res_typ.id
       LEFT JOIN auth_user AS user ON user.id = res.created_by
     WHERE res.id = p_resource_id  
-        AND (res.published = 1 
-             or p_auth_user IN 
-                    (SELECT auth_user_id 
-                    FROM sow_teacher 
-                    WHERE scheme_of_work_id = les.scheme_of_work_id)
-        );
+        AND (p_show_published_state % res.published = 0 
+             or res.created_by = p_auth_user
+		 );
 END;
 //
 

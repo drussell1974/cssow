@@ -111,7 +111,7 @@ class ResourceModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -137,7 +137,7 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
-        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id)
+        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = ResourceModel(
@@ -207,13 +207,13 @@ class ResourceDataAccess:
 
     @staticmethod
     #248 Added parameters
-    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id):
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """ Get Resource """
 
         execHelper = ExecHelper()
         
         str_select = "lesson_resource__get"
-        params = (id_, auth_user_id)
+        params = (id_, int(show_published_state), auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -222,13 +222,13 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, lesson_id, auth_user_id, resource_type_id = 0):
+    def get_all(db, scheme_of_work_id, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH, resource_type_id = 0):
         """ Get resources for lesson """
 
         execHelper = ExecHelper()
 
         str_select = "lesson_resource__get_all"
-        params = (lesson_id, resource_type_id, auth_user_id)
+        params = (lesson_id, resource_type_id, int(show_published_state), auth_user_id)
 
         rows = []
         #271 Stored procedure

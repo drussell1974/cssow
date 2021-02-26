@@ -6,6 +6,7 @@ CREATE PROCEDURE scheme_of_work__get_latest (
  IN p_top_n INT,
  IN p_department_id INT,
  IN p_institute_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT DISTINCT
@@ -22,18 +23,23 @@ BEGIN
       CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, 
       sow.published as published, 
       dep.id as department_id,
-      dep.institute_id as institute_id
-    FROM sow_scheme_of_work as sow 
+	  dep.name as department_name,
+      ins.id as institute_id,
+      ins.name as institute_name
+	FROM sow_scheme_of_work as sow 
     INNER JOIN sow_department as dep ON dep.id = sow.department_id
+    INNER JOIN sow_institute as ins ON ins.id = dep.institute_id
     LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id 
     LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id 
     LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
     LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
     LEFT JOIN auth_user as user ON user.id = sow.created_by 
-    WHERE sow.department_id = p_department_id AND sow.published = 1 
-        or p_auth_user IN (SELECT auth_user_id 
-                            FROM sow_teacher 
-                            WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
+    WHERE dep.institute_id = p_institute_id or p_institute_id = 0 
+		or dep.id = p_department_id or p_department_id = 0 
+        AND 
+			(p_show_published_state % sow.published = 0 
+			or sow.created_by = p_auth_user
+		)
     ORDER BY sow.created DESC LIMIT p_top_n;
 END;
 //

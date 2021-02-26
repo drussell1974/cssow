@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel as Model, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -42,7 +43,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (67, mock_ctx.auth_user_id)
+                , (67, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -63,7 +64,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
             "lesson__get_number_of_learning_objectives"
-            , (87, mock_ctx.auth_user_id)
+            , (87, int(STATE.PUBLISH), mock_ctx.auth_user_id)
             , []
             , handle_log_info)
 
@@ -85,7 +86,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get_number_of_learning_objectives"
-                , (21, mock_ctx.auth_user_id)
+                , (21, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             
