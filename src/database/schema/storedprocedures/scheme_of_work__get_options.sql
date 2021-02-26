@@ -17,7 +17,8 @@ BEGIN
         LEFT JOIN sow_key_stage as ks ON ks.id = sow.key_stage_id 
     WHERE 
         sow.department_id = p_department_id 
-        AND p_show_published_state % sow.published = 0 #323 use p_show_published_state and remove subquery 
+        AND (p_show_published_state % sow.published = 0 #323 use p_show_published_state and remove subquery 
+			or sow.created_by = p_auth_user)
 	ORDER BY sow.key_stage_id;
 END;
 //

@@ -9,13 +9,13 @@ echo "yarn.test-ui--verify.sh:\e[1;33m Run 'fuser -k 3002/tcp' to kill exiting p
 echo "running..."
 
 ## start test
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_existing_page_navigation.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_delete.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_create_new_page_navigation.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_copy_existing.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_create_new.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_index__keyword__search.py
-
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_delete.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_edit_existing.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_create_new.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_delete.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
@@ -24,7 +24,7 @@ echo "running..."
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_edit_cancel.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_*.py

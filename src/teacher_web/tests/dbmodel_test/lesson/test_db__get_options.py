@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -25,7 +26,7 @@ class test_db__get_options(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                LessonModel.get_options(self.fake_db, 21, auth_user=1)
+                LessonModel.get_options(self.fake_db, 21, auth_user=mock_auth_user)
 
 
     def test__should_call_select__return_no_items(self, mock_auth_user):
@@ -41,7 +42,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (21, mock_auth_user.auth_user_id)
+                , (21, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -61,7 +62,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (12, 6079)
+                , (12, int(STATE.PUBLISH_INTERNAL), 6079)
                 , []
                 , handle_log_info)
 
@@ -93,7 +94,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_options'
-                , (214, mock_auth_user.auth_user_id)
+                , (214, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

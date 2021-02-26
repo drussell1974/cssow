@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, LessonFilter,  handle_log_info 
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 
@@ -69,7 +70,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (5, "Lorum ipsum", 0, 20, mock_auth_user.auth_user_id)
+                , (5, "Lorum ipsum", 0, 20, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -116,7 +117,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_filtered'
-                , (3, "", 0, 20, mock_auth_user.auth_user_id)
+                , (3, "", 0, 20, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -180,7 +181,7 @@ class test_db__get_filtered(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson__get_filtered'
-                 , (3, "", 1, 10, mock_auth_user.auth_user_id)
+                 , (3, "", 1, 10, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
 

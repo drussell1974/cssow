@@ -104,7 +104,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         
         model = KeywordModel(0, "", "")
         for row in rows:
@@ -135,9 +135,9 @@ class KeywordModel(BaseModel):
         rows = []
 
         if lesson_id > 0:
-            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id)
+            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         else:
-            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.auth_user_id)
+            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], row[2], row[3], published=row[4]))
@@ -220,7 +220,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_model(db, id, scheme_of_work_id, auth_user_id):
+    def get_model(db, id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db:
@@ -231,7 +231,7 @@ class KeywordDataAccess:
 
         select_sql = "keyword__get"
         
-        params = (id, scheme_of_work_id, auth_user_id)
+        params = (id, scheme_of_work_id, int(show_published_state), auth_user_id)
 
         rows = []
 
@@ -242,7 +242,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, auth_user_id):
+    def get_all(db, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -252,7 +252,7 @@ class KeywordDataAccess:
 
         select_sql = "scheme_of_work__get_all_keywords"
 
-        params = (scheme_of_work_id, auth_user_id)
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id)
         
         rows = []
         
@@ -263,7 +263,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id):
+    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -273,7 +273,7 @@ class KeywordDataAccess:
 
         select_sql = "lesson__get_all_keywords"
 
-        params = (lesson_id, auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
         
         rows = []
         

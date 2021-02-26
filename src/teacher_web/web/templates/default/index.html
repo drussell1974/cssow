@@ -13,15 +13,16 @@
     <section id="section-latest_schemesofwork" class="jumbotron">
         <!-- Scheme of works -->
       <span class="subheading">Latest Schemes of Work</span>
+      
       <!-- Scheme of works -->
       {% for row in content.data.latest_schemes_of_work %}
-        <div class="post-preview post-preview-schemeofwork">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute_id row.department_id row.id %}">
+        <div class="post-preview post-preview-schemeofwork {{ row.published_state }}">
+          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute.id row.department.id row.id %}">
             <h2 class="post-title">
                 {{ row.name }}
             </h2>
             <h3 class="post-subtitle">
-              {{ row.key_stage_name }}
+              <a id="lnk-departments-{{row.institute.id}}--{{row.id}}" href="{% url 'department.index' row.institute.id %}">{{ row.institute.name }}</a>
             </h3>
           </a>
           <p class="post-meta">Created by
@@ -29,10 +30,6 @@
             {% if row.created %}
               on {{ row.created }}
             {% endif %}
-            {% if auth.user %}
-                - <a href="{% url 'schemesofwork.delete_item' row.context.institute_id row.context.department_id row.id }">Delete</a>
-                - <a href="{% url 'schemesofwork.edit'  row.context.institute_id row.context.department_id row.id }">Edit</a>
-            {% endif %}</p>
         </div>
         <hr>
       {% endfor %}

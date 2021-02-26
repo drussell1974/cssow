@@ -6,6 +6,7 @@ CREATE PROCEDURE scheme_of_work__get_schemeofwork_name_only (
  IN p_scheme_of_work_id INT,
  IN p_department_id INT,
  IN p_institute_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT
@@ -15,11 +16,9 @@ BEGIN
       WHERE
         sow.id = p_scheme_of_work_id 
         AND sow.department_id = p_department_id
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                            FROM sow_teacher 
-                            WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        );
+        AND (p_show_published_state % sow.published = 0 
+                or sow.created_by = p_auth_user
+          );
 END;
 //
 

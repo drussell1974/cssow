@@ -1,5 +1,6 @@
 #from ._unittest import TestCase, FakeDb
 from shared.models.cls_content import ContentModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from unittest.mock import Mock, MagicMock, patch
 from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
@@ -41,7 +42,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (0, 1, mock_auth_user.auth_user_id)
+            , (0, 1, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             
@@ -60,7 +61,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (0, 2, mock_auth_user.auth_user_id)
+            , (0, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             
@@ -84,7 +85,7 @@ class test_db_content__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
             'content__get_options'
-            , (563, 3, mock_auth_user.auth_user_id)
+            , (563, 3, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
             , []
             , handle_log_info)
             

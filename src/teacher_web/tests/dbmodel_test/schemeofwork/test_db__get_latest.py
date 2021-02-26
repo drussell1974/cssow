@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -40,7 +41,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (4, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.auth_user_id)
+                , (4, mock_ctx.department_id, mock_ctx.institute_id, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -48,7 +49,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
     def test__should_call__select__return_single_item(self, mock_ctx):
         # arrange
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 1271176, "Computer Science", 12711761271176, "Lorem Ipsum",)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -59,7 +60,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3,  mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.auth_user_id)
+                , (3,  mock_ctx.department_id, mock_ctx.institute_id, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -67,6 +68,8 @@ class test_db__get_latest_schemes_of_work(TestCase):
             self.assertEqual(6, rows[0].id)
             self.assertEqual("Lorem", rows[0].name)
             self.assertEqual("ipsum dolor sit amet.", rows[0].description)
+            self.assertEqual("Lorem Ipsum", rows[0].institute.name)
+            self.assertEqual("Computer Science", rows[0].department.name)
 
 
 
@@ -74,9 +77,9 @@ class test_db__get_latest_schemes_of_work(TestCase):
         # arrange
 
         expected_result = [
-            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176),
-            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176),
-            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 12711761271176, 1271176)]
+            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 1271176, "Computer Science", 12711761271176, "Lorem Ipsum",),
+            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 1271176, "Computer Science", 12711761271176, "Lorem Ipsum",),
+            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 1, 1271176, "Computer Science", 12711761271176, "Lorem Ipsum",)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -87,7 +90,7 @@ class test_db__get_latest_schemes_of_work(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_latest"
-                , (3, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.auth_user_id)
+                , (3, mock_ctx.department_id, mock_ctx.institute_id, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 

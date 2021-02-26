@@ -5,6 +5,7 @@ from shared.models.cls_lesson import LessonModel, handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -46,7 +47,7 @@ class test_db__get_model(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                LessonModel.get_model(self.fake_db, 4)
+                LessonModel.get_model(self.fake_db, int(STATE.PUBLISH), 4)
 
 
     def test__should_call_select__return_no_items(self, mock_auth_user):
@@ -62,7 +63,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
-                , (101,34,mock_auth_user.auth_user_id)
+                , (101, 34, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -91,7 +92,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "lesson__get"
-                , (321, 909, mock_auth_user.auth_user_id)
+                , (321, 909, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             

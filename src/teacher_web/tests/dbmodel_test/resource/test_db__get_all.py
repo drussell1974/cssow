@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_resource import ResourceModel, handle_log_info 
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 # TODO: #329 - remove global reference
@@ -45,7 +46,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_resource__get_all'
-                , (5, 0, mock_auth_user.auth_user_id)
+                , (5, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -80,7 +81,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_resource__get_all'
-                , (3, 0, mock_auth_user.auth_user_id)
+                , (3, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -161,7 +162,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                  'lesson_resource__get_all'
-                 , (3, 0, mock_auth_user.auth_user_id)
+                 , (3, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
 

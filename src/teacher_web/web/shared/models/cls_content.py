@@ -75,7 +75,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_options(db, key_stage_id, auth_user, scheme_of_work_id = 0):
-        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user_id=auth_user.auth_user_id, scheme_of_work_id=scheme_of_work_id)
+        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user_id=auth_user.auth_user_id, scheme_of_work_id=scheme_of_work_id, show_published_state=STATE.PUBLISH)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2])
@@ -117,13 +117,13 @@ class ContentModel(BaseModel):
 class ContentDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_options(db, key_stage_id, auth_user_id, scheme_of_work_id = 0):
+    def get_options(db, key_stage_id, auth_user_id, scheme_of_work_id = 0, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
         #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
         str_select = "content__get_options"
-        params = (scheme_of_work_id, key_stage_id, auth_user_id)
+        params = (scheme_of_work_id, key_stage_id, int(STATE.PUBLISH), auth_user_id)
 
         rows = []
         #271 Stored procedure (get_options)
