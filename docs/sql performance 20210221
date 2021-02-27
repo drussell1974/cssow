@@ -11,17 +11,11 @@ scheme_of_work__get_context_model                     0.016856)
 
 # reviewed
 
-scheme_of_work__get_all.max                           0.063114) ###
 
 keyword__get_options                                  0.059833) ##
 
 lesson__get_related_topic_ids                         0.141794) ####
 
-lesson__get_ks123_pathway_objective_ids               0.044492) ####
-
-scheme_of_work__get_all_keywords                      0.09519) ####
-
-scheme_of_work__get_all                               0.063114) ###
 
 lesson_learning_objective__get_all                    0.042646) #####
 
@@ -30,5 +24,3 @@ lesson__get_by_keyword                             ', 0.041591 ####
 lesson__get                                        ', 0.017311) ###
 
 scheme_of_work__get_options                           0.048163) ###
-
-

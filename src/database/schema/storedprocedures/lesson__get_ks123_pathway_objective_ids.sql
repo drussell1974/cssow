@@ -18,4 +18,4 @@ END;
 
 //
 
-DELIMITER ;
+DELIMITER;
