@@ -7,7 +7,7 @@ from .views import LessonViewSet, LessonListViewSet, LessonPathwayObjectivesView
 urlpatterns = [
     path('', LessonListViewSet.as_view(), name="api.lessons.get"),
     path('<int:lesson_id>', LessonViewSet.as_view(), name="api.lesson.get"),
-    path('<int:lesson_id>/pathway-ks123/year/<int:year_id>/topic/<int:topic_id>', LessonPathwayKs123ViewSet.as_view(), name="api.lesson.pathway-ks123"),
+    path('<int:lesson_id>/pathway-ks123/key-stage/<int:year_id>/topic/<int:topic_id>', LessonPathwayKs123ViewSet.as_view(), name="api.lesson.pathway-ks123"),
     #<int:learning_objective_id>/pathway-objectives/key-stage/<int:key_stage_id>/keywords/<str:key_words>
     path('<int:lesson_id>/pathway-objectives/key-stage/<int:key_stage_id>/keywords/<str:key_words>', LessonPathwayObjectivesViewSet.as_view(), name='api.lesson.pathway-objectives'),
     path('<int:lesson_id>/pathway-objectives/key-stage/<int:key_stage_id>/keywords/', LessonPathwayObjectivesViewSet.as_view(), name='api.lesson.pathway-objectives'),
