@@ -14,7 +14,7 @@ class running_time_log():
 
     def write(self, func_name, arg_key, timespan):
 
-        min_key = f"{func_name}_{arg_key}__min";
+        min_key = f"{func_name}.{arg_key}.min";
 
         if min_key in running_time_log.log:
             min_cur = running_time_log.log[min_key]
@@ -23,7 +23,7 @@ class running_time_log():
         else:
             running_time_log.log[min_key] = timespan
         
-        max_key = f"{func_name}_{arg_key}__max"
+        max_key = f"{func_name}.{arg_key}.max"
         
         if max_key in running_time_log.log:
             max_cur = running_time_log.log[max_key]
