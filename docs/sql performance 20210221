@@ -1,45 +1,34 @@
+# next
 
-institute__get_context_model                        ', 0.0139)
-scheme_of_work__get_context_model                   ', 0.010072)
-scheme_of_work__get_teacher_permissions             ', 0.015244)
+scheme_of_work__get_teacher_permissions            ', 0.015401)
+scheme_of_work__get_teacher_permissions               0.014518)
+scheme_of_work__get_teacher_permissions            ', 0.015244) ####
 
-scheme_of_work__get                                ', 0.071587) #
-keyword__get_options                               ', 0.285774) #
-keyword__get_options                               ', 0.042573)
-topic__get_options                                 ', 0.057407) #
-scheme_of_work__get_number_of_lessons              ', 0.221639) #
-scheme_of_work__get_number_of_learning_objectives  ', 0.022534) #
-lesson__get_all                                    ', 0.064524) #
-lesson__get_related_topic_ids                      ', 0.283788) #
-lesson__get_related_topic_ids                      ', 0.049343)
-lesson__get_ks123_pathway_objective_ids            ', 0.178757) #
-lesson__get_ks123_pathway_objective_ids             ', 0.037774)
-institute__get                                     ', 0.013025) #
-scheme_of_work__get_all_keywords                   ', 0.014193) #
-scheme_of_work__get_all_keywords                    ', 0.011034)
-scheme_of_work__get_all                            ', 0.013387) #
-scheme_of_work__get_all                             ', 0.039068)
-lesson__get_options                                ', 0.017052) #
-lesson_learning_objective__get_all                  ', 0.018968) #
-lesson_learning_objective__get_all                  ', 0.013231)
-scheme_of_work__get_latest                          ', 0.014225) #
-keystage__get_options                               ', 0.010609) #
-scheme_of_work__get_number_of_resources             ', 0.013769) #
-lesson__get_all_keywords                            ', 0.013069) #
-lesson__get_all_keywords                            ', 0.017883)
-lesson__get_number_of_learning_objectives           ', 0.013182) #
-scheme_of_work__get_schemeofwork_name_only          ', 0.019362) # 
-lesson__get_filtered                                ', 0.022821) #
-ks123_pathway__get_options                          ', 0.010396) #
-lesson_resource__get_all                            ', 0.010469) #
-lesson_resource__get_all                            ', 0.010623)
-lesson__get_by_keyword                              ', 0.01957) #
-lesson__get_by_keyword                              ', 0.041591)
-content__get_options                                ', 0.01186) #
-lesson__get                                         ', 0.013681) #
-lesson__get                                         ', 0.017311)
-keyword__get                                        ', 0.015525) #
-lesson_resource__get                                ', 0.014667) #
-scheme_of_work__get_options                         ', 0.016312) #
-scheme_of_work__get_teacher_permissions', 0.015401)
+# new
+
+scheme_of_work__get_context_model                  ', 0.010072)
+scheme_of_work__get_context_model                     0.016856)
+
+# reviewed
+
+scheme_of_work__get_all.max                           0.063114) ###
+
+keyword__get_options                                  0.059833) ##
+
+lesson__get_related_topic_ids                         0.141794) ####
+
+lesson__get_ks123_pathway_objective_ids               0.044492) ####
+
+scheme_of_work__get_all_keywords                      0.09519) ####
+
+scheme_of_work__get_all                               0.063114) ###
+
+lesson_learning_objective__get_all                    0.042646) #####
+
+lesson__get_by_keyword                             ', 0.041591 ####
+
+lesson__get                                        ', 0.017311) ###
+
+scheme_of_work__get_options                           0.048163) ###
+
 

@@ -9,7 +9,7 @@ CREATE PROCEDURE scheme_of_work__get_all (
  IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
-    SELECT DISTINCT 
+    SELECT 
         sow.id as id,
         sow.name as name,
         sow.description as description,
