@@ -20,7 +20,7 @@ BEGIN
         res.lesson_id as lesson_id,
         res.created as created,
         res.created_by as created_by_id,
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,
+        user.first_name as created_by_name,
         res.published as published
     FROM sow_resource AS res
       INNER JOIN sow_lesson as les ON les.id = res.lesson_id  

@@ -20,7 +20,7 @@ BEGIN
         lob.group_name as group_name, 
         lob.created as created, 
         lob.created_by as created_by_id, 
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name 
+        user.first_name as created_by_name 
     FROM sow_learning_objective as lob 
         INNER JOIN sow_lesson__has__pathway as pw ON pw.learning_objective_id = lob.id 
         LEFT JOIN sow_solo_taxonomy as solo ON solo.id = lob.solo_taxonomy_id 

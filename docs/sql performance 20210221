@@ -15,12 +15,34 @@ scheme_of_work__get_context_model                     0.016856)
 keyword__get_options                                  0.059833) ##
 
 lesson__get_related_topic_ids                         0.141794) ####
+lesson__get_related_topic_ids                         0.017327)
 
 
 lesson_learning_objective__get_all                    0.042646) #####
+lesson_learning_objective__get_all                    0.04142)
 
 lesson__get_by_keyword                             ', 0.041591 ####
 
 lesson__get                                        ', 0.017311) ###
 
 scheme_of_work__get_options                           0.048163) ###
+scheme_of_work__get_options                           0.010592)
+
+
+department__get_context_model                                                       0.014436)
+scheme_of_work__get_all_keywords                                                       0.018016)
+lesson__get_all_keywords                                                       0.014302)
+institute__get_context_model                                                       0.017315)
+lesson__get_by_keyword                                                       0.042471)
+keyword__get_options                                                       0.010638)
+scheme_of_work__get_teacher_permissions                                                       0.017089)
+scheme_of_work__get_latest                                                       0.023126)
+lesson__get_ks123_pathway_objective_ids                                                       0.013461)
+lesson__get_number_of_learning_objectives                                                       0.013052)
+lesson__get                                                       0.013457)
+lesson_resource__get_all                                                       0.011751)
+lesson_resource__get                                                       0.010361)
+scheme_of_work__get_all                                                       0.012945)
+scheme_of_work__get_number_of_resources                                                       0.01011)
+scheme_of_work__get_context_model                                                       0.011668)
+topic__get_options                                                       0.013039)

@@ -21,7 +21,7 @@ BEGIN
         dep.name as department_name,
         sow.created as created,
         sow.created_by as created_by_id,
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,
+        user.first_name as created_by_name,
         sow.published as published
     FROM sow_scheme_of_work as sow  
         LEFT JOIN sow_department as dep ON dep.id = sow.department_id

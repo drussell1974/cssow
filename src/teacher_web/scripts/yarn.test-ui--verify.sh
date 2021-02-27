@@ -11,7 +11,7 @@ echo "running..."
 ## start test
 
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_cannot_delete_published.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_cancel.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py

@@ -29,7 +29,7 @@ BEGIN
         le.summary as summary, 
         le.created as created, 
         le.created_by as created_by_id, 
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, 
+        user.first_name as created_by_name, 
         le.published as published 
     FROM sow_lesson as le  
     INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id 

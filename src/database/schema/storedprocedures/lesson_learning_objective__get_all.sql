@@ -26,7 +26,7 @@ BEGIN
         le_lo.is_key_objective as is_key_objective,
         lob.created as created,
         lob.created_by as created_by_id,
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,
+        user.first_name as created_by_name,
         le_lo.published as published
     FROM sow_scheme_of_work as sow  
     INNER JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id
