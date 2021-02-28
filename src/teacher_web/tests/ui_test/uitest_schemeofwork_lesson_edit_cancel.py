@@ -8,10 +8,9 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.test_context.implicitly_wait(10)
         #231: TODO: open existing resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/edit")
-        self.wait(s=2)
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/edit", wait=2)
+
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -66,7 +65,7 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
 
         ' click no (finding button appears to cancel dialog) '        
         
-        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
+       elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
         
         self.wait(s=2)

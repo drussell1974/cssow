@@ -6,8 +6,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives")
-        self.wait()
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives", wait=2)
 
 
     def tearDown(self):
@@ -28,7 +27,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
 
     def test_page__should_have__sidebar_and_selected_lesson(self):
         # test
-        self.test_context.implicitly_wait(20)
+        #self.test_context.implicitly_wait(20)
         elem = self.test_context.find_element_by_id("nav-link-lesson-{}".format(self.test_lesson_id))
         
         # assert
@@ -38,7 +37,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
 
     def test_page__should_have__group_heading(self):
         # test
-        self.test_context.implicitly_wait(20)
+        #self.test_context.implicitly_wait(20)
         elem = self.test_context.find_element_by_class_name('group-heading')
 
         # assert

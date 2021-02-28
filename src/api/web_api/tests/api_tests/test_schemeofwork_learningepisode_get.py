@@ -10,8 +10,7 @@ class test_schemeofwork_lesson_get_all(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get("http://localhost:8000/api/schemeofwork/{}/lessons".format(self.test_scheme_of_work_id))
-        self.test_context.implicitly_wait(4)
+        self.do_get("http://localhost:8000/api/schemeofwork/{}/lessons".format(self.test_scheme_of_work_id), wait=2)
 
         #arrange
         elem = self.test_context.find_element_by_tag_name('pre')

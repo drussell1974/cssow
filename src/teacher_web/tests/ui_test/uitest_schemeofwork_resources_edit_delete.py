@@ -9,13 +9,11 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
     
     def setUp(self):
 
-        #self.test_context.implicitly_wait(10)
         # setup
         #231: create a new resource
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/new")
 
          # setup
-        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -52,7 +50,6 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         elem.send_keys(test_file)
 
         ' submit the form '
-        #self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_id("saveDraftButton")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)

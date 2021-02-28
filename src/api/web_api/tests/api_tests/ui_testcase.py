@@ -51,8 +51,8 @@ class UITestCase(TestCase):
         """
 
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get(redirect_to_uri_on_login)
-        self.test_context.implicitly_wait(wait)
+        self.do_get(redirect_to_uri_on_login, wait=wait)
+        #self.test_context.implicitly_wait(wait)
 
         try:
 
@@ -84,7 +84,7 @@ class UITestCase(TestCase):
         go_to_url = "{}?_next={}".format(login_uri, redirect_to_uri_on_login)
         
         self.test_context.get(go_to_url)
-        self.test_context.implicitly_wait(wait)
+        #self.test_context.implicitly_wait(wait)
         
         try:
             elem = self.test_context.find_element_by_id("auth_user_email")
