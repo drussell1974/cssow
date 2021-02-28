@@ -11,20 +11,28 @@ echo "running..."
 ## start test
 
 
+
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_cancel.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_delete.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_index.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_create_new.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_edit_cancel.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
+
+
+
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_failed_log_in.py
+
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_content_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_learningobjective_*.py

@@ -7,8 +7,7 @@ class uitest_schemeofwork_failed_log_in(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork")
-        self.test_context.implicitly_wait(4)
+        self.do_get(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork", wait=4)
 
         try:
             elem = self.test_context.find_element_by_id("btn-logout")

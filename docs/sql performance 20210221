@@ -4,6 +4,8 @@ scheme_of_work__get_teacher_permissions            ', 0.015401)
 scheme_of_work__get_teacher_permissions               0.014518)
 scheme_of_work__get_teacher_permissions            ', 0.015244) ####
 
+lesson__get_number_of_learning_objectives             0.327152 ###
+
 # new
 
 scheme_of_work__get_context_model                  ', 0.010072)

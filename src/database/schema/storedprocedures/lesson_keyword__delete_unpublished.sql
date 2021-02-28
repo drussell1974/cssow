@@ -21,4 +21,12 @@ BEGIN
 END;
 //
 
+SELECT id FROM sow_key_word
+			WHERE scheme_of_work_id = 11 
+					AND published IN (32,64) 
+					AND 2 IN 
+							(SELECT auth_user_id 
+							FROM sow_teacher 
+							WHERE scheme_of_work_id = 11);
+
 DELIMITER ;

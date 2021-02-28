@@ -65,7 +65,7 @@ class uitest_schemeofwork_lesson_edit_cancel(UITestCase):
 
         ' click no (finding button appears to cancel dialog) '        
         
-       elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
         
         self.wait(s=2)

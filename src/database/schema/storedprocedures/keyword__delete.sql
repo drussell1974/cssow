@@ -19,10 +19,12 @@ BEGIN
         WHERE kw.id = p_keyword_id and kw.scheme_of_work_id = p_scheme_of_work_id;
 
     DELETE FROM sow_key_word
+    -- UPDATE sow_key_word
+    -- SET published = 64
     WHERE id = p_keyword_id and scheme_of_work_id = p_scheme_of_work_id
-              AND p_auth_user IN (SELECT auth_user_id 
-                                  FROM sow_teacher 
-                                  WHERE auth_user_id = p_auth_user AND scheme_of_work_id = p_scheme_of_work_id);
+        AND p_auth_user IN (SELECT auth_user_id 
+                            FROM sow_teacher 
+                            WHERE auth_user_id = p_auth_user AND scheme_of_work_id = p_scheme_of_work_id);
 END;
 //
 

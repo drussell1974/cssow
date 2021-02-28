@@ -39,7 +39,6 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
         
         elem = self.find_element_by_id__with_explicit_wait("btn-delete-unpublished", wait=2)
         ' Ensure element is visible '
-        # TODO: #323 add scrolllIntoView() to find_element_by_id__with_explicit_wait
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         self.wait(s=2)
 

@@ -8,11 +8,10 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
     test_context = WebBrowserContext()
     
     def setUp(self):
-        #self.test_context.implicitly_wait(10)
         
         # setup
 
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/new")
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/new", wait=4)
 
         # create content
         
@@ -27,15 +26,15 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
         elem.send_keys("Lorem ipsum DEL 11")
 
         elem = self.test_context.find_element_by_id("ctl-definition")
-        elem.send_keys("test page  redirect to index if valid")
+        elem.send_keys("Can be deleted")
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(s=5)
+        self.wait(s=2)
+        
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
-
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level', wait=4)
 
 
     def tearDown(self):

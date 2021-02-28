@@ -9,8 +9,8 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
     def setUp(self):
         # setup
         #231: open a learning objective
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/edit")
-        self.wait(s=2)
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/{self.test_learning_objective_id}/edit", wait=4)
+
 
     def tearDown(self):
         #self.do_delete_scheme_of_work()
@@ -31,20 +31,18 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
+        
         ' Open Modal '
 
         #231: click the cancel button
-        elem = self.test_context.find_element_by_id("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton", wait=2)
         elem.click()
-
-        self.wait(s=2)
         
         ' click no '        
         
         #231: then click the stay button
-        elem = self.test_context.find_element_by_id("cancelModalStayButton")
-        self.wait(s=2)
+
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalStayButton", wait=2)
         elem.click()
         
         # assert
@@ -61,17 +59,17 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
 
 
         ' Open Modal '
-
+        
         #231: click the cancel button
-        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton", wait=2)
         elem.click()
 
 
         ' click no (finding button appears to cancel dialog) '        
         
         #231: then click the continue button
-        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
-        self.wait(s=2)
+        elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton", wait=2)
+
         elem.click()
         
         self.wait(s=2)

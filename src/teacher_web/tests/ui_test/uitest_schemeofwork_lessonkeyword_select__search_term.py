@@ -44,8 +44,6 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         # test
         elem = self.test_context.find_element_by_id("ctl-keyword_search")
         elem.send_keys("Ra")
-        
-        self.wait(s=2)
 
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         
@@ -68,9 +66,8 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
     def test_page__should_retain_hidden_items_on_save(self):
         
         # test
-        elem = self.test_context.find_element_by_id("ctl-keyword_search")
+        elem = self.find_element_by_id__with_explicit_wait("ctl-keyword_search", wait=2)
         elem.send_keys("Random Access Memory (RAM)")
-        self.wait(s=2)
                 
         elem = self.test_context.find_elements_by_xpath("//*[contains(@style, 'block')]")
         self.assertEqual(1, len(elem), "page must show only one element before saving")
@@ -78,10 +75,10 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         # act
         
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_element_by_id__with_explicit_wait("saveButton", wait=2)
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
-        
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')

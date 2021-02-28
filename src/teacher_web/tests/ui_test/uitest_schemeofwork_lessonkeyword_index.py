@@ -27,7 +27,6 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
     def test_page__should_have__sidebar_and_selected_lesson(self):
         # test
-        #self.test_context.implicitly_wait(20)
         elem = self.find_element_by_id__with_explicit_wait("nav-link-lesson-{}".format(self.test_lesson_id), wait=4)
         
         # assert
@@ -37,7 +36,6 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
     def test_page__should_have__group_heading(self):
         # test
-        #self.test_context.implicitly_wait(20)
         elem = self.test_context.find_element_by_class_name('group-heading')
 
         # assert

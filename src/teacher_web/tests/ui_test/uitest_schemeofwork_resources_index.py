@@ -36,7 +36,7 @@ class uitest_schemeofwork_resources_index(UITestCase):
 
 
     def test_page__should_have__group_heading(self):
-        # test
+        # test        
         elem = self.test_context.find_element_by_class_name('group-heading')
 
         # assert
