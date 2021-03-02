@@ -33,7 +33,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__get_context_model;
 
@@ -58,8 +59,7 @@ END;
 
 DELIMITER ;
 
-CALL department__get_context_model(2, 5);DELIMITER //
-
+DELIMITER //
 DROP PROCEDURE IF EXISTS keyword__update;
 
 CREATE PROCEDURE keyword__update (
@@ -81,7 +81,10 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+//
+
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_all;
 
@@ -122,7 +125,8 @@ END;
 
 DELIMITER ;
 
-CALL scheme_of_work__get_all(0,5,2,2,1);DELIMITER //
+-- CALL scheme_of_work__get_all(0,5,2,2,1);
+DELIMITER //
 DROP PROCEDURE IF EXISTS lesson_learning_objective__delete_unpublished;
 
 CREATE PROCEDURE lesson_learning_objective__delete_unpublished (
@@ -174,7 +178,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__get;
 
@@ -200,7 +205,8 @@ END;
 
 DELIMITER ;
 
-CALL institute__get(2,2);DELIMITER //
+-- CALL institute__get(2,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_key_stage_id_only;
 
@@ -224,7 +230,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_options;
 
@@ -249,7 +256,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS ks123_pathway__get_options;
 
@@ -276,7 +284,8 @@ END;
 
 DELIMITER ;
 
-CALL ks123_pathway__get_options(4, 4, 1, 2);DELIMITER //
+-- CALL ks123_pathway__get_options(4, 4, 1, 2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__delete;
 
@@ -289,7 +298,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS content__delete;
 
@@ -304,7 +314,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__update;
 
@@ -325,7 +336,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_resource__delete_unpublished;
 
@@ -339,7 +351,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__get_context_name;
 
@@ -358,7 +371,8 @@ END;
 
 DELIMITER ;
 
-CALL department__get_context_name(1,5,2);DELIMITER //
+-- CALL department__get_context_name(1,5,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__update;
 
@@ -379,7 +393,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS content__delete_unpublished;
 
@@ -397,7 +412,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_by_keyword;
 
@@ -447,7 +463,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER 
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_context_model;
 
@@ -468,7 +485,8 @@ END;
 //
 
 DELIMITER ;
-CALL scheme_of_work__get_context_model(11);DELIMITER //
+-- CALL scheme_of_work__get_context_model(11);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_schemeofwork_name_only;
 
@@ -492,7 +510,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_learning_objective__get;
 
@@ -534,7 +553,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_keyword__delete_unpublished;
 
@@ -565,7 +585,8 @@ SELECT id FROM sow_key_word
 							FROM sow_teacher 
 							WHERE scheme_of_work_id = 11);
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS keyword__get;
 
@@ -593,7 +614,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_resource__get;
 
@@ -629,7 +651,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__get_number_of_departments;
 
@@ -649,7 +672,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get;
 
@@ -687,7 +711,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS content__get_all;
 
@@ -714,7 +739,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_resource__delete;
 
@@ -726,7 +752,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS keyword__delete_unpublished;
 
@@ -747,7 +774,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__get_options;
 
@@ -795,7 +823,8 @@ END;
 
 DELIMITER ;
 
-CALL department__get_all(2,32, 2);DELIMITER //
+-- CALL department__get_all(2,32, 2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__delete;
 
@@ -808,7 +837,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS topic__get_options;
 
@@ -833,7 +863,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS content__update;
 
@@ -860,7 +891,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_learning_objective__get_linked_pathway_objectives;
 
@@ -895,7 +927,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_options;
 
@@ -925,7 +958,8 @@ END;
 
 DELIMITER ;
 
-CALL lesson__get_options(11,1, 2);DELIMITER //
+-- CALL lesson__get_options(11,1, 2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__get_number_of_schemes_of_work;
 
@@ -949,7 +983,8 @@ END;
 
 DELIMITER ;
 
-CALL department__get_number_of_schemes_of_work(5,2);DELIMITER $$
+-- CALL department__get_number_of_schemes_of_work(5,2);
+DELIMITER $$
 DROP PROCEDURE IF EXISTS lesson__get_all_keywords;
 
 CREATE PROCEDURE `lesson__get_all_keywords`(
@@ -1008,8 +1043,9 @@ END;
 
 DELIMITER ;
 
-CALL scheme_of_work__get_team_permissions(2,5,2,True,2);
-CALL scheme_of_work__get_team_permissions(2,5,2,False,2);DELIMITER //
+-- CALL scheme_of_work__get_team_permissions(2,5,2,True,2);
+-- CALL scheme_of_work__get_team_permissions(2,5,2,False,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_resource__get_all;
 
@@ -1046,7 +1082,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_number_of_learning_objectives;
 
@@ -1066,7 +1103,8 @@ END;
 
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS keyword__delete;
 
@@ -1096,7 +1134,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__update;
 
@@ -1127,7 +1166,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__get_all;
 
@@ -1154,7 +1194,8 @@ END;
 
 DELIMITER ;
 
-CALL institute__get_all(2, 1);DELIMITER //
+-- CALL institute__get_all(2, 1);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_options;
 
@@ -1184,7 +1225,8 @@ END;
 
 DELIMITER ;
 
-CALL lesson__get_options(11,1, 2);DELIMITER //
+-- CALL lesson__get_options(11,1, 2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__insert;
 
@@ -1216,7 +1258,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__get;
 
@@ -1245,7 +1288,8 @@ END;
 
 DELIMITER ;
 
-CALL department__get(2,1,2);DELIMITER //
+-- CALL department__get(2,1,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS department__has__teacher__insert;
 
@@ -1279,7 +1323,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_teacher_permissions;
 
@@ -1313,8 +1358,8 @@ END;
 
 DELIMITER ;
 
--- CALL scheme_of_work__get_team_permissions(2, 5, 2, True, 2);
--- CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
+-- -- CALL scheme_of_work__get_team_permissions(2, 5, 2, True, 2);
+-- -- CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
 DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_number_of_lessons;
@@ -1334,7 +1379,8 @@ END;
 
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__update;
 
@@ -1425,7 +1471,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_latest;
 
@@ -1473,7 +1520,8 @@ END;
 
 DELIMITER ;
 
-#CALL scheme_of_work__get_latest(5, 2);DELIMITER //
+#-- CALL scheme_of_work__get_latest(5, 2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_learning_objective__get_all;
 
@@ -1521,7 +1569,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__get_context_model;
 
@@ -1544,7 +1593,8 @@ END;
 
 DELIMITER ;
 
-CALL institute__get_context_model(2);DELIMITER //
+-- CALL institute__get_context_model(2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_ks123_pathway_objective_ids;
 
@@ -1564,7 +1614,8 @@ END;
 
 //
 
-DELIMITER;DELIMITER //
+DELIMITER;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS keyword__merge_duplicates;
 
@@ -1644,7 +1695,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get;
 
@@ -1690,7 +1742,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__has__teacher_permission__update;
 
@@ -1718,9 +1771,10 @@ BEGIN
 END;
 //
 
-#CALL scheme_of_work__has__teacher_permission__update(11, 113, 1, 1, 1, 2, True);
+#-- CALL scheme_of_work__has__teacher_permission__update(11, 113, 1, 1, 1, 2, True);
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_resource__update;
 
@@ -1755,7 +1809,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER $$
+DELIMITER ;
+DELIMITER $$
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_all_keywords;
 
@@ -1838,7 +1893,8 @@ END;
 
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS institute__get_context_name;
 
@@ -1856,7 +1912,8 @@ END;
 
 DELIMITER ;
 
-CALL institute__get_context_name(2,2);DELIMITER //
+-- CALL institute__get_context_name(2,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson_learning_objective__delete;
 
@@ -1914,7 +1971,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS teacher__get;
 
@@ -1947,7 +2005,8 @@ END;
 
 DELIMITER ;
 
-CALL teacher__get(2,5,2);DELIMITER //
+-- CALL teacher__get(2,5,2);
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__has__teacher_permission__insert;
 
@@ -2043,7 +2102,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_number_of_learning_objectives;
 
@@ -2063,7 +2123,8 @@ END;
 
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS keystage__get_options;
 
@@ -2081,7 +2142,8 @@ BEGIN
 END;
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS lesson__get_related_topic_ids;
 
@@ -2110,7 +2172,8 @@ END;
 
 //
 
-DELIMITER ;DELIMITER //
+DELIMITER ;
+DELIMITER //
 
 DROP PROCEDURE IF EXISTS content__get_options;
 

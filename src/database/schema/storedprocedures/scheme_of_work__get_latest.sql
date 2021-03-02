@@ -34,12 +34,7 @@ BEGIN
     LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
     LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
     LEFT JOIN auth_user as user ON user.id = sow.created_by 
-    WHERE dep.institute_id = p_institute_id or p_institute_id = 0 
-		or dep.id = p_department_id or p_department_id = 0 
-        AND 
-			(p_show_published_state % sow.published = 0 
-			or sow.created_by = p_auth_user
-		)
+    WHERE p_show_published_state % sow.published = 0 
     ORDER BY sow.created DESC LIMIT p_top_n;
 END;
 //
