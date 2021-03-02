@@ -22,7 +22,7 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
-        self.assertFooterContextText("dave Test User")
+        self.assertFooterContextText("test@localhost Computer Science")
 
 
     def test_page__should_have__sidebar_and_selected_lesson(self):

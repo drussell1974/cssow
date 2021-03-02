@@ -28,7 +28,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new_page_navigation(U
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
-        self.assertFooterContextText("dave Test User")
+        self.assertFooterContextText("test@localhost Computer Science")
 
 
     """ Breadcrumb """
