@@ -8,7 +8,7 @@ CREATE PROCEDURE keyword__delete_unpublished (
 BEGIN
     DELETE FROM sow_key_word
 	-- UPDATE sow_key_word
-    -- SET published = 64
+	-- SET published = 64
     WHERE scheme_of_work_id = p_scheme_of_work_id 
             AND published IN (32,64)
 			AND p_auth_user IN 

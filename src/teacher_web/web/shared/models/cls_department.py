@@ -1,12 +1,12 @@
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.core.basemodel import BaseModel
+from shared.models.core.basemodel import BaseModel, BaseContextModel
 from shared.models.cls_institute import InstituteModel, InstituteContextModel
 from shared.models.enums.publlished import STATE
+from shared.models.utils.cache_proxy import CacheProxy
 
-
-class DepartmentContextModel(BaseModel):
+class DepartmentContextModel(BaseContextModel):
     
     name = ""
 
@@ -15,18 +15,31 @@ class DepartmentContextModel(BaseModel):
         self.name = name
 
 
-    @staticmethod
-    def empty(published=STATE.DRAFT):
-        model = DepartmentContextModel(id_=0, name="", published=published)
+    @classmethod
+    def empty(cls, published=STATE.DRAFT, ctx=None):
+        model = cls(id_=0, name="", published=published, ctx=ctx)
         return model
 
 
-    @staticmethod
-    def get_context_model(db, institute_id, department_id, auth_user_id):
-        empty_model = DepartmentContextModel.empty()
+    @classmethod
+    def get_context_model(cls, db, institute_id, department_id, auth_user_id):
+        empty_model = cls.empty()
 
-        result = BaseModel.get_context_model(db, empty_model, "department__get_context_model", handle_log_info, institute_id, department_id)
+        result = BaseContextModel.get_context_model(db, empty_model, "department__get_context_model", handle_log_info, institute_id, department_id)
         return result if result is not None else None
+
+
+    @classmethod
+    def cached(cls, request, db, institute_id, department_id, auth_user_id):
+
+        department = cls.empty()
+
+        cache_obj = CacheProxy.session_cache(request, db, "department", cls.get_context_model, institute_id, department_id, auth_user_id)
+
+        if cache_obj is not None:
+            department.from_dict(cache_obj)    
+
+        return department
 
 
 class DepartmentModel(DepartmentContextModel):

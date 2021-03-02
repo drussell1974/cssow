@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .core.basemodel import BaseModel, try_int
+from .core.basemodel import BaseContextModel, BaseModel, try_int
 from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_institute import InstituteContextModel
@@ -8,26 +8,42 @@ from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 from shared.models.enums.publlished import STATE
+from shared.models.utils.cache_proxy import CacheProxy
 
-class SchemeOfWorkContextModel(BaseModel):
+class SchemeOfWorkContextModel(BaseContextModel):
     
     def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
-        
+        self.name = name
+        self.teacher_permissions = []
 
-    @staticmethod
-    def empty(published=STATE.PUBLISH, ctx=None):
-        model = SchemeOfWorkContextModel(id_=0, name="", published=published, ctx=ctx)
+
+    @classmethod
+    def empty(cls, published=STATE.PUBLISH, ctx=None):
+        model = cls(id_=0, name="", published=published, ctx=ctx)
         return model
 
 
-    @staticmethod
-    def get_context_model(db, scheme_of_work_id, auth_user_id):
+    @classmethod
+    def get_context_model(cls, db, scheme_of_work_id, auth_user_id):
         
-        empty_model = SchemeOfWorkContextModel.empty()
+        empty_model = cls.empty()
 
-        result = BaseModel.get_context_model(db, empty_model, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
+        result = BaseContextModel.get_context_model(db, empty_model, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
         return result if result is not None else None
+
+
+    @classmethod
+    def cached(cls, request, db, scheme_of_work_id, auth_user_id):
+
+        scheme_of_work = cls.empty()
+            
+        cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", cls.get_context_model, scheme_of_work_id, auth_user_id)
+
+        if cache_obj is not None:
+            scheme_of_work.from_dict(cache_obj)
+
+        return scheme_of_work        
 
 
 class SchemeOfWorkModel(SchemeOfWorkContextModel):
@@ -60,7 +76,6 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
         self.number_of_keywords = 0
-        self.teacher_permissions = []
         
 
     @property

@@ -12,10 +12,7 @@ echo "running..."
 
 
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_cancel.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_delete.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_index.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_create_new.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resource_edit_not_found.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
@@ -25,9 +22,18 @@ python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeo
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_merge_cancel.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
 
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_cancel.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_create_new_page_navigation.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_create_new.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_delete.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_existing.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_not_found.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_index__search_term.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_index.py
 
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_*.py

@@ -1,7 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel, InstituteContextModel as Model, handle_log_info
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model

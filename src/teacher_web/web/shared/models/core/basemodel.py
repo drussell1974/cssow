@@ -232,6 +232,31 @@ class BaseModel(models.Model):
                 DataAccess._update(db, model, auth_user)
         return model
 
+
+class BaseContextModel(BaseModel):
+    
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db, ctx=None):
+        super().__init__(id_=id_, display_name=display_name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+    
+    
+    def from_dict(self, dict_obj):
+        
+        if type(dict_obj) is not dict:
+            raise TypeError("Value must be type dictionary (dict).")
+
+        self.id = dict_obj.get("id")
+        self.name = dict_obj.get("name")
+        self.display_name = dict_obj.get("display_name")
+        self.created = dict_obj.get("created")
+        self.created_by_id = dict_obj.get("created_by_id")
+        self.created_by_name = dict_obj.get("created_by_name")
+        self.published = dict_obj.get("published")
+        self.set_published_state() # = dict_obj.get("published_state")
+        self.auth_user_id = dict_obj.get("auth_user_id")
+        self.department_id = dict_obj.get("department_id", 0)
+        self.institute_id = dict_obj.get("institute_id", 0)
+
+
     # TODO: move to DataModel
     @staticmethod
     def get_context_model(db, default_or_empty_context_model, get_context_model_sp_name, handle_log_info, *lookup_args):
@@ -246,7 +271,7 @@ class BaseModel(models.Model):
         result = execHelper.select(db, get_context_model_sp_name, lookup_args, None, handle_log_info)
         if result is not None and len(result) > 1:
             # NOTE: must have 1 or none.....................
-            raise Exception(f"{get_context_model_sp_name} must returns a single row.")
+            raise Exception(f"{get_context_model_sp_name} must return a single row.")
         else:
             for row in result:
                 # NOTE: should return first item only
@@ -258,19 +283,6 @@ class BaseModel(models.Model):
                 model.set_published_state()
                 
         return model
-
-    # TODO: move to DataModel
-    @staticmethod
-    def get_context_name(db, get_context_scalar_sp_name, handle_log_info, *lookup_args):
-        ''' Call stored procedure get_context_scalar_sp_name with parameters to include unique identifiers and auth_user_id '''
-        execHelper = ExecHelper()
-        
-        result = []
-        
-        result = execHelper.scalar(db, get_context_scalar_sp_name, result, handle_log_info, lookup_args)
-        if result is not None and len(result) > 0:
-            result = result[0]
-        return result
 
 
 def try_int(val, return_value=None):
