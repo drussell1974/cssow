@@ -3,6 +3,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS institute__get_all;
 
 CREATE PROCEDURE institute__get_all (
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -16,12 +17,12 @@ BEGIN
         sow_institute as ins
         INNER JOIN auth_user as usr ON usr.id = ins.created_by
     WHERE 
-	    published = 1 or ins.created_by = p_auth_user
-                   or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-	 							WHERE auth_user_id = p_auth_user)
+	    p_show_published_state % published = 0 
+        or ins.created_by = p_auth_user
     ORDER BY ins.name;
 END;
 //
 
 DELIMITER ;
+
+CALL institute__get_all(2, 1);

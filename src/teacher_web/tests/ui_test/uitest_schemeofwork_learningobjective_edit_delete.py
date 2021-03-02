@@ -9,7 +9,6 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
     
     def setUp(self):
 
-        #self.test_context.implicitly_wait(10)
         # setup
         #231: create a new learning objective
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/learning-objectives/new")

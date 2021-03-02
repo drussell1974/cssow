@@ -1,6 +1,7 @@
 from unittest import TestCase
 from shared.models.core.context import Ctx
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.enums.publlished import STATE
 
 class SchemeOfWork_TestCase(TestCase):
     """ Shared functions """
@@ -17,7 +18,7 @@ class SchemeOfWork_TestCase(TestCase):
                                      department_name="test department",
                                      #institute_id=4,
                                      school_name="test school",
-                                     published=1,
+                                     published=STATE.PUBLISH,
                                      auth_user = Ctx(4,3))
         test.key_words = []
         

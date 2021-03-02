@@ -1,0 +1,1 @@
+DROP TABLE drussell1974$cssow_api.sow_department__has__scheme_of_work;

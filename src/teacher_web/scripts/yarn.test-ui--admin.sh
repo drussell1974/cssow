@@ -94,6 +94,6 @@ else
     echo "\e[1;32m yarn test-ui--admin.sh: ./tests/ui_test/ Passed! \e[0m"
 fi
 
-exit $x
+echo started... $start_date - finished... $(date)
 
-echo $start_date - $(date)
+exit $x

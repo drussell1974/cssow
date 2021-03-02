@@ -9,11 +9,9 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
     
     def setUp(self):
 
-        #self.test_context.implicitly_wait(10)
         # setup
         #231: create a new resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/new")
-        self.wait(s=2)
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/new", wait=1)
         
         # arrange
         elem = self.test_context.find_element_by_tag_name("form")

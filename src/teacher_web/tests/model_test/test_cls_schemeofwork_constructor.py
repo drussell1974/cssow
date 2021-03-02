@@ -1,6 +1,7 @@
 from unittest import TestCase
 from shared.models.core.context import Ctx
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.enums.publlished import STATE
 
 
 class Test_SchemeOfWork_Constructor(TestCase):
@@ -35,7 +36,6 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual(0, test.key_stage_id, "key_stage_id should be 0")
         self.assertEqual("", test.key_stage_name, "key_stage_name should be ''")
         self.assertEqual(0, test.department_id)
-        self.assertEqual("", test.department_name)
         self.assertTrue(test.published)
         self.assertFalse(test.is_recent)
         self.assertFalse(test.is_valid, "is_valid should be False")
@@ -55,7 +55,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
                                  department_name="test department",
                                  #institute_id=4,
                                  school_name="test school",
-                                 published=0,
+                                 published=STATE.DRAFT,
                                  auth_user = Ctx(4,3))
         # test
         test.validate()
@@ -69,9 +69,8 @@ class Test_SchemeOfWork_Constructor(TestCase):
         self.assertEqual(2, test.key_stage_id)
         self.assertEqual("test key stage", test.key_stage_name)
         self.assertEqual(3, test.department_id)
-        self.assertEqual("test department", test.department_name)
         self.assertEqual(4, test.institute_id)
         self.assertEqual("test school", test.school_name)
         self.assertTrue(test.is_valid)
         self.assertFalse(test.is_recent)
-        self.assertFalse(test.published)
+        self.assertEqual(STATE.DRAFT, test.published)

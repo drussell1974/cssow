@@ -2,7 +2,7 @@
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-
+from shared.models.enums.publlished import STATE
 
 class KS123PathwayModel(BaseModel):
     def __init__(self, id_, objective):
@@ -23,8 +23,8 @@ class KS123PathwayModel(BaseModel):
     
     
     @staticmethod
-    def get_options(db, year_id, topic_id, auth_user):
-        rows = KS123PathwayDataAccess.get_options(db, year_id, topic_id, auth_user_id=auth_user.auth_user_id)
+    def get_options(db, key_stage_id, topic_id, auth_user):
+        rows = KS123PathwayDataAccess.get_options(db, key_stage_id, topic_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1])
@@ -44,13 +44,13 @@ class KS123PathwayModel(BaseModel):
 class KS123PathwayDataAccess:
 
     @staticmethod
-    def get_options(db, year_id, topic_id, auth_user_id):
+    def get_options(db, key_stage_id, topic_id, auth_user_id, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
         str_select = "ks123_pathway__get_options"
-        params = (year_id, topic_id, auth_user_id)
-
+        params = (key_stage_id, topic_id, int(show_published_state), auth_user_id)
+        
         rows = []
 
         #271 Stored procedure (get_options)

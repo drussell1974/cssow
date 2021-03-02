@@ -3,6 +3,7 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.lesson_keywords.viewmodels import LessonKeywordPublishModelViewModel as ViewModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.publlished import STATE
 
 class test_viewmodel_PublishViewModel(TestCase):
 
@@ -58,7 +59,7 @@ class test_viewmodel_PublishViewModel(TestCase):
         # arrange
         
         data_to_return = Model(912, "How to save the world in a day")
-        data_to_return.published = 1
+        data_to_return.published = STATE.PUBLISH
 
         
         with patch.object(Model, "publish_by_id", return_value=data_to_return):

@@ -6,15 +6,16 @@ from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 
 
 class TeacherModel(BaseModel):
 
-    def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=False, ctx=None):
+    def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=False, ctx=None):
         
         TeacherModel.depreciation_notice("use TeacherPermissionModel")
 
-        super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=1, is_from_db=is_from_db, ctx=ctx)
+        super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=is_from_db, ctx=ctx)
         self.id = id
         self.name = name
         self.department = department
@@ -78,7 +79,7 @@ class TeacherDataAccess:
     @staticmethod
     def save(db, model, teacher_id, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE
             data = DepartmentDataAccess._delete(db, model, auth_user)
         elif model.is_valid == True:
             if model.is_new():

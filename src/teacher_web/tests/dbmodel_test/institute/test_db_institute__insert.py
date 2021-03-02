@@ -3,6 +3,7 @@ from shared.models.cls_institute import InstituteModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -47,7 +48,7 @@ class test_db_institute__insert(TestCase):
 
             ExecHelper.insert.assert_called_with(self.fake_db,
                 'institute__insert'
-                , (0, "Lorum ipsum", 6080, mock_auth_user.auth_user_id, 1)
+                , (0, "Lorum ipsum", 6080, mock_auth_user.auth_user_id, int(STATE.PUBLISH))
                 , handle_log_info)
 
             self.assertEqual(99, result.id)

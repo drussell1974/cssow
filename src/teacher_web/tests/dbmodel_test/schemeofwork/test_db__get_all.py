@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkDataAccess, handle_log_info
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 
@@ -32,18 +33,21 @@ class test_db__get_all(TestCase):
 
     def test__should_call__select__return_no_items(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = []
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx_model(), key_stage_id=5)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx, key_stage_id=5)
             
             # assert
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (5, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (5, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -51,6 +55,9 @@ class test_db__get_all(TestCase):
 
     def test__should_call__select__return_single_item(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+
         expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "sit dolor amet", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
 
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
@@ -60,13 +67,13 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
-            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx_model(), key_stage_id=3)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx, key_stage_id=3)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (3, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -81,13 +88,13 @@ class test_db__get_all(TestCase):
             self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
             self.assertEqual(4, rows[0]["key_stage_id"])
             self.assertEqual("KS4", rows[0]["key_stage_name"])
-            #self.assertEqual(67, rows[0]["department_id"])
-            self.assertEqual("sit dolor amet", rows[0]["department_name"])
 
 
 
     def test__should_call__select__return_multiple_item(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
 
         expected_result = [
             (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 54, "Computer Science Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 30),
@@ -102,14 +109,14 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx_model(), key_stage_id=3)
+            rows = SchemeOfWorkModel.get_all(self.fake_db, fake_ctx, key_stage_id=3)
             
             # assert
 
             ExecHelper.select.assert_called_with(
                 self.fake_db,
                 'scheme_of_work__get_all'
-                , (3, 67, 127671276711, fake_ctx_model().auth_user_id)
+                , (3, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -123,9 +130,7 @@ class test_db__get_all(TestCase):
             self.assertEqual(6, rows[0]["id"])
             self.assertEqual("Lorem", rows[0]["name"])
             self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
-            self.assertEqual("Computer Science Dept", rows[0]["department_name"])
 
             self.assertEqual(8, rows[2]["id"])
             self.assertEqual("Nulla", rows[2]["name"])
             self.assertEqual("Tristique pharetra nisi. Sed", rows[2]["description"])
-            self.assertEqual("IT Dept", rows[2]["department_name"])

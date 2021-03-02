@@ -6,6 +6,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, TeacherPermissionDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
 class test_db__delete(TestCase):
@@ -45,8 +46,7 @@ class test_db__delete(TestCase):
         model = Model(9343232, "Lorem Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=False)
-        model.published = 2
-
+        model.published = STATE.DELETE
         # mock functions not being tested
 
         expected_result = (19,79)

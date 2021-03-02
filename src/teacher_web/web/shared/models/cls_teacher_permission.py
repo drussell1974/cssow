@@ -8,8 +8,9 @@ from shared.models.core.db_helper import ExecHelper, sql_safe
 from shared.models.core.context import AuthCtx
 from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 
 class TeacherPermissionModel(BaseModel):
     
@@ -18,9 +19,7 @@ class TeacherPermissionModel(BaseModel):
 
 
     @staticmethod
-    def empty(institute_id, department_id, scheme_of_work_id, ctx):
-        scheme_of_work = SchemeOfWorkModel.empty(ctx=ctx)
-        
+    def empty(institute_id, department_id, scheme_of_work, ctx):        
         return TeacherPermissionModel(teacher_id=ctx.auth_user_id, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx=ctx) # Default
 
 
@@ -110,7 +109,7 @@ class TeacherPermissionModel(BaseModel):
         
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
         
-        model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work.id, auth_user) # Default
+        model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work, auth_user) # Default
 
         # NOTE: default valid if scheme of work is 0
         model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
@@ -121,10 +120,10 @@ class TeacherPermissionModel(BaseModel):
 
         for row in rows:
             # returns only the matching row
-            # TODO: Cache
             if auth_user.scheme_of_work_id == row[2] and auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
                 
                 model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[1], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=row[11], ctx=auth_user)
+                
                 return model
         return model
 
@@ -132,7 +131,7 @@ class TeacherPermissionModel(BaseModel):
     @staticmethod
     def get_team_permissions(db, teacher_id, auth_user, show_authorised=True):
 
-        cur_scheme_of_work = SchemeOfWorkModel(0, auth_user=auth_user)
+        cur_scheme_of_work = SchemeOfWorkContextModel.empty()
 
         rows = TeacherPermissionDataAccess.get_team_permissions(db, teacher_id, show_authorised=show_authorised, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id)
         data = []
@@ -140,12 +139,8 @@ class TeacherPermissionModel(BaseModel):
             
             # check for changed scheme of work
             if cur_scheme_of_work.id != row[2]:
-                cur_scheme_of_work = SchemeOfWorkModel(row[2], name=row[3], auth_user=auth_user)
+                cur_scheme_of_work = SchemeOfWorkContextModel(row[2], name=row[3])
                 data.append(cur_scheme_of_work)
-
-            #329 TODO: get by teacher_id only #create TeacherModel
-            
-            # TeacherModel(row[0], name=row[1], department=DepartmentModel(0,name=""))
 
             model = TeacherPermissionModel(
                 teacher_id=row[0],
@@ -186,7 +181,7 @@ class TeacherPermissionModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user, is_pending = False):
         """ save model """        
-        if model.is_new() == False and model.published == 2:
+        if model.is_new() == False and model.published == STATE.DELETE:
             data = TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, ctx=auth_user)
         elif model.is_valid == True:
             if model.is_new() == True:

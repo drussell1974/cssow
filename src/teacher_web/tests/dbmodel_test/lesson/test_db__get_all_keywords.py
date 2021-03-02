@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 get_all_keywords = LessonModel.get_all_keywords
@@ -43,7 +44,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all_keywords'
-                , (67, mock_ctx.auth_user_id)
+                , (67, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -61,7 +62,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all_keywords'
-                , (87, mock_ctx.auth_user_id)
+                , (87, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -89,7 +90,7 @@ class test_db__get_all_keywords(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson__get_all_keywords'
-                , (21, mock_ctx.auth_user_id)
+                , (21, int(STATE.PUBLISH), mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
             

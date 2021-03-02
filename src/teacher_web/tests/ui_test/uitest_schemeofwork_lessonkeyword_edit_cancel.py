@@ -8,10 +8,8 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.test_context.implicitly_wait(10)
-        #231: TODO: open existing resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit")
-        self.wait(s=2)
+        
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit", wait=2)
 
 
     def tearDown(self):
@@ -33,7 +31,7 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        self.wait(s=2)
+ 
         ' Open Modal '
 
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
@@ -44,8 +42,6 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("cancelModalStayButton")
         elem.click()
         
-        self.wait(s=2)
-
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Random Access Memory (RAM) for Types of CPU architecture')
@@ -64,16 +60,12 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
-        self.wait()
-
         ' click no (finding button appears to cancel dialog) '        
         
         elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
-        self.wait()
+ 
         elem.click()
         
-        self.wait(s=2)
-
         # assert
         ' should be redirected '
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')

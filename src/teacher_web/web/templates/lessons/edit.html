@@ -117,40 +117,28 @@
         <div class="help-block text-danger invalid-feedback"></div>
       </div>
     </div>
-    {% if content.data.show_ks123_pathway_selection %}
       <!-- KS123 Pathway START - SHOW FOR LESS THAN YEAR 10 -->
       <div class="control-group">
         <div class="form-group controls">
-          <label>{{_("Link to pathway")}}</label>
-          <select multiple type="text" name="pathway_ks123_ids" class="form-control" id="ctl-pathway_ks123"
-               maxlength="250">
+          <label>{{_("Link to pathway")}}</label><br> 
+          <label class="small text-muted">{{content.data.reference_author}}, <a href="{{content.data.reference_uri}}" class="text-muted" target="_blank">{{content.data.reference_title}}</a></label>
+          <br>
           {% for pathway in content.data.ks123_pathways %}
             {% if pathway.id in content.data.lesson.pathway_ks123_ids %}
-              <option value="{{pathway.id}}" selected >{{pathway.objective}}</option>
+              <input class="form-check-input small" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids" checked>
+              <label class="form-check-label small" for="inlineCheckbox1">{{pathway.objective}}</label>
             {% else %}    
-              <option value="{{pathway.id}}" >{{pathway.objective}}</option>
+              <input class="form-check-input small" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids">
+              <label class="form-check-label small" for="inlineCheckbox1">{{pathway.objective}}</label>
             {% endif %}
+            <br>
           {% endfor %}
-        </select>  
           <div id="div-pathway_ks123_id">
             </div>
-            <span class="small mark"><a href="http://community.computingatschool.org.uk/resources/1692/single">CAS Computing progression pathways</a> co-author <a href="https://www.markdorling.net/">Mark Dorling</a></span>
             <div class="help-block text-danger invalid-feedback"></div>
         </div>
       </div>
       <!-- KS123 Pathway END -->
-      {% endif %}
-    <div class="control-group">
-      <!-- Pathway Objectives START -->
-      <div class="control-group">
-        <div class="form-group controls">
-          <label>{{_("Prior learning")}}</label>
-            <div id="div-pathway_objective_id">
-              <select id="ctl-pathway_objective_id" multiple></select>
-            </div>
-            <div class="help-block text-danger invalid-feedback"></div>
-        </div>
-      </div>
     <br>
     <div id="success"></div>
     <div class="form-group stackable-group stackable-group-sm">

@@ -7,7 +7,6 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-#@patch("shared.models.core.django_helper", return_value=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
 class test_db__get_teacher_permission(TestCase):
     
     def setUp(self):
@@ -32,13 +31,16 @@ class test_db__get_teacher_permission(TestCase):
     
     def test__should_call__select__return_no_permissions(self):
         # arrange
+        
+        fake_ctx = fake_ctx_model()
+
         #expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE), "James Joyce", False)]
         expected_result = [(2, "Frank Herbert", 11, "A-Level Computer Science", 5, "Computer Science", 127, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, 6079, SchemeOfWorkModel(99, name="Ulysses", auth_user=fake_ctx_model()), auth_user=fake_ctx_model())
+            model = Model.get_model(self.fake_db, 6079, SchemeOfWorkModel(99, name="Ulysses", auth_user=fake_ctx), auth_user=fake_ctx)
             
             # assert
 
@@ -58,6 +60,9 @@ class test_db__get_teacher_permission(TestCase):
 
     def test__should_call__select__return_has_permission_to_view(self):
         # arrange
+
+        fake_ctx = fake_ctx_model()
+        
         #expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert", True)]
         expected_result = [(99, "Frank Herbert", 12323232, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
 
@@ -65,7 +70,7 @@ class test_db__get_teacher_permission(TestCase):
             
             # act
             
-            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(14, name="Dune", auth_user=fake_ctx_model()), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
+            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(14, name="Dune", auth_user=fake_ctx), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,

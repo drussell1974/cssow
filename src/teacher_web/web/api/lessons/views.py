@@ -63,13 +63,13 @@ class LessonPathwayObjectivesViewSet(APIView):
 class LessonPathwayKs123ViewSet(APIView):
 
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, year_id, topic_id):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, topic_id):
 
         raise DeprecationWarning("Not referenced. Confirm usage")
 
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
-        data = KS123PathwayModel.get_options(db, year_id = year_id, topic_id = topic_id, auth_user=auth_ctx)
+        data = KS123PathwayModel.get_options(db, key_stage_id = key_stage_id, topic_id = topic_id, auth_user=auth_ctx)
         should_be_checked = KS123PathwayModel.get_linked_pathway_ks123(db, lesson_id, auth_user=auth_ctx)
 
         ks123pathway = []

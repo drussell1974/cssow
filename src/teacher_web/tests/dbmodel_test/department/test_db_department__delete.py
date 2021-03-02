@@ -4,6 +4,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -27,7 +28,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         with patch.object(ExecHelper, "delete", side_effect=expected_result):
             # act and assert
             with self.assertRaises(Exception):
-                Model.save(self.fake_db, Mock(id=99, name="Casey Jones", published=2), "Lorum ipsum", auth_user = mock_auth_user)
+                Model.save(self.fake_db, Mock(id=99, name="Casey Jones", published=STATE.DELETE), "Lorum ipsum", auth_user = mock_auth_user)
             
 
     def test__should_call__delete__if_valid(self, mock_auth_user):
@@ -35,7 +36,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         expected_result = [99]
 
         fake_model = Model(101, "Lorum ipsum", institute=InstituteModel(1271124, "Lorum Ipsum"))
-        fake_model.published = 2
+        fake_model.published = STATE.DELETE        
         fake_model.created = "2021-01-24 07:20:01.907507"
     
         with patch.object(ExecHelper, "delete", return_value=expected_result):

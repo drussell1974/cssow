@@ -15,7 +15,13 @@ def WebBrowserContext():
     #return webdriver.Chrome()
 
     ''' Uncomment for Firefox -- geckodriver.exe '''
-    return webdriver.Firefox()
+    fireFoxOptions = webdriver.FirefoxOptions()
+    fireFoxOptions.set_headless()
+    browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+    
+    # browser.implicitly_wait(5)
+
+    return browser
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]
 TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
@@ -38,8 +44,13 @@ class UITestCase(TestCase):
     def wait(self, s = 3):
         time.sleep(s)
 
+    def do_get(self, uri, wait=0):
+        self.test_context.get(uri)
+        self.test_context.implicitly_wait(wait)
 
     def find_element_by_id__with_explicit_wait(self, element_id, wait=2):
+        # TODO: scroll element into view - check functionality
+        #self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem = WebDriverWait(self.test_context, wait).until(
             EC.presence_of_element_located((By.ID, element_id))
         )
@@ -64,14 +75,14 @@ class UITestCase(TestCase):
         self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")
         
 
-    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed"):
+    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed", wait=0):
 
         # test - subheading
-        self.assertEqual(title, self.test_context.title, f"title not as expected ({failed_message})")
+        self.assertEqual(subheading, self.find_element_by_id__with_explicit_wait("main-subheading", wait=wait).text, f".subheading not as expected ({failed_message})")
         # assert - site-heading
         self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, f".main_heading not as expected ({failed_message})")
         # assert - title
-        self.assertEqual(subheading, self.test_context.find_element_by_class_name("subheading").text, f".subheading not as expected ({failed_message})")
+        self.assertEqual(title, self.test_context.title, f"title not as expected ({failed_message})")
         
         
         # assert - username
@@ -101,15 +112,14 @@ class UITestCase(TestCase):
         self.assertEqual(login_message, elem.text, f"text for element #login_message at '{redirect_to_url}' not expected  - {failed_message}")
 
 
-    def try_log_in(self, redirect_to_uri_on_login, enter_username=None, enter_password=None):
+    def try_log_in(self, redirect_to_uri_on_login, enter_username=None, enter_password=None, wait=1):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
         
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get(redirect_to_uri_on_login)
-        self.test_context.implicitly_wait(4)
+        self.do_get(redirect_to_uri_on_login, wait=wait)
 
         try:
 
@@ -129,28 +139,28 @@ class UITestCase(TestCase):
 
     def try_click_log_out(self, wait):
         try:
-            elem = self.find_element_by_id__with_explicit_wait("btn-logout")    
+            elem = self.find_element_by_id__with_explicit_wait("btn-logout", wait)    
             elem.click()
         except Exception as e:
             #print("try_click_log_out handled - probably logged out already ({})".format(e.args))
             pass # ignore errors as may already be logged out
 
 
-    def try_log_out(self, uri, wait=2):
+    def try_log_out(self, uri, wait=1):
         
         self.try_click_log_out(wait=wait)
 
         self.test_context.get(self.root_uri + uri)
         
-        self.test_context.implicitly_wait(wait)
+        self.test_context.implicitly_wait(wait)  # reinstate
 
 
-    def do_log_in(self, redirect_to_uri_on_login, wait=1, enter_username=None, enter_password=None):
+    def do_log_in(self, redirect_to_uri_on_login, wait=4, enter_username=None, enter_password=None):
         """
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        
+        print(f"do_log_in: {redirect_to_uri_on_login}")
         enter_username = enter_username if enter_username is not None else TEST_USER_NAME
         enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
 
@@ -162,7 +172,7 @@ class UITestCase(TestCase):
 
         login_uri = self.root_uri + "/accounts/login"
         self.test_context.get("{}?next={}".format(login_uri, redirect_to_uri_on_login))
-        self.test_context.implicitly_wait(wait)
+        self.test_context.implicitly_wait(wait) # reinstate
 
         try:
 

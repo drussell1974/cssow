@@ -10,6 +10,7 @@ from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required, unauthorise_request
+from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
@@ -58,6 +59,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
     error_message = ""
     
     #253 check user id
+    # TODO: #323 Use SchemeOfWorkContextModel.get_context_model(db, scheme_of_work_id, auth_ctx)
+    # TODO: #323 SchemeOfWorkContextModel should return key_stage_id
     scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_ctx)
 
     if request.method == "GET":
@@ -67,7 +70,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
             #253 check user id
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
             model = get_lesson_view.model
-    
+            
         # handle copy
 
         if is_copy == True:
@@ -78,8 +81,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
             
     elif request.method == "POST":
         ## POST back from client ##
-        
-        published = int(request.POST["published"] if request.POST["published"] is not None else 1)
+    
+        published_state = STATE.parse(request.POST["published"] if request.POST["published"] is not None else "PUBLISH")
         
         model = LessonModel(
             id_ = request.POST["id"],
@@ -104,7 +107,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
         modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
         try:
-            modelviewmodel.execute(published)
+            modelviewmodel.execute(published_state)
             model = modelviewmodel.model
         
 
@@ -128,8 +131,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
     content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_ctx, scheme_of_work.id)
     topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_ctx)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user=auth_ctx)
-    ks123_pathways = KS123PathwayModel.get_options(db, model.year_id, model.topic_id, auth_ctx)
-    
+    ks123_pathways = KS123PathwayModel.get_options(db, scheme_of_work.key_stage_id, model.topic_id, auth_ctx)
+
     data = {
         "scheme_of_work_id": scheme_of_work_id,
         "lesson_id": lesson_id,
@@ -142,7 +145,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
         "selected_year_id": model.year_id,
         "lesson": model,
         "ks123_pathways": ks123_pathways,
-        "show_ks123_pathway_selection": model.key_stage_id in (1,2,3)
+        "reference_title": "CAS Computing progression pathways",
+        "reference_author": "Mark Dorling",
+        "reference_uri": "https://community.computingatschool.org.uk/resources/2324/single", # TODO: create look up for e.g. reference['<id_or_name>']
     }
     
     view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)

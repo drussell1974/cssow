@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -60,7 +61,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
              'lesson_resource__update'
-             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, 1, mock_auth_user.auth_user_id)
+             , (23, 'How to make unit tests', 'Unit test', 0, '', '', '', False, 13, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
@@ -84,7 +85,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson_resource__insert'
-                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, 1, mock_auth_user.auth_user_id)
+                , (0, 'How to make more unit tests', 'Unit test', 0, '', '', '', False, 15, '2021-01-24 07:14:04', 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)
@@ -98,7 +99,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=model):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.DELETE)
             
             # assert
             
@@ -108,5 +109,4 @@ class test_db__save(TestCase):
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
-            self.assertEqual(2, actual_result.published)
-
+            self.assertEqual(STATE.DELETE, actual_result.published)

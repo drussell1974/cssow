@@ -10,7 +10,7 @@ class uitest_schemeofwork_lessonkeyword_edit_existing(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit")
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit", wait=2)
 
         
     def tearDown(self):
@@ -41,7 +41,7 @@ class uitest_schemeofwork_lessonkeyword_edit_existing(UITestCase):
         elem.send_keys("test_page__should_stay_on_same_page_if_invalid")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveDraftButton")
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
@@ -60,14 +60,11 @@ class uitest_schemeofwork_lessonkeyword_edit_existing(UITestCase):
         elem = self.test_context.find_element_by_id("ctl-term")
         elem.clear()
         elem.send_keys(self.TEST_KEYWORD_RENAME_TERM_TO)
-        
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
-        self.wait(s=2)
-        # assert
-        # TODO: 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Central Processing Unit (CPU) for Types of CPU architecture')
+
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Random Access Memory (RAM) for Types of CPU architecture')
 
         #elem = self.test_context.find_element_by_id("saveButton")
         #self.assertEqual("", elem.text)

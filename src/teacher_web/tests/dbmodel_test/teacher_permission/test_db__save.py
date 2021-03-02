@@ -5,6 +5,7 @@ from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, TeacherPermissionDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 save = Model.save
@@ -125,8 +126,7 @@ class test_db__save(TestCase):
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=False)
         model.is_valid = True
-        model.published = 2
-
+        model.published = STATE.DELETE
         # mock functions not being tested
 
         expected_result = (19,)

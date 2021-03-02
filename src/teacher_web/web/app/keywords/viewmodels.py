@@ -7,6 +7,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -137,7 +138,7 @@ class KeywordSaveViewModel(BaseViewModel):
 
         self.model.validate()
 
-        if self.model.is_valid == True or published == 2:
+        if self.model.is_valid == True or published == STATE.DELETE:
             data = Model.save(self.db, self.model, self.auth_user)
             self.model = data   
         else:
@@ -178,7 +179,8 @@ class KeywordMergeViewModel(BaseViewModel):
             self.alert_message = "Duplicate keywords will be merged and deleted and definition lost. Click Merge to continue or click Cancel to return to the previous page."
 
             if request.method == "POST":
-                if request.POST.get("published") == "2":
+                published_state = STATE.parse(request.POST.get("published"))
+                if published_state == STATE.DELETE:
                     # 303 execute merge
                     self.model = Model.merge_duplicates(self.db, self.keyword_id, self.scheme_of_work_id, self.auth_user)
                     self.alert_message = "deleted!"

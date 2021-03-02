@@ -2,6 +2,7 @@
 from django.db import models
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.enums.publlished import STATE
 from shared.models.core.basemodel import BaseModel
 
 
@@ -28,7 +29,7 @@ class TopicModel(models.Model):
 
     @staticmethod
     def get_options(db, lvl, auth_user, topic_id = 0):
-        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.auth_user_id, topic_id=topic_id)
+        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.auth_user_id, topic_id=topic_id, show_published_state=STATE.PUBLISH)
         data = []
         
         for row in rows:
@@ -41,12 +42,12 @@ class TopicModel(models.Model):
 class TopicDataAccess:
     
     @staticmethod
-    def get_options(db, lvl, auth_user_id, topic_id = 0):
+    def get_options(db, lvl, auth_user_id, show_published_state=STATE.PUBLISH, topic_id = 0):
         
         execHelper = ExecHelper()
 
         str_select = "topic__get_options"
-        params = (topic_id, lvl, auth_user_id)
+        params = (topic_id, lvl, int(show_published_state), auth_user_id)
 
         try:
             rows = []

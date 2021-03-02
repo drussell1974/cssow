@@ -6,6 +6,7 @@ from shared.models.core.log_handlers import handle_log_exception, handle_log_war
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -74,7 +75,7 @@ class DepartmentEditViewModel(BaseViewModel):
                 
                 if self.model.is_valid == True:
 
-                    data = Model.save(self.db, self.model, self.auth_user, request.POST.get("published", 1))
+                    data = Model.save(self.db, self.model, self.auth_user, STATE.parse(request.POST.get("published", "PUBLISH")))
                     
                     self.on_post_complete(True)
                     self.model = data

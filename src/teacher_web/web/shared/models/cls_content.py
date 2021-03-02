@@ -2,7 +2,7 @@
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-
+from shared.models.enums.publlished import STATE
 
 class ContentModel(BaseModel):
     
@@ -10,7 +10,7 @@ class ContentModel(BaseModel):
         permissions = [('publish_contentmodel', 'Can pubish Curriculum Content')]
 
 
-    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
+    def __init__(self, id_ = 0, description = "", letter_prefix = "", key_stage_id = 0, scheme_of_work_id = None, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         #231: implement across all classes
         super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.id = id_
@@ -75,7 +75,7 @@ class ContentModel(BaseModel):
 
     @staticmethod
     def get_options(db, key_stage_id, auth_user, scheme_of_work_id = 0):
-        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user_id=auth_user.auth_user_id, scheme_of_work_id=scheme_of_work_id)
+        rows = ContentDataAccess.get_options(db, key_stage_id, auth_user_id=auth_user.auth_user_id, scheme_of_work_id=scheme_of_work_id, show_published_state=STATE.PUBLISH)
         data = []
         for row in rows:
             model = ContentModel(row[0], row[1], row[2])
@@ -94,13 +94,13 @@ class ContentModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
-        if try_int(published) == 2:
+    def save(db, model, auth_user, published=STATE.PUBLISH):
+        if try_int(published) == STATE.DELETE:
             rval = ContentDataAccess._delete(db, model, auth_user.auth_user_id)
             if rval == 0:
                 raise Exception("The item is either in use or you are not permitted to perform this action.")
             # TODO: check row count before updating
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 model = ContentDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
@@ -117,13 +117,13 @@ class ContentModel(BaseModel):
 class ContentDataAccess(BaseDataAccess):
 
     @staticmethod
-    def get_options(db, key_stage_id, auth_user_id, scheme_of_work_id = 0):
+    def get_options(db, key_stage_id, auth_user_id, scheme_of_work_id = 0, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
         #270 get ContentModel.get_options by scheme_of_work (look up many-to-many)
         str_select = "content__get_options"
-        params = (scheme_of_work_id, key_stage_id, auth_user_id)
+        params = (scheme_of_work_id, key_stage_id, int(STATE.PUBLISH), auth_user_id)
 
         rows = []
         #271 Stored procedure (get_options)
@@ -185,7 +185,7 @@ class ContentDataAccess(BaseDataAccess):
             model.letter_prefix,
             model.key_stage_id,
             model.scheme_of_work_id,
-            published,
+            int(published),
             auth_user_id
         )
     
@@ -207,7 +207,7 @@ class ContentDataAccess(BaseDataAccess):
             model.letter_prefix, 
             model.key_stage_id,
             model.scheme_of_work_id,
-            published,
+            int(published),
             auth_user_id
         )
 
@@ -217,13 +217,13 @@ class ContentDataAccess(BaseDataAccess):
  
 
     @staticmethod
-    def _delete(db, model, auth_user_id):
+    def _delete(db, model, auth_user_id, remove_published_state = STATE.DRAFT):
         """ Delete the content """
 
         execHelper = ExecHelper()
 
         stored_procedure = "content__delete"
-        params = (model.id, model.scheme_of_work_id, auth_user_id)
+        params = (model.id, int(remove_published_state), auth_user_id)
 
         rows = execHelper.delete(db, stored_procedure, params, handle_log_info)
 
@@ -231,7 +231,7 @@ class ContentDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+    def delete_unpublished(db, scheme_of_work_id, auth_user_id, remove_published_state = STATE.DRAFT):
         """ 
         Delete all unpublished content 
 
@@ -244,7 +244,7 @@ class ContentDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
         
         str_delete = "content__delete_unpublished"
-        params = (scheme_of_work_id, auth_user_id)
+        params = (scheme_of_work_id, int(remove_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.delete(db, str_delete, params, handle_log_info)

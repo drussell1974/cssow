@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -45,7 +46,7 @@ class test_db_institute__publish_by_id(TestCase):
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 "institute__publish"
-                , (123, 1, mock_auth_user.auth_user_id)
+                , (123, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(1, len(actual_result))

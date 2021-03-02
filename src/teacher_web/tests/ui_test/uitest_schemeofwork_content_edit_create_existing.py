@@ -41,7 +41,7 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         elem.send_keys("test_page__should_stay_on_same_page_if_invalid")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveDraftButton")
+        elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert

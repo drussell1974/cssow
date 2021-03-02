@@ -9,8 +9,7 @@ class uitest_accounts_register_cancel(UITestCase):
 
     def setUp(self):
         self.test_path = "/accounts/register/"
-        self.test_context.get(self.root_uri + self.test_path)
-        self.test_context.implicitly_wait(4)
+        self.do_get(self.root_uri + self.test_path, wait=4)
 
 
     def tearDown(self):

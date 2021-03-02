@@ -5,6 +5,7 @@ DROP PROCEDURE IF EXISTS keyword__get;
 CREATE PROCEDURE keyword__get (
  IN p_keyword_id INT,
  IN p_scheme_of_work_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -19,6 +20,8 @@ BEGIN
     WHERE
         kw.id = p_keyword_id 
         AND kw.scheme_of_work_id = p_scheme_of_work_id
+        AND (p_show_published_state % kw.published = 0
+			or kw.created_by = p_auth_user)
 	ORDER BY kw.name;
 END;
 //

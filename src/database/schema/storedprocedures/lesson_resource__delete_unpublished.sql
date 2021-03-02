@@ -8,7 +8,7 @@ CREATE PROCEDURE lesson_resource__delete_unpublished (
 BEGIN
   DELETE FROM sow_resource 
   WHERE lesson_id = p_lesson_id
-    AND published IN (0,2);
+    AND published IN (32,64);
 END;
 //
 

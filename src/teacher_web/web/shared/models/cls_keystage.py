@@ -2,7 +2,7 @@
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-
+from shared.models.enums.publlished import STATE
 
 class KeyStageModel(BaseModel):
     def __init__(self, id_, name):
@@ -24,7 +24,7 @@ class KeyStageModel(BaseModel):
     @staticmethod
     def get_options(db, auth_user):
         
-        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
+        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
 
         for row in rows:
@@ -37,11 +37,11 @@ class KeyStageModel(BaseModel):
 class KeyStageDataAccess:
 
     @staticmethod
-    def get_options(db, auth_user_id):
+    def get_options(db, auth_user_id, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "keystage__get_options", (auth_user_id,), rows, handle_log_info)
+        rows = execHelper.select(db, "keystage__get_options", (int(show_published_state), auth_user_id,), rows, handle_log_info)
         return rows

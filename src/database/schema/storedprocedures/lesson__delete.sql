@@ -10,7 +10,7 @@ BEGIN
     FROM sow_lesson
     INNER JOIN sow_scheme_of_work AS sow ON sow.id = sow_lesson.scheme_of_work_id
     WHERE 
-        sow_lesson.id =  p_lesson_id AND sow_lesson.published IN (0,2) 
+        sow_lesson.id = p_lesson_id AND sow_lesson.published IN (32,64) 
                 AND p_auth_user IN 
                         (SELECT auth_user_id 
                         FROM sow_teacher 

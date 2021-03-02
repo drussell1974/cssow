@@ -4,6 +4,7 @@ from uuid import uuid1
 from shared.models.core.basemodel import BaseModel, try_int
 from shared.models.core.db_helper import ExecHelper, sql_safe, to_empty
 from shared.models.core.log_handlers import handle_log_exception, handle_log_info, handle_log_warning, handle_log_error
+from shared.models.enums.publlished import STATE
 
 
 class KeywordModel(BaseModel):
@@ -19,7 +20,7 @@ class KeywordModel(BaseModel):
     warning_handler=None
     info_handler=None
     
-    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, all_terms = [], ctx=None):
+    def __init__(self, id_ = 0, term = "", definition = "", scheme_of_work_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, all_terms = [], ctx=None):
 
         super().__init__(id_, definition, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.id = id_
@@ -63,7 +64,7 @@ class KeywordModel(BaseModel):
         super().validate(skip_validation)
 
         # do not validate deleted items
-        if self.published == 2:
+        if self.published == STATE.DELETE:
             self.is_valid = True;
             self.on_after_validate()
             return
@@ -103,7 +104,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_model(db, id, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = KeywordDataAccess.get_model(db, id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         
         model = KeywordModel(0, "", "")
         for row in rows:
@@ -115,7 +116,7 @@ class KeywordModel(BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user, exclude_id = 0):
-        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, exclude_id=exclude_id)
+        rows = KeywordDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, exclude_id=exclude_id, show_published_state=auth_user.can_view)
 
         data = []
         for row in rows:
@@ -134,9 +135,9 @@ class KeywordModel(BaseModel):
         rows = []
 
         if lesson_id > 0:
-            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id)
+            rows = KeywordDataAccess.get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         else:
-            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.auth_user_id)
+            rows = KeywordDataAccess.get_all(db, scheme_of_work_id, auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], row[1], row[2], row[3], published=row[4]))
@@ -158,7 +159,7 @@ class KeywordModel(BaseModel):
     @staticmethod
     def save(db, model, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
         else:
             if model.is_new():
@@ -199,7 +200,7 @@ class KeywordModel(BaseModel):
 class KeywordDataAccess:
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user_id, exclude_id = 0):
+    def get_options(db, scheme_of_work_id, auth_user_id, exclude_id = 0, show_published_state=STATE.PUBLISH):
         """
         Get list of options
         :param db:
@@ -211,7 +212,7 @@ class KeywordDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "keyword__get_options"
-        params = (scheme_of_work_id, exclude_id, auth_user_id)
+        params = (scheme_of_work_id, exclude_id, int(show_published_state), auth_user_id)
         rows = []
         #271 Stored procedure (get_options)
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -219,7 +220,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_model(db, id, scheme_of_work_id, auth_user_id):
+    def get_model(db, id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db:
@@ -230,7 +231,7 @@ class KeywordDataAccess:
 
         select_sql = "keyword__get"
         
-        params = (id, scheme_of_work_id, auth_user_id)
+        params = (id, scheme_of_work_id, int(show_published_state), auth_user_id)
 
         rows = []
 
@@ -241,7 +242,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, auth_user_id):
+    def get_all(db, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -251,7 +252,7 @@ class KeywordDataAccess:
 
         select_sql = "scheme_of_work__get_all_keywords"
 
-        params = (scheme_of_work_id, auth_user_id)
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id)
         
         rows = []
         
@@ -262,7 +263,7 @@ class KeywordDataAccess:
 
 
     @staticmethod
-    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id):
+    def get_lesson_all(db, scheme_of_work_id, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
         :param db: database context
@@ -272,7 +273,7 @@ class KeywordDataAccess:
 
         select_sql = "lesson__get_all_keywords"
 
-        params = (lesson_id, auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
         
         rows = []
         
@@ -321,7 +322,7 @@ class KeywordDataAccess:
 
         stored_procedure = "keyword__insert"
 
-        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user_id, published)    
+        params = (model.id, model.term, model.definition, scheme_of_work_id, auth_user_id, int(published))    
     
         new_id = execHelper.insert(db,
             stored_procedure
@@ -340,7 +341,7 @@ class KeywordDataAccess:
         
         str_update = "keyword__update"
         
-        params = (model.id, model.term, model.definition, scheme_of_work_id, published, auth_user_id)
+        params = (model.id, model.term, model.definition, scheme_of_work_id, int(published), auth_user_id)
         
         execHelper.update(db, str_update, params, handle_log_info)
 
@@ -384,7 +385,7 @@ class KeywordDataAccess:
 
         str_update = "keyword__publish"
         
-        params = (model.id, model.published, auth_user_id)
+        params = (model.id, int(model.published), auth_user_id)
 
         rval = []
         rval = execHelper.update(db, str_update, params, handle_log_info)

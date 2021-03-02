@@ -4,11 +4,11 @@ from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-
+from shared.models.enums.publlished import STATE
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
+    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         #231: implement across all classes
         super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         
@@ -134,7 +134,7 @@ class LearningObjectiveModel (BaseModel):
 
     @staticmethod
     def get_all(db, lesson_id, scheme_of_work_id, auth_user):
-        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = LearningObjectiveDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = LearningObjectiveModel(
@@ -202,7 +202,7 @@ class LearningObjectiveModel (BaseModel):
     @staticmethod
     def save(db, model, auth_user, published):
 
-        if published == 2:
+        if published == STATE.DELETE:
             LearningObjectiveDataAccess._delete(db, model, auth_user_id=auth_user.auth_user_id)
         else:
             model.validate()
@@ -262,7 +262,7 @@ class LearningObjectiveDataAccess:
 
 
     @staticmethod
-    def get_all(db, lesson_id, scheme_of_work_id, auth_user_id):
+    def get_all(db, lesson_id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
@@ -270,7 +270,7 @@ class LearningObjectiveDataAccess:
 
         select_sql = "lesson_learning_objective__get_all"
 
-        params = (lesson_id, scheme_of_work_id, auth_user_id)
+        params = (lesson_id, scheme_of_work_id, int(show_published_state), auth_user_id)
 
         rows = []
         
@@ -387,7 +387,7 @@ class LearningObjectiveDataAccess:
         #269 create learning_objective__update stored procedure
         str_update = "lesson_learning_objective__update"
         
-        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, published, auth_user_id)
+        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, int(published), auth_user_id)
         
         rows = execHelper.update(db, str_update, params, handle_log_info)
 
@@ -414,7 +414,7 @@ class LearningObjectiveDataAccess:
             model.parent_id,
             model.created,
             model.created_by_id,
-            published,
+            int(published),
             auth_user_id
         )
         

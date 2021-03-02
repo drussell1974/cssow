@@ -2,15 +2,13 @@ import json
 from unittest import TestCase, skip
 from django.http import Http404
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.teampermissions.viewmodels import TeamPermissionRequestLoginViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, DepartmentModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON 
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
 
@@ -69,7 +67,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
         
         #data_to_return = Model( TeacherModel(24, name="Jane Doe", department=DepartmentModel(15, name="Computer Science", institute=InstituteModel(12776111277611, "Lorem Ipsum"))), scheme_of_work=SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return = TeacherPermissionModel_get_model
-        data_to_return.published = 2
+        data_to_return.published = STATE.DELETE
 
         db = Mock()
         db.cursor = MagicMock()
@@ -118,7 +116,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
         
         #data_to_return = Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return = TeacherPermissionModel_get_model
-        data_to_return.published = 2
+        data_to_return.published = STATE.DELETE
 
         db = Mock()
         db.cursor = MagicMock()

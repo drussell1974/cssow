@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import SCHEMEOFWORK
+from shared.models.enums.publlished import STATE
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from shared.models.cls_keyword import KeywordModel
@@ -109,6 +110,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     error_message = ""
 
     """ save_item non-view action """
+    published_state = STATE.parse(request.POST.get("published", "DRAFT"))
     model = KeywordModel(
         id_=keyword_id,
         scheme_of_work_id=scheme_of_work_id,
@@ -117,7 +119,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
         created=datetime.now(),
         #253 check user id
         created_by_id=auth_ctx,
-        published=request.POST.get("published", 0)
+        published=published_state
     )
     
     # 299 Referenece KeywordModel - remove MARKDOWN_TYPE_ID
@@ -128,7 +130,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     #253 check user id
     save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
     
-    save_keyword_view.execute(int(request.POST["published"]))
+    save_keyword_view.execute(published_state)
 
     model = save_keyword_view.model
     

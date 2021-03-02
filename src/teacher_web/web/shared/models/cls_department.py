@@ -1,25 +1,64 @@
 from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.core.basemodel import BaseModel
-from shared.models.cls_institute import InstituteModel
+from shared.models.core.basemodel import BaseModel, BaseContextModel
+from shared.models.cls_institute import InstituteModel, InstituteContextModel
+from shared.models.enums.publlished import STATE
+from shared.models.utils.cache_proxy import CacheProxy
 
-class DepartmentModel(BaseModel):
+class DepartmentContextModel(BaseContextModel):
+    
+    name = ""
+
+    def __init__(self, id_, name, description = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        self.name = name
+
+
+    @classmethod
+    def empty(cls, published=STATE.DRAFT, ctx=None):
+        model = cls(id_=0, name="", published=published, ctx=ctx)
+        return model
+
+
+    @classmethod
+    def get_context_model(cls, db, institute_id, department_id, auth_user_id):
+        empty_model = cls.empty()
+
+        result = BaseContextModel.get_context_model(db, empty_model, "department__get_context_model", handle_log_info, institute_id, department_id)
+        return result if result is not None else None
+
+
+    @classmethod
+    def cached(cls, request, db, institute_id, department_id, auth_user_id):
+
+        department = cls.empty()
+
+        cache_obj = CacheProxy.session_cache(request, db, "department", cls.get_context_model, institute_id, department_id, auth_user_id)
+
+        if cache_obj is not None:
+            department.from_dict(cache_obj)    
+
+        return department
+
+
+class DepartmentModel(DepartmentContextModel):
 
     # default values for api
     name = ""
     description = ""
     number_of_schemes_of_work = 0
     institute_id = 0
-    
 
-    def __init__(self, id_, name, institute, description = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
-        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
+    def __init__(self, id_, name, institute, description = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
         #self.id = id_
-        self.name = name
+        #self.name = name
         self.description = description
         self.institute = institute
         self.number_of_schemes_of_work = 0
+        if self.id == 60:
+            print("3. DepartmentModel")
 
 
     def validate(self, skip_validation = []):
@@ -47,17 +86,11 @@ class DepartmentModel(BaseModel):
         if self.description is not None:
             self.description = sql_safe(self.description)
 
-    
-    @staticmethod
-    def get_context_name(db, institude_id, department_id, auth_user_id):
-        result = BaseModel.get_context_name(db, "department__get_context_name", handle_log_info, institude_id, department_id, auth_user_id)
-        return result if result is not None else ""
-
 
     @staticmethod
     def get_all(db, institute_id, auth_user):
         
-        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, auth_user_id=auth_user.auth_user_id)
+        rows = DepartmentDataAccess.get_all(db=db, institute_id=institute_id, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows: 
             model = DepartmentModel(id_=row[0],
@@ -79,9 +112,6 @@ class DepartmentModel(BaseModel):
     @staticmethod
     def get_model(db, department_id, auth_user):   
         
-        # TODO: #329 check id
-        # TODO: #329 add context
-        
         rows = DepartmentDataAccess.get_model(db, department_id, auth_user_id=auth_user.auth_user_id)
 
         model = DepartmentModel(0, "", institute=InstituteModel(0, ""))
@@ -89,7 +119,7 @@ class DepartmentModel(BaseModel):
 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
-                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #329 use institute name
+                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #323 use context institute name
                                     created=row[3],
                                     created_by_id=row[4],
                                     created_by_name=row[5],
@@ -108,7 +138,7 @@ class DepartmentModel(BaseModel):
         data = []
         
         for row in rows:
-            # TODO: #329 get institute_name
+            # TODO: 323 get institute_name
             model = DepartmentModel(row[0], row[1], institute=InstituteModel(auth_user.institute_id, name=""))
             data.append(model)
         return data
@@ -123,7 +153,7 @@ class DepartmentModel(BaseModel):
     @staticmethod
     def save(db, model, teacher_id, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             data = DepartmentDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
@@ -169,7 +199,7 @@ class DepartmentDataAccess:
 
 
     @staticmethod
-    def get_all(db, institute_id, auth_user_id):
+    def get_all(db, institute_id, show_published_state, auth_user_id):
         """
         get all inistutions
         """
@@ -177,7 +207,7 @@ class DepartmentDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "department__get_all" 
-        params = (institute_id, auth_user_id,)
+        params = (institute_id, int(show_published_state), auth_user_id,)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -231,7 +261,7 @@ class DepartmentDataAccess:
             institute_id,
             model.created,
             auth_user_id,
-            model.published,
+            int(model.published),
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -250,7 +280,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             model.institute.id,
-            model.published,
+            int(model.published),
             auth_user_id
         )
         

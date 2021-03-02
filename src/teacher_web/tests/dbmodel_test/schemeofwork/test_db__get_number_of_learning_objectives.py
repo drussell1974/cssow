@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 # TODO: #329 remove global reference
@@ -28,7 +29,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_number_of_learning_objectives(self.fake_db, 101)
+                get_number_of_learning_objectives(self.fake_db, 101, int(STATE.PUBLISH), mock_auth_user)
 
 
     def test__should_call__select__return_no_items(self, mock_auth_user):
@@ -44,7 +45,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_number_of_learning_objectives'
-                , (101, mock_auth_user.auth_user_id)
+                , (101, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, actual_result)
@@ -63,7 +64,7 @@ class test_db__get_number_of_learning_objectives(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_number_of_learning_objectives'
-                , (6, mock_auth_user.auth_user_id)
+                , (6, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, actual_result)

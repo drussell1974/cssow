@@ -5,6 +5,7 @@ DROP PROCEDURE IF EXISTS lesson__get_by_keyword;
 CREATE PROCEDURE lesson__get_by_keyword (
  IN p_key_word_id INT,
  IN p_scheme_of_work_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
      SELECT  
@@ -24,7 +25,7 @@ BEGIN
         le.summary as summary, 
         le.created as created, 
         le.created_by as created_by_id, 
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name, 
+        user.first_name as created_by_name, 
         le.published as published 
     FROM sow_lesson as le  
     INNER JOIN sow_lesson__has__key_words as lkw ON lkw.lesson_id = le.id
@@ -38,11 +39,11 @@ BEGIN
 		lkw.key_word_id = p_key_word_id
         AND 
         le.scheme_of_work_id = p_scheme_of_work_id
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        )
+        AND (p_show_published_state % sow.published = 0 
+				or p_show_published_state % le.published = 0 
+                or sow.created_by = p_auth_user 
+				or le.created_by = p_auth_user 
+			)
     ORDER BY le.year_id, le.order_of_delivery_id;
 END;
 //

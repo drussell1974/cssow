@@ -161,7 +161,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
             # act
             mock_post = Mock(
-                POST = {"id":"0", "description":"Proin id massa metus. Aliqua tincidunt.", "letter_prefix":"B","key_stage_id":"4","published":"1"},
+                POST = {"id":"0", "description":"Proin id massa metus. Aliqua tincidunt.", "letter_prefix":"B","key_stage_id":"4","published":"PUBLISH"},
                 method = "POST"
             )
             
@@ -188,7 +188,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
 
             # act
             mock_post = Mock(
-                POST = {"id":"12","description":"Vivamus venenatis interdum sem.", "letter_prefix":"aB", "key_stage_id":"4", "published":"1"},
+                POST = {"id":"12","description":"Vivamus venenatis interdum sem.", "letter_prefix":"aB", "key_stage_id":"4", "published":"PUBLISH"},
                 method = "POST"
             )
 

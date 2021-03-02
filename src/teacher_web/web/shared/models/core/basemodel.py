@@ -5,6 +5,7 @@ import re
 from django.db import models
 import warnings
 from shared.models.core.db_helper import ExecHelper, sql_safe
+from shared.models.enums.publlished import STATE
 
 class BaseModel(models.Model):
     id = 0
@@ -16,7 +17,7 @@ class BaseModel(models.Model):
     validation_errors = {}
     error_message = ""
     stack_trace = ""
-    published = 0
+    published = STATE.DRAFT
     is_from_db = False
     skip_validation = []
     department_id = 0
@@ -50,11 +51,11 @@ class BaseModel(models.Model):
     
 
     def set_published_state(self):
-        if self.published == 0:
+        if self.published == STATE.DRAFT:
             self.published_state = "unpublished"
-        elif self.published == 1:
+        elif self.published == STATE.PUBLISH or self.published == STATE.PUBLISH_INTERNAL:
             self.published_state = "published"
-        elif self.published == 2:
+        elif self.published == STATE.DELETE:
             self.published_state = "deleting"
         else:
             self.published_state = "unknown"    
@@ -220,9 +221,9 @@ class BaseModel(models.Model):
             :return: the instance of the model being inserted/updated/deleted
         """
         model.published = int(published)
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             DataAccess._delete(db, model, auth_user)
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 rows, new_id = DataAccess._insert(db, model, auth_user)
@@ -232,18 +233,56 @@ class BaseModel(models.Model):
         return model
 
 
+class BaseContextModel(BaseModel):
+    
+    def __init__(self, id_, display_name, created, created_by_id, created_by_name, published, is_from_db, ctx=None):
+        super().__init__(id_=id_, display_name=display_name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+    
+    
+    def from_dict(self, dict_obj):
+        
+        if type(dict_obj) is not dict:
+            raise TypeError("Value must be type dictionary (dict).")
+
+        self.id = dict_obj.get("id")
+        self.name = dict_obj.get("name")
+        self.display_name = dict_obj.get("display_name")
+        self.created = dict_obj.get("created")
+        self.created_by_id = dict_obj.get("created_by_id")
+        self.created_by_name = dict_obj.get("created_by_name")
+        self.published = dict_obj.get("published")
+        self.set_published_state() # = dict_obj.get("published_state")
+        self.auth_user_id = dict_obj.get("auth_user_id")
+        self.department_id = dict_obj.get("department_id", 0)
+        self.institute_id = dict_obj.get("institute_id", 0)
+
+
     # TODO: move to DataModel
     @staticmethod
-    def get_context_name(db, get_context_scalar_sp_name, handle_log_info, *lookup_args):
-        ''' Call stored procedure get_context_scalar_sp_name with parameters to include unique identifiers and auth_user_id '''
+    def get_context_model(db, default_or_empty_context_model, get_context_model_sp_name, handle_log_info, *lookup_args):
+        ''' Call stored procedure get_context_model_sp_name with parameters to include unique identifiers and auth_user_id '''
         execHelper = ExecHelper()
+
+        # return a default or empty        
+        model = default_or_empty_context_model
         
-        result = []
-        
-        result = execHelper.scalar(db, get_context_scalar_sp_name, result, handle_log_info, lookup_args)
-        if result is not None and len(result) > 0:
-            result = result[0]
-        return result
+        # TODO: could raise outer exception
+
+        result = execHelper.select(db, get_context_model_sp_name, lookup_args, None, handle_log_info)
+        if result is not None and len(result) > 1:
+            # NOTE: must have 1 or none.....................
+            raise Exception(f"{get_context_model_sp_name} must return a single row.")
+        else:
+            for row in result:
+                # NOTE: should return first item only
+                model.id = row[0]
+                model.name = row[1]
+                #model.parent_id = row[2] # TODO: create @property setter
+                model.created_by_id = row[3]
+                model.published = row[4]
+                model.set_published_state()
+                
+        return model
 
 
 def try_int(val, return_value=None):

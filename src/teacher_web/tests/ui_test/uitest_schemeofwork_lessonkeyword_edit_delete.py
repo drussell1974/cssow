@@ -8,9 +8,7 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
     test_context = WebBrowserContext()
     
     def setUp(self):
-        #self.test_context.implicitly_wait(10)
-        
-        # setup
+        # arrange
 
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/new")
 
@@ -37,10 +35,9 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
 
 
-
     def tearDown(self):
-        self.wait(s=20)
-        elem = self.test_context.find_element_by_id("btn-delete-unpublished")
+        
+        elem = self.find_element_by_id__with_explicit_wait("btn-delete-unpublished", wait=2)
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         self.wait(s=2)

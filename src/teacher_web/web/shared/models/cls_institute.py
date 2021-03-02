@@ -1,18 +1,54 @@
-from .core.basemodel import BaseModel
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.core.basemodel import BaseModel
+from shared.models.core.basemodel import BaseModel, BaseContextModel
+from shared.models.enums.publlished import STATE
+from shared.models.utils.cache_proxy import CacheProxy
 
-class InstituteModel(BaseModel):
+class InstituteContextModel(BaseContextModel):
+    
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        self.id = id_
+        self.name = name
+
+
+    @classmethod
+    def empty(cls, published=STATE.PUBLISH, ctx=None):
+        model = cls(id_=0, name="", published=published, ctx=ctx)
+        return model
+
+
+    @classmethod
+    def get_context_model(cls, db, institude_id, auth_user_id):
+        
+        empty_model = cls.empty()
+
+        result = BaseContextModel.get_context_model(db, empty_model, "institute__get_context_model", handle_log_info, institude_id)
+        return result if result is not None else None
+
+
+    @classmethod
+    def cached(cls, request, db, institute_id, auth_user_id):
+        
+        institute = cls.empty()
+        
+        cache_obj = CacheProxy.session_cache(request, db, "institute", cls.get_context_model, institute_id, auth_user_id)
+        
+        if cache_obj is not None:
+            institute.from_dict(cache_obj)
+
+        return institute
+
+class InstituteModel(InstituteContextModel):
 
     # default values for api
     name = ""
     description = ""
     number_of_departments = 0
-    
-    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False):
-        super().__init__(id_, name, created, created_by_id, created_by_name, published, is_from_db)
-        self.id = id_
+
+    def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=None)
+        #self.id = id_
         self.name = name
         self.description = description
         self.number_of_departments = 0
@@ -45,15 +81,15 @@ class InstituteModel(BaseModel):
 
 
     @staticmethod
-    def get_context_name(db, institude_id, auth_user_id):
-        result = BaseModel.get_context_name(db, "institute__get_context_name", handle_log_info, institude_id, auth_user_id)
-        return result if result is not None else ""
+    def empty():
+        model = InstituteModel(0, "")
+        return model
 
 
     @staticmethod
     def get_all(db, auth_user):
         
-        rows = InstituteDataAccess.get_all(db, auth_user_id=auth_user.auth_user_id)
+        rows = InstituteDataAccess.get_all(db, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
         data = []
         for row in rows: 
             model = InstituteModel(id_=row[0],
@@ -62,7 +98,7 @@ class InstituteModel(BaseModel):
                                     created_by_id=row[3],
                                     created_by_name=row[4],
                                     published=row[5])
-
+            
             model.number_of_departments = InstituteModel.get_number_of_departments(db, model.id, auth_user)
             
             data.append(model)
@@ -108,7 +144,7 @@ class InstituteModel(BaseModel):
     @staticmethod
     def save(db, model, teacher_id, auth_user):
         """ save model """
-        if model.published == 2:
+        if model.published == STATE.DELETE:
             data = InstituteDataAccess._delete(db, model, auth_user.auth_user_id)
         elif model.is_valid == True:
             if model.is_new():
@@ -155,7 +191,7 @@ class InstituteDataAccess:
 
 
     @staticmethod
-    def get_all(db, auth_user_id):
+    def get_all(db, show_published_state, auth_user_id):
         """
         get all inistutions
         """
@@ -163,7 +199,7 @@ class InstituteDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "institute__get_all" 
-        params = (auth_user_id,)
+        params = (int(show_published_state), auth_user_id,)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -216,7 +252,7 @@ class InstituteDataAccess:
             model.name,
             teacher_id,
             auth_user_id,
-            model.published
+            int(model.published)
         )
                
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
@@ -235,7 +271,7 @@ class InstituteDataAccess:
             model.id,
             model.name,
             teacher_id,
-            model.published,
+            int(model.published),
             auth_user_id
         )
         
@@ -266,7 +302,7 @@ class InstituteDataAccess:
         
         #271 Create StoredProcedure
         str_delete = "institute__delete_unpublished"
-        params = (0,auth_user_id)
+        params = (int(STATE.DRAFT),auth_user_id)
             
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

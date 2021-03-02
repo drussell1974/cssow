@@ -15,6 +15,7 @@ from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.decorators.permissions import min_permission_required
+from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
@@ -123,6 +124,9 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 
     """ save_item non-view action """
     # create instance of model from request.vars
+
+    published_state = STATE.parse(request.POST.get("published", "DRAFT"))
+    
     model = ResourceModel(
         id_=resource_id,
         lesson_id=lesson_id,
@@ -136,7 +140,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         created=datetime.now(),
         #253 check user id
         created_by_id=auth_ctx.auth_user_id,
-        published=request.POST.get("published", 0)
+        published=published_state
     )
 
     ResourceModel.MARKDOWN_TYPE_ID = settings.MARKDOWN_TYPE_ID
@@ -150,8 +154,8 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 
     #253 check user id
     save_resource_view = ResourceSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_ctx)
-    
-    save_resource_view.execute(int(request.POST["published"]))
+
+    save_resource_view.execute(published_state)
 
     model = save_resource_view.model
  

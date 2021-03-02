@@ -5,6 +5,7 @@ from django.http.response import Http404
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -67,8 +68,10 @@ class InstituteEditViewModel(BaseViewModel):
                 self.model.validate()
                 
                 if self.model.is_valid == True:
+                    
+                    published_state = STATE.parse(request.POST.get("published", "PUBLISH"))
 
-                    data = Model.save(self.db, self.model, self.auth_user, request.POST.get("published", 1))
+                    data = Model.save(self.db, self.model, self.auth_user, published=published_state)
                     
                     self.on_post_complete(True)
                     self.model = data

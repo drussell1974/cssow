@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfWorkDataAccess as DataAccess, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from tests.test_helpers.mocks import fake_ctx_model
 
@@ -48,20 +49,22 @@ class test_db__save(TestCase):
 
 
     def test_should_call__update_with__is_new__false(self):
-         # arrange
-        model = Model(89, auth_user=fake_ctx_model())
+        # arrange
+
+        fake_ctx = fake_ctx_model()
+        
+        model = Model(89, auth_user=fake_ctx)
         model.key_stage_id = 4
         model.is_new = Mock(return_value=False)
 
         with patch.object(ExecHelper, 'update', return_value=model):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model())
-            
+            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx)
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
                 'scheme_of_work__update'
-                , (89, '', '', 0, 4, 67, 1, fake_ctx_model().auth_user_id)
+                , (89, '', '', 0, 4, 67, STATE.PUBLISH, fake_ctx.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -69,8 +72,10 @@ class test_db__save(TestCase):
 
     def test_should_call__scheme_of_work__insert__when__is_new__true(self):
         # arrange
+        
+        fake_ctx = fake_ctx_model()
 
-        model = Model(0, auth_user=fake_ctx_model())
+        model = Model(0, auth_user=fake_ctx)
         model.exam_board_id = 2
         model.created = "2021-01-24 07:13:09.681409"
 
@@ -80,13 +85,13 @@ class test_db__save(TestCase):
             # act
 
 
-            actual_result = Model.save(self.fake_db, model, fake_ctx_model())
+            actual_result = Model.save(self.fake_db, model, fake_ctx)
 
             # assert
             
             ExecHelper.insert.assert_called_with(self.fake_db,
                  'scheme_of_work__insert'
-                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, 1, fake_ctx_model().auth_user_id)
+                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, STATE.PUBLISH, fake_ctx.auth_user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -123,7 +128,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=([], 101)):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model(), published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx_model(), published=STATE.DELETE)
 
             # assert
 

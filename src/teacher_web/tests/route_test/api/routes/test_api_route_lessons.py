@@ -52,12 +52,12 @@ class test_api_route_lessons(TestCase):
 
 
     def test_url_resolves_to_LessonPathwayKs123ViewSet_get(self):
-        url = resolve("/api/institute/127671276711/department/67/schemesofwork/127/lessons/76/pathway-ks123/year/10/topic/4")
+        url = resolve("/api/institute/127671276711/department/67/schemesofwork/127/lessons/76/pathway-ks123/key-stage/2/topic/4")
         self.assertEqual("api.lesson.pathway-ks123", url.url_name)
         self.assertEqual(type(url.func), type(LessonPathwayKs123ViewSet.as_view()))
 
     
     def test_url_resolves_to_LessonPathwayKs123ViewSet_get__reverse(self):
-        url = reverse('api.lesson.pathway-ks123', args=[127671276711, 67, 127, 76, 10, 4])
-        self.assertEqual("/api/institute/127671276711/department/67/schemesofwork/127/lessons/76/pathway-ks123/year/10/topic/4", url)
+        url = reverse('api.lesson.pathway-ks123', args=[127671276711, 67, 127, 76, 3, 4])
+        self.assertEqual("/api/institute/127671276711/department/67/schemesofwork/127/lessons/76/pathway-ks123/key-stage/3/topic/4", url)
 

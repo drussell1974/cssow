@@ -1,5 +1,6 @@
 from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel as Model, handle_log_info
+from shared.models.enums.publlished import STATE
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from tests.test_helpers.mocks import fake_teacher_permission_model
@@ -41,7 +42,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'topic__get_options'
-                , (1, 2, mock_auth_user.auth_user_id)
+                , (1, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -60,7 +61,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options'
-                , (2, 2, mock_auth_user.auth_user_id)
+                , (2, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, len(rows))
@@ -82,7 +83,7 @@ class test_db_topic__get_options__level_1(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options'
-                , (3, 2, mock_auth_user.auth_user_id)
+                , (3, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

@@ -19,10 +19,10 @@ class UITestCase(TestCase):
     test_scheme_of_work_id = 11
     test_lesson_id = 131
     test_learning_objective_id = 410
-    test_reference = 10
-    test_keyword_id = 265
+    test_reference = 983
+    test_keyword_id = 9574
 
-    def wait(self, s = 3):
+    def wait(self, s=3):
         time.sleep(s)
 
 
@@ -51,8 +51,8 @@ class UITestCase(TestCase):
         """
 
         ' Open uri - if authentication is required this should automatically redirect to login '
-        self.test_context.get(redirect_to_uri_on_login)
-        self.test_context.implicitly_wait(wait)
+        self.do_get(redirect_to_uri_on_login, wait=wait)
+        #self.test_context.implicitly_wait(wait)
 
         try:
 
@@ -84,7 +84,7 @@ class UITestCase(TestCase):
         go_to_url = "{}?_next={}".format(login_uri, redirect_to_uri_on_login)
         
         self.test_context.get(go_to_url)
-        self.test_context.implicitly_wait(wait)
+        #self.test_context.implicitly_wait(wait)
         
         try:
             elem = self.test_context.find_element_by_id("auth_user_email")

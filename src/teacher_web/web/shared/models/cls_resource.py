@@ -3,10 +3,9 @@ import markdown
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, BaseDataAccess, sql_safe
 from shared.models.core.log_handlers import handle_log_info
+from shared.models.enums.publlished import STATE
 from datetime import datetime
 from .core.db_helper import to_empty
-
-
 
 class ResourceTypeModel:
     def __init__(self, id, name):
@@ -28,7 +27,7 @@ class ResourceModel (BaseModel):
     # default Get this from settings
     MARKDOWN_TYPE_ID = 10 # default
 
-    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, ctx=None):
+    def __init__(self, id_, lesson_id = 0, scheme_of_work_id = 0, title="", publisher="", page_note="", page_uri="", md_document_name="", type_id = 0, type_name = "", type_icon = "", last_accessed = "", is_expired = False, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         
         super().__init__( id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         self.title = title
@@ -112,7 +111,7 @@ class ResourceModel (BaseModel):
     @staticmethod
     #248 Added parameters
     def get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user):
-        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = ResourceDataAccess.get_model(db, resource_id, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = None
         for row in rows:
             model = ResourceModel(
@@ -138,7 +137,7 @@ class ResourceModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, lesson_id, auth_user, resource_type_id=0):
-        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id)
+        rows =  ResourceDataAccess.get_all(db, scheme_of_work_id, lesson_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = ResourceModel(
@@ -174,11 +173,11 @@ class ResourceModel (BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, published=1):
-        if try_int(published) == 2:
+    def save(db, model, auth_user, published=STATE.PUBLISH):
+        if try_int(published) == STATE.DELETE:
             rval = ResourceDataAccess._delete(db, model, auth_user.auth_user_id)
             # TODO: check row count before updating
-            model.published = 2
+            model.published = STATE.DELETE
         else:
             if model.is_new() == True:
                 new_id = ResourceDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
@@ -208,13 +207,13 @@ class ResourceDataAccess:
 
     @staticmethod
     #248 Added parameters
-    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id):
+    def get_model(db, id_, lesson_id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """ Get Resource """
 
         execHelper = ExecHelper()
         
         str_select = "lesson_resource__get"
-        params = (id_, auth_user_id)
+        params = (id_, int(show_published_state), auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -223,13 +222,13 @@ class ResourceDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, lesson_id, auth_user_id, resource_type_id = 0):
+    def get_all(db, scheme_of_work_id, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH, resource_type_id = 0):
         """ Get resources for lesson """
 
         execHelper = ExecHelper()
 
         str_select = "lesson_resource__get_all"
-        params = (lesson_id, resource_type_id, auth_user_id)
+        params = (lesson_id, resource_type_id, int(show_published_state), auth_user_id)
 
         rows = []
         #271 Stored procedure
@@ -268,7 +267,7 @@ class ResourceDataAccess:
             model.lesson_id,
             model.created,
             model.created_by_id,
-            published,
+            int(published),
             auth_user_id
         )
                
@@ -294,7 +293,7 @@ class ResourceDataAccess:
             model.md_document_name,
             model.is_expired,
             model.lesson_id,
-            published,
+            int(published),
             auth_user_id
         )
         

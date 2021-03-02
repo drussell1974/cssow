@@ -4,6 +4,7 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel as Model, LessonDataAccess, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -68,7 +69,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = 1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = STATE.PUBLISH)
             
             # assert
             
@@ -95,7 +96,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = 1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = STATE.PUBLISH)
             
             # assert
             
@@ -120,14 +121,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.PUBLISH)
             
             # assert
             
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
                 'lesson__update'
-                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, 1, mock_auth_user.auth_user_id)
+                , (1, 'CPU and RAM', '', 1, 0, 0, 0, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 ,handle_log_info)
 
             # check subsequent functions where called
@@ -159,14 +160,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = 1)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published = STATE.PUBLISH)
             
             # assert
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'lesson__insert'
-                , (0, '', '', 1, 0, 0, 0, 0, 1, 0, '2021-01-24 07:18:18.677084')
+                , (0, '', '', 1, 0, 0, 0, 0, int(STATE.PUBLISH), 0, '2021-01-24 07:18:18.677084')
                 , handle_log_info)
 
             # check subsequent functions where called
@@ -195,7 +196,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user, published=STATE.DELETE)
 
             # assert
 

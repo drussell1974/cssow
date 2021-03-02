@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_learningobjective import LearningObjectiveModel as Model, LearningObjectiveDataAccess, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -30,7 +31,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.save(self.fake_db, model, mock_auth_user, published=1),
+                Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH),
 
 
     def test_should_call__update_with_exception(self, mock_auth_user):
@@ -45,7 +46,7 @@ class test_db__save(TestCase):
             with self.assertRaises(KeyError):
                 # act 
                 
-                Model.save(self.fake_db, model, mock_auth_user, published=1)
+                Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
 
 
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
@@ -60,13 +61,13 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
             
             # assert
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                 "lesson_learning_objective__update"
-                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, 1, mock_auth_user.auth_user_id)
+                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
 
@@ -86,14 +87,14 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=1)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.PUBLISH)
 
             # assert
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 "lesson_learning_objective__insert"
-                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, 1, mock_auth_user.auth_user_id)
+                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
                 
             self.assertEqual(23, actual_result.id)
@@ -112,7 +113,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=2)
+            actual_result = Model.save(self.fake_db, model, mock_auth_user, published=STATE.DELETE)
 
             # assert
 

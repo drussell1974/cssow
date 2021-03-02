@@ -7,6 +7,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -210,7 +211,7 @@ class LessonKeywordSaveViewModel(BaseViewModel):
         
         self.model.validate()
 
-        if self.model.is_valid == True or published == 2:
+        if self.model.is_valid == True or published == STATE.DELETE:
             data = Model.save(self.db, self.model, self.auth_user)
             self.model = data   
         else:

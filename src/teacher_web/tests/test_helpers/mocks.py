@@ -1,9 +1,9 @@
-from unittest.mock import Mock, MagicMock
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_institute import InstituteModel
+from unittest.mock import Mock, MagicMock, patch
+from shared.models.cls_department import DepartmentContextModel
+from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkContextModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.core.context import AuthCtx, Ctx
 
@@ -18,19 +18,22 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
     mock_db = Mock()
     mock_db.cursor = MagicMock()
     
-    institute = InstituteModel(127671276711, name="Lorum Ipsum")
-    
-    department = DepartmentModel(67, name="Computer Science", institute=institute, is_from_db=True)
-    
-    if trace == True:
-        KeyError(department.id)
+    with patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum")) as institute:
+        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True)) as department:
+            with patch.object(SchemeOfWorkContextModel, "get_context_model", return_value = SchemeOfWorkContextModel(67, name="Nunc maximus purus", is_from_db=True)) as scheme_of_work:
+                
+                institute.name = "Lorum Ipsum"
+                department.name = "Computer Science"
 
-    scheme_of_work = SchemeOfWorkModel(12323232, name="GCSE Computer Science", auth_user=Ctx(1276711, 826))
+                scheme_of_work = SchemeOfWorkContextModel(12323232, name="GCSE Computer Science", ctx=Ctx(1276711, 826))
 
-    auth_ctx = AuthCtx(mock_db, mock_request, institute_id=institute.id, department_id=department.id, scheme_of_work_id=scheme_of_work.id)
-    auth_ctx.department_permission = dep
-    auth_ctx.scheme_of_work_permission = sow
-    auth_ctx.lesson_permission = les
+                auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=67, scheme_of_work_id=scheme_of_work.id)
+                auth_ctx.institute = institute
+                auth_ctx.department = department
+                auth_ctx.scheme_of_work = scheme_of_work
+                auth_ctx.department_permission = dep
+                auth_ctx.scheme_of_work_permission = sow
+                auth_ctx.lesson_permission = les
 
     return auth_ctx
 
@@ -57,12 +60,18 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
     mock_db = Mock()
     mock_db.cursor = MagicMock()
     
-    institute = InstituteModel(127671276711, name="Lorum Ipsum")
+    #institute = InstituteContextModel(127671276711, name="Lorum Ipsum")
     
-    department = DepartmentModel(67, "Computer Science", institute=institute, is_from_db=True)
+    #department = DepartmentContextModel(67, "Computer Science", is_from_db=True)
 
-    scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", is_from_db=is_from_db, auth_user=AuthCtx(mock_db, mock_request, institute.id, department.id))
-    
-    auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=34, scheme_of_work_id=14)
+    with patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum")) as institute:
+        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True)) as department:
+            
+            institute.get = MagicMock(return_value="Lorum Ipsum")
+            department.get = MagicMock(return_value="Computer Science")
+                    
+            scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", is_from_db=is_from_db, auth_user=AuthCtx(mock_db, mock_request, institute.id, department.id))
+            
+            auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=34, scheme_of_work_id=14)
 
     return TeacherPermissionModel(teacher_id=56, teacher_name="Jane Mellor" , scheme_of_work=scheme_of_work, is_from_db=is_from_db, ctx=auth_ctx, scheme_of_work_permission=SCHEMEOFWORK.OWNER, lesson_permission=LESSON.OWNER, department_permission=DEPARTMENT.HEAD, is_authorised=is_authorised)

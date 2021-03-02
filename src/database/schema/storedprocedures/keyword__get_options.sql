@@ -1,33 +1,31 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS keyword__get_options;
+DROP PROCEDURE IF EXISTS lesson__get_options;
 
-CREATE PROCEDURE keyword__get_options (
+CREATE PROCEDURE lesson__get_options (
  IN p_scheme_of_work_id INT,
- IN p_exclude_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
-        kw.id as id, 
-        kw.name as name, 
-        kw.definition as definition,
-        kw.scheme_of_work_id as scheme_of_work_id,
-        kw.published as published,
-        count(lkw.lesson_id) as number_of_lessons, 
-        kw.created
-    FROM 
-        sow_key_word as kw 
-        LEFT JOIN sow_lesson__has__key_words as lkw ON lkw.key_word_id = kw.id
+        le.id as id, 
+        le.title as title, 
+        le.order_of_delivery_id as order_of_delivery_id, 
+        top.id as topic_id, 
+        top.name as name, 
+        yr.id as year_id, 
+        yr.name as year_name 
+    FROM sow_lesson as le 
+        INNER JOIN sow_topic as top ON top.id = le.topic_id 
+        INNER JOIN sow_year as yr ON yr.id = le.year_id  
     WHERE 
-        kw.scheme_of_work_id = p_scheme_of_work_id
-			AND kw.id != p_exclude_id
-            AND published = 1 
-                  -- or p_auth_user IN (SELECT auth_user_id 
-                  --                   FROM sow_teacher 
-                  --                   WHERE auth_user_id = p_auth_user AND scheme_of_work_id = kw.scheme_of_work_id)
-    GROUP BY id, name, definition, scheme_of_work_id, published
-    ORDER BY name;
+        le.scheme_of_work_id = p_scheme_of_work_id
+        AND (p_show_published_state % le.published = 0 
+                or le.created_by = p_auth_user)
+    ORDER BY le.year_id, le.order_of_delivery_id;
 END;
 //
 
 DELIMITER ;
+
+CALL lesson__get_options(11,1, 2);

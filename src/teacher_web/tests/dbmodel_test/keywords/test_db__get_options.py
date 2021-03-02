@@ -2,6 +2,7 @@ from unittest.mock import Mock, MagicMock, patch
 from unittest import TestCase, skip
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_keyword import KeywordModel, handle_log_info
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -40,7 +41,7 @@ class test_db_keyword__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 0, mock_auth_user.auth_user_id)
+                , (13, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -59,7 +60,7 @@ class test_db_keyword__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 777, mock_auth_user.auth_user_id)
+                , (13, 777, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -85,7 +86,7 @@ class test_db_keyword__get_options(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'keyword__get_options'
-                , (13, 0, mock_auth_user.auth_user_id)
+                , (13, 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))

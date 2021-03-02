@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.keywords.viewmodels import KeywordDeleteUnpublishedViewModel  as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_keyword import KeywordModel as Model
+from shared.models.enums.publlished import STATE
 
 class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
 
@@ -56,7 +57,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         # arrange
         
         data_to_return = Model(912, "How to save the world in a day")
-        data_to_return.published = 2
+        data_to_return.published = STATE.DELETE
 
         
         with patch.object(Model, "delete_unpublished", return_value=data_to_return):
@@ -73,4 +74,4 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
             Model.delete_unpublished.assert_called()
             self.assertEqual(912, self.viewmodel.model.id)
             self.assertEqual("How to save the world in a day", self.viewmodel.model.term)
-            self.assertEqual(2, self.viewmodel.model.published)
+            self.assertEqual(STATE.DELETE, self.viewmodel.model.published)

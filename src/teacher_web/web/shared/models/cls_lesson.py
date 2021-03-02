@@ -3,6 +3,7 @@ from django.db import models
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from shared.models.core.log_handlers import handle_log_info, handle_log_error
+from shared.models.enums.publlished import STATE
 from .utils.pager import Pager
 from .cls_schemeofwork import SchemeOfWorkDataAccess
 from .cls_learningobjective import LearningObjectiveModel
@@ -38,7 +39,7 @@ class LessonModel (BaseModel):
     topic_id = None
     year_id = None
     key_stage_id = None
-    published = 1
+    published = STATE.PUBLISH
     key_words = []  
     resources = []
     learning_objectives = []
@@ -48,7 +49,7 @@ class LessonModel (BaseModel):
     department_id = 0
     institute_id = 0
 
-    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=1, is_from_db=False, auth_user = None):
+    def __init__(self, id_ = 0, title="", orig_id = 0, order_of_delivery_id = 1, scheme_of_work_id = 0, scheme_of_work_name = "", content_id = 0, content_description = "", topic_id = 0, topic_name = "", related_topic_ids = "", parent_topic_id = 0, parent_topic_name = "", key_stage_id = 0, key_stage_name = "", year_id = 0, year_name = "", summary = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user = None):
         #231: implement across all classes
         super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title
@@ -199,7 +200,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_options(db, scheme_of_work_id, auth_user):
-        rows = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_options(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = LessonModel(id_=row[0], title=row[1], order_of_delivery_id=row[2], topic_id=row[3], topic_name=row[4], year_id=row[5], year_name=row[6], scheme_of_work_id=scheme_of_work_id)
@@ -211,7 +212,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_model(db, lesson_id, scheme_of_work_id, auth_user, resource_type_id=0):
-        rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, resource_type_id=resource_type_id)
+        rows = LessonDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view, resource_type_id=resource_type_id)
         model = None
         for row in rows:
             model = LessonModel(
@@ -245,10 +246,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_all(db, scheme_of_work_id, auth_user):
-        rows = LessonDataAccess.get_all(db, 
-            scheme_of_work_id, 
-            auth_user_id=auth_user.auth_user_id)
-
+        rows = LessonDataAccess.get_all(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = LessonModel(
@@ -301,6 +299,7 @@ class LessonModel (BaseModel):
             search_criteria.keyword_search,
             search_criteria.page,
             search_criteria.pagesize,
+            show_published_state=auth_user.can_view,
             auth_user_id=auth_user.auth_user_id)
 
         data = []
@@ -349,10 +348,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user, parent_only = True):
-        rows = LessonDataAccess.get_by_keyword(db, 
-            keyword_id,
-            scheme_of_work_id, 
-            auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
 
         data = []
         for row in rows:
@@ -400,7 +396,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_all_keywords(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_all_keywords(db, lesson_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             data.append(KeywordModel(row[0], term=row[1], definition=to_empty(row[2]), scheme_of_work_id=row[3], published=row[4], created=row[5]))
@@ -409,7 +405,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_ks123_pathway_objective_ids(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             data.append(try_int(row[0]))
@@ -418,7 +414,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user):
-        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         serializable_list = []
         for row in rows:
             serializable_list.append({"id":row[0], "name":row[1], "checked":row[2] is not None, "disabled":int(row[3]) > 0})
@@ -427,7 +423,7 @@ class LessonModel (BaseModel):
 
     @staticmethod
     def get_number_of_learning_objectives(db, lesson_id, auth_user):
-        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user_id=auth_user.auth_user_id)
+        rows = LessonDataAccess.get_number_of_learning_objectives(db, lesson_id, auth_user_id=auth_user.auth_user_id, show_published_state=STATE.PUBLISH)
         
         return rows[0][0]
 
@@ -447,7 +443,7 @@ class LessonModel (BaseModel):
         try:     
             if model.is_new() == True:
                 model = LessonDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
-            elif published == 2:
+            elif published == STATE.DELETE:
                 model = LessonDataAccess._delete(db, auth_user.auth_user_id, model)
             else:
                 model = LessonDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
@@ -487,7 +483,7 @@ class LessonModel (BaseModel):
 class LessonDataAccess:
 
     @staticmethod
-    def get_model(db, id_, scheme_of_work_id, auth_user_id, resource_type_id = 0):
+    def get_model(db, id_, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH, resource_type_id = 0):
         """
         get lesson for scheme of work
 
@@ -500,7 +496,7 @@ class LessonDataAccess:
         
         execHelper = ExecHelper()
         select_sql = "lesson__get"
-        params = (id_,scheme_of_work_id,auth_user_id)
+        params = (id_, scheme_of_work_id, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -509,7 +505,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_all(db, scheme_of_work_id, auth_user_id):
+    def get_all(db, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get lessons for the scheme of work
 
@@ -521,7 +517,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_all"
-        params = (scheme_of_work_id, auth_user_id); 
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id); 
 
         rows = []    
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -530,7 +526,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_filtered(db, scheme_of_work_id, keyword_search, page, pagesize, auth_user_id):
+    def get_filtered(db, scheme_of_work_id, keyword_search, page, pagesize, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get lessons for the scheme of work
 
@@ -542,7 +538,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_filtered"
-        params = (scheme_of_work_id, keyword_search, page - 1, pagesize, auth_user_id); 
+        params = (scheme_of_work_id, keyword_search, page - 1, pagesize, int(show_published_state), auth_user_id); 
 
         rows = []    
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -551,7 +547,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_all_keywords(db, lesson_id, auth_user_id):
+    def get_all_keywords(db, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get a full list of terms and definitions
 
@@ -563,7 +559,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_all_keywords"
-        params = (lesson_id, auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -594,7 +590,7 @@ class LessonDataAccess:
 
     
     @staticmethod
-    def get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id):
+    def get_ks123_pathway_objective_ids(db, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         Get the ks123 pathways for the lesson
 
@@ -607,7 +603,7 @@ class LessonDataAccess:
         
 
         str_select = "lesson__get_ks123_pathway_objective_ids"
-        params = (lesson_id, auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -616,7 +612,7 @@ class LessonDataAccess:
 
     
     @staticmethod
-    def get_number_of_learning_objectives(db, lesson_id, auth_user_id):
+    def get_number_of_learning_objectives(db, lesson_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get the number of learning objective for the lessons
 
@@ -629,7 +625,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_number_of_learning_objectives"
-        params = (lesson_id, auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -638,7 +634,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id):
+    def get_related_topic_ids(db, lesson_id, parent_topic_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         gets the related topic ids for the lesson and whether they are selected or should be disabled
 
@@ -652,7 +648,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
         
         str_select = "lesson__get_related_topic_ids"
-        params = (lesson_id, parent_topic_id, auth_user_id)
+        params = (lesson_id, parent_topic_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -661,7 +657,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_options(db, scheme_of_work_id, auth_user_id):
+    def get_options(db, scheme_of_work_id, auth_user_id,  show_published_state=STATE.PUBLISH):
         """
         get a list lessons
 
@@ -674,7 +670,7 @@ class LessonDataAccess:
         
         str_select = "lesson__get_options"
 
-        params = (scheme_of_work_id, auth_user_id)
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
@@ -683,7 +679,7 @@ class LessonDataAccess:
 
 
     @staticmethod
-    def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user_id):
+    def get_by_keyword(db, keyword_id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get lessons using this key word
 
@@ -696,7 +692,7 @@ class LessonDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "lesson__get_by_keyword"
-        params = (keyword_id, scheme_of_work_id, auth_user_id); 
+        params = (keyword_id, scheme_of_work_id, int(show_published_state), auth_user_id); 
 
         rows = []    
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -729,7 +725,7 @@ class LessonDataAccess:
             model.content_id,
             model.topic_id,
             model.year_id,
-            published,
+            int(published),
             auth_user_id
         )
 
@@ -777,7 +773,7 @@ class LessonDataAccess:
             model.content_id,
             model.topic_id,
             model.year_id,
-            published,
+            int(published),
             model.created_by_id,
             model.created,
         )

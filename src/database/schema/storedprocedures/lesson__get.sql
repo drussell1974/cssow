@@ -5,6 +5,7 @@ DROP PROCEDURE IF EXISTS lesson__get;
 CREATE PROCEDURE lesson__get (
  IN p_lesson_id INT,
  IN p_scheme_of_work_id INT,
+ IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -24,7 +25,7 @@ BEGIN
         le.summary as summary,
         le.created as created,
         le.created_by as created_by_id,
-        CONCAT_WS(' ', user.first_name, user.last_name) as created_by_name,
+        user.first_name as created_by_name,
         le.published as published
     FROM sow_lesson as le
         INNER JOIN sow_scheme_of_work as sow ON sow.id = le.scheme_of_work_id
@@ -34,11 +35,12 @@ BEGIN
         LEFT JOIN sow_content as cnt ON cnt.id = le.content_id
         LEFT JOIN auth_user as user ON user.id = sow.created_by
     WHERE le.id = p_lesson_id AND le.scheme_of_work_id = p_scheme_of_work_id 
-        AND (sow.published = 1 
-                or p_auth_user IN (SELECT auth_user_id 
-                                FROM sow_teacher 
-                                WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow.id)
-        );
+        AND (	
+				p_show_published_state % sow.published = 0 
+				or p_show_published_state % le.published = 0 
+                or sow.created_by = p_auth_user
+                or le.created_by = p_auth_user
+		);
 END;
 //
 

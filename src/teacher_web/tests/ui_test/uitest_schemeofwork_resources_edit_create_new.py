@@ -8,7 +8,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
     def setUp(self):
         # setup
-        self.test_context.implicitly_wait(20)
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/new")
 
 
@@ -51,7 +50,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
     def test_page__markdownfile_type_stay_on_same_page_if_invalid(self):
         # setup
-        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -91,7 +89,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
-        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -128,7 +125,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         elem.send_keys(test_file)
 
         ' submit the form '
-        #self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_id("saveDraftButton")
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)
@@ -185,7 +181,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
     def test_page__should_hide_upload_if_not_md_document_type(self):
         # setup
-        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
@@ -206,7 +201,6 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
     def test_page__should_hide_upload_if_is_md_document_type(self):
         # setup
-        self.test_context.implicitly_wait(10)
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '

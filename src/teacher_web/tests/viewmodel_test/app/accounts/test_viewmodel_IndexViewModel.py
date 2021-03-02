@@ -1,15 +1,12 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-
-# test context
-
 from app.teampermissions.viewmodels import TeamPermissionIndexViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model, fake_teacher_permission_model
-
 
 class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
 
@@ -51,7 +48,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
                 teacher_id=24,
                 teacher_name="Jane Doe", #DepartmentModel(15, "Computer Science")), 
                 scheme_of_work=MagicMock(id = 69, name="GCSE Computer Science"), 
-                published=1,
+                published=STATE.PUBLISH,
                 department_permission=DEPARTMENT.TEACHER, 
                 scheme_of_work_permission=SCHEMEOFWORK.EDITOR, 
                 lesson_permission=LESSON.EDITOR,
@@ -89,7 +86,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
                 teacher_id=1, 
                 teacher_name="Mr Russell", #DepartmentModel(15, "Computer Science")), 
                 scheme_of_work=MagicMock(id = 67, name="GCSE Computer Science"), 
-                published=1,
+                published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.HEAD), 
                 scheme_of_work_permission=int(SCHEMEOFWORK.OWNER),
                 lesson_permission=int(LESSON.OWNER),
@@ -99,7 +96,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
                 teacher_id=2, 
                 teacher_name="Jane Doe", #DepartmentModel(15, "Computer Science")), 
                 scheme_of_work=MagicMock(id = 68, name="A-Level Computer Science"), 
-                published=1,
+                published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.TEACHER), 
                 scheme_of_work_permission=int(SCHEMEOFWORK.EDITOR), 
                 lesson_permission=int(LESSON.EDITOR),
@@ -109,7 +106,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
                 teacher_id=3, 
                 teacher_name="Miss Doe", #DepartmentModel(15, "Computer Science")), 
                 scheme_of_work=MagicMock(id = 69, name="Games design"), 
-                published=1,
+                published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.STUDENT), 
                 scheme_of_work_permission=int(SCHEMEOFWORK.VIEWER), 
                 lesson_permission=int(LESSON.VIEWER),

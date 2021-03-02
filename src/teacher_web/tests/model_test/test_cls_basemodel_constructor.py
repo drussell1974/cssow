@@ -1,6 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 from shared.models.core.basemodel import BaseModel
+from shared.models.enums.publlished import STATE
 
 class Test_basemodel_Constructor(TestCase):
 
@@ -22,7 +23,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0,
+                        published = STATE.DRAFT,
                         is_from_db = False)
 
         # test
@@ -40,7 +41,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0,
+                        published = STATE.DRAFT,
                         is_from_db = False)
 
         # assert
@@ -59,7 +60,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 1,
+                        published = STATE.PUBLISH,
                         is_from_db = False)
 
         # test
@@ -81,7 +82,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0,
+                        published = STATE.DRAFT,
                         is_from_db = False)
 
         # assert
@@ -97,7 +98,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0,
+                        published = STATE.DRAFT,
                         is_from_db = False)
 
         # assert
@@ -114,7 +115,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 0,
+                        published = STATE.DRAFT,
                         is_from_db = False)
 
         # assert
@@ -129,7 +130,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 1,
+                        published = STATE.PUBLISH,
                         is_from_db = False)
 
         # assert
@@ -144,7 +145,7 @@ class Test_basemodel_Constructor(TestCase):
                         created = self.created_now,
                         created_by_id = 1,
                         created_by_name = "Dave Russell",
-                        published = 2,
+                        published = STATE.DELETE,
                         is_from_db = False)
 
         # assert

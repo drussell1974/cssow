@@ -7,8 +7,7 @@ class uitest_schemeofwork_default_login(UITestCase):
 
     def setUp(self):
         # set up
-        self.test_context.get(self.root_uri + "/accounts/login")
-        self.test_context.implicitly_wait(4)
+        self.do_get(self.root_uri + "/accounts/login", wait=4)
 
 
     def tearDown(self):

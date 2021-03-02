@@ -8,10 +8,8 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.test_context.implicitly_wait(10)
         #231: TODO: open existing resource
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit")
-        self.wait(s=2)
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit", wait=2)
 
 
     def tearDown(self):

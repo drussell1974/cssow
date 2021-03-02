@@ -90,7 +90,9 @@ class test_db__full_access(TestCase):
     def test_should_call__insert_department__has__teacher_permissions(self):
         # arrange
 
-        model = Model(56, "Jane Mellor", is_authorised=True, ctx=fake_ctx_model())
+        fake_ctx = fake_ctx_model(6079)
+
+        model = Model(56, "Jane Mellor", is_authorised=True, ctx=fake_ctx)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -102,7 +104,7 @@ class test_db__full_access(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.full_access(self.fake_db, model, auth_user=fake_ctx_model(6079))
+            actual_result = Model.full_access(self.fake_db, model, auth_user=fake_ctx)
             
             # assert
 

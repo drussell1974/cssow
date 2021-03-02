@@ -6,6 +6,7 @@ from shared.models.core.log_handlers import handle_log_exception, handle_log_war
 from shared.models.core.basemodel import try_int
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -127,7 +128,7 @@ class ResourceSaveViewModel(BaseViewModel):
     def execute(self, published):
         self.model.validate()
 
-        if self.model.is_valid == True or published == 2:
+        if self.model.is_valid == True or published == STATE.DELETE:   
             data = Model.save(self.db, self.model, self.auth_user, published)
             self.model = data   
         else:

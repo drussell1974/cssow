@@ -33,9 +33,3 @@ END;
 //
 
 DELIMITER ;
-
-DELETE FROM sow_department__has__teacher WHERE auth_user_id = 83;
-
-CALL department__has__teacher__insert(83, 5, 0, 0, 0, 2);
-
-SELECT * FROM sow_department__has__teacher WHERE auth_user_id = 83;

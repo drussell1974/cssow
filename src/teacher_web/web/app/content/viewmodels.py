@@ -4,6 +4,7 @@ from rest_framework import serializers, status
 from django.http import Http404
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
+from shared.models.enums.publlished import STATE
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
@@ -79,17 +80,17 @@ class ContentEditViewModel(BaseViewModel):
 
         elif request.method == "POST":
             
-            published = request.POST["published"]
+            published_state = STATE.parse(request.POST["published"])
 
             self.model = Model().from_post(request.POST)
 
             self.model.validate()
             
-            if self.model.is_valid == True or published == 2:
+            if self.model.is_valid == True or published_state == STATE.DELETE:
                 # save to database
                 try:
                         
-                    data = Model.save(self.db, self.model, self.auth_user, published)
+                    data = Model.save(self.db, self.model, self.auth_user, published_state)
                     self.model = data
 
                     self.is_content_ready = True   

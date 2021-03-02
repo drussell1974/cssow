@@ -45,7 +45,7 @@ class test_viewmodel_MergeViewModel(TestCase):
         mock_request = Mock()
         mock_request.method = "POST"
         mock_request.POST = { 
-            "published":"2",
+            "published":"DELETE",
             "next":"/"
         }
 
