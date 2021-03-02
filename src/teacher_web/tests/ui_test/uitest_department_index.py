@@ -24,7 +24,7 @@ class uitest_department_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Test User', 'Departments')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Departments')
         self.assertFooterContextText("Computer Science")
 
 
