@@ -63,7 +63,7 @@
             </a>
           </div>
             <p class="post-meta">{{_("Created by")}}
-              <a href="{% student_uri row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
+              <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.id %}" target="_blank" class="float-right">{{_("student portal")}} <i class="fa fa-globe student_portal--link"></i></a>
               <a href="#">{{ row.created_by_name }}</a>
               {% if row.created == True %}
                 on {{ row.get_ui_created }}

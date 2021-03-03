@@ -3,8 +3,8 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS department__get_context_model;
 
 CREATE PROCEDURE department__get_context_model (
- IN p_department_id INT,
- IN p_institute_id INT)
+ IN p_institute_id INT,
+ IN p_department_id INT)
 BEGIN
 	/* return data for lightweight Context model (id, name, parent_id, created_by, published) */
     SELECT 

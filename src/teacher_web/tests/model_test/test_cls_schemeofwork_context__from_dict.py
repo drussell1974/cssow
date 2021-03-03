@@ -43,13 +43,14 @@ class test_cls_department_context__from_dict(TestCase):
         self.assertEqual(0, self.test.created_by_id)
         self.assertEqual(int(STATE.PUBLISH), self.test.published)
         self.assertEqual("published", self.test.published_state)
+        self.assertFalse(self.test.is_from_db)
 
 
     def test_should_give_object_from_constructor_set_valid_values(self):
 
         # arrange
 
-        self.dict_obj = SchemeOfWorkContextModel(7, "Curabitur", description="Sed erat ultricies dapibus.", published=STATE.DRAFT).__dict__
+        self.dict_obj = SchemeOfWorkContextModel(7, "Curabitur", description="Sed erat ultricies dapibus.", published=STATE.DRAFT, is_from_db=True).__dict__
 
         # act
 
@@ -64,3 +65,4 @@ class test_cls_department_context__from_dict(TestCase):
         self.assertEqual(0, self.test.created_by_id)
         self.assertEqual(STATE.DRAFT, self.test.published)
         self.assertEqual("unpublished", self.test.published_state)
+        self.assertTrue(self.test.is_from_db)

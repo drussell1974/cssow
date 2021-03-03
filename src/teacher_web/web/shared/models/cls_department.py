@@ -26,6 +26,9 @@ class DepartmentContextModel(BaseContextModel):
         empty_model = cls.empty()
 
         result = BaseContextModel.get_context_model(db, empty_model, "department__get_context_model", handle_log_info, institute_id, department_id)
+        result.institute_id = institute_id
+        result.department_id = department_id
+        
         return result if result is not None else None
 
 
@@ -112,7 +115,7 @@ class DepartmentModel(DepartmentContextModel):
     @staticmethod
     def get_model(db, department_id, auth_user):   
         
-        rows = DepartmentDataAccess.get_model(db, department_id, auth_user_id=auth_user.auth_user_id)
+        rows = DepartmentDataAccess.get_model(db, department_id, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
 
         model = DepartmentModel(0, "", institute=InstituteModel(0, ""))
         for row in rows:
@@ -179,7 +182,7 @@ class DepartmentModel(DepartmentContextModel):
 class DepartmentDataAccess:
     
     @staticmethod
-    def get_model(db, id_, auth_user_id):
+    def get_model(db, id_, auth_user_id, show_published_state = STATE.PUBLISH):
         """
         get scheme of work
 
@@ -191,7 +194,7 @@ class DepartmentDataAccess:
         execHelper = ExecHelper()
 
         select_sql = "department__get"
-        params = (id_, auth_user_id)
+        params = (id_, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

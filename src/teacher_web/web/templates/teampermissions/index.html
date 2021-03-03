@@ -52,40 +52,63 @@
             <hr>
             <span class="small">
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">{{_("Teacher")}}</th>
-                    <th scope="col">{{_("Department")}}</th>
-                    <th scope="col">{{_("Scheme of work")}} </th>
-                    <th scope="col" colspan="2">{{_("Lesson")}}</th>
-                  </tr>
-                </thead>
-                <tbody>
               {% for member in scheme_of_work.teacher_permissions %}
-                
-                <tr class="bg-info">
-                  <th class="text-white" scope="row">{{member.teacher_name}}</th>
-                  <td class="text-white">{{member.department_permission.name}}</td>
-                  <td class="text-white">{{member.scheme_of_work_permission.name}}</td>
-                  <td class="text-white">{{member.lesson_permission.name}}</td>
-                  <td>
-                  </td>
-                </tr>
-                <tr class="bg-info">
-                  <th scope="row" colspan="5">
-                    <a class="btn btn-danger float-right" href="{% url 'team-permissions.reject' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
-                      {{_("Reject")}}
-                    </a>
-                    <a class="btn btn-warning float-right" href="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
-                      {{_("Approve")}}
-                    </a>
-                  </td>
-                </tr>
-                
+                <form name="edit-teampermission-{{member.id}}" id="form" class="needs-validation" method="post" enctype="multipart/form-data"  action="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}">
+                  {% csrf_token %}
+
+                  <div class="control-group"> 
+                    <div class="form-group controls">
+                      <b>{{member.teacher_name}}</b>
+                    </div>
+                  </div>
+                  <div class="form-group stackable-group stackable-group-sm">
+                  
+                    <div class="control-group"> 
+                      <div class="form-group controls">
+                        <label>{{_("Department:")}}</label>
+                        <select class="form-control stackable" name="department_permission" id="ctl-type_id" required>
+                          {% for opt in content.data.department_permission_options %}
+                          <option value="{{opt.name}}" {% if opt.value == member.department_permission %} selected {% endif %}>{{opt.name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="control-group"> 
+                      <div class="form-group controls">
+                      <label>{{_("Scheme of work:")}}</label>
+                        <select class="form-control stackable" name="scheme_of_work_permission" id="ctl-type_id" required>
+                          {% for opt in content.data.scheme_of_work_permission_options %}
+                          <option value="{{opt.name}}" {% if opt.value == member.scheme_of_work_permission %} selected {% endif %}>{{opt.name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>     
+
+                    <div class="control-group"> 
+                      <div class="form-group controls">
+                      <label>{{_("Lesson:")}}</label>
+                      <select class="form-control stackable" name="lesson_permission" id="ctl-type_id" required>
+                        {% for opt in content.data.lesson_permission_options %}
+                        <option value="{{opt.name}}" {% if opt.value == member.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    </div>
+
+                    <div class="control-group"> 
+                      <div class="form-group controls">
+                          <a class="btn btn-danger float-right" href="{% url 'team-permissions.reject' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                        {{_("Reject")}}
+                        </a>
+                        <button type="submit" class="btn btn-warning float-right" href="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}">
+                          {{_("Approve")}}
+                        </button>
+                      </div>
+                    </div>
+                </form>
               {% endfor %}
-                </tbody>
-              </table>
+                
 
           </span>
         </div>

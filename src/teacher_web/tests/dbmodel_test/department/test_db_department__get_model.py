@@ -3,6 +3,7 @@ from shared.models.cls_department import DepartmentModel as Model, handle_log_in
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
+from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -43,7 +44,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'department__get'
-                , (999, mock_auth_user.auth_user_id,)
+                , (999, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -67,7 +68,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'department__get'
-                , (593, mock_auth_user.auth_user_id,)
+                , (593, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 

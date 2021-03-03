@@ -40,7 +40,7 @@ class test_db__get_context_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = SchemeOfWorkContextModel.get_context_model(self.fake_db, 99, fake_ctx.auth_user_id)
+            model = SchemeOfWorkContextModel.get_context_model(self.fake_db, 127671112711, 67, 99, fake_ctx.auth_user_id)
             
             # assert
 
@@ -67,7 +67,7 @@ class test_db__get_context_model(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            model = SchemeOfWorkContextModel.get_context_model(self.fake_db, 6, fake_ctx.auth_user_id)
+            model = SchemeOfWorkContextModel.get_context_model(self.fake_db, 127671112711, 67, 6, fake_ctx.auth_user_id)
             
             # assert
 
