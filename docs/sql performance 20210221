@@ -63,6 +63,6 @@ topic__get_options                                                       0.01303
 ('select.institute__get_context_model.max', 0.01266)
 ('select.scheme_of_work__get_latest.max', 0.043224)
 ('select.scheme_of_work__get_teacher_permissions.max', 0.012057)
-('select.scheme_of_work__get_number_of_resources.max', 0.013173)
+('select.scheme_odsf_work__get_number_of_resources.max', 0.013173)
 ('select.scheme_of_work__get_all_keywords.max', 0.12615)
 ('select.lesson__get_by_keyword.max', 0.016917)

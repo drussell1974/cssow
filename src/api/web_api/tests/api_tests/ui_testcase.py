@@ -20,7 +20,7 @@ class UITestCase(TestCase):
     test_lesson_id = 131
     test_learning_objective_id = 410
     test_reference = 983
-    test_keyword_id = 9647
+    test_keyword_id = 92
 
     def wait(self, s=3):
         time.sleep(s)

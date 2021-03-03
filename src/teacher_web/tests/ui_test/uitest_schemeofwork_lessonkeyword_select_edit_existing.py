@@ -39,6 +39,7 @@ class uitest_schemeofwork_lessonkeyword_select_edit_existing(UITestCase):
             self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
             
             elem.send_keys(Keys.RETURN)
+            print("KEYWORD RESTORED!!!!")
         pass
 
 

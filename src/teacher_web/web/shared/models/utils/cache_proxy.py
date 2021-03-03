@@ -14,9 +14,9 @@ class CacheProxy:
 
     @classmethod
     def print_cache(cls, request, print_key = None):
-        print("SESSION>>>>>>>>>>>>>>>>>>>>")
+        print("SESSION...")
         for key, value in request.session.items():
             if print_key is not None and print_key not in key:
                 continue
             print('{} => {}'.format(key, value))
-        print("<<<<<<<<<<<<<<<<<<<< SESSION")
+        print("...SESSION")
