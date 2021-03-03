@@ -3,10 +3,12 @@ from unittest.mock import Mock, MagicMock, patch
 from unittest import skip
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_ks123pathway import KS123PathwayModel, handle_log_info
+from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(TeacherPermissionModel, "get_model", return_value=fake_teacher_permission_model())
 class test_db__get_options(TestCase):
 
     def setUp(self):
@@ -19,7 +21,7 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -30,7 +32,7 @@ class test_db__get_options(TestCase):
                 KS123PathwayModel.get_options(self.fake_db, year_id = 1, topic_id = 1)
           
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_result = []
 
@@ -48,7 +50,7 @@ class test_db__get_options(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_result = [(1,"Recognises that digital content can be represented in many forms. (AB) (GE)")]
 
@@ -68,7 +70,7 @@ class test_db__get_options(TestCase):
             self.assertEqual("Recognises that digital content can be represented in many forms. (AB) (GE)", rows[0].objective, "First item not as expected")
             
             
-    def test__should_call_select__return_multiple_items(self, mock_auth_user):
+    def test__should_call_select__return_multiple_items(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_result = [
             (10,"Designs solutions (algorithms) that use repetition and two-way selection i.e. if, then and else. (AL)"),

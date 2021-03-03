@@ -49,7 +49,7 @@ def approve(request, institute_id, department_id, scheme_of_work_id, teacher_id)
 
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
-    approve_viewmodel = TeamPermissionApproveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
+    approve_viewmodel = TeamPermissionApproveViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, teacher_id=teacher_id, auth_user=auth_ctx)
     approve_viewmodel.execute()
 
     return HttpResponseRedirect(reverse("team-permissions.index", args=[institute_id, department_id]))

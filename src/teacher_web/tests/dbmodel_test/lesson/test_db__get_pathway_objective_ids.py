@@ -5,6 +5,7 @@ from shared.models.cls_lesson import LessonModel, handle_log_info
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(TeacherPermissionModel, "get_model", return_value=fake_teacher_permission_model())
 class test_db__get_pathway_objective_ids(TestCase):
     
     def setUp(self):
@@ -16,7 +17,7 @@ class test_db__get_pathway_objective_ids(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -27,7 +28,7 @@ class test_db__get_pathway_objective_ids(TestCase):
                 LessonModel.get_pathway_objective_ids(self.fake_db, 21)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_auth_user, mock_teacher_permission):
         # arrange
         expected_result = []
 
@@ -46,7 +47,7 @@ class test_db__get_pathway_objective_ids(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_auth_user, mock_teacher_permission):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[("87",)]):
@@ -67,7 +68,7 @@ class test_db__get_pathway_objective_ids(TestCase):
             self.assertEqual(87, actual_results[0])
 
 
-    def test__should_call_select__return_multiple_item(self, mock_auth_user):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user, mock_teacher_permission):
         # arrange
 
         with patch.object(ExecHelper, 'select', return_value=[("1034",),("1045",),("12",) ]):

@@ -1,3 +1,4 @@
+from django.conf import settings
 from datetime import datetime, timedelta
 
 class running_time_log():
@@ -55,20 +56,24 @@ class running_time():
 
     def __call__(self, func):
         def inner(*args, **kwargs):
-
-            s1 = datetime.now()
-
-            # calling function
-            res = func(*args, **kwargs)
-
-            s2 = datetime.now()
             
-            timespan = s2 - s1
-            
-            if timespan > timedelta(microseconds=self.max_benchmark_ms):
-                self.write(func, args, timespan.total_seconds())
+            if settings.DEBUG == True or str(settings.DEBUG).upper() == "TRUE":
+                
+                s1 = datetime.now()
 
-            return res
+                # calling function
+                res = func(*args, **kwargs)
+
+                s2 = datetime.now()
+                
+                timespan = s2 - s1
+                
+                if timespan > timedelta(microseconds=self.max_benchmark_ms):
+                    self.write(func, args, timespan.total_seconds())
+
+                return res
+            else:
+                return func(*args, **kwargs)
 
 
         return inner
