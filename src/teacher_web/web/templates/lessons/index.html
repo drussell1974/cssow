@@ -119,7 +119,7 @@
       
     </div>
     <p class="post-meta">
-      <a href="{% student_uri row.scheme_of_work_id row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
+      <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" class="float-right small">{{_("student portal")}} <i class="fa fa-globe student_portal--link"></i></a>
       {{_("Created by")}}
       <a href="#">{{ row.created_by_name }}</a>
       {% if row.created %}

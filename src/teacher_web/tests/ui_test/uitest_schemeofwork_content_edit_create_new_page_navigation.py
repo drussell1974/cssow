@@ -27,7 +27,7 @@ class uitest_schemeofwork_content_edit_create_new_page_navigation(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
-        self.assertFooterContextText("dave Test User")
+        self.assertFooterContextText("test@localhost Computer Science")
 
 
     """ Breadcrumb """

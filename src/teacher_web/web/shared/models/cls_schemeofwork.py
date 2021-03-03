@@ -25,20 +25,23 @@ class SchemeOfWorkContextModel(BaseContextModel):
 
 
     @classmethod
-    def get_context_model(cls, db, scheme_of_work_id, auth_user_id):
+    def get_context_model(cls, db, institute_id, department_id, scheme_of_work_id, auth_user_id):
         
         empty_model = cls.empty()
 
         result = BaseContextModel.get_context_model(db, empty_model, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
+        result.institute_id = institute_id
+        result.department_id = department_id
+
         return result if result is not None else None
 
 
     @classmethod
-    def cached(cls, request, db, scheme_of_work_id, auth_user_id):
+    def cached(cls, request, db, institude_id, department_id, scheme_of_work_id, auth_user_id):
 
         scheme_of_work = cls.empty()
             
-        cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", cls.get_context_model, scheme_of_work_id, auth_user_id)
+        cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", cls.get_context_model, institude_id, department_id, scheme_of_work_id, auth_user_id)
 
         if cache_obj is not None:
             scheme_of_work.from_dict(cache_obj)

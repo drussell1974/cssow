@@ -44,5 +44,5 @@ class uitest_schemeofwork_default_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        ''' TEMPORARILY SET TO 5 SHOULD BE 3 '''
-        self.assertEqual(5, result, "number of elements not as expected")
+        ''' TEMPORARILY SET TO 4 SHOULD BE 3 '''
+        self.assertEqual(4, result, "number of elements not as expected")

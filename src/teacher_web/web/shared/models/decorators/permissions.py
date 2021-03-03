@@ -3,11 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from shared.models.core.django_helper import on_not_found
 from shared.models.core.log_handlers import handle_log_info, handle_log_warning, handle_log_error
-from shared.models.enums.permissions import SCHEMEOFWORK, LESSON 
 from shared.models.core.context import AuthCtx
-from shared.models.cls_teacher_permission import TeacherPermissionModel
-from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
-from shared.models.utils.cache_proxy import CacheProxy
 
 DEFAULT_INSTITUTE_ID = 0
 DEFAULT_DEPARTMENT_ID = 0
@@ -61,23 +57,8 @@ class min_permission_required:
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
             
             auth_ctx = AuthCtx(db, request, **kwargs)
-            
-            #323 get light weight context model '''
 
-            scheme_of_work = SchemeOfWorkContextModel.empty(ctx=auth_ctx)
-            
-            cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", SchemeOfWorkContextModel.get_context_model, scheme_of_work_id, auth_ctx.auth_user_id)
-            if cache_obj is not None:
-                # convert dictionary cache to scheme of work
-                scheme_of_work.from_dict(cache_obj)
-                
-            ''' teacher_id and auth_user are the same in this call '''
-
-            # get the permissions for the current user
-            
-            model = TeacherPermissionModel.get_model(db, teacher_id=auth_ctx.auth_user_id, scheme_of_work=scheme_of_work, auth_user=auth_ctx)
-            
-            if model.check_permission(self._permission) == False:
+            if auth_ctx.teacher_permission is None or auth_ctx.teacher_permission.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."
                 

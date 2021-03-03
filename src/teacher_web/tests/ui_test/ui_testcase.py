@@ -7,6 +7,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 
+class print_fnc_name():
+    """ decorator for printing the name of the function """
+    
+    def __call__(self, func):
+        """ the parent function """
+        def inner(*args, **kwargs):
+            print(func.__name__)
+            
+        return inner
+
+
 def WebBrowserContext():
 
     ''' Uncomment Chrome driver -- chromedriver.exe '''
@@ -160,7 +171,7 @@ class UITestCase(TestCase):
         Makes an attempt to log in, if the page has been redirected.
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
-        print(f"do_log_in: {redirect_to_uri_on_login}")
+        #print(f"do_log_in: {redirect_to_uri_on_login}")
         enter_username = enter_username if enter_username is not None else TEST_USER_NAME
         enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
 
@@ -205,7 +216,7 @@ class UITestCase(TestCase):
         
         # Ensure element is visible
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        
+        self.wait(s=2)
         elem.click()
         
 

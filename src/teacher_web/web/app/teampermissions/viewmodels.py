@@ -35,7 +35,10 @@ class TeamPermissionIndexViewModel(BaseViewModel):
 
         data = {
                 "authorised_permissions": authorised_permissions,
-                "pending_permissions": pending_permissions
+                "pending_permissions": pending_permissions,
+                "department_permission_options": list(DEPARTMENT),
+                "scheme_of_work_permission_options": list(SCHEMEOFWORK),
+                "lesson_permission_options": list(LESSON),
             }
         
         return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data)
@@ -110,11 +113,12 @@ class TeamPermissionEditViewModel(BaseViewModel):
 
 class TeamPermissionApproveViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, teacher_id, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, teacher_id, auth_user):
+        self.request = request
         self.teacher_id = teacher_id
         self.scheme_of_work_id = scheme_of_work_id
         self.auth_user = auth_user
-
+        
         # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, self.scheme_of_work_id, auth_user=auth_user)
         
@@ -135,7 +139,11 @@ class TeamPermissionApproveViewModel(BaseViewModel):
     def execute(self):
         if self.model is not None:
             # can now approve
-            
+
+            self.model.department_permission = self.request.POST.get("department_permission", 0)
+            self.model.scheme_of_work_permission = self.request.POST.get("scheme_of_work_permission", 0)
+            self.model.lesson_permission = self.request.POST.get("lesson_permission", 0)
+
             self.model.is_authorised = True
             
             self.model.validate()

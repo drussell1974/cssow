@@ -70,15 +70,15 @@ x=$(($x+$?))
 ## end test
 
 ## start test
-echo yarn test-ui--admin: running... uitest_schemeofwork_schemesofworkkeyword_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
+echo yarn test-ui--admin: running... uitest_schemeofwork_lessonkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
 # increment
 x=$(($x+$?))
 ## end test
 
 ## start test
-echo yarn test-ui--admin: running... uitest_schemeofwork_lessonkeyword_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
+echo yarn test-ui--admin: running... uitest_schemeofwork_schemesofworkkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
 # increment
 x=$(($x+$?))
 ## end test

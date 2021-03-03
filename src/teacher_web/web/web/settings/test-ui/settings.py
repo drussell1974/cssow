@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
 SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY']
-        
+
 # SECURITY WARNING: don't run with debug or stack trace turned on in production!
-DEBUG = os.environ['TEACHER_WEB__WEB_SERVER_DEBUG']
+DEBUG = bool(os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'])
 
 ALLOWED_HOSTS = [
     "jtc10",

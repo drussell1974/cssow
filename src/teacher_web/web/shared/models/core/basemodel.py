@@ -255,7 +255,7 @@ class BaseContextModel(BaseModel):
         self.auth_user_id = dict_obj.get("auth_user_id")
         self.department_id = dict_obj.get("department_id", 0)
         self.institute_id = dict_obj.get("institute_id", 0)
-
+        self.is_from_db = dict_obj.get("is_from_db")
 
     # TODO: move to DataModel
     @staticmethod
@@ -281,7 +281,7 @@ class BaseContextModel(BaseModel):
                 model.created_by_id = row[3]
                 model.published = row[4]
                 model.set_published_state()
-                
+                model.is_from_db = True
         return model
 
 

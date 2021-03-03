@@ -1,5 +1,4 @@
 {% extends '_partials/__layout.onecolumn.html' %}
-{% load student_uri %}
 
 
 {% block head_js %} 
@@ -52,7 +51,6 @@
             </a>
           </div>
             <p class="post-meta">{{_("Created by")}}
-              <a href="{% student_uri row.id %}" target="_blank"><i class="fa fa-globe float-right student_portal--link"></i></a>
               <a href="#">{{ row.created_by_name }}</a>
               {% if row.created == True %}
                 on {{ row.get_ui_created }}

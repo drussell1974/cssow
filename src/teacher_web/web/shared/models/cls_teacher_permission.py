@@ -5,7 +5,6 @@ from django.db import models
 from enum import Enum
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.core.db_helper import ExecHelper, sql_safe
-from shared.models.core.context import AuthCtx
 from shared.models.core.basemodel import BaseModel
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -109,7 +108,7 @@ class TeacherPermissionModel(BaseModel):
         
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
         
-        model = TeacherPermissionModel.empty(scheme_of_work.institute_id, scheme_of_work.department_id, scheme_of_work, auth_user) # Default
+        model = TeacherPermissionModel.empty(auth_user.institute_id, auth_user.department_id, scheme_of_work, auth_user) # Default
 
         # NOTE: default valid if scheme of work is 0
         model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
@@ -155,7 +154,7 @@ class TeacherPermissionModel(BaseModel):
             )
 
             cur_scheme_of_work.teacher_permissions.append(model)
-
+            
         return data
 
 
