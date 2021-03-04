@@ -66,6 +66,7 @@ class LessonsPage extends React.Component {
                 institute={this.state.Institute}
                 site={this.state.Site}
                 socialmediadata={this.state.socialmediadata}
+                loading={this.state.loading}
             />
         )
     }
