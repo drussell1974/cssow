@@ -22,7 +22,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # arrange
         
-        test_context = ViewModel(db=self.mock_db, model=None, scheme_of_work_id=23, auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, model=None, scheme_of_work_id=23, lesson_id=101, auth_user=mock_auth_user)
         
         with self.assertRaises(AttributeError):
             # act
@@ -35,7 +35,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         # arrange
         on_find_or_create__create_new_instance = Model(15, "Database","",13)
         
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(15,"Database","", 13), auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(15,"Database","", 13), lesson_id=101, auth_user=mock_auth_user)
         
         test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
 
@@ -61,7 +61,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # act
 
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(112, "Unit Testing", "new definition", 13), auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(112, "Unit Testing", "new definition", 13), lesson_id=101, auth_user=mock_auth_user)
         test_context._find_keyword_by_id = Mock(return_value=data_to_return)
         
         with patch.object(Model, "save", return_value=data_to_return):
@@ -84,7 +84,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # act
 
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "Unit Test", scheme_of_work_id=13), auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "Unit Test", scheme_of_work_id=13), lesson_id=101, auth_user=mock_auth_user)
         #test_context._find_by_term = Mock(return_value=on_find_or_create__create_new_instance)
         
         with patch.object(Model, "save", return_value=new_instance_to_save):
@@ -105,7 +105,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
 
         # arrange
         
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model= Model(0, "", scheme_of_work_id=13), auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model= Model(0, "", scheme_of_work_id=13), lesson_id=101, auth_user=mock_auth_user)
         
         with patch.object(Model, "save"):
             # act
@@ -130,7 +130,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         # arrange
 
         # start with new object id=0
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "New Keyword", scheme_of_work_id=13), auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=13, model=Model(0, "New Keyword", scheme_of_work_id=13), lesson_id=101, auth_user=mock_auth_user)
  
         #test_context._find_by_term = MagicMock(return_value=on_find_or_create__find_existing_instance)
         
@@ -151,7 +151,7 @@ class test_viewmodel_SaveListViewModel(TestCase):
         
         # arrange
         
-        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=34, model='{"id":999,"term":"non-existing object","definition":""}', auth_user=mock_auth_user)
+        test_context = ViewModel(db=self.mock_db, scheme_of_work_id=34, model='{"id":999,"term":"non-existing object","definition":""}', lesson_id=101, auth_user=mock_auth_user)
         test_context._find_keyword_by_id = Mock(return_value=None)
         
         with patch.object(Model, "save", return_value=None):

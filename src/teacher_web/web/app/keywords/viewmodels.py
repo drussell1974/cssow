@@ -121,11 +121,12 @@ class KeywordGetModelViewModel(BaseViewModel):
 class KeywordSaveViewModel(BaseViewModel):
 
 
-    def __init__(self, db, scheme_of_work_id, model, auth_user):
+    def __init__(self, db, scheme_of_work_id, lesson_id, model, auth_user):
 
         self.db = db
         self.auth_user = auth_user
         self.scheme_of_work_id = scheme_of_work_id
+        self.lesson_id = lesson_id
         self.model = model
 
 
@@ -139,7 +140,7 @@ class KeywordSaveViewModel(BaseViewModel):
         self.model.validate()
 
         if self.model.is_valid == True or published == STATE.DELETE:
-            data = Model.save(self.db, self.model, self.auth_user)
+            data = Model.save(self.db, self.model, lesson_id=self.lesson_id, auth_user=self.auth_user)
             self.model = data   
         else:
             handle_log_warning(self.db, self.scheme_of_work_id, "saving keyword", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
@@ -150,7 +151,7 @@ class KeywordSaveViewModel(BaseViewModel):
 class KeywordDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, scheme_of_work_id, auth_user):
-        data = Model.delete_unpublished(db, scheme_of_work_id, auth_user)
+        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id=0, auth_user=auth_user)
         self.model = data
 
 
