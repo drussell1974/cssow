@@ -19,7 +19,7 @@ class InstitutePage extends React.Component {
             error: {}
         }
 
-        this.institute_id = 2; //props.match.params.institute_id;
+        this.institute_id = props.match.params.institute_id;
     }
 
     componentDidMount() {
