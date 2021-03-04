@@ -33,10 +33,10 @@ class AuthCtx(Ctx):
 
         self.department = DepartmentContextModel.cached(request, db, self.institute_id, self.department_id, self.auth_user_id)
         # TODO: #323 check ownership and set can_view
-
+        
         self.institute = InstituteContextModel.cached(request, db, self.institute_id, self.auth_user_id)        
         # TODO: #323 check ownership and set can_view
-
+        
         self.scheme_of_work = SchemeOfWorkContextModel.cached(request, db, self.institute_id, self.department_id, self.scheme_of_work_id, self.auth_user_id)      
         # TODO: #323 check ownership and set can_view  
         
