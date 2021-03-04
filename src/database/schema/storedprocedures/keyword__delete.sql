@@ -15,7 +15,7 @@ BEGIN
     ELSE
 		DELETE FROM sow_key_word
 		-- UPDATE sow_key_word
-		-- SET published = 64
+		-- SET published = 64	
 		WHERE id = p_keyword_id and scheme_of_work_id = p_scheme_of_work_id
 			AND p_auth_user IN (SELECT auth_user_id 
 								FROM sow_teacher 
