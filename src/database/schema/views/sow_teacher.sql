@@ -13,6 +13,7 @@ AS
 		-- teach.scheme_of_work_id AS scheme_of_work_id, 
         user.first_name as first_name, 
         user.last_name as last_name, 
+        teach.scheme_of_work_id as scheme_of_work_id,
         teach.scheme_of_work_permission as scheme_of_work_permission, 
         teach.lesson_permission as lesson_permission,
         teach.department_permission as department_permission
