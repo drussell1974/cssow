@@ -1,44 +1,91 @@
 {% extends '_partials/__layout.onecolumn.html' %}
 {% block header %}
 <div class="site-heading">
-  <h1>{{_('Account')}}</h1>
+  <h1>{{request.user.first_name}}</h1>
   <span class="subheading" id="main-subheading">{{_('Your profile')}}</span>
 </div>
 {% endblock %}
 
 {% block maincontent %}
+  
   {% if request.user.is_authenticated %}
-    <h1>{{request.user.first_name}}</h1>
-    <div>
-      <h2>Password</h2>
-        <div>
-            <a class="btn" href="{% url 'password_change' %}" id="btn-password_change">
-              <i class="fa fa-key"></i> {{_("Change password")}}
-            </a>
+    <div id="accordion">
+      <!-- My Institutes-->
+      <div class="card">
+        <div class="card-header" id="headingMyInstitutes">
+          <h5 class="mb-0">
+            <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseMyInstitutes" aria-expanded="false" aria-controls="collapseMyInstitutes" id="btn-expand-heading-my_institutes">{{_("My institutes")}}</button>
+          </h5>
         </div>
-
-        {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 and content.ctx is not None %}
-        <div>
-          <a class="btn" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-password_change">
-            <i class="fa fa-users"></i> {{_("Team permissions")}}
-          </a>
+        <div id="collapseMyInstitutes" class="collapse" aria-labelledby="headingMyInstitutes" data-parent="#accordion">
+          <div class="card-body">
+          
+            {% include '_partials/widget.content.institutes.html' %}
+            
+          </div>
+        </div>
       </div>
-      {% endif %}
-      
-      {% if request.user.is_superuser %}
-        <h2>{{_('Super user')}}</h2>
-        <div>
-            <a class="btn" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
+      <!-- Latest Schemes of work -->
+      <div class="card">
+        <div class="card-header" id="headingMyLatestSchemesOfWork">
+          <h5 class="mb-0">
+            <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseMyLatestSchemesOfWork" aria-expanded="false" aria-controls="collapseMyLatestSchemesOfWork" id="btn-expand-heading-latest_schemes_of_work">{{_("My Latest Schemes of Work")}}</button>
+          </h5>
         </div>
-      {% endif %}
-    </div>
-  {% endif %}
-  
-  <section id="section-latest_schemesofwork" class="jumbotron">
-    <!-- Scheme of works -->
-  <span class="subheading">My Latest Schemes of Work</span>
-  
-  {% include '_partials/widget.content.latest_schemes_of_work.html' %}
+        <div id="collapseMyLatestSchemesOfWork" class="collapse" aria-labelledby="headingMyLatestSchemesOfWork" data-parent="#accordion">
+          <div class="card-body">
+          
+            {% include '_partials/widget.content.latest_schemes_of_work.html' %}
+            
+          </div>
+        </div>
+      </div>
+      <!-- My Team -->
+      <div class="card">
+        <div class="card-header" id="headingMyTeam">
+          <h5 class="mb-0">
+            <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseMyTeam" aria-expanded="false" aria-controls="collapseMyTeam" id="btn-expand-heading-my_team">{{_("Manage my Team")}}</button>
+          </h5>
+        </div>
+        <div id="collapseMyTeam" class="collapse" aria-labelledby="headingMyTeam" data-parent="#accordion">
+          <div class="card-body">    
+            {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 and content.ctx is not None %}
+            <div>
+              <a class="btn" href="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-password_change"><i class="fa fa-users"></i> {{_("Team permissions")}}</a>
+            </div>
+            {% else %}
+            {{_("Coming soon")}}
+          {% endif %}
+          </div>
+        </div>
+      </div>
+      <!-- Account -->
+      <div class="card">
+        <div class="card-header" id="headingMyAdmin">
+          <h5 class="mb-0">
+            <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseMyAdmin" aria-expanded="false" aria-controls="collapseMyAdmin" id="btn-expand-heading-my_admin">{{_("Account admin")}}</button>
+          </h5>
+        </div>
+    
+        <div id="collapseMyAdmin" class="collapse" aria-labelledby="headingMyAdmin" data-parent="#accordion">
+          <div class="card-body">
+              <a class="btn" href="{% url 'password_change' %}" id="btn-password_change--content">
+                <i class="fa fa-key"></i> {{_("Change password")}}
+              </a>
 
-  </section>
+              {% if request.user.is_superuser %}
+              <h2>{{_('Super user')}}</h2>
+              <div>
+                  <a class="btn" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+  {{_("Nothing to see here")}}
+  {% endif %}
+ 
+
 {% endblock %}

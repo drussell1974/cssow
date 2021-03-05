@@ -1,0 +1,21 @@
+
+      <!-- Institute -->
+      {% for row in content.data.institutes %}
+        <div class="post-preview post-preview--institute {{ row.published_state }}">
+          <a id="lnk-institute-{{row.id}}" href="{% url 'institute.index' %}">
+            <h2 class="post-title">
+                {{ row.name }}
+            </h2>
+            <h3 class="post-subtitle">
+              <a id="lnk-departments--{{row.id}}" href="{% url 'department.index' row.id %}">{{ row.name }}</a>
+            </h3>
+          </a>
+          <p class="post-meta">Created by
+            <a href="#">{{ row.created_by_name }}</a>
+            {% if row.created %}
+              on {{ row.created }}
+            {% endif %}
+        </div>
+        <hr>
+      {% endfor %}
+      <!-- Institutes END -->

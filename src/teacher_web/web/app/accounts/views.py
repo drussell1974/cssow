@@ -8,7 +8,7 @@ from django.views import generic
 from shared.models.core.context import AuthCtx
 from shared.view_model import ViewModel
 
-from .viewmodels import RegisterTeacherForm, AccountSchemeOfWorkGetLatestViewModel
+from .viewmodels import RegisterTeacherForm, AccountIndexViewModel
 
 # Create your views here.
 @login_required()
@@ -20,7 +20,7 @@ def index(request):
     
     # get the schemes of work
     #253 check user id
-    modelview = AccountSchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_ctx)
+    modelview = AccountIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 
