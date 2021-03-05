@@ -14,7 +14,7 @@
     {% include '_partials/widget.content.showcase.html' %}
   
   </section>
-  
+  <hr>
   {% if request.user.is_authenticated and content.data.institutes|length > 0 %}
     <section id="section-institutes" class="jumbotron">
       <!-- My institutes -->
@@ -23,6 +23,7 @@
       {% include '_partials/widget.content.institutes.html' %}
 
     </section>
+    <hr>
   {% endif %}
 
   <section id="section-latest_schemesofwork" class="jumbotron">
