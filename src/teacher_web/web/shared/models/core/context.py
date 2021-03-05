@@ -44,6 +44,9 @@ class AuthCtx(Ctx):
         self.scheme_of_work_permission = SCHEMEOFWORK.OWNER if request.user.id == self.institute.created_by_id else SCHEMEOFWORK.NONE
         self.lesson_permission = LESSON.OWNER if request.user.id == self.institute.created_by_id else LESSON.NONE
 
+        self.teacher_permission = TeacherPermissionModel.empty(institute_id, department_id, None, self)
+        self.teacher_permission.is_authorised = (self.auth_user_id == self.institute.created_by_id)
+        
         if self.auth_user_id is not None and self.auth_user_id > 0:
             self.teacher_permission = TeacherPermissionModel.get_model(db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)
             if self.teacher_permission.is_from_db == True:
