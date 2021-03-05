@@ -16,9 +16,39 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
+
+
+class AccountIndexViewModel(BaseViewModel):
+    
+    def __init__(self, db, top, auth_user):
+        self.latest_schemes_of_work = []
+        self.db = db
+        self.auth_user = auth_user
+
+        try:
+            # get institutes
+            self.institutes = InstituteModel.get_my(self.db, auth_user=auth_user)
+
+            # get latest_schemes_of_work
+            self.latest_schemes_of_work = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
+
+        except Exception as e:
+            self.error_message = repr(e)
+
+
+    def view(self, main_heading, sub_heading):
+        
+        data = {
+            "institutes": self.institutes,
+            "latest_schemes_of_work":self.latest_schemes_of_work,
+        }
+        
+        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+
 
 # 206 inherit RegisteredUserForm from UserCreationForm to include new fields
 class RegisterTeacherForm(UserCreationForm):

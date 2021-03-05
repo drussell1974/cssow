@@ -21,6 +21,13 @@ x=$(($x+$?))
 ## end test
 
 ## start test
+echo yarn test-ui--admin: Testing... uitest_accounts_
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
+# increment
+x=$(($x+$?))
+## end test
+
+## start test
 echo yarn test-ui--admin: Testing... uitest_institute_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
 # increment

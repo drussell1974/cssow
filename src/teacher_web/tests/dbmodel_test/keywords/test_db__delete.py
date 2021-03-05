@@ -28,7 +28,7 @@ class test_db__delete(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.delete(self.fake_db, model, mock_auth_user)
+                Model.delete(self.fake_db, model, lesson_id=0, auth_user=mock_auth_user)
 
 
     def test_should_call__delete(self, mock_auth_user):
@@ -40,13 +40,13 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.delete(self.fake_db, model, mock_auth_user)
+            actual_result = Model.delete(self.fake_db, model, lesson_id=0, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'keyword__delete'
-             , (797, 12, mock_auth_user.auth_user_id)
+             , (797, 0, 12, mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(expected_result, actual_result)

@@ -27,14 +27,16 @@ BEGIN
       ins.id as institute_id,
       ins.name as institute_name
 	FROM sow_scheme_of_work as sow 
-    INNER JOIN sow_department as dep ON dep.id = sow.department_id
-    INNER JOIN sow_institute as ins ON ins.id = dep.institute_id
-    LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id 
-    LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id 
-    LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
-    LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
-    LEFT JOIN auth_user as user ON user.id = sow.created_by 
-    WHERE p_show_published_state % sow.published = 0 
+		INNER JOIN sow_department as dep ON dep.id = sow.department_id
+		INNER JOIN sow_institute as ins ON ins.id = dep.institute_id
+		LEFT JOIN sow_lesson as le ON le.scheme_of_work_id = sow.id 
+		LEFT JOIN sow_learning_objective__has__lesson as lo_le ON lo_le.lesson_id = le.id 
+		LEFT JOIN sow_exam_board as exam ON exam.id = sow.exam_board_id 
+		LEFT JOIN sow_key_stage as kys ON kys.id = sow.key_stage_id  
+		LEFT JOIN auth_user as user ON user.id = sow.created_by 
+    WHERE p_show_published_state % sow.published = 0
+		and (dep.id = p_department_id or p_department_id = 0)
+        and (ins.id = p_institute_id or p_institute_id = 0)
     ORDER BY sow.created DESC LIMIT p_top_n;
 END;
 //

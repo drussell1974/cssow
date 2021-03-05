@@ -127,6 +127,25 @@ class InstituteModel(InstituteContextModel):
 
 
     @staticmethod
+    def get_my(db, auth_user):
+        
+        rows = InstituteDataAccess.get_my(db, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
+        data = []
+        for row in rows: 
+            model = InstituteModel(id_=row[0],
+                                    name=row[1],
+                                    created=row[2],                                                                                                                                                                                                                         
+                                    created_by_id=row[3],
+                                    created_by_name=row[4],
+                                    published=row[5])
+            
+            model.number_of_departments = InstituteModel.get_number_of_departments(db, model.id, auth_user)
+            
+            data.append(model)
+        return data
+
+
+    @staticmethod
     def get_options(db, auth_user):
         rows = InstituteDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id)
         data = []
@@ -201,6 +220,23 @@ class InstituteDataAccess:
         execHelper = ExecHelper()
         
         select_sql = "institute__get_all" 
+        params = (int(show_published_state), auth_user_id,)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+
+        return rows
+
+
+    @staticmethod
+    def get_my(db, show_published_state, auth_user_id):
+        """
+        get my inistutions
+        """
+        
+        execHelper = ExecHelper()
+        
+        select_sql = "institute__get_my" 
         params = (int(show_published_state), auth_user_id,)
 
         rows = []

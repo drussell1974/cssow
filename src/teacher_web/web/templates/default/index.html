@@ -1,6 +1,5 @@
 {% extends '_partials/__layout.landingpage.html' %}
 
-
 {% block head_js %} 
   <!-- #295: Google Analytics script.googleanalytics.html partial -->
   {% include '_partials/script.googleanalytics.html' %}
@@ -10,29 +9,29 @@
 
   {% block maincontent %}
 
-    <section id="section-latest_schemesofwork" class="jumbotron">
-        <!-- Scheme of works -->
-      <span class="subheading">Latest Schemes of Work</span>
-      
-      <!-- Scheme of works -->
-      {% for row in content.data.latest_schemes_of_work %}
-        <div class="post-preview post-preview-schemeofwork {{ row.published_state }}">
-          <a id="lnk-schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.institute.id row.department.id row.id %}">
-            <h2 class="post-title">
-                {{ row.name }}
-            </h2>
-            <h3 class="post-subtitle">
-              <a id="lnk-departments-{{row.institute.id}}--{{row.id}}" href="{% url 'department.index' row.institute.id %}">{{ row.institute.name }}</a>
-            </h3>
-          </a>
-          <p class="post-meta">Created by
-            <a href="#">{{ row.created_by_name }}</a>
-            {% if row.created %}
-              on {{ row.created }}
-            {% endif %}
-        </div>
-        <hr>
-      {% endfor %}
-      <!-- Scheme of works END -->
+  <section id="section-showcase" class="overlay">
+
+    {% include '_partials/widget.content.showcase.html' %}
+  
+  </section>
+  <hr>
+  {% if request.user.is_authenticated and content.data.institutes|length > 0 %}
+    <section id="section-institutes" class="jumbotron">
+      <!-- My institutes -->
+    <span class="subheading">{{_("My Institutes")}}</span>
+    
+      {% include '_partials/widget.content.institutes.html' %}
+
     </section>
-  {% endblock %}
+    <hr>
+  {% endif %}
+
+  <section id="section-latest_schemesofwork" class="jumbotron">
+      <!-- Scheme of works -->
+    <span class="subheading">{{_("Latest Schemes of Work")}}</span>
+    
+      {% include '_partials/widget.content.latest_schemes_of_work.html' %}
+
+  </section>
+
+{% endblock %}

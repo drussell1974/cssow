@@ -33,7 +33,7 @@ class test_db__save__lesson(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.save(self.fake_db, model, mock_auth_user)
+                Model.save(self.fake_db, model, lesson_id=0, auth_user=mock_auth_user)
 
 
     def test_should_call__upsert__when__is_new__true(self, mock_auth_user):
@@ -51,7 +51,7 @@ class test_db__save__lesson(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, mock_auth_user)
+            actual_result = Model.save(self.fake_db, model, lesson_id=0, auth_user=mock_auth_user)
 
             # assert
 

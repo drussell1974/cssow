@@ -163,7 +163,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
+    save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(published_state)
 
@@ -215,7 +215,7 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    KeywordModel.delete(db, keyword_id, auth_ctx)
+    KeywordModel.delete(db, keyword_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
 
@@ -238,6 +238,6 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
-    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))

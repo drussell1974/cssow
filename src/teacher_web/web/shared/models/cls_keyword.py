@@ -157,10 +157,10 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):
+    def save(db, model, lesson_id, auth_user):
         """ save model """
         if model.published == STATE.DELETE:
-            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+            data = KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, lesson_id=lesson_id, auth_user_id=auth_user.auth_user_id)
         else:
             if model.is_new():
                 data = KeywordDataAccess._insert(db, model, model.scheme_of_work_id, model.published, auth_user_id=auth_user.auth_user_id)
@@ -175,13 +175,13 @@ class KeywordModel(BaseModel):
 
 
     @staticmethod
-    def delete(db, model, auth_user):
-        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+    def delete(db, model, lesson_id, auth_user):
+        return KeywordDataAccess.delete(db, model.id, model.scheme_of_work_id, lesson_id=lesson_id, auth_user_id=auth_user.auth_user_id)
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user):
-        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user):
+        rows = KeywordDataAccess.delete_unpublished(db, scheme_of_work_id, lesson_id=lesson_id, auth_user_id=auth_user.auth_user_id)
         return rows
 
 
@@ -349,28 +349,28 @@ class KeywordDataAccess:
  
 
     @staticmethod
-    def delete(db, id, scheme_of_work_id, auth_user_id):
+    def delete(db, id, scheme_of_work_id, lesson_id, auth_user_id):
         """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete"
             
-        params = (id, scheme_of_work_id, auth_user_id)
+        params = (id,  lesson_id, scheme_of_work_id, auth_user_id)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
 
 
     @staticmethod
-    def delete_unpublished(db, scheme_of_work_id, auth_user_id):
+    def delete_unpublished(db, scheme_of_work_id, lesson_id, auth_user_id):
         """ Delete all unpublished keywords for the scheme of work"""
 
         execHelper = ExecHelper()
         
         str_delete = "keyword__delete_unpublished"
-        params = (scheme_of_work_id, auth_user_id)
-    
+        params = (lesson_id, scheme_of_work_id, auth_user_id)
+        
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval
 

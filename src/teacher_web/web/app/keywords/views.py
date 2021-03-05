@@ -128,7 +128,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     redirect_to_url = ""
 
     #253 check user id
-    save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, model=model, auth_user=auth_ctx)
+    save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=0, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(published_state)
 
@@ -173,7 +173,7 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword
     redirect_to_url = request.META.get('HTTP_REFERER')
 
     #253 check user id
-    KeywordModel.delete(db, keyword_id, auth_ctx)
+    KeywordModel.delete(db, keyword_id, lesson_id=0, auth_user=auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
 

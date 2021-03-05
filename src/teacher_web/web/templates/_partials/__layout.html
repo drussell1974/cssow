@@ -38,6 +38,9 @@
           <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
           <div class="dropdown-menu">
 
+            <a class="dropdown-item" href="{% url 'accounts.index' %}"><i class="fa fa-user"></i> 
+              {{_("My profile")}}
+            </a>
             {% if content.ctx.institute.id > 0 and content.ctx.department.id > 0 %}
               <!-- Button trigger modal -->
               <button type="button" class="dropdown-item "  data-toggle="modal" data-target="#contextModal">

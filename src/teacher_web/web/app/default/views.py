@@ -4,7 +4,7 @@ from django.db import connection as db
 from django.http import HttpResponse
 from shared.models.core.context import AuthCtx
 from shared.view_model import ViewModel
-from .viewmodels import SchemeOfWorkGetLatestViewModel
+from .viewmodels import DefaultIndexViewModel
 
 # Create your views here.
 def index(request):
@@ -13,7 +13,7 @@ def index(request):
     
     # get the schemes of work
     #253 check user id
-    modelview = SchemeOfWorkGetLatestViewModel(db=db, top=5, auth_user=auth_ctx)
+    modelview = DefaultIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
     view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
 

@@ -30,7 +30,7 @@ class test_db__deleteunpublished(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=1, auth_user=mock_auth_user)
+                KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=1, lesson_id=0, auth_user=mock_auth_user)
 
 
     def test_should_call__delete(self, mock_auth_user):
@@ -39,12 +39,12 @@ class test_db__deleteunpublished(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=13, auth_user=mock_auth_user)
+            actual_result = KeywordModel.delete_unpublished(self.fake_db, scheme_of_work_id=13, lesson_id=0, auth_user=mock_auth_user)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
                 'keyword__delete_unpublished'
-                , (13, mock_auth_user.auth_user_id)
+                , (0, 13, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(5, actual_result)

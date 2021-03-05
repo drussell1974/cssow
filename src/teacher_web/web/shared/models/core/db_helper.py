@@ -92,7 +92,7 @@ class ExecHelper:
         self.end_transaction()
 
 
-    @running_time(max_benchmark_ms=10000, arg_idx=2)
+    @running_time(max_benchmark_ms=50000, arg_idx=2)
     def select(self, db, sql, params, result, log_info=None):
         ''' run the sql statement '''
         self.begin(db)
