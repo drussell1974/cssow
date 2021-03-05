@@ -54,7 +54,7 @@ class AuthCtx(Ctx):
             self.teacher_permission = None
             self.department_permission = DEPARTMENT.NONE
             self.scheme_of_work_permission = SCHEMEOFWORK.NONE
-            self.lesson_permission = LESSON.NON
+            self.lesson_permission = LESSON.NONE
 
 
     def __repr__(self):
