@@ -1,6 +1,5 @@
 {% extends '_partials/__layout.landingpage.html' %}
 
-
 {% block head_js %} 
   <!-- #295: Google Analytics script.googleanalytics.html partial -->
   {% include '_partials/script.googleanalytics.html' %}
@@ -10,11 +9,28 @@
 
   {% block maincontent %}
 
-    <section id="section-latest_schemesofwork" class="jumbotron">
-        <!-- Scheme of works -->
-      <span class="subheading">Latest Schemes of Work</span>
-      
-      {% include '_partials/widget.content.latest_schemes_of_work.html' %}
+  <section id="section-showcase" class="overlay">
+
+    {% include '_partials/widget.content.showcase.html' %}
+  
+  </section>
+  
+  {% if request.user.is_authenticated and content.data.institutes|length > 0 %}
+    <section id="section-institutes" class="jumbotron">
+      <!-- My institutes -->
+    <span class="subheading">{{_("My Institutes")}}</span>
+    
+      {% include '_partials/widget.content.institutes.html' %}
 
     </section>
-  {% endblock %}
+  {% endif %}
+
+  <section id="section-latest_schemesofwork" class="jumbotron">
+      <!-- Scheme of works -->
+    <span class="subheading">{{_("Latest Schemes of Work")}}</span>
+    
+      {% include '_partials/widget.content.latest_schemes_of_work.html' %}
+
+  </section>
+
+{% endblock %}

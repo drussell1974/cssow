@@ -7,7 +7,7 @@
                 {{ row.name }}
             </h2>
             <h3 class="post-subtitle">
-              <a id="lnk-departments--{{row.id}}" href="{% url 'department.index' row.id %}">{{ row.name }}</a>
+              <a id="lnk-departments--{{row.id}}" href="{% url 'department.index' row.id %}">{{_("Departments")}}</a>
             </h3>
           </a>
           <p class="post-meta">Created by

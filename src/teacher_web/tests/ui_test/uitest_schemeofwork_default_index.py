@@ -33,12 +33,12 @@ class uitest_schemeofwork_default_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
 
 
-    def test_page__show_published_and_owned_latest_schemesofwork(self):
+    def test_page__has_show_published_and_owned_latest_schemesofwork(self):
         # setup
         
         # act
 
-        section = self.test_context.find_elements_by_class_name('post-preview')
+        section = self.test_context.find_elements_by_class_name('post-preview--schemeofwork')
 
         result = len(section)
 
@@ -46,3 +46,27 @@ class uitest_schemeofwork_default_index(UITestCase):
         # ***** less 5 should be visible to test@localhost for testing purposes
         ''' TEMPORARILY SET TO 4 SHOULD BE 3 '''
         self.assertEqual(4, result, "number of elements not as expected")
+
+
+    def test_page__show_institutes(self):
+        # setup
+        
+        # act
+
+        section = self.test_context.find_elements_by_class_name('post-preview--institute')
+
+        result = len(section)
+
+        # assert
+        self.assertEqual(4, result, "number of elements not as expected")
+
+
+
+    def test_page__has_showcase(self):
+        # setup
+        
+        # act
+
+        section = self.test_context.find_element_by_id('carouselShowCaseIndicators')
+
+        self.assertIsNotNone(section)

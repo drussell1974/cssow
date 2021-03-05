@@ -158,3 +158,13 @@ header.masthead .site-heading h1 {
     content: ' | ';
     white-space: pre;
 }*/
+
+.carousel-item {
+    min-height: 460px;
+    max-height: 460px;
+}
+
+
+img.mask {
+    opacity: 0.65;
+    }
