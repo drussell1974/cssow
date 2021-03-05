@@ -106,23 +106,23 @@ class TeacherPermissionModel(BaseModel):
     def get_model(db, teacher_id, scheme_of_work, auth_user, show_authorised=True):
         ''' get permission for the teacher '''
         
-        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
-        
+                rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
+
         model = TeacherPermissionModel.empty(auth_user.institute_id, auth_user.department_id, scheme_of_work, auth_user) # Default
 
         # NOTE: default valid if scheme of work is 0
-        model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
-        model.scheme_of_work_permission = SCHEMEOFWORK.OWNER if scheme_of_work.id == 0 else SCHEMEOFWORK.NONE
-        model.lesson_permission = LESSON.OWNER if scheme_of_work.id == 0 else LESSON.NONE
-        model.is_from_db = (scheme_of_work.id == 0)
-        model.is_authorised = (scheme_of_work.id == 0)
+        #model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
+        #model.scheme_of_work_permission = SCHEMEOFWORK.OWNER if scheme_of_work.id == 0 else SCHEMEOFWORK.NONE
+        #model.lesson_permission = LESSON.OWNER if scheme_of_work.id == 0 else LESSON.NONE
+        #model.is_from_db = (scheme_of_work.id == 0)
+        #model.is_authorised = (scheme_of_work.id == 0)
 
         for row in rows:
             # returns only the matching row
             if auth_user.scheme_of_work_id == row[2] and auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
-                
+
                 model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[1], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=row[11], ctx=auth_user)
-                
+
                 return model
         return model
 
