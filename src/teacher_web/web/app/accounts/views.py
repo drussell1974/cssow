@@ -1,5 +1,6 @@
 import os
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.db import connection as db
@@ -22,7 +23,7 @@ def index(request):
     #253 check user id
     modelview = AccountIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
-    view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
+    view_model = modelview.view(settings.SITE_TITLE, settings.SITE_SUMMARY)
 
     return render(request, "accounts/index.html", view_model.content)
 

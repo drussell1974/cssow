@@ -1,5 +1,6 @@
 import os
 from django.shortcuts import render
+from django.conf import settings
 from django.db import connection as db
 from django.http import HttpResponse
 from shared.models.core.context import AuthCtx
@@ -15,7 +16,7 @@ def index(request):
     #253 check user id
     modelview = DefaultIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
-    view_model = modelview.view(os.environ["TEACHER_WEB__SITE_TITLE"], os.environ["TEACHER_WEB__SITE_SUMMARY"])
+    view_model = modelview.view(settings.SITE_TITLE, settings.SITE_SUMMARY)
 
     return render(request, "default/index.html", view_model.content)
 
