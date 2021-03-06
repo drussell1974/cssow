@@ -108,7 +108,9 @@
                 {{ row.topic_name}}
             </h5>
             {% endif %}
-            <p>{{ row.notes }}</p>
+            {% if row.notes is not None %}
+            <p class="preserve-linebreak">{{row.notes}}</p>
+            {% endif %}
           </a>
         </div>
         <hr>
