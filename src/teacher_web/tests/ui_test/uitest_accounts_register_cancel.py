@@ -5,7 +5,7 @@ from ui_testcase import UITestCase, WebBrowserContext
 
 class uitest_accounts_register_cancel(UITestCase):
 
-    test_context = WebBrowserContext()
+    test_context = WebBrowserContext(restore_test_data=False)
 
     def setUp(self):
         self.test_path = "/accounts/register/"

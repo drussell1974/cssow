@@ -3,7 +3,7 @@ from unittest import skip
       
 class uitest_permissions_accounts_team_permissions__when_vistor(UITestCase):
 
-    test_context = WebBrowserContext()
+    test_context = WebBrowserContext(restore_test_data=False)
 
     def setUp(self):
         # set up

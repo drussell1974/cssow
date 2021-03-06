@@ -5,7 +5,7 @@ from ui_testcase import UITestCase, WebBrowserContext
 
 class uitest_registration_password_reset_cancel(UITestCase):
 
-    test_context = WebBrowserContext()
+    test_context = WebBrowserContext(restore_test_data=False)
 
     def setUp(self):
         # ensure test user is logged out for this test
