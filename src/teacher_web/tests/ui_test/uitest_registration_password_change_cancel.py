@@ -5,7 +5,7 @@ from ui_testcase import UITestCase, WebBrowserContext
 
 class uitest_registration_password_change_cancel(UITestCase):
 
-    test_context = WebBrowserContext(restore_test_data=False)
+    test_context = WebBrowserContext()
 
     def setUp(self):
         self.try_log_in(self.root_uri + "/accounts/password_change")

@@ -35,7 +35,7 @@ class test_DepartmentDataAccess___delete(TestCase):
         # arrange
         expected_result = [99]
 
-        fake_model = Model(101, "Lorum ipsum", institute=InstituteModel(1271124, "Lorum Ipsum"))
+        fake_model = Model(101, "Lorum ipsum", hod_id=56, institute=InstituteModel(1271124, "Lorum Ipsum"))
         fake_model.published = STATE.DELETE        
         fake_model.created = "2021-01-24 07:20:01.907507"
     

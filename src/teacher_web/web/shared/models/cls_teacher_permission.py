@@ -17,9 +17,40 @@ class TeacherPermissionModel(BaseModel):
         permissions = [('can_manage_team_permissions','Can Manage Team Permissions'), ('can_request_team_permissions','Can Request Team Permissions')]
 
 
-    @staticmethod
-    def empty(institute_id, department_id, scheme_of_work, ctx):        
-        return TeacherPermissionModel(teacher_id=ctx.auth_user_id, teacher_name="Anonymous", scheme_of_work=scheme_of_work, ctx=ctx) # Default
+    @classmethod
+    def empty(cls, scheme_of_work, ctx):
+        return TeacherPermissionModel(teacher_id=ctx.auth_user_id, teacher_name=ctx.user_name, scheme_of_work=scheme_of_work, ctx=ctx) # Default
+
+
+    @classmethod
+    def default(cls, institute, department, scheme_of_work, ctx):        
+
+        teacher_permission = cls.empty(scheme_of_work=scheme_of_work, ctx=ctx)
+        
+        # start with no permissions
+
+        teacher_permission.department_permission = DEPARTMENT.NONE
+        teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.NONE
+        teacher_permission.lesson_permission = LESSON.NONE
+
+        # promote to HOD
+        if ctx.auth_user_id == department.hod_id:
+            ''' set DEPARTMENT.HEAD permissions '''
+            teacher_permission.department_permission = DEPARTMENT.HEAD
+            teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.OWNER
+            teacher_permission.lesson_permission = LESSON.OWNER
+            teacher_permission.is_authorised = True
+            teacher_permission.is_from_db = True
+        
+        # promote to Admin if creator
+        if ctx.auth_user_id == department.created_by_id or ctx.auth_user_id == institute.created_by_id:        
+            teacher_permission.department_permission = DEPARTMENT.ADMIN
+            teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.OWNER
+            teacher_permission.lesson_permission = LESSON.OWNER
+            teacher_permission.is_authorised = True
+            teacher_permission.is_from_db = True
+
+        return teacher_permission
 
 
     def __init__(self, teacher_id, teacher_name, scheme_of_work=None, scheme_of_work_permission=SCHEMEOFWORK.NONE, lesson_permission=LESSON.NONE, department_permission=DEPARTMENT.NONE, created=None, auth_user=None, created_by_name=None, published=None, is_from_db=False, is_authorised = False, ctx = None):
@@ -108,14 +139,7 @@ class TeacherPermissionModel(BaseModel):
         
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
 
-        model = TeacherPermissionModel.empty(auth_user.institute_id, auth_user.department_id, scheme_of_work, auth_user) # Default
-
-        # NOTE: default valid if scheme of work is 0
-        #model.department_permission = DEPARTMENT.ADMIN if scheme_of_work.id == 0 else DEPARTMENT.NONE
-        #model.scheme_of_work_permission = SCHEMEOFWORK.OWNER if scheme_of_work.id == 0 else SCHEMEOFWORK.NONE
-        #model.lesson_permission = LESSON.OWNER if scheme_of_work.id == 0 else LESSON.NONE
-        #model.is_from_db = (scheme_of_work.id == 0)
-        #model.is_authorised = (scheme_of_work.id == 0)
+        model = TeacherPermissionModel.empty(scheme_of_work=scheme_of_work, ctx=auth_user)
 
         for row in rows:
             # returns only the matching row

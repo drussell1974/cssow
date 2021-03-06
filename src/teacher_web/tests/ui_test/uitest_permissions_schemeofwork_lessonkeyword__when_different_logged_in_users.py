@@ -3,7 +3,7 @@ from unittest import skip
 
 class uitest_permissions_schemeofwork_lessonkeyword__when_different_logged_in_users(UITestCase):
 
-    test_context = WebBrowserContext(restore_test_data=False)
+    test_context = WebBrowserContext()
 
     def setUp(self):
         # set up

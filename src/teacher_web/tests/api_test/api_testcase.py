@@ -20,8 +20,17 @@ class APITestCase(TestCase):
     def wait(self, s = 3):
         time.sleep(s)
 
+
+    def restore_demo_data(self):
+        uri = "/api/demo/restore-data"    
+        full_uri = self.root_uri + uri
+        requests.get(full_uri)
+    
+
     def get(self, uri):
 
+        self.restore_demo_data()
+        
         full_uri = self.root_uri + uri
         self.test_context = requests.get(full_uri)
         self.payload = json.loads(self.test_context.content)

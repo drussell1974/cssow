@@ -32,8 +32,9 @@ def WebBrowserContext(restore_test_data=True):
     
     # browser.implicitly_wait(5)
     if restore_test_data:
-        browser.get(os.environ["TEST_URI"] + "/api/demo/restore-data")
-    
+        uri = os.environ["TEST_URI"] + "/api/demo/restore-data"
+        browser.get(uri)
+
     return browser
 
 
