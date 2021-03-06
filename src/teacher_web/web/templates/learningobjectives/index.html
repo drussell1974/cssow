@@ -88,7 +88,7 @@
       {% endif %}
         {{value.name}}
       </h2>
-      {% for row in value.learning_objectives %}    
+      {% for row in value.learning_objectives %}
         <div class="post-preview {{ row.published_state }}">
           <a name="{{ row.id }}"></a>
             <h3 class="post-title">
@@ -97,17 +97,21 @@
               </a>
               {{ row.description}}
             </h3>
-            {% if request.user.is_authenticated and 1 == 2%}
-              <div class="custom-control custom-checkbox">  
+            {% if request.user.is_authenticated and 1 == 2 %}
+              <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{row.id}}" {% if row.is_key_objective %} checked {% endif %} value="{{ row.id }}">
                 <label class="custom-control-label small" for="chk-is_key_objective-{{ row.id }}" id="lbl-is_key_objective-{{ row.id }}">{{_("This is a key learning objective")}}</label>
               </div>
             {% endif %}
-            <h3 class="post-subtitle">
+            {% if row.topic_name is not None %}
+            <h5 class="post-subtitle">
                 {{ row.topic_name}}
-            </h3>
-          </a>  
+            </h5>
+            {% endif %}
+            <p>{{ row.notes }}</p>
+          </a>
         </div>
+        <hr>
       {% endfor %}
     </div> 
     <hr>
