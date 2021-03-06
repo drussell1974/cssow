@@ -60,7 +60,7 @@
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Notes")}}</label>
-                <input type="text"  class="form-control" name="notes" placeholder="{{_('notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.learningobjective.notes}}" />
+                <textarea class="form-control preserve-linebreak" name="notes" placeholder="{{_('Enter notes')}} {{_('(optional)')}}" id="ctl-notes" maxlength="2500" value="{{content.data.learningobjective.notes}}" rows="3">{{content.data.keyword.definition}} </textarea>
                 <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
             </div>
         </div>
