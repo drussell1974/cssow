@@ -18,7 +18,7 @@ class print_fnc_name():
         return inner
 
 
-def WebBrowserContext(restore_test_data=True):
+def WebBrowserContext(restore_test_data=False):
 
     ''' Uncomment Chrome driver -- chromedriver.exe '''
     #options = webdriver.ChromeOptions()
