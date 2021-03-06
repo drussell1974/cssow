@@ -18,7 +18,7 @@ class print_fnc_name():
         return inner
 
 
-def WebBrowserContext():
+def WebBrowserContext(restore_test_data=False):
 
     ''' Uncomment Chrome driver -- chromedriver.exe '''
     #options = webdriver.ChromeOptions()
@@ -31,8 +31,12 @@ def WebBrowserContext():
     browser = webdriver.Firefox(firefox_options=fireFoxOptions)
     
     # browser.implicitly_wait(5)
+    if restore_test_data:
+        uri = os.environ["TEST_URI"] + "/api/demo/restore-data"
+        browser.get(uri)
 
     return browser
+
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]
 TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
@@ -245,7 +249,7 @@ class UITestCase(TestCase):
 
     def run_testcases__permission(self, testcases, batch_name):
 
-        print(f"running {len(testcases)} test cases for {batch_name}!", end="")
+        #print(f"running {len(testcases)} test cases for {batch_name}!", end="")
 
         for testcase in testcases:
             # test

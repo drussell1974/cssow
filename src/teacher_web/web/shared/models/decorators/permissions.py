@@ -58,9 +58,9 @@ class min_permission_required:
             
             auth_ctx = AuthCtx(db, request, **kwargs)
 
-            if auth_ctx.teacher_permission is None or auth_ctx.teacher_permission.check_permission(self._permission) == False:
+            if auth_ctx.teacher_permission.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
-                str_err = str_err + f" for this {str(self._permission).split('.')[0]} ({scheme_of_work_id}) redirect to {self._redirect_to_url}."
+                str_err = str_err + f" for this scheme of work ({scheme_of_work_id}) {str(self._permission).split('.')[0]} redirect to {self._redirect_to_url}."
                 
                 return self.redirect_handler(str_err, institute_id, department_id, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 

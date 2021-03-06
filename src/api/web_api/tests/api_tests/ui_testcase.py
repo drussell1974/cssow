@@ -3,15 +3,26 @@ import time
 from django.test import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
+import os
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]
 TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 
-def WebBrowserContext():
+def WebBrowserContext(restore_demo_data=False):
     options = webdriver.ChromeOptions();
     options.add_argument("--start-maximized");
-    return webdriver.Chrome(chrome_options=options)
+
+    webdriver.Chrome(chrome_options=options)
+    # browser.implicitly_wait(5)
+    if restore_demo_data:
+        print("restoring demo data...", end="")
+        uri = os.environ["TEST_URI"] + "/api/demo/restore-data"
+        print(uri, end="")
+        webdriver.get(uri)
+
+        print("...restored demo data!")
+
+    return webdriver
 
 
 class UITestCase(TestCase):

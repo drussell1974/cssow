@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // env-cmd -f ${workspaceFolder}/dotenv/.env.test-ui
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/teacher_web/web/manage.py",
+            "args": [
+                "runserver",
+                "--settings=web.settings.debug.settings",
+                "127.0.0.1:3000",
+            ],
+            "env": {
+                "env-cmd":"-f ${workspaceFolder}/dotenv/.env.test-ui"
+            },
+            "django": true
+        }
+    ]
+}

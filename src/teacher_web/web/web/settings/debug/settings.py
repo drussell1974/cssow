@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -19,24 +20,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
-SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY']
+SECRET_KEY = 'v%5$rv@!eegr_ngmix(bbl(36eztv0at+(jq_7y7!-drao55tz'
+#SECRET_KEY = os.environ['TEACHER_WEB__WEB_SERVER_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug or stack trace turned on in production!
-DEBUG = bool(os.environ['TEACHER_WEB__WEB_SERVER_DEBUG'])
+DEBUG = True
 
 ALLOWED_HOSTS = [
-        "127.0.0.1",
-        "localhost",
-        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_EXT'],
-        os.environ['TEACHER_WEB__WEB_SERVER_ALLOWED_HOST_INT'],
-        ]
+    "jtc10",
+    "127.0.0.1",
+    "localhost"
+]
 
 INTERNAL_IPS = [
     '127.0.0.1',
+    'localhost',
 ]
 
 # Application definition
+
+
 
 INSTALLED_APPS = [
     'app.default',
@@ -63,13 +66,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = [
-        '127.0.0.1',
-        'localhost',
-        os.environ['STUDENT_WEB__WEB_SERVER_WWW'],
+        'http://127.0.0.1',
+        'http://localhost'
     ]
 
 ROOT_URLCONF = 'web.urls'
@@ -100,17 +101,17 @@ WSGI_APPLICATION = 'web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 from shared.decrypt import decrypt
-db_password = os.environ['CSSOW_DB__PASSWORD_KEY']
-PASSWORD_FILEPATH = os.path.join(BASE_DIR, os.environ['CSSOW_DB__PASSWORD_FILE'])
+db_password = '0WU2hZBY04apXuokH-93TQywFjabDlBswFZz0NyGeV4='
+PASSWORD_FILEPATH = os.path.join(BASE_DIR, 'db.test-ui.cssow_api.bin')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['CSSOW_DB__DATABASE'],
-        'USER': os.environ['CSSOW_DB__USER'],
-        'PASSWORD': decrypt(db_password, PASSWORD_FILEPATH),
-        'HOST': os.environ['CSSOW_DB__HOST_INT'],
-        'PORT': os.environ['CSSOW_DB__PORT_INT'],
+        'NAME': 'drussell1974$cssow_api',
+        'USER': 'drussell1974',
+        'PASSWORD': 'password1.',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
     }
 }
 
@@ -132,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -148,17 +148,18 @@ USE_TZ = True
 
 # EMAIL HOST
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 #EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'  # During development only
-EMAIL_FILE_PATH = os.environ['TEACHER_WEB__EMAILBACKEND_PATH'] 
 
-EMAIL_HOST = os.environ['EMAIL_SERVER__HOST_EXT']
-EMAIL_PORT = os.environ['EMAIL_SERVER__PORT_EXT']
-EMAIL_HOST_USER = os.environ['EMAIL_SERVER__HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_SERVER__HOST_PASSWORD']
-EMAIL_USE_TLS = os.environ["EMAIL_SERVER__USE_TLS"]
-DEFAULT_FROM_EMAIL = os.environ['EMAIL_SERVER__FROM_EMAIL']
+EMAIL_FILE_PATH = '/'
+
+EMAIL_HOST = '127.0.0.1'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'drussell1974@localhost'
+EMAIL_HOST_PASSWORD = 'password1.'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'no-reply@localhost'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -171,7 +172,7 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+#SOLUTION_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 
 # markdown service settings
 
@@ -180,39 +181,63 @@ MARKDOWN_STORAGE = os.path.join(MEDIA_ROOT, 'markdown')
 #254 get id of the row in the cssow_api.sow_resource_type table for markdown type
 MARKDOWN_TYPE_ID = 10
 
+
 # LOGGING_LEVEL: set the logging level as appropriate
 
 # Verbose = 8
 # Information = 4
 # Warning = 2
 # Error = 1
-LOGGING_LEVEL = 1
-LOG_TO_SQL = True
+LOGGING_LEVEL = 2
+LOG_TO_SQL = False
 LOG_TO_CONSOLE = False
 LOG_TO_DJANGO_LOGS = False
-SHOW_STACK_TRACE = os.environ['TEACHER_WEB__WEB_SERVER_SHOW_STACK_TRACE']
+SHOW_STACK_TRACE = 1
 
-# number of days to keep log
+# Minimum number of days to keep log
 MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
 MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
 
 # DATEFORMAT
 ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
 
-
 # Paging default settings
 
 PAGER = {
     "default":{
         "page": 1,
-        "pagesize": 25,
-        "pagesize_options": [ 10, 25, 50, 100 ]
+        "pagesize": 10,
+        "pagesize_options": [5, 10, 25, 50, 100 ]
     }
 }
 
-STUDENT_WEB__WEB_SERVER_WWW = os.environ['STUDENT_WEB__WEB_SERVER_WWW']
+STUDENT_WEB__WEB_SERVER_WWW = 'http://localhost:3302'
 
-ACTIONS_DISABLED = os.environ['TEACHER_WEB__ACTIONS_DISABLED'].split(",")
+SITE_TITLE = "Teach Computer Science"
+SITE_SUMMARY = "Computing Schemes of Work across all key stages"
 
-SITE_TITLE = os.environ["TEACHER_WEB__SITE_TITLE"]
-SITE_SUMMARY = os.environ["TEACHER_WEB__SITE_SUMMARY"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ACTIONS_DISABLED = ""

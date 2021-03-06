@@ -8,7 +8,9 @@
 
 
   {% block maincontent %}
-
+  <p class="text-center">
+    <a href="{% url 'accounts.index' %}" class="small btn btn-small"><i class="fas fa-user fa-2x"></i><br>{{content.ctx.user_name}}</a>
+  </p>
   <section id="section-showcase" class="overlay">
 
     {% include '_partials/widget.content.showcase.html' %}
@@ -34,4 +36,5 @@
 
   </section>
 
+  <p class="text- muted small">* Future features</p>
 {% endblock %}

@@ -10,9 +10,10 @@ class DepartmentContextModel(BaseContextModel):
     
     name = ""
 
-    def __init__(self, id_, name, description = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+    def __init__(self, id_, name, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
         self.name = name
+        self.hod_id = hod_id
 
 
     @classmethod
@@ -53,16 +54,13 @@ class DepartmentModel(DepartmentContextModel):
     number_of_schemes_of_work = 0
     institute_id = 0
 
-    def __init__(self, id_, name, institute, description = "", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
-        super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
-        #self.id = id_
-        #self.name = name
+    def __init__(self, id_, name, institute, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, name=name, hod_id=hod_id, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+        
         self.description = description
         self.institute = institute
         self.number_of_schemes_of_work = 0
-        if self.id == 60:
-            print("3. DepartmentModel")
-
+        
 
     def validate(self, skip_validation = []):
         """ clean up and validate model """
@@ -122,15 +120,15 @@ class DepartmentModel(DepartmentContextModel):
 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
-                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #323 use context institute name
-                                    created=row[3],
-                                    created_by_id=row[4],
-                                    created_by_name=row[5],
-                                    published=row[6])
-            model.institute_id = row[2]
+                                    hod_id=row[2],
+                                    institute=InstituteModel(id_=row[3], name=row[4]), # TODO: #323 use context institute name
+                                    created=row[5],
+                                    created_by_id=row[6],
+                                    created_by_name=row[7],
+                                    published=row[8])
+            model.institute_id = row[3]
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             
-        
             model.on_fetched_from_db()         
         return model
     

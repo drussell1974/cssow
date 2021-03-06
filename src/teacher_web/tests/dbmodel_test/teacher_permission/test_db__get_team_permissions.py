@@ -45,8 +45,7 @@ class test_db__get_team_permissions(TestCase):
             rows = Model.get_team_permissions(self.fake_db, teacher_id = 6079, auth_user=fake_ctx)
             
             # assert
-            TeacherModel_get_model.assert_not_called()
-
+            
             ExecHelper.select.assert_called_with(self.fake_db,
                 'scheme_of_work__get_team_permissions'
                 , (6079, 67, 127671276711, True, 6079)

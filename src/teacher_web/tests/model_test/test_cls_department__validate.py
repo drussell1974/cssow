@@ -17,7 +17,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
         
         test.name = "A"
 
@@ -31,7 +31,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = " x "
 
@@ -46,7 +46,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__invalid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = ""
 
@@ -60,7 +60,7 @@ class test_Department_validate__name(TestCase):
 
     def test_min__invalid_extreme_when_None(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = None
 
@@ -74,7 +74,7 @@ class test_Department_validate__name(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
         
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse e" # length 70 characters
 
@@ -88,7 +88,7 @@ class test_Department_validate__name(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse el"  # length 71 characters
 
@@ -128,7 +128,7 @@ class test_institute_validate__description(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.description = " x "
 
@@ -143,7 +143,7 @@ class test_institute_validate__description(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.description = ""
 
@@ -157,7 +157,7 @@ class test_institute_validate__description(TestCase):
 
     def test_min__valid_extreme_when_None(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.description = None
 
@@ -171,7 +171,7 @@ class test_institute_validate__description(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
         
         test.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate leo sed erat ultricies dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec molestie quam, vel rutrum tellus. Aenean aliquam volutpat tortor, sit amet pulvinar elit sollicitudin et. Aliquam et feugiat orci. Nam semper egestas condimentum. Fusce sollicitudin, leo quis mollis condimentum, nulla mauris laoreet nulla, vel tincidunt purus nisi sit amet nisi. Vestibulum quis ullamcorper nisi, at rutrum leo. Curabitur sed orci volutpat, rutrum justo vel, commodo arcu."\
             "Pellentesque ornare vel nisl vitae tincidunt. Fusce eros ipsum, vulputate vel orci nec, malesuada consectetur dolor. Donec diam velit, cursus vel erat a, rutrum feugiat tortor. Nam hendrerit, tortor eu blandit vestibulum, est lacus imperdiet lorem, quis iaculis est neque nec neque. Sed luctus leo et odio hendrerit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris maximus interdum rhoncus. Vivamus porta dui in eros varius accumsan. In porta pharetra rhoncus. Vivamus in malesuada libero, a commodo quam. Sed vel commodo neque, eu convallis turpis. Praesent tempor orci ornare, efficitur lorem non, commodo enim."\
@@ -193,7 +193,7 @@ class test_institute_validate__description(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = DepartmentModel(1, "Lorem ipsum", institute=InstituteModel(2, "Lorem Ipsum"))
+        test = DepartmentModel(1, "Lorem ipsum", hod_id=56, institute=InstituteModel(2, "Lorem Ipsum"))
 
         test.description = "XLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate leo sed erat ultricies dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec molestie quam, vel rutrum tellus. Aenean aliquam volutpat tortor, sit amet pulvinar elit sollicitudin et. Aliquam et feugiat orci. Nam semper egestas condimentum. Fusce sollicitudin, leo quis mollis condimentum, nulla mauris laoreet nulla, vel tincidunt purus nisi sit amet nisi. Vestibulum quis ullamcorper nisi, at rutrum leo. Curabitur sed orci volutpat, rutrum justo vel, commodo arcu."\
             "Pellentesque ornare vel nisl vitae tincidunt. Fusce eros ipsum, vulputate vel orci nec, malesuada consectetur dolor. Donec diam velit, cursus vel erat a, rutrum feugiat tortor. Nam hendrerit, tortor eu blandit vestibulum, est lacus imperdiet lorem, quis iaculis est neque nec neque. Sed luctus leo et odio hendrerit auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris maximus interdum rhoncus. Vivamus porta dui in eros varius accumsan. In porta pharetra rhoncus. Vivamus in malesuada libero, a commodo quam. Sed vel commodo neque, eu convallis turpis. Praesent tempor orci ornare, efficitur lorem non, commodo enim."\
