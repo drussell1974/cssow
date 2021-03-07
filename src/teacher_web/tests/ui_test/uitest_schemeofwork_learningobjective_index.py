@@ -96,7 +96,19 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         self.assertEqual(8, result, "number of elements not as expected")
 
 
-    def test_page__should_display_descriptions_and_notes(self):
+    def test_page__should_display_description(self):
+        # setup
+        # test
+        
+        elem = self.test_context.find_element_by_id(f"btn-collapseNotes--{self.test_learning_objective_id}")
+
+        elem_description = self.test_context.find_element_by_class_name(f'post-preview--{self.test_learning_objective_id} h3.post-title')
+        
+        # assert
+        self.assertEqual("Explain what happens to inactive processes and what is the purpose of managing these inactive processes", elem_description.text)
+
+
+    def test_page__should_hide__notes__and__missing_words(self):
         # setup
         # test
         
@@ -105,13 +117,13 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.click() # reveal notes
 
-        elem_description = self.test_context.find_element_by_class_name(f'post-preview--{self.test_learning_objective_id} h3.post-title')
-        elem_notes = self.test_context.find_element_by_class_name(f'post-preview--{self.test_learning_objective_id} p.preserve-linebreak')
+        elem_notes = self.test_context.find_element_by_class_name(f'post-preview--{self.test_learning_objective_id} p.notes')
+        elem_missing_words_challenge = self.test_context.find_element_by_class_name(f'post-preview--{self.test_learning_objective_id} p.missing-words-challenge')
         
         # assert
-        self.assertEqual("Explain what happens to inactive processes and what is the purpose of managing these inactive processes", elem_description.text)
-        # show only first 500 with ellipse
+        
         self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet feugiat lectus. Duis posuere tristique vulputate. Suspendisse at tristique magna, id interdum neque. Proin et nisl et justo tincidunt ullamcorper nec vitae urna. Etiam molestie porta dolor. Nulla iaculis consequat volutpat. Ut ac erat tempus, facilisis felis eleifend, porttitor ipsum. Proin porttitor ex et imperdiet venenatis. Suspendisse eleifend ut libero nec tincidunt. Donec molestie metus nunc, quis congue dolor aliquet nec. Integer lacus arcu, dignissim eget vulputate vel, semper vulputate arcu. Nam fringilla morbi.", elem_notes.text)
+        self.assertEqual("porttitor ipsum, nunc, nec, vulputate vel", elem_missing_words_challenge.text)
 
 
     def test_page__should_have_sidenav__showing_options_for_this_lesson(self):

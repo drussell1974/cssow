@@ -57,7 +57,9 @@ class test_db__get_all(TestCase):
             "Nullam dapibus leo vitae imperdiet mollis.",
             4, "KS4",
             12, "Vivamus rutrum viverra lorem",
-            "malesuada,sapien,condimentum", "Ut consequat mi purus, ut placerat libero tempus.",
+            "malesuada,sapien,condimentum", 
+            "Ut consequat mi purus, ut placerat libero tempus.", 
+            "mi purus, placerat, tempus.",
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 1
         )]
 
@@ -81,7 +83,9 @@ class test_db__get_all(TestCase):
             self.assertEqual("Sed at arcu in leo vestibulum dapibus. Suspendisse", actual_results[0]["description"])
             self.assertEqual("Prestructural", actual_results[0]["solo_taxonomy_name"])
             self.assertEqual("Nullam dapibus leo vitae imperdiet mollis.", actual_results[0]["content_description"])
-
+            self.assertEqual("Ut consequat mi purus, ut placerat libero tempus.", actual_results[0]["notes"])
+            self.assertEqual("mi purus, placerat, tempus.", actual_results[0]["missing_words_challenge"])
+            
 
     def test__should_call_select__return_multiple_item(self, mock_ctx):
         # arrange
@@ -91,7 +95,9 @@ class test_db__get_all(TestCase):
             "Donec mattis sed eros ac eleifend.",
             4, "KS4",
             12, "Morbi volutpat justo quis",
-            "ligula,pretium congue,vestibulum", "Sed egestas, ligula eu tempus sollicitudin, lectus velit.",
+            "ligula,pretium congue,vestibulum", 
+            "Sed egestas, ligula eu tempus sollicitudin, lectus velit.",
+            "",
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 0
         ),
         (
@@ -100,7 +106,9 @@ class test_db__get_all(TestCase):
             "Nullam dapibus leo vitae imperdiet mollis.",
             4, "KS4",
             12, "Vivamus rutrum viverra lorem",
-            "malesuada,sapien,condimentum", "Ut consequat mi purus, ut placerat libero tempus.",
+            "malesuada,sapien,condimentum",
+            "Ut consequat mi purus, ut placerat libero tempus.",
+            "mi purus, placerat, tempus.",
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 0
         ),
         (
@@ -109,7 +117,9 @@ class test_db__get_all(TestCase):
             "Donec ut condimentum risus.",
             4, "KS4",
             12, " Maecenas tincidunt tempus arcu.",
-            "Nulla,molestie,magna purus", "A dapibus enim lobortis.",
+            "Nulla,molestie,magna purus", 
+            "A dapibus enim lobortis.",
+            "lobortis",
             "Consequat tempus.", 1, "2020-07-17 16:24:04", 99, "test_user", 1
         )]
 
@@ -134,9 +144,13 @@ class test_db__get_all(TestCase):
             self.assertEqual("Etiam eu efficitur ante. Nunc justo turpis, finibus.", actual_results[0]["description"])
             self.assertEqual("Unistructural", actual_results[0]["solo_taxonomy_name"])
             self.assertEqual("Donec mattis sed eros ac eleifend.", actual_results[0]["content_description"])
+            self.assertEqual("Sed egestas, ligula eu tempus sollicitudin, lectus velit.", actual_results[0]["notes"])
+            self.assertEqual("", actual_results[0]["missing_words_challenge"])
 
             self.assertEqual(936, actual_results[2]["id"])
             self.assertEqual("Sed consectetur nulla ut venenatis dignissim. Sed dictum.", actual_results[2]["description"])
             self.assertEqual("Relational", actual_results[2]["solo_taxonomy_name"])
             self.assertEqual("Donec ut condimentum risus.", actual_results[2]["content_description"])
+            self.assertEqual("A dapibus enim lobortis.", actual_results[2]["notes"])
+            self.assertEqual("lobortis", actual_results[2]["missing_words_challenge"])
 

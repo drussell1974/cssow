@@ -53,3 +53,8 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
     def test__should_have_key_words(self):
         # assert
         self.assertEqual(3, len(self.payload["lesson"]["key_words"]))
+
+
+    def test__should_have_missing_words_challenge(self):
+        # assert
+        self.assertEqual("", self.payload["lesson"]["learning_objectives"][7]["missing_words_challenge"])

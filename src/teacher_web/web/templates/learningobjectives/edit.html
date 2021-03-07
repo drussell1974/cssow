@@ -39,8 +39,8 @@
         <div class="control-group">
             <div class="form-group controls">
             <label>{{_("Description")}}</label>
-            <input type="text" class="form-control" placeholder="{{_('Enter a description')}}" id="ctl-description" name="description" required
-                    maxlength="1000" value='{{content.data.learningobjective.description}}'>
+            <input type="text" class="form-control" placeholder="{{_('Enter a description')}}" id="ctl-description" name="description"
+                required maxlength="1000" value='{{content.data.learningobjective.description}}'>
             <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
             </div>
         </div>
@@ -66,6 +66,16 @@
         </div>
         <hr>
         <!-- Notes END -->
+        <!-- Missing words challenge -->
+        <div class="control-group">
+            <div class="form-group controls">
+            <label>{{_("Missing words challenge")}}</label>
+            <input type="text" class="form-control" placeholder="{{_('Enter words that will be removed from the student notes')}}" id="ctl-missing_words_challenge" name="missing_words_challenge"
+                    maxlength="140" value='{{content.data.learningobjective.missing_words_challenge}}'>
+            <p class="help-block text-danger invalid-feedback">{{_("not valid")}}</p>
+            </div>
+        </div>
+        <!-- Missing words challenge END -->
         <div class="card-body alert-secondary">
             <!-- Content START -->
             <div class="control-group">

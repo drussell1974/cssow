@@ -110,11 +110,14 @@
             {% endif %}
             {% if row.notes|length > 0%}
             <button class="btn" data-toggle="collapse" data-target="#collapseNotes--{{row.id}}" aria-expanded="false" aria-controls="collapseNotes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">
-              {{_("notes...")}}
+              {{_("Class notes...")}}
             </button>
             <div class="collapse" id="collapseNotes--{{row.id}}">
-              <div class="card card-body">
-                <p class="preserve-linebreak">{{row.notes}}</p>
+              <div class="card card-body card--class-notes--{{row.id}}">
+                <p class="notes preserve-linebreak" id="class-notes">{{row.notes}}</p>
+                <h6>{{_('Missing words challenge:')}}</h6>
+                <p class="missing-words-challenge border border-dark alert alert-info">{{row.missing_words_challenge}}</p>
+                <button class="btn btn-light" data-target="card--class-notes--{{row.id}}">{{_("Preview")}}</button>
               </div>
             </div>
             {% endif %}

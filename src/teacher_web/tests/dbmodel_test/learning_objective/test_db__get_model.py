@@ -57,7 +57,9 @@ class test_db__get_model(TestCase):
             3,"Unistructural", 4, 12,
             "State the different numbering systems", 45,
             3, "KS3",
-            "Binary,Denary,Hexadecimal", "Revise the names three different numbering systems",
+            "Binary,Denary,Hexadecimal",
+            "Revise the names three different numbering systems",
+            "numbering systems",
             "Theory", "2020-07-17 02:12:34", 1, "test_user", 1
         )]
         

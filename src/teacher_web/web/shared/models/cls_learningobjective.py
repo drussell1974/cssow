@@ -8,13 +8,14 @@ from shared.models.enums.publlished import STATE
 
 class LearningObjectiveModel (BaseModel):
 
-    def __init__(self, id_, description = "", notes = "", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+    def __init__(self, id_, description = "", notes = "", missing_words_challenge="", scheme_of_work_name = "", solo_taxonomy_id = 0, solo_taxonomy_name = "", solo_taxonomy_level = "", parent_topic_id = None, parent_topic_name = "", content_id = None, content_description = "", key_stage_id = 0, key_stage_name = "", lesson_id = 0, lesson_name = "", parent_id = None, key_words = "", group_name = "", is_key_objective = True, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         #231: implement across all classes
         super().__init__(id_, description, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
         
         self.id = int(id_)
         self.description = description
         self.notes = notes.strip() if notes is not None else ""
+        self.missing_words_challenge = missing_words_challenge
         self.scheme_of_work_name = scheme_of_work_name
         self.solo_taxonomy_id = int(solo_taxonomy_id)
         self.solo_taxonomy_name = solo_taxonomy_name
@@ -48,6 +49,9 @@ class LearningObjectiveModel (BaseModel):
         # validate notes
         self._validate_optional_string("notes", self.notes, 2500)
 
+        # validate missing_words_challenge
+        self._validate_optional_string("missing_words_challenge", self.missing_words_challenge, 140)
+
         # validate content_id
         self._validate_optional_integer("content_id", self.content_id, 1, 9999)
 
@@ -76,6 +80,12 @@ class LearningObjectiveModel (BaseModel):
         # trim notes
         if self.notes is not None:
             self.notes = sql_safe(self.notes)
+
+
+        # trim missing_words_challenge
+        if self.missing_words_challenge is not None:
+            self.missing_words_challenge = sql_safe(self.missing_words_challenge)
+
 
         # trim parent_topic_name
         if self.parent_topic_name is not None:
@@ -122,11 +132,12 @@ class LearningObjectiveModel (BaseModel):
                 key_stage_name = row[9],
                 key_words=row[10],
                 notes=row[11],
-                group_name=row[12],
-                created = row[13],
-                created_by_id = row[14],
-                created_by_name = row[15],
-                published = row[16])
+                missing_words_challenge=row[12],
+                group_name=row[13],
+                created = row[14],
+                created_by_id = row[15],
+                created_by_name = row[16],
+                published = row[17])
             model.on_fetched_from_db()
 
         return model
@@ -151,12 +162,13 @@ class LearningObjectiveModel (BaseModel):
                 lesson_name = row[10],
                 key_words=row[11],
                 notes=row[12],
-                group_name=row[13],
-                is_key_objective= row[14],
-                created = row[15],
-                created_by_id = row[16],
-                created_by_name = row[17],
-                published=row[18])
+                missing_words_challenge=row[13],
+                group_name=row[14],
+                is_key_objective= row[15],
+                created = row[16],
+                created_by_id = row[17],
+                created_by_name = row[18],
+                published=row[19])
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
         return data
@@ -387,7 +399,7 @@ class LearningObjectiveDataAccess:
         #269 create learning_objective__update stored procedure
         str_update = "lesson_learning_objective__update"
         
-        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, int(published), auth_user_id)
+        params = (model.id, model.lesson_id, model.description, model.group_name, model.notes, model.missing_words_challenge, model.key_words, model.solo_taxonomy_id, model.content_id, model.parent_id, int(published), auth_user_id)
         
         rows = execHelper.update(db, str_update, params, handle_log_info)
 
@@ -408,6 +420,7 @@ class LearningObjectiveDataAccess:
             model.description,
             model.group_name,
             model.notes,
+            model.missing_words_challenge,
             model.key_words,
             model.solo_taxonomy_id,
             model.content_id,

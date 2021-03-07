@@ -22,6 +22,7 @@ BEGIN
         le.order_of_delivery_id as order_of_delivery, -- lesson_name,
         lob.key_words as key_words,
         lob.notes as notes,
+        lob.missing_words_challenge as missing_words_challenge,
         lob.group_name as group_name,
         le_lo.is_key_objective as is_key_objective,
         lob.created as created,

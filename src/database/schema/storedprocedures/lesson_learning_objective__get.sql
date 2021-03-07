@@ -18,6 +18,7 @@ BEGIN
         ks.name as key_stage_name, 
         lob.key_words as key_words, 
         lob.notes as notes, 
+        lob.missing_words_challenge as missing_words_challenge,
         lob.group_name as group_name, 
         lob.created as created, 
         lob.created_by as created_by_id, 
