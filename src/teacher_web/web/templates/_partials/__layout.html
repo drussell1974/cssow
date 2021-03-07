@@ -220,8 +220,9 @@
           <div class="modal-body">
             <ul class="list-group">
               <li class="list-group-item">{{_("Can view:")}}<br><span class="small">{{content.ctx.can_view}}</span></li>
-              <li class="list-group-item">{{content.ctx.department.name}}<br><span class="small">{{content.ctx.department_permission}}</span></li>
-              <li class="list-group-item">{{content.ctx.scheme_of_work.name}}<br><span class="small">{{content.ctx.scheme_of_work_permission}}</span><br><span class="small">{{content.ctx.lesson_permission}}</span></li>
+              <li class="list-group-item">{{content.ctx.department.name}}<br><span class="small">{{content.ctx.teacher_permission.department_permission}}</span></li>
+              <li class="list-group-item">{{content.ctx.scheme_of_work.name}}<br><span class="small">{{content.ctx.teacher_permission.scheme_of_work_permission}}</span>
+                <br><span class="small">{{content.ctx.teacher_permission.lesson_permission}}</span></li>
             </ul>
           </div>
           <div class="modal-footer">
