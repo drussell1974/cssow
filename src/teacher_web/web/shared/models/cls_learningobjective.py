@@ -14,7 +14,7 @@ class LearningObjectiveModel (BaseModel):
         
         self.id = int(id_)
         self.description = description
-        self.notes = notes
+        self.notes = notes.strip() if notes is not None else ""
         self.scheme_of_work_name = scheme_of_work_name
         self.solo_taxonomy_id = int(solo_taxonomy_id)
         self.solo_taxonomy_name = solo_taxonomy_name
