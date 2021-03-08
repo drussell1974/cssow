@@ -124,6 +124,9 @@
     </div>
     <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
+    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>    
+
+    {% block page_js %}
+    {% endblock %}
   </body>
 </html>

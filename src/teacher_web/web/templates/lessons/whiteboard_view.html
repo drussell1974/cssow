@@ -16,32 +16,47 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-lg-4 col-md-4 mx-auto print-span">
-      <!-- Keywords -->
-        <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
-        <div id="accordion-keywords">
-        {% for key_word in content.data.key_words %}
-            <div class="keyword-expand">
-                <div class="expand-header" id="heading-keyword{{key_word.id}}">
-                    <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                        <u>{{key_word.term}}</u>
-                    </a>
-                </div>
-                {% if key_word.definition is not None %}
-                <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
-                    <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
-                </div>
-                {% endif %}
-            </div>
-        {% endfor %}
+    <div class="col-lg-4 col-md-4 mx-auto print-span">
+        
+        <div class="d-print-none">
+            <button class="btn btn-dark chalk" id="btn-show-all">
+                <u>{{_("Expand all")}}</u>
+            </button>
+            <button class="btn btn-dark chalk" id="btn-hide-all">
+                <u>{{_("Hide all")}}</u>
+            </button>
+            <button class="btn btn-dark chalk" id="btn-reveal-all">
+                <u>{{_("Reveal all")}}</u>
+            </button>
+            <button class="btn btn-dark chalk" id="btn-mask-all">
+                <u>{{_("Mask all")}}</u>
+            </button>
         </div>
-      <!-- Keywords END-->
-  </div>
-  <div class="col-lg-8 col-md-8 mx-auto print-span">
-      <!-- Learning Objectives -->
-      <h2 class="chalk" id="heading-learning_objectives">{{_("Learning objectives")}}</h2>
+        <!-- Keywords -->
+            <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
+            <div id="accordion-keywords">
+            {% for key_word in content.data.key_words %}
+                <div class="keyword-expand">
+                    <div class="expand-header" id="heading-keyword{{key_word.id}}">
+                        <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
+                            <u>{{key_word.term}}</u>
+                        </a>
+                    </div>
+                    {% if key_word.definition is not None %}
+                    <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
+                        <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        <!-- Keywords END-->
+    </div>
+    <div class="col-lg-8 col-md-8 mx-auto print-span">
+        <!-- Learning Objectives -->
+        <h2 class="chalk" id="heading-learning_objectives">{{_("Learning objectives")}}</h2>
         <div id="accordion-learning_objectives">
-          {% for row in content.data.learning_objectives %}
+        {% for row in content.data.learning_objectives %}
             <div class="learning_objective-expand">
                 <div class="learning_objective-item expand-header" id="heading-learning_objective{{order}}">
                     {% if row.solo_taxonomy_level == "B" %}
@@ -55,20 +70,23 @@
                         <u class="chalk">{{row.description}}</u>
                     </a>
                 </div>
-                <div id="collapse-learning_objective{{row.id}}" class="collapse" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
-                    <div class="expand-body chalk notes">
-                        {{row.notes}}
+                {% if row.notes|length > 0 %}
+                <div id="collapse-learning_objective{{row.id}}" class="collapse learning-objective--card" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
+                    <div class="expand-body chalk chalk-notes notes" id="chalk-notes--{{row.id}}">
+                        <p class="notes class-notes">{{row.notes}}</p>
+                        <p class="missing-words-challenge border border-dark">{{row.missing_words_challenge}}</p>
+                        <button class="btn btn-light btn-challenge d-print-none" data-target="chalk-notes--{{row.id}}">{{_("Reveal")}}</button>
                     </div>
                 </div>
-           {% endfor %}
-
-        </div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <!-- Learning Objectives END-->
-
-      <!-- Learning Materials -->
+        <!-- Learning Materials -->
+        </div>
         <h2 class="chalk"  id="heading-learning_materials">{{_("Learning materials")}}</h2>
         {% for item in content.data.resources %}
-            <div class="learning-material-expand"></div>
+            <div class="learning-material-expand">
                 <div class="learning-material-item expand-header" id="heading-learning_material{{item.id}}">
                     <i class="chalk">{{item.title}} ({{item.publisher}})</i> -
                         <span><a href="{{item.page_uri}}" class="chalk">
@@ -78,8 +96,28 @@
                 </div>
             </div>
         {% endfor %}
-    <!-- Learning materials END -->
-  </div>
+        <!-- Learning materials END -->
+     </div>
 </div>
-</div>
+{% endblock %}
+
+{% block page_js %}
+{% load static %}   
+<script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
+<script>
+  previewMissingWordsChallengeToggleOnClick('btn-challenge');
+  previewMissingWordsChallengeShowAllOnClick('btn-reveal-all', '#accordion-learning_objectives .chalk-notes');
+  previewMissingWordsChallengeHideAllOnClick('btn-mask-all', '#accordion-learning_objectives .chalk-notes');
+</script>
+<script>
+    const show_all = document.querySelector("#btn-show-all");
+    const hide_all = document.querySelector("#btn-hide-all");
+    
+    show_all.addEventListener('click', () => {
+        $("#accordion-learning_objectives .learning_objective-expand .collapse").addClass('show')
+    })
+    hide_all.addEventListener('click', () => {
+        $("#accordion-learning_objectives .learning_objective-expand .collapse").collapse('hide');
+    })
+</script>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
-
-{% block head %}
+{% block head_js %}
+{% load static %}
+<link href="{% static 'default/vendor/sliptree/css/bootstrap-tokenfield.min.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -67,7 +68,7 @@
         <hr>
         <!-- Notes END -->
         <!-- Missing words challenge -->
-        <div class="control-group">
+        <div class="control-group" id="missing_words_challenge">
             <div class="form-group controls">
             <label>{{_("Missing words challenge")}}</label>
             <input type="text" class="form-control" placeholder="{{_('Enter words that will be removed from the student notes')}}" id="ctl-missing_words_challenge" name="missing_words_challenge"
@@ -122,5 +123,9 @@
 {% endblock %}
 
 {% block page_js %}
-    
+{% load static %}
+<script src="{% static 'default/vendor/sliptree/js/bootstrap-tokenfield.min.js' %}"></script>
+<script>
+    $('#ctl-missing_words_challenge').tokenfield();
+</script>
 {% endblock %}

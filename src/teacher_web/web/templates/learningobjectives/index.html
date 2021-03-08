@@ -113,11 +113,14 @@
               {{_("Class notes...")}}
             </button>
             <div class="collapse" id="collapseNotes--{{row.id}}">
-              <div class="card card-body card--class-notes--{{row.id}}">
-                <p class="notes preserve-linebreak" id="class-notes">{{row.notes}}</p>
-                <h6>{{_('Missing words challenge:')}}</h6>
-                <p class="missing-words-challenge border border-dark alert alert-info">{{row.missing_words_challenge}}</p>
-                <button class="btn btn-light" data-target="card--class-notes--{{row.id}}">{{_("Preview")}}</button>
+              <div class="card card-body card--class-notes" id="card--class-notes--{{row.id}}">
+                <p class="notes preserve-linebreak class-notes">{{row.notes}}</p>
+                <h6>{{_('Missing words challenge:')}}</h6>  
+                <p class="missing-words-challenge border border-dark alert alert-info">{{row.missing_words_challenge}}
+                  <a class="edit float-right" href="{% url 'learningobjective.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id row.id %}#missing_words_challenge">
+                  <i class="far fa-edit small"></i>
+                </a></p>
+                <button class="btn btn-light btn-challenge" data-target="card--class-notes--{{row.id}}">{{_("Preview challenge")}}</button>
               </div>
             </div>
             {% endif %}
@@ -135,4 +138,12 @@
     {% endif %}
   </footer>
 </article>
+{% endblock %}
+
+{% block page_js %}
+{% load static %}
+<script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
+<script>
+  previewMissingWordsChallengeToggleOnClick('btn-challenge');
+</script>
 {% endblock %}

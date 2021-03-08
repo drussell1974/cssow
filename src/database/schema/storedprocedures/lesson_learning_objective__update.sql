@@ -22,7 +22,7 @@ BEGIN
         description = p_description, 
         group_name = p_group_name, 
         notes = p_notes, 
-        missing_words_challenge = p_missing_words_challenge,
+		missing_words_challenge = p_missing_words_challenge,
         key_words = p_key_words,
         solo_taxonomy_id = p_solo_taxonomy_id, 
         content_id = p_content_id, 

@@ -95,7 +95,12 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         ' missing words challenge '
 
         elem = self.test_context.find_element_by_id("ctl-missing_words_challenge")
-        elem.send_keys("Consectetur, Faucibus, Ut sed")
+        elem.send_keys("Consectetur")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Faucibus")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Ut sed")
+        elem.send_keys(Keys.TAB)
 
         ' ctl-content_id SELECT VALID '
 
