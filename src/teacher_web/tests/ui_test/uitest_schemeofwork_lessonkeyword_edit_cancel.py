@@ -57,7 +57,7 @@ class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
 
         ' Open Modal '
 
-        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton", wait=5)
         elem.click()
 
         ' click no (finding button appears to cancel dialog) '        

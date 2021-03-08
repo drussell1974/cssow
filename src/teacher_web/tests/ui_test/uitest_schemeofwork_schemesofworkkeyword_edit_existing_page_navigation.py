@@ -6,8 +6,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation(UIT
 
     def setUp(self):
         # setup
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit")
-        self.wait(s=2)
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/{self.test_keyword_id}/edit", wait=5)
 
         
     def tearDown(self):
@@ -27,7 +26,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation(UIT
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level', wait=2)
         self.assertFooterContextText("test@localhost Computer Science")
        
        

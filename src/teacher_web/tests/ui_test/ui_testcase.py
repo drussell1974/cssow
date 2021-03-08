@@ -169,7 +169,7 @@ class UITestCase(TestCase):
         
         self.test_context.implicitly_wait(wait)  # reinstate
 
-
+    
     def do_log_in(self, redirect_to_uri_on_login, wait=4, enter_username=None, enter_password=None):
         """
         Makes an attempt to log in, if the page has been redirected.
