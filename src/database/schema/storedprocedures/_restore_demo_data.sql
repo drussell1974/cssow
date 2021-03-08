@@ -23,7 +23,7 @@ BEGIN
 		INSERT INTO `sow_key_word` (`id`, `name`, `definition`, `scheme_of_work_id`, `created_by`, `published`) 
 		VALUES (p_keyword_id, 'Random Access Memory (RAM)', '', p_scheme_of_work_id, p_auth_user_id, '1');
 	END IF;
-	SELECT * FROM `sow_key_word` WHERE id = p_keyword_id;
+	UPDATE `sow_key_word` SET `published` = 1 WHERE id = p_keyword_id;
     
     -- RESTORE LESSON KEYWORD
     IF (SELECT count(*) FROM `sow_lesson__has__key_words` WHERE key_word_id = p_keyword_id and lesson_id = p_lesson_id) = 0 THEN

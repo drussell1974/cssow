@@ -1,0 +1,47 @@
+{% extends '_partials/__layout.whiteboard.html' %}
+
+{% block maincontent %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-14 col-md-10 mx-auto">
+            <p class="h4 chalk float-right d-print-none">{{display_date}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 mx-auto print-span">
+            <!-- Learning Objectives -->
+            {% for row in content.data.learning_objectives %}
+                {% if row.notes|length > 0 and row.missing_words_challenge|length > 0 %}    
+                    <h3 class="chalk">
+                        {% if row.solo_taxonomy_level == "B" %}
+                            <i class="far fa-star"></i>
+                        {% elif row.solo_taxonomy_level == "C" %}
+                            <i class="fas fa-star"></i>
+                        {% elif row.solo_taxonomy_level == "D" %}
+                            <i class="fas fa-trophy"></i>
+                        {% endif %}
+                        {{row.description}}
+                    </h3>
+                    <div id="learning_objective{{row.id}}" class="learning-objective--card">
+                        <div class="chalk chalk-notes notes" id="chalk-notes--{{row.id}}">
+                            <p class="notes class-notes line-spacing">{{row.notes}}</p>
+                            <button class="btn btn-dark btn-challenge float-right d-print-none" data-target="chalk-notes--{{row.id}}">{{_("Challenge")}}</button>
+                            <p id="missing-words-challenge" class="missing-words-challenge border border-dark p-3">{{row.missing_words_challenge}}</p>
+                        </div>
+                    </div>
+                <hr>
+                {% endif %}
+            {% endfor %}
+            <!-- Learning Objectives END-->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_js %}
+{% load static %}   
+<script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
+<script>
+  previewMissingWordsChallengeToggleOnClick('btn-challenge');
+</script>
+{% endblock %}

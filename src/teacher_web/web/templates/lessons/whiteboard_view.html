@@ -16,32 +16,32 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-lg-4 col-md-4 mx-auto print-span">
-      <!-- Keywords -->
-        <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
-        <div id="accordion-keywords">
-        {% for key_word in content.data.key_words %}
-            <div class="keyword-expand">
-                <div class="expand-header" id="heading-keyword{{key_word.id}}">
-                    <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                        <u>{{key_word.term}}</u>
-                    </a>
+    <div class="col-lg-4 col-md-4 mx-auto print-span">
+        <!-- Keywords -->
+            <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
+            <div id="accordion-keywords">
+            {% for key_word in content.data.key_words %}
+                <div class="keyword-expand">
+                    <div class="expand-header" id="heading-keyword{{key_word.id}}">
+                        <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
+                            <u>{{key_word.term}}</u>
+                        </a>
+                    </div>
+                    {% if key_word.definition is not None %}
+                    <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
+                        <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if key_word.definition is not None %}
-                <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
-                    <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
-                </div>
-                {% endif %}
+            {% endfor %}
             </div>
-        {% endfor %}
-        </div>
-      <!-- Keywords END-->
-  </div>
-  <div class="col-lg-8 col-md-8 mx-auto print-span">
-      <!-- Learning Objectives -->
-      <h2 class="chalk" id="heading-learning_objectives">{{_("Learning objectives")}}</h2>
+        <!-- Keywords END-->
+    </div>
+    <div class="col-lg-8 col-md-8 mx-auto print-span">
+        <!-- Learning Objectives -->
+        <h2 class="chalk" id="heading-learning_objectives">{{_("Learning objectives")}}</h2>
         <div id="accordion-learning_objectives">
-          {% for row in content.data.learning_objectives %}
+        {% for row in content.data.learning_objectives %}
             <div class="learning_objective-expand">
                 <div class="learning_objective-item expand-header" id="heading-learning_objective{{order}}">
                     {% if row.solo_taxonomy_level == "B" %}
@@ -51,24 +51,27 @@
                     {% elif row.solo_taxonomy_level == "D" %}
                         <i class="fas fa-trophy"></i>
                     {% endif %}
-                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective{{row.id}}" aria-expanded="false" aria-controls="collapse-learning_objective{{row.id}}">
-                        <u class="chalk">{{row.description}}</u>
+                    <a class="chalk learning_objective" data-toggle="collapse" data-target="#collapse-learning_objective--{{row.id}}" aria-expanded="false" aria-controls="collapse-learning_objective{{row.id}}">
+                        <u id="expand-learning_objective--{{row.id}}" class="chalk">{{row.description}}</u>
                     </a>
                 </div>
-                <div id="collapse-learning_objective{{row.id}}" class="collapse" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
-                    <div class="expand-body chalk notes">
-                        {{row.notes}}
+                {% if row.notes|length > 0 %}
+                <div id="collapse-learning_objective--{{row.id}}" class="collapse learning-objective--card" aria-labelledby="heading-learning_objective--{{row.id}}" data-parent="#accordion-learning_objectives">
+                    <div class="expand-body chalk chalk-notes notes" id="chalk-notes--{{row.id}}">
+                        <p class="notes class-notes">{{row.notes}}</p>
+                        <button class="btn btn-dark btn-challenge float-right d-print-none" data-target="chalk-notes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">{{_("Challenge")}}</button>
+                        <p id="missing-words-challenge--{{row.id}}" class="missing-words-challenge border border-dark p-3">{{row.missing_words_challenge}}</p>
                     </div>
                 </div>
-           {% endfor %}
-
-        </div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <!-- Learning Objectives END-->
-
-      <!-- Learning Materials -->
+        <!-- Learning Materials -->
+        </div>
         <h2 class="chalk"  id="heading-learning_materials">{{_("Learning materials")}}</h2>
         {% for item in content.data.resources %}
-            <div class="learning-material-expand"></div>
+            <div class="learning-material-expand">
                 <div class="learning-material-item expand-header" id="heading-learning_material{{item.id}}">
                     <i class="chalk">{{item.title}} ({{item.publisher}})</i> -
                         <span><a href="{{item.page_uri}}" class="chalk">
@@ -78,8 +81,15 @@
                 </div>
             </div>
         {% endfor %}
-    <!-- Learning materials END -->
-  </div>
+        <!-- Learning materials END -->
+     </div>
 </div>
-</div>
+{% endblock %}
+
+{% block page_js %}
+{% load static %}   
+<script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
+<script>
+  previewMissingWordsChallengeToggleOnClick('btn-challenge');
+</script>
 {% endblock %}

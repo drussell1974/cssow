@@ -15,7 +15,7 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static 'default/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'default/css/my.css' %}" rel="stylesheet">
-    <link media="print" href="{% static 'custom/css/class_notes.css' %}" rel="stylesheet">
+    <link media="print" href="{% static 'default/css/class_notes.css' %}" rel="stylesheet">
     <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
@@ -68,7 +68,7 @@
   </head>
   <body>
 
-    <div class="container-fluid main-container">
+    <div class="container-fluid main-container whiteboard--container">
       <div class="row">
         <div class="accessibility">
           <p>
@@ -124,6 +124,9 @@
     </div>
     <script src="{% static 'default/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'default/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>
+    <script src="{% static 'default/js/clean-blog.min.js' %}"></script>    
+
+    {% block page_js %}
+    {% endblock %}
   </body>
 </html>

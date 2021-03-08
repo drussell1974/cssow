@@ -237,6 +237,106 @@ class test_LearningObjectiveModel_validate__notes(LearningObjective_TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
+class test_LearningObjectiveModel_validate__missing_words_challenge(LearningObjective_TestCase):
+
+    test = None
+
+    def setUp(self):
+        pass
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = "A"
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertEqual("A", test.missing_words_challenge)
+        self.assertFalse("missing_words_challenge" in test.validation_errors, "missing_words_challenge should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_min__valid_extreme_trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = " "
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("missing_words_challenge" in test.validation_errors, "missing_words_challenge should have no validation errors - %s" % test.validation_errors)
+        self.assertEqual(test.missing_words_challenge, "")
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = ""
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("missing_words_challenge" in test.validation_errors, "missing_words_challenge should have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "should not be is_valid")
+
+
+    def test_min__valid_extreme_when_None(self):
+
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = None
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("missing_words_challenge" in test.validation_errors, "missing_words_challenge should have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla at dui euismod hendrerit. Fusce sed rutrum risus. Cras viverra id."
+        # length 140 characters
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertFalse("missing_words_challenge" in test.validation_errors, "missing_words_challenge should not have validation error %s" % test.validation_errors)
+        self.assertTrue(test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+
+        test = self._construct_valid_object()
+
+        
+        test.missing_words_challenge = "xLorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla at dui euismod hendrerit. Fusce sed rutrum risus. Cras viverra id."
+        # length 140 characters
+
+        # test
+        test.validate()
+
+        # assert
+        self.assertTrue("missing_words_challenge" in test.validation_errors, "missing_words_challenge should have validation error %s" % test.validation_errors)
+        self.assertFalse(test.is_valid, "is_valid should be False")
+
+
 class test_LearningObjectiveModel_validate__content_id(LearningObjective_TestCase):
 
     test = None

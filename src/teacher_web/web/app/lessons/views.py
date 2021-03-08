@@ -19,7 +19,7 @@ from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonGetModelViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonMissingWordsChallengeViewModel, LessonGetModelViewModel
 
 from datetime import datetime
 
@@ -210,6 +210,25 @@ def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id
     view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
+
+
+@unauthorise_request
+def missing_words_challenge(request, institute_id, department_id,scheme_of_work_id, lesson_id):
+    ''' Display the missing words on the whiteboard (with printable) '''
+
+    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+
+    #253 check user id
+    get_challenge_view =  LessonMissingWordsChallengeViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    model = get_challenge_view.model
+
+    data = {
+        "learning_objectives":model.learning_objectives,
+    }
+
+    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    
+    return render(request, "lessons/missing_words_view.html", view_model.content)
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')

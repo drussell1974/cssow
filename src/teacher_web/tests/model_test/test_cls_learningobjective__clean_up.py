@@ -19,7 +19,6 @@ class test_learningobjective__clean_up__parent_topic_name(LearningObjective_Test
         self.assertEqual(test.parent_topic_name, "x")
 
 
-
 class test_learningobjective__clean_up__content_description(LearningObjective_TestCase):
 
     def setUp(self):
@@ -36,6 +35,39 @@ class test_learningobjective__clean_up__content_description(LearningObjective_Te
         # assert
         self.assertEqual(test.content_description, "x")
 
+
+class test_learningobjective__clean_up__notes(LearningObjective_TestCase):
+
+    def setUp(self):
+        self.test = self._construct_valid_object()
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.notes = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.notes, "x")
+
+
+class test_learningobjective__clean_up__missing_words_challenge(LearningObjective_TestCase):
+
+    def setUp(self):
+        self.test = self._construct_valid_object()
+
+    def test__trim_whitespace(self):
+        test = self._construct_valid_object()
+
+        test.missing_words_challenge = " x "
+
+        # test
+        test._clean_up()
+
+        # assert
+        self.assertEqual(test.missing_words_challenge, "x")
 
 
 class test_learningobjective__clean_up__lesson_name(LearningObjective_TestCase):

@@ -122,6 +122,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
             lesson_id=lesson_id,
             key_words = request.POST.get("key_words", []),
             notes = request.POST.get("notes", ""),
+            missing_words_challenge = request.POST.get("missing_words_challenge", ""),
             group_name = request.POST.get("group_name", ""),
             created=datetime.now(),
             #253 check user id
@@ -213,6 +214,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
         lesson_id=lesson_id,
         key_words = request.POST.get("key_words", []),
         notes = request.POST.get("notes", ""),
+        missing_words_challenge = request.POST.get("missing_words_challenge", ""),
         group_name = request.POST.get("group_name", ""),
         created=datetime.now(),
         created_by_id=auth_ctx

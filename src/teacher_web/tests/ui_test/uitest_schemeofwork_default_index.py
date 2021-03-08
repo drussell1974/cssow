@@ -4,6 +4,10 @@ class uitest_schemeofwork_default_index(UITestCase):
 
     test_context = WebBrowserContext()
 
+    def setUpClass(cls):
+        cls.do_log_in(self.root_uri, wait=2)
+
+
     def setUp(self):
         # set up
         self.do_log_in(self.root_uri, wait=2)

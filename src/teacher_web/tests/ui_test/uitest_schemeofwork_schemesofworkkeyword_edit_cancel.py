@@ -59,7 +59,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
         ' Open Modal '
 
-        elem = self.find_element_by_id__with_explicit_wait("cancelButton")
+        elem = self.find_element_by_id__with_explicit_wait("cancelButton", wait=5)
         elem.click()
 
 

@@ -31,9 +31,13 @@
 {% block sidecontent %}
 
 <section class="card widget widget-button widget-button--blackboard">
-  <div class="alert alert-secondary">
-    <a href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+  <div class="alert alert-secondary stackable-group stackable-group-sm">
+    <a href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark stackable" id="lnk-whiteboard_view">
       {{_("Blackboard display")}}
+    </a>
+    <hr>
+    <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark stackable" id="lnk-missing_words_challenge">
+      {{_("Display objectives")}}
     </a>
   </div>
 </section>
@@ -88,8 +92,8 @@
       {% endif %}
         {{value.name}}
       </h2>
-      {% for row in value.learning_objectives %}    
-        <div class="post-preview {{ row.published_state }}">
+      {% for row in value.learning_objectives %}
+        <div class="post-preview post-preview--{{row.id}} {{ row.published_state }}">
           <a name="{{ row.id }}"></a>
             <h3 class="post-title">
               <a class="edit float-right" href="{% url 'learningobjective.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id row.id %}">
@@ -97,17 +101,35 @@
               </a>
               {{ row.description}}
             </h3>
-            {% if request.user.is_authenticated and 1 == 2%}
-              <div class="custom-control custom-checkbox">  
+            {% if request.user.is_authenticated and 1 == 2 %}
+              <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input is_key_objective" id="chk-is_key_objective-{{row.id}}" {% if row.is_key_objective %} checked {% endif %} value="{{ row.id }}">
                 <label class="custom-control-label small" for="chk-is_key_objective-{{ row.id }}" id="lbl-is_key_objective-{{ row.id }}">{{_("This is a key learning objective")}}</label>
               </div>
             {% endif %}
-            <h3 class="post-subtitle">
+            {% if row.topic_name is not None %}
+            <h5 class="post-subtitle">
                 {{ row.topic_name}}
-            </h3>
-          </a>  
+            </h5>
+            {% endif %}
+            {% if row.notes|length > 0%}
+            <button class="btn" data-toggle="collapse" data-target="#collapseNotes--{{row.id}}" aria-expanded="false" aria-controls="collapseNotes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">
+              {{_("Class notes...")}}
+            </button>
+            <div class="collapse" id="collapseNotes--{{row.id}}">
+              <div class="card card-body card--class-notes" id="card--class-notes--{{row.id}}">
+                <p class="notes preserve-linebreak class-notes">{{row.notes}}</p>
+                <button class="btn btn-dark btn-challenge" data-target="card--class-notes--{{row.id}}">{{_("Challenge")}}</button>
+                <p class="missing-words-challenge border border-dark alert alert-info">{{row.missing_words_challenge}}
+                  <a class="edit float-right" href="{% url 'learningobjective.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id row.id %}#missing_words_challenge">
+                  <i class="far fa-edit small"></i>
+                </a></p>
+              </div>
+            </div>
+            {% endif %}
+          </a>
         </div>
+        <hr>
       {% endfor %}
     </div> 
     <hr>
@@ -119,4 +141,12 @@
     {% endif %}
   </footer>
 </article>
+{% endblock %}
+
+{% block page_js %}
+{% load static %}
+<script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
+<script>
+  previewMissingWordsChallengeToggleOnClick('btn-challenge');
+</script>
 {% endblock %}

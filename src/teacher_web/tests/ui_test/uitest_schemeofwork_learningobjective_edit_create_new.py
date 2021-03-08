@@ -55,11 +55,13 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
                  opt.click()
         elem.send_keys(Keys.TAB)
 
+
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
+
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
         
@@ -84,6 +86,21 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
         elem = self.test_context.find_element_by_id("ctl-description")
         elem.send_keys("test_page__should_redirect_to_index_if_valid")
+
+        ' notes '
+
+        elem = self.test_context.find_element_by_id("ctl-notes")
+        elem.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultricies metus non mauris faucibus facilisis. Aliquam erat volutpat. Ut sed.")
+
+        ' missing words challenge '
+
+        elem = self.test_context.find_element_by_id("ctl-missing_words_challenge")
+        elem.send_keys("Consectetur")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Faucibus")
+        elem.send_keys(Keys.TAB)
+        elem.send_keys("Ut sed")
+        elem.send_keys(Keys.TAB)
 
         ' ctl-content_id SELECT VALID '
 

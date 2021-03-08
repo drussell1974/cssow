@@ -52,6 +52,8 @@ class test_db__save(TestCase):
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
         model = Model(1, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
+        model.notes = "Proin iaculis pellentesque lectus eu porttitor"
+        model.missing_words_challenge = "Proin, lectus"
         
         model.is_new = MagicMock(return_value=False)
         model.is_valid = MagicMock(return_value=True)
@@ -67,7 +69,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                 "lesson_learning_objective__update"
-                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (1, 12, 'Mauris ac velit ultricies, vestibulum.', '', 'Proin iaculis pellentesque lectus eu porttitor', 'Proin, lectus', '', 1, None, None, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
 
@@ -78,6 +80,8 @@ class test_db__save(TestCase):
         # arrange
 
         model = Model(0, description="Mauris ac velit ultricies, vestibulum.", lesson_id=12, solo_taxonomy_id=1)
+        model.notes = "Duis auctor ipsum eu metus condimentum pellentesque. Maecenas feugiat arcu laoreet"
+        model.missing_words_challenge = "metus, condimentum, pellentesque"
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
@@ -94,7 +98,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 "lesson_learning_objective__insert"
-                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', '', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (0, 12, 'Mauris ac velit ultricies, vestibulum.', '', 'Duis auctor ipsum eu metus condimentum pellentesque. Maecenas feugiat arcu laoreet', 'metus, condimentum, pellentesque', '', 1, None, None, '2021-01-24 07:18:18.677084', 0, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
                 
             self.assertEqual(23, actual_result.id)

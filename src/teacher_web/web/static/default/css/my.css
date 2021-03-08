@@ -137,6 +137,13 @@ h4, h5, h6 {
     }
 }
 
+.line-spacing {
+    line-height: 2.5em;
+}
+
+.whiteboard--container {
+    margin: 1.1em 1.3em;
+}
 
 /* OVERRIDES */
 header.masthead {
