@@ -23,8 +23,6 @@ python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeo
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_learningobjectives_missing_words.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_whiteboard.py
 
-
-
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
