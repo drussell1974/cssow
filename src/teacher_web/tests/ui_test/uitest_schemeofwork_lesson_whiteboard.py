@@ -56,3 +56,26 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
         # assert
         self.assertEqual("Learning materials", elem.text)
         self.assertEqual(4, len(elems))
+
+
+    def test_page__should_preview_missing_words_challenge(self):
+        # setup
+        # test
+        
+        elem = self.test_context.find_element_by_id(f"expand-learning_objective--{self.test_learning_objective_id}")
+        elem.click() # reveal notes
+        self.wait(s=1)
+
+        # preview missing notes
+
+        elem = self.test_context.find_element_by_css_selector(f"#collapse-learning_objective--{self.test_learning_objective_id} .btn-challenge")
+        elem.click() # preview missing words
+        self.wait(s=1)
+        
+        elem_notes = self.test_context.find_element_by_css_selector(f'#collapse-learning_objective--{self.test_learning_objective_id} p.notes')
+        elem_missing_words_challenge = self.test_context.find_element_by_id(f'missing-words-challenge--{self.test_learning_objective_id}')
+
+        # assert
+        self.maxDiff = None
+        self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet feugiat lectus. Duis posuere tristique vulputate. Suspendisse at tristique magna, id interdum neque. ____ et nisl et justo tincidunt ullamcorper nec vitae urna. Etiam molestie porta dolor. Nulla iaculis consequat volutpat. Ut ac erat tempus, facilisis felis ____ eleifend, ______________ porttitor ex et imperdiet venenatis. Suspendisse eleifend ut libero nec tincidunt. Donec molestie metus ___, quis congue dolor aliquet nec. Integer lacus arcu, dignissim eget ____________, semper vulputate arcu. Nam fringilla morbi.", elem_notes.text)
+        self.assertEqual("porttitor ipsum, nunc, vulputate vel, PROIN", elem_missing_words_challenge.text)

@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
+@skip("DO NOT RUN, to eliminate prevent deletion of test data")
 class uitest_schemeofwork_schemesofworkkeyword_edit_delete(UITestCase):
 
     test_context = WebBrowserContext()

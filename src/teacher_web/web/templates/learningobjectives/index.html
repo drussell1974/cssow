@@ -31,9 +31,13 @@
 {% block sidecontent %}
 
 <section class="card widget widget-button widget-button--blackboard">
-  <div class="alert alert-secondary">
-    <a href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
+  <div class="alert alert-secondary stackable-group stackable-group-sm">
+    <a href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark stackable" id="lnk-whiteboard_view">
       {{_("Blackboard display")}}
+    </a>
+    <hr>
+    <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark stackable" id="lnk-missing_words_challenge">
+      {{_("Display objectives")}}
     </a>
   </div>
 </section>

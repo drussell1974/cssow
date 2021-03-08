@@ -12,7 +12,10 @@ echo "running..."
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_create_new.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing.py
+
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_index.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_learningobjectives_missing_words.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_whiteboard.py
 
 
 

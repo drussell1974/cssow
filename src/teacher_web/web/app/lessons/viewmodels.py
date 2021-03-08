@@ -92,6 +92,21 @@ class LessonWhiteboardViewModel(BaseViewModel):
         self.model = model
 
 
+class LessonMissingWordsChallengeViewModel(BaseViewModel):
+        
+    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
+        self.db = db
+        # get model
+        model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+
+        # if not found then raise error
+        if lesson_id > 0:
+            if model is None or model.is_from_db == False:
+                self.on_not_found(model, lesson_id, scheme_of_work_id)
+
+        self.model = model
+
+
 class LessonEditViewModel(BaseViewModel):
 
     def __init__(self, db, scheme_of_work_id, model, auth_user):
