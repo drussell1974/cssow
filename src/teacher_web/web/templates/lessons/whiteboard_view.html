@@ -17,21 +17,6 @@
 </div>
 <div class="row">
     <div class="col-lg-4 col-md-4 mx-auto print-span">
-        
-        <div class="d-print-none">
-            <button class="btn btn-dark chalk" id="btn-show-all">
-                <u>{{_("Expand all")}}</u>
-            </button>
-            <button class="btn btn-dark chalk" id="btn-hide-all">
-                <u>{{_("Hide all")}}</u>
-            </button>
-            <button class="btn btn-dark chalk" id="btn-reveal-all">
-                <u>{{_("Reveal all")}}</u>
-            </button>
-            <button class="btn btn-dark chalk" id="btn-mask-all">
-                <u>{{_("Mask all")}}</u>
-            </button>
-        </div>
         <!-- Keywords -->
             <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
             <div id="accordion-keywords">
@@ -74,8 +59,8 @@
                 <div id="collapse-learning_objective{{row.id}}" class="collapse learning-objective--card" aria-labelledby="heading-learning_objective{{row.id}}" data-parent="#accordion-learning_objectives">
                     <div class="expand-body chalk chalk-notes notes" id="chalk-notes--{{row.id}}">
                         <p class="notes class-notes">{{row.notes}}</p>
-                        <p class="missing-words-challenge border border-dark">{{row.missing_words_challenge}}</p>
-                        <button class="btn btn-light btn-challenge d-print-none" data-target="chalk-notes--{{row.id}}">{{_("Reveal")}}</button>
+                        <button class="btn btn-dark btn-challenge float-right d-print-none" data-target="chalk-notes--{{row.id}}">{{_("Challenge")}}</button>
+                        <p id="missing-words-challenge" class="missing-words-challenge border border-dark p-3">{{row.missing_words_challenge}}</p>
                     </div>
                 </div>
                 {% endif %}
@@ -106,18 +91,5 @@
 <script src="{% static 'default/js/missing-words--challenge.js' %}" ></script>
 <script>
   previewMissingWordsChallengeToggleOnClick('btn-challenge');
-  previewMissingWordsChallengeShowAllOnClick('btn-reveal-all', '#accordion-learning_objectives .chalk-notes');
-  previewMissingWordsChallengeHideAllOnClick('btn-mask-all', '#accordion-learning_objectives .chalk-notes');
-</script>
-<script>
-    const show_all = document.querySelector("#btn-show-all");
-    const hide_all = document.querySelector("#btn-hide-all");
-    
-    show_all.addEventListener('click', () => {
-        $("#accordion-learning_objectives .learning_objective-expand .collapse").addClass('show')
-    })
-    hide_all.addEventListener('click', () => {
-        $("#accordion-learning_objectives .learning_objective-expand .collapse").collapse('hide');
-    })
 </script>
 {% endblock %}

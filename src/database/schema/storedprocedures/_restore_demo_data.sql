@@ -36,7 +36,7 @@ BEGIN
     
 END;
 //
-/*
+
 DELIMITER ;
 SET @DEMO_USER_ID=2;
 SET @DEMO_INSTITUTE_ID=2;
@@ -58,4 +58,3 @@ CALL demo_restoredata(
     @DEMO_LEARNING_OBJECTIVE_ID,
     @DEMO_RESOURCE_ID, 
     @DEMO_KEYWORD_ID);
-*/
