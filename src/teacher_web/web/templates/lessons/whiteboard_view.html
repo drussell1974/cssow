@@ -59,10 +59,12 @@
                 <div id="collapse-learning_objective--{{row.id}}" class="collapse learning-objective--card" aria-labelledby="heading-learning_objective--{{row.id}}" data-parent="#accordion-learning_objectives">
                     <div class="expand-body chalk chalk-notes notes" id="chalk-notes--{{row.id}}">
                         <p class="notes class-notes">{{row.notes}}</p>
+                        {% if row.missing_words_challenge|length > 0 %}
                         <button class="btn btn-dark btn-challenge float-right d-print-none" data-target="chalk-notes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">{{_("Challenge")}}</button>
                         <p id="missing-words-challenge--{{row.id}}" class="missing-words-challenge border border-dark p-3">{{row.missing_words_challenge}}</p>
+                        {% endif %} 
                     </div>
-                </div>
+                  </div>
                 {% endif %}
             </div>
         {% endfor %}

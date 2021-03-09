@@ -5,7 +5,7 @@ from shared.models.core.log_handlers import handle_log_info
 class DemoHelper:
 
     @classmethod
-    def restore(cls, db, auth_user):
+    def restore(cls, db, auth_user_id):
         
         demo_institute_id = os.environ["TEST_INSTITUTE_ID"]
         demo_department_id = os.environ["TEST_DEPARTMENT_ID"]
@@ -21,7 +21,7 @@ class DemoHelper:
 
         stored_procedure = "demo_restoredata"
         params = (
-            auth_user.auth_user_id,
+            auth_user_id,
             demo_institute_id,
             demo_department_id,
             demo_scheme_of_work_id,
