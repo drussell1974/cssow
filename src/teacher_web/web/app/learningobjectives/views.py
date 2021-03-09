@@ -22,18 +22,16 @@ from shared.models.cls_content import ContentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.core import validation_helper
 from shared.models.core.basemodel import try_int
-from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning
 
 # view models
 from app.lessons.viewmodels import LessonGetModelViewModel
 
 @min_permission_required(LESSON.VIEWER, login_url="/accounts/login")
-def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Get learning objectives for lesson '''
+def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     #253 check user id
     learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
@@ -42,13 +40,12 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Create a new learning objective '''
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
+    #367 get auth_ctx from min_permission_required decorator
+    
     # check if an existing_learning_objective_id has been passed
-     
-    #253 check user id 
+    
     get_lessonobjective_view = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=0, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
     model = get_lessonobjective_view.model
     
@@ -97,10 +94,10 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.change_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id = 0):
-    ''' Edit an existing learning objective '''
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx, learning_objective_id = 0):
 
+    #367 get auth_ctx from min_permission_required decorator
+    
     if request.method == "GET":
         ## GET request from client ##
     
@@ -199,9 +196,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
-def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
-    """ save_item non-view action """
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id, auth_ctx):
+
+    #367 get auth_ctx from min_permission_required decorator
 
     # create instance of model from request
 
@@ -257,9 +254,9 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, lea
 
 @permission_required('cssow.delete_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
-def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    """ delete item and redirect back to referer """
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
+
+    #367 get auth_ctx from min_permission_required decorator
 
     LearningObjectiveDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
@@ -268,9 +265,9 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 
 @permission_required('cssow.publish_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login")
-def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id):
-    ''' Publish the learningobjective '''
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, learning_objective_id, auth_ctx):
+
+    #367 get auth_ctx from min_permission_required decorator
 
     LearningObjectivePublishModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, learning_objective_id=learning_objective_id, auth_user=auth_ctx)
 
