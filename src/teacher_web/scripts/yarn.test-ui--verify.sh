@@ -10,18 +10,7 @@ echo "running..."
 
 ## start test
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_create_new.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing.py
-
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_index.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_index.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_cancel.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_cancel.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_existing.py
-
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_learningobjectives_missing_words.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_whiteboard.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py

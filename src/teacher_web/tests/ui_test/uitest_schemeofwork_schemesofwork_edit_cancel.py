@@ -58,7 +58,7 @@ class uitest_schemeofwork_schemesofwork_edit_cancel(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        self.wait(s=1)
+        self.wait(s=2)
         elem.click()
 
         ' click yes, cancel (finding button appears to cancel dialog) '        

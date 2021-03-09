@@ -7,18 +7,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 
-class print_fnc_name():
-    """ decorator for printing the name of the function """
-    
-    def __call__(self, func):
-        """ the parent function """
-        def inner(*args, **kwargs):
-            print(func.__name__)
-            
-        return inner
 
-
-def WebBrowserContext(restore_test_data=False):
+def WebBrowserContext():
 
     ''' Uncomment Chrome driver -- chromedriver.exe '''
     #options = webdriver.ChromeOptions()
@@ -30,18 +20,13 @@ def WebBrowserContext(restore_test_data=False):
     fireFoxOptions.set_headless()
     browser = webdriver.Firefox(firefox_options=fireFoxOptions)
     
-    # browser.implicitly_wait(5)
-    if restore_test_data:
-        uri = os.environ["TEST_URI"] + "/api/demo/restore-data"
-        browser.get(uri)
-
     return browser
 
 
 TEST_USER_NAME = os.environ["TEST_USER_NAME"]
 TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
 
-class UITestCase(TestCase):
+class UITestCase(TestCase):                                                                     
     root_uri = os.environ["TEST_URI"]
 
     test_institute_id = os.environ["TEST_INSTITUTE_ID"]
