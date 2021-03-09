@@ -56,11 +56,13 @@ class min_permission_required:
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
             
-            # add institute_id and department_id to kwargs if necessary
-            if "institute_id" not in kwargs and "department_id" not in kwargs:
-                auth_ctx = AuthCtx(db, request, institute_id, department_id, **kwargs)
-            else:
+            #367 add institute_id and department_id to kwargs if necessary
+            if "institute_id" in kwargs and "department_id" in kwargs:
                 auth_ctx = AuthCtx(db, request, **kwargs)
+            elif "institute_id" in kwargs:
+                auth_ctx = AuthCtx(db, request, department_id=department_id, **kwargs)
+            else:
+                auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, **kwargs)
 
             # check permissions
             if auth_ctx.check_permission(self._permission) == False:

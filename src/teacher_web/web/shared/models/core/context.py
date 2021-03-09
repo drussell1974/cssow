@@ -45,13 +45,16 @@ class AuthCtx(Ctx):
 
     def check_permission(self, min_permission):
         """ check if the teacher has enough priviliges """
-        ''' if the current user created the institute or department they are DEPARTMENT ADMIN '''
+
+        #367 move checks to functions and allow where department requires no permissions or where department id is zero
+
         if min_permission == DEPARTMENT.NONE or self.department_id == 0:
             return True
         else:
             # default TeacherPermissionModel
             self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)
 
+            ''' if the current user created the institute or department they are DEPARTMENT ADMIN '''
             if self.auth_user_id is not None and self.auth_user_id > 0 and self.scheme_of_work.id > 0:
                 self.teacher_permission = TeacherPermissionModel.get_model(self.db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)
         
