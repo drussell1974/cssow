@@ -9,7 +9,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.filehandler import handle_uploaded_markdown
-from shared.models.core.context import AuthCtx
 from shared.models.core import validation_helper
 from shared.models.enums.permissions import LESSON
 from shared.models.cls_resource import ResourceModel
@@ -21,10 +20,10 @@ from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
 
 @min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
+    #367 get auth_ctx from min_permission_required decorator
+    
     getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
     return render(request, "resources/index.html", getall_resources.view().content)
@@ -33,10 +32,10 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 #234 add permission
 @permission_required('cssow.add_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Create a new resource '''
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
+    #367 get auth_ctx from min_permission_required decorator
+    
     model = ResourceModel(
         id_=0,
         title="",
@@ -44,11 +43,11 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    #253 check user id
+    
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     lesson = get_lesson_view.model
 
-    #253 check user id
+    
     get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user=auth_ctx)
 
     data = {
@@ -67,11 +66,10 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 #234 add permission
 @permission_required('cssow.change_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
-    ''' Edit an existing resource '''
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx):
 
-    #253 check user id
+    #367 get auth_ctx from min_permission_required decorator
+
     get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
 
@@ -84,11 +82,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             lesson_id=lesson_id)
 
 
-    #253 check user id
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
     lesson = get_lesson_view.model
 
-    #253 check user id
     get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_ctx)
 
     data = {
@@ -108,10 +104,10 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 #234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
-    
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx):
 
+    #367 get auth_ctx from min_permission_required decorator
+    
     def upload_error_handler(e, msg):
         print(msg, e)
     
@@ -138,7 +134,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         page_uri=request.POST.get("page_uri", ""),
         type_id=request.POST.get("type_id", None),  
         created=datetime.now(),
-        #253 check user id
         created_by_id=auth_ctx.auth_user_id,
         published=published_state
     )
@@ -152,14 +147,12 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    #253 check user id
     save_resource_view = ResourceSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_ctx)
 
     save_resource_view.execute(published_state)
 
     model = save_resource_view.model
  
-
     if model.is_valid == True:
         ' save resource'
 
@@ -179,7 +172,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         #redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id,lesson_ischemesofwork.index scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
         lesson = get_lesson_view.model
             
-        #253 check user id
         get_resource_type_options = ResourceModel.get_resource_type_options(db, auth_user=auth_ctx)
 
         data = {
@@ -200,14 +192,12 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
 #234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
-    """ delete item and redirect back to referer """
+def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #253 check user id
     ResourceModel.delete(db, resource_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
@@ -216,11 +206,10 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
 #234 add permission
 @permission_required('cssow.delete_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    """ delete item and redirect back to referer """
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     ResourceModel.delete_unpublished(db, lesson_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("resource.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
@@ -229,11 +218,10 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, 
 #234 add permission
 @permission_required('cssow.publish_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
-    ''' Publish the learningobjective '''
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     ResourceModel.publish_item(db=db, scheme_of_work_id=scheme_of_work_id, resource_id=resource_id, auth_user=auth_ctx)
     
     return HttpResponseRedirect(reverse("resource.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
