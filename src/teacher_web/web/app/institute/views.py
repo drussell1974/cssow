@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import permission_required
-from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
@@ -14,9 +13,8 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 # Create your views here.
 
-def index(request):
-
-    auth_ctx = AuthCtx(db, request, institute_id=0, department_id=0)
+@min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def index(request, auth_ctx):
     
     index_view =  InstituteIndexViewModel(db=db, auth_user=auth_ctx)
     
@@ -25,10 +23,7 @@ def index(request):
 
 @permission_required("cssow.change_institutemodel", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id = 0):
-    """ edit action """
-    
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
+def edit(request, institute_id, auth_ctx):
     
     save_view = InstituteEditViewModel(db=db, request=request, auth_user=auth_ctx)
     
@@ -45,11 +40,8 @@ def edit(request, institute_id = 0):
 
 @permission_required("cssow.delete_institutemodel", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, institute_id):
-    """ delete item and redirect back to referer """
+def delete_unpublished(request, institute_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
-    
     InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("institute.index"))
