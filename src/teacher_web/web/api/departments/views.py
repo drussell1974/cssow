@@ -7,8 +7,9 @@ from .viewmodels import DepartmentGetAllViewModel, DepartmentGetModelViewModel
 class DepartmentViewSet(APIView):
     ''' API endpoint for a department '''
 
-    def get(self, request, institute_id, department_id):
+    def get(self, request, institute_id, department_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
 
         department_view = DepartmentGetModelViewModel(db=db, department_id=department_id, auth_user=auth_ctx)
@@ -18,8 +19,9 @@ class DepartmentViewSet(APIView):
 class DepartmentListViewSet(APIView):
     ''' API endpoint for list of departments '''
 
-    def get (self, request, institute_id):
+    def get (self, request, institute_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
 
         #253 check user id

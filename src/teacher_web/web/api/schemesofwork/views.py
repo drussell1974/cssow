@@ -7,8 +7,9 @@ from .viewmodels import SchemeOfWorkGetAllViewModel, SchemeOfWorkGetModelViewMod
 class SchemeOfWorkViewSet(APIView):
     ''' API endpoint for a schemeofwork '''
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         #253 check user id
@@ -19,8 +20,9 @@ class SchemeOfWorkViewSet(APIView):
 class SchemeOfWorkListViewSet(APIView):
     ''' API endpoint for list of lessons '''
 
-    def get (self, request, institute_id, department_id):
+    def get (self, request, institute_id, department_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
 
         #253 check user id
