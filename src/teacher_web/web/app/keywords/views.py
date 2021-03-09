@@ -6,7 +6,6 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.enums.publlished import STATE
 from shared.models.decorators.permissions import min_permission_required
@@ -23,12 +22,10 @@ from shared.filehandler import handle_uploaded_markdown
 
 
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id):
-    ''' Get keywords for scheme of work '''
+def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    #253 check user id
+    #367 get auth_ctx from min_permission_required decorator
+    
     getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     return render(request, "keywords/index.html", getall_keywords.view().content)
@@ -36,11 +33,10 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def new(request, institute_id, department_id, scheme_of_work_id):
-    ''' Create a new keyword '''
+def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-    
+    #367 get auth_ctx from min_permission_required decorator
+        
     model = KeywordModel(
         id_=0,
         term="",
@@ -63,10 +59,9 @@ def new(request, institute_id, department_id, scheme_of_work_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
-    ''' Edit an existing keyword '''
+def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
@@ -77,8 +72,6 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
             term="",
             definition="",
             scheme_of_work_id=scheme_of_work_id)
-
-    #253 check user id
 
     get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     scheme_of_work = get_scheme_of_work_view.model
@@ -96,16 +89,15 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id):
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
-    
+def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, auth_ctx):
+
     def upload_error_handler(e, msg):
         print(msg, e)
     
     def upload_success_handler(f, msg):
         print(msg, f)
         
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
-
+    #367 get auth_ctx from min_permission_required decorator
     
     error_message = ""
 
@@ -117,7 +109,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
         term=request.POST.get("term", ""),
         definition=request.POST.get("definition", ""),
         created=datetime.now(),
-        #253 check user id
         created_by_id=auth_ctx,
         published=published_state
     )
@@ -127,7 +118,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    #253 check user id
     save_keyword_view = KeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=0, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(published_state)
@@ -165,14 +155,12 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id):
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword_id):
-    """ delete item and redirect back to referer """
+def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #253 check user id
     KeywordModel.delete(db, keyword_id, lesson_id=0, auth_user=auth_ctx)
 
     return HttpResponseRedirect(redirect_to_url)
@@ -180,11 +168,10 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, keyword
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
-    ''' Publish the keyword '''
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
-    
+    #367 get auth_ctx from min_permission_required decorator
+        
     KeywordModel.publish_by_id(db, keyword_id, auth_ctx)
 
     return HttpResponseRedirect(reverse("keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
@@ -192,11 +179,10 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
-    """ delete item and redirect back to referer """
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     KeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("schemesofwork.index", args=[institute_id, department_id]))
@@ -204,10 +190,9 @@ def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, keyword_id):
-    """ delete item and redirect back to referer """
+def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     merge_viewmodel = KeywordMergeViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
