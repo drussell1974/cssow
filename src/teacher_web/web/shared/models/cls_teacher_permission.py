@@ -34,7 +34,7 @@ class TeacherPermissionModel(BaseModel):
         teacher_permission.lesson_permission = LESSON.NONE
 
         # promote to HOD
-        if ctx.auth_user_id == department.hod_id:
+        if ctx.auth_user_id is not None and ctx.auth_user_id == department.hod_id:
             ''' set DEPARTMENT.HEAD permissions '''
             teacher_permission.department_permission = DEPARTMENT.HEAD
             teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.OWNER
@@ -43,7 +43,7 @@ class TeacherPermissionModel(BaseModel):
             teacher_permission.is_from_db = True
         
         # promote to Admin if creator
-        if ctx.auth_user_id == department.created_by_id or ctx.auth_user_id == institute.created_by_id:        
+        if (ctx.auth_user_id is not None and ctx.auth_user_id == department.created_by_id) or (ctx.auth_user_id is not None and ctx.auth_user_id == institute.created_by_id):        
             teacher_permission.department_permission = DEPARTMENT.ADMIN
             teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.OWNER
             teacher_permission.lesson_permission = LESSON.OWNER
