@@ -6,7 +6,6 @@ from django.db import connection as db
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
-from shared.models.core.context import AuthCtx
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
@@ -22,12 +21,10 @@ from django.contrib.contenttypes.models import ContentType
 from shared.filehandler import handle_uploaded_markdown
 
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Get keywords for lesson '''
+def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    #253 check user id
+    #367 get auth_ctx from min_permission_required decorator
+    
     getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
     return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
@@ -36,12 +33,10 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 # 299 Keyword Index
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def select(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Get keywords for lesson '''
+def select(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
-    #253 check user id
+    #367 get auth_ctx from min_permission_required decorator
+    
     keywords_select = LessonKeywordSelectViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
     if request.method == "POST":
@@ -58,11 +53,10 @@ def select(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Create a new resource '''
+def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     model = KeywordModel(
         id_=0,
         term="",
@@ -71,7 +65,6 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     
     model.belongs_to_lessons.append(lesson_id)
 
-    #253 check user id
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     lesson = get_lesson_view.model
 
@@ -92,11 +85,10 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
-    ''' Edit an existing keyword '''
+def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-    
+    #367 get auth_ctx from min_permission_required decorator
+        
     get_model_view = LessonKeywordGetModelViewModel(db=db, keyword_id=keyword_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
     
@@ -109,11 +101,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         
     model.belongs_to_lessons.append(lesson_id)
 
-    #253 check user id
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
     lesson = get_lesson_view.model
-
-    #253 check user id
 
     data = {
         "scheme_of_work_id": scheme_of_work_id,
@@ -130,15 +119,15 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
-    
+def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id, auth_ctx):
+
     def upload_error_handler(e, msg):
         print(msg, e)
     
     def upload_success_handler(f, msg):
         print(msg, f)
-        
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+     
+    #367 get auth_ctx from min_permission_required decorator
 
     error_message = ""
 
@@ -162,7 +151,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
     # validate the model and save if valid otherwise redirect to default invalid
     redirect_to_url = ""
 
-    #253 check user id
     save_keyword_view = LessonKeywordSaveViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, model=model, auth_user=auth_ctx)
     
     save_keyword_view.execute(published_state)
@@ -207,10 +195,9 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
-    """ delete item and redirect back to referer """
+def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
@@ -221,11 +208,10 @@ def delete_item(request, institute_id, department_id, scheme_of_work_id, lesson_
 
 
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id):
-    ''' Publish the keyword '''
-
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson_id, keyword_id, auth_ctx):
+    
+    #367 get auth_ctx from min_permission_required decorator
+    
     KeywordModel.publish_by_id(db, keyword_id, auth_ctx)
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
@@ -233,11 +219,10 @@ def publish_item(request, institute_id, department_id, scheme_of_work_id, lesson
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    """ delete item and redirect back to referer """
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-    
+    #367 get auth_ctx from min_permission_required decorator
+        
     LessonKeywordDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("lesson_keywords.index", args=[institute_id, department_id, scheme_of_work_id, lesson_id]))
