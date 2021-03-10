@@ -237,15 +237,20 @@ class UITestCase(TestCase):
         #print(f"running {len(testcases)} test cases for {batch_name}!", end="")
 
         for testcase in testcases:
-            # test
-            if "skip" in testcase.keys() and testcase["skip"] == True:
-                print("s", end="")
-            else:
-                self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=2)
-                
-                # assert
-                if testcase["allow"] == False:
-                    self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
+            try:
+            
+                # test
+                if "skip" in testcase.keys() and testcase["skip"] == True:
+                    print("s", end="")
                 else:
-                    self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
-                
+                    self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=2)
+                    
+                    # assert
+                    if testcase["allow"] == False:
+                        self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
+                    else:
+                        self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
+            except KeyError as e:
+                raise AssertionError(f"An error occurred running uri {testcase['uri']} for user {testcase['enter_username']} in test cases for {batch_name}! ensure correct keys have been provided", e)
+            except Exception as e:
+                raise AssertionError(f"An error occurred running {testcase} test cases for {batch_name}! ensure correct keys have been provided", e)

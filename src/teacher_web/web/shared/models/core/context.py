@@ -41,6 +41,13 @@ class AuthCtx(Ctx):
         
         self.scheme_of_work = SchemeOfWorkContextModel.cached(request, db, self.institute_id, self.department_id, self.scheme_of_work_id, self.auth_user_id)
         # TODO: #323 check ownership and set can_view
+        
+        # default TeacherPermissionModel
+        self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)
+
+        ''' if the current user created the institute or department they are DEPARTMENT ADMIN '''
+        if self.auth_user_id is not None and self.auth_user_id > 0 and self.scheme_of_work.id > 0:
+            self.teacher_permission = TeacherPermissionModel.get_model(self.db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)
 
 
     def check_permission(self, min_permission):
@@ -51,15 +58,8 @@ class AuthCtx(Ctx):
         if min_permission == DEPARTMENT.NONE or self.department_id == 0:
             return True
         else:
-            # default TeacherPermissionModel
-            self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)
-
-            ''' if the current user created the institute or department they are DEPARTMENT ADMIN '''
-            if self.auth_user_id is not None and self.auth_user_id > 0 and self.scheme_of_work.id > 0:
-                self.teacher_permission = TeacherPermissionModel.get_model(self.db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)
-        
             return self.teacher_permission.check_permission(min_permission)
 
 
     def __repr__(self):
-        return f"institute_id={self.institute_id}, department_id={self.department_id}"
+        return f"user={self.auth_user_id},{self.user_name}, institute_id={self.institute_id}, department_id={self.department_id}"

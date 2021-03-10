@@ -140,13 +140,13 @@ class TeacherPermissionModel(BaseModel):
         rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
 
         model = TeacherPermissionModel.empty(scheme_of_work=scheme_of_work, ctx=auth_user)
-
+        
         for row in rows:
             # returns only the matching row
             if auth_user.scheme_of_work_id == row[2] and auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
-
+                
                 model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[1], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=row[11], ctx=auth_user)
-
+                #model.is_from_db = True
                 return model
         return model
 

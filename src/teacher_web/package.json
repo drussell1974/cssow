@@ -30,6 +30,7 @@
     "test-dbmodels":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/dbmodel_test --settings=web.settings.test-ui.settings",
     "test-helpers": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/test_helpers --settings=web.settings.test-ui.settings",
     "test-api": "env-cmd -f ../../dotenv/.env.test-ui coverage run -a -m unittest discover -s ./tests/api_test -p apitest_*.py",
+    "test-models--auth_ctx":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/model_test/auth_ctx --settings=web.settings.test-ui.settings",
     "test-models--pattern":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/model_test/auth_ctx --settings=web.settings.test-ui.settings -k ",
     "test-ui": "yarn test-ui--admin && yarn test-ui--permissions",
     "test-ui--admin": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--admin.sh",
