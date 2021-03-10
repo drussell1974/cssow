@@ -27,7 +27,7 @@
                             <u>{{key_word.term}}</u>
                         </a>
                     </div>
-                    {% if key_word.definition is not None and row.missing_words_challenge|length > 0 %}
+                    {% if key_word.definition is not None %}
                     <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
                         <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
                     </div>
