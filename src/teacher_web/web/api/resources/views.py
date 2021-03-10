@@ -11,8 +11,9 @@ from .viewmodels import ResourceGetModelViewModel, ResourceGetMarkdownViewModel
 class ResourceViewSet(APIView):
     ''' API endpoint for a resource '''
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id):
-        
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx=None):
+
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         #253 check user id
@@ -24,8 +25,9 @@ class ResourceViewSet(APIView):
 class ResourceMarkdownViewSet(APIView):
     ''' API endpoint for a markdown of a resource of type MARKDOWN '''
     
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, md_document_name):
-        
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, md_document_name, auth_ctx=None):
+
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         #253 check user id

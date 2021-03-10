@@ -9,6 +9,7 @@ class InstituteViewSet(APIView):
 
     def get(self, request, institute_id):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
 
         institute_view = InstituteGetModelViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
@@ -20,6 +21,7 @@ class InstituteListViewSet(APIView):
 
     def get (self, request):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=0, department_id=0)
 
         #253 check user id

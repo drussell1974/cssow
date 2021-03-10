@@ -59,3 +59,6 @@ CALL demo_restoredata(
     @DEMO_LEARNING_OBJECTIVE_ID,
     @DEMO_RESOURCE_ID, 
     @DEMO_KEYWORD_ID);
+
+select * from sow_key_word where id = 92;
+select * from sow_lesson__has__key_words where key_word_id = 92;

@@ -16,7 +16,7 @@
                 "127.0.0.1:3000",
             ],
             "env": {
-                "env-cmd":"-f ${workspaceFolder}/dotenv/.env.test-ui"
+                "env-cmd": "-f ${workspaceFolder}/dotenv/.env.test-ui"
             },
             "django": true
         }

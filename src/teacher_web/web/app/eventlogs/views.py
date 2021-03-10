@@ -16,9 +16,9 @@ from .viewmodels import EventLogIndexViewModel, EventLogDeleteOldViewModel
 
 @permission_required('cssow.view_eventlogs', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
-def index(request, institute_id, department_id, scheme_of_work_id):
-    """ view the event log """ 
-    
+def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx=None):
+
+    # TODO: #367 get auth_ctx from min_permission_required decorator
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
        
     modelview = EventLogIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_ctx)
@@ -28,9 +28,9 @@ def index(request, institute_id, department_id, scheme_of_work_id):
 
 @permission_required('cssow.delete_eventlogs', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.OWNER, login_url='/accounts/login/')
-def delete(request, institute_id, department_id, scheme_of_work_id, rows = 0):
-    """ delete old logs """
+def delete(request, institute_id, department_id, scheme_of_work_id, rows = 0, auth_ctx=None):
 
+    # TODO: #367 get auth_ctx from min_permission_required decorator
     auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
     
     modelview = EventLogDeleteOldViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_ctx)

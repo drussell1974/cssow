@@ -18,8 +18,9 @@ from .viewmodels import LessonGetModelViewModel, LessonGetAllViewModel
 class LessonViewSet(APIView):
     ''' API endpoint for a lesson '''
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id):
-                
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx=None):
+
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
         
         resource_type_id = request.GET.get("resource_type_id", 0)
@@ -32,8 +33,9 @@ class LessonViewSet(APIView):
 class LessonListViewSet(APIView):
     ''' API endpoint for list of lessons '''
 
-    def get (self, request, institute_id, department_id, scheme_of_work_id):
+    def get (self, request, institute_id, department_id, scheme_of_work_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         #253 check user id
@@ -44,8 +46,9 @@ class LessonListViewSet(APIView):
 class LessonPathwayObjectivesViewSet(APIView):
     ''' API endpoint for list of lessons pathway objectives'''
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, key_words = None):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, key_words = None, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         raise DeprecationWarning("verify usage")
     
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
@@ -63,8 +66,9 @@ class LessonPathwayObjectivesViewSet(APIView):
 class LessonPathwayKs123ViewSet(APIView):
 
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, topic_id):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, key_stage_id, topic_id, auth_ctx=None):
 
+        # TODO: #367 get auth_ctx from min_permission_required decorator
         raise DeprecationWarning("Not referenced. Confirm usage")
 
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)

@@ -9,10 +9,10 @@ from shared.models.core.context import AuthCtx, Ctx
 
 mock_scheme_of_work = SchemeOfWorkModel(99, name="A-Level Computer Science", auth_user=Ctx(1276711, 826))
 
-def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, trace=False):
+def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, trace=False, fake_request_user_id=6079):
     
     mock_request = MagicMock()
-    mock_request.user = MagicMock(id=6079)
+    mock_request.user = MagicMock(id=fake_request_user_id)
     mock_request.session = {}
 
     mock_db = Mock()

@@ -16,11 +16,14 @@ def unauthorise_request(func):
     """
     changes to request.user.id to UNAUTHORISED_USER_ID 
     """
+    raise DeprecationWarning("set NONE permission using min_permission_required decorator")
         
     def inner(*args, **kwargs):
+
         for arg in args:   
             if hasattr(arg, 'user') and hasattr(arg.user, 'id'):
                 arg.user.id = UNAUTHORISED_USER_ID
+
         return func(*args, **kwargs)
     return inner
 
@@ -44,9 +47,9 @@ class min_permission_required:
             request = args[0]
             
             self.kwargs = kwargs
-
             self._return_url = request.path
-            #auth_user = request.user
+            
+            auth_ctx = None
 
             str_err = f"You do not have {str(self._permission).split('.')[1]} permission"
             
@@ -56,9 +59,16 @@ class min_permission_required:
             institute_id = self.getkwargs("institute_id", default_value=DEFAULT_INSTITUTE_ID)            
             scheme_of_work_id = self.getkwargs("scheme_of_work_id", default_value=DEFAULT_SCHEME_OF_WORK_ID)
             
-            auth_ctx = AuthCtx(db, request, **kwargs)
+            #367 add institute_id and department_id to kwargs if necessary
+            if "institute_id" in kwargs and "department_id" in kwargs:
+                auth_ctx = AuthCtx(db, request, **kwargs)
+            elif "institute_id" in kwargs:
+                auth_ctx = AuthCtx(db, request, department_id=department_id, **kwargs)
+            else:
+                auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, **kwargs)
 
-            if auth_ctx.teacher_permission.check_permission(self._permission) == False:
+            # check permissions
+            if auth_ctx.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
                 str_err = str_err + f" for this scheme of work ({scheme_of_work_id}) {str(self._permission).split('.')[0]} redirect to {self._redirect_to_url}."
                 
@@ -67,7 +77,7 @@ class min_permission_required:
             self.setkwargs("ctx", value=auth_ctx)
             
             # call decorated function
-            return func(*args, **kwargs)
+            return func(auth_ctx=auth_ctx, *args, **kwargs)
             
         return inner
 

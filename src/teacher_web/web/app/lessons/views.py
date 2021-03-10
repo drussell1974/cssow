@@ -6,10 +6,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core import validation_helper
-from shared.models.core.context import AuthCtx
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
-from shared.models.decorators.permissions import min_permission_required, unauthorise_request
+from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
@@ -26,10 +25,10 @@ from datetime import datetime
 # Create your views here.        
 
 @min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0):
+def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, lesson_id = 0):
     """ Get lessons for scheme of work """
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     # default pager settings
     page = try_int(request.GET.get("page", 0))
@@ -48,12 +47,11 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0, is_copy = False):
+def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     
     # TODO: # use/create LessonEditViewModel
-    
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     model = LessonModel(id_=lesson_id, scheme_of_work_id=scheme_of_work_id)
     error_message = ""
@@ -157,10 +155,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id = 0,
 
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def publish(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    ''' Publish the lesson '''
-    
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+def publish(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
+
+    #367 get auth_ctx from min_permission_required decorator
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
@@ -176,12 +173,11 @@ def publish(request, institute_id, department_id, scheme_of_work_id, lesson_id):
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id):
-    """ delete item and redirect back to referer """
+def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
+    # TODO: #367 get auth_ctx from min_permission_required decorator
     raise DeprecationWarning("remove if not longer in use")
-
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    #367 get auth_ctx from min_permission_required decorator
     
     redirect_to_url = request.META.get('HTTP_REFERER')
 
@@ -191,13 +187,12 @@ def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id):
     return HttpResponseRedirect(redirect_to_url)
     
 
-@unauthorise_request
-def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id):
-    ''' Display the lesson plan on the whiteboard '''
+@min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
+    #367 get auth_ctx from min_permission_required decorator
+    #367 use min permissions NONE
 
-    #253 check user id
     get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_lesson_view.model
 
@@ -212,13 +207,12 @@ def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
-@unauthorise_request
-def missing_words_challenge(request, institute_id, department_id,scheme_of_work_id, lesson_id):
-    ''' Display the missing words on the whiteboard (with printable) '''
+@min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def missing_words_challenge(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
-    #253 check user id
+    #367 get auth_ctx from min_permission_required decorator
+    #367 use min permissions NONE
+        
     get_challenge_view =  LessonMissingWordsChallengeViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_challenge_view.model
 
@@ -233,11 +227,10 @@ def missing_words_challenge(request, institute_id, department_id,scheme_of_work_
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.OWNER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete_unpublished(request, institute_id, department_id, scheme_of_work_id):
-    """ delete item and redirect back to referer """
+def delete_unpublished(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
-    auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
-
+    #367 get auth_ctx from min_permission_required decorator
+    
     LessonDeleteUnpublishedViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("lesson.index", args=[institute_id, department_id, scheme_of_work_id]))
