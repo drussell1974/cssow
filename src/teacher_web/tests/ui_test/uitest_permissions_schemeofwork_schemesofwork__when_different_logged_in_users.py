@@ -117,7 +117,8 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "enter_username":"department-admin@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-                # should be this after fix to feature #373
+                # TODO: #373 department-admin should be allowed for not creator (modify and also verify with auth_ctx tests)
+                #"allow": True,
                 #"exp__title":"Dave Russell - Teach Computer Science",
                 #"exp__h1":"Log in",
                 #"exp__subheading":"Register to create schemes of work and lessons",

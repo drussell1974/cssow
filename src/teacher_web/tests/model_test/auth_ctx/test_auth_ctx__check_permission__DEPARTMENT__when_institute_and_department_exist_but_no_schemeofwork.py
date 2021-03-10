@@ -11,7 +11,8 @@ from shared.models.core.context import AuthCtx
 from tests.test_helpers.mocks import fake_ctx_model
 
 
-class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department_exist(TestCase):
+class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department_exist_but_no_schemeofwork(TestCase):
+    """ Simulates Department level, with institute_id and department_id http://teacher.daverussell.co.uk/insitute/2/department/5/schemesofwork - e.g. for creating new scheme of work """
 
     def setUp(self):
         pass
@@ -20,9 +21,9 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department
         pass
         
     
-    def test_should_return_false__when_user_is_authenticated(self):
+    def test_when_user_is_authenticated(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=6079)
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079)
 
         # assert
         self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
@@ -31,9 +32,9 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department
         self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
 
 
-    def test_should_return_false__when_user_visitor(self):
+    def test_when_user_visitor(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=None)
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=None)
 
         # assert
         self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
@@ -42,9 +43,9 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department
         self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
 
 
-    def test_should_return_false__when_user_is_authenticated__and__is_head_of_department(self):
+    def test_when_user_is_authenticated__and__is_head_of_department(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=6079, fake_user_is_hod=True)
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079, fake_user_is_hod=True)
         
         # assert
         self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
@@ -53,9 +54,9 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_institute_and_department
         self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
 
 
-    def test_should_return_false__when_user_is_authenticated__and__is_creator(self):
+    def test_when_user_is_authenticated__and__is_creator(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=6079, fake_user_is_creator=True)
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079, fake_user_is_creator=True)
         
         # assert
         self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))

@@ -12,7 +12,8 @@ from tests.test_helpers.mocks import fake_ctx_model
 
 
 class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
-
+    """ get data fake data from sow_scheme_of_work__has__teacher from database """
+    
     def setUp(self):
         pass
 
@@ -20,7 +21,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
         pass
         
     
-    def test_should_return_false__when_user_is_authenticated__no_permission_data(self):
+    def test_when_user_is_authenticated__no_permission_data(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = []
@@ -33,7 +34,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(SCHEMEOFWORK.OWNER))
     
 
-    def test_should_return_false__when_user_is_authenticated__SCHEMEOFWORK_EDITOR(self):
+    def test_when_user_is_authenticated__SCHEMEOFWORK_EDITOR(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(scheme_of_work_permission=SCHEMEOFWORK.EDITOR)
@@ -47,7 +48,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(SCHEMEOFWORK.OWNER))
 
 
-    def test_should_return_false__when_user_is_authenticated__SCHEMEOFWORK_NONE(self):
+    def test_when_user_is_authenticated__SCHEMEOFWORK_NONE(self):
         # arrange
         # return matching teacher_data
         fake_teacher_data = get_fake_TeacherData(scheme_of_work_permission=SCHEMEOFWORK.NONE)
@@ -61,7 +62,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(SCHEMEOFWORK.OWNER))
 
 
-    def test_should_return_false__when_user_is_authenticated__SCHEMEOFWORK_OWNER(self):
+    def test_when_user_is_authenticated__SCHEMEOFWORK_OWNER(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(scheme_of_work_permission=SCHEMEOFWORK.OWNER)
@@ -75,7 +76,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_teacher(TestCase):
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.OWNER))
     
 
-    def test_should_return_false__when_user_is_authenticated__SCHEMEOFWORK_VIEWER(self):
+    def test_when_user_is_authenticated__SCHEMEOFWORK_VIEWER(self):
         # arrange
         # return matching teacher_data
         fake_teacher_data = get_fake_TeacherData(scheme_of_work_permission=SCHEMEOFWORK.VIEWER)

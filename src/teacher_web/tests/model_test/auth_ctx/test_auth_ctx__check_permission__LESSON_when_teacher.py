@@ -12,7 +12,8 @@ from tests.test_helpers.mocks import fake_ctx_model
 
 
 class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
-
+    """ get data fake data from sow_scheme_of_work__has__teacher from database """
+    
     def setUp(self):
         pass
 
@@ -20,7 +21,7 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         pass
         
     
-    def test_should_return_false__when_user_is_authenticated__no_data(self):
+    def test_when_user_is_authenticated__no_data(self):
         # arrange
         
         ''' return matching teacher_data '''
@@ -35,7 +36,7 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
      
     
-    def test_should_return_false__when_user_is_authenticated__LESSON_EDITOR(self):
+    def test_when_user_is_authenticated__LESSON_EDITOR(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.EDITOR)
@@ -49,7 +50,7 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
     
      
-    def test_should_return_false__when_user_is_authenticated__LESSON_NONE(self):
+    def test_when_user_is_authenticated__LESSON_NONE(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.NONE)
@@ -63,7 +64,7 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
     
 
-    def test_should_return_false__when_user_is_authenticated__LESSON_OWNER(self):
+    def test_when_user_is_authenticated__LESSON_OWNER(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.OWNER)
@@ -77,7 +78,7 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertTrue(self.test.check_permission(LESSON.OWNER))
     
 
-    def test_should_return_false__when_user_is_authenticated__LESSON_VIEWER(self):
+    def test_when_user_is_authenticated__LESSON_VIEWER(self):
         # arrange
         # return matching teacher_data        
         fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.VIEWER)
