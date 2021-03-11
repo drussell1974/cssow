@@ -49,3 +49,78 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(DEPARTMENT.TEACHER))
         self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
         self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
+
+     
+    def test_when_user_is_authenticated__DEPARTMENT_NONE(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(department_permission=DEPARTMENT.NONE)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+
+        # act and assert
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
+
+
+    def test_when_user_is_authenticated__DEPARTMENT_STUDENT(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(department_permission=DEPARTMENT.STUDENT)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+
+        # act and assert
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
+
+
+    def test_when_user_is_authenticated__DEPARTMENT_TEACHER(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(department_permission=DEPARTMENT.TEACHER)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+
+        # act and assert
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
+
+
+    def test_when_user_is_authenticated__DEPARTMENT_HEAD(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(department_permission=DEPARTMENT.HEAD)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+
+        # act and assert
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertFalse(self.test.check_permission(DEPARTMENT.ADMIN))
+
+
+    def test_when_user_is_authenticated__DEPARTMENT_ADMIN(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(department_permission=DEPARTMENT.ADMIN)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+
+        # act and assert
+        self.assertTrue(self.test.check_permission(DEPARTMENT.NONE))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.STUDENT))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.TEACHER))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.HEAD))
+        self.assertTrue(self.test.check_permission(DEPARTMENT.ADMIN))

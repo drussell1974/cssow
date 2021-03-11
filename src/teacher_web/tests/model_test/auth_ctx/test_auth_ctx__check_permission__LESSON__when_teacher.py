@@ -11,7 +11,7 @@ from shared.models.core.context import AuthCtx
 from tests.test_helpers.mocks import fake_ctx_model
 
 
-class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
+class test_auth_ctx__check_permission__LESSON__when_teacher(TestCase):
     """ get data fake data from sow_scheme_of_work__has__teacher from database """
     
     def setUp(self):
@@ -35,20 +35,6 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertFalse(self.test.check_permission(LESSON.EDITOR))
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
      
-    
-    def test_when_user_is_authenticated__LESSON_EDITOR(self):
-        # arrange
-        # return matching teacher_data        
-        fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.EDITOR)
-        
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
-        
-        # assert
-        self.assertTrue(self.test.check_permission(LESSON.NONE))
-        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
-        self.assertTrue(self.test.check_permission(LESSON.EDITOR))
-        self.assertFalse(self.test.check_permission(LESSON.OWNER))
-    
      
     def test_when_user_is_authenticated__LESSON_NONE(self):
         # arrange
@@ -61,6 +47,34 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertTrue(self.test.check_permission(LESSON.NONE))
         self.assertFalse(self.test.check_permission(LESSON.VIEWER))
         self.assertFalse(self.test.check_permission(LESSON.EDITOR))
+        self.assertFalse(self.test.check_permission(LESSON.OWNER))
+
+
+    def test_when_user_is_authenticated__LESSON_VIEWER(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.VIEWER)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+        
+        # assert
+        self.assertTrue(self.test.check_permission(LESSON.NONE))
+        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
+        self.assertFalse(self.test.check_permission(LESSON.EDITOR))
+        self.assertFalse(self.test.check_permission(LESSON.OWNER))
+        
+
+    def test_when_user_is_authenticated__LESSON_EDITOR(self):
+        # arrange
+        # return matching teacher_data        
+        fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.EDITOR)
+        
+        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
+        
+        # assert
+        self.assertTrue(self.test.check_permission(LESSON.NONE))
+        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
+        self.assertTrue(self.test.check_permission(LESSON.EDITOR))
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
     
 
@@ -77,17 +91,3 @@ class test_auth_ctx__check_permission__LESSON_when_teacher(TestCase):
         self.assertTrue(self.test.check_permission(LESSON.EDITOR))
         self.assertTrue(self.test.check_permission(LESSON.OWNER))
     
-
-    def test_when_user_is_authenticated__LESSON_VIEWER(self):
-        # arrange
-        # return matching teacher_data        
-        fake_teacher_data = get_fake_TeacherData(lesson_permission=LESSON.VIEWER)
-        
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=11, fake_request_user_id=6079, fake_teacher_data=fake_teacher_data)
-        
-        # assert
-        self.assertTrue(self.test.check_permission(LESSON.NONE))
-        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
-        self.assertFalse(self.test.check_permission(LESSON.EDITOR))
-        self.assertFalse(self.test.check_permission(LESSON.OWNER))
-        
