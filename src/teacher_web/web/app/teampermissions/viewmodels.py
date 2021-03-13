@@ -11,8 +11,8 @@ from django.db import connection as db
 from django.http import Http404
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
-from shared.models.cls_institute import InstituteModel
-from shared.models.cls_department import DepartmentModel
+from shared.models.cls_institute import InstituteContextModel
+from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON, parse_enum
@@ -148,7 +148,7 @@ class TeamPermissionApproveViewModel(BaseViewModel):
             
             self.model.validate()
 
-            self.model = TeacherPermissionModel.save(db, self.model, self.auth_user)
+            self.model = TeacherPermissionModel.approve(db, self.model, self.auth_user)
 
 
 class TeamPermissionDeleteViewModel(BaseViewModel):
@@ -200,24 +200,49 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
         
         # get the permissions for the current user
-        self.model = TeacherPermissionModel.get_model(db, teacher_id=auth_user.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)
+        
+        # NOTE: get department then get institute to promote can_view
 
-        # Check if permission has already been granted
-        self.model.validate()
-        if self.model is not None and self.model.is_from_db == True and self.model.is_authorised == True:
-            raise PermissionError(f"{teacher_name} has already been granted access to this scheme of work.")
+        self.department = DepartmentContextModel.cached(request, db, self.institute_id, self.department_id, self.auth_user.auth_user_id)
+        # TODO: #323 check ownership and set can_view
         
-        self.model = TeacherPermissionModel(
-            teacher_id=self.model.teacher_id,
-            teacher_name=self.model.teacher_name,
-            scheme_of_work=self.scheme_of_work, 
-            department_permission = self.permission if type(self.permission) is DEPARTMENT else DEPARTMENT.NONE,
-            scheme_of_work_permission = self.permission if type(self.permission) is SCHEMEOFWORK else SCHEMEOFWORK.NONE,
-            lesson_permission = self.permission if type(self.permission) is LESSON else LESSON.NONE,
-            is_authorised=False,
-            ctx=auth_user
-        )
+        self.institute = InstituteContextModel.cached(request, db, self.institute_id, self.auth_user.auth_user_id)
+        # TODO: #323 check ownership and set can_view
         
+        # NOTE: #373 remove current permission check and insert new request, or update any unapproved request
+        teacher_permissions = TeacherPermissionModel.get_model(db, teacher_id=auth_user.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=False)
+        
+        if teacher_permissions is not None or teacher_permissions[self.scheme_of_work_id].is_from_db == True:
+            self.model = teacher_permissions
+        else:
+            """ create new request """
+            # check existing approved model to retain other values not being requested
+            # TODO: Return from database as merged instance
+            approved_permissions = TeacherPermissionModel.get_model(db, teacher_id=auth_user.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=auth_user, show_authorised=True)
+            
+            if approved_permissions is None or approved_permissions[self.scheme_of_work_id].is_from_db == False:
+                approved_permissions[self.scheme_of_work_id] = TeacherPermissionModel.default(auth_user.institute, auth_user.department, self.scheme_of_work, auth_user)
+            
+                self.model = TeacherPermissionModel(
+                    teacher_id=self.model.teacher_id,
+                    teacher_name=self.model.teacher_name,
+                    scheme_of_work=self.scheme_of_work, 
+                    department_permission = self.permission if type(self.approved_permissions[self.scheme_of_work_id]) is DEPARTMENT else approved_permissions[self.scheme_of_work_id].department_permission,
+                    scheme_of_work_permission = self.permission if type(self.approved_permissions[self.scheme_of_work_id]) is SCHEMEOFWORK else approved_permissions[self.scheme_of_work_id].scheme_of_work_permission,
+                    lesson_permission = self.permission if type(self.approved_permissions[self.scheme_of_work_id]) is LESSON else approved_permissions[self.scheme_of_work_id].lesson_permission,
+                    is_authorised=False,
+                    ctx=auth_user
+                )
+        
+        if self.model.is_authorised == False:
+            """ update existing request """            
+            # update or keep permission depending on permission type being requested
+            self.model.department_permission = self.permission if type(self.permission) is DEPARTMENT else self.model.department_permission
+            self.model.scheme_of_work_permission = self.permission if type(self.permission) is SCHEMEOFWORK else self.model.scheme_of_work_permission 
+            self.model.lesson_permission = self.permission if type(self.permission) is LESSON else self.model.lesson_permission
+            self.model.is_authorised=False,
+            self.model.ctx=auth_user
+
 
     def execute(self):
         if self.model.validate():

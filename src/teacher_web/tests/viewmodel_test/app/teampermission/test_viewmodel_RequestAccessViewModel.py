@@ -3,7 +3,7 @@ from unittest import TestCase, skip
 from django.http import Http404
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.teampermissions.viewmodels import TeamPermissionRequestAccessViewModel as ViewModel
-from shared.models.cls_department import DepartmentModel
+from shared.models.utils.cache_proxy import CacheProxy
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
@@ -24,7 +24,8 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
-    def test_init_called_request_access__with_exception(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
+    @patch.object(CacheProxy, "session_cache", return_value={})
+    def test_init_called_request_access__with_exception(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, session_cache):
         ''' request_access returns exception - SchemeOfWork must exist and User permission hasn't been granted '''
         # arrange        
         with patch.object(Model, "request_access", side_effect=KeyError):
@@ -57,7 +58,8 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
     @patch.object(SchemeOfWorkModel, "get_model", return_value=None)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
-    def test_init_raise_Http404__when_scheme_of_work_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
+    @patch.object(CacheProxy, "session_cache", return_value={})
+    def test_init_raise_Http404__when_scheme_of_work_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, session_cache):
         ''' When the schemeofwork does not exist returns not found - SchemeOfWork must NOT exist and but ensure User permission hasn't been granted '''
         
         # arrange        
@@ -92,10 +94,10 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
         
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    #Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True), is_authorised=True, is_from_db=True)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
-    def test_init_raise_PermissionError__when_permission_already_granted(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
+    @patch.object(CacheProxy, "session_cache", return_value={})
+    def test_init_update__when_permission_already_granted(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, session_cache):
         ''' When the User permission does not exist returns not found - SchemeOfWork must NOT exist and but ensure User model does not exist '''
         
         # arrange
@@ -112,37 +114,35 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
         mock_request = Mock()
         
         with patch.object(Model, "request_access", return_value=data_to_return):
-            with self.assertRaises(PermissionError):
-                # act
-                self.viewmodel = ViewModel(
-                    db, 
-                    request=mock_request, 
-                    auth_user=fake_ctx_model(), 
-                    scheme_of_work_id=999, 
-                    #teacher_id=24, 
-                    teacher_name="Pies Descalzos",
-                    permission = "DEPARTMENT.STUDENT"
-                )
-                    
-                self.viewmodel.execute()
+            # act
+            self.viewmodel = ViewModel(
+                db, 
+                request=mock_request, 
+                auth_user=fake_ctx_model(),
+                scheme_of_work_id=999, 
+                #teacher_id=24, 
+                teacher_name="Pies Descalzos",
+                permission = "DEPARTMENT.STUDENT"
+            )
+                
+            self.viewmodel.execute()
 
-                # assert functions were called
-                SchemeOfWorkModel_get_model.assert_called()
-                TeacherPermissionModel_get_model.assert_called()
-                TeacherPermissionModel_validate.assert_called()
-                Model.request_access.assert_not_called()
-                self.assertEqual(DEPARTMENT.STUDENT, self.viewmodel.permission)
+            # assert functions were called
+            SchemeOfWorkModel_get_model.assert_called()
+            TeacherPermissionModel_get_model.assert_called()
+            TeacherPermissionModel_validate.assert_called()
+            Model.request_access.assert_called()
+            self.assertEqual(DEPARTMENT.STUDENT, self.viewmodel.permission)
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
-    # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=False)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
-    def test_init_called_request_access__return_item(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate):
+    @patch.object(CacheProxy, "session_cache", return_value={})
+    def test_init_called_request_access__return_item(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, session_cache):
         ''' Grant permissions to user - SchemeOfWork must exist and User hasn't been granted permission '''
         
         # arrange
-        #Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return = TeacherPermissionModel_get_model
         data_to_return.published = STATE.DELETE        
         

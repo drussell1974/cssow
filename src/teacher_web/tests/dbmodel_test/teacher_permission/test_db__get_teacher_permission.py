@@ -49,7 +49,7 @@ class test_db__get_teacher_permission(TestCase):
                 , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
-                
+            
             #self.assertEqual(99, model.scheme_of_work_id)
             #self.assertEqual("Ulysses", model.scheme_of_work_name)
             self.assertEqual(SCHEMEOFWORK.NONE, int(model.scheme_of_work_permission))
@@ -62,15 +62,15 @@ class test_db__get_teacher_permission(TestCase):
         # arrange
 
         fake_ctx = fake_ctx_model()
-        
+        sow_id_to_get = 12323232
         #expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert", True)]
-        expected_result = [(99, "Frank Herbert", 12323232, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
+        expected_result = [(99, "Frank Herbert", sow_id_to_get, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
             # act
             
-            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(14, name="Dune", auth_user=fake_ctx), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
+            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(sow_id_to_get, name="Dune", auth_user=fake_ctx), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,

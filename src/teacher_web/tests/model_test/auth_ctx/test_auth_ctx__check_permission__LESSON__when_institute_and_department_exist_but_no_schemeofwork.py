@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, patch
-from .base_authctx_testcase import get_TestAuthCtx
+from .base_authctx_testcase import init_TestAuthCtx
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -23,7 +23,7 @@ class test_auth_ctx__check_permission__LESSON__when_institute_and_department_exi
     
     def test_when_user_is_authenticated(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079)
+        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079)
 
         # assert
         self.assertTrue(self.test.check_permission(LESSON.NONE))
@@ -34,32 +34,10 @@ class test_auth_ctx__check_permission__LESSON__when_institute_and_department_exi
 
     def test_when_user_visitor(self):
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=None)
+        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=None)
 
         # assert
         self.assertTrue(self.test.check_permission(LESSON.NONE))
         self.assertFalse(self.test.check_permission(LESSON.VIEWER))
         self.assertFalse(self.test.check_permission(LESSON.EDITOR))
         self.assertFalse(self.test.check_permission(LESSON.OWNER))
-
-
-    def test_when_user_is_authenticated__and__is_head_of_department(self):
-        # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079, fake_user_is_hod=True)
-        
-        # assert
-        self.assertTrue(self.test.check_permission(LESSON.NONE))
-        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
-        self.assertTrue(self.test.check_permission(LESSON.EDITOR))
-        self.assertTrue(self.test.check_permission(LESSON.OWNER))
-
-
-    def test_when_user_is_authenticated__and__is_creator(self):
-        # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, scheme_of_work_id=0, fake_request_user_id=6079, fake_user_is_creator=True)
-        
-        # assert
-        self.assertTrue(self.test.check_permission(LESSON.NONE))
-        self.assertTrue(self.test.check_permission(LESSON.VIEWER))
-        self.assertTrue(self.test.check_permission(LESSON.EDITOR))
-        self.assertTrue(self.test.check_permission(LESSON.OWNER))

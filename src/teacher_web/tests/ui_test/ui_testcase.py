@@ -252,5 +252,4 @@ class UITestCase(TestCase):
                         self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
             except KeyError as e:
                 raise AssertionError(f"An error occurred running uri {testcase['uri']} for user {testcase['enter_username']} in test cases for {batch_name}! ensure correct keys have been provided", e)
-            except Exception as e:
-                raise AssertionError(f"An error occurred running {testcase} test cases for {batch_name}! ensure correct keys have been provided", e)
+            # DON"T CAPTURE assertions

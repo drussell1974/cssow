@@ -61,5 +61,5 @@ class test_db__delete(TestCase):
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
                 'scheme_of_work__has__teacher_permission__delete'
-                , (19, 9343232, fake_ctx_model().auth_user_id)
+                , (19, 9343232, False, fake_ctx_model().auth_user_id)
                 , handle_log_info)

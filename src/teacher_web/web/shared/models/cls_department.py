@@ -39,7 +39,7 @@ class DepartmentContextModel(BaseContextModel):
         department = cls.empty()
 
         cache_obj = CacheProxy.session_cache(request, db, "department", cls.get_context_model, institute_id, department_id, auth_user_id)
-
+        
         if cache_obj is not None:
             department.from_dict(cache_obj)    
 

@@ -52,6 +52,7 @@
                 {% if 'retrieve_password' not in auth.settings.actions_disabled %}
                     <a href="{% url 'password_reset' %}" class="btn btn-link stackable">{{_('Lost password?')}}</a>
                 {% endif %}
+                <a href="https://github.com/drussell1974/cssow/issues/new" class="btn btn-link stackable">{{_('Report an issue')}}</a>
             </div>
         </div>
         <input type="hidden" name="next" value="{{ next }}">

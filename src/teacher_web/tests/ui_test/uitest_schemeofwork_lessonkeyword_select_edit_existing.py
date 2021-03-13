@@ -74,7 +74,7 @@ class uitest_schemeofwork_lessonkeyword_select_edit_existing(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("chk-term--{}".format(self.test_keyword_id))
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        
+        self.wait(s=4)
         # act
         
         ' select term '
