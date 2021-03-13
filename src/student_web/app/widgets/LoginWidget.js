@@ -8,23 +8,15 @@ export const LoginWidget = ({redirect}) => {
     } else {
         return (
             <Fragment>
-                <h2>Login</h2>
                 <form method="post" action="/login" id="frm-login-form">
-                    <div className="controls-group">
-                        <div className="form-group form-group--auto controls">
-                            <label>Email:</label>
-                            <input type="text" name="username" />
-                        </div>
-                    </div>
-                    <div className="controls-group">
-                        <div className="form-group form-group--auto controls">
-                            <label>Password:</label>
-                            <input type="password" name="password" />
+                    <div className="controls-group align-center">
+                        <div className="form-group form-group--auto controls p-25">
+                            <h2>Enter your class code</h2>
+                            <input type="text" name="classcode" />
+                            <input type="submit" value="Enter" className="btn btn-primary w-100"></input>
                         </div>
                     </div>
                     <input type="hidden" name="redirect_url" value={redirect.url} />
-                    <input type="submit" value="login" className="btn btn-primary"></input>
-                    <Link className="btn btn-secondary" to={redirect.url}>Cancel</Link>
                 </form>
             </Fragment>
         );

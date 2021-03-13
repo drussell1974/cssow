@@ -7,6 +7,9 @@ const BreadcrumbWidget = ({activePageName, breadcrumbItems = []}) => {
     }
     return (
         <nav id="breadcrumb-nav" aria-label="breadcrumb">
+            <ul className="breadcrumb float-right">
+            <Link to={'/'}>I have a class code</Link>
+            </ul>
             <ul className="breadcrumb">
                 { breadcrumbItems.map(item => 
                     <li key={item.url} className="breadcrumb-item">
@@ -15,7 +18,6 @@ const BreadcrumbWidget = ({activePageName, breadcrumbItems = []}) => {
                 )}
                 <li className="breadcrumb-item active" aria-current="page">{activePageName}</li>
             </ul>
-            <Link className="float-right" to={'/login'}>Login</Link>
         </nav>
     )
 };
