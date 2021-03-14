@@ -75,14 +75,13 @@ class UITestCase(TestCase):
         self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")
         
 
-    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message = "assertWebPageTitleAndHeadings failed", wait=0):
-
+    def assertWebPageTitleAndHeadings(self, title, h1, subheading, should_be_logged_in=None, username=None, failed_message=None, wait=2):
         # test - subheading
-        self.assertEqual(subheading, self.find_element_by_id__with_explicit_wait("main-subheading", wait=wait).text, f".subheading not as expected ({failed_message})")
+        self.assertEqual(subheading, self.find_element_by_id__with_explicit_wait("main-subheading", wait=wait).text, failed_message)
         # assert - site-heading
-        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, f".main_heading not as expected ({failed_message})")
+        self.assertEqual(h1, self.test_context.find_element_by_tag_name("h1").text, failed_message)
         # assert - title
-        self.assertEqual(title, self.test_context.title, f"title not as expected ({failed_message})")
+        self.assertEqual(title, self.test_context.title, failed_message)
         
         
         # assert - username
@@ -233,23 +232,23 @@ class UITestCase(TestCase):
 
 
     def run_testcases__permission(self, testcases, batch_name):
-
-        #print(f"running {len(testcases)} test cases for {batch_name}!", end="")
-
+        
         for testcase in testcases:
             try:
-            
+                uri =testcase['uri']
+                route = testcase['route']
                 # test
                 if "skip" in testcase.keys() and testcase["skip"] == True:
                     print("s", end="")
                 else:
-                    self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=2)
+                    self.do_log_in(testcase["uri"], enter_username=testcase["enter_username"], wait=4)
                     
                     # assert
                     if testcase["allow"] == False:
-                        self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message=f"testcase {testcase['route']} failed.")
+                        self.assertLoginPage(login_message=testcase["exp__login_message"], redirect_to_url=testcase["uri"], exception_message="PermissionError at", failed_message="testcase:(route={}, uri={}) failed.".format(uri, route))
                     else:
-                        self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message=f"testcase {testcase['route']} failed.")
+                        self.assertWebPageTitleAndHeadings(testcase["exp__title"], testcase["exp__h1"], testcase["exp__subheading"], failed_message="testcase:(route={}, uri={}) failed.".format(uri, route), wait=4)
             except KeyError as e:
                 raise AssertionError(f"An error occurred running uri {testcase['uri']} for user {testcase['enter_username']} in test cases for {batch_name}! ensure correct keys have been provided", e)
             # DON"T CAPTURE assertions
+            

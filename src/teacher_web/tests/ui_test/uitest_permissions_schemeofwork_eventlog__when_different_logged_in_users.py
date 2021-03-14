@@ -24,14 +24,7 @@ class uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users(U
         cls.test_context.close()
 
 
-    def test_page__permission_when__schemeofwork_viewer(self):
-        """ test permission on event-logs
-
-        #path("", views.index, name="eventlog.index"),
-        #path("delete", views.delete, name="eventlog.delete")
-
-        """
-
+    def test_page__permission_when__eventlog_index__schemeofwork_viewer(self):
         testcases = [
             {
                 "route":"eventlog.index as schemeofwork-viewer@localhost",
@@ -39,25 +32,42 @@ class uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users(U
                 "enter_username": "schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-            },
+            }]
+
+        self.run_testcases__permission(testcases, "eventlog")
+
+
+    def test_page__permission_when__eventlog_delete__schemeofwork_viewer(self):
+
+        testcases = [
             {
                 "route":"eventlog.delete as schemeofwork-viewer@localhost",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log/delete",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-            },
+            }]
+
+        self.run_testcases__permission(testcases, "eventlog")
 
 
+    def test_page__permission_when__eventlog_index__schemeofwork_editor(self):
+
+        testcases = [
             {
                 "route":"eventlog.index as schemeofwork-editor@localhost",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log",
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": False,
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
-            },  
+            }]
+
+        self.run_testcases__permission(testcases, "eventlog")
 
 
+    def test_page__permission_when__eventlog_index__super_user(self):
+
+        testcases = [
             {
                 "route":"eventlog.index as drussell1974",
                 "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/event-log",

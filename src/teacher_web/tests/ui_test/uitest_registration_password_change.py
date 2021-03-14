@@ -8,7 +8,7 @@ class uitest_registration_password_change(UITestCase):
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.try_log_in(self.root_uri + "/accounts/password_change")
+        self.try_log_in(self.root_uri + "/accounts/password_change", wait=4)
 
 
     def tearDown(self):
@@ -30,7 +30,6 @@ class uitest_registration_password_change(UITestCase):
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
 
         ' old password '
         elem = self.test_context.find_element_by_id("id_old_password")
