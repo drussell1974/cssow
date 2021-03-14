@@ -37,19 +37,6 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
 
     return auth_ctx
 
-'''
-def fake_teacher_model(auth_user_id = 6079, department_permission=DEPARTMENT.HEAD, scheme_of_work_permission=SCHEMEOFWORK.OWNER, lesson_permission=LESSON.OWNER, is_authorised=False):
-
-    permission_ctx = TeacherPermissionModel(teacher_id=9999, teacher_name="Dave Russell", scheme_of_work=mock_scheme_of_work, is_from_db=True, ctx=fake_ctx_model())
-    
-    permission_ctx.is_authorised = is_authorised
-    permission_ctx.department_permission = department_permission
-    permission_ctx.scheme_of_work_permission = scheme_of_work_permission
-    permission_ctx.lesson_permission = lesson_permission
-    permission_ctx.auth_user_id = auth_user_id
-    
-    return permission_ctx
-'''
 
 def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
 
