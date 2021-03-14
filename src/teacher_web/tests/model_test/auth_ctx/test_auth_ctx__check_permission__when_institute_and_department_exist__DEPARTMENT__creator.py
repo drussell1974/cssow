@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, patch
-from .base_authctx_testcase import get_TestAuthCtx
+from .base_authctx_testcase import init_TestAuthCtx
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -16,7 +16,7 @@ class test_auth_ctx__check_permission__when_institute_and_department_exist__DEPA
     def setUp(self):
         
         # arrange
-        self.test = get_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=6079, fake_user_is_hod=True)
+        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=67, fake_request_user_id=6079)
 
 
     def tearDown(self):
@@ -38,7 +38,7 @@ class test_auth_ctx__check_permission__when_institute_and_department_exist__DEPA
         actual_result = self.test.check_permission(DEPARTMENT.STUDENT)
 
         # assert
-        self.assertTrue(actual_result)
+        self.assertFalse(actual_result)
         
 
     def test_should_return_false__when_user__is_authenticated__and__permissions_required__DEPARTMENT_HEAD(self):
@@ -47,7 +47,7 @@ class test_auth_ctx__check_permission__when_institute_and_department_exist__DEPA
         actual_result = self.test.check_permission(DEPARTMENT.HEAD)
 
         # assert
-        self.assertTrue(actual_result)
+        self.assertFalse(actual_result)
 
 
     def test_should_return_false__when_user__is_authenticated__and__permissions_required__DEPARTMENT_ADMIN(self):

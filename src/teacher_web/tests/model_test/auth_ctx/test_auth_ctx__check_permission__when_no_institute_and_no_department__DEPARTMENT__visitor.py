@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, patch
-from .base_authctx_testcase import get_TestAuthCtx
+from .base_authctx_testcase import init_TestAuthCtx
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -16,7 +16,7 @@ class test_auth_ctx__check_permission__when_no_institute_and_no_department__DEPA
 
         # arrange
         
-        self.test = get_TestAuthCtx(institute_id=0, department_id=0, fake_request_user_id=None)
+        self.test = init_TestAuthCtx(institute_id=0, department_id=0, fake_request_user_id=None)
 
 
     def tearDown(self):
