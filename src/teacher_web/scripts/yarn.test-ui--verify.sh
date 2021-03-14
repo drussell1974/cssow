@@ -10,24 +10,8 @@ echo "running..."
 
 ## start test
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_change.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_learningobjective__when_different_logged_in_users.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_lesson__when_different_logged_in_users.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logged_in_users.py
-
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_password_change.py
-
 #-k test_page__should_have__title__title_heading__and__sub_heading
-
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_cancel.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_existing.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_index.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_index__search_term.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_select__search_term.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_select_edit_existing.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_cancel.py
-
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
@@ -39,7 +23,7 @@ python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registr
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_registration_*.py
 

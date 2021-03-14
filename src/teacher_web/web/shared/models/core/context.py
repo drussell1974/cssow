@@ -49,7 +49,7 @@ class AuthCtx(Ctx):
         if self.auth_user_id is not None and self.auth_user_id > 0:
             self.teacher_permission = TeacherPermissionModel.get_model(self.db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)
             
-
+            
     def check_permission(self, min_permission):
         """ check if the teacher has enough priviliges """
 

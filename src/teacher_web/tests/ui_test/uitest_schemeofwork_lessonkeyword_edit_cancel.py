@@ -1,13 +1,11 @@
 from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
-from tests.test_helpers.decorators import restore_demo_data
 
 class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
 
     test_context = WebBrowserContext()
     
-    @restore_demo_data()
     def setUp(self):
         
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords/{self.test_keyword_id}/edit", wait=2)
