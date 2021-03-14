@@ -42,7 +42,7 @@ def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
     return render(request, "schemesofwork/edit.html", save_view.view().content)
 
 
-#@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
+@permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def delete_unpublished(request, institute_id, department_id, auth_ctx):
 

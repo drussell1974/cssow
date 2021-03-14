@@ -10,7 +10,7 @@ echo "running..."
 
 ## start test
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users.py
 #-k test_page__should_have__title__title_heading__and__sub_heading
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
