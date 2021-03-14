@@ -19,8 +19,8 @@ BEGIN
         department_permission as department_permission,
 		scheme_of_work_permission as scheme_of_work_permission,
         lesson_permission as lesson_permission,
-		is_authorised as is_authorised -- the head of department is authorised
-        , hod_id
+		is_authorised as is_authorised, -- the head of department is authorised
+        hod_id as head_of_department_id
     FROM sow_permission
 	WHERE 
 		hod_id = p_head_id -- get head for department
@@ -34,4 +34,3 @@ END;
 DELIMITER ;
 
 CALL scheme_of_work__get_team_permissions(2,5,2,True,2);
-CALL scheme_of_work__get_team_permissions(2,5,2,False,2);

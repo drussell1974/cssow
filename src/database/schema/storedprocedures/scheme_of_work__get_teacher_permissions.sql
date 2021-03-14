@@ -6,7 +6,7 @@ CREATE PROCEDURE scheme_of_work__get_teacher_permissions (
  IN p_teacher_id INT,
  IN p_department_id INT,
  IN p_institute_id INT,
- IN p_is_authorised BIT,
+ IN p_is_authorised BOOLEAN,
  IN p_auth_user INT)
 BEGIN
     SELECT 
@@ -19,7 +19,7 @@ BEGIN
 		institute_id as institute_id,	
         institute_name as institute_name,
 		scheme_of_work_permission as scheme_of_work_permission, 
-        lesson_permission as lesson_permission,
+        lesson_permission as lesson_permission,	
         department_permission as department_permission,
 		is_authorised as is_authorised
     FROM sow_permission
@@ -32,5 +32,5 @@ END;
 
 DELIMITER ;
 
--- CALL scheme_of_work__get_team_permissions(2, 5, 2, True, 2);
--- CALL scheme_of_work__get_teacher_permissions(2, 5, 2, True, 2);
+CALL scheme_of_work__get_team_permissions(15, 5, 2, True, 15);
+CALL scheme_of_work__get_teacher_permissions(15, 5, 2, True, 15);

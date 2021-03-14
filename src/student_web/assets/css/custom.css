@@ -49,6 +49,14 @@ div.progress--css-animated {
     float: right;
 }
 
+.p-25 {
+    padding: 0 25% 25% 25%;
+}
+
+.w-100 {
+    width:100%
+}
+
 @keyframes progressbar {
     0%   { width: 10% }
     20%  { width: 20% }

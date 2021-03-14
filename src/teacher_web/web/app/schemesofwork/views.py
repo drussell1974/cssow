@@ -24,7 +24,7 @@ def index(request, institute_id, department_id, auth_ctx):
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
-@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+@min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
 
     #367 get auth_ctx from min_permission_required decorator

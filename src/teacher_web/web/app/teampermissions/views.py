@@ -80,7 +80,7 @@ def delete(request, institute_id, department_id, scheme_of_work_id, teacher_id, 
 
 
 @login_required
-@permission_required('cssow.can_request_team_permissions', login_url="/accounts/login")
+@min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login")
 def request_access(request, institute_id, department_id, scheme_of_work_id, permission, auth_ctx):
 
     #367 get auth_ctx from min_permission_required decorator

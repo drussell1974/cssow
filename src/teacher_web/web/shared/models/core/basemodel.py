@@ -242,7 +242,7 @@ class BaseContextModel(BaseModel):
     def from_dict(self, dict_obj):
         
         if type(dict_obj) is not dict:
-            raise TypeError("Value must be type dictionary (dict).")
+            raise TypeError(f"Value must be type dictionary (dict).{type(dict_obj)}")
 
         self.id = dict_obj.get("id")
         self.name = dict_obj.get("name")

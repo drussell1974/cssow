@@ -27,7 +27,7 @@ class TeacherPermissionModel(BaseModel):
 
         teacher_permission = cls.empty(scheme_of_work=scheme_of_work, ctx=ctx)
         
-        # start with no permissions
+        # start with no permissions TODO: #373 remove as empty defaults to these values
 
         teacher_permission.department_permission = DEPARTMENT.NONE
         teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.NONE
@@ -36,7 +36,7 @@ class TeacherPermissionModel(BaseModel):
         # promote to HOD
         if ctx.auth_user_id is not None and ctx.auth_user_id == department.hod_id:
             ''' set DEPARTMENT.HEAD permissions '''
-            teacher_permission.department_permission = DEPARTMENT.HEAD
+            teacher_permission.department_permission = DEPARTMENT.HEAD # TODO: #373 DEPARTMENT.HEAD #373 HOD should be administrator
             teacher_permission.scheme_of_work_permission = SCHEMEOFWORK.OWNER
             teacher_permission.lesson_permission = LESSON.OWNER
             teacher_permission.is_authorised = True
@@ -122,34 +122,52 @@ class TeacherPermissionModel(BaseModel):
 
 
     def _check_scheme_of_work_permission(self, permission):
-        return self.scheme_of_work_permission % permission == 0 and self.is_authorised == True
+        is_authorised = self.scheme_of_work_permission % permission == 0 and (self.is_authorised == True or self.is_authorised == 1)
+        return is_authorised
 
 
     def _check_lesson_permission(self, permission):
-        return self.lesson_permission % permission == 0 and self.is_authorised == True
-
+        is_authorised = self.lesson_permission % permission == 0 and (self.is_authorised == True or self.is_authorised == 1)
+        return is_authorised
 
     def _check_department_permission(self, permission):
-        return self.department_permission % permission == 0 and self.is_authorised == True
-
+        is_authorised = self.department_permission % permission == 0 and (self.is_authorised == True or self.is_authorised == 1)
+        return is_authorised
+    
 
     @staticmethod
     def get_model(db, teacher_id, scheme_of_work, auth_user, show_authorised=True):
-        ''' get permission for the teacher '''
+        """ get permission for the teacher """
         
-        rows = TeacherPermissionDataAccess.get_model(db, scheme_of_work.id, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
+        #373 and #363 Get all permissions for department and use dictionary look up on check_permission
+        teacher_permissions_dict = {}
 
-        model = TeacherPermissionModel.empty(scheme_of_work=scheme_of_work, ctx=auth_user)
-
+        # default or no scheme of work
+        teacher_permissions_dict[0] = TeacherPermissionModel.default(institute=auth_user.institute, department=auth_user.department, scheme_of_work=scheme_of_work, ctx=auth_user)
+        
+        rows = TeacherPermissionDataAccess.get_model(db, teacher_id, auth_user.department_id, auth_user.institute_id, show_authorised=show_authorised, auth_user_id=auth_user.auth_user_id)
         for row in rows:
             # returns only the matching row
-            if auth_user.scheme_of_work_id == row[2] and auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
+            if auth_user.department_id == row[4] and auth_user.institute_id == row[6]:
+                cur_scheme_of_work = SchemeOfWorkContextModel(row[2], row[3], auth_user.auth_user_id)
+                cur_model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[1], scheme_of_work=cur_scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=row[11], ctx=auth_user)
+                # add teacher permission model to dictionary using scheme of work
+                teacher_permissions_dict[cur_model.scheme_of_work_id] = cur_model
+                # HACK: promote department level permissions for the default permission to highest level of permissions
+                if cur_model.department_permission > teacher_permissions_dict[0].department_permission:
+                    teacher_permissions_dict[0].department_permission = cur_model.department_permission
+                # because the permissions are retrieved from the database set as authorised
+                # TODO: Verify if this check is necessary before removing
+                teacher_permissions_dict[0].is_authorised = True
 
-                model = TeacherPermissionModel(teacher_id=teacher_id, teacher_name=row[1], scheme_of_work=scheme_of_work,  scheme_of_work_permission=row[8], lesson_permission=row[9], department_permission=row[10], is_from_db=True, is_authorised=row[11], ctx=auth_user)
-
-                return model
-        return model
-
+        if scheme_of_work.id in teacher_permissions_dict:
+            model = teacher_permissions_dict[scheme_of_work.id]
+            return model
+        else:
+            # fall back to default permissions
+            model = teacher_permissions_dict[0]
+            return model
+        
 
     @staticmethod
     def get_team_permissions(db, teacher_id, auth_user, show_authorised=True):
@@ -202,24 +220,31 @@ class TeacherPermissionModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user, is_pending = False):
+    def save(db, model, auth_user):
         """ save model """        
         if model.is_new() == False and model.published == STATE.DELETE:
-            data = TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, ctx=auth_user)
+            data = TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, model.is_authorised, ctx=auth_user)
         elif model.is_valid == True:
             if model.is_new() == True:
                 data = TeacherPermissionDataAccess._insert(db, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, ctx=auth_user)
                 model.id = data[0]
             else:
-                #raise KeyError(model.teacher_id)
                 data = TeacherPermissionDataAccess._update(db, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission,  model.is_authorised, ctx=auth_user)
     
         return model
 
 
     @staticmethod
+    def approve(db, model, auth_user):
+        if model.is_authorised == True and model.is_valid == True:
+            TeacherPermissionDataAccess.approve_access_request(db, model.scheme_of_work_id, model.teacher_id, model.department_permission, model.scheme_of_work_permission, model.lesson_permission, ctx=auth_user)
+    
+        return model
+
+
+    @staticmethod
     def delete(db, model, auth_user):
-        TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, ctx=auth_user)
+        TeacherPermissionDataAccess._delete(db, model.scheme_of_work_id, model.teacher_id, model.is_authorised, ctx=auth_user)
         model.is_from_db = False
         return model
 
@@ -227,7 +252,7 @@ class TeacherPermissionModel(BaseModel):
 class TeacherPermissionDataAccess:
 
     @staticmethod
-    def get_model(db, scheme_of_work_id, teacher_id, department_id, institute_id, show_authorised, auth_user_id):
+    def get_model(db, teacher_id, department_id, institute_id, show_authorised, auth_user_id):
         ''' gets the current users permissions for the scheme of work  '''
         
         helper = ExecHelper()
@@ -291,6 +316,7 @@ class TeacherPermissionDataAccess:
         
         str_update = "scheme_of_work__has__teacher_permission__update"
         params = (
+            ctx.department_id,
             ctx.scheme_of_work_id,
             teacher_id,
             DEPARTMENT(department_permission).value,
@@ -306,13 +332,13 @@ class TeacherPermissionDataAccess:
 
 
     @staticmethod
-    def _delete(db, scheme_of_work_id, teacher_id, ctx):
+    def _delete(db, scheme_of_work_id, teacher_id, is_authorised, ctx):
         ''' deletes from sow_scheme_of_work__has__teacher''' 
 
         execHelper = ExecHelper()
 
         sql = "scheme_of_work__has__teacher_permission__delete"
-        params = (scheme_of_work_id, teacher_id, ctx.auth_user_id)
+        params = (scheme_of_work_id, teacher_id, is_authorised, ctx.auth_user_id)
     
         rows = execHelper.delete(db, sql, params, handle_log_info)
         
@@ -339,6 +365,28 @@ class TeacherPermissionDataAccess:
         )    
         
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
+        
+        return result
+
+
+    @staticmethod
+    def approve_access_request(db, scheme_of_work_id, teacher_id, department_permission, scheme_of_work_permission, lesson_permission, ctx):
+        """ update the sow_scheme_of_work__has__teacher """
+        
+        execHelper = ExecHelper()
+
+        sql_update_statement = "scheme_of_work__has__teacher_permission__approve"
+        params = (
+            ctx.department_id,
+            scheme_of_work_id,
+            teacher_id,
+            DEPARTMENT(department_permission).value, # GET PERMISSION FROM MODEL
+            SCHEMEOFWORK(scheme_of_work_permission).value, # GET PERMISSION FROM MODEL
+            LESSON(lesson_permission).value, # GET PERMISSION FROM MODEL
+            ctx.auth_user_id
+        )    
+        
+        result = execHelper.update(db, sql_update_statement, params, handle_log_info)
         
         return result
 
