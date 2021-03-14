@@ -42,3 +42,4 @@ class test_auth_ctx__check_permission__DEPARTMENT__when_institute_but_no_departm
         self.assertTrue(self.test.check_permission(DEPARTMENT.STUDENT))
         self.assertTrue(self.test.check_permission(DEPARTMENT.HEAD))
         self.assertTrue(self.test.check_permission(DEPARTMENT.ADMIN))
+        
