@@ -1,13 +1,13 @@
 from ui_testcase import UITestCase, WebBrowserContext
-import unittest
+from unittest import skip
 
-class uitest_department_index(UITestCase):
+class uitest_department_all(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
         # set up
-        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department")
+        self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/department/all")
         self.wait()
 
     def tearDown(self):
@@ -28,7 +28,7 @@ class uitest_department_index(UITestCase):
         self.assertFooterContextText("Computer Science")
 
 
-    @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
+    @skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
     def test_page__navigate_to_lesson_index(self):
 
         # setup
@@ -44,10 +44,10 @@ class uitest_department_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
 
-    @unittest.skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
-    def test_page__breadcrumb__navigate_to_departments_all(self):
+    @skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
+    def test_page__breadcrumb__navigate_to_departments_index(self):
         # setup
-        self.test_context.find_element_by_id('btn-topnav-departments_all').click()
+        self.test_context.find_element_by_id('btn-topnav-departments').click()
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
@@ -63,11 +63,11 @@ class uitest_department_index(UITestCase):
 
     def test_page__post_preview__item__navigate_to_schemesofwork(self):
         # setup
-        self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_department_id)).click()
+        self.test_context.find_element_by_id('lnk-schemesofwork--{}'.format(self.test_department_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Mr Russell', 'Departments')
-                
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+         
 
     def not_test_page__submenu__navigate_to_department_new(self):
         # setup

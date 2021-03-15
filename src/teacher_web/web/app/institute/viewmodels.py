@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
+from app.default.viewmodels import DefaultIndexViewModel
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel as Model
@@ -9,8 +10,18 @@ from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
+class InstituteIndexViewModel(DefaultIndexViewModel):
 
-class InstituteIndexViewModel(BaseViewModel):
+    def __init__(self, db, top, auth_user):
+        super().__init__(db, top, auth_user)
+
+
+    def view(self, main_heading, sub_heading):
+        view = super().view(main_heading, sub_heading)
+        return view
+
+
+class InstituteAllViewModel(BaseViewModel):
     
     def __init__(self, db, auth_user):
         self.model = []

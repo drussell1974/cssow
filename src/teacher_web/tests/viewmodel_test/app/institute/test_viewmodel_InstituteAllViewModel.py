@@ -1,12 +1,12 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-from app.institute.viewmodels import InstituteIndexViewModel as ViewModel
+from app.institute.viewmodels import InstituteAllViewModel as ViewModel
 from shared.models.cls_institute import InstituteModel as Model
 from shared.models.cls_keyword import KeywordModel
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_IndexViewModel(TestCase):
+class test_viewmodel_InstituteAllViewModel(TestCase):
 
     def setUp(self):        
         pass

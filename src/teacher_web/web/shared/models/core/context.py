@@ -44,7 +44,7 @@ class AuthCtx(Ctx):
         
         # default TeacherPermissionModel
         self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)
-
+    
         ''' if the current user created the institute or department they are DEPARTMENT ADMIN '''
         if self.auth_user_id is not None and self.auth_user_id > 0:
             self.teacher_permission = TeacherPermissionModel.get_model(self.db, teacher_id=self.auth_user_id, scheme_of_work=self.scheme_of_work, auth_user=self)

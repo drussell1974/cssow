@@ -47,14 +47,15 @@ class InstituteModel(InstituteContextModel):
     name = ""
     description = ""
     number_of_departments = 0
-
+    
     def __init__(self, id_, name, description="", created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         super().__init__(id_, name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=None)
         #self.id = id_
         self.name = name
         self.description = description
         self.number_of_departments = 0
-
+        self.departments = []
+        
 
     def validate(self, skip_validation = []):
         """ clean up and validate model """

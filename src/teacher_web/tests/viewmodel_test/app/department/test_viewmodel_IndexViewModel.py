@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.department.viewmodels import DepartmentIndexViewModel as ViewModel
+from app.department.viewmodels import DepartmentAllViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_institute import InstituteModel

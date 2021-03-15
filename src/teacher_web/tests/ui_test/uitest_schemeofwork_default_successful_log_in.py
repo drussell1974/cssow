@@ -11,7 +11,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork", wait=2)
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork", wait=4)
 
 
     def tearDown(self):
@@ -28,7 +28,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
 
         # assert
         ' redirect back to home page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage', wait=4)
 
         elem = self.test_context.find_element_by_id("btn-profile")
         self.assertEqual("TEST USER", elem.text)

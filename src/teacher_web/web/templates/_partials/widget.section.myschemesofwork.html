@@ -1,0 +1,55 @@
+<span class="subheading">{{_("My Schemes of work")}}</span>
+      <!-- Institute -->
+      {% for row in content.data.institutes %}
+        <div class="post-preview post-preview--institute {{ row.published_state }}">
+          <h2>
+              {{ row.name }}
+            <a id="lnk-institute-departments--{{row.id}}" href="{% url 'department.index' row.id %}" class="float-right">
+              <i class="fa fa-list" data-toggle="tooltip" data-placement="top" title="Go to {{row.name}} departments"></i>
+            </a>
+          </h2>
+          {% for drow in row.departments %}
+          <h3>
+              {{ drow.name }} 
+          </h3>
+
+            <!-- Scheme of works -->
+            {% for srow in drow.schemes_of_work %}
+              <div class="post-preview post-preview--my_schemeofwork {{ row.published_state }}">
+                <a id="lnk-my_schemeofwork-{{row.id}}" href="{% url 'lesson.index' srow.institute_id srow.department_id srow.id %}">
+                  <h4 class="post-title">
+                      {{ srow.name }}
+                  </h4>
+                </a>
+                <p class="post-meta">Created by
+                  <a href="#">{{ srow.created_by_name }}</a>
+                  {% if srow.created %}
+                    on {{ srow.created }}
+                  {% endif %}
+              </div>
+            {% endfor %}
+            
+            <!-- Scheme of works END -->
+            <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="btn btn-outline-dark stackable">
+              {{_("Add scheme of work")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
+            </a>
+          
+          {% endfor %}
+          
+          <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'department.new' row.id %}" class="btn btn-outline-dark stackable">
+            {{_("Add department")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
+          </a>
+          
+        </div>
+        <hr>
+      {% endfor %}
+      <!-- Institutes END -->
+</section>
+
+{% block page_js %}
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+{% endblock %}
