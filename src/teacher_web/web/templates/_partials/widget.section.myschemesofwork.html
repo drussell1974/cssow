@@ -16,7 +16,7 @@
             <!-- Scheme of works -->
             {% for srow in drow.schemes_of_work %}
               <div class="post-preview post-preview--my_schemeofwork {{ row.published_state }}">
-                <a id="lnk-my_schemeofwork-{{row.id}}" href="{% url 'lesson.index' srow.institute_id srow.department_id srow.id %}">
+                <a id="lnk-my_schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id drow.id srow.id %}">
                   <h4 class="post-title">
                       {{ srow.name }}
                   </h4>
