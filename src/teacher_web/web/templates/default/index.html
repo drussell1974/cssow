@@ -24,23 +24,25 @@
   <section id="section-institutes" class="jumbotron">
     <!-- My institutes -->
     {% include '_partials/widget.section.myschemesofwork.html' %}
+  </section>
   <hr>
   {% endif %}
 
-  <section id="section-showcase" class="overlay">
+    <section id="section-showcase" class="overlay">
 
-    {% include '_partials/widget.content.showcase.html' %}
-  
-  </section>
-  <hr>
-
-  <section id="section-latest_schemesofwork" class="jumbotron">
-      <!-- Scheme of works -->
-    <span class="subheading">{{_("Latest Schemes of Work")}}</span>
+      {% include '_partials/widget.content.showcase.html' %}
     
+    </section>
+  <hr>
+  {% if request.user.is_authenticated %}
+    <section id="section-latest_schemesofwork" class="jumbotron">
+        <!-- Scheme of works -->
+      <span class="subheading">{{_("Latest Schemes of Work")}}</span>
+      
       {% include '_partials/widget.content.latest_schemes_of_work.html' %}
 
-  </section>
+    </section>
+  {% endif %}
 
   <p class="text- muted small">* Future features</p>
 {% endblock %}
