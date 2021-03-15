@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.institute.views import edit, index, delete_unpublished
+from app.institute.views import edit, all, index, delete_unpublished
 
 # Create your tests here.
 class test_app_route_institute_page(TestCase):
@@ -14,6 +14,17 @@ class test_app_route_institute_page(TestCase):
     def test__institute__url_resolves_to_index__reverse(self):
         url = reverse("institute.index")
         self.assertEqual("/institute/", url)
+
+
+    def test__institute__url_resolves_to_all(self):
+        url = resolve("/institute/all")
+        self.assertEqual("institute.all", url.url_name)
+        self.assertEqual(url.func, all)
+
+
+    def test__institute__url_resolves_to_all__reverse(self):
+        url = reverse("institute.all")
+        self.assertEqual("/institute/all", url)
     
     
     def test__institute_new__resolves_to_new(self):

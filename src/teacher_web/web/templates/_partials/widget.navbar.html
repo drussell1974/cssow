@@ -6,7 +6,11 @@
       <li class="nav-item">
         <!-- TODO: #329 check content for content.data.institute_id and content.data.department_id -->
         {% if content.ctx.institute_id > 0 and content.ctx.department_id > 0 %}
-        <a class="nav-link" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-topnav-schemes_of_work">Schemes of Work</a>
+          <a class="nav-link" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}" id="btn-topnav-schemes_of_work">{{_('Schemes of Work')}}</a>
+        {% elif content.ctx.institute_id > 0 and content.ctx.department_id == 0 %}
+          <a class="nav-link" href="{% url 'department.all' content.ctx.institute_id %}" id="btn-topnav-departments_all">{{_('All departments')}}</a>
+        {% else %}
+          <a class="nav-link" href="{% url 'institute.all' %}" id="btn-topnav-institutes_all">{{_('All institutes')}}</a>
         {% endif %}
       </li>
       <li class="nav-item">

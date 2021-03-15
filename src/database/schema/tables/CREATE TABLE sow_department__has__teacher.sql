@@ -37,6 +37,9 @@ ALTER TABLE sow_department__has__teacher
 ADD COLUMN created_by INT DEFAULT 0 after department_permission;
 
 ALTER TABLE sow_department__has__teacher
+ADD COLUMN modified_by INT DEFAULT 0 after created;
+
+ALTER TABLE sow_department__has__teacher
 ADD COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP after created_by;
 
 ALTER TABLE sow_department__has__teacher

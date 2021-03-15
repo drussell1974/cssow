@@ -7,6 +7,7 @@ from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
+from app.department.viewmodels import DepartmentAllViewModel
 from app.department.viewmodels import DepartmentEditViewModel
 from app.department.viewmodels import DepartmentIndexViewModel
 from app.department.viewmodels import DepartmentDeleteUnpublishedViewModel
@@ -18,9 +19,19 @@ def index(request, institute_id, auth_ctx):
 
     #367 get auth_ctx from min_permission_required decorator
 
-    getall_view =  DepartmentIndexViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
+    index_view =  DepartmentIndexViewModel(db=db, institute_id=institute_id, top=10, auth_user=auth_ctx)
     
-    return render(request, "department/index.html", getall_view.view().content)
+    return render(request, "default/index.html", index_view.view(index_view.institute.name, "Departments").content)
+
+
+@min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def viewall(request, institute_id, auth_ctx):
+
+    #367 get auth_ctx from min_permission_required decorator
+
+    all_view =  DepartmentAllViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
+    
+    return render(request, "department/index.html", all_view.view().content)
 
 
 @permission_required("cssow.change_institutemodel", login_url="/accounts/login/")

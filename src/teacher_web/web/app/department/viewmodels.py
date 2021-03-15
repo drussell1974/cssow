@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
+from app.default.viewmodels import DefaultIndexViewModel
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel
@@ -11,7 +12,25 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
 
-class DepartmentIndexViewModel(BaseViewModel):
+class DepartmentIndexViewModel(DefaultIndexViewModel):
+
+    def __init__(self, db, institute_id, top, auth_user):
+        super().__init__(db, top, auth_user)
+        self.institute_id = institute_id
+        self.institute = InstituteModel.get_model(db, id=institute_id, auth_user=auth_user)
+        
+        # if not found then raise error
+        if self.institute_id > 0:
+            if self.institute is None or self.institute.is_from_db == False:
+                self.on_not_found(self.institute, self.institute_id)
+
+
+    def view(self, main_heading, sub_heading):
+        view = super().view(self.institute.name, sub_heading)
+        return view
+
+
+class DepartmentAllViewModel(BaseViewModel):
     
     def __init__(self, db, institute_id, auth_user):
         self.model = []

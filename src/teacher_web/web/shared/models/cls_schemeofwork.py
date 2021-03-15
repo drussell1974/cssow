@@ -163,6 +163,30 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
 
     @staticmethod
+    def get_my(db, institute, department, auth_user, key_stage_id=0):
+        rows = SchemeOfWorkDataAccess.get_my(db, department_id=department.id, institute_id=department.institute_id, auth_user_id=auth_user.auth_user_id, key_stage_id=key_stage_id, show_published_state=auth_user.can_view)
+        data = []
+        for row in rows:
+            model = SchemeOfWorkModel(id_=row[0],
+                                    name=row[1],
+                                    description=row[2],
+                                    exam_board_id=row[3],
+                                    exam_board_name=row[4],
+                                    key_stage_id=row[5],
+                                    key_stage_name=row[6],
+                                    #department_name=row[8],
+                                    created=row[7],                                                                                                                                                                                               
+                                    created_by_id=row[8],
+                                    created_by_name=row[9],
+                                    published=row[10],
+                                    auth_user=auth_user)
+
+            model.institute_id = row[13]
+            data.append(model.__dict__)
+        return data
+
+
+    @staticmethod
     def get_model(db, id, auth_user):   
         rows = SchemeOfWorkDataAccess.get_model(db, id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         
@@ -354,6 +378,23 @@ class SchemeOfWorkDataAccess:
         
         select_sql = "scheme_of_work__get_all" 
         params = (key_stage_id, department_id, institute_id, int(show_published_state), auth_user_id)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+
+        return rows
+
+
+    @staticmethod
+    def get_my(db, department_id, institute_id, auth_user_id, key_stage_id=0, show_published_state=STATE.PUBLISH):
+        """
+        get my scheme of work
+        """
+        
+        execHelper = ExecHelper()
+        
+        select_sql = "scheme_of_work__get_my" 
+        params = (department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

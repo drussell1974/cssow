@@ -46,7 +46,7 @@
               <!-- -->
             </h4>
           <div class="card-body stackable-group-sm">
-            <a id="lnk-institute-departments--{{row.id}}" href="{% url 'department.index' row.id %}" class="btn btn-outline-dark stackable">
+            <a id="lnk-institute-departments--{{row.id}}" href="{% url 'department.all' row.id %}" class="btn btn-outline-dark stackable">
               {{_("Departments")}} <span class="badge badge-light">{{row.number_of_departments}}</span>
             </a>
           </div>

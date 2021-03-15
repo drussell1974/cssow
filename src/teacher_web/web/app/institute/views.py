@@ -8,7 +8,7 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from app.institute.viewmodels import InstituteEditViewModel
-from app.institute.viewmodels import InstituteIndexViewModel
+from app.institute.viewmodels import InstituteIndexViewModel, InstituteAllViewModel
 from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 # Create your views here.
@@ -16,9 +16,17 @@ from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, auth_ctx):
     
-    index_view =  InstituteIndexViewModel(db=db, auth_user=auth_ctx)
+    index_view =  InstituteIndexViewModel(db=db, top=10, auth_user=auth_ctx)
     
-    return render(request, "institute/index.html", index_view.view().content)
+    return render(request, "default/index.html", index_view.view("Schemes of Work", "Institutes").content)
+
+
+@min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def all(request, auth_ctx):
+    
+    all_view =  InstituteAllViewModel(db=db, auth_user=auth_ctx)
+    
+    return render(request, "institute/index.html", all_view.view().content)
 
 
 @permission_required("cssow.change_institutemodel", login_url="/accounts/login/")

@@ -111,6 +111,28 @@ class DepartmentModel(DepartmentContextModel):
 
 
     @staticmethod
+    def get_my(db, institute, department_id, auth_user):
+        
+        # TODO: #371 ignore if no institute
+
+        rows = DepartmentDataAccess.get_my(db, institute_id=institute.id, department_id=department_id, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
+        data = []
+        for row in rows: 
+            model = DepartmentModel(id_=row[0],
+                                    name=row[1],
+                                    institute = institute,
+                                    created=row[2],                                                                                                                                                                                                                         
+                                    created_by_id=row[3],
+                                    created_by_name=row[4],
+                                    published=row[5])
+            
+            model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
+            
+            data.append(model)
+        return data
+
+
+    @staticmethod
     def get_model(db, department_id, auth_user):   
         
         rows = DepartmentDataAccess.get_model(db, department_id, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
@@ -210,6 +232,23 @@ class DepartmentDataAccess:
         select_sql = "department__get_all" 
         params = (institute_id, int(show_published_state), auth_user_id,)
 
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+
+        return rows
+
+
+    @staticmethod
+    def get_my(db, department_id, institute_id, show_published_state, auth_user_id):
+        """
+        get my departments
+        """
+        
+        execHelper = ExecHelper()
+        
+        select_sql = "department__get_my" 
+        params = (institute_id, department_id, int(show_published_state), auth_user_id,)
+        
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
 

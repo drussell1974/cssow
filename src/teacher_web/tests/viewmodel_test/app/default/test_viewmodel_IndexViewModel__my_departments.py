@@ -1,11 +1,14 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from app.default.viewmodels import DefaultIndexViewModel as ViewModel
-from shared.models.cls_institute import InstituteModel as Model
+from shared.models.cls_department import DepartmentModel as Model
+from shared.models.cls_institute import InstituteModel
 from tests.test_helpers.mocks import *
 
+
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_DefaultIndexViewModel__institutes(TestCase):
+@patch.object(InstituteModel, "get_my", return_value=[InstituteModel(56, "Lorem Ipsum")])
+class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
 
     def setUp(self):        
         pass
@@ -15,7 +18,7 @@ class test_viewmodel_DefaultIndexViewModel__institutes(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self, mock_auth_user):
+    def test_init_called_fetch__no_return_rows(self, InstituteModel_get_my, mock_auth_user):
         
         # arrange
         
@@ -32,15 +35,20 @@ class test_viewmodel_DefaultIndexViewModel__institutes(TestCase):
             self.viewmodel = ViewModel(db, top=5, auth_user=mock_auth_user)
 
             # assert functions was called
+            InstituteModel_get_my.assert_called()
             Model.get_my.assert_called()
-            self.assertEqual(0, len(self.viewmodel.institutes))
+
+            self.assertEqual(1, len(self.viewmodel.institutes))
+            self.assertEqual(0, len(self.viewmodel.institutes[0].departments))
 
 
-    def test_init_called_fetch__single_row(self, mock_auth_user):
+    def test_init_called_fetch__single_row(self, InstituteModel_get_my, mock_auth_user):
         
         # arrange
         
-        data_to_return = [Model(56, "Lorem Ipsum")]
+        mock_institute = mock_auth_user.institute
+
+        data_to_return = [Model(56, "Lorem Ipsum", institute=mock_institute)]
         
         with patch.object(Model, "get_my", return_value=data_to_return):
 
@@ -53,15 +61,24 @@ class test_viewmodel_DefaultIndexViewModel__institutes(TestCase):
             self.viewmodel = ViewModel(db, top=5, auth_user=mock_auth_user)
 
             # assert functions was called
+            InstituteModel_get_my.assert_called()
             Model.get_my.assert_called()
+
             self.assertEqual(1, len(self.viewmodel.institutes))
+            self.assertEqual(1, len(self.viewmodel.institutes[0].departments))
 
 
-    def test_init_called_fetch__multiple_rows(self, mock_auth_user):
+    def test_init_called_fetch__multiple_rows(self, InstituteModel_get_my, mock_auth_user):
         
         # arrange
         
-        data_to_return = [Model(57, "Lorem Ipsum"),Model(58, "Lorem Ipsum"),Model(59, "Lorem Ipsum")]
+        mock_institute = mock_auth_user.institute
+
+        data_to_return = [
+            Model(57, "Lorem Ipsum", institute=mock_institute),
+            Model(58, "Lorem Ipsum", institute=mock_institute),
+            Model(59, "Lorem Ipsum", institute=mock_institute)
+            ]
         
         with patch.object(Model, "get_my", return_value=data_to_return):
 
@@ -72,5 +89,8 @@ class test_viewmodel_DefaultIndexViewModel__institutes(TestCase):
             self.viewmodel = ViewModel(db, top=5, auth_user=mock_auth_user)
 
             # assert functions was called
+            InstituteModel_get_my.assert_called()
             Model.get_my.assert_called()
-            self.assertEqual(3, len(self.viewmodel.institutes))
+            
+            self.assertEqual(1, len(self.viewmodel.institutes))
+            self.assertEqual(3, len(self.viewmodel.institutes[0].departments))
