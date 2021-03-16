@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
@@ -32,11 +33,13 @@ def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
     save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     if save_view.saved == True:
-
-        if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
-            redirect_to_url = request.POST.get("next", None)
-        else:
-            redirect_to_url = reverse('schemesofwork.edit', args=[save_view.model.id])
+        
+        # TODO: #386 determine wizard mode
+        redirect_to_url = ViewHelper.postSaveRedirect(request,
+            next_step=reverse('content.new', args=[institute_id, department_id, save_view.model.id]),
+            add_another=reverse('schemesofwork.new', args=[institute_id, department_id]),
+            default=reverse('schemesofwork.edit', args=[institute_id, department_id, save_view.model.id])
+        )
         return HttpResponseRedirect(redirect_to_url)
     
     return render(request, "schemesofwork/edit.html", save_view.view().content)

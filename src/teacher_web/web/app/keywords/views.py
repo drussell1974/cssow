@@ -9,6 +9,7 @@ from django.urls import reverse
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.enums.publlished import STATE
 from shared.models.decorators.permissions import min_permission_required
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
@@ -129,10 +130,13 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
         ' save keyword '
   
         ' redirect as necessary '
-        if request.POST["next"] != None and request.POST["next"] != "":
-            redirect_to_url = request.POST["next"]
-        else:
-            redirect_to_url = reverse('keyword.edit', args=(scheme_of_work_id, model.id))
+        # TODO: #386 determine wizard mode
+        redirect_to_url = ViewHelper.postSaveRedirect(request,
+            next_step=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+            add_another=reverse('keywords.new', args=[institute_id, department_id, scheme_of_work_id]),
+            default=reverse('keywords.edit', args=(institute_id, department_id, scheme_of_work_id, model.id))
+        )
+        
     else:
         """ redirect back to page and show message """
 

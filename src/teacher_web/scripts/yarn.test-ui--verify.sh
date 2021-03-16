@@ -13,14 +13,14 @@ echo "running..."
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_permissions_schemeofwork_eventlog__when_different_logged_in_users.py
 #-k test_page__should_have__title__title_heading__and__sub_heading
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py

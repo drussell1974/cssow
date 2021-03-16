@@ -10,6 +10,7 @@ from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
@@ -111,12 +112,16 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
 
             if model.is_valid == True:
                 ' save the lesson '            
-                redirect_to_url = reverse('lesson.index', args=[auth_ctx.institute_id, auth_ctx.department_id, model.scheme_of_work_id])
                 
-                if request.POST["next"] != "None"  and request.POST["next"] != "":
-                    redirect_to_url = request.POST["next"]
-                
+                # TODO: #386 determine wizard mode
+                redirect_to_url = ViewHelper.postSaveRedirect(request,
+                    next_step=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, modelviewmodel.model.id]),
+                    add_another=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+                    default=reverse('lesson.index', args=[auth_ctx.institute_id, auth_ctx.department_id, model.scheme_of_work_id])
+                )
+
                 return HttpResponseRedirect(redirect_to_url)
+            
             else:
                 handle_log_warning(db, scheme_of_work, "lesson {} (id:{}) is invalid posting back to client - {}".format(model.title, model.id, model.validation_errors))
         

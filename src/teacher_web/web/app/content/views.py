@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from shared.models.core.log_handlers import handle_log_warning
 # TODO: remove after creating view model
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
@@ -34,12 +35,13 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, cont
     
     view_model = ContentEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, content_id=content_id, auth_user=auth_ctx)
 
-    if view_model.is_content_ready:
-        
-        redirect_to_url = reverse('content.index', args=[institute_id, department_id, scheme_of_work_id])
+    if view_model.is_content_ready: 
 
-        if request.POST["next"] != "None"  and request.POST["next"] != "":
-            redirect_to_url = request.POST["next"]
+        #386 determine wizard mode
+        redirect_to_url = ViewHelper.postSaveRedirect(request,
+            next_step=reverse('keywords.new', args=[institute_id, department_id, scheme_of_work_id]),
+            add_another=reverse('content.new', args=[institute_id, department_id, scheme_of_work_id]),
+            default=reverse('content.index', args=[institute_id, department_id, scheme_of_work_id]))
         
         return HttpResponseRedirect(redirect_to_url)
 

@@ -7,6 +7,7 @@ from django.urls import reverse
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from .viewmodels import LearningObjectiveEditViewModel
@@ -139,11 +140,13 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, aut
             
         if model.is_valid == True:
             
-            redirect_to_url = reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, model.id))
+            # TODO: #386 determine wizard mode
+            redirect_to_url = ViewHelper.postSaveRedirect(request,
+                next_step=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+                add_another=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+                default=reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, model.id))
+            )
             
-            if request.POST["next"] != None and request.POST["next"] != "":
-                redirect_to_url = request.POST["next"]
-
             return HttpResponseRedirect(redirect_to_url)
         else:
             handle_log_warning(db, scheme_of_work_id, "learning objective {} (id:{}) is invalid posting back to client - {}".format(model.description, model.id, model.validation_errors))

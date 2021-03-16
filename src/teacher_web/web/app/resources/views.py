@@ -15,6 +15,7 @@ from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
+from shared.view_helper import ViewHelper
 from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
@@ -161,11 +162,14 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             handle_uploaded_markdown(request.FILES['md_file'], model, upload_success_handler, upload_error_handler)
             
         ' redirect as necessary '
-        if request.POST["next"] != None and request.POST["next"] != "":
-            redirect_to_url = request.POST["next"]
-            
-        else:
-            redirect_to_url = reverse('resource.edit', args=(scheme_of_work_id, model.id))
+
+        # TODO: #386 determine wizard mode
+        redirect_to_url = ViewHelper.postSaveRedirect(request,
+            next_step=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
+            add_another=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+            default=reverse('resource.edit', args=(scheme_of_work_id, model.id))
+        )
+        
     else:
         """ redirect back to page and show message """
 
