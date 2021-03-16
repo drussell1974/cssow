@@ -26,8 +26,8 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
-        self.assertFooterContextText("test@localhost Computer Science")
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'A-Level Computer Science')
+        self.assertFooterContextText("Computer Science - Finibus Bonorum et Malorum")
         
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -66,7 +66,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'A-Level Computer Science')
 
 
     def test_page__should_redirect_to_index_if_valid(self):

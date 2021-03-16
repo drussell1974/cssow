@@ -120,7 +120,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel("", self.auth_user.department.name, self.model.name if len(self.model.name) != 0 else "Create new scheme of work ", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):

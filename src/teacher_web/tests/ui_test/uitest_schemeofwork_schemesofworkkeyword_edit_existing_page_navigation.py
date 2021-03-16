@@ -27,7 +27,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation(UIT
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level', wait=2)
-        self.assertFooterContextText("test@localhost Computer Science")
+        self.assertFooterContextText("Computer Science - Finibus Bonorum et Malorum")
        
        
     """ Breadcrumb """
