@@ -167,7 +167,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         redirect_to_url = ViewHelper.postSaveRedirect(request,
             next_step=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
             add_another=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
-            default=reverse('resource.edit', args=(scheme_of_work_id, model.id))
+            default=reverse('resource.edit', args=(institute_id, department_id, scheme_of_work_id, lesson_id, model.id))
         )
         
     else:
