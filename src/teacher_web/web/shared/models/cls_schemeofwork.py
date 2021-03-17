@@ -140,15 +140,15 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    #department_name=row[8],
                                     created=row[9],                                                                                                                                                                                               
                                     created_by_id=row[10],
                                     created_by_name=row[11],
                                     published=row[12],
                                     auth_user=auth_user)
 
-            #model.institute_id = row[13]
-            
+            model.department_id = try_int(row[7])
+            model.institute_id = try_int(row[8])
+
             # TODO: #323 improve performance for the following calls
             
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
@@ -174,14 +174,15 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    #department_name=row[8],
                                     created=row[7],                                                                                                                                                                                               
                                     created_by_id=row[8],
                                     created_by_name=row[9],
                                     published=row[10],
                                     auth_user=auth_user)
 
-            model.institute_id = row[13]
+            model.department_id = try_int(row[11])
+            model.institute_id = try_int(row[13])
+
             data.append(model.__dict__)
         return data
 
@@ -201,16 +202,15 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
                                     exam_board_name=row[4],
                                     key_stage_id=row[5],
                                     key_stage_name=row[6],
-                                    #department_id=row[7], # TODO: #329 get from ctx/auth_user and remove from query
-                                    #department_name=row[8], # TODO: #329 get from ctx/auth_user and remove from query
                                     created=row[9],
                                     created_by_id=row[10],
                                     created_by_name=row[11],
                                     published=row[12],
                                     auth_user=auth_user)
-
-            #model.institute_id = row[13] # TODO: #329 use auth_user context
             
+            model.department_id = try_int(row[7])
+            model.institute_id = try_int(row[8])
+
             # TODO: #323 improve performance for the following calls
 
             model.number_of_lessons = SchemeOfWorkModel.get_number_of_lessons(db, model.id, auth_user)
@@ -252,8 +252,9 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
                                     created_by_name=row[9],
                                     published=row[10],
                                     auth_user=auth_user)
-
+            model.department_id = try_int(row[11])
             model.department = DepartmentContextModel(row[11], row[12])
+            model.institute_id = try_int(row[13])
             model.institute = InstituteContextModel(row[13], row[14]) 
 
             data.append(model)
