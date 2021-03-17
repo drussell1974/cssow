@@ -182,7 +182,6 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
             model.department_id = try_int(row[11])
             model.institute_id = try_int(row[13])
-
             data.append(model.__dict__)
         return data
 

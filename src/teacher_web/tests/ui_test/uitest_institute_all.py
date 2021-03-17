@@ -67,6 +67,7 @@ class uitest_institute_all(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')
+
     
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
