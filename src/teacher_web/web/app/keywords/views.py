@@ -9,6 +9,7 @@ from django.urls import reverse
 from shared.models.enums.permissions import SCHEMEOFWORK
 from shared.models.enums.publlished import STATE
 from shared.models.decorators.permissions import min_permission_required
+from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
@@ -24,8 +25,6 @@ from shared.filehandler import handle_uploaded_markdown
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
-    #367 get auth_ctx from min_permission_required decorator
-    
     getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     return render(request, "keywords/index.html", getall_keywords.view().content)
@@ -42,7 +41,14 @@ def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
         term="",
         definition="",
         scheme_of_work_id=scheme_of_work_id)
-    
+
+    # TODO: #386 wizard options
+    wizard = WizardHelper(
+        next_url=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+        add_another_url=reverse('keywords.new', args=[institute_id, department_id, scheme_of_work_id]),
+        default_url=reverse('keywords.index', args=(institute_id, department_id, scheme_of_work_id))
+    )
+
     get_scheme_of_work_view = SchemeOfWorkGetModelViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     scheme_of_work = get_scheme_of_work_view.model
 
@@ -52,7 +58,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
         "keyword": model
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -60,9 +66,14 @@ def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id, auth_ctx):
-
-    #367 get auth_ctx from min_permission_required decorator
     
+    # TODO: #386 wizard options
+    wizard = WizardHelper(
+        next_url=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+        add_another_url=reverse('keywords.new', args=[institute_id, department_id, scheme_of_work_id]),
+        default_url=reverse('keywords.index', args=(institute_id, department_id, scheme_of_work_id))
+    )
+
     get_model_view = KeywordGetModelViewModel(db=db, keyword_id=keyword_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
     
@@ -82,8 +93,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=auth_ctx, data=data, active_model=model, alert_message="")
-    
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
+
     return render(request, "keywords/edit.html", view_model.content)
 
 
@@ -124,15 +135,19 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
 
     model = save_keyword_view.model
     
+    # TODO: #386 wizard options
+    wizard = WizardHelper(
+        next_url=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+        add_another_url=reverse('keywords.new', args=[institute_id, department_id, scheme_of_work_id]),
+        default_url=reverse('keywords.index', args=(institute_id, department_id, scheme_of_work_id))
+    )
 
     if model.is_valid == True:
         ' save keyword '
   
         ' redirect as necessary '
-        if request.POST["next"] != None and request.POST["next"] != "":
-            redirect_to_url = request.POST["next"]
-        else:
-            redirect_to_url = reverse('keyword.edit', args=(scheme_of_work_id, model.id))
+        # TODO: #386 determine wizard mode
+        redirect_to_url = wizard.get_redirect_url(request)
     else:
         """ redirect back to page and show message """
 
@@ -146,7 +161,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
             "validation_errors":model.validation_errors
         }
         
-        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)        
+        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        
         
         return render(request, "keywords/edit.html", view_model.content)
         

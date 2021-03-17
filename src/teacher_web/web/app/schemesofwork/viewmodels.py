@@ -48,11 +48,12 @@ class SchemeOfWorkGetModelViewModel(BaseViewModel):
 
 class SchemeOfWorkEditViewModel(BaseViewModel):
 
-    def __init__(self, db, request, scheme_of_work_id, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, auth_user, wizard=None):
         
         self.db = db
         self.auth_user = auth_user
         self.model = Model(id_=scheme_of_work_id, auth_user=auth_user)
+        self.wizard = wizard
 
         if request.method == "GET" and self.model.id > 0:
             ## GET request from client ##
@@ -120,7 +121,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message, wizard=self.wizard)
 
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):

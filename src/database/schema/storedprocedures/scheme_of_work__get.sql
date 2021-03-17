@@ -18,7 +18,7 @@ BEGIN
         sow.key_stage_id as key_stage_id,
         kys.name as key_stage_name,
         dep.id as department_id,
-        dep.name as department_name,
+        dep.institute_id as institute_id,
         sow.created as created,
         sow.created_by as created_by_id,
         user.first_name as created_by_name,

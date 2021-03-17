@@ -65,7 +65,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
 
         ' ctl-title '
         elem = self.test_context.find_element_by_id("ctl-title")
-        elem.send_keys("test_page__should_redirect_to_index_if_valid")
+        elem.send_keys("test_page__markdownfile_type_stay_on_same_page_if_invalid")
 
         ' ctl-publisher '
         elem = self.test_context.find_element_by_id("ctl-publisher")

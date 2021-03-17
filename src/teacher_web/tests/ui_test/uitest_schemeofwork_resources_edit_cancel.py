@@ -47,7 +47,7 @@ class uitest_schemeofwork_resources_edit_cancel(UITestCase):
         # assert
         ' should still be on the same page '
         #231: assert we're still on the same page
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: OCR AS and A Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Types of CPU architecture')
 
 
     def test_page__should_redirect_to_index_if_continue(self):

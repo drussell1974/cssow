@@ -88,7 +88,7 @@ class uitest_schemeofwork_lesson_copy_existing(UITestCase):
         ' ctl-title - select EMPTY '
         elem = self.test_context.find_element_by_id("ctl-title")
         elem.clear()
-        elem.send_keys("COPY test_page__should_redirect_to_index_if_valid")
+        elem.send_keys("COPY uitest_schemeofwork_lesson_copy_existing.test_page__should_redirect_to_index_if_valid")
 
 
         ' submit the form '

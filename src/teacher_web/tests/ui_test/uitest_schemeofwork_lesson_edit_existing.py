@@ -93,3 +93,26 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         # TODO: detect dialog
         # TODO: close dialog
         
+
+    def test_page__should_redirect_to_next_if_valid(self):
+        ''' Test Next option '''
+
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' submit the form '
+        
+        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(2)")
+        elem.click()
+        self.wait(s=1)
+        
+        elem.send_keys(Keys.RETURN)
+        
+        self.wait(s=2)
+        
+        # assert
+        ' should be next page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
+        

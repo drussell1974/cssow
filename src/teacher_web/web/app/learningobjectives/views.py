@@ -7,6 +7,7 @@ from django.urls import reverse
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
+from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from .viewmodels import LearningObjectiveEditViewModel
@@ -41,9 +42,14 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login")
 def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
-
-    #367 get auth_ctx from min_permission_required decorator
     
+    # TODO: #386 wizard options
+    wizard = WizardHelper(
+        next_url=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        add_another_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        default_url=reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, lesson_id))
+    )
+
     # check if an existing_learning_objective_id has been passed
     
     get_lessonobjective_view = LearningObjectiveGetModelViewModel(db=db, learning_objective_id=0, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_ctx)
@@ -87,7 +93,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data)
+    view_model = ViewModel("", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -97,7 +103,14 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx, learning_objective_id = 0):
 
     #367 get auth_ctx from min_permission_required decorator
-    
+
+    # TODO: #386 wizard options
+    wizard = WizardHelper(
+        next_url=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        add_another_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        default_url=reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, lesson_id))
+    )
+
     if request.method == "GET":
         ## GET request from client ##
     
@@ -139,10 +152,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, aut
             
         if model.is_valid == True:
             
-            redirect_to_url = reverse('learningobjective.index', args=(institute_id, department_id, scheme_of_work_id, model.id))
-            
-            if request.POST["next"] != None and request.POST["next"] != "":
-                redirect_to_url = request.POST["next"]
+            # TODO: #386 determine wizard mode
+            redirect_to_url = wizard.get_redirect_url(request)
 
             return HttpResponseRedirect(redirect_to_url)
         else:
@@ -189,7 +200,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, aut
         "content_options": content_options,
     }
     #231: pass the active model to ViewModel
-    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, active_model=model, alert_message="")
+    view_model = ViewModel("", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 

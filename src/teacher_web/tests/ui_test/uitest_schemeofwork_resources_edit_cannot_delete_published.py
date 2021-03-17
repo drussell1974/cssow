@@ -1,7 +1,7 @@
 from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
-      
+
 class uitest_schemeofwork_resources_edit_cannot_delete_published(UITestCase):
 
     test_context = WebBrowserContext()
@@ -52,5 +52,5 @@ class uitest_schemeofwork_resources_edit_cannot_delete_published(UITestCase):
 
         #231: assert we're still on the stay on page
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: OCR AS and A Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Types of CPU architecture')
         

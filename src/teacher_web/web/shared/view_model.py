@@ -6,7 +6,7 @@ class ViewModel:
     active_model__validation_errors = {}
     active_model__published_state = "unknown-state"
 
-    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = ""):
+    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = "", wizard = None):
         """ Create View Model """
         self.data = data
         self.ctx = ctx
@@ -38,7 +38,8 @@ class ViewModel:
                 },
                 "ctx": ctx,
                 "alert_message": ui_messages,
-                "stack_trace": stack_trace
+                "stack_trace": stack_trace,
+                "wizard": wizard,
             },
             "auth": {
                 "user":False,

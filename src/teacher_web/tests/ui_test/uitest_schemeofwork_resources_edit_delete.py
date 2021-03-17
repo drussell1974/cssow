@@ -29,7 +29,7 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
 
         ' ctl-title '
         elem = self.test_context.find_element_by_id("ctl-title")
-        elem.send_keys("test_page__should_redirect_to_index_if_valid")
+        elem.send_keys("setUp.uitest_schemeofwork_resources_edit_delete")
 
         ' ctl-notes '
         elem = self.test_context.find_element_by_id("ctl-notes")
@@ -76,7 +76,7 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         #delete
 
         ' Open edit '
-        self.delete_unpublished_item(".unpublished a.edit .fa-edit")
+        self.delete_unpublished_item(".unpublished .post-title a.edit .fa-edit")
         
         self.wait(s=2)
 

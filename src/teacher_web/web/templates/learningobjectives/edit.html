@@ -115,7 +115,8 @@
         <input type="hidden" name="lesson_id" value="{{content.data.lesson_id}}">
         <input type="hidden" name="next" value="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" > 
         <div class="form-group stackable-group stackable-group-sm">
-            {% include '_partials/form.buttons.validation.html' %}
+            <!-- #386: use form.buttons.validition.wizard partial -->
+            {% include '_partials/form.buttons.validation.wizard.html' %}
         </div>
     </form>
     <hr>

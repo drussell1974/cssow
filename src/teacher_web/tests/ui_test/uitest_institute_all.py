@@ -66,7 +66,8 @@ class uitest_institute_all(UITestCase):
         self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_institute_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Departments')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')
+
     
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):

@@ -78,7 +78,8 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("saveButton", wait=2)
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem.send_keys(Keys.RETURN)
-
+        self.wait(s=2)
+        
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC', wait=4)

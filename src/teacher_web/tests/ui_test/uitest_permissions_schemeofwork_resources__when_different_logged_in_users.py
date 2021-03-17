@@ -104,7 +104,7 @@ class uitest_permissions_schemeofwork_resources__when_different_logged_in_users(
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Edit: OCR AS and A Level Computer Science",
+                "exp__subheading":"Edit: Types of CPU architecture",
             },
             {
                 "route":"resource.delete_unpublished as schemeofwork-editor@localhost",
