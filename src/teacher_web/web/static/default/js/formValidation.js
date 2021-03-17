@@ -48,13 +48,26 @@
     }
 
     // prevent validation when cancel button is clicked 
-
     document.getElementById('cancelButton').addEventListener('click', function(event) {
       // set all forms to cancel validation
       Array.prototype.filter.call(forms, function(form) {
         form.setAttribute('novalidate', "");
       })
     });
+
+    if (document.getElementById('skipButton') !== null && document.getElementById('skipButton') !== undefined  ) {
+      document.getElementById('skipButton').addEventListener('click', function(event) {
+        // set all forms to cancel validation
+        Array.prototype.filter.call(forms, function(form) {
+          form.setAttribute('novalidate', "");
+          window.location.href = event.currentTarget.getAttribute("data-target");
+        })  
+        
+        event.preventDefault();
+        event.stopPropagation();
+        
+      });
+    }
 
     // prevent validation when delete button is clicked 
     var deleteButtonElem = document.getElementById('deleteButton');

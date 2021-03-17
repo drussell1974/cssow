@@ -27,7 +27,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
-        self.assertFooterContextText("test@localhost Computer Science")
+        self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -78,8 +78,104 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
+        
         self.wait(s=2)
         
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+
+
+    ''' Test Save options - Default, Next, Add another '''
+
+    def test_page__should_redirect_to_default_if_valid(self):
+        ''' Test Save option '''
+
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' submit the form '
+
+        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(1)")
+        elem.click()
+        self.wait(s=1)
+
+        elem.send_keys(Keys.RETURN)
+        
+        self.wait(s=2)
+        
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+
+
+    def test_page__should_redirect_to_next_if_valid(self):
+        ''' Test Next option '''
+
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' submit the form '
+        
+        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(2)")
+        elem.click()
+        self.wait(s=1)
+        
+        elem.send_keys(Keys.RETURN)
+        
+        self.wait(s=2)
+        
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
+
+
+    def test_page__should_redirect_to_add_another_if_valid(self):
+        ''' Test Add another option '''
+
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' submit the form '
+        
+        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(3)")
+        elem.click()
+        self.wait(s=1)
+        
+        elem.send_keys(Keys.RETURN)
+        
+        self.wait(s=2)
+        
+        # assert
+        ' should still be on the same page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Create new scheme of work')
+
+
+    def test_page__should_redirect_to_skip_if_invalid(self):
+        ''' Test Skip button - invalidate '''
+
+        # setup
+        elem = self.test_context.find_element_by_tag_name("form")
+        ' Ensure element is visible '
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+
+        ' Fill in field as blank '
+        elem = self.test_context.find_element_by_id("ctl-name")
+        elem.clear()
+        self.wait(s=1)
+
+        ' submit the form '
+        elem = self.test_context.find_element_by_id("skipButton")
+        elem.send_keys(Keys.RETURN)
+        
+        self.wait(s=2)
+        
+        # assert
+        ' should be next page '
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')

@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from rest_framework import serializers, status
 from django.http import Http404
+from django.urls import reverse
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.enums.publlished import STATE
@@ -48,13 +49,14 @@ class ContentEditViewModel(BaseViewModel):
     is_content_ready = False
     error_message = ""
 
-    def __init__(self, db, request, scheme_of_work_id, content_id, auth_user):
+    def __init__(self, db, request, scheme_of_work_id, content_id, auth_user, wizard=None):
         
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
         self.content_id = content_id
         self.auth_user = auth_user
-        
+        self.wizard = wizard
+
         # TODO: #323 call read only model
         self.scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, self.auth_user)
         #248 check associated schemeofwork 
@@ -114,8 +116,8 @@ class ContentEditViewModel(BaseViewModel):
             "content_id":self.content_id,
             "model":self.model
         }
-
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message)
+        
+        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, wizard=self.wizard)
 
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):

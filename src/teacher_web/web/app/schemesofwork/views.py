@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
-from shared.view_helper import ViewHelper
+from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
@@ -28,20 +28,26 @@ def index(request, institute_id, department_id, auth_ctx):
 @min_permission_required(SCHEMEOFWORK.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
 
-    #367 get auth_ctx from min_permission_required decorator
-    
-    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    wizard = WizardHelper(
+        default_url=reverse('schemesofwork.index', args=[institute_id, department_id]),
+        add_another_url=reverse('schemesofwork.new', args=[institute_id, department_id])
+    )
+
+    if scheme_of_work_id > 0:
+        wizard.next_url=reverse('content.new', args=[institute_id, department_id, scheme_of_work_id])
+        
+    save_view = SchemeOfWorkEditViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, wizard=wizard)
     
     if save_view.saved == True:
         
         # TODO: #386 determine wizard mode
-        redirect_to_url = ViewHelper.postSaveRedirect(request,
-            next_step=reverse('content.new', args=[institute_id, department_id, save_view.model.id]),
-            add_another=reverse('schemesofwork.new', args=[institute_id, department_id]),
-            default=reverse('schemesofwork.edit', args=[institute_id, department_id, save_view.model.id])
-        )
+        
+        wizard.next_url=reverse('content.new', args=[institute_id, department_id, save_view.model.id])
+        
+        redirect_to_url = wizard.get_redirect_url(request)
+
         return HttpResponseRedirect(redirect_to_url)
-    
+
     return render(request, "schemesofwork/edit.html", save_view.view().content)
 
 

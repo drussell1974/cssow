@@ -15,7 +15,7 @@ from shared.models.cls_resource import ResourceModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
-from shared.view_helper import ViewHelper
+from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..resources.viewmodels import ResourceGetModelViewModel, ResourceIndexViewModel, ResourceSaveViewModel
@@ -35,8 +35,6 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
 
-    #367 get auth_ctx from min_permission_required decorator
-    
     model = ResourceModel(
         id_=0,
         title="",
@@ -44,7 +42,12 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         scheme_of_work_id=scheme_of_work_id,
         lesson_id=lesson_id)
 
-    
+    wizard = WizardHelper(
+        next_url=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
+        add_another_url=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        default_url=reverse('resource.index', args=(institute_id, department_id, scheme_of_work_id, lesson_id))
+    )
+
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     lesson = get_lesson_view.model
 
@@ -59,7 +62,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=auth_ctx, data=data)
+    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "resources/edit.html", view_model.content)
 
@@ -68,8 +71,6 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
 @permission_required('cssow.change_resource', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, resource_id, auth_ctx):
-
-    #367 get auth_ctx from min_permission_required decorator
 
     get_model_view = ResourceGetModelViewModel(db=db, resource_id=resource_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_model_view.model
@@ -82,6 +83,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             scheme_of_work_id=scheme_of_work_id,
             lesson_id=lesson_id)
 
+    wizard = WizardHelper(
+        next_url=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
+        add_another_url=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        default_url=reverse('resource.index', args=(institute_id, department_id, scheme_of_work_id, lesson_id))
+    )
 
     get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=int(lesson_id), scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)    
     lesson = get_lesson_view.model
@@ -96,9 +102,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         "get_resource_type_options": get_resource_type_options,
     }
     
-    #231: pass the active model to ViewModel
-    view_model = ViewModel(lesson.title, lesson.title, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="")
-    
+    view_model = ViewModel(lesson.title, lesson.title, "Edit: %s" % lesson.title, ctx=auth_ctx, active_model=model, data=data, wizard=wizard)
+
     return render(request, "resources/edit.html", view_model.content)
 
 
@@ -117,6 +122,12 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         # set markdown document name with file name after saving
         model.md_document_name = f
         
+    wizard = WizardHelper(
+        next_url=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
+        add_another_url=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
+        default_url=reverse('resource.index', args=(institute_id, department_id, scheme_of_work_id, lesson_id))
+    )
+    
     error_message = ""
 
     """ save_item non-view action """
@@ -164,12 +175,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
         ' redirect as necessary '
 
         # TODO: #386 determine wizard mode
-        redirect_to_url = ViewHelper.postSaveRedirect(request,
-            next_step=reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id]),
-            add_another=reverse('resource.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id]),
-            default=reverse('resource.edit', args=(institute_id, department_id, scheme_of_work_id, lesson_id, model.id))
-        )
-        
+        redirect_to_url = wizard.get_redirect_url(request)
     else:
         """ redirect back to page and show message """
 
@@ -184,9 +190,13 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             "resource_id": model.id,
             "resource": model,
             "get_resource_type_options": get_resource_type_options,
-            "validation_errors":model.validation_errors
+            "validation_errors":model.validation_errors,
+            
         }
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
+        
+        #skip_uri = reverse('lesson_keywords.select', args=[institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id])
+
+        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
         
         return render(request, "resources/edit.html", view_model.content)
 

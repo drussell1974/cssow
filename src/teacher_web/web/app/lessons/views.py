@@ -10,7 +10,7 @@ from shared.models.core.log_handlers import handle_log_warning, handle_log_info
 from shared.models.enums.permissions import LESSON
 from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
-from shared.view_helper import ViewHelper
+from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_content import ContentModel
@@ -51,6 +51,11 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, les
 def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, lesson_id = 0, is_copy = False):
     ''' Edit the lesson '''
     
+    wizard = WizardHelper(
+        add_another_url=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
+        default_url=reverse('lesson.index', args=[auth_ctx.institute_id, auth_ctx.department_id, scheme_of_work_id])
+    )
+    
     # TODO: # use/create LessonEditViewModel
     #367 get auth_ctx from min_permission_required decorator
     
@@ -68,8 +73,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         if lesson_id > 0:
             #253 check user id
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-            model = get_lesson_view.model
-            
+            model = get_lesson_view.model        
+            wizard.next_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id])
+
         # handle copy
 
         if is_copy == True:
@@ -77,7 +83,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
             model.id = 0 # reset id
             model.title = "copy of " + model.title
 
-            
+        
     elif request.method == "POST":
         ## POST back from client ##
     
@@ -112,13 +118,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
 
             if model.is_valid == True:
                 ' save the lesson '            
-                
                 # TODO: #386 determine wizard mode
-                redirect_to_url = ViewHelper.postSaveRedirect(request,
-                    next_step=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, modelviewmodel.model.id]),
-                    add_another=reverse('lesson.new', args=[institute_id, department_id, scheme_of_work_id]),
-                    default=reverse('lesson.index', args=[auth_ctx.institute_id, auth_ctx.department_id, model.scheme_of_work_id])
-                )
+                
+                wizard.next_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, modelviewmodel.model.id])
+                
+                redirect_to_url = wizard.get_redirect_url(request)
 
                 return HttpResponseRedirect(redirect_to_url)
             
@@ -153,7 +157,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "reference_uri": "https://community.computingatschool.org.uk/resources/2324/single", # TODO: create look up for e.g. reference['<id_or_name>']
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
     
     return render(request, "lessons/edit.html", view_model.content)
 

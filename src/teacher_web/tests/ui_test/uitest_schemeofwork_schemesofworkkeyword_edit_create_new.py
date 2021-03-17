@@ -91,7 +91,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
         ' definition '
 
         elem = self.test_context.find_element_by_id("ctl-definition")
-        elem.send_keys("test_page__should_redirect_to_index_if_valid")
+        elem.send_keys("uitest_schemeofwork_schemesofworkkeyword_edit_create_new.test_page__should_redirect_to_index_if_valid")
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")

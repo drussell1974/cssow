@@ -24,8 +24,8 @@ class uitest_department_all(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Departments')
-        self.assertFooterContextText("Computer Science")
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')
+        self.assertFooterContextText("Finibus Bonorum et Malorum")
 
 
     @skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
