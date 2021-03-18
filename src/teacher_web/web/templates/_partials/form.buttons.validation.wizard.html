@@ -14,17 +14,20 @@
 {% endif %}
 
 <!-- BUTTONS -->
-<button type="submit" name="published" value="PUBLISH" class="bg-primary stackable" id="saveButton">
-    <select name="wizard_mode" class="btn btn-primary" id="wizard-options">
-        <option value="0">{{_("Save")}}</option>
-        <option value="1">{{_('Next')}}</option>
-        {% if content.wizard.add_another_url is not None %}
-        <option value="2">{{_('Add another')}}</option>
-        {% endif %}
-    </select>
-</button>
+<span class="dropdown stackable">
+    <button class="btn btn-primary stackable dropdown-toggle" type="button" id="wizardMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       {{_("Save")}}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="wizardMenuButton">
+      <button type="submit" name="published" value="PUBLISH.DEFAULT" class="btn btn-primary dropdown-item text-white" id="saveButton">{{_("Save")}}</button>
+      <button type="submit" name="published" value="PUBLISH.NEXT" class="btn btn-primary dropdown-item text-white" id="saveButtonNext">{{_('Next')}}</button>
+      {% if content.wizard.add_another_url is not None %}
+      <button type="submit" name="published" value="PUBLISH.ANOTHER" class="btn btn-primary dropdown-item text-white" id="saveButtonAnother">{{_('Add another')}}</button>
+      {% endif %}
+    </div>
+</span>
 {% if content.wizard.next_url is not None %}
-<button type="submit" name="published" value="SKIP" class="btn btn-info stackable" id="skipButton" data-target="{{content.wizard.next_url}}">{{_("Skip")}}</button>
+<a name="published" value="SKIP" class="btn btn-info stackable" id="skipButton" href="{{content.wizard.next_url}}">{{_("Skip")}}</a>
 {% endif %}
 <button type="submit" name="published" value="DRAFT" class="btn btn-secondary stackable" id="saveDraftButton">{{_("Draft")}}</button>
 <button type="cancel" class="btn btn-dark stackable" id="cancelButton" >{{_("Cancel")}}</button>

@@ -9,28 +9,32 @@ class WizardHelper:
     def get_redirect_url(self, request):
         
         redirect_to_url = "/" # home
-        if request is None or request.POST.get("wizard_mode") is None:
+        
+        if request is None or request.POST.get("published") is None:
             # default to url after save
             redirect_to_url = self.default_url
-
-        elif request.POST.get("wizard_mode", 0) == "0":
-            # default save option
-            redirect_to_url = self.default_url
-
-        elif request.POST.get("wizard_mode", 0) == "1":
-            # next option
-            redirect_to_url = self.next_url
-
-        elif request.POST.get("wizard_mode", 0) == "2":
-            # add another option
-            redirect_to_url = self.add_another_url
-
-        #elif request.POST.get("next") != "None" and request.POST.get("next") != "":
-        #    # use in page next value
-        #    redirect_to_url = request.POST.get("next")
-        
         else:
-            # default to url after save       
-            redirect_to_url = self.default_url
+            published = request.POST.get("published")
+            published_action = "DEFAULT"
+            
+            # get the action            
+            
+            if len(published.split('.')) > 1:
+                published_action = published.split('.')[1]
+            
+            # perform the action
+
+            if published_action.upper() == "DEFAULT":
+                # default save option
+                redirect_to_url = self.default_url
+            elif published_action.upper() == "NEXT":
+                # next option
+                redirect_to_url = self.next_url
+            elif published_action.upper() == "ANOTHER":
+                # add another option
+                redirect_to_url = self.add_another_url
+            else:
+                # default to url after save       
+                redirect_to_url = self.default_url
 
         return redirect_to_url

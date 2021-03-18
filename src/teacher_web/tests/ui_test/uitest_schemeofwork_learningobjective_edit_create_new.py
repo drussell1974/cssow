@@ -57,7 +57,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
 
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert

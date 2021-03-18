@@ -35,7 +35,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
