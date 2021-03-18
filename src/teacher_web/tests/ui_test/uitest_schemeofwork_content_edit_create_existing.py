@@ -48,7 +48,6 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
 
 
-
     def test_page__should_redirect_to_next_if_valid(self):
         ''' Test Next option '''
 

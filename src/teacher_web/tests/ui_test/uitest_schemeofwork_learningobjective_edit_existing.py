@@ -65,8 +65,7 @@ class uitest_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         ' submit the form '
         
-        elem = self.find_wizardoptions_element_by_id("saveButtonNext")
-        
+        elem = self.find_wizardoptions_element_by_id("saveButtonNext")        
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)
