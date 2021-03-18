@@ -41,13 +41,11 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         elem.send_keys("test_page__should_stay_on_same_page_if_invalid")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
-
-        elem.click()
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -60,10 +58,7 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
 
         ' submit the form '
         
-        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(2)")
-        elem.click()
-        self.wait(s=1)
-        
+        elem = self.find_wizardoptions_element_by_id("saveButtonNext")        
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)

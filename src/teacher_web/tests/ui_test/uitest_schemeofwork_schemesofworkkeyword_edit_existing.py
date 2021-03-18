@@ -41,7 +41,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         elem.send_keys("test_page__should_stay_on_same_page_if_invalid")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
@@ -62,15 +62,12 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         elem.send_keys(self.TEST_KEYWORD_RENAME_TERM_TO)
         
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
         
-        #elem = self.test_context.find_element_by_id("saveButton")
-        #self.assertEqual("", elem.text)
-
         
     def test_page__should_redirect_if_valid(self):
         # setup
@@ -81,7 +78,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         self.wait(s=2)
         
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
@@ -106,10 +103,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
 
         ' submit the form '
         
-        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(2)")
-        elem.click()
-        self.wait(s=1)
-        
+        elem = self.find_wizardoptions_element_by_id("saveButtonNext")
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)

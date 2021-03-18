@@ -57,6 +57,15 @@ class UITestCase(TestCase):
         return elem
 
 
+    def find_wizardoptions_element_by_id(self, option_button_id):
+        elem = self.test_context.find_element_by_id("wizardMenuButton")
+        elem.click()
+        self.wait(s=1)
+        
+        elem = self.test_context.find_element_by_id(option_button_id)
+        return elem
+
+
     def assertSidebarResponsiveMenu(self, section_no, expected_title, expected_no_of_items):
         
         # title

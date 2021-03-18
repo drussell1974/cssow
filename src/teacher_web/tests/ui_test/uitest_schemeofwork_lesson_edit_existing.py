@@ -71,7 +71,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         elem.send_keys("")
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
         # assert
@@ -82,7 +82,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
     def test_page__should_redirect_to_index_if_valid(self):
 
         ' submit the form '
-        elem = self.test_context.find_element_by_id("saveButton")
+        elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
 
@@ -104,10 +104,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         ' submit the form '
         
-        elem = self.test_context.find_element_by_css_selector("#wizard-options > option:nth-child(2)")
-        elem.click()
-        self.wait(s=1)
-        
+        elem = self.find_wizardoptions_element_by_id("saveButtonNext")
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)
