@@ -17,9 +17,7 @@
 <button type="submit" name="published" value="PUBLISH" class="bg-primary stackable" id="saveButton">
     <select name="wizard_mode" class="btn btn-primary" id="wizard-options">
         <option value="0">{{_("Save")}}</option>
-        {% if content.wizard.next_url is not None %}
         <option value="1">{{_('Next')}}</option>
-        {% endif %}
         {% if content.wizard.add_another_url is not None %}
         <option value="2">{{_('Add another')}}</option>
         {% endif %}
