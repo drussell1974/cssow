@@ -3,7 +3,7 @@ import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
+import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource, getDepartment, getInstitute } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class ActivityPage extends React.Component {
@@ -30,6 +30,10 @@ class ActivityPage extends React.Component {
         this.NO_OF_COMPONENTS_TO_LOAD = 6;
 
         getSiteConfig(this);
+
+        getInstitute(this, this.institute_id);
+
+        getDepartment(this, this.institute_id, this.department_id);
 
         getCourse(this, this.institute_id, this.department_id, this.course_id);
 
@@ -62,10 +66,12 @@ class ActivityPage extends React.Component {
         return (
             <React.Fragment>
                 <ActivityPageContainer 
-                    resource={this.state.Resource}
-                    schemeofwork={this.state.Course}
-                    lesson={this.state.Lesson}
                     markdown_html={this.state.markdown_html}
+                    resource={this.state.Resource}
+                    lesson={this.state.Lesson}
+                    course={this.state.Course}
+                    institute={this.state.Institute}
+                    department={this.state.Department}
                     socialmediadata={this.state.socialmediadata}
                     loading={this.state.loading}
                 />
@@ -74,18 +80,17 @@ class ActivityPage extends React.Component {
     }
 };
 
-export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_html, socialmediadata, loading = 0}) => {
-    if (resource === undefined || schemeofwork === undefined || lesson === undefined) {
-        return ( 
+export const ActivityPageContainer = ({markdown_html, resource, lesson, course, department, institute, socialmediadata, loading = 0}) => {
+    if (resource === undefined || course === undefined || lesson === undefined || department === undefined || institute === undefined) {
+        return (
             <React.Fragment></React.Fragment>
         )
     } else {
         
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
-            {text:schemeofwork.name, url:`/course/`},
-            {text:lesson.title, url:`/course/${schemeofwork.id}/lesson/${lesson.id}`}
-
+            {text:course.name, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}/lesson`},
+            {text:lesson.title, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}/lesson/${lesson.id}`}
         ]
 
         return (
@@ -100,7 +105,7 @@ export const ActivityPageContainer = ({resource, schemeofwork, lesson, markdown_
                     </div>
                 </div>
 
-                <FooterWidget heading={schemeofwork.name} summary={schemeofwork.description} socialmedia={socialmediadata} />
+                <FooterWidget heading={course.name} summary={course.description} socialmedia={socialmediadata} />
             
             </React.Fragment>
         )

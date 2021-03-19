@@ -10,7 +10,19 @@ describe("ActivityPageContainer", () =>{
 
     let socialmediadata = undefined;
 
-    let schemesofwork = {
+    let institute = {
+        id: 1276711,
+        name:"Lorem Ipsum",
+        description:"Phasellus eu tincidunt sapien, ac laoreet dui. In hac habitasse platea dictumst. Ut molestie nibh nec hendrerit posuere."
+    }
+
+    let department = {
+        id:67,
+        name:"Computer Science",
+        description:"Morbi ipsum tellus, porta non congue condimentum, fermentum sed nisl."
+    }
+    
+    let course = {
         id: 1,
         institute_id: 5,
         department_id: 2,
@@ -54,13 +66,40 @@ describe("ActivityPageContainer", () =>{
         )
     })
 
-    it('renders empty model', () => {
-        render(
-            <MemoryRouter>
-                <ActivityPageContainer />
-            </MemoryRouter>);
-        
-        expect(container.textContent).toMatch('');
+    describe('renders empty model', () => {
+        it('with no parameters', () => {
+            
+            render(
+                <MemoryRouter>
+                    <ActivityPageContainer />
+                </MemoryRouter>);
+            
+            expect(container.textContent).toMatch('');
+        })
+
+        it('with no institute', () => {
+            render(<ActivityPageContainer lesson course department site />);
+            
+            expect(container.textContent).toMatch('');
+        })
+
+        it('with no department', () => {
+            render(<ActivityPageContainer lesson course institute site />);
+            
+            expect(container.textContent).toMatch('');
+        })
+
+        it('with no course', () => {
+            render(<ActivityPageContainer lesson department={department} institute={institute}  site />);
+            
+            expect(container.textContent).toMatch('');
+        })
+
+        it('with no lesson', () => {
+            render(<ActivityPageContainer course department={department} institute={institute}  site />);
+            
+            expect(container.textContent).toMatch('');
+        })
     })
 
     describe('has a banner', () => {
@@ -68,7 +107,7 @@ describe("ActivityPageContainer", () =>{
         it('with heading', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute}  socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -79,7 +118,7 @@ describe("ActivityPageContainer", () =>{
         it('with description', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute}  socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -93,7 +132,7 @@ describe("ActivityPageContainer", () =>{
         it('with home link', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute} socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -105,11 +144,10 @@ describe("ActivityPageContainer", () =>{
             ).toEqual('/');
         })
 
-
         it('with Course link', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute} socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -118,13 +156,13 @@ describe("ActivityPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/course/');
+            ).toEqual('/institute/1276711/department/67/course/1/lesson');
         })
 
         it('with Lesson link', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute}  socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -133,14 +171,14 @@ describe("ActivityPageContainer", () =>{
 
             expect(
                 container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
-            ).toEqual('/course/1/lesson/1');
+            ).toEqual('/institute/1276711/department/67/course/1/lesson/1');
 
         })
 
         it('with current page text only', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer resource={resource} lesson={lesson} schemeofwork={schemesofwork} socialmediadata />
+                    <ActivityPageContainer resource={resource} lesson={lesson} course={course} department={department} institute={institute}  socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -154,7 +192,7 @@ describe("ActivityPageContainer", () =>{
         it('with scheme of work name as heading', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} socialmediadata />
+                    <ActivityPageContainer course={course} lesson={lesson} resource={resource} department={department} institute={institute}  socialmediadata />
                 </MemoryRouter>);
 
             expect(
@@ -165,7 +203,7 @@ describe("ActivityPageContainer", () =>{
         it('with scheme of work overview summary', () => {
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} socialmedia />
+                    <ActivityPageContainer course={course} lesson={lesson} resource={resource} department={department} institute={institute}  socialmedia />
                 </MemoryRouter>);
 
             expect(
@@ -182,7 +220,7 @@ describe("ActivityPageContainer", () =>{
 
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} markdown_html={markdown_html} socialmedia />
+                    <ActivityPageContainer course={course} lesson={lesson} resource={resource} markdown_html={markdown_html} department={department} institute={institute}  socialmedia />
                 </MemoryRouter>);
 
             expect(
@@ -196,7 +234,7 @@ describe("ActivityPageContainer", () =>{
 
             render(
                 <MemoryRouter>
-                    <ActivityPageContainer schemeofwork={schemesofwork} lesson={lesson} resource={resource} markdown_html={markdown_html} socialmedia />
+                    <ActivityPageContainer course={course} lesson={lesson} resource={resource} markdown_html={markdown_html} department={department} institute={institute}  socialmedia />
                 </MemoryRouter>);
 
             expect(

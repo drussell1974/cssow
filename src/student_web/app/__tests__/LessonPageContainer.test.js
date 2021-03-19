@@ -220,36 +220,6 @@ describe("LessonPageContainer", () =>{
             ).toEqual('/');
         })
 
-        it('with institute link', () => {
-            render(
-                <Router>
-                    <LessonPageContainer lesson={lesson} course={course} department={department} institute={institute} site socialmediadata />
-                </Router>);
-
-            expect(
-                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2)').textContent
-            ).toEqual('Lorem Ipsum');
-
-            expect(
-                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2) > a').getAttribute("href")
-            ).toEqual('/institute/');
-        })
-
-        it('with department link', () => {
-            render(
-                <Router>
-                    <LessonPageContainer lesson={lesson} course={course} department={department} institute={institute} site socialmediadata />
-                </Router>);
-
-            expect(
-                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3)').textContent
-            ).toEqual('Computer Science');
-
-            expect(
-                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(3) > a').getAttribute("href")
-            ).toEqual('/institute/1276711/department/');
-        })
-
         it('with current page text only', () => {
             render(
                 <Router>
@@ -257,7 +227,7 @@ describe("LessonPageContainer", () =>{
                 </Router>);
 
             expect(
-                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(4)').textContent
+                container.querySelector('nav#breadcrumb-nav > ul > li:nth-child(2)').textContent
             ).toEqual('CPU Architecture');
         })
     })
