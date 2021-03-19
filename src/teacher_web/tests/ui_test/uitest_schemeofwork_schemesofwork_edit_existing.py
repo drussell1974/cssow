@@ -97,7 +97,6 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         ' submit the form '
-
         elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
         
@@ -137,8 +136,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
         ' submit the form '
-        elem = self.find_wizardoptions_element_by_id("saveButtonAnother")
-        
+        elem = self.find_wizardoptions_element_by_id("saveButtonAnother")        
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)

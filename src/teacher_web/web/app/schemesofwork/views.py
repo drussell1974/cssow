@@ -47,7 +47,6 @@ def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
         redirect_to_url = wizard.get_redirect_url(request)
 
         return HttpResponseRedirect(redirect_to_url)
-        
     return render(request, "schemesofwork/edit.html", save_view.view().content)
 
 

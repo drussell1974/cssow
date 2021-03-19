@@ -36,5 +36,4 @@ class WizardHelper:
             else:
                 # default to url after save       
                 redirect_to_url = self.default_url
-
         return redirect_to_url
