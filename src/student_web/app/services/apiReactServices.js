@@ -252,30 +252,32 @@ const getResource = (reactComponent, institute_id, department_id, course_id, les
 
 
 const getMarkdown = (reactComponent, institute_id, department_id, course_id, lesson_id, resource_id, md_document_name) => {
-    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}//institute/${institute_id}/department/${department_id}schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`;
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/institute/${institute_id}/department/${department_id}/schemesofwork/${course_id}/lessons/${lesson_id}/resources/${resource_id}/markdown/${md_document_name}?format=json`;
     fetch(uri)
-      .then(res => res.json())
-      .then(
-        (result) => {
-            reactComponent.setState({
-            isLoaded: true,
-            loading: onProgress(reactComponent),
-            markdown_html: result.markdown,
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-            reactComponent.setState({
-            hasError: true,
-            isLoaded: true,
-            markdown_html: error,
-            error,
-            onerror: onProgress(reactComponent),
-          });
-        }
-      )
+        .then(res => {
+            return res.json();
+        })
+        .then(
+            (result) => {
+                reactComponent.setState({
+                isLoaded: true,
+                loading: onProgress(reactComponent),
+                markdown_html: result.markdown,
+            });
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                reactComponent.setState({
+                    hasError: true,
+                    isLoaded: true,
+                    markdown_html: error,
+                    error,
+                    onerror: onProgress(reactComponent),
+                });
+            }
+        )
 } 
 
 

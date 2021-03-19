@@ -17,7 +17,7 @@ ReactDOM.render(
         <Switch>
             <Route exact path="/" component={LoginPage} ></Route>
         
-            <Route exact path="/institute/:institute_id/department/:department_id/course/:course_id/lesson/:lesson_id/ativity/:resource_id/:md_document_name/" component={ActivityPage} />
+            <Route exact path="/institute/:institute_id/department/:department_id/course/:course_id/lesson/:lesson_id/activity/:resource_id/:md_document_name/" component={ActivityPage} />
             
             <Route exact path="/institute/:institute_id/department/:department_id/course/:course_id/lesson/:lesson_id" component={LessonPage} />
             

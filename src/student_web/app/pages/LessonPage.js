@@ -85,9 +85,7 @@ export const LessonPageContainer = ({lesson, course, department, institute, site
 
         let breadcrumbItems = [
             {text:"Home", url:"/"}, 
-            {text:institute.name, url:`/institute/`},
-            {text:department.name, url:`/institute/${institute.id}/department/`},
-            {text:course.name, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}`},
+            {text:course.name, url:`/institute/${institute.id}/department/${department.id}/course/${course.id}/lesson`},
         ]
 
         return (

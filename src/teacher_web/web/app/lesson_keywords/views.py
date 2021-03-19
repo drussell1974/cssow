@@ -18,7 +18,6 @@ from ..lesson_keywords.viewmodels import LessonKeywordGetModelViewModel, LessonK
 from shared.models.core import validation_helper
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from shared.filehandler import handle_uploaded_markdown
 
 @min_permission_required(SCHEMEOFWORK.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
