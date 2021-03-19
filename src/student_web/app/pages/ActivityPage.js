@@ -8,15 +8,9 @@ import { MarkdownWidget } from '../widgets/MarkdownWidget';
 
 class ActivityPage extends React.Component {
     
-    onProgress() {
-        return this.state.loading + 100 / 3;
-    }
-
     constructor(props){
         super(props);
         this.state = {
-            Course: {},
-            Lesson: {},
             hasError: false,
             loading: 0,
             markdown_html: {},
