@@ -13,6 +13,7 @@ from shared.models.enums.publlished import STATE
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
 from shared.models.cls_lesson import LessonModel, try_int
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
@@ -210,11 +211,13 @@ def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id
 
     get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_lesson_view.model
-
+    lesson_schedule = LessonScheduleModel.get_model(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    
     data = {
         "key_words":model.key_words,
         "learning_objectives":model.learning_objectives,
         "resources": model.resources,
+        "lesson_schedule": lesson_schedule
     }
 
     view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)

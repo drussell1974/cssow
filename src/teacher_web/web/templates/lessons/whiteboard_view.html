@@ -3,13 +3,13 @@
 {% block maincontent %}
 
 <div class="row">
-  <div class="col-lg-14 col-md-10 mx-auto">
+  <div class="col-md-10">
     <p class="h4 chalk float-right d-print-none">{{display_date}}</p>
   </div>
 </div>
 <div class="row">
   <div class="col-lg-8 col-md-8 mx-auto print-span">
-    <section class="heading" align="center">
+    <section class="heading" class="center">
         <h1>{{lesson_title}}</h1>
         <p class="subheading chalk">{{lesson_summary}}</p>
     </section>
@@ -18,24 +18,31 @@
 <div class="row">
     <div class="col-lg-4 col-md-4 mx-auto print-span">
         <!-- Keywords -->
-            <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
-            <div id="accordion-keywords">
-            {% for key_word in content.data.key_words %}
-                <div class="keyword-expand">
-                    <div class="expand-header" id="heading-keyword{{key_word.id}}">
-                        <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                            <u>{{key_word.term}}</u>
-                        </a>
-                    </div>
-                    {% if key_word.definition is not None %}
-                    <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
-                        <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
-                    </div>
-                    {% endif %}
+        <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
+        <div id="accordion-keywords">
+        {% for key_word in content.data.key_words %}
+            <div class="keyword-expand">
+                <div class="expand-header" id="heading-keyword{{key_word.id}}">
+                    <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
+                        <u>{{key_word.term}}</u>
+                    </a>
                 </div>
-            {% endfor %}
+                {% if key_word.definition is not None %}
+                <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
+                    <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
+                </div>
+                {% endif %}
             </div>
+        {% endfor %}
+        </div>
+        <br>
         <!-- Keywords END-->
+
+        <button class="border chalk mt-2">
+            <p id="heading-class_code">{{_("Class code")}}</p>
+            <p class="h1">{{ content.data.lesson_schedule.class_code }}</p> 
+        </button>
+
     </div>
     <div class="col-lg-8 col-md-8 mx-auto print-span">
         <!-- Learning Objectives -->

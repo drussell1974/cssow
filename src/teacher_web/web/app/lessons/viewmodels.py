@@ -87,7 +87,7 @@ class LessonWhiteboardViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-
+        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
         # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:
