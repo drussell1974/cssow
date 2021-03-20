@@ -29,7 +29,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):            
+            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -73,7 +73,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):            
+            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -114,7 +114,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):            
+            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -150,7 +150,7 @@ class test_viewmodel_EditViewModel(TestCase):
         
         
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):
+            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):
                 with patch.object(Model, "save", return_value=None):
                     
                     save_keyword.model = Mock(return_value=KeywordModel(12, scheme_of_work_id=13))

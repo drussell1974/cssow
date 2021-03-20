@@ -6,24 +6,25 @@ from shared.models.enums.publlished import STATE
 
 class LessonScheduleModel(BaseModel):
         
-    def __init__(self, id_, class_code, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user = None):
+    lesson_id = 0
+    scheme_of_work_id = 0
+    department_id = 0
+    institute_id = 0
+
+    def __init__(self, id_, class_code, lesson_id, scheme_of_work_id, department_id, institute_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None):
         #231: implement across all classes
         super().__init__(id_, class_code, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.class_code = class_code
         self.lesson_id = int(lesson_id)
         self.scheme_of_work_id = int(scheme_of_work_id)
-        if auth_user is not None:
-            self.department_id = auth_user.department_id #329 use auth_user context
-            self.institute_id = auth_user.institute_id
-        else:
-            self.department_id = 0
-            self.institute_id = 0
-
+        self.department_id = department_id
+        self.institute_id = institute_id
+        
 
     @staticmethod
     def new(lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
         new_class_code = fn_generate_class_code(length=6)
-        return LessonScheduleModel(0, new_class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+        return LessonScheduleModel(0, new_class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_ctx.department_id, institute_id=auth_ctx.institute_id, auth_user=auth_ctx)
 
 
     def validate(self, skip_validation = []):
@@ -55,6 +56,26 @@ class LessonScheduleModel(BaseModel):
                 class_code = row[1],
                 lesson_id = row[5],
                 scheme_of_work_id=row[4],
+                department_id=row[3],
+                institute_id=row[2],
+                published=row[6],
+                auth_user=auth_user)
+            model.on_fetched_from_db()
+        return model
+
+
+    @staticmethod
+    def get_model_by_class_code(db, class_code, auth_user):
+        rows = LessonScheduleDataAccess.get_model_by_class_code(db, class_code, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+        model = None
+        for row in rows:
+            model = LessonScheduleModel(
+                id_=row[0],
+                class_code = row[1],
+                lesson_id = row[5],
+                scheme_of_work_id=row[4],
+                department_id=row[3],
+                institute_id=row[2],
                 published=row[6],
                 auth_user=auth_user)
             model.on_fetched_from_db()
@@ -85,7 +106,7 @@ class LessonScheduleModel(BaseModel):
 
     @staticmethod
     def delete(db, id_, lesson_id, scheme_of_work_id, auth_user):
-        model = LessonScheduleModel(id_, "", lesson_id, scheme_of_work_id)
+        model = LessonScheduleModel(id_, "", lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id)
         LessonScheduleDataAccess._delete(db, auth_user_id=auth_user.auth_user_id, model=model)
         return model
 
@@ -107,6 +128,27 @@ class LessonScheduleDataAccess:
         execHelper = ExecHelper()
         select_sql = "lesson_schedule__get"
         params = (lesson_id, int(show_published_state), auth_user_id)
+        
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
+        return rows
+
+
+    @staticmethod
+    def get_model_by_class_code(db, class_code, auth_user_id, show_published_state=STATE.PUBLISH):
+        """
+        get lesson schedule
+
+        :param db:database context
+        :param id_: the lesson identifier
+        :param class_code: class_code
+        :return: the lesson schedule
+        """
+        
+        execHelper = ExecHelper()
+        select_sql = "lesson_schedule__get_by_class_code"
+        params = (class_code, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

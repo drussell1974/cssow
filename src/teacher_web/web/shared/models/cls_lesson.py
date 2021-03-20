@@ -276,7 +276,7 @@ class LessonModel (BaseModel):
                 auth_user=auth_user
             )
             
-            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], auth_user=auth_user) 
+            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user=auth_user) 
             
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
@@ -332,7 +332,7 @@ class LessonModel (BaseModel):
                 published = row[18]
             )
 
-            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], auth_user=auth_user) 
+            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id = auth_user.department_id, institute_id = auth_user.institute_id, auth_user=auth_user) 
 
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)

@@ -31,6 +31,8 @@ urlpatterns = [
     path('api/institute/<int:institute_id>/department/<int:department_id>/', include('api.default.urls')),
     path('api/institute/<int:institute_id>/department/', include('api.departments.urls')),
     path('api/institute/', include('api.institutes.urls')),
+    path('api/schedule/lesson/', include('api.schedules.urls')),
+
     ### app ###
 
     path('accounts/team-permissions', include('app.teampermissions.urls')),

@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.cls_content import ContentModel
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import fake_ctx_model
 
@@ -24,14 +24,14 @@ class test_db__deleteunpublished(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        ContentModel(0)
+        LessonScheduleModel(0, class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
-            with self.assertRaises(Exception):
+            with self.assertRaises(KeyError):
                 # act 
-                ContentModel.delete_unpublished(self.fake_db, 1)
+                LessonScheduleModel.delete_unpublished(self.fake_db, lesson_id=866, scheme_of_work_id=34, auth_user=mock_auth_user)
 
 
     def test_should_call__delete(self, mock_auth_user):
@@ -40,12 +40,12 @@ class test_db__deleteunpublished(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=(5)):
             # act
 
-            actual_result = ContentModel.delete_unpublished(self.fake_db, 99, auth_user=mock_auth_user)
+            actual_result = LessonScheduleModel.delete_unpublished(self.fake_db, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)
             
             # assert
             ExecHelper.delete.assert_called_with(self.fake_db,
-                'content__delete_unpublished'
-                , (99, int(STATE.DRAFT), mock_auth_user.auth_user_id)
+                'lesson_schedule__delete_unpublished'
+                , (99, 12, mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(5, actual_result)

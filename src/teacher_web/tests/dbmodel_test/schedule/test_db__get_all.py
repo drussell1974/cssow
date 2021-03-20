@@ -1,9 +1,10 @@
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_content import ContentModel, handle_log_info
+from shared.models.cls_lesson_schedule import LessonScheduleModel, handle_log_info
 from tests.test_helpers.mocks import *
 
+@skip("not implemented")
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_all(TestCase):
 
@@ -25,7 +26,7 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
-                ContentModel.get_all(self.fake_db)
+                LessonScheduleModel.get_all(self.fake_db)
 
 
     def test__should_call_select_return_no_items(self, mock_ctx):
@@ -35,7 +36,7 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=mock_ctx)
+            rows = LessonScheduleModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=mock_ctx)
             
             # assert
 
@@ -57,7 +58,7 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = ContentModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=mock_ctx)
+            actual_results = LessonScheduleModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=mock_ctx)
             
             # assert
 
@@ -86,7 +87,7 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = ContentModel.get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=mock_ctx)
+            actual_results = LessonScheduleModel.get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=mock_ctx)
             
             # assert
 

@@ -1,11 +1,11 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_content import ContentModel as Model, handle_log_info
+from shared.models.cls_lesson_schedule import LessonScheduleModel as Model, handle_log_info
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_db__get_model(TestCase):
+class test_db__get_model_by_class_code(TestCase):
     
     def setUp(self):
         ' fake database context '
@@ -23,10 +23,11 @@ class test_db__get_model(TestCase):
         with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
-            with self.assertRaises(Exception):
-                Model.get_model(self.fake_db,  scheme_of_work_id=54, auth_user=4)
+            with self.assertRaises(KeyError):
+                Model.get_model_by_class_code(self.fake_db, class_code="FOOBAR", auth_user=mock_auth_user)
 
 
+    @skip("not implemented")
     def test__should_call_select__return_no_items(self, mock_auth_user):
         # arrange
         expected_result = []
@@ -39,34 +40,36 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get'
-                , (99, 54, mock_auth_user.auth_user_id)
+                'lesson_schedule__get'
+                , (99, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
             self.assertIsNone(actual_result)
 
 
+    @skip("not implemented")
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [(6, "Lorem", "A", 1)]
+        expected_result = [(6, "ABCDEF", 12767111276711, 67, 11, 1234, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            model = Model.get_model(self.fake_db, 6, scheme_of_work_id=30, auth_user=mock_auth_user)
+            model = Model.get_model(self.fake_db, lesson_id=6, scheme_of_work_id=11, auth_user=mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get'
-                , (6, 30, mock_auth_user.auth_user_id)
+                'lesson_schedule__get'
+                , (6, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(6, model.id)
-            self.assertEqual("Lorem", model.description)
-            self.assertEqual("A", model.letter_prefix)
+            self.assertEqual("ABCDEF", model.class_code)
+            self.assertEqual(11, model.scheme_of_work_id)
+            self.assertEqual(1234, model.lesson_id)
             self.assertFalse(model.is_new())
             self.assertTrue(model.is_from_db)
 

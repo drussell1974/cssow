@@ -8,7 +8,7 @@ class test_cls_lesson_schedule__validate__class_code(TestCase):
 
     def setUp(self):
         # start with valid model exept attribute under test
-        self.test = Model(1, class_code = "", lesson_id=9734, scheme_of_work_id=3434)
+        self.test = Model(1, class_code = "", lesson_id=9734, scheme_of_work_id=3434, department_id=67, institute_id=12711671276711)
 
 
     def tearDown(self):

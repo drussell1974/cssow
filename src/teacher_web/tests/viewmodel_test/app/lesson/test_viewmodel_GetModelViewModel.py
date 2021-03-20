@@ -44,7 +44,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         data_to_return = None
         
         with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):
+            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):
 
                 db = MagicMock()
                 db.cursor = MagicMock()
@@ -76,7 +76,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         data_to_return.is_from_db = True
 
         with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12)):
+            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):
                 
                 db = MagicMock()
                 db.cursor = MagicMock()
