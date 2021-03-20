@@ -17,12 +17,12 @@ class LessonScheduleModel(BaseModel):
             self.institute_id = auth_user.institute_id
         else:
             self.department_id = 0
-            self.institute_id = 0        
+            self.institute_id = 0
 
 
     @staticmethod
-    def new(lesson_id, scheme_of_work_id, auth_ctx):
-        new_class_code = "BCDEFG"
+    def new(lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
+        new_class_code = fn_generate_class_code(length=6)
         return LessonScheduleModel(0, new_class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
 
@@ -45,18 +45,17 @@ class LessonScheduleModel(BaseModel):
             self.class_code = sql_safe(self.class_code)
 
 
-
     @staticmethod
-    def get_model(db, lesson_schedule_id, scheme_of_work_id, auth_user):
-        rows = LessonScheduleDataAccess.get_model(db, lesson_schedule_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+    def get_model(db, lesson_id, scheme_of_work_id, auth_user):
+        rows = LessonScheduleDataAccess.get_model(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         model = None
         for row in rows:
             model = LessonScheduleModel(
                 id_=row[0],
                 class_code = row[1],
-                lesson_id = row[2],
-                scheme_of_work_id=row[3],
-                published=row[17],
+                lesson_id = row[5],
+                scheme_of_work_id=row[4],
+                published=row[6],
                 auth_user=auth_user)
             model.on_fetched_from_db()
         return model
@@ -94,7 +93,7 @@ class LessonScheduleModel(BaseModel):
 class LessonScheduleDataAccess:
 
     @staticmethod
-    def get_model(db, id_, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
+    def get_model(db, lesson_id, scheme_of_work_id, auth_user_id, show_published_state=STATE.PUBLISH):
         """
         get lesson schedule
 
@@ -107,7 +106,7 @@ class LessonScheduleDataAccess:
         
         execHelper = ExecHelper()
         select_sql = "lesson_schedule__get"
-        params = (id_, int(show_published_state), auth_user_id)
+        params = (lesson_id, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -137,7 +136,7 @@ class LessonScheduleDataAccess:
             auth_ctx.department_id,
             model.scheme_of_work_id,
             model.lesson_id,
-            published,
+            int(published),
             auth_ctx.auth_user_id
         )
 
@@ -170,7 +169,7 @@ class LessonScheduleDataAccess:
             auth_ctx.department_id,
             model.scheme_of_work_id,
             model.lesson_id,
-            published,
+            int(published),
             auth_ctx.auth_user_id
         )
     

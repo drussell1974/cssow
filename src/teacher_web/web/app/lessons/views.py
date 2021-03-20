@@ -67,13 +67,16 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     # TODO: #323 SchemeOfWorkContextModel should return key_stage_id
     scheme_of_work = SchemeOfWorkModel.get_model(db, scheme_of_work_id, auth_ctx)
 
+    lesson_schedule = None
+
     if request.method == "GET":
         ## GET request from client ##
         
         if lesson_id > 0:
             #253 check user id
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-            model = get_lesson_view.model        
+            model = get_lesson_view.model  
+            lesson_schedule = get_lesson_view.lesson_schedule      
             wizard.next_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id])
 
         # handle copy
@@ -108,13 +111,15 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
 
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
+        create_schedule = request.POST.get("generate_class_code", False)
+        
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, create_schedule = create_schedule)
 
         try:
             modelviewmodel.execute(published_state)
             model = modelviewmodel.model
-        
+            lesson_schedule = modelviewmodel.lesson_schedule
 
             if model.is_valid == True:
                 ' save the lesson '            
@@ -155,6 +160,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "reference_title": "CAS Computing progression pathways",
         "reference_author": "Mark Dorling",
         "reference_uri": "https://community.computingatschool.org.uk/resources/2324/single", # TODO: create look up for e.g. reference['<id_or_name>']
+        "lesson_schedule": lesson_schedule
     }
     
     view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)

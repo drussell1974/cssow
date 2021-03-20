@@ -8,6 +8,7 @@ from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.publlished import STATE 
+from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
@@ -70,7 +71,8 @@ class LessonGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-
+        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
+        
         # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:
@@ -127,8 +129,8 @@ class LessonEditViewModel(BaseViewModel):
         if self.model.is_valid == True:
             data = Model.save(self.db, self.model, self.auth_user, published)
             
-            if self.create_schedule:
-                lesson_sch_model = LessonScheduleModel.new(data.id, self.model.scheme_of_work_id, self.auth_user)
+            if self.create_schedule or self.model.is_new():
+                lesson_sch_model = LessonScheduleModel.new(data.id, self.model.scheme_of_work_id, self.auth_user, ClassCodeGenerator.generate_class_code)
                 self.lesson_schedule = LessonScheduleModel.save(self.db, model=lesson_sch_model, auth_user=self.auth_user, published=STATE.PUBLISH)
             
             self.model = data
