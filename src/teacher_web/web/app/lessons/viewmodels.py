@@ -5,7 +5,9 @@ from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE 
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
@@ -109,12 +111,14 @@ class LessonMissingWordsChallengeViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, model, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user, create_schedule = False):
         
         self.db = db
         self.auth_user = auth_user
         self.model = model
         self.scheme_of_work_id = scheme_of_work_id
+        self.create_schedule = create_schedule
+        self.lesson_schedule = None
 
 
     def execute(self, published):
@@ -122,7 +126,12 @@ class LessonEditViewModel(BaseViewModel):
 
         if self.model.is_valid == True:
             data = Model.save(self.db, self.model, self.auth_user, published)
-            self.model = data   
+            
+            if self.create_schedule:
+                lesson_sch_model = LessonScheduleModel.new(data.id, self.model.scheme_of_work_id, self.auth_user)
+                self.lesson_schedule = LessonScheduleModel.save(self.db, model=lesson_sch_model, auth_user=self.auth_user, published=STATE.PUBLISH)
+            
+            self.model = data
         else:
             handle_log_warning(self.db, self.scheme_of_work_id, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
 

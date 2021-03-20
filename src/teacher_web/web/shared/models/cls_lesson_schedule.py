@@ -20,6 +20,12 @@ class LessonScheduleModel(BaseModel):
             self.institute_id = 0        
 
 
+    @staticmethod
+    def new(lesson_id, scheme_of_work_id, auth_ctx):
+        new_class_code = "BCDEFG"
+        return LessonScheduleModel(0, new_class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+
+
     def validate(self, skip_validation = []):
         """ clean up and validate model """
         super().validate(skip_validation)
