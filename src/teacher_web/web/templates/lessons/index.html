@@ -106,6 +106,7 @@
         <button class="badge badge-secondary {{ key_word.published_state }}" data-toggle="tooltip" data-placement="bottom" title="{{ key_word.definition }}">{{ key_word.term }}</button>&nbsp;
       {% endfor %}
     </div>
+
     <div class="links card-body stackable-group-sm">
       <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-learningobjectives--{{row.id}}">
         {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
@@ -116,10 +117,19 @@
       <a href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-keywords--{{row.id}}">
         {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
       </a>
-      
     </div>
     <p class="post-meta">
-      <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" class="float-right small">{{_("student portal")}} <i class="fa fa-globe student_portal--link"></i></a>
+      {% if row.lesson_schedule.class_code is not None  %}
+      <span class="info-class_code small float-right" data-toggle="popover" title="Student class code" data-content="Students should visit http://daverussell.co.uk and enter {{row.lesson_schedule.class_code}}">
+        {{_('Class code:')}} {{row.lesson_schedule.class_code}} <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" class="text-white"><i class="fa fa-users text-white student_portal--link"></i></a>
+      </span>
+      {% elif request.user.is_authenticated %}
+      <a class="info-class_code small float-right" href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}">
+        {{_('Create class code')}} <i class="fa fa-users text-white student_portal--link"></i></a>
+      </a>
+      {% endif %}
+      
+
       {{_("Created by")}}
       <a href="#">{{ row.created_by_name }}</a>
       {% if row.created %}
@@ -131,7 +141,8 @@
           {% endif %}
           <a href="{% url 'lesson.copy' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}">{{_("copy")}}</a> 
       {% endif %} 
-      </p>
+      
+    </p>
   </div>
   <hr>
 
@@ -150,4 +161,10 @@
   <hr />
 </article>
 
+{% endblock %}
+
+{% block page_js %}
+<script>
+  $('.info-class_code').popover()
+</script>
 {% endblock %}

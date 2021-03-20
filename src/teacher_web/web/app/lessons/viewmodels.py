@@ -20,7 +20,7 @@ class LessonIndexViewModel(BaseViewModel):
         
         data = []
 
-        self.model = []
+        self.data = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
         self.search_criteria = LessonFilter(keyword_search, pagesize_options, page, pagesize, 0)
@@ -34,7 +34,7 @@ class LessonIndexViewModel(BaseViewModel):
 
             # side menu options
             self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
-            self.model = data
+            self.data = data
             
             # get pager from POST 
 
@@ -43,7 +43,7 @@ class LessonIndexViewModel(BaseViewModel):
                 self.search_criteria.pagesize = try_int(request.POST["pagesize"], return_value=pagesize)
                 
             # get list of lessons
-            self.model = Model.get_filtered(self.db, scheme_of_work_id, self.search_criteria, auth_user)
+            self.data = Model.get_filtered(self.db, scheme_of_work_id, self.search_criteria, auth_user)
 
         except Http404 as notfound:
             raise notfound        
@@ -57,7 +57,7 @@ class LessonIndexViewModel(BaseViewModel):
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
             "schemeofwork_options": self.schemeofwork_options,
-            "lessons": self.model,
+            "lessons": self.data,
             "topic_name": "",
             "search_criteria": self.search_criteria,
         }
