@@ -217,7 +217,8 @@ def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id
         "key_words":model.key_words,
         "learning_objectives":model.learning_objectives,
         "resources": model.resources,
-        "lesson_schedule": lesson_schedule
+        "lesson_schedule": lesson_schedule, 
+        "STUDENT_WEB__WEB_SERVER_WWW": get_lesson_view.STUDENT_WEB__WEB_SERVER_WWW
     }
 
     view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)

@@ -120,12 +120,12 @@
     </div>
     <p class="post-meta">
       {% if row.lesson_schedule.class_code is not None  %}
-      <span class="info-class_code small float-right" data-toggle="popover" title="Student class code" data-content="Students should visit http://daverussell.co.uk and enter {{row.lesson_schedule.class_code}}">
-        {{_('Class code:')}} {{row.lesson_schedule.class_code}} <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" class="text-white"><i class="fa fa-users text-white student_portal--link"></i></a>
+      <span class="info-class_code small float-right" data-toggle="popover" title="Student class code" data-content="Students should visit {{ content.data.STUDENT_WEB__WEB_SERVER_WWW }} and enter {{row.lesson_schedule.class_code}}">
+        <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" title="{{_('student portal')}}" > {{_('Class code:')}} {{row.lesson_schedule.class_code}} <i class="fa fa-users student_portal--link"></i></a>
       </span>
       {% elif request.user.is_authenticated %}
       <a class="info-class_code small float-right" href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}">
-        {{_('Create class code')}} <i class="fa fa-users text-white student_portal--link"></i></a>
+        {{_('Create class code')}} <i class="fa fa-users student_portal--link"></i></a>
       </a>
       {% endif %}
       

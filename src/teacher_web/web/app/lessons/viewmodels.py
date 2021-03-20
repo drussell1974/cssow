@@ -1,4 +1,5 @@
 import json
+from django.conf import settings
 from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
@@ -60,6 +61,7 @@ class LessonIndexViewModel(BaseViewModel):
             "lessons": self.data,
             "topic_name": "",
             "search_criteria": self.search_criteria,
+            "STUDENT_WEB__WEB_SERVER_WWW": settings.STUDENT_WEB__WEB_SERVER_WWW
         }
 
         return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message)
@@ -72,7 +74,8 @@ class LessonGetModelViewModel(BaseViewModel):
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
         self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
-        
+        self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
+
         # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:
@@ -88,6 +91,8 @@ class LessonWhiteboardViewModel(BaseViewModel):
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
         self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
+        self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
+
         # if not found then raise error
         if lesson_id > 0:
             if model is None or model.is_from_db == False:

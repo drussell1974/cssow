@@ -37,12 +37,15 @@
         </div>
         <br>
         <!-- Keywords END-->
-
-        <button class="border chalk mt-2">
+        
+        {% if content.data.lesson_schedule.class_code %}
+        <!-- Class code -->
+        <button class="border chalk mt-2" data-toggle="modal" data-target="#classCodeModal">
             <p id="heading-class_code">{{_("Class code")}}</p>
             <p class="h1">{{ content.data.lesson_schedule.class_code }}</p> 
         </button>
-
+        <!-- Class code END -->
+        {% endif %}
     </div>
     <div class="col-lg-8 col-md-8 mx-auto print-span">
         <!-- Learning Objectives -->
@@ -93,6 +96,37 @@
         <!-- Learning materials END -->
      </div>
 </div>
+
+<!-- Modal -->
+
+{% block modal %}
+{% if content.data.lesson_schedule.class_code %}
+
+<div class="modal fade" id="classCodeModal" tabindex="-1" role="dialog" aria-labelledby="classCodeModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title" id="classCodeModalLongTitle">{{_('Class code')}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+            <p>
+                {{_('1. Go to Website')}} <a href="{{content.data.STUDENT_WEB__WEB_SERVER_WWW}}" target="_blank">{{content.data.STUDENT_WEB__WEB_SERVER_WWW}}</a><br>
+                {{_('2. Enter the class code')}}
+            </p>
+            <p class="h1">{{ content.data.lesson_schedule.class_code }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
 {% endblock %}
 
 {% block page_js %}
