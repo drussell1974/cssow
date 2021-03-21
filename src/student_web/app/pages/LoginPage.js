@@ -20,7 +20,8 @@ class LoginPage extends React.Component {
             redirect: {},
             hasError: false,
             loading: 0,
-            socialmediadata: []
+            socialmediadata: [],
+            class_code: ""
         }
     }
 
@@ -47,6 +48,26 @@ class LoginPage extends React.Component {
             loading: 50
         }
       }
+
+    handleSubmit(e){
+        //call the api here with current state value (this.state.class_code)
+        console.log('handleSubmit...');
+        console.log(e);
+        // TODO: call api to get scheduled lesson getLessonFromClassCode(this)
+
+        this.state = {
+            class_code: e, // TODO: class_code from form
+            institute_id: 0, // TODO: get from api result
+            department_id: 0, // TODO: get from api result
+            scheme_of_work_id: 0, // TODO: get from api result
+            lesson_id: 0 // TODO: get from api result
+        }
+
+        // TODO: Get scheduled lesson
+
+        // TODO: Redirect to lesson page
+
+      }
       
     render() {
 
@@ -55,6 +76,8 @@ class LoginPage extends React.Component {
                 <LoginPageContainer 
                     site={this.state.Site}
                     socialmediadata={this.state.socialmediadata}
+                    onSubmit={ this.handleSubmit.bind(this) }
+                    class_code={ this.state.class_code }
                     loading={this.state.loading}
                 />
             </React.Fragment>
@@ -62,7 +85,7 @@ class LoginPage extends React.Component {
     }
 };
 
-export const LoginPageContainer = ({site, socialmediadata, loading = 0}) => {
+export const LoginPageContainer = ({site, socialmediadata, onSubmit, class_code, loading = 0}) => {
     if (site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
@@ -83,7 +106,7 @@ export const LoginPageContainer = ({site, socialmediadata, loading = 0}) => {
                 <div id="main">
                     <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={"Home"} />    
-                        <LoginWidget redirect={redirect} />
+                        <LoginWidget class_code={class_code} onSubmit={ onSubmit} />
                     </div>
                 </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />
