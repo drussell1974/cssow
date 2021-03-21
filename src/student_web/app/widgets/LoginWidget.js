@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export const LoginForm = ({class_code, onSubmit}) => {
+export const LoginForm = ({class_code, onSubmit, fetch}) => {
     const [ student, setClassCode ] = useState({class_code});
     const handleChangeClassCode = ({ target }) => {
         setClassCode(student => ({
@@ -9,8 +9,19 @@ export const LoginForm = ({class_code, onSubmit}) => {
             class_code: target.value
         }));
     }
+    // TODO: change post location
+    const handleSubmit = () => {
+        //onSubmit(class_code);
+        fetch('/customers', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(student)
+        })
+    }
+
     return (
-        <form id="frm-login-form" onSubmit={() => onSubmit(student)}>
+        <form id="frm-login-form" onSubmit={handleSubmit}>
             <div className="controls-group align-center">
                 <div className="form-group form-group--auto controls p-25">
                     <h2 htmlFor="class_code">Enter your class code</h2>
@@ -23,14 +34,20 @@ export const LoginForm = ({class_code, onSubmit}) => {
     )
 }
 
-export const LoginWidget = ({class_code, onSubmit}) => {
+// mimic fetch api
 
+LoginForm.defaultProps = {
+    fetch: async () => {},
+}
+
+export const LoginWidget = ({class_code, onSubmit, fetch}) => {
+    
     if(onSubmit === undefined) {
         return <React.Fragment></React.Fragment>;
     } else {
         return (
             <Fragment>
-                <LoginForm class_code={class_code} onSubmit={onSubmit} />
+                <LoginForm class_code={class_code} onSubmit={onSubmit} fetch={fetch} />
             </Fragment>
         );
     }
