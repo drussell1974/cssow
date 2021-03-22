@@ -324,5 +324,50 @@ const getSiteConfig = (reactComponent) => {
     });
 }
 
+const getLessonFromClassCode = (reactComponent, class_code, onFetch) => {
+    // #205 get lesson details
+    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/schedule/lesson/${class_code}?format=json`;
+    fetch(uri)
+        .then(res => {
+            return res.json();
+        })
+        .then(
+            (result) => {
+                console.log("apiReactService.getLessonFromClassCode: returning result...");
+                console.log(result);
+                if (result.found) {
+                    
+                    reactComponent.setState({
+                        isLoaded: true,
+                        loading: onProgress(reactComponent),
+                        message: result.detail,
+                        found: true,
+                        lesson: result
+                    });
+                } else {
 
-export { getInstitutes, getInstitute, getDepartments, getDepartment, getCourses, getCourse, getLessons, getLesson, getResource, getMarkdown, getSocialMediaLinks, getSiteConfig };
+                    reactComponent.setState({
+                        isLoaded: true,
+                        loading: onProgress(reactComponent),
+                        message: result.detail,
+                        lesson: { found: false }
+                    });
+                }
+                
+                onFetch(result)
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                reactComponent.setState({
+                    hasError: true,
+                    isLoaded: true,
+                    error,
+                    onerror: onProgress(reactComponent),
+                });
+            }
+        )
+}
+
+export { getInstitutes, getInstitute, getDepartments, getDepartment, getCourses, getCourse, getLessons, getLesson, getResource, getMarkdown, getSocialMediaLinks, getSiteConfig, getLessonFromClassCode };

@@ -51,3 +51,7 @@ class apitest_schemeofwork_lesson_schedule_get_model_by_class_code(APITestCase):
     def test__should_have_institute_id(self):
         # assert
         self.assertEqual(2, self.payload["schedule"]["institute_id"])
+
+
+    def test__should_have_found(self):
+        self.assertTrue(self.payload["schedule"]["is_from_db"])

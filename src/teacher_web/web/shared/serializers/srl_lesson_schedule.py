@@ -11,5 +11,6 @@ class LessonScheduleModelSerializer(serializers.ModelSerializer):
             "lesson_id",
             "scheme_of_work_id",
             "department_id",
-            "institute_id"
+            "institute_id",
+            "is_from_db",
         ]

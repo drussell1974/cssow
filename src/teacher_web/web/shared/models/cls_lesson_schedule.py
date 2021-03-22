@@ -10,6 +10,7 @@ class LessonScheduleModel(BaseModel):
     scheme_of_work_id = 0
     department_id = 0
     institute_id = 0
+    is_from_db = False
 
     def __init__(self, id_, class_code, lesson_id, scheme_of_work_id, department_id, institute_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None):
         #231: implement across all classes
