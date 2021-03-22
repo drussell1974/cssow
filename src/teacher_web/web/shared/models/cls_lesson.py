@@ -12,6 +12,8 @@ from .cls_keyword import KeywordDataAccess, KeywordModel
 from .cls_topic import TopicModel
 from .cls_year import YearModel
 from .cls_ks123pathway import KS123PathwayModel
+from .cls_lesson_schedule import LessonScheduleModel
+
 
 class LessonFilter(Pager):
 
@@ -76,7 +78,9 @@ class LessonModel (BaseModel):
         #self.created_by_name=created_by_name
         #self.published=published
         self.orig_id = orig_id
+        self.lesson_schedule = None
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
+        
         if auth_user is not None:
             self.department_id = auth_user.department_id #329 use auth_user context
             self.institute_id = auth_user.institute_id
@@ -272,6 +276,8 @@ class LessonModel (BaseModel):
                 auth_user=auth_user
             )
             
+            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user=auth_user) 
+            
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
@@ -325,7 +331,9 @@ class LessonModel (BaseModel):
                 created_by_name=row[17],
                 published = row[18]
             )
-            
+
+            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id = auth_user.department_id, institute_id = auth_user.institute_id, auth_user=auth_user) 
+
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 

@@ -3,13 +3,13 @@
 {% block maincontent %}
 
 <div class="row">
-  <div class="col-lg-14 col-md-10 mx-auto">
+  <div class="col-md-10">
     <p class="h4 chalk float-right d-print-none">{{display_date}}</p>
   </div>
 </div>
 <div class="row">
   <div class="col-lg-8 col-md-8 mx-auto print-span">
-    <section class="heading" align="center">
+    <section class="heading" class="center">
         <h1>{{lesson_title}}</h1>
         <p class="subheading chalk">{{lesson_summary}}</p>
     </section>
@@ -18,24 +18,34 @@
 <div class="row">
     <div class="col-lg-4 col-md-4 mx-auto print-span">
         <!-- Keywords -->
-            <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
-            <div id="accordion-keywords">
-            {% for key_word in content.data.key_words %}
-                <div class="keyword-expand">
-                    <div class="expand-header" id="heading-keyword{{key_word.id}}">
-                        <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
-                            <u>{{key_word.term}}</u>
-                        </a>
-                    </div>
-                    {% if key_word.definition is not None %}
-                    <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
-                        <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
-                    </div>
-                    {% endif %}
+        <h2 class="chalk" id="heading-key_words">{{_("Keywords")}}</h2>
+        <div id="accordion-keywords">
+        {% for key_word in content.data.key_words %}
+            <div class="keyword-expand">
+                <div class="expand-header" id="heading-keyword{{key_word.id}}">
+                    <a class="chalk keyword" data-toggle="collapse" data-target="#collapse-keyword{{key_word.id}}" aria-expanded="false" aria-controls="collapse-keyword{{keyword.id}}">
+                        <u>{{key_word.term}}</u>
+                    </a>
                 </div>
-            {% endfor %}
+                {% if key_word.definition is not None %}
+                <div id="collapse-keyword{{key_word.id}}" class="collapse" aria-labelledby="heading-keyword{{keyword.id}}" data-parent="#accordion-keywords">
+                    <div class="expand-body chalk preserve-linebreak">{{key_word.definition}}</div>
+                </div>
+                {% endif %}
             </div>
+        {% endfor %}
+        </div>
+        <br>
         <!-- Keywords END-->
+        
+        {% if content.data.lesson_schedule.class_code %}
+        <!-- Class code -->
+        <button class="border chalk mt-2" data-toggle="modal" data-target="#classCodeModal">
+            <p id="heading-class_code">{{_("Class code")}}</p>
+            <p class="h1">{{ content.data.lesson_schedule.class_code }}</p> 
+        </button>
+        <!-- Class code END -->
+        {% endif %}
     </div>
     <div class="col-lg-8 col-md-8 mx-auto print-span">
         <!-- Learning Objectives -->
@@ -86,6 +96,37 @@
         <!-- Learning materials END -->
      </div>
 </div>
+
+<!-- Modal -->
+
+{% block modal %}
+{% if content.data.lesson_schedule.class_code %}
+
+<div class="modal fade" id="classCodeModal" tabindex="-1" role="dialog" aria-labelledby="classCodeModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title" id="classCodeModalLongTitle">{{_('Class code')}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+            <p>
+                {{_('1. Go to Website')}} <a href="{{content.data.STUDENT_WEB__WEB_SERVER_WWW}}" target="_blank">{{content.data.STUDENT_WEB__WEB_SERVER_WWW}}</a><br>
+                {{_('2. Enter the class code')}}
+            </p>
+            <p class="h1">{{ content.data.lesson_schedule.class_code }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
 {% endblock %}
 
 {% block page_js %}

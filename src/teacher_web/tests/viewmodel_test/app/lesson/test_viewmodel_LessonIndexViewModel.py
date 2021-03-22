@@ -71,7 +71,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     
                     Model.get_filtered.assert_called()
 
-                    self.assertEqual(0, len(self.viewmodel.model))
+                    self.assertEqual(0, len(self.viewmodel.data))
 
                     self.assertEqual("", self.viewmodel.error_message)
 
@@ -108,7 +108,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             Model.get_filtered.assert_called()
 
-            self.assertEqual(1, len(self.viewmodel.model))
+            self.assertEqual(1, len(self.viewmodel.data))
 
             self.assertViewModelContent(self.viewmodel
                 , ""
@@ -143,7 +143,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             Model.get_filtered.assert_called_with(db, 96, self.viewmodel.search_criteria, 99)
 
-            self.assertEqual(3, len(self.viewmodel.model))
+            self.assertEqual(3, len(self.viewmodel.data))
 
 
             self.assertViewModelContent(self.viewmodel
@@ -182,7 +182,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             Model.get_filtered.assert_called_with(db, 96, self.viewmodel.search_criteria, 99)
 
-            self.assertEqual(3, len(self.viewmodel.model))
+            self.assertEqual(3, len(self.viewmodel.data))
 
             self.assertViewModelContent(self.viewmodel
                 , ""

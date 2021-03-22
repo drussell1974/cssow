@@ -1,11 +1,15 @@
 import json
+from django.conf import settings
 from django.http import Http404
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.enums.publlished import STATE 
+from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 from app.default.viewmodels import KeywordSaveViewModel
@@ -17,7 +21,7 @@ class LessonIndexViewModel(BaseViewModel):
         
         data = []
 
-        self.model = []
+        self.data = []
         self.db = db
         self.scheme_of_work_id = scheme_of_work_id
         self.search_criteria = LessonFilter(keyword_search, pagesize_options, page, pagesize, 0)
@@ -31,7 +35,7 @@ class LessonIndexViewModel(BaseViewModel):
 
             # side menu options
             self.schemeofwork_options = SchemeOfWorkModel.get_options(db, auth_user=auth_user)
-            self.model = data
+            self.data = data
             
             # get pager from POST 
 
@@ -40,7 +44,7 @@ class LessonIndexViewModel(BaseViewModel):
                 self.search_criteria.pagesize = try_int(request.POST["pagesize"], return_value=pagesize)
                 
             # get list of lessons
-            self.model = Model.get_filtered(self.db, scheme_of_work_id, self.search_criteria, auth_user)
+            self.data = Model.get_filtered(self.db, scheme_of_work_id, self.search_criteria, auth_user)
 
         except Http404 as notfound:
             raise notfound        
@@ -54,9 +58,10 @@ class LessonIndexViewModel(BaseViewModel):
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
             "schemeofwork_options": self.schemeofwork_options,
-            "lessons": self.model,
+            "lessons": self.data,
             "topic_name": "",
             "search_criteria": self.search_criteria,
+            "STUDENT_WEB__WEB_SERVER_WWW": settings.STUDENT_WEB__WEB_SERVER_WWW
         }
 
         return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message)
@@ -68,6 +73,8 @@ class LessonGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
+        self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
 
         # if not found then raise error
         if lesson_id > 0:
@@ -83,6 +90,8 @@ class LessonWhiteboardViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
+        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
+        self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
 
         # if not found then raise error
         if lesson_id > 0:
@@ -109,12 +118,14 @@ class LessonMissingWordsChallengeViewModel(BaseViewModel):
 
 class LessonEditViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, model, auth_user):
+    def __init__(self, db, scheme_of_work_id, model, auth_user, create_schedule = False):
         
         self.db = db
         self.auth_user = auth_user
         self.model = model
         self.scheme_of_work_id = scheme_of_work_id
+        self.create_schedule = create_schedule
+        self.lesson_schedule = None
 
 
     def execute(self, published):
@@ -122,7 +133,12 @@ class LessonEditViewModel(BaseViewModel):
 
         if self.model.is_valid == True:
             data = Model.save(self.db, self.model, self.auth_user, published)
-            self.model = data   
+            
+            if self.create_schedule or self.model.is_new():
+                lesson_sch_model = LessonScheduleModel.new(data.id, self.model.scheme_of_work_id, self.auth_user, ClassCodeGenerator.generate_class_code)
+                self.lesson_schedule = LessonScheduleModel.save(self.db, model=lesson_sch_model, auth_user=self.auth_user, published=STATE.PUBLISH)
+            
+            self.model = data
         else:
             handle_log_warning(self.db, self.scheme_of_work_id, "saving lesson", "lesson is not valid (id:{}, title:{}, validation_errors (count:{}).".format(self.model.id, self.model.title, len(self.model.validation_errors)))
 

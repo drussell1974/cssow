@@ -1,12 +1,14 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import BannerWidget from '../widgets/BannerWidget';
 import BreadcrumbWidget from '../widgets/BreadcrumbWidget';
 import FooterWidget from '../widgets/FooterWidget';
 import { SpinnerWidget } from '../widgets/SpinnerWidget';
-import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource } from '../services/apiReactServices';
+import { getMarkdown, getCourse, getLesson, getSocialMediaLinks, getSiteConfig, getResource, getLessonFromClassCode } from '../services/apiReactServices';
 import { MarkdownWidget } from '../widgets/MarkdownWidget';
 import { LoginWidget } from '../widgets/LoginWidget';
 
+        
 class LoginPage extends React.Component {
     
     onProgress() {
@@ -17,10 +19,10 @@ class LoginPage extends React.Component {
         super(props);
         this.state = {
             Site: {},
-            redirect: {},
+            //redirect: {},
             hasError: false,
             loading: 0,
-            socialmediadata: []
+            socialmediadata: [],
         }
     }
 
@@ -47,6 +49,11 @@ class LoginPage extends React.Component {
             loading: 50
         }
       }
+
+    handleSubmit(e, onFetch){
+        // #205 call api to get scheduled lesson getLessonFromClassCode(this)
+        getLessonFromClassCode(this, e.class_code, onFetch);
+    }
       
     render() {
 
@@ -55,6 +62,8 @@ class LoginPage extends React.Component {
                 <LoginPageContainer 
                     site={this.state.Site}
                     socialmediadata={this.state.socialmediadata}
+                    onSubmit={ this.handleSubmit.bind(this) }
+                    class_code={ this.state.class_code }
                     loading={this.state.loading}
                 />
             </React.Fragment>
@@ -62,7 +71,7 @@ class LoginPage extends React.Component {
     }
 };
 
-export const LoginPageContainer = ({site, socialmediadata, loading = 0}) => {
+export const LoginPageContainer = ({site, socialmediadata, onSubmit, onFetch, class_code, loading = 0}) => {
     if (site === undefined) {
         return ( 
             <React.Fragment></React.Fragment>
@@ -73,7 +82,7 @@ export const LoginPageContainer = ({site, socialmediadata, loading = 0}) => {
             {text:"Home", url:"/"},
         ]
         
-        let redirect = { url: "/" };
+        //let redirect = { url: "/" };
 
         return (
             <React.Fragment>
@@ -83,7 +92,7 @@ export const LoginPageContainer = ({site, socialmediadata, loading = 0}) => {
                 <div id="main">
                     <div className="inner clearfix">
                         <BreadcrumbWidget breadcrumbItems={breadcrumbItems} activePageName={"Home"} />    
-                        <LoginWidget redirect={redirect} />
+                        <LoginWidget class_code={class_code} onSave={ onSubmit } onFetch={ onFetch } />
                     </div>
                 </div>
                 <FooterWidget heading={site.name} summary={site.description} socialmedia={socialmediadata} />

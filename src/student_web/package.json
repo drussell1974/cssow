@@ -9,6 +9,7 @@
     "@babel/runtime": "^7.6.3",
     "clean-dir": "^1.0.3",
     "copyfiles": "^2.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
@@ -16,8 +17,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "cors":"^2.8.5"
+    "react-router-dom": "^5.1.2"
   },
   "scripts": {
     "clean": "cleandir src/api/web_api/web_api/schemeofwork",
@@ -39,6 +39,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "copy": "^0.3.2",
     "copy-webpack-plugin": "^5.1.1",
+    "cors": "^2.8.5",
     "css-loader": "^3.3.0",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
@@ -48,7 +49,7 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
-    "cors":"^2.8.5"
+    "whatwg-fetch": "^3.6.2"
   },
   "jest": {
     "rootDir": "app/",
