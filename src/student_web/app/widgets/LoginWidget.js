@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { render } from 'react-dom/cjs/react-dom.development';
 import { Link, useHistory } from 'react-router-dom';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -7,11 +8,24 @@ export const LoginForm = ({class_code, onSave}) => {
     const [ error, setError ] = useState(false);
 
     let history = useHistory();
-    let error_message = "Class code must be 6 letters and numbers. Please ensure they match correctly."
-    let setErrorMsg = (msg)  => {
-        error_message = msg;
-    }
+    let invalidated = false;
 
+    const Error = (lesson)  => {
+        var len = lesson.class_code.length
+        if (len > 6) {
+            // must be invalidated before showing too short
+            return (
+                <div className="error">Too Long. Must be 6 characters.</div>
+            )
+        } else if (len < 6) {
+            return (
+                <div className="error">Too short. Must be 6 characters.</div>
+            )
+        } else {
+            return (<div className="error">Check your class code.</div>)
+        }
+    }
+    
     // Default lesson
 
     const redirectToLesson = (url) => {
@@ -24,7 +38,7 @@ export const LoginForm = ({class_code, onSave}) => {
             ...lesson,
             class_code: target.value
         }));
-        if (target.value.length > 6) {
+        if (target.value.length != 6) {
             setError(true);
         } else {
             setError(false);
@@ -32,35 +46,29 @@ export const LoginForm = ({class_code, onSave}) => {
     }
 
     const handleFetch = (payload) => {
-        
+        //console.log(payload);
         if (payload.schedule) {
             // get lesson from payload
             let scheduled_lesson = payload.schedule;
             // create url TODO: get from route
-            let url = `/institute/${scheduled_lesson.institute_id}/department/${scheduled_lesson.department_id}/course/${scheduled_lesson.scheme_of_work_id}/lesson/${scheduled_lesson.lesson_id}`
-            console.log(url);
-            redirectToLesson(url);
-        } else if (payload.detail) {
+            redirectToLesson(`/institute/${scheduled_lesson.institute_id}/department/${scheduled_lesson.department_id}/course/${scheduled_lesson.scheme_of_work_id}/lesson/${scheduled_lesson.lesson_id}`);
+        } else if(payload.detail) {
             // display detail
-            console.log("payload.detail setting error...");
             setError(true);
-            setErrorMsg(payload.detail);
         } else {
-            // TODOL set error from detail
             setError(true);
         }
     }
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log("LoginWidget.handleSubmit: handing submit in child...")
 
         if (lesson.class_code !== undefined) {
-            if(lesson.class_code.length == 6) {
-                // 6 digits entered fetch lesson
-                onSave(lesson, handleFetch);
-            } else {
+            if(lesson.class_code.length != 6) {
                 setError(true);
+            } else {
+                onSave(lesson, handleFetch);
+                setError(false);
             }
         }
     };
@@ -73,7 +81,7 @@ export const LoginForm = ({class_code, onSave}) => {
                     <p><a href="http://teacher.daverussell.co.uk">I am a teacher</a></p>
                     <input type="text" id="class_code" name="class_code" className="input-lg" value={class_code} onChange={handleChangeClassCode} />
                     <input type="submit" value="Enter" className="btn btn-primary w-100" />
-                    { error ? <div className="error">{error_message}</div> : null }
+                    { error ? <Error class_code={lesson.class_code} /> : null }
                 </div>
             </div>
         </form>

@@ -333,8 +333,6 @@ const getLessonFromClassCode = (reactComponent, class_code, onFetch) => {
         })
         .then(
             (result) => {
-                console.log("apiReactService.getLessonFromClassCode: returning result...");
-                console.log(result);
                 if (result.found) {
                     
                     reactComponent.setState({
@@ -350,7 +348,7 @@ const getLessonFromClassCode = (reactComponent, class_code, onFetch) => {
                         isLoaded: true,
                         loading: onProgress(reactComponent),
                         message: result.detail,
-                        lesson: { found: false }
+                        found: false
                     });
                 }
                 

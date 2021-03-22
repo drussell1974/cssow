@@ -63,7 +63,6 @@ class LoginPage extends React.Component {
                     site={this.state.Site}
                     socialmediadata={this.state.socialmediadata}
                     onSubmit={ this.handleSubmit.bind(this) }
-                    onFetch= { this.handleSubmit.bind(this) }
                     class_code={ this.state.class_code }
                     loading={this.state.loading}
                 />

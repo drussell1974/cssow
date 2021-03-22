@@ -7,6 +7,7 @@ import { createContainer, withEvent } from '../helpers/domManipulators';
 import { LoginForm } from '../widgets/LoginWidget';
 import  { 
     fetchResponseOK,
+    fetchResponseNotOK,
     fetchResponseError, 
     requestBodyOf 
 } from '../helpers/spyHelpers';
@@ -135,15 +136,16 @@ describe("LoginForm", () =>{
 
     describe('submit form', () => {
 
-    beforeEach(() => {
-        jest
-            .spyOn(window, 'fetch')
-            .mockReturnValue(fetchResponseOK({}));
-    })
-    
-    afterEach(() => {
-        window.fetch.mockRestore(); // = originalFetch;
-    })
+        beforeEach(() => {
+            jest
+                .spyOn(window, 'fetch')
+                .mockReturnValue(fetchResponseOK({}));
+        })
+        
+        afterEach(() => {
+            window.fetch.mockRestore(); // = originalFetch;
+        })
+        
         it('has a submit button', () => {
             render(<LoginForm />);
             const submitButton = container.querySelector('input[type="submit"]');
@@ -191,13 +193,15 @@ describe("LoginForm", () =>{
 
                 render(
                     <LoginForm { ...{[fieldName]: 'value'} } />);
-                  
+                    
                 submit(form('frm-login-form'));
                 
                 expect(requestBodyOf(window.fetch)).toMatchObject({
                     [fieldName]: 'value'
                 })
             });
+
+        itSubmitsExistingValue('class_code');
 
         const itFetchesDataWhenSubmitted = fieldName =>
             it.skip('saves new value when submitted', async () => {
@@ -222,93 +226,101 @@ describe("LoginForm", () =>{
                     [fieldName]: 'newValue'
                 });
             });
-
-        it.skip('does not submit form when there are validation errors', async () => {
-            
-            render(<LoginForm  
-                    { ...{class_code: ""} } 
-                    onSave={fetchSpy} 
-                />);
-
-            submit(form('frm-login-form'));
-
-            expect(fetchSpy).not.toHaveBeenCalled();
-        })
-
-        it('does not submit form when there are validation errors', async () => {
-            
-            render(<LoginForm  
-                    { ...{class_code: ""} } 
-                    onSave={window.fetch} 
-                />);
-
-            submit(form('frm-login-form'));
-
-            expect(window.fetch).not.toHaveBeenCalled();
-        })
-
-        it.skip('notifies onSave when form is submitted', async () => {
-            const lesson = { id: 123 };
-            window.fetch.mockReturnValue(fetchResponseOK(lesson));
-            
-            const saveSpy = jest.fn(); //spy();
-            
-            render(<LoginForm 
-                    { ...validClassCode } 
-                    onSave={saveSpy} //.fn} 
-                />);
-
-            await act(async () => {
-                submit(form('frm-login-form'));
-            })
-            
-            expect(window.fetch).toHaveBeenCalled();
-            /*expect(saveSpy).toHaveBeenCalledWith(lesson);*/
-        })
-
-        it('it does not notify onSave if POST request returns an error', async () => {
-            
-            window.fetch.mockReturnValue(fetchResponseError());
-
-            const saveSpy = jest.fn(); //spy();
-
-            render(<LoginForm onSave={saveSpy} />);
-            await act(async () => {
-                submit(form('frm-login-form'));
-            })
-
-            expect(saveSpy).not.toHaveBeenCalled();
-        })
-
-        it('prevents the default action when submitting the form', async () => {
-            const preventDefaultSpy = jest.fn(); //spy();
-
-            render(<LoginForm onSave={window.fetch} />);
-
-            await act(async () => {
-                submit(form('frm-login-form'), {
-                    preventDefault: preventDefaultSpy //.fn
-                })
-            })
-            expect(preventDefaultSpy).toHaveBeenCalled();
-        })
-
-        it('renders error message when fetch call fails', async () => {
-            window.fetch.mockReturnValue(fetchResponseError());
-            
-            render(<LoginForm
-                { ...validClassCode } />);
-
-            await act(async () => {
-                submit(form('frm-login-form'));
-            })
-
-            expect(element('.error')).not.toBeNull();
-            expect(element('.error').textContent).toMatch('Class code must be 6 letters and numbers. Please ensure they match correctly.');
-        })
-  
-        itSubmitsExistingValue('class_code');
-        
+    
         itFetchesDataWhenSubmitted('class_code');
+
+        describe('does not submit form when there are validation errors', () => {
+            
+            it('when class code is empty', async () => {
+                
+                render(<LoginForm  
+                        { ...{class_code: ""} } 
+                        onSave={window.fetch} 
+                    />);
+
+                submit(form('frm-login-form'));
+
+                expect(window.fetch).not.toHaveBeenCalled();
+            })
+
+            it('when class code too short', async () => {
+                
+                render(<LoginForm  
+                        { ...{class_code: "ABCDE"} } 
+                        onSave={window.fetch} 
+                    />);
+
+                submit(form('frm-login-form'));
+
+                expect(window.fetch).not.toHaveBeenCalled();
+                expect(element('.error')).not.toBeNull();
+                expect(element('.error').textContent).toMatch('Too short. Must be 6 characters.');
+            })
+
+            it('when class_code is too long', async () => {
+                
+                render(<LoginForm  
+                        { ...{class_code: "ABCDEFG"} } 
+                        onSave={window.fetch} 
+                    />);
+
+                submit(form('frm-login-form'));
+
+                expect(window.fetch).not.toHaveBeenCalled();
+                expect(element('.error')).not.toBeNull();
+                expect(element('.error').textContent).toMatch('Too Long. Must be 6 characters.');
+            })
+        });
+
+        describe('when form is submitted', () => {
+           
+            it('notifies onSave', async () => {
+                const lesson = { id: 123 };
+                window.fetch.mockReturnValue(fetchResponseOK(lesson));
+                
+                const saveSpy = jest.fn(); //spy();
+                
+                render(<LoginForm 
+                        { ...validClassCode } 
+                        onSave={window.fetch} //.fn} 
+                    />);
+
+                await act(async () => {
+                    submit(form('frm-login-form'));
+                })
+                
+                expect(window.fetch).toHaveBeenCalled();
+                /*expect(saveSpy).toHaveBeenCalledWith(lesson);*/
+            })
+
+            it.skip('notify onSave if POST request returns an error', async () => {
+                
+                window.fetch.mockReturnValue(fetchResponseError());
+                
+                render(<LoginForm onSave={window.fetch} />);
+
+                await act(async () => {
+                    submit(form('frm-login-form'));
+                })
+
+                expect(window.fetch).not.toHaveBeenCalled();
+                expect(element('.error')).not.toBeNull();
+                expect(element('.error').textContent).toMatch('Class code must be 6 letters and numbers. Please ensure they match correctly.');
+            })
+
+            it('prevents the default action when submitting the form', async () => {
+                const preventDefaultSpy = jest.fn(); //spy();
+
+                render(<LoginForm onSave={window.fetch} />);
+
+                await act(async () => {
+                    submit(form('frm-login-form'), {
+                        preventDefault: preventDefaultSpy //.fn
+                    })
+                })
+                expect(preventDefaultSpy).toHaveBeenCalled();
+            })
+            
+        });
     })
 });
