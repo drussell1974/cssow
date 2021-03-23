@@ -213,31 +213,7 @@ PAGER = {
 
 STUDENT_WEB__WEB_SERVER_WWW = 'http://localhost:3302'
 
+ACTIONS_DISABLED = ""
+
 SITE_TITLE = "Teach Computer Science"
 SITE_SUMMARY = "Computing Schemes of Work across all key stages"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ACTIONS_DISABLED = ""
