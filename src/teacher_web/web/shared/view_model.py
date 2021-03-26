@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 
 class ViewModel:
@@ -39,7 +40,8 @@ class ViewModel:
                 "ctx": ctx,
                 "alert_message": ui_messages,
                 "stack_trace": stack_trace,
-                "wizard": wizard,
+                "wizard": wizard,        
+                "display_date": datetime.now(),
             },
             "auth": {
                 "user":False,
