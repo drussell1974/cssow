@@ -161,7 +161,7 @@
                 </a>
               </li>
             </ul>
-            <p class="copyright text-muted">Copyright &#169; Dave Russell 2019</p>
+            <p class="copyright text-muted">Copyright &#169; Dave Russell, {{ content.display_date|date:"Y" }}</p>
             {% if content.ctx.institute.id > 0 and content.ctx.department.id > 0 %}
               <!-- Button trigger modal -->
               <p class="text-center text-muted" data-toggle="modal" data-target="#contextModal">
