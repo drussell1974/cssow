@@ -70,14 +70,17 @@
 
     <div class="container-fluid main-container whiteboard--container">
       <div class="row">
-        <div class="accessibility col-lg-4 col-md-5">
+        <div class="accessibility col-lg-8 col-md-8">
           <p>
             <a class="btn btn-light chalk" data-toggle="collapse" href="#collapseAccessibility" role="button" aria-expanded="false" aria-controls="collapseAccessibility">
               {{_("Accessibility")}}
             </a>
           </p>
           <div class="collapse" id="collapseAccessibility">
-            <ul class="nav justify-content-center">
+            <ul class="nav justify-content">
+              <li class="nav-item">
+                <span class="btn btn-outline-dark" onclick='set_font_size("normal")' style='font-size:10px;background-color:rgba(245, 245, 245, 1);'>A</span>
+              </li>
               <li class="nav-item">
                 <span class="btn btn-outline-dark" onclick='set_font_size("larger")' style='font-size:12px;background-color:rgba(245, 245, 245, 1);'>A</span>
               </li>
@@ -108,8 +111,8 @@
             </ul>
           </div>
         </div>
-        <div class="col-lg-5 col-md-8">
-          <p class="text-muted h3 float-right"><u>{{ content.display_date|date:"l, d M Y" }}</u><br>{{ user.first_name }}</p>
+        <div class="col-lg-3 col-md-4">
+          <p class="text-muted h4 text-right d-print-none"><u>{{ content.display_date|date:"l, d F Y" }}</u><br>{{ user.first_name }}</p>
         </div>
       </div>
     
