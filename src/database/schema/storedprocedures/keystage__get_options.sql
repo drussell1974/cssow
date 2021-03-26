@@ -1,5 +1,5 @@
-DELIMITER //
 
+DELIMITER $$
 DROP PROCEDURE IF EXISTS keystage__get_options$2;
 
 CREATE PROCEDURE `keystage__get_options$2`(
@@ -18,6 +18,7 @@ BEGIN
 			p_show_published_state % published = 0
 			or created_by = p_auth_user);
 END$$
+
 DELIMITER ;
 
 DELIMITER //
