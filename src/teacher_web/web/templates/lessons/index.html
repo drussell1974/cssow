@@ -108,15 +108,27 @@
     </div>
 
     <div class="links card-body stackable-group-sm">
-      <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-learningobjectives--{{row.id}}">
-        {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
-      </a>
-      <a href="{% url 'resource.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-resources--{{row.id}}">
-        {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
-      </a>
-      <a href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark stackable" id="btn-lesson-keywords--{{row.id}}">
-        {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
-      </a>
+      <div class="dropdown show">
+        <!-- Show whiteboard -->
+        <a class="btn btn-outline-dark stackable" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+          {{_('Whiteboard')}} <i class="fa fa-graduation-cap"></i>
+        </a>
+        <!-- Edit drop down button/links -->
+        <button class="btn btn-outline-dark stackable dropdown-toggle" role="button" id="lessonDropdownMenuLink--{{row.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{_('Edit')}}
+        </button>
+        <div class="dropdown-menu stackable" aria-labelledby="lessonDropdownMenuLink--{{row.id}}">    
+          <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-learningobjectives--{{row.id}}">
+            {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
+          </a>
+          <a href="{% url 'resource.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-resources--{{row.id}}">
+            {{_("Resources")}} <span class="badge badge-light" >{{row.number_of_resources}}</span>
+          </a>
+          <a href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-keywords--{{row.id}}">
+            {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
+          </a>
+        </div>
+      </div>
     </div>
     <p class="post-meta">
       {% if row.lesson_schedule.class_code is not None  %}
