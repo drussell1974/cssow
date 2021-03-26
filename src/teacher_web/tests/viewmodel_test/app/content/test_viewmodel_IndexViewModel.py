@@ -26,7 +26,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
         
         data_to_return = []
         
-        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
+        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, "Test 2", name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
             with patch.object(SchemeOfWorkModel, "get_model", return_value=None):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
@@ -51,7 +51,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
         
         data_to_return = []
         
-        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
+        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
             with patch.object(SchemeOfWorkModel, "get_model", return_value=None):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
@@ -76,8 +76,8 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
         
         data_to_return = []
         
-        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
+        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, name="Test", study_duration=3, start_study_in_year=7, is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()
@@ -101,8 +101,8 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
         
         data_to_return = [Model(56,"", "")]
 
-        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
+        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, name="Test", study_duration=3, start_study_in_year=7, is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()
@@ -126,8 +126,8 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
         
         data_to_return = [Model(56,"", ""),Model(57,"", ""),Model(58,"", "")]
  
-        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
-            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, "Test", is_from_db=True)):
+        with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
+            with patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(11, name="Test", study_duration=3, start_study_in_year=7, is_from_db=True)):
                 with patch.object(Model, "get_all", return_value=data_to_return):
 
                     db = MagicMock()

@@ -17,3 +17,5 @@ END;
 //
 
 DELIMITER ;
+
+CALL lesson__get_number_of_resources(220, 1, 2);

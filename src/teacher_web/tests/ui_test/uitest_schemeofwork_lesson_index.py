@@ -92,6 +92,13 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
         # setup
+        
+        # click dropdown
+        elem = self.test_context.find_element_by_id('lessonDropdownMenuLink--{}'.format(self.test_lesson_id))
+        elem.click()
+        
+        # click option
+
         elem = self.test_context.find_element_by_id('btn-lesson-learningobjectives--{}'.format(self.test_lesson_id))
 
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -102,9 +109,16 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
         
-
+        
     def test_page__post_preview__item__navigate_to_resources(self):
         # setup
+
+        # click dropdown
+        elem = self.test_context.find_element_by_id('lessonDropdownMenuLink--{}'.format(self.test_lesson_id))
+        elem.click()
+        
+        # click option
+
         elem = self.test_context.find_element_by_id('btn-lesson-resources--{}'.format(self.test_lesson_id))
 
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -118,6 +132,13 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
     def test_page__post_preview__item__navigate_to_keywords(self):
         # setup
+        
+        # click dropdown
+        elem = self.test_context.find_element_by_id('lessonDropdownMenuLink--{}'.format(self.test_lesson_id))
+        elem.click()
+        
+        # click option
+
         elem = self.test_context.find_element_by_id('btn-lesson-keywords--{}'.format(self.test_lesson_id))
         
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
@@ -128,3 +149,18 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
         
+
+                
+    def test_page__post_preview__item__navigate_to_whiteboard(self):
+        # setup
+        elem = self.test_context.find_element_by_id('lnk-whiteboard_view--{}'.format(self.test_lesson_id))
+        
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait(s=2)
+
+        elem.click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        
+

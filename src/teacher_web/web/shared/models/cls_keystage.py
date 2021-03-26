@@ -24,7 +24,7 @@ class KeyStageModel(BaseModel):
     @staticmethod
     def get_options(db, auth_user):
         
-        rows = KeyStageDataAccess.get_options(db, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+        rows = KeyStageDataAccess.get_options(db, department_id=auth_user.department_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
 
         for row in rows:
@@ -37,11 +37,11 @@ class KeyStageModel(BaseModel):
 class KeyStageDataAccess:
 
     @staticmethod
-    def get_options(db, auth_user_id, show_published_state=STATE.PUBLISH):
+    def get_options(db, department_id, auth_user_id, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
         rows = []
         #271 Stored procedure (get_options)
-        rows = execHelper.select(db, "keystage__get_options", (int(show_published_state), auth_user_id,), rows, handle_log_info)
+        rows = execHelper.select(db, "keystage__get_options$2", (department_id, int(show_published_state), auth_user_id,), rows, handle_log_info)
         return rows

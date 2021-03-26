@@ -42,7 +42,7 @@ class test_viewmodel_IndexViewModel(TestCase):
     def test_init_called_fetch__single_row(self):
         
         # arrange
-        model = Model(56, "Lorum")
+        model = Model(56, name="Lorum", study_duration=2, start_study_in_year=10)
         model.key_words = [KeywordModel(), KeywordModel()]
 
         data_to_return = [model]
@@ -69,7 +69,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56),Model(57),Model(58)]
+        data_to_return = [Model(56, name="Lorem", study_duration=2, start_study_in_year=10),Model(57, name="Lorem2", study_duration=2, start_study_in_year=10),Model(58, name="Lorem3", study_duration=2, start_study_in_year=10)]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
 

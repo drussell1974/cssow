@@ -9,7 +9,7 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, DepartmentModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON 
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
+from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model, mock_scheme_of_work
 
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
@@ -23,7 +23,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
         pass
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
     def test_init_raise_exception_when_missing__scheme_of_work_id(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):
@@ -58,14 +58,13 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
             TeacherPermissionModel_get_model.assert_called()
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_authorised=False))
     @patch.object(Model, "validate", return_value=True)
     def test_init_when_permssion_requested__return_true(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):
         
         # arrange
         
-        #data_to_return = Model( TeacherModel(24, name="Jane Doe", department=DepartmentModel(15, name="Computer Science", institute=InstituteModel(12776111277611, "Lorem Ipsum"))), scheme_of_work=SchemeOfWorkModel(99, name="La Sacre du Printemps Pt1: L'Adoration de las Terre"))
         data_to_return = TeacherPermissionModel_get_model
         data_to_return.published = STATE.DELETE
 
@@ -107,7 +106,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
 
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
     def test_init_when_permssion_requested__return_false(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):

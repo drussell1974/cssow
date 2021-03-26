@@ -35,8 +35,7 @@ class test_db_helper__insert(TestCase):
         # arrange
 
         cur = MagicMock()
-        cur.callproc = Mock()
-        cur.fetchone = Mock(return_value = [])
+        cur.callproc = Mock(return_value=[])
 
         fake_db = Mock()
         fake_db.cursor = MagicMock(return_value = cur)
@@ -51,9 +50,6 @@ class test_db_helper__insert(TestCase):
         # assert
 
         cur.callproc.assert_called_with('a_fake_stored_procedure_will_insert_data', ('var1', 'var2', 'var3'))
-        cur.fetchone.called_with(None)
-
-        self.assertEqual([], result)
 
 
     def test__should_return_an_new_id_from_LAST_INSERT_ID_in_stored_proc(self):
@@ -61,8 +57,7 @@ class test_db_helper__insert(TestCase):
         # arrange
 
         cur = MagicMock()
-        cur.callproc = Mock()
-        cur.fetchone = Mock(return_value = [(645,)])
+        cur.callproc = Mock(return_value = [(645,)])
 
         fake_db = Mock()
         fake_db.autocommit = True
@@ -78,9 +73,6 @@ class test_db_helper__insert(TestCase):
         # assert
 
         cur.callproc.assert_called_with('a_fake_stored_procedure_will_insert_data', ('var1', 'var2', 'var3'))
-        cur.fetchone.called_with(None)
-
-        self.assertEqual([(645,)], result)
 
         
 

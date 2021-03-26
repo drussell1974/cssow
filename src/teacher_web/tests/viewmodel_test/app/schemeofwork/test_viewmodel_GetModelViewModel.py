@@ -57,7 +57,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(99, "Duis diam arcu, rhoncus ac")
+        data_to_return = Model(99, name="Duis diam arcu, rhoncus ac", study_duration=2, start_study_in_year=10)
         data_to_return.is_from_db = True
 
         with patch.object(Model, "get_model", return_value=data_to_return):

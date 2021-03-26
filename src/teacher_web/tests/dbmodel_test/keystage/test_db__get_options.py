@@ -41,8 +41,8 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keystage__get_options'
-                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
+                'keystage__get_options$2'
+                , (mock_ctx.department_id, int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -63,8 +63,8 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keystage__get_options'
-                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
+                'keystage__get_options$2'
+                , (mock_ctx.department_id, int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
             
@@ -90,8 +90,8 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'keystage__get_options'
-                , (int(STATE.PUBLISH), mock_ctx.auth_user_id,)
+                'keystage__get_options$2'
+                , (mock_ctx.department_id, int(STATE.PUBLISH), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
             

@@ -34,7 +34,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             method = "GET"
         )
     
-        self.fake_schemeofwork = SchemeOfWorkModel(22)
+        self.fake_schemeofwork = SchemeOfWorkModel(22, name="Lorem", study_duration=2, start_study_in_year=10)
         self.fake_schemeofwork.is_from_db = True
         self.fake_schemeofwork.key_words.clear()
                 
@@ -63,7 +63,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             method = "GET"
         )
     
-        self.fake_schemeofwork = SchemeOfWorkModel(22)
+        self.fake_schemeofwork = SchemeOfWorkModel(22, name="Lorem", study_duration=3, start_study_in_year=7)
         self.fake_schemeofwork.is_from_db = True   
         self.fake_schemeofwork.key_words.clear()
         self.fake_schemeofwork.key_words.append(Model(34))
@@ -95,7 +95,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
             method = "GET"
         )
         
-        self.fake_schemeofwork = SchemeOfWorkModel(22)
+        self.fake_schemeofwork = SchemeOfWorkModel(22, name="Lorem", study_duration=2, start_study_in_year=10)
         self.fake_schemeofwork.is_from_db = True   
         self.fake_schemeofwork.key_words.clear()
         self.fake_schemeofwork.key_words.append(Model(34))

@@ -41,7 +41,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                "scheme_of_work__get"
+                "scheme_of_work__get$2"
                 , (99, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -56,7 +56,7 @@ class test_db__get_model(TestCase):
 
         fake_ctx = fake_ctx_model()
 
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "", "2020-07-21 17:09:34", 1, "test_user", 1, 5)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, 12711761271176, "2020-07-21 17:09:34", 1, "test_user", 1, 2, 10)]
 
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
         SchemeOfWorkModel.get_number_of_resources = Mock(return_value=[(20,)])
@@ -71,7 +71,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                "scheme_of_work__get"
+                "scheme_of_work__get$2"
                 , (6, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -79,8 +79,18 @@ class test_db__get_model(TestCase):
             self.assertEqual(6, model.id)
             self.assertEqual("Lorem", model.name)
             self.assertEqual("ipsum dolor sit amet.", model.description)
+            self.assertEqual(4, model.exam_board_id)
+            self.assertEqual("AQA", model.exam_board_name)
+            self.assertEqual(4, model.key_stage_id)
+            self.assertEqual("KS4", model.key_stage_name)
+            self.assertEqual(56, model.department_id)
+            self.assertEqual(12711761271176, model.institute_id)
+            self.assertEqual(4, model.key_stage_id)
+            self.assertEqual("2020-07-21 17:09:34", model.created)
+            self.assertEqual(1, model.created_by_id)
+            self.assertEqual(1, model.published)
+            self.assertEqual(2, model.study_duration)
+            self.assertEqual(10, model.start_study_in_year)
+
             self.assertFalse(model.is_new())
             self.assertTrue(model.is_from_db)
-
-
-

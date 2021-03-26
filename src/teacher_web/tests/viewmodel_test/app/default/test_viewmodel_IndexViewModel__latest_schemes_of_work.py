@@ -41,7 +41,7 @@ class test_viewmodel_DefaultIndexViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56)]
+        data_to_return = [Model(56, name="Lorem", study_duration=2, start_study_in_year=10)]
         
         with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 
@@ -62,7 +62,7 @@ class test_viewmodel_DefaultIndexViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56),Model(57),Model(58)]
+        data_to_return = [Model(56, name="Lorem1", study_duration=2, start_study_in_year=10),Model(57, name="Lorem2", study_duration=2, start_study_in_year=10),Model(58, name="Lorem3", study_duration=2, start_study_in_year=10)]
         
         with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 

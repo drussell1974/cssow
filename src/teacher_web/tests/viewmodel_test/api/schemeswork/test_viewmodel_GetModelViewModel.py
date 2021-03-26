@@ -64,7 +64,7 @@ class test_viewmodel_GetModelViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(67, name="Integer ac ante")
+        data_to_return = Model(67, name="Integer ac ante", study_duration=3, start_study_in_year=7)
         
         with patch.object(Model, "get_model", return_value=data_to_return):
 

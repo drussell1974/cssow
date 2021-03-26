@@ -23,7 +23,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(0, auth_user=fake_ctx_model())
+        model = Model(0, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
 
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -37,7 +37,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1, auth_user=fake_ctx_model())
+        model = Model(1, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
     
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -53,8 +53,9 @@ class test_db__save(TestCase):
 
         fake_ctx = fake_ctx_model()
         
-        model = Model(89, auth_user=fake_ctx)
+        model = Model(89, "KS3 Computing", study_duration=3, start_study_in_year=7, auth_user=fake_ctx)
         model.key_stage_id = 4
+        model.start_study_in_year = 10
         model.is_new = Mock(return_value=False)
 
         with patch.object(ExecHelper, 'update', return_value=model):
@@ -63,8 +64,8 @@ class test_db__save(TestCase):
             actual_result = Model.save(self.fake_db, model, auth_user=fake_ctx)
             # assert
             ExecHelper.update.assert_called_with(self.fake_db,
-                'scheme_of_work__update'
-                , (89, '', '', 0, 4, 67, STATE.PUBLISH, fake_ctx.auth_user_id)
+                'scheme_of_work__update$2'
+                , (89, 'KS3 Computing', 3, 10, '', 0, 4, 67, int(STATE.PUBLISH), fake_ctx.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(89, actual_result.id)
@@ -75,7 +76,7 @@ class test_db__save(TestCase):
         
         fake_ctx = fake_ctx_model()
 
-        model = Model(0, auth_user=fake_ctx)
+        model = Model(0, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx)
         model.exam_board_id = 2
         model.created = "2021-01-24 07:13:09.681409"
 
@@ -90,8 +91,8 @@ class test_db__save(TestCase):
             # assert
             
             ExecHelper.insert.assert_called_with(self.fake_db,
-                 'scheme_of_work__insert'
-                 , (0, '', '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, STATE.PUBLISH, fake_ctx.auth_user_id)
+                 'scheme_of_work__insert$2'
+                 , (0, '', 2, 10, '', 2, 0, 67, '2021-01-24 07:13:09.681409', 0, STATE.PUBLISH, fake_ctx.auth_user_id)
                  , handle_log_info)
                  
             DataAccess._insert_as__teacher.assert_called()
@@ -102,7 +103,7 @@ class test_db__save(TestCase):
     def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self):
         # arrange
 
-        model = Model(0, auth_user=fake_ctx_model())
+        model = Model(0, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
 
         with patch.object(ExecHelper, 'insert', return_value=[101]):
             # act
@@ -122,7 +123,7 @@ class test_db__save(TestCase):
     def test_should_call__delete_when_published_is_delete(self):
         # arrange
 
-        model = Model(99, auth_user=fake_ctx_model())
+        model = Model(99, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
 
 
         with patch.object(ExecHelper, 'delete', return_value=([], 101)):

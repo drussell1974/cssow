@@ -23,7 +23,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(56)
+        data_to_return = Model(56, name="Lorem", study_duration=3, start_study_in_year=7)
         
         with patch.object(Model, "delete_unpublished", return_value=data_to_return):
 

@@ -42,7 +42,8 @@ class test_db__get_my(TestCase):
             
             # assert
 
-            ExecHelper.select.assert_called_with(self.fake_db, 'scheme_of_work__get_my'
+            ExecHelper.select.assert_called_with(self.fake_db, 
+                'scheme_of_work__get_my$2'
                 , (mock_auth_user.department.id, mock_auth_user.department.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -53,7 +54,7 @@ class test_db__get_my(TestCase):
     def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
         expected_result = [
-            (1, "Computer Science", "", 3, "AQA", 5, "KS5", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum"),
+            (1, "Computer Science", "ipsum dolor sit amet.", 3, "AQA", 5, "KS5", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum", 2, 10),
         ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -65,21 +66,36 @@ class test_db__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'scheme_of_work__get_my'
+                'scheme_of_work__get_my$2'
                 , (mock_auth_user.department.id, mock_auth_user.department.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("Computer Science", rows[0]["name"], "First item not as expected")
+
+            self.assertEqual(1, rows[0]["id"])
+            self.assertEqual("Computer Science", rows[0]["name"])
+            self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
+            self.assertEqual(3, rows[0]["exam_board_id"])
+            self.assertEqual("AQA", rows[0]["exam_board_name"])
+            self.assertEqual(5, rows[0]["key_stage_id"])
+            self.assertEqual("KS5", rows[0]["key_stage_name"])
+            self.assertEqual(5, rows[0]["department_id"])
+            self.assertEqual(2, rows[0]["institute_id"])
+            self.assertEqual("2020-07-21 17:09:34", rows[0]["created"])
+            self.assertEqual(1, rows[0]["created_by_id"])
+            self.assertEqual(2, rows[0]["published"])
+            self.assertEqual(2, rows[0]["study_duration"])
+            self.assertEqual(10, rows[0]["start_study_in_year"])
+
             
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
         expected_result = [
-            (1, "Computer Science", "", 3, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum"),
-            (2, "Business", "", 3, "AQA", 5, "KS5",  "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum"), 
-            (3, "IT", "", 3, "AQA", 3, "KS3", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum")]
+            (1, "Computer Science", "", 3, "AQA", 4, "KS4", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum", 2, 10),
+            (2, "Business", "", 3, "AQA", 5, "KS5",  "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum", 2, 12), 
+            (3, "IT", "", 3, "AQA", 3, "KS3", "2020-07-21 17:09:34", 1, "test_user", 2, 5, "Computer Science", 2, "Lorem Ipsum", 3, 7)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
@@ -88,12 +104,18 @@ class test_db__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'scheme_of_work__get_my'
+                'scheme_of_work__get_my$2'
                 , (mock_auth_user.department.id, mock_auth_user.department.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
             self.assertEqual(3, len(rows))
+
             self.assertEqual("Computer Science", rows[0]["name"], "First item not as expected")
+            self.assertEqual(10, rows[0]["start_study_in_year"])
+            self.assertEqual(2, rows[0]["study_duration"])
+
             self.assertEqual("IT", rows[len(rows)-1]["name"], "Last item not as expected")
+            self.assertEqual(7, rows[len(rows)-1]["start_study_in_year"])
+            self.assertEqual(3, rows[len(rows)-1]["study_duration"])
 

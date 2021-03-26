@@ -37,7 +37,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             
             # assert functions was called
             TeacherPermissionModel.get_team_permissions.assert_called()
-            self.assertEqual(4, len(actual_result.content))
+            self.assertEqual(3, len(actual_result.content))
             
 
     def test_init_called_fetch__single_item(self):

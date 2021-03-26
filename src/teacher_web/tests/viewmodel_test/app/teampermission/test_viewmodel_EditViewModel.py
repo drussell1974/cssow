@@ -5,7 +5,7 @@ from shared.models.cls_department import DepartmentModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
-from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
+from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model, mock_scheme_of_work
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_EditViewModel(TestCase):
@@ -18,7 +18,7 @@ class test_viewmodel_EditViewModel(TestCase):
     def tearDown(self):
         pass
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_execute_should_call_save__when_model_is_valid(self, mock_auth_user, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
@@ -53,7 +53,7 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual(22, test_context.scheme_of_work.id)
             
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_authorised=False))
     def test_execute_should_not_call_save__when_return_invalid(self, mock_auth_user, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         

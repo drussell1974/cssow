@@ -8,7 +8,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_teacher_permission_model
+from tests.test_helpers.mocks import fake_teacher_permission_model, mock_scheme_of_work
 
 class test_viewmodel_DeleteViewModel(TestCase):
 
@@ -20,7 +20,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
         pass
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_init_called_delete__with_exception(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
         
@@ -64,7 +64,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
             TeacherPermissionModel_get_model.assert_called()
         
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     def test_init_raise_Http404__when_permission_model_not_found(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
     
@@ -83,7 +83,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
             TeacherPermissionModel_get_model.assert_called()
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_init_called_delete__no_return_rows(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):
@@ -109,7 +109,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
             Model.delete.assert_called()
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     # Model(TeacherModel(24, "Jane Doe", DepartmentModel(15, "Computer Science")), SchemeOfWorkModel(22, "A-Level Computing"), is_from_db=True)
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     def test_init_called_delete__return_item(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model):

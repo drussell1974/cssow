@@ -9,7 +9,7 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON 
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
+from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model, mock_scheme_of_work
 
 class test_viewmodel_RequestAccessViewModel(TestCase):
 
@@ -21,7 +21,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
         pass
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
     @patch.object(CacheProxy, "session_cache", return_value={})
@@ -93,7 +93,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
             self.assertIsInstance(LESSON, self.viewmodel.permission)
         
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
     @patch.object(CacheProxy, "session_cache", return_value={})
@@ -135,7 +135,7 @@ class test_viewmodel_RequestAccessViewModel(TestCase):
             self.assertEqual(DEPARTMENT.STUDENT, self.viewmodel.permission)
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(22, "A-Level Computing", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_from_db=False))
     @patch.object(Model, "validate", return_value=True)
     @patch.object(CacheProxy, "session_cache", return_value={})

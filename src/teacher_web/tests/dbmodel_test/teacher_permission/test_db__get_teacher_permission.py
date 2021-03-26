@@ -40,7 +40,7 @@ class test_db__get_teacher_permission(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            model = Model.get_model(self.fake_db, 6079, SchemeOfWorkModel(99, name="Ulysses", auth_user=fake_ctx), auth_user=fake_ctx)
+            model = Model.get_model(self.fake_db, 6079, SchemeOfWorkModel(99, name="Ulysses", study_duration=2, start_study_in_year=10, auth_user=fake_ctx), auth_user=fake_ctx)
             
             # assert
 
@@ -70,7 +70,7 @@ class test_db__get_teacher_permission(TestCase):
             
             # act
             
-            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(sow_id_to_get, name="Dune", auth_user=fake_ctx), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
+            model = Model.get_model(self.fake_db, 99, scheme_of_work=SchemeOfWorkModel(sow_id_to_get, name="Dune", study_duration=2, start_study_in_year=10, auth_user=fake_ctx), auth_user=fake_ctx_model(DEPARTMENT.NONE, SCHEMEOFWORK.EDITOR, LESSON.VIEWER))
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,

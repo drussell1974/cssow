@@ -42,7 +42,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "scheme_of_work__get_options"
+                "scheme_of_work__get_options$2"
                 , (mock_auth_user.department_id, mock_auth_user.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -51,7 +51,7 @@ class test_db__get_options(TestCase):
 
     def test__should_call__select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [(123, "Item 1", "Praesent tempus facilisis pharetra. Pellentesque.", 20)]
+        expected_result = [(123, "Item 1", 3, 7, "Praesent tempus facilisis pharetra. Pellentesque.", 20)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -61,24 +61,34 @@ class test_db__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                "scheme_of_work__get_options"
+                "scheme_of_work__get_options$2"
                 , (mock_auth_user.department_id, mock_auth_user.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
             
             self.assertEqual(1, len(rows))
+            '''
+            id_ = row[0], 
+            name = row[1], 
+            study_duration = row[2], 
+            start_study_in_year=[3], 
+            key_stage_name = row[4], 
+            auth_user=auth_user)
+            '''
+
             self.assertEqual(123, rows[0].id)
             self.assertEqual("Item 1", rows[0].name)
+            self.assertEqual(3, rows[0].study_duration)
+            self.assertEqual(7, rows[0].start_study_in_year)
             self.assertEqual("Praesent tempus facilisis pharetra. Pellentesque.", rows[0].key_stage_name)
-
-
+            
 
     def test__should_call__select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
-            (1, "Item 1","Lorem ipsum dolor sit amet.",5),
-            (2,"Item 2","Nulla porttitor quis tortor ac.",8),
-            (3, "Item 3","Sed vehicula, quam nec sodales.",97)]
+            (1, "Item 1", 2, 10, "Lorem ipsum dolor sit amet.",5),
+            (2,"Item 2", 2, 10, "Nulla porttitor quis tortor ac.",8),
+            (3, "Item 3", 3, 9, "Sed vehicula, quam nec sodales.",97)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -89,7 +99,7 @@ class test_db__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(
                 self.fake_db,
-                "scheme_of_work__get_options"
+                "scheme_of_work__get_options$2"
                 , (mock_auth_user.department_id, mock_auth_user.institute_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
