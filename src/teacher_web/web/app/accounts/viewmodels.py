@@ -16,6 +16,7 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_institute import InstituteModel
+from shared.models.cls_pathway_template import PathwayTemplateModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -59,10 +60,11 @@ class RegisterTeacherForm(UserCreationForm):
     role = forms.ChoiceField(label='What is your role?', choices=((1, "I am a teacher"), (2,"I am a student"))) 
     department_name = forms.CharField(label='Department name (teachers only)', max_length=70, required=False, help_text="your department name")
     institute_name = forms.CharField(label='Institute name (teachers only)', max_length=70, required=False, help_text="your institute/school name")
+    pathway_id = forms.ChoiceField(choices=PathwayTemplateModel.get_options(db))
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('email','first_name', 'role', 'institute_name', 'department_name')
+        fields = ('email','first_name', 'role', 'institute_name', 'department_name', 'pathway_id')
     
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -73,6 +75,10 @@ class RegisterTeacherForm(UserCreationForm):
         user.role = self.cleaned_data["role"]
         user.department_name = self.cleaned_data["department_name"]
         user.institute_name = self.cleaned_data["institute_name"]
+
+        # TODO: #256 create select option on ui page use PathwayTemplateModel.get_options()
+
+        pathway_id =  self.cleaned_data["pathway_id"]
 
         if commit:
             user.save()
@@ -108,6 +114,7 @@ class RegisterTeacherForm(UserCreationForm):
                     department_model = DepartmentModel(0, name=department_name, institute = institute_model, ctx=auth_ctx, published=STATE.PUBLISH)
 
                     # create teacher permission
+
                     teacher_permission_model = TeacherPermissionModel(user.id, user.username, is_authorised=True, ctx=auth_ctx)
                     teacher_permission_model.department_permission = DEPARTMENT.ADMIN
                     teacher_permission_model.scheme_of_work_permission = SCHEMEOFWORK.OWNER
@@ -118,7 +125,8 @@ class RegisterTeacherForm(UserCreationForm):
                     institute_model.validate()
                     department_model.validate()
                     teacher_permission_model.validate()
-                    # save
+                    
+                    # save if all are valid
 
                     if institute_model.is_valid and department_model.is_valid and teacher_permission_model.is_valid:
 
@@ -126,16 +134,29 @@ class RegisterTeacherForm(UserCreationForm):
                         institute_model = InstituteModel.save(db, institute_model, user.id, auth_user=auth_ctx)
                         # set the institute id context
                         auth_ctx.institute_id = institute_model.id
-            
+                        department_model.institute_id = institute_model.id
+
                         # save the department
                         department_model = DepartmentModel.save(db, department_model, user.id, auth_user=auth_ctx)
                         # set the department id context
                         auth_ctx.department_id = department_model.id
 
-                        # insert department permissions
+                        # create pathways/key_stage available
                         
-                        TeacherPermissionModel.full_access(db, teacher_permission_model, auth_user=auth_ctx)
+                        ''' this creates the available key stages and levels for the department '''
+
+                        pathway = PathwayTemplateModel(id_=pathway_id, name="", department_id=department_model.id)
+                        pathway = PathwayTemplateModel.save(db, pathway, auth_user=auth_ctx)
                         
+                        pathway.validate()
+
+                        if pathway.is_valid:
+                            # insert department permissions
+                            TeacherPermissionModel.full_access(db, teacher_permission_model, auth_user=auth_ctx)
+                        else:
+                            # delete user if cannot create department
+                            if user.id is not None:
+                                user.delete()
                     else:
                         # delete user if cannot create department
                         if user.id is not None:

@@ -10,7 +10,7 @@ from tests.test_helpers.mocks import *
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_KeywordGetModelViewModel(TestCase):
     
-    fake_schemeofwork = SchemeOfWorkModel(22)
+    fake_schemeofwork = SchemeOfWorkModel(22, name="Lorem", study_duration=2, start_study_in_year=10)
     fake_schemeofwork.is_from_db = True
     
     fake_lesson = LessonModel(45)
@@ -61,7 +61,7 @@ class test_viewmodel_KeywordGetModelViewModel(TestCase):
         data_to_return = Model(101, "Abstraction")
         data_to_return.is_from_db = True
     
-        fake_schemeofwork = SchemeOfWorkModel(22)
+        fake_schemeofwork = SchemeOfWorkModel(22, name="Lorem", study_duration=2, start_study_in_year=10)
         fake_schemeofwork.is_from_db = True
 
         with patch.object(Model, "get_model", return_value=data_to_return):

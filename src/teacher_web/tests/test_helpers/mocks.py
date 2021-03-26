@@ -7,7 +7,8 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkContex
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.core.context import AuthCtx, Ctx
 
-mock_scheme_of_work = SchemeOfWorkModel(99, name="A-Level Computer Science", auth_user=Ctx(1276711, 826))
+def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True, ctx=Ctx(1276711, 826)):
+    return SchemeOfWorkModel(id, name=name, study_duration=1, start_study_in_year=12, is_from_db=is_from_db, auth_user=ctx)
 
 
 def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, fake_request_user_id=6079):
@@ -58,7 +59,7 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
             institute.get = MagicMock(return_value="Lorum Ipsum")
             department.get = MagicMock(return_value="Computer Science")
                     
-            scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", is_from_db=is_from_db, auth_user=AuthCtx(mock_db, mock_request, institute.id, department.id))
+            scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", study_duration=2, start_study_in_year=12, is_from_db=is_from_db, auth_user=AuthCtx(mock_db, mock_request, institute.id, department.id))
             
             auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=34, scheme_of_work_id=14)
 

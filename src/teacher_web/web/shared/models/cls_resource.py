@@ -166,6 +166,7 @@ class ResourceModel (BaseModel):
         value = ResourceDataAccess.get_number_of_resources(db, lesson_id, auth_user_id=auth_user.auth_user_id)
         return value
 
+
     @staticmethod
     def get_resource_type_options(db, auth_user):
         rows = ResourceDataAccess.get_resource_type_options(db, auth_user_id=auth_user.auth_user_id)

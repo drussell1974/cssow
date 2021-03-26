@@ -52,7 +52,9 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
         
         self.db = db
         self.auth_user = auth_user
-        self.model = Model(id_=scheme_of_work_id, auth_user=auth_user)
+        # new scheme of work 
+        self.model = Model(id_=scheme_of_work_id, name="", study_duration=0, start_study_in_year=1, auth_user=auth_user)
+        
         self.wizard = wizard
 
         if request.method == "GET" and self.model.id > 0:
@@ -71,13 +73,22 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 description=request.POST.get("description", ""),
                 exam_board_id=request.POST.get("exam_board_id", 0),
                 key_stage_id=request.POST.get("key_stage_id", 0),
-                created=datetime.now(),
+                study_duration = request.POST.get("study_duration", 0),
+                start_study_in_year = request.POST.get("start_study_in_year", 1), # can be, e.g., 7 (Year7) for KS3, Year 10 for KS4
+                created=datetime.now(), 
                 created_by_id=self.auth_user.auth_user_id,
                 auth_user=auth_user)
-
+            
             try:
-                self.model.validate()
                 
+                #256 create the pathway options and return key_stage
+                '''
+                '''
+
+                # save Scheme of work
+                
+                self.model.validate()
+                    
                 if self.model.is_valid == True:
                     published_state = STATE.parse(request.POST.get("published", "PUBLISH"))
 
@@ -93,13 +104,15 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 # TODO: use this in other ViewModels
                 self.on_exception(ex)
                 handle_log_exception(db, scheme_of_work_id, "An error occurred processing scheme of work", ex)
+                raise ex
                 
 
     def view(self):
         
         # get options
         self.examboard_options = ExamBoardModel.get_options(self.db, self.auth_user)
-        self.keystage_options = KeyStageModel.get_options(self.db, self.auth_user)
+        # keystage_options are templates templates
+        self.keystage_options =  KeyStageModel.get_options(self.db, self.auth_user)
         self.department_options = DepartmentModel.get_options(self.db, self.auth_user)
 
         # view data
@@ -127,6 +140,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, auth_user):
+        
         data = Model.delete_unpublished(db, auth_user)
         self.model = data
 

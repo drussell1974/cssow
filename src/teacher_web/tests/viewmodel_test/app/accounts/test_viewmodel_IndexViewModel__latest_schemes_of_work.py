@@ -40,7 +40,7 @@ class test_viewmodel_AccountIndexViewModel__latest_schemes_of_work(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56)]
+        data_to_return = [Model(56, name="Test", study_duration=3, start_study_in_year=7)]
         
         with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 
@@ -61,7 +61,7 @@ class test_viewmodel_AccountIndexViewModel__latest_schemes_of_work(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56),Model(57),Model(58),Model(59)]
+        data_to_return = [Model(56, name="Test1", study_duration=3, start_study_in_year=7),Model(57, name="Test2", study_duration=3, start_study_in_year=7),Model(58, name="Test3", study_duration=3, start_study_in_year=7),Model(59, name="Test4", study_duration=3, start_study_in_year=7)]
         
         with patch.object(Model, "get_latest_schemes_of_work", return_value=data_to_return):
 

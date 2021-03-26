@@ -20,7 +20,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(34, "Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(1, "Box of Rain - Grateful Dead", is_from_db=True))
     def test_init_called_fetch__no_return_rows(self, SchemeOfWorkModel_get_model, LessonModel_get_model, mock_auth_user):
         
@@ -45,7 +45,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(0, len(actual_result.model))
 
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(92, "Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, is_from_db=True))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(2, "Box of Rain - Grateful Dead", is_from_db=True))
     def test_init_called_fetch__single_item(self, SchemeOfWorkModel_get_model, LessonModel_get_model, mock_auth_user):
         
@@ -71,7 +71,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(1, len(actual_result.model))
             
 
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(92, "Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, name="Tumbing Dice - Rolling Stones", is_from_db=True))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(3, "Box of Rain - Grateful Dead", is_from_db=True))
     def test_init_called_fetch__multiple_items(self, SchemeOfWorkModel_get_model, LessonModel_get_model, mock_auth_user):
         

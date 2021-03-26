@@ -1,8 +1,8 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS delivery_template__get_options;
+DROP PROCEDURE IF EXISTS pathway_template__get_options;
 
-CREATE PROCEDURE delivery_template__get_options ()
+CREATE PROCEDURE pathway_template__get_options ()
 BEGIN
     SELECT 
         id, 
@@ -10,7 +10,8 @@ BEGIN
         created, 
         created_by 
     FROM 
-        sow_delivery_template;
+        sow_pathway_template
+	ORDER BY show_order ASC;
 END;
 //
 

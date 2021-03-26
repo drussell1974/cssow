@@ -26,7 +26,7 @@ class test_db__full_access(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work(id=14, ctx=fake_ctx_model()), ctx=fake_ctx_model())
         model.is_valid = True
         
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -40,9 +40,7 @@ class test_db__full_access(TestCase):
     def test_should_not_call__insert__when_not_valid(self):
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
-
-        model = Model(0, "", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(0, "", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         
@@ -66,11 +64,10 @@ class test_db__full_access(TestCase):
     def test_should_not_call__insert__when_access_already_granted(self):
         # arrange
 
-        fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", auth_user=fake_ctx_model())
-
+        
         ''' set is_authorised/permission granted on model '''
 
-        model = Model(56, "Jane Mellor", fake_scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model()) 
+        model = Model(56, "Jane Mellor", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model()) 
         model.created = '2021-01-24 07:18:18.677084'
 
 

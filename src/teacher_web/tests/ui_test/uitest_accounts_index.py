@@ -110,4 +110,4 @@ class uitest_accounts_index(UITestCase):
         result = len(section)
 
         # assert
-        self.assertEqual(4, result, "number of elements not as expected")
+        self.assertEqual(3, result, "number of elements not as expected")

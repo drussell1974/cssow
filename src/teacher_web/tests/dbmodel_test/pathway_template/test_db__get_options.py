@@ -1,5 +1,5 @@
 from unittest import TestCase
-from shared.models.cls_delivery_template import DeliveryTemplateModel as Model, handle_log_info
+from shared.models.cls_pathway_template import PathwayTemplateModel as Model, handle_log_info
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_department import DepartmentModel
@@ -8,7 +8,7 @@ from shared.models.cls_teacher import TeacherModel
 from tests.test_helpers.mocks import fake_ctx_model
 
 #@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_DeliveryTemplateDataAccess__get_options(TestCase):
+class test__get_options(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -47,7 +47,7 @@ class test_DeliveryTemplateDataAccess__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'delivery_template__get_options'
+                'pathway_template__get_options'
                 , []
                 , handle_log_info)
 
@@ -68,12 +68,12 @@ class test_DeliveryTemplateDataAccess__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'delivery_template__get_options'
+                'pathway_template__get_options'
                 , []
                 , handle_log_info)
 
             self.assertEqual(1, len(rows))
-            self.assertEqual((1, "GCSE"), rows[0], "First item not as expected")
+            self.assertEqual((1,"GCSE"), rows[0])
             
 
     def test__should_call__select__multiple_items(self):
@@ -90,10 +90,12 @@ class test_DeliveryTemplateDataAccess__get_options(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'delivery_template__get_options'
+                'pathway_template__get_options'
                 , []
                 , handle_log_info)
-            self.assertEqual(3, len(rows))
-            self.assertEqual((1, "GCSE"), rows[0], "First item not as expected")
-            self.assertEqual((3, "NVQ"), rows[len(rows)-1], "Last item not as expected")
 
+            self.assertEqual(3, len(rows))
+
+            self.assertEqual((1,"GCSE"), rows[0])
+
+            self.assertEqual((3,"NVQ"), rows[len(rows)-1])

@@ -46,10 +46,6 @@ class ViewModel:
                 "settings": {
                     "actions_disabled": settings.ACTIONS_DISABLED
                 }
-            },
-            "session": {
-                # TODO: #306 stock persisting alert_message - remove this
-                "alert_message": ""
             }
         }
         

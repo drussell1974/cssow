@@ -72,6 +72,22 @@
                 <div class="help-block text-danger invalid-feedback"></div>
             </div>
         </div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Duration (years of study)")}}</label>
+                <input type="number" class="form-control" name="study_duration" placeholder="{{_('Enter a number')}}" id="ctl-study_duration" value="{{content.data.scheme_of_work.study_duration}}" required />
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Start studying in year")}}</label>
+                <!--  can be, e.g., 7 (Year7) for KS3, Year 10 for KS4 -->
+                <input type="number" class="form-control" name="start_study_in_year" placeholder="{{_('Enter a number')}}" id="ctl-start_study_in_year" value="{{content.data.scheme_of_work.start_study_in_year}}" required />
+                <div class="help-block text-info small">{{_("e.g. enter 7 for KS3")}}</div>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>
         <br>
         <div id="success"></div>
         

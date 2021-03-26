@@ -23,7 +23,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         
         data_to_return = []
         with patch.object(SchemeOfWorkModel, "get_schemeofwork_name_only", return_value=None):
-            with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
+            with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
                 with patch.object(Model, "get_filtered", return_value=data_to_return):
 
                     db = MagicMock()
@@ -54,7 +54,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
         data_to_return = []
         with patch.object(SchemeOfWorkModel, "get_schemeofwork_name_only", return_value="Varum dosctes"):
-            with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")]):
+            with patch.object(SchemeOfWorkModel, "get_options", return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)]):
                 
                 with patch.object(Model, "get_filtered", return_value=data_to_return):
 
@@ -87,7 +87,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
-        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")])
+        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)])
         
         data_to_return = [Model(56)]
         with patch.object(Model, "get_filtered", return_value=data_to_return):
@@ -122,7 +122,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
-        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")])
+        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)])
         
         data_to_return = [Model(56),Model(57),Model(58)]
         
@@ -159,7 +159,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         
         # arrange
         SchemeOfWorkModel.get_schemeofwork_name_only = Mock(return_value="Varum dosctes")
-        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, "Test 1"),SchemeOfWorkModel(102, "Test 2"),SchemeOfWorkModel(103, "Test 3")])
+        SchemeOfWorkModel.get_options = Mock(return_value=[SchemeOfWorkModel(101, name="Lorem1", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(102, name="Lorem2", study_duration=2, start_study_in_year=10),SchemeOfWorkModel(103, name="Lorem3", study_duration=2, start_study_in_year=10)])
         
         data_to_return = [Model(56),Model(57),Model(58)]
         

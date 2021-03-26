@@ -62,7 +62,7 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
     institute_id = 0
 
 
-    def __init__(self, id_, name="", description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = STATE.PUBLISH, is_from_db=False, auth_user=None):
+    def __init__(self, id_, name, study_duration, start_study_in_year, description="", exam_board_id=0, exam_board_name="", key_stage_id=0, key_stage_name="", department_name="", school_name = "", created="", created_by_id=0, created_by_name="", is_recent = False, published = STATE.PUBLISH, is_from_db=False, auth_user=None):
         #231: implement across all classes
         
         #assert auth_user is not None
@@ -75,6 +75,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         self.exam_board_name = exam_board_name
         self.key_stage_id = try_int(key_stage_id)
         self.key_stage_name = key_stage_name
+        self.study_duration = try_int(study_duration)
+        self.start_study_in_year = try_int(start_study_in_year, 1)
         self.school_name = school_name
         self.is_recent = is_recent
         self.url = '/schemeofwork/{}/lessons'.format(self.id)
@@ -104,8 +106,11 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         self._validate_required_integer("department_id", self.department_id, 1, BaseModel.MAX_INT)
         # Validate institute_id
         self._validate_required_integer("institute_id", self.institute_id, 1, BaseModel.MAX_INT)
+        # Validate study duration
+        self._validate_required_integer("study_duration", self.study_duration, min_value=1, max_value=7)
 
         self.on_after_validate()
+        
 
     def _clean_up(self):
         """ clean up properties by casting and ensuring safe for inserting etc """
@@ -126,6 +131,12 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
         if self.school_name is not None:
             self.school_name = sql_safe(self.school_name)
+    
+        if self.study_duration is not int:
+            self.study_duration = try_int(self.study_duration)
+
+        if self.start_study_in_year is not int:
+            self.start_study_in_year = try_int(self.start_study_in_year)
 
 
     @staticmethod
@@ -135,6 +146,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
+                                    study_duration=row[13],
+                                    start_study_in_year=row[14],
                                     description=row[2],
                                     exam_board_id=row[3],
                                     exam_board_name=row[4],
@@ -169,6 +182,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
+                                    study_duration=row[15], 
+                                    start_study_in_year=row[16],
                                     description=row[2],
                                     exam_board_id=row[3],
                                     exam_board_name=row[4],
@@ -191,11 +206,18 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         rows = SchemeOfWorkDataAccess.get_model(db, id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         
         # start as none None
-        model = SchemeOfWorkModel(0, auth_user=auth_user)
+        
+        model = SchemeOfWorkModel(0,
+            name="", 
+            study_duration=0, 
+            start_study_in_year=1, # default to 1, but can be, e.g., 7 (Year7) for KS3, Year 10 for KS4
+            auth_user=auth_user)
         
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
+                                    study_duration=row[13],
+                                    start_study_in_year=row[14],
                                     description=row[2],
                                     exam_board_id=row[3],
                                     exam_board_name=row[4],
@@ -227,7 +249,13 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         data = []
 
         for row in rows:
-            model = SchemeOfWorkModel(id_ = row[0], name = row[1], key_stage_name = row[2], auth_user=auth_user)
+            model = SchemeOfWorkModel(id_ = row[0], 
+                name = row[1], 
+                study_duration = row[2], 
+                start_study_in_year=row[3], 
+                key_stage_name = row[4], 
+                auth_user=auth_user)
+
             data.append(model)
 
         return data
@@ -241,6 +269,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
+                                    study_duration=row[15],
+                                    start_study_in_year=row[16],
                                     description=row[2],
                                     exam_board_id=row[3],
                                     exam_board_name=row[4],
@@ -360,7 +390,7 @@ class SchemeOfWorkDataAccess:
 
         execHelper.begin(db)
         
-        select_sql = "scheme_of_work__get"
+        select_sql = "scheme_of_work__get$2"
         params = (id_, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
@@ -376,7 +406,7 @@ class SchemeOfWorkDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "scheme_of_work__get_all" 
+        select_sql = "scheme_of_work__get_all$2" 
         params = (key_stage_id, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
@@ -393,7 +423,7 @@ class SchemeOfWorkDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "scheme_of_work__get_my" 
+        select_sql = "scheme_of_work__get_my$2"
         params = (department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
@@ -412,7 +442,7 @@ class SchemeOfWorkDataAccess:
         """
         execHelper = ExecHelper()
         
-        select_sql = "scheme_of_work__get_latest"
+        select_sql = "scheme_of_work__get_latest$2"
         params = (top, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
@@ -427,10 +457,12 @@ class SchemeOfWorkDataAccess:
 
         # 1. update scheme of work 
 
-        str_update = "scheme_of_work__update"
+        str_update = "scheme_of_work__update$2"
         params = (
             model.id,
             model.name, 
+            model.study_duration,
+            model.start_study_in_year,
             model.description,
             model.exam_board_id,
             model.key_stage_id,
@@ -449,10 +481,12 @@ class SchemeOfWorkDataAccess:
 
         # 1. insert scheme of work
 
-        str_insert = "scheme_of_work__insert"      
+        str_insert = "scheme_of_work__insert$2"      
         params = (
             model.id,
             model.name,
+            model.study_duration,
+            model.start_study_in_year,
             model.description,
             model.exam_board_id,
             model.key_stage_id,
@@ -525,7 +559,8 @@ class SchemeOfWorkDataAccess:
     @staticmethod
     def publish(db, auth_user, id_):
         
-        model = SchemeOfWorkModel(id_, auth_user=auth_user)
+        model = SchemeOfWorkModel(id_, "", study_duration=0, start_study_in_year=0, auth_user=auth_user)
+
         model.publish = True
 
         execHelper = ExecHelper()
@@ -544,7 +579,7 @@ class SchemeOfWorkDataAccess:
 
         execHelper = ExecHelper()
         
-        str_select = "scheme_of_work__get_options"
+        str_select = "scheme_of_work__get_options$2"
         params = (department_id, institute_id, int(show_published_state), auth_user_id,)
         
         rows = []

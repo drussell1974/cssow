@@ -46,7 +46,7 @@ class test_db__get_all(TestCase):
             # assert
             ExecHelper.select.assert_called_with(
                 self.fake_db,
-                'scheme_of_work__get_all'
+                'scheme_of_work__get_all$2'
                 , (5, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -58,7 +58,7 @@ class test_db__get_all(TestCase):
 
         fake_ctx = fake_ctx_model()
 
-        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, "sit dolor amet", "2020-07-21 17:09:34", 1, "test_user", 1, 48)]
+        expected_result = [(6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 56, 2, "2020-07-21 17:09:34", 1, "test_user", 1, 2, 10)]
 
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
@@ -72,7 +72,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'scheme_of_work__get_all'
+                'scheme_of_work__get_all$2'
                 , (3, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -86,8 +86,17 @@ class test_db__get_all(TestCase):
             self.assertEqual(6, rows[0]["id"])
             self.assertEqual("Lorem", rows[0]["name"])
             self.assertEqual("ipsum dolor sit amet.", rows[0]["description"])
+            self.assertEqual(4, rows[0]["exam_board_id"])
+            self.assertEqual("AQA", rows[0]["exam_board_name"])
             self.assertEqual(4, rows[0]["key_stage_id"])
             self.assertEqual("KS4", rows[0]["key_stage_name"])
+            self.assertEqual(56, rows[0]["department_id"])
+            self.assertEqual(2, rows[0]["institute_id"])
+            self.assertEqual("2020-07-21 17:09:34", rows[0]["created"])
+            self.assertEqual(1, rows[0]["created_by_id"])
+            self.assertEqual(1, rows[0]["published"])
+            self.assertEqual(2, rows[0]["study_duration"])
+            self.assertEqual(10, rows[0]["start_study_in_year"])
 
 
 
@@ -97,9 +106,9 @@ class test_db__get_all(TestCase):
         fake_ctx = fake_ctx_model()
 
         expected_result = [
-            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 54, "Computer Science Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 30),
-            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", 56, "IT Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 20),
-            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA",  4, "KS4", 56, "IT Dept", "2020-07-21 17:09:34", 1, "test_user", 1, 34)]
+            (6, "Lorem", "ipsum dolor sit amet.", 4, "AQA", 4, "KS4", 54, 2, "2020-07-21 17:09:34", 1, "test_user", 1, 2, 10),
+            (7, "Phasellus", "ultricies orci sed tempus.", 4, "AQA", 4, "KS4", 56, 2, "2020-07-21 17:09:34", 1, "test_user", 1, 2, 10),
+            (8, "Nulla", "Tristique pharetra nisi. Sed", 4, "AQA",  4, "KS4", 56, 2, "2020-07-21 17:09:34", 1, "test_user", 1, 3, 9)]
 
         SchemeOfWorkModel.get_number_of_lessons = Mock(return_value=[(66,)])
         SchemeOfWorkModel.get_number_of_learning_objectives = Mock(return_value=[(253,)])
@@ -115,7 +124,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(
                 self.fake_db,
-                'scheme_of_work__get_all'
+                'scheme_of_work__get_all$2'
                 , (3, 67, 127671276711, int(STATE.PUBLISH_INTERNAL), fake_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -134,3 +143,5 @@ class test_db__get_all(TestCase):
             self.assertEqual(8, rows[2]["id"])
             self.assertEqual("Nulla", rows[2]["name"])
             self.assertEqual("Tristique pharetra nisi. Sed", rows[2]["description"])
+            self.assertEqual(9, rows[2]["start_study_in_year"])
+            self.assertEqual(3, rows[2]["study_duration"])

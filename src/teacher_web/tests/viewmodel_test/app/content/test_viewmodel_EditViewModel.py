@@ -66,7 +66,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
     def test_init_on_GET__edit_new_model(self, mock_auth_user):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
 
 
         db = MagicMock()
@@ -95,7 +95,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
     def test_init_on_GET__edit_existing_model(self, mock_auth_user):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=2, start_study_in_year=10, is_from_db=True))
         Model.get_model = Mock(return_value=Model(101,"dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti", "Z", is_from_db=True))    
         
         db = MagicMock()
@@ -124,7 +124,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
     def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self, mock_auth_user):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
         
         Model.get_model = Mock(return_value=None)    
         
@@ -152,7 +152,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
     def test_init_on_POST_valid_model__is_content_ready__true__and__save(self, mock_auth_user):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        SchemeOfWorkModel.get_model = Mock(return_value=mock_scheme_of_work(id=32))
 
         on_save__data_to_return = Model(92, "Quisque eu venenatis sem", "A")
         on_save__data_to_return.is_valid = True
@@ -180,7 +180,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
     def test_init_on_POST__invalid_model_is_content_ready__false(self, mock_auth_user):
         
         # arrange
-        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, "Vivamus venenatis interdum sem.", is_from_db=True))
+        SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
 
         on_save__data_to_return = Model(92, "Quisque eu venenatis sem", "aaa")
                 

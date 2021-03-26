@@ -29,18 +29,19 @@ class test_viewmodel_EditViewModel(TestCase):
                     "name":"Proin id massa metus. Aliqua tincidunt.",
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
-                    "key_stage_id": 5,
                     "institute_id": 49,
                     "department_id": 68,
-                    "lesson_id": 230
+                    "lesson_id": 230,
+                    "key_stage_id": 2,
+                    "study_duration": 1
                 }
 
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tincidunt.")
+        on_save__scheme_of_work_data_to_return = Model(99, name="Proin id massa metus. Aliqua tincidunt.", study_duration=2, start_study_in_year=10)
         
-        with patch.object(Model, "save", return_value=on_save__data_to_return):
+        with patch.object(Model, "save", return_value=on_save__scheme_of_work_data_to_return):
 
             # act
 
@@ -48,7 +49,8 @@ class test_viewmodel_EditViewModel(TestCase):
             test_context.model.key_words.clear()
             
             # assert 
-
+            self.assertEqual(0, test_context.model.key_stage_id)
+                    
             self.assertEqual("", test_context.error_message)
             self.assertTrue(test_context.saved)
             
@@ -70,17 +72,16 @@ class test_viewmodel_EditViewModel(TestCase):
                     "name":"Proin id massa metus. Aliqua tinciduntx.",
                     "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
                     "exam_board_id": 56,
-                    "key_stage_id": 5,
-                    #"institute_id": 48,
-                    #"department_id": 67,
-                    "lesson_id": 230
+                    "lesson_id": 230,
+                    "key_stage_id": 2,
+                    "study_duration": 1
                 }
 
 
-        on_save__data_to_return = Model(99, "Proin id massa metus. Aliqua tinciduntx.", auth_user=fake_ctx_model())
+        on_save__scheme_of_work_data_to_return = Model(99, name="Proin id massa metus. Aliqua tinciduntx.", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
         
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(Model, "save", return_value=on_save__data_to_return):
+            with patch.object(Model, "save", return_value=on_save__scheme_of_work_data_to_return):
 
 
                 return_keyword_model = KeywordModel(123, "RAM")
@@ -96,6 +97,8 @@ class test_viewmodel_EditViewModel(TestCase):
                 test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
                 
                 # assert 
+                self.assertEqual(0, test_context.model.key_stage_id)
+                
                 self.assertEqual("", test_context.error_message)
                 self.assertEqual({}, test_context.model.validation_errors)
 
@@ -117,11 +120,11 @@ class test_viewmodel_EditViewModel(TestCase):
                     "name":"Suspendisse nisi dui, lobortis ut",
                     "description": "unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
                     "exam_board_id": 0,
-                    "key_stage_id": 3,
                     "lesson_id": 0,
                     "department_id": 56,
                     "institute_id": 49,
-                    #"key_words":  '[{"id": 0, "term": "CPU", "definition": "", "published":1}, {"id": 123, "term": "RAM", "definition": "", "published":1}]'
+                    "key_stage_id": 2,
+                    "study_duration": 1
                 }
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
@@ -148,10 +151,92 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 Model.save.assert_not_called()
 
+                # return the invalid objectwith patch.object(Model, "save", return_value=None):
+                    
+                # act
+                
+                return_keyword_model = KeywordModel(4, term="Four")
+                return_keyword_model.is_valid = True
+
+                save_keyword.execute = Mock(return_value=return_keyword_model)
+                save_keyword.model = return_keyword_model
+
+                mock_db = MagicMock()
+                mock_db.cursor = MagicMock()
+
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
+
+                # assert 
+
+                self.assertEqual("", test_context.error_message)
+                self.assertEqual("validation errors {'exam_board_id': '0 is not a valid range'}", test_context.alert_message)
+                self.assertFalse(test_context.saved)
+
+                Model.save.assert_not_called()
+
                 # return the invalid object
                 self.assertEqual(99, test_context.model.id)
                 self.assertEqual("Suspendisse nisi dui, lobortis ut", test_context.model.name)
-                #self.assertEqual(0, test_context.model.lesson_id)
+                self.assertEqual(2, test_context.model.key_stage_id)
                 self.assertFalse(test_context.model.is_valid)
                 self.assertEqual(1, len(test_context.model.validation_errors)) 
                 self.assertEqual({'exam_board_id': '0 is not a valid range'}, test_context.model.validation_errors) 
+
+                self.assertEqual(99, test_context.model.id)
+                self.assertEqual("Suspendisse nisi dui, lobortis ut", test_context.model.name)
+                self.assertEqual(2, test_context.model.key_stage_id)
+                self.assertFalse(test_context.model.is_valid)
+                self.assertEqual(1, len(test_context.model.validation_errors)) 
+                self.assertEqual({'exam_board_id': '0 is not a valid range'}, test_context.model.validation_errors) 
+
+
+    def test_execute_called_save__add_model_to_data__invalid_study_duration(self):
+         
+        # arrange
+
+        mock_request = Mock()
+        mock_request.method = "POST"
+        mock_request.POST = {
+                    "id": 99,
+                    "name":"Suspendisse nisi dui, lobortis ut",
+                    "description": "unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+                    "exam_board_id": 2,
+                    "lesson_id": 0,
+                    "department_id": 56,
+                    "institute_id": 49,
+                    "key_stage_id": 2,
+                    "study_duration": 0 # invalid study
+                }
+
+        
+        with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
+            with patch.object(Model, "save", return_value=None):
+                    
+                # act
+                
+                return_keyword_model = KeywordModel(4, term="Four")
+                return_keyword_model.is_valid = True
+
+                save_keyword.execute = Mock(return_value=return_keyword_model)
+                save_keyword.model = return_keyword_model
+
+                mock_db = MagicMock()
+                mock_db.cursor = MagicMock()
+
+                test_context = ViewModel(db=mock_db, request=mock_request, scheme_of_work_id=99, auth_user=fake_ctx_model())
+
+                # assert 
+
+                self.assertEqual("", test_context.error_message)
+                self.assertEqual("validation errors {'study_duration': '0 is not a valid range'}", test_context.alert_message)
+                self.assertFalse(test_context.saved)
+
+                Model.save.assert_not_called()
+
+                # return the invalid object
+                self.assertEqual(99, test_context.model.id)
+                self.assertEqual("Suspendisse nisi dui, lobortis ut", test_context.model.name)
+                self.assertEqual(2, test_context.model.key_stage_id)
+                self.assertFalse(test_context.model.is_valid)
+                self.assertEqual(1, len(test_context.model.validation_errors)) 
+                self.assertEqual({'study_duration': '0 is not a valid range'}, test_context.model.validation_errors) 

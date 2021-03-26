@@ -298,7 +298,7 @@ class DepartmentDataAccess:
             model.id,
             model.name,
             teacher_id,
-            institute_id,
+            model.institute_id,
             model.created,
             auth_user_id,
             int(model.published),

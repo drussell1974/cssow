@@ -24,7 +24,7 @@ class test_db__deleteunpublished(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = SchemeOfWorkModel(0, auth_user=mock_auth_user)
+        model = SchemeOfWorkModel(0, name="", study_duration=3, start_study_in_year=7, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             

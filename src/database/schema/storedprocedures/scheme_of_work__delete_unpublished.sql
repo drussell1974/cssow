@@ -10,11 +10,12 @@ BEGIN
     DELETE sow_scheme_of_work 
     FROM sow_scheme_of_work 
     WHERE published = p_published
-        AND p_auth_user IN (SELECT auth_user_id 
-                            FROM sow_teacher 
-                            WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow_scheme_of_work.id);
+        AND (created_by = p_auth_user 
+			or p_auth_user IN (SELECT auth_user_id 
+								FROM sow_teacher 
+								WHERE auth_user_id = p_auth_user AND scheme_of_work_id = sow_scheme_of_work.id)
+			);
 END;
 //
 
 DELIMITER ;
-

@@ -17,7 +17,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
 
     def test_validate_for_default_instance_returns_false(self):
 
-        test = SchemeOfWorkModel(0)
+        test = SchemeOfWorkModel(0, name="KS3 Computing", study_duration=3, start_study_in_year=7)
 
         self.assertFalse(test.validate())
         self.assertFalse(test.is_valid)
@@ -25,7 +25,7 @@ class Test_SchemeOfWork_Constructor(TestCase):
 
     def test__constructor_default(self):
         # setup
-        test = SchemeOfWorkModel(0)
+        test = SchemeOfWorkModel(0, name="", study_duration=3, start_study_in_year=7)
 
         # assert
         self.assertEqual(0, test.id)
@@ -51,9 +51,9 @@ class Test_SchemeOfWork_Constructor(TestCase):
                                  exam_board_name="test exam board",
                                  key_stage_id=2,
                                  key_stage_name="test key stage",
-                                 #department_id=3,
+                                 study_duration=1,
+                                 start_study_in_year=1,
                                  department_name="test department",
-                                 #institute_id=4,
                                  school_name="test school",
                                  published=STATE.DRAFT,
                                  auth_user = Ctx(4,3))

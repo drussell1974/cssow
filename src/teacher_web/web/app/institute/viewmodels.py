@@ -104,14 +104,7 @@ class InstituteEditViewModel(BaseViewModel):
         }
         
         # build alert message to be displayed
-        delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>".format(display_name=self.model.name, id=self.model.id)
-        if self.model.number_of_lessons > 0:
-            delete_message = delete_message + "<li>{number_of_lessons} lesson(s)</li>".format(number_of_lessons=self.model.number_of_lessons)
-        if self.model.number_of_learning_objectives > 0:
-            delete_message = delete_message + "<li>{number_of_learning_objectives} learning objective(s)</li>".format(number_of_learning_objectives=self.model.number_of_learning_objectives)
-        if self.model.number_of_resources > 0:
-            delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
-        delete_message = delete_message + "</ul>"
+        delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>"
 
         return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 

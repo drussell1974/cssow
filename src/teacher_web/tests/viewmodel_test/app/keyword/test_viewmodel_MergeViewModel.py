@@ -67,7 +67,7 @@ class test_viewmodel_MergeViewModel(TestCase):
             self.assertEqual("new definition", test_context.model.definition)
 
     
-    @patch.object(SchemeOfWorkModel, "get_model", return_value=SchemeOfWorkModel(92, "Lo Hecho Esta Hecho", is_from_db=True))
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, name="Lo Hecho Esta Hecho", is_from_db=True))
     @patch.object(Model, "get_model", return_value=Model(365, "Me Enamore", is_from_db=True))
     def test_execute_not_called_save__add_model_to_data__when_not_valid(self, SchemeOfWorkModel_get_model, KeywordModel_get_model, mock_auth_user):
     

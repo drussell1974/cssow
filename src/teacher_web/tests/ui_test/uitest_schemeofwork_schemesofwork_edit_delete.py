@@ -45,15 +45,21 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
                  opt.click()
 
         elem.send_keys(Keys.TAB)
+        
+        ' study duration - ctl-study_duration '
+        
+        elem = self.test_context.find_element_by_id("ctl-study_duration")
+        elem.send_keys("3")
 
         ' select the submit button (to remove cursor from textarea '
         
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
         elem.send_keys(Keys.RETURN)
-        # TODO: improve performance
         
-        self.wait(s=2)
+        self.wait(5)
+        
+        # TODO: improve performance
         
         # assert
         ' should still be on the same page '
