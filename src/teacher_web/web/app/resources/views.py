@@ -190,7 +190,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             "resource_id": model.id,
             "resource": model,
             "get_resource_type_options": get_resource_type_options,
-            "validation_errors":model.validation_errors,
             
         }
         

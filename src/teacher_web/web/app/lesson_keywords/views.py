@@ -177,7 +177,6 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
             "lesson_id": lesson_id,
             "keyword_id": model.id,
             "keyword": model,
-            "validation_errors":model.validation_errors
         }
 
         # determine heading

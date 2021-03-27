@@ -1,17 +1,6 @@
 <!-- VALIDATION ERROR - json value -->
 <input type="hidden" name="validation_errors" value="{{ content.validation_errors }}" id="hdn-validation_errors" />
 
-{% if content.validation_errors %}
-<div class="border-bottom rounded">
-    <ul class="list-group">
-        {% for key, value in content.validation_errors.items %}
-            <li class="list-group-item strong bg-danger"> 
-                <small class="text-white">{{ key }}: {{ value }}</small>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
 
 <!-- BUTTONS -->
 <button type="submit" name="published" value="DELETE" class="btn btn-danger stackable float-right" id="deleteButton">{{_("Continue")}}</button>
