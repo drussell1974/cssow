@@ -31,10 +31,10 @@ ALTER TABLE `drussell1974$cssow_api`.`sow_pathway_template`
 ADD COLUMN `show_order` INT NOT NULL DEFAULT 1 AFTER `name`;
 
 
-INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (3, 'GCSE', 5);
-INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (4, 'BTEC', 7);
-INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (5, 'KS3', 4);
-INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (6, 'A-level', 6);
+INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (3, `GCSE`, 5);
+INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (4, `BTEC`, 7);
+INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (5, `KS3`, 4);
+INSERT INTO `sow_pathway_template` (`id`, `name`, `show_order`) VALUES (6, `A-level`, 6);
 
 INSERT INTO `sow_pathway_template_key_stages` (`id`, `pathway_template_id`, `name`, `created_by`, `modified_by`) VALUES ('9', '3', 'KS1', '0', '0');
 INSERT INTO `sow_pathway_template_key_stages` (`id`, `pathway_template_id`, `name`, `created_by`, `modified_by`) VALUES ('10', '3', 'KS2', '0', '0');
@@ -58,11 +58,10 @@ INSERT INTO `sow_pathway_template_key_stages` (`id`, `pathway_template_id`, `nam
 INSERT INTO `sow_pathway_template_key_stages` (`id`, `pathway_template_id`, `name`, `created_by`, `modified_by`) VALUES ('24', '4', 'KS4', '0', '0');
 INSERT INTO `sow_pathway_template_key_stages` (`id`, `pathway_template_id`, `name`, `created_by`, `modified_by`) VALUES ('25', '4', 'KS5', '0', '0');
 
-
-
 ALTER TABLE `drussell1974$cssow_api`.`sow_pathway_template_key_stages` 
 ADD INDEX `cssow_pathway_template_key_stages__has__pathway_template` (`pathway_template_id` ASC);
 ;
+
 ALTER TABLE `drussell1974$cssow_api`.`sow_pathway_template_key_stages` 
 ADD CONSTRAINT `cssow_pathway_template_key_stages__has__pathway_template`
   FOREIGN KEY (`pathway_template_id`)

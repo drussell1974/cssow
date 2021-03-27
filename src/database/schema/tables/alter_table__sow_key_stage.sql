@@ -1,6 +1,5 @@
 ALTER TABLE `sow_key_stage` 
 ADD COLUMN department_id INT after name,
--- ADD COLUMN pathway_template_id INT after name,
 ADD COLUMN year_of_study INT DEFAULT 1 after name;
 
 -- NEEDS REVISING OR MANUALLY
