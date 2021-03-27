@@ -42,6 +42,20 @@ x=$(($x+$?))
 ## end test
 
 ## start test
+echo yarn test-ui--admin: running... uitest_schemeofwork_lessonkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
+# increment
+x=$(($x+$?))
+## end test
+
+## start test
+echo yarn test-ui--admin: running... uitest_schemeofwork_schemesofworkkeyword_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
+# increment
+x=$(($x+$?))
+## end test
+
+## start test
 echo yarn test-ui--admin: running... uitest_schemeofwork_schemesofwork_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
 # increment
@@ -76,19 +90,6 @@ python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeo
 x=$(($x+$?))
 ## end test
 
-## start test
-echo yarn test-ui--admin: running... uitest_schemeofwork_lessonkeyword_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
-# increment
-x=$(($x+$?))
-## end test
-
-## start test
-echo yarn test-ui--admin: running... uitest_schemeofwork_schemesofworkkeyword_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py
-# increment
-x=$(($x+$?))
-## end test
 
 # exit with incremented exit code 
 # ensures any test that fail will 

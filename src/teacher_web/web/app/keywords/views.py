@@ -156,8 +156,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
         data = {
             "scheme_of_work_id": scheme_of_work_id,
             "keyword_id": model.id,
-            "keyword": model,
-            "validation_errors":model.validation_errors
+            "keyword": model
         }
         
         view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        

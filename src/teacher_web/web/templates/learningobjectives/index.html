@@ -95,7 +95,7 @@
       {% for row in value.learning_objectives %}
         <div class="post-preview post-preview--{{row.id}} {{ row.published_state }}">
           <a name="{{ row.id }}"></a>
-            <h3 class="post-title">
+            <h3 class="post-title h4">
               <a class="edit float-right" href="{% url 'learningobjective.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id row.id %}">
                 <i class="far fa-edit"></i>
               </a>
@@ -113,9 +113,9 @@
             </h5>
             {% endif %}
             {% if row.notes|length > 0%}
-            <button class="btn" data-toggle="collapse" data-target="#collapseNotes--{{row.id}}" aria-expanded="false" aria-controls="collapseNotes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">
-              {{_("Class notes...")}}
-            </button>
+            <a href="#" data-toggle="collapse" data-target="#collapseNotes--{{row.id}}" aria-expanded="false" aria-controls="collapseNotes--{{row.id}}" id="btn-collapseNotes--{{row.id}}">
+              {{_("Class notes")}}
+            </a>
             <div class="collapse" id="collapseNotes--{{row.id}}">
               <div class="card card-body card--class-notes" id="card--class-notes--{{row.id}}">
                 <p class="notes preserve-linebreak class-notes">{{row.notes}}</p>

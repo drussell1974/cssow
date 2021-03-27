@@ -261,3 +261,15 @@ class UITestCase(TestCase):
                 raise AssertionError(f"An error occurred running uri {testcase['uri']} for user {testcase['enter_username']} in test cases for {batch_name}! ensure correct keys have been provided", e)
             # DON"T CAPTURE assertions
             
+
+    def check_test_keyword_exists(self):
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/keywords")
+        
+        self.wait(s=1)
+        # arrange
+        section = self.test_context.find_elements_by_class_name('card-keyword')
+        # act
+        result = len(section)
+        # assert
+        self.assertEqual(3, result, "number of elements not as expected")
+        pass
