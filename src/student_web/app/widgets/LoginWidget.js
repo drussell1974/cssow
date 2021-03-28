@@ -19,7 +19,7 @@ export const LoginForm = ({class_code, onSave}) => {
             )
         } else if (len < 6) {
             return (
-                <div className="h2">Too short. Must be 6 characters.</div>
+                <div className="warning h2">Too short. Must be 6 characters.</div>
             )
         } else {
             return (<div className="error h2">Check your class code.</div>)
