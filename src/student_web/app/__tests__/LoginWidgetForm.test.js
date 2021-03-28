@@ -253,8 +253,8 @@ describe("LoginForm", () =>{
                 submit(form('frm-login-form'));
 
                 expect(window.fetch).not.toHaveBeenCalled();
-                expect(element('.error')).not.toBeNull();
-                expect(element('.error').textContent).toMatch('Too short. Must be 6 characters.');
+                expect(element('.warning')).not.toBeNull();
+                expect(element('.warning').textContent).toMatch('Too short. Must be 6 characters.');
             })
 
             it('when class_code is too long', async () => {
