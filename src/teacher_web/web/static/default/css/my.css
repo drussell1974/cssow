@@ -161,6 +161,11 @@ header.masthead .site-heading h1 {
     width: 100% !important;
 }
 
+.form-group--auto select {
+    padding: 5px 5px;
+    width: 100%;
+}
+
 /*.pagination div:after {
     content: ' | ';
     white-space: pre;
