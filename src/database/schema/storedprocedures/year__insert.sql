@@ -14,7 +14,6 @@ BEGIN
     
 	WHILE @yr < @last_year DO
 		SET @yr_name = CONCAT('Yr', @yr);
-		SELECT @yr, @last_year, @yr_name;
 		INSERT IGNORE INTO sow_year (
 			name,
             year_num,
