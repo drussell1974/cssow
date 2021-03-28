@@ -79,9 +79,11 @@
             </div>
         {% endfor %}
         <br>
+        {% if content.data.lesson_schedule is not None: %}
         <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.lesson_schedule.scheme_of_work_id content.data.lesson_schedule.lesson_id %}" class="btn btn-light d-print-none" id="lnk-missing_words_challenge">
           {{_("Show all")}}
         </a>
+        {% endif %}
         <!-- Learning Objectives END-->
         <!-- Learning Materials -->
         </div>
