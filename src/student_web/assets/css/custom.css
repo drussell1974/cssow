@@ -3,6 +3,27 @@
     padding:40px;
 }
 
+.h2 {
+    font-size: 1.75em;
+}
+
+.h3 {
+    font-size: 1.35em;
+}
+
+.h4 {
+    font-size: 1.1em;
+}
+
+.h5 {
+    font-size: 0.9em;
+}
+
+.h6 {
+    font-size: 0.7em;
+}
+
+
 .markdown-body h1,
 .markdown-body h2, 
 .markdown-body h3,
@@ -83,4 +104,12 @@ div.progress--css-animated {
     border-color: #49B39D;
     border-style: groove;
     padding: 1em;
+}
+
+.text-upper {
+    text-transform: uppercase;
+}
+
+.error {
+    background-color: rgba(255, 0, 0, .5);
 }

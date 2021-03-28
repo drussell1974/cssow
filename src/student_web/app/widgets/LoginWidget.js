@@ -15,14 +15,14 @@ export const LoginForm = ({class_code, onSave}) => {
         if (len > 6) {
             // must be invalidated before showing too short
             return (
-                <div className="error">Too Long. Must be 6 characters.</div>
+                <div className="error h2">Too Long. Must be 6 characters.</div>
             )
         } else if (len < 6) {
             return (
-                <div className="error">Too short. Must be 6 characters.</div>
+                <div className="h2">Too short. Must be 6 characters.</div>
             )
         } else {
-            return (<div className="error">Check your class code.</div>)
+            return (<div className="error h2">Check your class code.</div>)
         }
     }
     
@@ -79,8 +79,8 @@ export const LoginForm = ({class_code, onSave}) => {
                 <div className="form-group form-group--auto controls p-25">
                     <h2 htmlFor="class_code">Enter your class code</h2>
                     <p><a href="http://teacher.daverussell.co.uk">I am a teacher</a></p>
-                    <input type="text" id="class_code" name="class_code" className="input-lg" value={class_code} onChange={handleChangeClassCode} />
-                    <input type="submit" value="Enter" className="btn btn-primary w-100" />
+                    <input type="text" id="class_code" name="class_code" className="align-center text-upper  h3" value={class_code} onChange={handleChangeClassCode} />
+                    <input type="submit" value="Enter" className="btn btn-primary w-100 h3" />
                     { error ? <Error class_code={lesson.class_code} /> : null }
                 </div>
             </div>
