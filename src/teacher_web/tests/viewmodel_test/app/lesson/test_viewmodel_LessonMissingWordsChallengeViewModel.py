@@ -86,7 +86,7 @@ class test_viewmodel_LessonMissingWordsChallengeViewModel(TestCase):
 
             self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit", self.viewmodel.model.learning_objectives[0].description)
             self.assertEqual("dapibus in ligula. Duis turpis lectus", self.viewmodel.model.learning_objectives[0].notes)
-            self.assertEqual("dapibus, ligula, lectus", self.viewmodel.model.learning_objectives[0].missing_words_challenge)
+            self.assertEqual("dapibus,lectus,ligula", self.viewmodel.model.learning_objectives[0].missing_words_challenge)
 
 
             self.assertEqual("Donec a ligula mi. Aenean pretium mauris ut nam.", self.viewmodel.model.learning_objectives[2].description)

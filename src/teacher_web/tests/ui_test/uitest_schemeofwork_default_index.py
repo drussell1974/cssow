@@ -6,7 +6,7 @@ class uitest_schemeofwork_default_index(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(self.root_uri, wait=2)
+        self.do_log_in(self.root_uri, wait=4)
 
 
     def tearDown(self):

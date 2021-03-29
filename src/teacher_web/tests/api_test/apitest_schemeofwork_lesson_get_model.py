@@ -57,4 +57,4 @@ class apitest_schemeofwork_lesson_get_model(APITestCase):
 
     def test__should_have_missing_words_challenge(self):
         # assert
-        self.assertEqual("porttitor ipsum, nunc, vulputate vel, PROIN", self.payload["lesson"]["learning_objectives"][7]["missing_words_challenge"])
+        self.assertEqual("nunc,porttitor ipsum,PROIN,vulputate vel", self.payload["lesson"]["learning_objectives"][7]["missing_words_challenge"])
