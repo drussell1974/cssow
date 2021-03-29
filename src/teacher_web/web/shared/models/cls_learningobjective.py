@@ -3,6 +3,7 @@ from datetime import datetime
 from .core.db_helper import to_empty, sql_safe
 from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
+from shared.models.core.helper_sort_and_search import sort_array
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.publlished import STATE
 
@@ -15,7 +16,7 @@ class LearningObjectiveModel (BaseModel):
         self.id = int(id_)
         self.description = description
         self.notes = notes.strip() if notes is not None else ""
-        self.missing_words_challenge = missing_words_challenge
+        self.missing_words_challenge = ",".join(sort_array(missing_words_challenge.split(','))) # sort and join back togeter
         self.scheme_of_work_name = scheme_of_work_name
         self.solo_taxonomy_id = int(solo_taxonomy_id)
         self.solo_taxonomy_name = solo_taxonomy_name

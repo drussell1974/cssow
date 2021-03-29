@@ -93,7 +93,7 @@ class Test_LearningObjectiveModel_Constructor(TestCase):
         # assert
         self.assertEqual(test.description, "lo test description", "--- setup --- description failed")
         self.assertEqual(test.notes, "some notes and stuff", "--- setup --- notes failed")
-        self.assertEqual(test.missing_words_challenge, "Lorem, ipsum, dolor sit, amet.", "--- setup --- missing_words_challenge failed")
+        self.assertEqual(test.missing_words_challenge, "amet.,dolor sit,ipsum,Lorem", "--- setup --- missing_words_challenge failed")
         self.assertEqual(test.solo_taxonomy_id, 1, "--- setup --- solo_taxonomy_id failed")
         self.assertEqual(test.solo_taxonomy_name, "Unistructural", "--- setup --- solo_taxonomy_name failed")
         self.assertEqual(test.solo_taxonomy_level, "B", "--- setup --- solo_taxonomy_level failed")

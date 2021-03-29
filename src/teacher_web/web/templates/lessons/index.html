@@ -118,6 +118,10 @@
           {{_('Edit')}}
         </button>
         <div class="dropdown-menu stackable" aria-labelledby="lessonDropdownMenuLink--{{row.id}}">    
+          <a href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-edit--{{row.id}}">    
+            {{_("Edit")}} <i class="far fa-edit"></i>
+          </a>  
+          <hr>
           <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-learningobjectives--{{row.id}}">
             {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
           </a>

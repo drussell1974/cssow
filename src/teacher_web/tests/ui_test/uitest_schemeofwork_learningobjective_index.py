@@ -158,7 +158,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # assert
         self.maxDiff = None
         self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet feugiat lectus. Duis posuere tristique vulputate. Suspendisse at tristique magna, id interdum neque. ____ et nisl et justo tincidunt ullamcorper nec vitae urna. Etiam molestie porta dolor. Nulla iaculis consequat volutpat. Ut ac erat tempus, facilisis felis ____ eleifend, ______________ porttitor ex et imperdiet venenatis. Suspendisse eleifend ut libero nec tincidunt. Donec molestie metus ___, quis congue dolor aliquet nec. Integer lacus arcu, dignissim eget ____________, semper vulputate arcu. Nam fringilla morbi.", elem_notes.text)
-        self.assertEqual("porttitor ipsum, nunc, vulputate vel, PROIN", elem_missing_words_challenge.text)
+        self.assertEqual("nunc,porttitor ipsum,PROIN,vulputate vel", elem_missing_words_challenge.text)
 
 
     def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
