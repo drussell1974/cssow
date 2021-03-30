@@ -90,6 +90,26 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=3, expected_title="Administrator", expected_no_of_items=1)
 
         
+    def test_page__post_preview__item__navigate_to_ks123pathways(self):
+        # setup
+        
+        # click dropdown
+        elem = self.test_context.find_element_by_id('lessonDropdownMenuLink--{}'.format(self.test_lesson_id))
+        elem.click()
+        
+        # click option
+
+        elem = self.test_context.find_element_by_id('btn-lesson-ks123pathways--{}'.format(self.test_lesson_id))
+
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        self.wait(s=2)
+
+        elem.click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture')
+    
+    
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
         # setup
         
