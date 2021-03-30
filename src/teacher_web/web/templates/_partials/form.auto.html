@@ -2,7 +2,7 @@
 {% if form.errors %}
 <div class="border-bottom rounded">
 <ul class="list-group">
-    {% for error in form.errors.items %}
+    {% for error in form.errors.values %}
         <li class="list-group-item strong bg-danger"> 
             {% for err in error %}
                 <small class="text-white">{{ err }}</small>
