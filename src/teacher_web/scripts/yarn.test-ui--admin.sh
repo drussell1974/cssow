@@ -79,7 +79,7 @@ x=$(($x+$?))
 ## start test
 echo yarn test-ui--admin: running... uitest_schemeofwork_lessonks123pathway_*.py
 python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_*.py
-# increment
+# increment 
 x=$(($x+$?))
 ## end test
 

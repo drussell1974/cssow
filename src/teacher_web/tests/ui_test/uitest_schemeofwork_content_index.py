@@ -40,10 +40,10 @@ class uitest_schemeofwork_content_index(UITestCase):
 
         # act
         self.test_context.find_element_by_id('btn-new').click()
-        self.wait()
+        self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science', wait=2)
 
 
     def test_page__should_have_sidenav(self):

@@ -108,8 +108,8 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         
         self.wait(s=2)
-        
+
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture', wait=4)
         

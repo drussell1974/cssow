@@ -10,13 +10,13 @@ echo "running..."
 
 ### start test
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_select_not_found.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_select_page_navigation.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_delete.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_cancel.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_existing.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_index.py
-
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_index.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_existing.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_edit_cancel.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_merge_cancel.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_existing.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_edit_cancel.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_*_edit_existing.py -k test_page__should_redirect_to_next_if_valid
 
