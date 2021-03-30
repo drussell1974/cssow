@@ -16,8 +16,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="btn-bc-learning_objectives" href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
-              {{_("Objectives")}}
+            <a class="nav-link" id="btn-bc-ks123pathways" href="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
+              {{_("Pathways")}}
             </a>
           </li>
         </ul>

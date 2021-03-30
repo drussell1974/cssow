@@ -10,7 +10,8 @@ echo "running..."
 
 ### start test
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_index.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_select_not_found.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_select_page_navigation.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_delete.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_cancel.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_edit_existing.py
