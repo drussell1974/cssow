@@ -5,8 +5,7 @@ DROP PROCEDURE IF EXISTS lesson__insert_ks123_pathway;
 CREATE PROCEDURE lesson__insert_ks123_pathway (
  IN p_lesson_id INT,
  IN p_ks123_pathway_id INT,
- IN p_auth_user INT,
- IN p_pubished_state INT)
+ IN p_auth_user INT)
 BEGIN
     DECLARE record_exists INT DEFAULT 0;
 
