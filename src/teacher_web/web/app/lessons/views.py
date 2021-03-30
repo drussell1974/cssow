@@ -78,7 +78,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
             model = get_lesson_view.model  
             lesson_schedule = get_lesson_view.lesson_schedule      
-            wizard.next_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id])
+            wizard.next_url=reverse('lesson_ks123pathways.select', args=[auth_ctx.institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id])
 
         # handle copy
 
@@ -126,7 +126,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
                 ' save the lesson '            
                 # TODO: #386 determine wizard mode
                 
-                wizard.next_url=reverse('learningobjective.new', args=[institute_id, department_id, scheme_of_work_id, modelviewmodel.model.id])
+                wizard.next_url=reverse('lesson_ks123pathways.select', args=[institute_id, department_id, scheme_of_work_id, modelviewmodel.model.id])
                 
                 redirect_to_url = wizard.get_redirect_url(request)
 
@@ -158,9 +158,6 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "selected_year_id": model.year_id,
         "lesson": model,
         "ks123_pathways": ks123_pathways,
-        "reference_title": "CAS Computing progression pathways",
-        "reference_author": "Mark Dorling",
-        "reference_uri": "https://community.computingatschool.org.uk/resources/2324/single", # TODO: create look up for e.g. reference['<id_or_name>']
         "lesson_schedule": lesson_schedule
     }
     

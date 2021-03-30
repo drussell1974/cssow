@@ -128,30 +128,6 @@
         <div class="help-block text-danger invalid-feedback"></div>
       </div>
     </div>
-      <!-- KS123 Pathway START - SHOW FOR LESS THAN YEAR 10 -->
-      <div class="control-group">
-        <div class="form-group controls">
-          <label>{{_("Link to pathway")}}</label><br> 
-          <label class="small text-muted">{{content.data.reference_author}}, <a href="{{content.data.reference_uri}}" class="text-muted" target="_blank">{{content.data.reference_title}}</a></label>
-          <br>
-          {% for pathway in content.data.ks123_pathways %}
-            <div class="mb-3">
-            {% if pathway.id in content.data.lesson.pathway_ks123_ids %}
-              <input class="form-check-input" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids" checked>
-              <label class="form-check-label" for="inlineCheckbox1">{{pathway.objective}}</label>
-            {% else %}    
-              <input class="form-check-input" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids">
-              <label class="form-check-label" for="inlineCheckbox1">{{pathway.objective}}</label>
-            {% endif %}
-            </div>
-          {% endfor %}
-          <hr>
-          <div id="div-pathway_ks123_id">
-            </div>
-            <div class="help-block text-danger invalid-feedback"></div>
-        </div>
-      </div>
-      <!-- KS123 Pathway END -->
     <br>
     <div id="success"></div>
     <div class="form-group stackable-group stackable-group-sm">

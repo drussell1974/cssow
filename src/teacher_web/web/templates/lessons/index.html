@@ -122,6 +122,9 @@
             {{_("Edit")}} <i class="far fa-edit"></i>
           </a>  
           <hr>
+          <a href="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-ks123pathways--{{row.id}}">
+            {{_("KS123 Pathway")}} <span class="badge badge-light"></span>
+          </a>
           <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-learningobjectives--{{row.id}}">
             {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
           </a>

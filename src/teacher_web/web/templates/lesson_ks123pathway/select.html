@@ -1,0 +1,86 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--lesson-edit">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
+              {{_("Schemes of Work")}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
+              {{_("Lessons")}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="btn-bc-ks123pathways" href="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
+              {{_("Pathways")}}
+            </a>
+          </li>
+        </ul>
+    </div>
+  </nav>
+</section>
+{% endblock %}
+
+
+{% block maincontent %}
+
+<article class="widget widget-form widget-lesson-form">
+  {% if content.data.is_copy %}
+  <div class="alert alert-warning" role="alert">
+    <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <form name="edit-lesson_pathway" id="form" method="post" class="needs-validation" action="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
+    {% csrf_token %}
+    
+    <!-- show error_message -->
+    {% include '_partials/form.viewmodel.alert_message.html' %}
+    <!-- show error_message END -->
+      <!-- KS123 Pathway START - SHOW FOR LESS THAN YEAR 10 -->
+      <div class="control-group">
+        <div class="form-group controls">
+          {% for pathway in content.data.ks123_pathways %}
+            <div class="mb-3">
+            {% if pathway.id in content.data.lesson.pathway_ks123_ids %}
+              <input class="form-check-input" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids" checked>
+              <label class="form-check-label" for="inlineCheckbox1">{{pathway.objective}}</label>
+            {% else %}    
+              <input class="form-check-input" type="checkbox" id="ctl-pathway_ks123--{{pathway.id}}" value="{{pathway.id}}" name="pathway_ks123_ids">
+              <label class="form-check-label" for="inlineCheckbox1">{{pathway.objective}}</label>
+            {% endif %}
+            </div>
+          {% endfor %}
+          <hr>
+          <div id="div-pathway_ks123_id">
+            </div>
+            <div class="help-block text-danger invalid-feedback"></div>
+        </div>
+        <label class="small text-muted">{{content.data.reference_author}}, <a href="{{content.data.reference_uri}}" class="text-muted" target="_blank">{{content.data.reference_title}}</a></label>
+      </div>
+      <!-- KS123 Pathway END -->
+    <br>
+    <div id="success"></div>
+    <div class="form-group stackable-group stackable-group-sm">
+      <!-- #386: use form.buttons.validition.wizard partial -->
+      {% include '_partials/form.buttons.validation.wizard.html' %}
+    </div>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="id" value="{{content.data.lesson_id}}" id="hdn-lesson_id">
+    <input type="hidden" name="orig_id" value="{{content.data.lesson.orig_id}}">
+    <input type="hidden" name="scheme_of_work_id" value="{{content.data.scheme_of_work_id}}" id="hdn-scheme_of_work_id">
+    <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
+    <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" > 
+  </form>
+</article>
+{% endblock %}
+
+

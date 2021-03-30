@@ -38,6 +38,7 @@ class UITestCase(TestCase):
     test_reference = os.environ["TEST_RESOURCE_ID"]
     test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
     test_keyword_id = os.environ["TEST_KEYWORD_ID"]
+    test_ks123pathway_id = os.environ["TEST_KS123PATHWAY_ID"]
     TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
     TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]
     
