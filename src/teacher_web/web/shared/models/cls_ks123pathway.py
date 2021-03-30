@@ -9,6 +9,7 @@ class KS123PathwayModel(BaseModel):
         self.id = id_
         self.objective = objective
         self.is_checked = False
+        #self.belongs_to_lessons = []
 
 
     def _clean_up(self):

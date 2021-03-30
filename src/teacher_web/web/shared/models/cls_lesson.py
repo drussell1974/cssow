@@ -56,7 +56,7 @@ class LessonModel (BaseModel):
         super().__init__(id_, title, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title
         self.order_of_delivery_id = int(order_of_delivery_id)
-        self.scheme_of_work_id = int(scheme_of_work_id)
+        self.scheme_of_work_id = try_int(scheme_of_work_id)
         self.scheme_of_work_name = scheme_of_work_name
         self.content_id = int(content_id)
         self.content_description = content_description
@@ -70,6 +70,7 @@ class LessonModel (BaseModel):
         self.year_id = int(year_id)
         self.year_name = year_name
         self.key_words = []
+        self.ks123pathway = []
         self.summary = summary
         self.pathway_objective_ids = []
         self.pathway_ks123_ids = []
@@ -472,6 +473,16 @@ class LessonModel (BaseModel):
 
 
     @staticmethod
+    def save_ks123pathway(db, model, auth_user):
+        
+        results = []
+
+        LessonDataAccess._delete_ks123pathways(db, model, results, auth_user.auth_user_id)
+        
+        return LessonDataAccess._upsert_pathway_ks123_ids(db, model, results, auth_user_id=auth_user.auth_user_id)
+
+
+    @staticmethod
     def publish(db, auth_user, lesson_id, scheme_of_work_id):
         return LessonDataAccess.publish(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
     
@@ -748,10 +759,6 @@ class LessonDataAccess:
 
         LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id=auth_user_id)
 
-        # 4. insert pathway ks123
-
-        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id=auth_user_id)
-
         return model
 
 
@@ -800,11 +807,7 @@ class LessonDataAccess:
 
         LessonDataAccess._upsert_pathway_objective_ids(db, model, rows, auth_user_id)
 
-        # 4. insert pathway ks123
-
-        LessonDataAccess._upsert_pathway_ks123_ids(db, model, rows, auth_user_id)
-
-        # 6. insert objectives
+        # 4. insert objectives
         if model.is_copy():
             LessonDataAccess._copy_objective_ids(db, model, rows, auth_user_id)
 
@@ -935,10 +938,9 @@ class LessonDataAccess:
         
         str_insert = "lesson__insert_ks123_pathway"
 
-        for pathway_id in model.pathway_ks123_ids:
-            if pathway_id.isdigit():
-                params = (model.id, pathway_id, auth_user_id)
-                results = execHelper.insert(db, str_insert, params, handle_log_info)
+        for pathway in model.pathway_ks123_ids:
+            params = (model.id, pathway.id, auth_user_id)
+            results = execHelper.insert(db, str_insert, params, handle_log_info)
         
         return results
 
@@ -975,6 +977,30 @@ class LessonDataAccess:
 
         try:
             str_delete = "lesson__delete_keywords"
+            params = (model.id, auth_user_id)
+
+            results = execHelper.delete(db, str_delete, params, handle_log_info)
+            
+            execHelper.end_transaction()
+            execHelper.commit()
+            
+        except:
+            execHelper.rollback()
+            raise
+        finally:
+            execHelper.end()
+            
+        return results
+
+
+    @staticmethod
+    def _delete_ks123pathways(db, model, results, auth_user_id):
+        
+        execHelper = ExecHelper()
+        execHelper.begin(db, TRANSACTION_STATE.OPEN)
+
+        try:
+            str_delete = "lesson__delete_ks123pathways"
             params = (model.id, auth_user_id)
 
             results = execHelper.delete(db, str_delete, params, handle_log_info)

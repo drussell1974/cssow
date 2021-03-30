@@ -135,7 +135,6 @@ class test_db__save(TestCase):
             
             LessonDataAccess._upsert_related_topic_ids.assert_called()
             LessonDataAccess._upsert_pathway_objective_ids.assert_called()
-            LessonDataAccess._upsert_pathway_ks123_ids.assert_called()
             LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(expected_result, actual_result.id)
@@ -174,7 +173,6 @@ class test_db__save(TestCase):
             
             LessonDataAccess._upsert_related_topic_ids.assert_called()
             LessonDataAccess._upsert_pathway_objective_ids.assert_called()
-            LessonDataAccess._upsert_pathway_ks123_ids.assert_called()
             LessonDataAccess._copy_objective_ids.assert_not_called()
 
             self.assertEqual(876, actual_result.id)
