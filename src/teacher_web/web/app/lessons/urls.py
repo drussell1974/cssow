@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:lesson_id>/learning-objectives/', include('app.learningobjectives.urls')),
     path('<int:lesson_id>/resources/', include('app.resources.urls')),
     path('<int:lesson_id>/keywords/', include('app.lesson_keywords.urls')),
+    path('<int:lesson_id>/pathways/', include('app.lesson_pathways.urls')),
 ]
