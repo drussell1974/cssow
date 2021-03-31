@@ -48,7 +48,7 @@
       <h3>{{ key }}</h3>
       {% for row in value %}
         <div class="card card-ks123pathway {{ row.published_state }}">
-          <a name="{{ row.value.id }}"></a>
+          <a name="{{ row.id }}"></a>
           <div class="card-body">
             <h5 class="card-title">  
               <a class="edit float-right" href="{% url 'ks123pathways.edit' content.ctx.institute_id content.ctx.department_id row.id %}">

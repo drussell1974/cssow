@@ -44,11 +44,14 @@ class KS123PathwayModel(BaseModel):
         """ clean up properties by removing by casting and ensuring safe for inserting etc """
 
         # id
-        self.id = int(self.id)
-
+        self.id = try_int(self.id)
         # objective
         if self.objective is not None:
             self.objective = sql_safe(self.objective)
+        # topic id
+        self.topic_id = try_int(self.topic_id)
+        # year id
+        self.year_id = try_int(self.year_id)
     
     
     @staticmethod
@@ -98,16 +101,16 @@ class KS123PathwayModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):
+    def save(db, model, auth_ctx):
         """ save model """
         if model.published == STATE.DELETE:
-            data = KS123PathwayDataAccess.delete(db, model.id, auth_user_id=auth_user.auth_user_id)
+            data = KS123PathwayDataAccess.delete(db, model.id, auth_user_id=auth_ctx.auth_user_id)
         else:
             if model.is_new():
-                data = KS123PathwayDataAccess._insert(db, model, auth_user_id=auth_user.auth_user_id)
+                data = KS123PathwayDataAccess._insert(db, model, auth_user_id=auth_ctx.auth_user_id)
                 model.id = data[0]
             else:
-                data = KS123PathwayDataAccess._update(db, model, auth_user_id=auth_user.auth_user_id)
+                data = KS123PathwayDataAccess._update(db, model, auth_user_id=auth_ctx.auth_user_id)
             
         return model
 
@@ -182,7 +185,7 @@ class KS123PathwayDataAccess:
         
         execHelper = ExecHelper()
 
-        stored_procedure = "ks123pathway__insert"
+        stored_procedure = "ks123_pathway__insert"
 
         params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)    
     
@@ -201,7 +204,7 @@ class KS123PathwayDataAccess:
         
         execHelper = ExecHelper()
         
-        str_update = "ks123pathway__update"
+        str_update = "ks123_pathway__update"
         
         params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)
         
@@ -216,7 +219,7 @@ class KS123PathwayDataAccess:
 
         execHelper = ExecHelper()
         
-        str_delete = "ks123pathway__delete"
+        str_delete = "ks123_pathway__delete"
         
         params = (id, auth_user_id)
 

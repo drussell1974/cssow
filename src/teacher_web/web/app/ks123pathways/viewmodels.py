@@ -95,10 +95,19 @@ class KS123PathwayEditViewModel(BaseViewModel):
         return ViewModel("", self.department.name, self.model.objective if len(self.model.objective) != 0 else "Create new pathway objective", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
 
 
-    def execute(self, published):
+    def execute(self, published=STATE.PUBLISH):
         
-        self.model.validate()
+        self.model = Model(0, "", self.auth_ctx)
+        
+        if self.pathway_item_id > 0:
+            self.model = Model.get_model(self.db, self.pathway_item_id, auth_ctx=self.auth_ctx)
+        
+        self.model.objective = self.request.POST["objective"]
+        self.model.topic_id = self.request.POST["topic_id"]
+        self.model.year_id = self.request.POST["year_id"]
 
+        self.model.validate()
+        
         if self.model.is_valid == True or published == STATE.DELETE:
             data = Model.save(self.db, self.model, auth_ctx=self.auth_ctx)
             self.model = data

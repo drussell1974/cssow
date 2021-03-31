@@ -73,7 +73,7 @@ class test_db__save(TestCase):
             # assert
             
             ExecHelper.update.assert_called_with(self.fake_db, 
-                'ks123pathway__update'
+                'ks123_pathway__update'
                 , (1, 'Mauris ac velit ultricies, vestibulum.', 1, 3, 1, mock_auth_user.auth_user_id)
                 ,  handle_log_info)
 
@@ -99,7 +99,7 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
-                'ks123pathway__insert'
+                'ks123_pathway__insert'
                 , (0, 'Mauris ac velit ultricies, vestibulum.', 1, 3, 1, mock_auth_user.auth_user_id)
                 , handle_log_info)
                 

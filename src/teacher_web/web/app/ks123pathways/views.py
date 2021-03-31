@@ -34,6 +34,12 @@ def index(request, institute_id, department_id, auth_ctx):
 def edit(request, institute_id, department_id, pathway_item_id = 0, auth_ctx = None):
 
     pathway_edit = KS123PathwayEditViewModel(db=db, request=request, pathway_item_id=pathway_item_id, auth_ctx=auth_ctx)
+    if request.method == "POST":
+        pathway_edit.execute()
+
+        if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
+            redirect_to_url = f"{request.POST.get('next', None)}#{pathway_edit.model.id}"
+        return HttpResponseRedirect(redirect_to_url)
 
     return render(request, "ks123pathway/edit.html", pathway_edit.view().content)
 
