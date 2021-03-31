@@ -33,12 +33,14 @@
             {% endfor %}
             
             <!-- Scheme of works END -->
-            <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="btn btn-outline-dark stackable">
+            <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+              {{_("Pathways")}}
+            </a>
+            <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="btn btn-outline-dark stackable">
               {{_("Add scheme of work")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
             </a>
           
           {% endfor %}
-          
           <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'department.new' row.id %}" class="btn btn-outline-dark stackable">
             {{_("Add department")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
           </a>
