@@ -121,7 +121,8 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             "scheme_of_work": self.model,
             "examboard_options": self.examboard_options,
             "keystage_options": self.keystage_options,
-            "department_options": self.department_options
+            "department_options": self.department_options,
+            "start_study_in_year_options": self.model.start_study_in_year_options
         }
         
         # build alert message to be displayed

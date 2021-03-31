@@ -142,6 +142,11 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
 
     @staticmethod
+    def start_study_in_year_options():
+        return  list(map(lambda x:{ "id": x+1, "name": f"Year {x+1}"}, range(13)))
+
+
+    @staticmethod
     def get_all(db, auth_user, key_stage_id=0):
         rows = SchemeOfWorkDataAccess.get_all(db, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, key_stage_id=key_stage_id, show_published_state=auth_user.can_view)
         data = []
