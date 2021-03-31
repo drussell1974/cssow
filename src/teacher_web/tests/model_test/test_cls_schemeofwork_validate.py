@@ -420,7 +420,7 @@ class test_SchemeOfWork_validate__department_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.department_Id = BaseModel.MAX_INT 
+        test.department_id = BaseModel.MAX_INT 
 
         # test
         test.validate()
@@ -502,7 +502,7 @@ class test_SchemeOfWork_validate__institute_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.department_Id = BaseModel.MAX_INT 
+        test.department_id = BaseModel.MAX_INT 
 
         # test
         test.validate()

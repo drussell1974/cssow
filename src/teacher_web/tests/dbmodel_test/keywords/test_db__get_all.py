@@ -28,6 +28,7 @@ class test_db__get_all(TestCase):
             # act and assert
 
             with self.assertRaises(Exception):
+                # TODO assertRaises(KeyError)
                 KeywordModel.get_all(self.fake_db)
 
 
