@@ -13,7 +13,7 @@ from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_lesson import LessonModel
 from ..lessons.viewmodels import LessonGetModelViewModel
 from ..schemesofwork.viewmodels import SchemeOfWorkGetModelViewModel
-from ..ks123pathways.viewmodels import KS123PathwayIndexViewModel #, LessonKS123PathwayGetModelViewModel, LessonKS123PathwaySaveViewModel, LessonKS123PathwayDeleteUnpublishedViewModel
+from ..ks123pathways.viewmodels import KS123PathwayIndexViewModel, KS123PathwayEditViewModel #, LessonKS123PathwayGetModelViewModel, LessonKS123PathwaySaveViewModel, LessonKS123PathwayDeleteUnpublishedViewModel
 from shared.models.core import validation_helper
 from shared.view_model import ViewModel
 from shared.wizard_helper import WizardHelper
@@ -31,11 +31,11 @@ def index(request, institute_id, department_id, auth_ctx):
 
 #@permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, auth_ctx):
+def edit(request, institute_id, department_id, pathway_item_id = 0, auth_ctx = None):
 
-    raise NotImplementedError("not supported")
+    pathway_edit = KS123PathwayEditViewModel(db=db, request=request, pathway_item_id=pathway_item_id, auth_ctx=auth_ctx)
 
-    return render(request, "ks123pathway/edit.html")
+    return render(request, "ks123pathway/edit.html", pathway_edit.view().content)
 
 '''
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')

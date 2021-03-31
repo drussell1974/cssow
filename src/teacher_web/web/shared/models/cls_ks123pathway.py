@@ -71,6 +71,19 @@ class KS123PathwayModel(BaseModel):
 
 
     @classmethod
+    def get_model(cls, db, pathway_item_id, auth_ctx):
+
+        rows = KS123PathwayDataAccess.get_model(db, pathway_item_id=pathway_item_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
+        model = None
+        for row in rows:
+            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4])
+            model.year = YearModel(row[2], row[3])
+            model.topic = TopicModel(row[4], row[5])
+            return model        
+        return model
+
+
+    @classmethod
     def get_all(cls, db, department_id, auth_ctx):
 
         rows = KS123PathwayDataAccess.get_all(db, department_id=department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
@@ -116,6 +129,22 @@ class KS123PathwayDataAccess:
         #271 Stored procedure
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
         return rows
+
+
+    @staticmethod
+    def get_model(db, pathway_item_id, auth_user_id, show_published_state=STATE.PUBLISH):
+        
+        execHelper = ExecHelper()
+
+        str_select = "ks123_pathway__get_model"
+        params = (pathway_item_id, int(show_published_state), auth_user_id)
+        
+        rows = []
+
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+
+        return rows
+
 
     @staticmethod
     def get_all(db, department_id, auth_user_id, show_published_state=STATE.PUBLISH):

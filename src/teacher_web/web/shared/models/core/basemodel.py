@@ -231,6 +231,11 @@ class BaseModel(models.Model):
             else:
                 DataAccess._update(db, model, auth_user)
         return model
+        
+
+    @staticmethod
+    def start_study_in_year_options():
+        return  list(map(lambda x:{ "id": x+1, "name": f"Year {x+1}"}, range(13)))
 
 
 class BaseContextModel(BaseModel):

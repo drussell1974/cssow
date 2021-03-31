@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.ks123pathways.views import index, edit, delete_unpublished #, delete_item, save, publish_item
+from app.ks123pathways.views import index, edit, delete_unpublished, save 
 
 # Create your tests here.
 class test_app_route_ks123pathways_page(TestCase):
@@ -37,17 +37,6 @@ class test_app_route_ks123pathways_page(TestCase):
         url = reverse("ks123pathways.new", args=[12711761271176, 1271176])
         self.assertEqual("/institute/12711761271176/department/1271176/pathways/new", url)
     
-    """
-    def test__pathways_save__url_resolves_to_save(self):    
-        url = resolve('/institute/12711761271176/department/1271176/schemesofwork/127/lessons/32/pathways/99/save')
-        self.assertEqual("lesson_ks123pathways.save", url.url_name)
-        self.assertEqual(url.func, save)
-
-    
-    def test__pathways_save__url_resolves_to_save__reverse(self):
-        url = reverse("lesson_ks123pathways.save", args=[12711761271176, 1271176, 127, 32, 99])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/32/pathways/99/save", url)
-    """
 
     def test__pathways_delete_unpublished__url_resolves_to_delete_unpublished(self):
         url = resolve("/institute/12711761271176/department/1271176/pathways/delete_unpublished")
