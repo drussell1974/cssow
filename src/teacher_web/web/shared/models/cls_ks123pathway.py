@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .core.basemodel import BaseModel
+from .core.basemodel import BaseModel, try_int
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.publlished import STATE
@@ -97,6 +97,21 @@ class KS123PathwayModel(BaseModel):
         return data
 
 
+    @staticmethod
+    def save(db, model, auth_user):
+        """ save model """
+        if model.published == STATE.DELETE:
+            data = KS123PathwayDataAccess.delete(db, model.id, auth_user_id=auth_user.auth_user_id)
+        else:
+            if model.is_new():
+                data = KS123PathwayDataAccess._insert(db, model, auth_user_id=auth_user.auth_user_id)
+                model.id = data[0]
+            else:
+                data = KS123PathwayDataAccess._update(db, model, auth_user_id=auth_user.auth_user_id)
+            
+        return model
+
+
 class KS123PathwayDataAccess:
 
     @staticmethod
@@ -159,4 +174,52 @@ class KS123PathwayDataAccess:
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
 
         return rows
+
+
+    @staticmethod
+    def _insert(db, model, auth_user_id):
+        """ Inserts pathway """
         
+        execHelper = ExecHelper()
+
+        stored_procedure = "ks123pathway__insert"
+
+        params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)    
+    
+        new_id = execHelper.insert(db,
+            stored_procedure
+            , params
+            , handle_log_info
+        )
+        
+        return new_id
+
+
+    @staticmethod
+    def _update(db, model, auth_user_id):
+        """ Inserts pathway """
+        
+        execHelper = ExecHelper()
+        
+        str_update = "ks123pathway__update"
+        
+        params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)
+        
+        execHelper.update(db, str_update, params, handle_log_info)
+
+        return model
+ 
+
+    @staticmethod
+    def delete(db, id, auth_user_id):
+        """ Delete the keyword by term """
+
+        execHelper = ExecHelper()
+        
+        str_delete = "ks123pathway__delete"
+        
+        params = (id, auth_user_id)
+
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval
+      

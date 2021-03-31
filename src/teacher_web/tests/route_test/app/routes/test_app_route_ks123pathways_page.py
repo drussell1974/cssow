@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.ks123pathways.views import index, edit, delete_unpublished, save 
+from app.ks123pathways.views import index, edit, delete_unpublished 
 
 # Create your tests here.
 class test_app_route_ks123pathways_page(TestCase):
