@@ -5,11 +5,34 @@ from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.publlished import STATE
 
 class KS123PathwayModel(BaseModel):
-    def __init__(self, id_, objective):
+    def __init__(self, id_, objective, year_id=0, topic_id=0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, objective, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
+
         self.id = id_
         self.objective = objective
+        self.year_id = year_id
+        self.topic_id = topic_id
         self.is_checked = False
-        #self.belongs_to_lessons = []
+
+
+    def validate(self, skip_validation = []):
+        """ clean up and validate model """
+        super().validate(skip_validation)
+
+        # do not validate deleted items
+        if self.published == STATE.DELETE:
+            self.is_valid = True;
+            self.on_after_validate()
+            return
+
+        # validate objective
+        self._validate_optional_string("objective", self.objective, 500)
+        # validate year_id
+        self._validate_required_integer("year_id", self.year_id, min_value=1, max_value=KS123PathwayModel.MAX_INT)
+        # validate topic_id
+        self._validate_required_integer("topic_id", self.topic_id, min_value=1, max_value=KS123PathwayModel.MAX_INT)
+
+        self.on_after_validate()
 
 
     def _clean_up(self):
