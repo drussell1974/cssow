@@ -79,9 +79,10 @@ class KS123PathwayModel(BaseModel):
         rows = KS123PathwayDataAccess.get_model(db, pathway_item_id=pathway_item_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
         model = None
         for row in rows:
-            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4])
+            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6])
             model.year = YearModel(row[2], row[3])
             model.topic = TopicModel(row[4], row[5])
+            
             return model        
         return model
 
@@ -92,9 +93,10 @@ class KS123PathwayModel(BaseModel):
         rows = KS123PathwayDataAccess.get_all(db, department_id=department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
         data = []
         for row in rows:
-            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4])
+            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6])
             model.year = YearModel(row[2], row[3])
             model.topic = TopicModel(row[4], row[5])
+
             data.append(model)
         
         return data
@@ -104,7 +106,7 @@ class KS123PathwayModel(BaseModel):
     def save(db, model, auth_ctx):
         """ save model """
         if model.published == STATE.DELETE:
-            data = KS123PathwayDataAccess.delete(db, model.id, auth_user_id=auth_ctx.auth_user_id)
+            data = KS123PathwayDataAccess.delete(db, model.id, auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id)
         else:
             if model.is_new():
                 data = KS123PathwayDataAccess._insert(db, model, auth_user_id=auth_ctx.auth_user_id)
@@ -214,14 +216,14 @@ class KS123PathwayDataAccess:
  
 
     @staticmethod
-    def delete(db, id, auth_user_id):
+    def delete(db, id, department_id, auth_user_id):
         """ Delete the keyword by term """
 
         execHelper = ExecHelper()
         
         str_delete = "ks123_pathway__delete"
         
-        params = (id, auth_user_id)
+        params = (id, department_id, auth_user_id)
 
         rval = execHelper.delete(db, str_delete, params, handle_log_info)
         return rval

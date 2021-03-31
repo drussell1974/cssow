@@ -105,6 +105,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
         self.model.objective = self.request.POST["objective"]
         self.model.topic_id = self.request.POST["topic_id"]
         self.model.year_id = self.request.POST["year_id"]
+        self.model.published = STATE.parse(self.request.POST["published"])
 
         self.model.validate()
         

@@ -7,7 +7,7 @@ CREATE PROCEDURE ks123_pathway__get_model (
  IN p_auth_user INT)
 BEGIN
     SELECT 
-        pw.id, pw.objective, pw.year_id, yr.name, pw.topic_id, tp.name
+        pw.id, pw.objective, pw.year_id, yr.name, pw.topic_id, tp.name, pw.published
     FROM 
         sow_ks123_pathway as pw
         INNER JOIN sow_year as yr ON yr.id = pw.year_id
