@@ -600,3 +600,79 @@ class test_cls_pathway__validate__study_duration(SchemeOfWork_TestCase):
         # assert
         self.assertTrue("study_duration" in self.test.validation_errors, "study_duration should have validation error %s" % self.test.validation_errors)
         self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+class test_cls_pathway__validate__start_study_in_year(SchemeOfWork_TestCase):
+
+    test = None
+
+    def setUp(self):
+        # set up
+        self.test = self._construct_valid_object()
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.start_study_in_year = 1
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("start_study_in_year" in self.test.validation_errors, "start_study_in_year should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+
+        self.test.start_study_in_year = 0
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("start_study_in_year" in self.test.validation_errors, "start_study_in_year should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+        # set up
+
+        self.test.start_study_in_year = None
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("start_study_in_year" in self.test.validation_errors, "start_study_in_year should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+        # set up
+        
+        self.test.start_study_in_year = 13
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("start_study_in_year" in self.test.validation_errors, "start_study_in_year should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+        # set up
+
+        self.test.start_study_in_year = 14
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("start_study_in_year" in self.test.validation_errors, "start_study_in_year should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
