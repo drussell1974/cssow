@@ -33,7 +33,7 @@ class test_db__save(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.save(self.fake_db, model, auth_user=mock_auth_user)
+                Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
 
 
     def test_should_call___update___updatewith_exception(self, mock_auth_user):
@@ -50,7 +50,7 @@ class test_db__save(TestCase):
             with self.assertRaises(KeyError):
                 # act 
                 
-                Model.save(self.fake_db, model, auth_user=mock_auth_user)
+                Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
 
 
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
@@ -68,7 +68,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'update', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user)
+            actual_result = Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
             
             # assert
             
@@ -93,7 +93,7 @@ class test_db__save(TestCase):
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
             # act
 
-            actual_result = Model.save(self.fake_db, model, auth_user=mock_auth_user)
+            actual_result = Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
 
             # assert
 

@@ -27,7 +27,7 @@ class test_cls_ks123pathway__validate__objective(TestCase):
         self.assertTrue(self.test.is_valid, "is_valid should be True")
 
 
-    def test_min__valid_extreme_trim_whitespace(self):
+    def test_min__invalid_extreme_trim_whitespace(self):
         # set up
 
         self.test.objective = " "
@@ -36,15 +36,15 @@ class test_cls_ks123pathway__validate__objective(TestCase):
         self.test.validate(skip_validation="")
 
         # assert
-        self.assertFalse("objective" in self.test.validation_errors, "objective should have no validation errors - %s" % self.test.validation_errors)
+        self.assertTrue("objective" in self.test.validation_errors, "objective should have no validation errors - %s" % self.test.validation_errors)
         self.assertEqual(self.test.objective, "")
-        self.assertTrue(self.test.is_valid, "is_valid should be True")
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
     def test_min__valid_extreme(self):
         # set up
 
-        self.test.objective = ""
+        self.test.objective = "a"
 
         # test
         self.test.validate(skip_validation="")
@@ -54,7 +54,7 @@ class test_cls_ks123pathway__validate__objective(TestCase):
         self.assertTrue(self.test.is_valid, "should not be is_valid")
 
 
-    def test_min__valid_extreme_when_None(self):
+    def test_min__invalid_extreme_when_None(self):
         # set up
 
         self.test.objective = None
@@ -63,8 +63,8 @@ class test_cls_ks123pathway__validate__objective(TestCase):
         self.test.validate(skip_validation="")
 
         # assert
-        self.assertFalse("objective" in self.test.validation_errors, "objective should have validation error %s" % self.test.validation_errors)
-        self.assertTrue(self.test.is_valid, "is_valid should be False")
+        self.assertTrue("objective" in self.test.validation_errors, "objective should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
 
 
     def test_max__valid_extreme(self):
@@ -106,7 +106,7 @@ class test_cls_keyword__validate__year_id(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KS123PathwayModel(1, objective="", year_id=1, topic_id=1)
+        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1)
 
 
     def tearDown(self):
@@ -170,7 +170,7 @@ class test_cls_keyword__validate__topic_id(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KS123PathwayModel(1, objective="", year_id=1, topic_id=1)
+        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1)
 
 
     def tearDown(self):

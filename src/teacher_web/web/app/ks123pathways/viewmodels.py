@@ -111,6 +111,9 @@ class KS123PathwayEditViewModel(BaseViewModel):
         
         if self.model.is_valid == True or published == STATE.DELETE:
             data = Model.save(self.db, self.model, auth_ctx=self.auth_ctx)
+            
+            self.on_post_complete(saved=True)
+
             self.model = data
         else:
             handle_log_warning(self.db, self.pathway_item_id, "saving pathway", "pathway is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))

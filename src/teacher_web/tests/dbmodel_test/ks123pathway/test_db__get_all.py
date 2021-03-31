@@ -54,7 +54,7 @@ class test_db__get_all(TestCase):
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
         expected_result = [
-            (702, "Fringilla purus lacus, ut volutpat nibh euismod.", 10, "Year 10", 2, "Algorithms")
+            (702, "Fringilla purus lacus, ut volutpat nibh euismod.", 10, "Year 10", 2, "Algorithms", int(STATE.PUBLISH))
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -82,9 +82,9 @@ class test_db__get_all(TestCase):
     def test__should_call_select__return_multiple_item(self, mock_auth_user):
         # arrange
         expected_result = [
-            (1021, "Vestibulum nec arcu nec dolor vehicula ornare non.", 10, "Year 10", 1, "Hardware"),
-            (1022, "Fringilla purus lacus, ut volutpat nibh euismod.", 10, "Year 10", 2, "Algorithms"),
-            (1023, "Phasellus rutrum lorem a arcu ultrices, id mollis", 11, "Year 11", 2, "Algorithms")
+            (1021, "Vestibulum nec arcu nec dolor vehicula ornare non.", 10, "Year 10", 1, "Hardware", int(STATE.DRAFT)),
+            (1022, "Fringilla purus lacus, ut volutpat nibh euismod.", 10, "Year 10", 2, "Algorithms", int(STATE.PUBLISH)),
+            (1023, "Phasellus rutrum lorem a arcu ultrices, id mollis", 11, "Year 11", 2, "Algorithms", int(STATE.PUBLISH))
         ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -106,7 +106,7 @@ class test_db__get_all(TestCase):
             self.assertEqual("Vestibulum nec arcu nec dolor vehicula ornare non.", actual_results[0].objective)
             self.assertEqual("Year 10", actual_results[0].year.name)
             self.assertEqual("Hardware", actual_results[0].topic.name)
-            self.assertEqual(STATE.PUBLISH, actual_results[0].published)
+            self.assertEqual(STATE.DRAFT, actual_results[0].published)
 
 
             self.assertEqual(1023, actual_results[2].id)

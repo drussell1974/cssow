@@ -37,9 +37,10 @@ def edit(request, institute_id, department_id, pathway_item_id = 0, auth_ctx = N
     if request.method == "POST":
         pathway_edit.execute(published=STATE.PUBLISH)
 
-        if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
-            redirect_to_url = f"{request.POST.get('next', None)}#{pathway_edit.model.id}"
-        return HttpResponseRedirect(redirect_to_url)
+        if pathway_edit.saved:
+            if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
+                redirect_to_url = f"{request.POST.get('next', None)}#{pathway_edit.model.id}"
+            return HttpResponseRedirect(redirect_to_url)
 
     return render(request, "ks123pathway/edit.html", pathway_edit.view().content)
 

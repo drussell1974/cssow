@@ -31,7 +31,7 @@ class KS123PathwayModel(BaseModel):
             return
 
         # validate objective
-        self._validate_optional_string("objective", self.objective, 500)
+        self._validate_required_string("objective", self.objective, 1, 500)
         # validate year_id
         self._validate_required_integer("year_id", self.year_id, min_value=1, max_value=KS123PathwayModel.MAX_INT)
         # validate topic_id
