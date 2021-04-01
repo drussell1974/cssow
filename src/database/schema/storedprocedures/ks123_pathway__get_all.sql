@@ -14,7 +14,7 @@ BEGIN
         INNER JOIN sow_topic as tp ON tp.id = pw.topic_id
         INNER JOIN sow_key_stage as ks ON ks.id = yr.key_stage_id
     WHERE 
-		-- pw.department_id = p_department_id and
+		pw.department_id = p_department_id and
         (p_show_published_state % pw.published = 0 
 			or pw.created_by = p_auth_user
         );

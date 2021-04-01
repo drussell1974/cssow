@@ -40,6 +40,7 @@ class BaseModel(models.Model):
         self.department_id = 0
         self.institute_id = 0
         
+        self.ctx = None
         if ctx is not None:
             self.ctx = ctx
             self.department_id = ctx.department_id #329 use auth_user context

@@ -8,7 +8,7 @@ from shared.models.cls_year import YearModel
 
 
 class KS123PathwayModel(BaseModel):
-    def __init__(self, id_, objective, year_id=0, topic_id=0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+    def __init__(self, id_, objective, ctx, year_id=0, topic_id=0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False):
         super().__init__(id_, objective, created, created_by_id, created_by_name, published, is_from_db, ctx=ctx)
 
         self.id = id_
@@ -24,6 +24,9 @@ class KS123PathwayModel(BaseModel):
         """ clean up and validate model """
         super().validate(skip_validation)
 
+        if self.ctx is None:
+            raise Exception("missing context")
+
         # do not validate deleted items
         if self.published == STATE.DELETE:
             self.is_valid = True;
@@ -36,7 +39,7 @@ class KS123PathwayModel(BaseModel):
         self._validate_required_integer("year_id", self.year_id, min_value=1, max_value=KS123PathwayModel.MAX_INT)
         # validate topic_id
         self._validate_required_integer("topic_id", self.topic_id, min_value=1, max_value=KS123PathwayModel.MAX_INT)
-
+        
         self.on_after_validate()
 
 
@@ -59,7 +62,7 @@ class KS123PathwayModel(BaseModel):
         rows = KS123PathwayDataAccess.get_options(db, key_stage_id, topic_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
-            model = KS123PathwayModel(row[0], row[1])
+            model = KS123PathwayModel(row[0], row[1], ctx=auth_user)
             data.append(model)
         return data
 
@@ -76,10 +79,10 @@ class KS123PathwayModel(BaseModel):
     @classmethod
     def get_model(cls, db, pathway_item_id, auth_ctx):
 
-        rows = KS123PathwayDataAccess.get_model(db, pathway_item_id=pathway_item_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
+        rows = KS123PathwayDataAccess.get_model(db, pathway_item_id=pathway_item_id, department_id=auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
         model = None
         for row in rows:
-            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6])
+            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6], ctx=auth_ctx)
             model.year = YearModel(row[2], row[3])
             model.topic = TopicModel(row[4], row[5])
             
@@ -93,7 +96,7 @@ class KS123PathwayModel(BaseModel):
         rows = KS123PathwayDataAccess.get_all(db, department_id=department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=auth_ctx.can_view)
         data = []
         for row in rows:
-            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6])
+            model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6], ctx=auth_ctx)
             model.year = YearModel(row[2], row[3])
             model.topic = TopicModel(row[4], row[5])
 
@@ -152,12 +155,12 @@ class KS123PathwayDataAccess:
 
 
     @staticmethod
-    def get_model(db, pathway_item_id, auth_user_id, show_published_state=STATE.PUBLISH):
+    def get_model(db, pathway_item_id, department_id, auth_user_id, show_published_state=STATE.PUBLISH):
         
         execHelper = ExecHelper()
 
         str_select = "ks123_pathway__get_model"
-        params = (pathway_item_id, int(show_published_state), auth_user_id)
+        params = (pathway_item_id, department_id, int(show_published_state), auth_user_id)
         
         rows = []
 
@@ -189,7 +192,7 @@ class KS123PathwayDataAccess:
 
         stored_procedure = "ks123_pathway__insert"
 
-        params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)    
+        params = (model.id, model.objective, model.department_id, model.year_id, model.topic_id, try_int(model.published), auth_user_id)    
     
         new_id = execHelper.insert(db,
             stored_procedure
@@ -202,13 +205,13 @@ class KS123PathwayDataAccess:
 
     @staticmethod
     def _update(db, model, auth_user_id):
-        """ Inserts pathway """
+        """ Updates pathway """
         
         execHelper = ExecHelper()
         
         str_update = "ks123_pathway__update"
         
-        params = (model.id, model.objective, model.year_id, model.topic_id, try_int(model.published), auth_user_id)
+        params = (model.id, model.objective, model.department_id, model.year_id, model.topic_id, try_int(model.published), auth_user_id)
         
         execHelper.update(db, str_update, params, handle_log_info)
 

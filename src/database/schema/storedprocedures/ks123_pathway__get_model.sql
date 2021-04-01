@@ -3,6 +3,7 @@ DROP PROCEDURE IF EXISTS ks123_pathway__get_model;
 
 CREATE PROCEDURE ks123_pathway__get_model (
  IN p_pathway_item_id INT,
+ IN p_department_id INT,
  IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
@@ -15,6 +16,7 @@ BEGIN
         INNER JOIN sow_key_stage as ks ON ks.id = yr.key_stage_id
     WHERE 
 		pw.id = p_pathway_item_id and
+		pw.department_id = p_department_id and
         (p_show_published_state % pw.published = 0 
 			or pw.created_by = p_auth_user
         );
@@ -23,4 +25,4 @@ END;
 
 DELIMITER ;
 
-CALL ks123_pathway__get_model(1,4,2);
+CALL ks123_pathway__get_model(101, 5, 4,2);

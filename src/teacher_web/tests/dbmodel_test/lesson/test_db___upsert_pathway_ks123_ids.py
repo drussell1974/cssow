@@ -24,7 +24,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
         expected_exception = KeyError("Bang!")
 
         model = LessonModel(0, "")
-        model.pathway_ks123_ids = [KS123PathwayModel(201, objective="")]
+        model.pathway_ks123_ids = [KS123PathwayModel(201, objective="", ctx=mock_auth_user)]
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
@@ -38,7 +38,7 @@ class test_db__upsert_pathway_ks123_ids(TestCase):
     def test_should_call__reinsert__pathway_ks123_ids(self, mock_auth_user):
          # arrange
         model = LessonModel(10, "")
-        model.pathway_ks123_ids = [KS123PathwayModel(201, objective=""), KS123PathwayModel(202, objective="")]
+        model.pathway_ks123_ids = [KS123PathwayModel(201, objective="", ctx=mock_auth_user), KS123PathwayModel(202, objective="", ctx=mock_auth_user)]
         expected_result = []
 
         with patch.object(ExecHelper, 'insert', return_value=expected_result):

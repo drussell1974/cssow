@@ -66,7 +66,7 @@ class test_viewmodel_LessonKS123PathwaySelectViewModel_view(TestCase):
         self.fake_schemeofwork.is_from_db = True   
     
         with patch.object(SchemeOfWorkModel, "get_model", return_value=self.fake_schemeofwork):
-            with patch.object(Model, "get_options", return_value=[Model(34, objective="Vestibulum tincidunt leo ac erat gravida faucibus non eu nulla.")]):
+            with patch.object(Model, "get_options", return_value=[Model(34, objective="Vestibulum tincidunt leo ac erat gravida faucibus non eu nulla.", ctx=None)]):
                 # act
                 actual_result = ViewModel(db=db, request=mock_request, lesson_id=45, scheme_of_work_id=22, auth_user=mock_auth_user)
                 actual_result.view(mock_request)
@@ -83,9 +83,9 @@ class test_viewmodel_LessonKS123PathwaySelectViewModel_view(TestCase):
     
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
     @patch.object(Model, "get_options", return_value=[
-        Model(34, objective="Sed id magna maximus, elementum ex pellentesque, vehicula magna."), 
-        Model(35, objective="Donec vestibulum ipsum a nisi laoreet, eget tempus leo facilisis."), 
-        Model(36, objective="Integer ac lacus mattis, faucibus ligula sit amet, blandit tortor.")
+        Model(34, objective="Sed id magna maximus, elementum ex pellentesque, vehicula magna.", ctx=None), 
+        Model(35, objective="Donec vestibulum ipsum a nisi laoreet, eget tempus leo facilisis.", ctx=None), 
+        Model(36, objective="Integer ac lacus mattis, faucibus ligula sit amet, blandit tortor.", ctx=None)
         ])
     def test_init_called_fetch__multiple_items(self, LessonModel__get_model, KS123Pathway__get_options, mock_auth_user):
         
@@ -103,9 +103,9 @@ class test_viewmodel_LessonKS123PathwaySelectViewModel_view(TestCase):
                 
         with patch.object(SchemeOfWorkModel, "get_model", return_value=self.fake_schemeofwork):
             fake_ks123pathway = []
-            fake_ks123pathway.append(Model(34, objective="Donec vestibulum ipsum a nisi laoreet, eget tempus leo facilisis."))
-            fake_ks123pathway.append(Model(35, objective="Suspendisse pellentesque velit id tellus elementum eleifend."))
-            fake_ks123pathway.append(Model(36, objective="Sed hendrerit massa sit amet ullamcorper maximus."))
+            fake_ks123pathway.append(Model(34, objective="Donec vestibulum ipsum a nisi laoreet, eget tempus leo facilisis.", ctx=None))
+            fake_ks123pathway.append(Model(35, objective="Suspendisse pellentesque velit id tellus elementum eleifend.", ctx=None))
+            fake_ks123pathway.append(Model(36, objective="Sed hendrerit massa sit amet ullamcorper maximus.", ctx=None))
             
             with patch.object(Model, "get_options", return_value=fake_ks123pathway):
                 # act

@@ -44,7 +44,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_model'
-                , (101, 1, mock_auth_user.auth_user_id) 
+                , (101, mock_auth_user.department_id, 1, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
             
@@ -66,7 +66,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'ks123_pathway__get_model'
-                , (73, 1, mock_auth_user.auth_user_id) 
+                , (73, mock_auth_user.department_id, 1, mock_auth_user.auth_user_id) 
                 , []
                 , handle_log_info)
                 

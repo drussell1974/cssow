@@ -24,7 +24,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(0, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3)
+        model = Model(0, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3, ctx=mock_auth_user)
         model.published = STATE.PUBLISH
         model.is_new = Mock(return_value=True)
 
@@ -40,7 +40,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1, objective="Mauris ac velit ultricies, vestibulum.")
+        model = Model(1, objective="Mauris ac velit ultricies, vestibulum.", ctx=mock_auth_user)
         model.is_new = Mock(return_value=False)
         model.published = STATE.PUBLISH
         
@@ -56,7 +56,7 @@ class test_db__save(TestCase):
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
 
-        model = Model(1, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3)
+        model = Model(1, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3, ctx=mock_auth_user)
         model.is_new = MagicMock(return_value=False)
         model.is_valid = MagicMock(return_value=True)
         model.published = STATE.PUBLISH
@@ -74,7 +74,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(self.fake_db, 
                 'ks123_pathway__update'
-                , (1, 'Mauris ac velit ultricies, vestibulum.', 1, 3, 1, mock_auth_user.auth_user_id)
+                , (1, 'Mauris ac velit ultricies, vestibulum.', mock_auth_user.department_id, 1, 3, 1, mock_auth_user.auth_user_id)
                 ,  handle_log_info)
 
             self.assertEqual(expected_result, actual_result.id)
@@ -83,7 +83,7 @@ class test_db__save(TestCase):
     def test_should_call__insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
-        model = Model(0, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3)
+        model = Model(0, objective="Mauris ac velit ultricies, vestibulum.", year_id=1, topic_id=3, ctx=mock_auth_user)
         model.published = STATE.PUBLISH
         model.is_new = MagicMock(return_value=True)
         model.is_valid = MagicMock(return_value=True)
@@ -100,7 +100,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
                 'ks123_pathway__insert'
-                , (0, 'Mauris ac velit ultricies, vestibulum.', 1, 3, 1, mock_auth_user.auth_user_id)
+                , (0, 'Mauris ac velit ultricies, vestibulum.', mock_auth_user.department_id, 1, 3, 1, mock_auth_user.auth_user_id)
                 , handle_log_info)
                 
             self.assertNotEqual(0, actual_result.id)

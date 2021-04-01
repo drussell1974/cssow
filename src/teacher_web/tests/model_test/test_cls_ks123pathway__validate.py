@@ -1,13 +1,13 @@
 from unittest import TestCase, skip
 from shared.models.cls_ks123pathway import KS123PathwayModel
-
+from tests.test_helpers.mocks import *
 
 class test_cls_ks123pathway__validate__objective(TestCase):
 
     test = None
 
     def setUp(self):
-        self.test = KS123PathwayModel(1, objective="", year_id=1, topic_id=1)
+        self.test = KS123PathwayModel(1, objective="", year_id=1, topic_id=1, ctx=fake_ctx_model())
 
 
     def tearDown(self):
@@ -106,7 +106,7 @@ class test_cls_keyword__validate__year_id(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1)
+        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1, ctx=fake_ctx_model())
 
 
     def tearDown(self):
@@ -170,7 +170,7 @@ class test_cls_keyword__validate__topic_id(TestCase):
     test = None
 
     def setUp(self):
-        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1)
+        self.test = KS123PathwayModel(1, objective="lorem ipsum", year_id=1, topic_id=1, ctx=fake_ctx_model())
 
 
     def tearDown(self):

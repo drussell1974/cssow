@@ -27,9 +27,9 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        topic_options_to_return = [Model(67, "Algorithms"), Model(68, "Hardware")]        
+        topic_options_to_return = [TopicModel(67, "Algorithms"), TopicModel(68, "Hardware")]        
 
-        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.")
+        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.", ctx=None)
         return_pathway_model.is_valid = True
 
         with patch.object(Model, "get_model", return_value=return_pathway_model):
@@ -65,9 +65,9 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        topic_options_to_return = [Model(67, "Algorithms"), Model(68, "Hardware")]        
+        topic_options_to_return = [TopicModel(67, "Algorithms"), TopicModel(68, "Hardware")]        
 
-        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.")
+        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.", ctx=None)
         return_pathway_model.is_valid = True
 
         with patch.object(Model, "get_model", return_value=return_pathway_model):
@@ -110,7 +110,7 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        on_save__data_to_return = Model(99, objective="Proin id massa metus. Aliqua tincidunt.")
+        on_save__data_to_return = Model(99, objective="Proin id massa metus. Aliqua tincidunt.", ctx=None)
         
         with patch.object(Model, "save", return_value=on_save__data_to_return):
 
@@ -145,7 +145,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "published": "PUBLISH",
                 }
 
-        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.")
+        return_pathway_model = Model(101, objective="Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.", ctx=mock_auth_user)
         return_pathway_model.is_valid = True
 
         mock_db = MagicMock()
