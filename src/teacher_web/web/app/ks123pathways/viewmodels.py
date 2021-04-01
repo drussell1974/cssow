@@ -116,6 +116,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
 
             self.model = data
         else:
+            self.alert_message = "validation errors %s" % self.model.validation_errors
             handle_log_warning(self.db, self.pathway_item_id, "saving pathway", "pathway is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
         return self.model

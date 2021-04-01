@@ -27,7 +27,7 @@
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Topic")}}</label>
-                <select class="form-control" name="topic_id" id="ctl-topic_id">
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required>
                     <option value="">- {{_("Select an option")}}</option>
                     {% for opt in content.data.topic_options %}
                         {% if opt.id == content.data.model.topic_id %}
@@ -45,7 +45,7 @@
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Year")}}</label>
-                <select class="form-control" name="year_id" id="ctl-year_id">
+                <select class="form-control" name="year_id" id="ctl-year_id" required>
                     <option value="">- {{_("Select an option")}}</option>
                     {% for opt in content.data.year_options %}
                         {% if opt.id == content.data.model.year_id %}

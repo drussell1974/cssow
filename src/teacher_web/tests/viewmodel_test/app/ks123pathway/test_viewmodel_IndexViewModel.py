@@ -1,8 +1,5 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-
-# test context
-
 from app.ks123pathways.viewmodels import KS123PathwayIndexViewModel as ViewModel
 from shared.models.cls_ks123pathway import KS123PathwayModel as Model
 from shared.models.cls_institute import InstituteContextModel
