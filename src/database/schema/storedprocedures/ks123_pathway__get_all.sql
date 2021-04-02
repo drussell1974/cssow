@@ -22,5 +22,3 @@ END;
 //
 
 DELIMITER ;
-
-CALL ks123_pathway__get_all(5,4,2);

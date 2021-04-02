@@ -59,7 +59,7 @@ class KS123PathwayModel(BaseModel):
     
     @staticmethod
     def get_options(db, key_stage_id, topic_id, auth_user):
-        rows = KS123PathwayDataAccess.get_options(db, key_stage_id, topic_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+        rows = KS123PathwayDataAccess.get_options(db, auth_user.department_id, key_stage_id, topic_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
         for row in rows:
             model = KS123PathwayModel(row[0], row[1], ctx=auth_user)
@@ -123,12 +123,12 @@ class KS123PathwayModel(BaseModel):
 class KS123PathwayDataAccess:
 
     @staticmethod
-    def get_options(db, key_stage_id, topic_id, auth_user_id, show_published_state=STATE.PUBLISH):
+    def get_options(db, department_id, key_stage_id, topic_id, auth_user_id, show_published_state=STATE.PUBLISH):
 
         execHelper = ExecHelper()
 
-        str_select = "ks123_pathway__get_options"
-        params = (key_stage_id, topic_id, int(show_published_state), auth_user_id)
+        str_select = "ks123_pathway__get_options$2"
+        params = (department_id, key_stage_id, topic_id, int(show_published_state), auth_user_id)
         
         rows = []
 

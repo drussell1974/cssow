@@ -42,8 +42,8 @@ class test_db__get_options(TestCase):
             rows = KS123PathwayModel.get_options(self.fake_db, key_stage_id = 3, topic_id = 2, auth_user=mock_auth_user)
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                'ks123_pathway__get_options'
-                , (3, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                'ks123_pathway__get_options$2'
+                , (mock_auth_user.department_id, 3, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -61,8 +61,8 @@ class test_db__get_options(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                'ks123_pathway__get_options'
-                , (4, 3, int(STATE.PUBLISH_INTERNAL), 6079)
+                'ks123_pathway__get_options$2'
+                , (67, 4, 3, int(STATE.PUBLISH_INTERNAL), 6079)
                 ,  []
                 , handle_log_info)
 
@@ -84,8 +84,8 @@ class test_db__get_options(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                'ks123_pathway__get_options'
-                , (5, 4, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                'ks123_pathway__get_options$2'
+                , (mock_auth_user.department_id, 5, 4, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
