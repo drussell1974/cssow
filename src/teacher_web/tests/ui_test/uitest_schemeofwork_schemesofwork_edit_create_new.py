@@ -108,10 +108,20 @@ class uitest_schemeofwork_schemesofwork_edit_create_new(UITestCase):
 
         elem.send_keys(Keys.TAB)
 
+        ' start study in year selection - select Year 12 '
+
+        elem = self.test_context.find_element_by_id("ctl-start_study_in_year")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "Year 12":
+                 opt.click()
+
+        elem.send_keys(Keys.TAB)
+        
         ' study duration - ctl-study_duration '
         
         elem = self.test_context.find_element_by_id("ctl-study_duration")
-        elem.send_keys("3")
+        elem.send_keys("2")
 
         elem.send_keys(Keys.TAB)
 

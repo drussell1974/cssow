@@ -108,6 +108,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         self._validate_required_integer("institute_id", self.institute_id, 1, BaseModel.MAX_INT)
         # Validate study duration
         self._validate_required_integer("study_duration", self.study_duration, min_value=1, max_value=7)
+        # Validate study duration
+        self._validate_required_integer("start_study_in_year", self.start_study_in_year, min_value=1, max_value=13)
 
         self.on_after_validate()
         

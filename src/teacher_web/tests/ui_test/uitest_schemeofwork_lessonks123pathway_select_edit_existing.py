@@ -40,10 +40,6 @@ class uitest_schemeofwork_lessonks123pathway_select_edit_existing(UITestCase):
         elem = self.find_wizardoptions_element_by_id("saveButton")
         elem.send_keys(Keys.RETURN)
 
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
-        elem.send_keys(Keys.RETURN)
-        
         self.wait(s=2)
 
         # assert
@@ -56,7 +52,7 @@ class uitest_schemeofwork_lessonks123pathway_select_edit_existing(UITestCase):
         elem = self.find_element_by_id__with_explicit_wait("ctl-pathway_ks123--{}".format(self.test_ks123pathway_id))
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-        self.wait(s=4)
+        
         # act
         
         ' select term '

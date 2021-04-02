@@ -1,0 +1,85 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--keywords-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-ks123pathway" href="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Pathways")}}</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block maincontent %}
+
+<article class="widget widget-form widget-keyword-form">
+    <form name="edit-ks123pathway" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'ks123pathways.edit' content.ctx.institute_id content.ctx.department_id content.data.model.id %}">
+        {% csrf_token %}
+        
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        <!-- Topic dropdown -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Topic")}}</label>
+                <select class="form-control" name="topic_id" id="ctl-topic_id" required>
+                    <option value="">- {{_("Select an option")}}</option>
+                    {% for opt in content.data.topic_options %}
+                        {% if opt.id == content.data.model.topic_id %}
+                            <option value="{{opt.id}}" selected>{{opt.name}}</option>
+                        {% else %}
+                            <option value="{{opt.id}}">{{opt.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>
+        <!-- Topic dropdown END -->
+        <!-- Year dropdown -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Year")}}</label>
+                <select class="form-control" name="year_id" id="ctl-year_id" required>
+                    <option value="">- {{_("Select an option")}}</option>
+                    {% for opt in content.data.year_options %}
+                        {% if opt.id == content.data.model.year_id %}
+                            <option value="{{opt.id}}" selected>{{opt.name}}</option>
+                        {% else %}
+                            <option value="{{opt.id}}">{{opt.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="help-block text-danger invalid-feedback"></div>
+            </div>
+        </div>
+        <!-- Year dropdown END -->
+        <!-- objective START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Objective")}}</label>
+                <textarea class="form-control preserve-linebreak" name="objective" placeholder="{{_('Enter a objective')}}" id="ctl-objective" maxlength="500" rows="8" required>{{content.data.model.objective}}</textarea>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- objective END -->
+
+        <br>
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            <!-- form.buttons.validition partial -->
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        
+        <input type="hidden" name="id" value="{{content.data.model.id }}">
+        <input type="hidden" name="department_id" value="{{content.data.department_id }}">
+        <input type="hidden" name="next" value="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}" >
+    </form>
+<hr>
+</article>
+{% endblock %}

@@ -40,6 +40,7 @@ class BaseModel(models.Model):
         self.department_id = 0
         self.institute_id = 0
         
+        self.ctx = None
         if ctx is not None:
             self.ctx = ctx
             self.department_id = ctx.department_id #329 use auth_user context
@@ -231,6 +232,11 @@ class BaseModel(models.Model):
             else:
                 DataAccess._update(db, model, auth_user)
         return model
+        
+
+    @staticmethod
+    def start_study_in_year_options():
+        return  list(map(lambda x:{ "id": x+1, "name": f"Year {x+1}"}, range(13)))
 
 
 class BaseContextModel(BaseModel):

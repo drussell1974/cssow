@@ -63,7 +63,7 @@ class uitest_schemeofwork_schemesofwork_edit_delete(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage', wait=4)
 
 
         #231: items after should be less than before
