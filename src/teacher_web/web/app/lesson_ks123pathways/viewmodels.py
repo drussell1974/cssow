@@ -30,7 +30,7 @@ class LessonKS123PathwaySelectViewModel(BaseViewModel):
             id_ = request.POST.get("id", 0),
             scheme_of_work_id=request.POST.get("scheme_of_work_id", 0))
         
-        self.model.pathway_ks123_ids = list(map(lambda x: Model(int(x), objective=""), request.POST.getlist("pathway_ks123_ids")))
+        self.model.pathway_ks123_ids = list(map(lambda x: Model(int(x), objective="", ctx=self.auth_user), request.POST.getlist("pathway_ks123_ids")))
         
         try:
             LessonModel.save_ks123pathway(self.db, self.model, self.auth_user)    
