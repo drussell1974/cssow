@@ -13,6 +13,7 @@ class APITestCase(TestCase):
     test_department_id = os.environ["TEST_DEPARTMENT_ID"]
     test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
     test_lesson_id = os.environ["TEST_LESSON_ID"] 
+    test_lesson_schedule_id = os.environ["TEST_LESSON_SCHEDULE_ID"] 
     test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
     test_reference = os.environ["TEST_RESOURCE_ID"]
     test_md_document_resource_id = os.environ["TEST_MD_DOCUMENT_RESOURCE_ID"]

@@ -21,11 +21,13 @@ BEGIN
     INNER JOIN sow_lesson as les ON les.id = sch.lesson_id
     INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id 
     INNER JOIN sow_department as dep ON dep.id = sow.department_id 
-    WHERE class_code = p_class_code
-        AND (p_show_published_state % sch.published = 0 or sch.created_by = p_auth_user_id);
+    WHERE class_code = p_class_code;
+        -- AND (p_show_published_state % sch.published = 0 or sch.created_by = p_auth_user_id);
 END;
 
 // DELIMITER ;
+
+CALL lesson_schedule__get_by_class_code$2('G86O5B', 1, 2);
 
 DELIMITER //
 

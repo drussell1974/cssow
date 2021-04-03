@@ -3,13 +3,13 @@ from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
 # test context
 
-from app.lessons.viewmodels import LessonWhiteboardViewModel as ViewModel
+from app.lesson_schedules.viewmodels import LessonScheduleWhiteboardViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_keyword import KeywordModel
 from tests.test_helpers.mocks import fake_ctx_model
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_LessonWhiteboardViewModel(TestCase):
+class test_viewmodel_LessonScheduleWhiteboardViewModel(TestCase):
     
 
     def setUp(self):        

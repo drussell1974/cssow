@@ -20,7 +20,7 @@ from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonMissingWordsChallengeViewModel, LessonGetModelViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel, LessonMissingWordsChallengeViewModel
 
 from datetime import datetime
 
@@ -199,27 +199,6 @@ def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, a
 
     return HttpResponseRedirect(redirect_to_url)
     
-
-@min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
-
-    # TODO: Move to lesson_schedule.views
-
-    get_lesson_view =  LessonWhiteboardViewModel(db=db, schedule_id=0, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-    model = get_lesson_view.model
-    lesson_schedule = LessonScheduleModel.get_model(db=db, schedule_id=0, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-    
-    data = {
-        "key_words":model.key_words,
-        "learning_objectives":model.learning_objectives,
-        "resources": model.resources,
-        "lesson_schedule": lesson_schedule, 
-        "STUDENT_WEB__WEB_SERVER_WWW": get_lesson_view.STUDENT_WEB__WEB_SERVER_WWW
-    }
-
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
-    
-    return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")

@@ -1,6 +1,7 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lesson_schedules.views import edit, delete
+from app.lesson_schedules.views import edit, delete, whiteboard
+
 
 # Create your tests here.
 class test_app_route_lesson_schedule_page(TestCase):
@@ -62,25 +63,15 @@ class test_app_route_lesson_schedule_page(TestCase):
         self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/13/copy", url)
     '''
 
-    '''
-    def test__lesson_schedule_whiteboard__url_resolves_to_whitebaord(self):
-        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/whiteboard")
+
+    def test__lesson_whiteboard__url_resolves_to_whitebaord(self):
+        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/schedules/987/whiteboard")
         self.assertEqual("lesson_schedule.whiteboard_view", url.url_name)
         self.assertEqual(url.func, whiteboard)
         
     
-    def test__lesson_schedule_whiteboard__url_resolves_to_whitebaord__reverse(self):
-        url = reverse("lesson_schedule.whiteboard_view", args=[12711761271176, 1271176, 11, 44])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/whiteboard", url)
+    def test__lesson_whiteboard__url_resolves_to_whitebaord__reverse(self):
+        url = reverse("lesson_schedule.whiteboard_view", args=[12711761271176, 1271176, 11, 44, 987])
+        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/schedules/987/whiteboard", url)
 
     
-    def test__lesson_schedule_missing_words_challenge__url_resolves_to_whitebaord(self):
-        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/7907/learning-objectives/missing-words")
-        self.assertEqual("lesson_schedule.missing_words_challenge_view", url.url_name)
-        self.assertEqual(url.func, missing_words_challenge)
-        
-    
-    def test__lesson_schedule_missing_words_challenge__url_resolves_to_whitebaord__reverse(self):
-        url = reverse("lesson_schedule.missing_words_challenge_view", args=[12711761271176, 1271176, 11, 7907])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/7907/learning-objectives/missing-words", url)
-    '''

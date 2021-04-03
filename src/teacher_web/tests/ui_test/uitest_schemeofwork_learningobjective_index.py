@@ -62,15 +62,6 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
 
 
-    def test_page__breadcrumb__navigate_to_whiteboard_view(self):
-        # setup
-
-        self.test_context.find_element_by_id('lnk-whiteboard_view').click()
-
-        # assert (TEST parent page is still open)
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
-
-
     def test_page__breadcrumb__navigate_to_missing_words_challenge_view(self):
         # setup
 

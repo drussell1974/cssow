@@ -173,9 +173,18 @@ class uitest_schemeofwork_lesson_index(UITestCase):
                 
     def test_page__post_preview__item__navigate_to_whiteboard(self):
         # setup
-        elem = self.test_context.find_element_by_id('lnk-whiteboard_view--{}'.format(self.test_lesson_id))
-        
+
+        # reveal schedule list
+        elem = self.test_context.find_element_by_id('ctl-lesson_schedudle--{}'.format(self.test_lesson_id))
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
+        elem.click()
+
+        self.wait(s=1)
+
+        # open whiteboard 
+
+        elem = self.test_context.find_element_by_id('lnk-whiteboard_view--{}'.format(self.test_lesson_schedule_id))
+        
         self.wait(s=2)
 
         elem.click()
