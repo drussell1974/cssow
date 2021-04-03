@@ -68,7 +68,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson__get_all'
+                'lesson__get_all$2'
                 , (5, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -102,7 +102,9 @@ class test_db__get_all(TestCase):
             4,
             "learning_objectives",
             23,
-            343
+            343,
+            "7x",
+            "ABCDEF"
         )]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -113,7 +115,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson__get_all'
+                'lesson__get_all$2'
                 , (3, int(STATE.PUBLISH_INTERNAL), 6079)
                 , []
                 , handle_log_info)
@@ -127,6 +129,8 @@ class test_db__get_all(TestCase):
             self.assertEqual(3, actual_results[0]["parent_topic_id"]),
             self.assertEqual("Data representation", actual_results[0]["parent_topic_name"]),
             self.assertEqual("Understand common numbering systems", actual_results[0]["summary"])
+            #self.assertEqual("", actual_results[0]["class_name"])
+            #self.assertEqual("", actual_results[0]["class_code"])
             LessonModel.get_all_keywords.assert_called()        
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0]["key_words"])
 
@@ -146,7 +150,9 @@ class test_db__get_all(TestCase):
             38,
             10,"Yr10","Understand binary representation in computer systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal,Number Systems",
-            4,"learning_objectives",23,343
+            4,"learning_objectives",23,343,
+            "7x",
+            "ABCDEF"
         ),
         (322, "Understanding numbering systems",1,5,"Computer Science",
             35, "Multistructural",
@@ -155,7 +161,9 @@ class test_db__get_all(TestCase):
             38,
             10,"Yr10","Understand common numbering systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
-            4,"learning_objectives",23,343
+            4,"learning_objectives",23,343,
+            "7x",
+            "ABCDEG"
         ),
         (323, "Understanding numbering systems",1,5,"Computer Science", 
             34, "Unistructural",
@@ -164,7 +172,9 @@ class test_db__get_all(TestCase):
             38,
             10,"Yr10","Understand hexadecimal representation in computer systems",
             "2020-07-16 01:04:59",1,"test_user",0,"Denary,Binary,Hexadecimal",
-            4,"learning_objectives",23,343
+            4,"learning_objectives",23,343,
+            "7x",
+            "ABCDEH"
         )]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -175,7 +185,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                 'lesson__get_all'
+                 'lesson__get_all$2'
                  , (3, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                  , []
                  , handle_log_info)
@@ -198,6 +208,8 @@ class test_db__get_all(TestCase):
             self.assertEqual(3, actual_results[0]["parent_topic_id"]),
             self.assertEqual("Data representation", actual_results[0]["parent_topic_name"]),
             self.assertEqual("Understand binary representation in computer systems", actual_results[0]["summary"])
+            #self.assertEqual("", actual_results[0]["class_name"])
+            #self.assertEqual("", actual_results[0]["summary"])
 
             
             self.assertEqual(323, actual_results[2]["id"])
@@ -207,3 +219,5 @@ class test_db__get_all(TestCase):
             self.assertEqual(3, actual_results[2]["parent_topic_id"]),
             self.assertEqual("Data representation", actual_results[2]["parent_topic_name"]),
             self.assertEqual("Understand hexadecimal representation in computer systems", actual_results[2]["summary"])
+            #self.assertEqual("", actual_results[2]["class_name"])
+            #self.assertEqual("", actual_results[2]["class_code"])

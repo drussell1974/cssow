@@ -69,17 +69,13 @@ class LessonModel (BaseModel):
         self.key_stage_name = key_stage_name
         self.year_id = int(year_id)
         self.year_name = year_name
+        self.lesson_schedule = []
         self.key_words = []
         self.ks123pathway = []
         self.summary = summary
         self.pathway_objective_ids = []
         self.pathway_ks123_ids = []
-        #self.created=created
-        #self.created_by_id=try_int(created_by_id)
-        #self.created_by_name=created_by_name
-        #self.published=published
         self.orig_id = orig_id
-        self.lesson_schedule = None
         self.url = "/schemeofwork/{}/lessons/{}".format(self.scheme_of_work_id, self.id)
         
         if auth_user is not None:
@@ -240,6 +236,9 @@ class LessonModel (BaseModel):
                 created_by_name=row[16],
                 published=row[17],
                 auth_user=auth_user)
+
+            ' get the lesson schedule #432 '
+            model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
@@ -277,8 +276,8 @@ class LessonModel (BaseModel):
                 auth_user=auth_user
             )
             
-            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user=auth_user) 
-            
+            ' #TODO: #432 get the lesson schedule '
+            #model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
@@ -333,8 +332,10 @@ class LessonModel (BaseModel):
                 published = row[18]
             )
 
-            model.lesson_schedule = LessonScheduleModel(id_=row[19], class_code=row[20], lesson_id=row[0], scheme_of_work_id=row[3], department_id = auth_user.department_id, institute_id = auth_user.institute_id, auth_user=auth_user) 
-
+            #model.lesson_schedule = LessonScheduleModel(id_=row[19], class_name=row[20], class_code=row[21], start_date=None, lesson_id=row[0], scheme_of_work_id=row[3], auth_user=auth_user) 
+            
+            ' get the lesson schedules '
+            model.lesson_schedule = [] #TODO: #432 LessonScheduleModel.get_all
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
@@ -535,7 +536,7 @@ class LessonDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "lesson__get_all"
+        select_sql = "lesson__get_all$2"
         params = (scheme_of_work_id, int(show_published_state), auth_user_id); 
 
         rows = []    

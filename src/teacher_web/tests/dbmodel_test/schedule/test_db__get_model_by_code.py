@@ -40,7 +40,7 @@ class test_db__get_model_by_class_code(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get'
+                'lesson_schedule__get_by_class_code$2'
                 , (99, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -51,7 +51,7 @@ class test_db__get_model_by_class_code(TestCase):
     @skip("not implemented")
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [(6, "ABCDEF", 12767111276711, 67, 11, 1234, 1, 99)]
+        expected_result = [(6, "ABCDEF", "", 11, 1234, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -61,7 +61,7 @@ class test_db__get_model_by_class_code(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get'
+                'lesson_schedule__get_by_class_code$2'
                 , (6, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)

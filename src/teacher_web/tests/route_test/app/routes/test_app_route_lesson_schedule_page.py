@@ -27,17 +27,17 @@ class test_app_route_lesson_schedule_page(TestCase):
         url = reverse("lesson_schedule.new", args=[12711761271176, 1271176, 127, 220])
         self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/new", url)
 
-    '''
+    
     def test__lesson_schedule_edit__url_resolves_to_edit(self):
-        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/12/edit")
+        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/987/edit")
         self.assertEqual("lesson_schedule.edit", url.url_name)
         self.assertEqual(url.func, edit)
 
 
     def test__lesson_schedule_edit__url_resolves_to_edit__reverse(self):
-        url = reverse("lesson_schedule.edit", args=[12711761271176, 1271176, 127,12])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/12/edit", url)
-    '''
+        url = reverse("lesson_schedule.edit", args=[12711761271176, 1271176, 127, 220, 987])
+        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/987/edit", url)
+    
 
     '''
     def test__lesson_schedule_copy__url_resolves_to_edit(self):

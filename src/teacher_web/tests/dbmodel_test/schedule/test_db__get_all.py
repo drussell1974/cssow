@@ -4,15 +4,15 @@ from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson_schedule import LessonScheduleModel, handle_log_info
 from tests.test_helpers.mocks import *
 
-@skip("not implemented")
+
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_all(TestCase):
-
 
     def setUp(self):
         ' fake database context '
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
+
 
     def tearDown(self):
         self.fake_db.close()
@@ -25,8 +25,8 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
-            with self.assertRaises(Exception):
-                LessonScheduleModel.get_all(self.fake_db)
+            with self.assertRaises(KeyError):
+                LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
 
 
     def test__should_call_select_return_no_items(self, mock_ctx):
@@ -36,13 +36,14 @@ class test_db__get_all(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
             
-            rows = LessonScheduleModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=7, auth_user=mock_ctx)
+            rows = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
             
+
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
-                , (34, 7, mock_ctx.auth_user_id)
+                'lesson_schedule__get_all'
+                , (34, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -51,59 +52,60 @@ class test_db__get_all(TestCase):
 
     def test__should_call_select_return_single_item(self, mock_ctx):
         # arrange
-        expected_result = [
-            (702, "purus lacus, ut volutpat nibh euismod.", "A",0)
-            ]
+        expected_result = [(569, "7x", "ABCDEF", "2021-04-03 11:30:34", 6, 11, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = LessonScheduleModel.get_all(self.fake_db, scheme_of_work_id=34, key_stage_id=5, auth_user=mock_ctx)
+            actual_results = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
-                , (34, 5, mock_ctx.auth_user_id)
+                'lesson_schedule__get_all'
+                , (34, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
 
             self.assertEqual(1, len(actual_results))
 
-            self.assertEqual(702, actual_results[0].id)
-            self.assertEqual("purus lacus, ut volutpat nibh euismod.", actual_results[0].description)
-            self.assertEqual("A", actual_results[0].letter_prefix),
+            self.assertEqual(569, actual_results[0].id)
+            self.assertEqual("ABCDEF", actual_results[0].class_code)
+            self.assertEqual("7x", actual_results[0].class_name)
+            self.assertEqual("2021-04-03 11:30:34", actual_results[0].start_date)
 
 
     def test__should_call_select_return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [
-            (1021, "nec arcu nec dolor vehicula ornare non.", "X", 0),
-            (1022, "purus lacus, ut volutpat nibh euismod.", "Y", 0),
-            (1023, "rutrum lorem a arcu ultrices, id mollis", "Z", 0)
-        ]
+            (569, "7x", "ABCDEX", "2021-04-03 09:00:00", 6, 11, 1, 99),
+            (570, "7y", "ABCDEY", "2021-04-04 10:00:00", 6, 11, 1, 99),
+            (571, "7z", "ABCDEZ", "2021-04-04 13:30:04", 6, 11, 1, 99)
+            ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            actual_results = LessonScheduleModel.get_all(self.fake_db,  scheme_of_work_id=34,key_stage_id=5, auth_user=mock_ctx)
+            actual_results = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
-                , (34, 5, mock_ctx.auth_user_id)
+                'lesson_schedule__get_all'
+                , (34, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
             self.assertEqual(3, len(actual_results))
 
-            self.assertEqual(1021, actual_results[0].id)
-            self.assertEqual("X", actual_results[0].letter_prefix),
-            self.assertEqual("nec arcu nec dolor vehicula ornare non.", actual_results[0].description)
+            self.assertEqual(569, actual_results[0].id)
+            self.assertEqual("ABCDEX", actual_results[0].class_code)
+            self.assertEqual("7x", actual_results[0].class_name)
+            self.assertEqual("2021-04-03 09:00:00", actual_results[0].start_date)
             
 
-            self.assertEqual(1023, actual_results[2].id)
-            self.assertEqual("Z", actual_results[2].letter_prefix),
-            self.assertEqual("rutrum lorem a arcu ultrices, id mollis", actual_results[2].description)
+            self.assertEqual(571, actual_results[2].id)
+            self.assertEqual("ABCDEZ", actual_results[2].class_code)
+            self.assertEqual("7z", actual_results[2].class_name)
+            self.assertEqual("2021-04-04 13:30:04", actual_results[2].start_date)

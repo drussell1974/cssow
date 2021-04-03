@@ -2,6 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_keyword import KeywordModel
@@ -23,19 +24,19 @@ class test_db__get_model(TestCase):
             KeywordModel(7, 'Registers', '')
         ])
 
-
+        LessonScheduleModel.get_all = MagicMock(return_value=[])
         LearningObjectiveModel.get_all = MagicMock(return_value=[1,2,3])
         ResourceModel.get_all = MagicMock(return_value=[])
-        #LessonModel.get_pathway_objective_ids = MagicMock(return_value=[])
         LessonModel.get_ks123_pathway_objective_ids = MagicMock(return_value=[])
 
 
     def tearDown(self):
         
+        LessonScheduleModel.get_all.reset_mock()
         LearningObjectiveModel.get_all.reset_mock()
         ResourceModel.get_all.reset_mock()
         LessonModel.get_ks123_pathway_objective_ids.reset_mock()
-
+        
         self.fake_db.close()
 
 
@@ -100,6 +101,7 @@ class test_db__get_model(TestCase):
 
             self.assertEqual(3, len(actual_results.key_words))
             
+            LessonScheduleModel.get_all.assert_called()
             LearningObjectiveModel.get_all.assert_called()
             ResourceModel.get_all.assert_called()
             LessonModel.get_ks123_pathway_objective_ids.assert_called()

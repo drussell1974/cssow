@@ -32,7 +32,7 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
             
             with self.assertRaises(KeyError):
                 # act
-                self.viewmodel = ViewModel(db=db, lesson_id=99, scheme_of_work_id=22, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db=db, schedule_id=987, lesson_id=99, scheme_of_work_id=22, auth_user=mock_auth_user)
             #TODO: #233 remove self.assertRaises
              
             # assert
@@ -56,7 +56,7 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
 
             # act
             with self.assertRaises(Http404):
-                self.viewmodel = ViewModel(db=db, lesson_id=123, scheme_of_work_id=22, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db=db, schedule_id=987, lesson_id=123, scheme_of_work_id=22, auth_user=mock_auth_user)
 
                 # assert functions was called
                 Model.get_model.assert_called()
@@ -85,7 +85,7 @@ class test_viewmodel_LessonWhiteboardViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, lesson_id=456, scheme_of_work_id=22, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db=db, schedule_id=987, lesson_id=456, scheme_of_work_id=22, auth_user=mock_auth_user)
 
             # assert functions was called
             Model.get_model.assert_called()

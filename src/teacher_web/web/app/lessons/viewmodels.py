@@ -73,7 +73,6 @@ class LessonGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
         self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
 
         # if not found then raise error
@@ -86,11 +85,11 @@ class LessonGetModelViewModel(BaseViewModel):
 
 class LessonWhiteboardViewModel(BaseViewModel):
     
-    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
+    def __init__(self, db, schedule_id, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
+        self.lesson_schedule = LessonScheduleModel.get_model(self.db, schedule_id, lesson_id, scheme_of_work_id, auth_user)
         self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
 
         # if not found then raise error

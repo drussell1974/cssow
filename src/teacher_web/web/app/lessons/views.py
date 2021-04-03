@@ -77,7 +77,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
             #253 check user id
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
             model = get_lesson_view.model  
-            lesson_schedule = get_lesson_view.lesson_schedule      
+            lesson_schedule = get_lesson_view.model.lesson_schedule      
             wizard.next_url=reverse('lesson_ks123pathways.select', args=[auth_ctx.institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id])
 
         # handle copy
@@ -203,12 +203,11 @@ def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, a
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
 
-    #367 get auth_ctx from min_permission_required decorator
-    #367 use min permissions NONE
+    # TODO: Move to lesson_schedule.views
 
-    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    get_lesson_view =  LessonWhiteboardViewModel(db=db, schedule_id=0, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     model = get_lesson_view.model
-    lesson_schedule = LessonScheduleModel.get_model(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    lesson_schedule = LessonScheduleModel.get_model(db=db, schedule_id=0, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
     data = {
         "key_words":model.key_words,

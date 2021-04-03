@@ -109,14 +109,8 @@
 
     <div class="links card-body stackable-group-sm">
       <div class="dropdown show">
-        <!-- Show whiteboard -->
-        <a class="btn btn-outline-dark stackable" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-          {{_('Whiteboard')}} <i class="fa fa-graduation-cap"></i>
-        </a>
         <!-- Edit drop down button/links -->
-        <button class="btn btn-outline-dark stackable dropdown-toggle" role="button" id="lessonDropdownMenuLink--{{row.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{_('Edit')}}
-        </button>
+        <button class="btn btn-outline-dark stackable dropdown-toggle" role="button" id="lessonDropdownMenuLink--{{row.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_('Edit')}}</button>
         <div class="dropdown-menu stackable" aria-labelledby="lessonDropdownMenuLink--{{row.id}}">    
           <a href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-edit--{{row.id}}">    
             {{_("Edit")}} <i class="far fa-edit"></i>
@@ -134,6 +128,28 @@
           <a href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-keywords--{{row.id}}">
             {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
           </a>
+        </div>
+        <!-- Schedule -->
+        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedudle--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedudle--{{row.id}}">{{_('Schedule')}} <i class="fa fa-calendar"> {{ content.model.lesson_schedule|length }}</i></button>
+        <div class="collapse shadow" id="collapseSchedudle--{{row.id}}">
+          <div class="card card-body">
+            <a href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-primary stackable" id="btn-lesson-schedule--{{row.id}}">{{_('Schedule a lesson')}}</a>
+            <hr>
+            {% for row in content.model.lesson_schedule %}
+            <a class="btn-md btn-warning p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+             <i class="fa fa-calendar"> {{_('Today')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7y')}}</i>
+            </a>
+            <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+              <i class="fa fa-calendar"> {{_('Tomorrow')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7i')}}</i>
+             </a>
+             <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+              <i class="fa fa-calendar"> {{_('Tomorrow')}}</i> <i class="fa fa-clock"> {{_('1:30pm')}} {{_('(period 4)')}}</i> <i class="fa fa-users"> {{_('7t')}}</i>
+             </a>
+             <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+              <i class="fa fa-calendar"> {{_('Monday, 3rd April, 2021')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7i')}}</i>
+             </a>
+            {% endfor %}    
+          </div>
         </div>
       </div>
     </div>
@@ -184,5 +200,19 @@
 {% block page_js %}
 <script>
   $('.info-class_code').popover()
+</script>
+<script>
+  const params = new URLSearchParams(window.location.search)
+  if (params !== undefined) {
+    var p = params.get('show-schedule');
+    console.log(p);
+    var id = '#collapseSchedudle--'.concat(p);
+    console.log(id);
+    var elem = document.querySelector(id);
+    console.log(elem);
+    if (elem != undefined) {
+      elem.collapse('show');
+    }
+  }
 </script>
 {% endblock %}
