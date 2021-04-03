@@ -51,7 +51,7 @@ class test_db__get_model_by_class_code(TestCase):
     @skip("not implemented")
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [(6, "ABCDEF", "", 11, 1234, 1, 99)]
+        expected_result = [(6, "ABCDEF", "", 11, 1234, 67, 12767111276711, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -70,6 +70,8 @@ class test_db__get_model_by_class_code(TestCase):
             self.assertEqual("ABCDEF", model.class_code)
             self.assertEqual(11, model.scheme_of_work_id)
             self.assertEqual(1234, model.lesson_id)
+            self.assertEqual(0, model.department_id)
+            self.assertEqual(0, model.institute_id)
             self.assertFalse(model.is_new())
             self.assertTrue(model.is_from_db)
 

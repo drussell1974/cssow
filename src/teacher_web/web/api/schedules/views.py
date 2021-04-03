@@ -14,7 +14,8 @@ class LessonScheduleViewSet(APIView):
     def get(self, request, class_code, auth_ctx=None):
 
         # TODO: #367 get auth_ctx from min_permission_required decorator
-        auth_ctx = Ctx(db, request)
+        #institute_id = request.GET.get("institute_id")
+        auth_ctx = Ctx(0, 0)
         
         #class_code = request.GET.get("class_code", "")
 

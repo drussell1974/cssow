@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lesson_schedules.views import edit # index, publish, delete, whiteboard, missing_words_challenge, delete_unpublished
+from app.lesson_schedules.views import edit, delete
 
 # Create your tests here.
 class test_app_route_lesson_schedule_page(TestCase):
@@ -37,6 +37,17 @@ class test_app_route_lesson_schedule_page(TestCase):
     def test__lesson_schedule_edit__url_resolves_to_edit__reverse(self):
         url = reverse("lesson_schedule.edit", args=[12711761271176, 1271176, 127, 220, 987])
         self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/987/edit", url)
+    
+
+    def test__lesson_schedule_delete__url_resolves_to_edit(self):
+        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/987/delete")
+        self.assertEqual("lesson_schedule.delete", url.url_name)
+        self.assertEqual(url.func, delete)
+
+
+    def test__lesson_schedule_delete__url_resolves_to_edit__reverse(self):
+        url = reverse("lesson_schedule.delete", args=[12711761271176, 1271176, 127, 220, 987])
+        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/987/delete", url)
     
 
     '''

@@ -276,8 +276,8 @@ class LessonModel (BaseModel):
                 auth_user=auth_user
             )
             
-            ' #TODO: #432 get the lesson schedule '
-            #model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+            ' #432 get the lesson schedule '
+            model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
@@ -332,10 +332,8 @@ class LessonModel (BaseModel):
                 published = row[18]
             )
 
-            #model.lesson_schedule = LessonScheduleModel(id_=row[19], class_name=row[20], class_code=row[21], start_date=None, lesson_id=row[0], scheme_of_work_id=row[3], auth_user=auth_user) 
-            
             ' get the lesson schedules '
-            model.lesson_schedule = [] #TODO: #432 LessonScheduleModel.get_all
+            model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             ' get the key words from the learning objectives '
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             ' get the number of learning objectives ' 
@@ -557,7 +555,7 @@ class LessonDataAccess:
         
         execHelper = ExecHelper()
 
-        select_sql = "lesson__get_filtered"
+        select_sql = "lesson__get_filtered$2"
         params = (scheme_of_work_id, keyword_search, page - 1, pagesize, int(show_published_state), auth_user_id); 
 
         rows = []    

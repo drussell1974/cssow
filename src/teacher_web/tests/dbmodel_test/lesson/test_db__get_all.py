@@ -2,11 +2,19 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, LessonFilter,  handle_log_info 
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
+@patch.object(LessonModel, "get_number_of_learning_objectives", return_value=3)
+@patch.object(LessonModel, "get_ks123_pathway_objective_ids", return_value=[])
+@patch.object(LessonModel, "get_related_topic_ids", return_value=[{"id":56, "name":"Hardware", "checked":None, "disabled":False},{"id":57, "name":"Software", "checked":True, "disabled":False}])
+@patch.object(LessonModel, "get_all_keywords", return_value={32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'})
+@patch.object(ResourceModel, "get_number_of_resources", return_value=6)
+@patch.object(LearningObjectiveModel, "get_all", return_value=[LearningObjectiveModel(23,"Objective 1")])
+@patch.object(LessonScheduleModel, "get_all", return_value=[])
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_all(TestCase):
 
@@ -16,36 +24,23 @@ class test_db__get_all(TestCase):
         self.fake_db = Mock()
         self.fake_db.cursor = MagicMock()
         
-        mockLO = Mock()
-        mockLO.id = 23
-        mockLO.description = "Objective 1"
-        LearningObjectiveModel.get_all = Mock(return_value=[
-            mockLO, 
-            mockLO])
-
-        LessonModel.get_all_keywords = Mock(return_value={32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'})
-
-        ResourceModel.get_number_of_resources = Mock(return_value=6)
-
-        LessonModel.get_related_topic_ids = Mock(return_value=[
-            {"id":56, "name":"Hardware", "checked":None, "disabled":False},
-            {"id":57, "name":"Software", "checked":True, "disabled":False}
-        ])
-
-        LessonModel.get_ks123_pathway_objective_ids = MagicMock()
-
-        LessonModel.get_number_of_learning_objectives = Mock(return_value=3)
-
         self.search_criteria = LessonFilter("", [5, 10, 25, 50, 2])
 
 
     def tearDown(self):
 
-        LessonModel.get_ks123_pathway_objective_ids.reset_mock()
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_auth_user, 
+            LessonScheduleModel_get_all,
+            LearningObjectiveModel_get_all,
+            ResourceModel_get_number_of_resources,
+            LessonModel_get_all_keywords,
+            LessonModel_get_related_topic_ids,
+            LessonModel_get_ks123_pathway_objective_ids,
+            LessonModel_get_number_of_learning_objectives):
+
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -56,7 +51,15 @@ class test_db__get_all(TestCase):
                 LessonModel.get_all(self.fake_db, int(STATE.PUBLISH), mock_auth_user)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_auth_user, 
+            LessonScheduleModel_get_all,
+            LearningObjectiveModel_get_all,
+            ResourceModel_get_number_of_resources,
+            LessonModel_get_all_keywords,
+            LessonModel_get_related_topic_ids,
+            LessonModel_get_ks123_pathway_objective_ids,
+            LessonModel_get_number_of_learning_objectives):
+
         # arrange
         expected_result = []
 
@@ -76,7 +79,15 @@ class test_db__get_all(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_auth_user, 
+            LessonScheduleModel_get_all,
+            LearningObjectiveModel_get_all,
+            ResourceModel_get_number_of_resources,
+            LessonModel_get_all_keywords,
+            LessonModel_get_related_topic_ids,
+            LessonModel_get_ks123_pathway_objective_ids,
+            LessonModel_get_number_of_learning_objectives):
+
         # arrange
         expected_result = [(
             321, 
@@ -134,6 +145,7 @@ class test_db__get_all(TestCase):
             LessonModel.get_all_keywords.assert_called()        
             self.assertEqual({32: 'Central Processing Unit (CPU)', 17: 'Control Unit (CU)', 7: 'Registers'}, actual_results[0]["key_words"])
 
+            LessonScheduleModel.get_all.assert_called()
             LearningObjectiveModel.get_all.assert_called()
             ResourceModel.get_number_of_resources.assert_called()
             LessonModel.get_related_topic_ids.assert_called()
@@ -141,7 +153,15 @@ class test_db__get_all(TestCase):
             LessonModel.get_number_of_learning_objectives.assert_called()
 
 
-    def test__should_call_select__return_multiple_item(self, mock_auth_user):
+    def test__should_call_select__return_multiple_item(self, mock_auth_user, 
+            LessonScheduleModel_get_all,
+            LearningObjectiveModel_get_all,
+            ResourceModel_get_number_of_resources,
+            LessonModel_get_all_keywords,
+            LessonModel_get_related_topic_ids,
+            LessonModel_get_ks123_pathway_objective_ids,
+            LessonModel_get_number_of_learning_objectives):
+
         # arrange
         expected_result = [(321, "Understanding numbering systems",1,5,"Computer Science",
             35, "Multistructural",
@@ -192,6 +212,7 @@ class test_db__get_all(TestCase):
 
 
 
+            LessonScheduleModel.get_all.assert_called()
             LearningObjectiveModel.get_all.assert_called()
             ResourceModel.get_number_of_resources.assert_called()
             LessonModel.get_related_topic_ids.assert_called()

@@ -130,25 +130,20 @@
           </a>
         </div>
         <!-- Schedule -->
-        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedudle--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedudle--{{row.id}}">{{_('Schedule')}} <i class="fa fa-calendar"> {{ content.model.lesson_schedule|length }}</i></button>
+        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedudle--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedudle--{{row.id}}">{{_('Schedule')}} <i class="fa fa-calendar"> {{ row.lesson_schedule|length }}</i></button>
         <div class="collapse shadow" id="collapseSchedudle--{{row.id}}">
           <div class="card card-body">
             <a href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-primary stackable" id="btn-lesson-schedule--{{row.id}}">{{_('Schedule a lesson')}}</a>
             <hr>
-            {% for row in content.model.lesson_schedule %}
-            <a class="btn-md btn-warning p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-             <i class="fa fa-calendar"> {{_('Today')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7y')}}</i>
-            </a>
-            <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-              <i class="fa fa-calendar"> {{_('Tomorrow')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7i')}}</i>
-             </a>
-             <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-              <i class="fa fa-calendar"> {{_('Tomorrow')}}</i> <i class="fa fa-clock"> {{_('1:30pm')}} {{_('(period 4)')}}</i> <i class="fa fa-users"> {{_('7t')}}</i>
-             </a>
-             <a class="btn-md btn-primary p-2 m-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-              <i class="fa fa-calendar"> {{_('Monday, 3rd April, 2021')}}</i> <i class="fa fa-clock"> {{_('9:15am')}} {{_('(period 1)')}}</i> <i class="fa fa-users"> {{_('7i')}}</i>
-             </a>
-            {% endfor %}    
+            {% for schrow in row.lesson_schedule %}                
+              <div class="btn-group btn-group-sm" role="group" aria-label="lesson">
+                <a class="btn-md {% if schrow.is_today %}btn-warning{%else%}btn-primary{%endif%} p-2 m-1 w-1" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
+                  <i class="fa fa-calendar"> {{ schrow.display_date }}</i> <i class="fa fa-clock"> {{ schrow.start_date|date:"H:i"  }}</i> <i class="fa fa-users"> {{ schrow.class_name }}</i>
+                </a>
+                <a class="btn btn-light w-1" role="button" href="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}?return={{request.url}}">{{_('Edit')}}</a>
+                <a class="btn btn-light w-1" role="button" href="{% url 'lesson_schedule.delete' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}?return={{request.url}}">{{_('Delete')}}</a>
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>

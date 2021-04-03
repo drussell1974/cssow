@@ -67,3 +67,22 @@ class LessonScheduleEditViewModel(BaseViewModel):
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit: {} {}".format(self.model.class_name, self.model.start_date) if self.model.id > 0 else "Create new schedule for {} {}".format(self.model.class_name, self.model.start_date), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)
+
+
+class LessonScheduleDeleteViewModel(BaseViewModel):
+
+    def __init__(self, db, schedule_id, lesson_id, scheme_of_work_id, auth_ctx):
+        self.db = db
+        self.schedule_id = schedule_id
+        self.auth_ctx = auth_ctx
+        self.model = LessonScheduleModel.get_model(db, schedule_id, lesson_id, scheme_of_work_id, auth_user=auth_ctx)
+        # Http404
+        if self.schedule_id > 0:
+            if self.model is None or self.model.is_from_db == False:
+                self.on_not_found(self.model, schedule_id, lesson_id)
+
+
+    def execute(self):
+        if self.model is not None:
+            # can now delete
+            self.model = LessonScheduleModel.delete(self.db, self.model, auth_user=self.auth_ctx)

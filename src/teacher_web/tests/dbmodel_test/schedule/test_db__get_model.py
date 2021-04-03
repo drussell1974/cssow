@@ -40,7 +40,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get$2'
-                , (987, 99, 1, mock_auth_user.auth_user_id)
+                , (987, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -60,7 +60,7 @@ class test_db__get_model(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get$2'
-                , (987, 6, 1, mock_auth_user.auth_user_id)
+                , (987, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

@@ -5,6 +5,7 @@ from shared.models.cls_lesson import LessonModel, handle_log_info
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
+@patch.object(LessonModel, "get_related_topic_ids", return_value=[])
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_options(TestCase):
     
@@ -18,7 +19,7 @@ class test_db__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, LessonModel_get_related_topic_ids, mock_auth_user):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -29,7 +30,7 @@ class test_db__get_options(TestCase):
                 LessonModel.get_options(self.fake_db, 21, auth_user=mock_auth_user)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, LessonModel_get_related_topic_ids, mock_auth_user):
         # arrange
         expected_result = []
 
@@ -49,7 +50,7 @@ class test_db__get_options(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, LessonModel_get_related_topic_ids, mock_auth_user):
         # arrange
         expected_result = [(87, "Praesent tempus facilisis pharetra. Pellentesque.", 1, 92, "Garden Peas", 10,"Yr10")]
 
@@ -76,7 +77,7 @@ class test_db__get_options(TestCase):
 
 
 
-    def test__should_call_select__return_multiple_item(self, mock_auth_user):
+    def test__should_call_select__return_multiple_item(self, LessonModel_get_related_topic_ids, mock_auth_user):
         # arrange
         expected_result = [
             (834, "Vivamus sodales enim cursus ex.", 1, 95, "Runner Beans", 10,"Yr7"),

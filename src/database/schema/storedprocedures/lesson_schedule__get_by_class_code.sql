@@ -8,14 +8,19 @@ CREATE PROCEDURE lesson_schedule__get_by_class_code$2 (
  IN p_auth_user_id INT)
 BEGIN
 	SELECT 
-		sch.class_name as class_name,
 		sch.id as id,
+		sch.class_name as class_name,
 		sch.start_date as start_date,
         sch.lesson_id as lesson_id,
         sch.scheme_of_work_id as scheme_of_work_id,
+        sow.department_id as department_id,
+        dep.institute_id as institute_id,
         sch.published as published,
         sch.created_by as created_by
     FROM sow_lesson_schedule as sch
+    INNER JOIN sow_lesson as les ON les.id = sch.lesson_id
+    INNER JOIN sow_scheme_of_work as sow ON sow.id = les.scheme_of_work_id 
+    INNER JOIN sow_department as dep ON dep.id = sow.department_id 
     WHERE class_code = p_class_code
         AND (p_show_published_state % sch.published = 0 or sch.created_by = p_auth_user_id);
 END;

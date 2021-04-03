@@ -5,8 +5,8 @@ DROP PROCEDURE IF EXISTS `lesson_schedule__get$2`;
 CREATE PROCEDURE `lesson_schedule__get$2` 
 (
  IN p_schedule_id INT,
- IN p_published_state INT,
- IN p_auth_user INT
+ IN p_show_published_state INT,
+ IN p_auth_user_id INT
  )
 BEGIN
 	SELECT 
@@ -18,7 +18,7 @@ BEGIN
         published as published,
         created_by as created_by
     FROM sow_lesson_schedule
-    WHERE id = p_schedule_id;
+    WHERE id = p_schedule_id AND (p_show_published_state % published = 0 or created_by = p_auth_user_id);
 END;
 
 // DELIMITER ;

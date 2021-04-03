@@ -179,7 +179,6 @@ class test_viewmodel_EditViewModel(TestCase):
                     self.assertEqual("2021-04-03 04:42:04", test_context.model.start_date)
 
 
-
     def test_execute_called_save__return_when_invalid(self, mock_auth_user):
          
         # arrange

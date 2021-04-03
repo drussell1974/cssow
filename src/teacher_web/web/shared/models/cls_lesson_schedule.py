@@ -5,7 +5,7 @@ from shared.models.core.log_handlers import handle_log_info, handle_log_error
 from shared.models.core.helper_string import date_to_string
 from shared.models.enums.publlished import STATE
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class LessonScheduleModel(BaseModel):
         
@@ -22,9 +22,31 @@ class LessonScheduleModel(BaseModel):
         super().__init__(id_, class_code, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.class_name = class_name
         self.class_code = class_code
-        self.start_date = date_to_string(start_date) if start_date is datetime else start_date
+        self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
         self.lesson_id = try_int(lesson_id)
         self.scheme_of_work_id = try_int(scheme_of_work_id)
+        
+
+    @property
+    def is_today(self):
+        return True if self.start_date.date() == datetime.today().date() else False
+
+
+    @property
+    def input_date(self):
+        # format as "2021-04-03T11:23" for datetime-local input field
+        if self.start_date is None:
+            return ""
+        return self.start_date.strftime("%Y-%m-%dT%H:%M")
+
+    @property
+    def display_date(self):
+        if self.start_date is None:
+            return ""
+        elif self.is_today:
+            return "Today"
+        else:
+            return self.start_date.strftime("%A, {} %B %Y".format(self.start_date.day))
         
 
     @classmethod
@@ -106,7 +128,13 @@ class LessonScheduleModel(BaseModel):
     def get_model_by_class_code(db, class_code, auth_user):
         rows = LessonScheduleDataAccess.get_model_by_class_code(db, class_code, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         model = None
+        
         for row in rows:
+            if auth_user.department_id == 0 and auth_user.institute_id == 0:
+                # handle empty context
+                auth_user.department_id = row[5]
+                auth_user.institute_id = row[6]
+                
             model = LessonScheduleModel(
                 id_=row[0],
         		class_name = row[1],
@@ -114,8 +142,8 @@ class LessonScheduleModel(BaseModel):
                 start_date = row[2],
                 lesson_id = row[3],
                 scheme_of_work_id=row[4],
-                published=row[5],
-                created_by_id=row[6],
+                published=row[7],
+                created_by_id=row[8],
                 auth_user=auth_user)
             model.on_fetched_from_db()
         return model
@@ -142,13 +170,12 @@ class LessonScheduleModel(BaseModel):
     def delete_unpublished(db, lesson_id, scheme_of_work_id, auth_user):
         return LessonScheduleDataAccess.delete_unpublished(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id)
 
-
+    
     @staticmethod
-    def delete(db, id_, lesson_id, scheme_of_work_id, auth_user):
-        model = LessonScheduleModel(id_, "", lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id)
-        LessonScheduleDataAccess._delete(db, auth_user_id=auth_user.auth_user_id, model=model)
+    def delete(db, model, auth_user):
+        LessonScheduleDataAccess._delete(db, model=model, auth_user_id=auth_user.auth_user_id)
         return model
-
+    
 
 class LessonScheduleDataAccess:
 
@@ -189,7 +216,7 @@ class LessonScheduleDataAccess:
         
         execHelper = ExecHelper()
         select_sql = "lesson_schedule__get$2"
-        params = (id_, lesson_id, int(show_published_state), auth_user_id)
+        params = (id_, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
@@ -232,10 +259,12 @@ class LessonScheduleDataAccess:
 
         execHelper = ExecHelper()
         
-        str_update = "lesson_schedule__update"
+        str_update = "lesson_schedule__update$2"
         params = (
             model.id,
+            model.start_date,
             model.class_code,
+            model.class_name,
             auth_ctx.institute_id,
             auth_ctx.department_id,
             model.scheme_of_work_id,
@@ -264,11 +293,12 @@ class LessonScheduleDataAccess:
 
         execHelper = ExecHelper()
 
-        str_insert = "lesson_schedule__insert"
+        str_insert = "lesson_schedule__insert$2"
         params = (
-            
             model.id,
+            model.start_date,
             model.class_code,
+            model.class_name,
             auth_ctx.institute_id,
             auth_ctx.department_id,
             model.scheme_of_work_id,
@@ -286,7 +316,7 @@ class LessonScheduleDataAccess:
 
 
     @staticmethod
-    def _delete(db, auth_user_id, model):
+    def _delete(db, model, auth_user_id):
         """ 
         Delete desson schedule 
 

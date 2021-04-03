@@ -12,9 +12,7 @@ from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
-
-from .viewmodels import LessonScheduleEditViewModel #, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonMissingWordsChallengeViewModel, LessonGetModelViewModel
-
+from .viewmodels import LessonScheduleEditViewModel, LessonScheduleDeleteViewModel
 from datetime import datetime
 
 # Create your views here.        
@@ -60,23 +58,18 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         
     return render(request, "lesson_schedules/edit.html", modelview.view().content)
 
-'''
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
+def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, schedule_id, auth_ctx):
 
-    # TODO: #367 get auth_ctx from min_permission_required decorator
-    raise DeprecationWarning("remove if not longer in use")
-    #367 get auth_ctx from min_permission_required decorator
-    
     redirect_to_url = request.META.get('HTTP_REFERER')
 
-    #253 check user id
-    LessonDeleteViewModel(db=db, auth_user=auth_ctx, lesson_id=lesson_id)
+    delete_view = LessonScheduleDeleteViewModel(db=db, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
+    delete_view.execute()
 
-    return HttpResponseRedirect(redirect_to_url)
+    return HttpResponseRedirect(f"{redirect_to_url}#{lesson_id}")
     
-
+'''
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
 

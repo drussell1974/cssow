@@ -27,27 +27,38 @@
         {% include '_partials/form.viewmodel.alert_message.html' %}
         <!-- show error_message END -->
         
-        <!-- Start date START -->
-        <div class="control-group">
-            <div class="form-group controls">
-                <label>{{_("Date")}}</label>
-                <input type="date" class="form-control" placeholder="{{_('Enter a term')}}" id="ctl-term" name="term" required
-                        value='{{content.data.model.start_date}}'>
-                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-            </div>
-        </div>
-        <!-- Start date END -->
-
         <!-- Class name START -->
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Class")}}</label>
-                <input type="text" class="form-control" placeholder="{{_('Enter a term')}}" id="ctl-term" name="term" required
+                <input type="text" class="form-control" placeholder="{{_('Enter a class name')}}" id="ctl-class_name" name="class_name" required
                         maxlength="10" value='{{content.data.model.class_name}}'>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
             </div>
         </div>
         <!-- Class name END -->
+
+        <!-- Start date START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Date")}}</label>
+                <input type="datetime-local" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
+                        value='{{content.data.model.input_date}}'>
+                        <p>{{content.data.model.input_date}}</p>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Start date END -->
+
+        <!-- Class code START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Class code (auto-generated)")}}</label>
+                <input type="text" class="form-control" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" 
+                    readonly maxlength="6" />
+            </div>
+        </div>
+        <!-- Class code END -->
 
         <br>
         <div id="success"></div>
@@ -56,8 +67,8 @@
             {% include '_partials/form.buttons.validation.wizard.html' %}
         </div>
         
-        <input type="hidden" name="id" value="{{content.data.keyword.id}}">
-        <input type="hidden" name="scheme_of_work_id" value="{{ content.data.scheme_of_work_id}}">
+        <input type="hidden" name="id" value="{{content.data.model.id}}">
+        <input type="hidden" name="lesson_id" value="{{ content.data.lesson_id}}">
         <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" >
         <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
     </form>
