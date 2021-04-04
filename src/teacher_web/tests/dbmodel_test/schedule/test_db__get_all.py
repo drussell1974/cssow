@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
@@ -37,13 +38,12 @@ class test_db__get_all(TestCase):
             # act
             
             rows = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
-            
 
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all'
-                , (34, 1, mock_ctx.auth_user_id)
+                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -63,7 +63,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all'
-                , (34, 1, mock_ctx.auth_user_id)
+                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -93,7 +93,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all'
-                , (34, 1, mock_ctx.auth_user_id)
+                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -109,3 +109,40 @@ class test_db__get_all(TestCase):
             self.assertEqual("ABCDEZ", actual_results[2].class_code)
             self.assertEqual("7z", actual_results[2].class_name)
             self.assertEqual("2021-04-04 13:30:04", actual_results[2].start_date)
+
+
+
+    def test__should_call_select_return_current_items_only(self, mock_ctx):
+        # arrange
+        expected_result = [
+            (765569, "7x", "ABCDEX", "2121-04-03 09:00:00", 6, 11, 1, 99),
+            (765570, "7y", "ABCDEY", "2121-04-04 10:00:00", 6, 11, 1, 99),
+            (765571, "7z", "ABCDEZ", "2121-04-04 13:30:04", 6, 11, 1, 99)
+            ]
+
+        with patch.object(ExecHelper, 'select', return_value=expected_result):
+            # act
+
+            actual_results = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx, show_next_days=7)
+            
+            # assert
+
+            ExecHelper.select.assert_called_with(self.fake_db,
+                'lesson_schedule__get_all'
+                , (34, datetime.today().date(), datetime.today().date() + timedelta(7), 1, mock_ctx.auth_user_id)
+                , []
+                , handle_log_info)
+
+            self.assertEqual(3, len(actual_results))
+
+            self.assertEqual(765569, actual_results[0].id)
+            self.assertEqual("ABCDEX", actual_results[0].class_code)
+            self.assertEqual("7x", actual_results[0].class_name)
+            self.assertEqual("2121-04-03 09:00:00", actual_results[0].start_date)
+            
+
+            self.assertEqual(765571, actual_results[2].id)
+            self.assertEqual("ABCDEZ", actual_results[2].class_code)
+            self.assertEqual("7z", actual_results[2].class_name)
+            self.assertEqual("2121-04-04 13:30:04", actual_results[2].start_date)
+

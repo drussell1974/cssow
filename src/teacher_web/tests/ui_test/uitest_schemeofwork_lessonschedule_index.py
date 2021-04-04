@@ -91,7 +91,7 @@ class uitest_schemeofwork_lessonschedule_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings(title="Dave Russell - Teach Computer Science", h1="Types of CPU architecture", subheading="Create schedule for Types of CPU architecture", wait=2)
         
-
+    
     def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
         # arrange
         self.assertSidebarResponsiveMenu(section_no=1, expected_title="This lesson", expected_no_of_items=3)

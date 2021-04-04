@@ -238,7 +238,7 @@ class LessonModel (BaseModel):
                 auth_user=auth_user)
 
             ' get the lesson schedule #432 '
-            model.lesson_schedule = LessonScheduleModel.get_all(db, model.id, scheme_of_work_id, auth_user)
+            model.lesson_schedule = LessonScheduleModel.get_all(db, lesson_id=model.id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
             model.key_words = LessonModel.get_all_keywords(db, model.id, auth_user)
             model.learning_objectives = LearningObjectiveModel.get_all(db, model.id, scheme_of_work_id, auth_user)
             model.resources = ResourceModel.get_all(db, model.scheme_of_work_id, model.id, auth_user, resource_type_id)
