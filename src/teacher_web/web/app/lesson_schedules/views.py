@@ -16,27 +16,15 @@ from .viewmodels import LessonScheduleEditViewModel, LessonScheduleDeleteViewMod
 from datetime import datetime
 
 # Create your views here.        
-'''
-@min_permission_required(LESSON.VIEWER, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, lesson_id = 0):
-    """ Get lessons for scheme of work """
 
-    #367 get auth_ctx from min_permission_required decorator
-    
-    # default pager settings
-    page = try_int(request.GET.get("page", 0))
+@min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
+    """ Get schedules for lesson """
 
-    if page == 0:
-        page = settings.PAGER["default"]["page"]
-    
-    pagesize = settings.PAGER["default"]["pagesize"]
-    pagesize_options = settings.PAGER["default"]["pagesize_options"]
-    keyword_search = request.POST.get("keyword_search", "")
+    #lessonIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
-    lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_ctx)
+    return render(request, "lesson_schedules/index.html") #, lessonIndexView.view().content)
 
-    return render(request, "lessons/index.html", lessonIndexView.view().content)
-'''
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")

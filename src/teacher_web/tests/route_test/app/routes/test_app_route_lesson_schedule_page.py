@@ -1,22 +1,21 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lesson_schedules.views import edit, delete, whiteboard
+from app.lesson_schedules.views import index, edit, delete, whiteboard
 
 
 # Create your tests here.
 class test_app_route_lesson_schedule_page(TestCase):
 
-    '''
     def test__lesson_schedule_index__url_resolves_to_index(self):
-        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/")
+        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/")
         self.assertEqual("lesson_schedule.index", url.url_name)
         self.assertEqual(url.func, index)
 
 
     def test__lesson_schedule_index__url_resolves_to_index__reverse(self):
-        url = reverse("lesson_schedule.index", args=[12711761271176, 1271176, 127])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/", url)
-    '''
+        url = reverse("lesson_schedule.index", args=[12711761271176, 1271176, 127, 220])
+        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/", url)
+    
 
     def test__lesson_schedule_new__url_resolves_to_new(self):
         url = resolve("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/220/schedules/new")
