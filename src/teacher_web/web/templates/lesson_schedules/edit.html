@@ -9,7 +9,7 @@
                     <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-keywords" href="{% url 'keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Keywords")}}</a>
+                      <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
                     </li>
                 </ul>
         </div>
@@ -44,7 +44,6 @@
                 <label>{{_("Date")}}</label>
                 <input type="datetime-local" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
                         value='{{content.data.model.input_date}}'>
-                        <p>{{content.data.model.input_date}}</p>
                 <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
             </div>
         </div>
@@ -64,7 +63,7 @@
         <div id="success"></div>
         <div class="form-group stackable-group stackable-group-sm">
             <!-- #386: use form.buttons.validition.wizard partial -->
-            {% include '_partials/form.buttons.validation.wizard.html' %}
+            {% include '_partials/form.buttons.validation.html' %}
         </div>
         
         <input type="hidden" name="id" value="{{content.data.model.id}}">

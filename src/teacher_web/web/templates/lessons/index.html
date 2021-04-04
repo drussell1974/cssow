@@ -132,16 +132,13 @@
         <!-- Schedule -->
         <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedudle--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedudle--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}">{{_('Schedule')}} <i class="fa fa-calendar"> {{ row.lesson_schedule|length }}</i></button>
         <div class="collapse shadow" id="collapseSchedudle--{{row.id}}">
-          <div class="card card-body">
-            <a href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-primary stackable" id="btn-lesson-schedule--{{row.id}}">{{_('Schedule a lesson')}}</a>
+          <div class="card card-body">  
+            <a href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-primary stackable" id="btn-lesson-schedule--{{row.id}}">{{_('View all')}}</a>
             <hr>
             {% for schrow in row.lesson_schedule %}                
                 <a class="btn-md {% if schrow.is_today %}btn-warning{%else%}btn-primary{%endif%} p-2 m-1 w-1" role="button" href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}" target="_blank" id="lnk-whiteboard_view--{{schrow.id}}">
                   <i class="fa fa-calendar"> {{ schrow.display_date }}</i> <i class="fa fa-clock"> {{ schrow.start_date|date:"H:i"  }}</i> <i class="fa fa-users"> {{ schrow.class_name }}</i>
                 </a>
-                <a class="btn btn-light" role="button" href="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}?return={{request.url}}">{{_('Edit')}}</a>
-                <a class="btn btn-light" role="button" href="{% url 'lesson_schedule.delete' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}?return={{request.url}}">{{_('Delete')}}</a>
-              
             {% endfor %}
           </div>
         </div>

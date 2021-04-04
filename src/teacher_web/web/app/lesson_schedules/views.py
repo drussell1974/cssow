@@ -12,7 +12,7 @@ from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
-from .viewmodels import LessonScheduleEditViewModel, LessonScheduleDeleteViewModel, LessonScheduleWhiteboardViewModel 
+from .viewmodels import LessonScheduleIndexViewModel, LessonScheduleEditViewModel, LessonScheduleDeleteViewModel, LessonScheduleWhiteboardViewModel 
 from datetime import datetime
 
 # Create your views here.        
@@ -21,9 +21,9 @@ from datetime import datetime
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
     """ Get schedules for lesson """
 
-    #lessonIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    scheduleIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
-    return render(request, "lesson_schedules/index.html") #, lessonIndexView.view().content)
+    return render(request, "lesson_schedules/index.html", scheduleIndexView.view().content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')

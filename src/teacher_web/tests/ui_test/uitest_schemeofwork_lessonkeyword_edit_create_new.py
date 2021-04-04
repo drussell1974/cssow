@@ -36,7 +36,7 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new(UITestCase):
         ' term Enter Valid '
         elem = self.test_context.find_element_by_id("ctl-term")
         elem.clear()
-        #elem.send_keys(self.TEST_KEYWORD_TERM)
+        elem.send_keys("")
 
         ' definition Enter Valid '
         elem = self.test_context.find_element_by_id("ctl-definition")
@@ -47,28 +47,6 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new(UITestCase):
         elem.send_keys(Keys.ENTER)
         elem.send_keys(Keys.ENTER)
         elem.send_keys("Quisque diame lorem, aliquam non tortor vel, tristique vestibulum leo. Integer mattis eros in diam faucibus interdum. Sed nec tortor.")
-
-        ' submit the form '
-        elem = self.test_context.find_element_by_id("saveDraftButton")
-        elem.send_keys(Keys.RETURN)
-
-        # assert
-        ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new keyword for Types of CPU architecture')
-        
-
-    def test_page__should_stay_on_same_page_if_duplicate(self):
-        # setup
-        elem = self.test_context.find_element_by_tag_name("form")
-
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
-        ' term Enter Valid but duplicate term '
-
-        elem = self.test_context.find_element_by_id("ctl-term")
-        elem.clear()    
-        elem.send_keys(self.TEST_KEYWORD_TERM)
 
         ' submit the form '
         elem = self.test_context.find_element_by_id("saveDraftButton")
