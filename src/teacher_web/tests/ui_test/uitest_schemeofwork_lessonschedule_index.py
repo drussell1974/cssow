@@ -40,7 +40,7 @@ class uitest_schemeofwork_lessonschedule_index(UITestCase):
         elem = self.test_context.find_element_by_class_name('group-heading')
 
         # assert
-        self.assertEqual("Schedule", elem.text)
+        self.assertEqual("Schedule 2020/2021", elem.text)
 
 
     def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
@@ -72,6 +72,40 @@ class uitest_schemeofwork_lessonschedule_index(UITestCase):
         self.assertEqual(1, result, "number of elements not as expected")
 
 
+    def test_page__show_previous_academic_year(self):
+        # setup
+        ' selected_year - select previous academic year '
+        elem = self.test_context.find_element_by_css_selector("#ctl-academic_year > option:nth-child(1)")
+        elem.click()
+
+        self.wait(s=4)
+
+        # assert
+
+        section = self.test_context.find_elements_by_class_name('card-keyword')
+
+        result = len(section)
+
+        # assert
+        self.assertEqual(0, result, "number of elements not as expected")
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons')
+        self.assertEqual("Schedule 2019/2020", self.test_context.find_element_by_class_name('group-heading').text)
+
+
+    def test_page__show_current_academic_year_only(self):
+        # setup
+        section = self.test_context.find_elements_by_class_name('card-keyword')
+
+        # test
+        result = len(section)
+
+        # assert
+        self.assertEqual(1, result, "number of elements not as expected")
+
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons')
+        self.assertEqual("Schedule 2020/2021", self.test_context.find_element_by_class_name('group-heading').text)
+
+
     def test_page__show_edit(self):
         # setup
         elem = self.test_context.find_element_by_id(f'lnk-edit-lesson_schedule--{self.test_lesson_schedule_id}')
@@ -91,7 +125,7 @@ class uitest_schemeofwork_lessonschedule_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings(title="Dave Russell - Teach Computer Science", h1="Types of CPU architecture", subheading="Create schedule for Types of CPU architecture", wait=2)
         
-    
+
     def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
         # arrange
         self.assertSidebarResponsiveMenu(section_no=1, expected_title="This lesson", expected_no_of_items=3)

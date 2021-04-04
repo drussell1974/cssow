@@ -60,7 +60,7 @@
     <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
   </span>
 {% endif %}
-<h2 class="group-heading">{{_("Schedule")}}</h2>
+<h2 class="group-heading">{{_("Schedule")}} {{ request.session.academic_year__display }}</h2>
 <hr />
 <!-- Pager Header END -->      
 

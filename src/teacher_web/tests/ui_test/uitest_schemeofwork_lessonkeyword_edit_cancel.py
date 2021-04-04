@@ -2,6 +2,7 @@ from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
+@skip("eliminate from keyword deletion")
 class uitest_schemeofwork_lessonkeyword_edit_cancel(UITestCase):
 
     test_context = WebBrowserContext()

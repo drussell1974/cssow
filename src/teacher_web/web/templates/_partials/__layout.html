@@ -122,7 +122,7 @@
           <form action="{% url 'default.academic-year' %}" method="POST">
             {% csrf_token %}
             <div class="card-body">
-              <select onchange="this.form.submit()" class="form-control" id="academic_year" name="academic_year">
+              <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
               {% for key, value in request.session.academic_year.items %}
                   <option value="{{key}}" {%if request.session.academic_year__selected_id == key %}selected{%endif%}>{{ value.display }}</option>
               {% endfor %}

@@ -112,10 +112,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
 
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
-        create_schedule = request.POST.get("generate_class_code", False)
-        
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, create_schedule = create_schedule)
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
         try:
             modelviewmodel.execute(published_state)

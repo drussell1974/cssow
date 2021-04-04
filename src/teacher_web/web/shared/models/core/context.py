@@ -56,7 +56,8 @@ class AuthCtx(Ctx):
         self.request.session["academic_year"] = academic_year
         #432 get set start and end from selected year
         selected_year = self.request.session.get("academic_year__selected_id", 0) # default current (offset zero)
-
+        
+        self.request.session["academic_year__display"] = academic_year[selected_year]["display"]
         self.request.session["academic_year.start_date"] = academic_year[selected_year]["start"]
         self.request.session["academic_year.end_date"] = academic_year[selected_year]["end"] 
 

@@ -49,15 +49,19 @@
         </div>
         <!-- Start date END -->
 
-        <!-- Class code START -->
-        <div class="control-group">
-            <div class="form-group controls">
-                <label>{{_("Class code (auto-generated)")}}</label>
+        <!-- Class code -->
+        <label>{{_("Class code")}}</label>
+        <div class="input-group mb-3">    
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="checkbox" id="ctl-class_code" name="generate_class_code" data-toggle="tooltip" data-placement="bottom" title="{{_('Check to regenerate the class code')}}" aria-label="Checkbox for regenerating the class code">
+                </div>
+                </div>
                 <input type="text" class="form-control" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" 
-                    readonly maxlength="6" />
-            </div>
+                    readonly minlength="6" maxlength="6" />
         </div>
         <!-- Class code END -->
+
 
         <br>
         <div id="success"></div>
@@ -68,9 +72,15 @@
         
         <input type="hidden" name="id" value="{{content.data.model.id}}">
         <input type="hidden" name="lesson_id" value="{{ content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" >
+        <input type="hidden" name="next" value="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" >
         <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
     </form>
 <hr>
 </article>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    $('#ctl-class_code').tooltip();
+</script>
 {% endblock %}
