@@ -114,6 +114,13 @@
             <!-- Content Heading END -->
         </div>
       </div>
+      <!-- Notifications START -->
+      <div class="row">
+        <div class="col-lg-12 col-md-14">
+          <div id="notification-app"></div>
+        </div>
+      </div>
+      <!-- Notifications END -->
       <!-- Breadcrumb START -->
       <div class="row">
         <!-- Academic Year START -->
@@ -248,6 +255,6 @@
       </div>
     </div>
   {% endif %}
-
+  <script src="{% static 'default/react_apps/notification-app/bundle.js' %}"></script>
   </body>
 </html>

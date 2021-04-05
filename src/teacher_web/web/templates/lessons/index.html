@@ -130,8 +130,8 @@
           </a>
         </div>
         <!-- Schedule -->
-        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedudle--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedudle--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}"><i class="fa fa-calendar"></i> {{_('Schedule')}} {% if row.lesson_schedule|length > 0 %}<i class="badge badge-danger fa fa-graduation-cap" title="{{ row.lesson_schedule|length }} {{_('current lessons')}}"> {{ row.lesson_schedule|length }}</i>{% endif %}</button>
-        <div class="collapse shadow" id="collapseSchedudle--{{row.id}}">
+        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedule--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedule--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}"><i class="fa fa-calendar"></i> {{_('Schedule')}} {% if row.lesson_schedule|length > 0 %}<i class="badge badge-danger fa fa-graduation-cap" title="{{ row.lesson_schedule|length }} {{_('current lessons')}}"> {{ row.lesson_schedule|length }}</i>{% endif %}</button>
+        <div class="collapse shadow" id="collapseSchedule--{{row.id}}">
           <div class="card card-body">  
             <a href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark stackable" id="btn-lesson-schedule--{{row.id}}">{{_('View all')}}</a>
             {% if row.lesson_schedule %}
@@ -188,11 +188,8 @@
   const params = new URLSearchParams(window.location.search)
   if (params !== undefined) {
     var p = params.get('show-schedule');
-    console.log(p);
-    var id = '#collapseSchedudle--'.concat(p);
-    console.log(id);
+    var id = '#collapseSchedule--'.concat(p);
     var elem = document.querySelector(id);
-    console.log(elem);
     if (elem != undefined) {
       elem.collapse('show');
     }
