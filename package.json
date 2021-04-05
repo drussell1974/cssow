@@ -8,9 +8,9 @@
   "scripts": {
     "build": "sh scripts/build.sh",
     "build:dev": "sh scripts/build:dev.sh",
-    "test:unit": "yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:unit",
-    "test:coverage": "yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:coverage",
-    "test:all": "yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:all",
+    "test:unit": "yarn --cwd src/calendar_app/ test && yarn --cwd src/notification_app/ test && yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:unit",
+    "test:coverage": "yarn --cwd src/calendar_app/ test && yarn --cwd src/notification_app/ test && yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:coverage",
+    "test:all": "yarn --cwd src/calendar_app/ test && yarn --cwd src/notification_app/ test && yarn --cwd src/student_web/ test && yarn --cwd src/teacher_web/ test:all",
     "dbpassword": "sh scripts/pwgen.sh"
   },
   "husky": {

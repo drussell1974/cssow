@@ -255,6 +255,9 @@
       </div>
     </div>
   {% endif %}
-  <script src="{% static 'default/react_apps/build/notification-app/bundle.js' %}"></script>
+  <!-- react scripts START -->
+  <script src="{% static 'default/react_apps/build/notification_app/bundle.js' %}"></script>
+  {% block react_scripts %}
+  {% endblock %}
   </body>
 </html>

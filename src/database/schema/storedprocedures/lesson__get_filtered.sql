@@ -1,8 +1,8 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS lesson__get_filtered$2;
+DROP PROCEDURE IF EXISTS `lesson__get_filtered$2`;
 
-CREATE PROCEDURE lesson__get_filtered$2 (
+CREATE PROCEDURE `lesson__get_filtered$2` (
  IN p_scheme_of_work_id INT,
  IN p_keyword_search VARCHAR(100),
  IN p_page INT,

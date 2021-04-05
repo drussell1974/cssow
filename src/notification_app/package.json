@@ -16,7 +16,7 @@
     "react-dom": "^16.10.2"
   },
   "scripts": {
-    "clean": "cleandir ../../src/teacher_web/web/static/default/react_apps/build/notification-app",
+    "clean": "cleandir ../../src/teacher_web/web/static/default/react_apps/build/notification_app",
     "build:dev": "yarn clean && env-cmd -f ../../dotenv/.env.development webpack --mode development && cp -R ./build ../../src/teacher_web/web/static/default/react_apps/",
     "build": "yarn clean && env-cmd -f ../../dotenv/.env.production webpack --mode production && cp -R ./build ../../src/teacher_web/web/static/default/react_apps/ && tar -czf ../../build/react_apps/notification-app.build.tar.gz build",
     "test": "jest --coverage"

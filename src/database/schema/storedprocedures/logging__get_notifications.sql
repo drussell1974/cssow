@@ -20,7 +20,7 @@ BEGIN
         sow_logging as log
         INNER JOIN sow_logging_notification as notify ON notify.logging_id = log.id
     WHERE
-		notify.user_id = p_auth_user     
+		notify.user_id = p_auth_user 
     LIMIT p_pagesize OFFSET offset_n_records;   
 END;
 //
