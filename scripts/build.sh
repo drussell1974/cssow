@@ -6,9 +6,12 @@ BUILDNO=$(date +%F)-${1:-development}
 
 echo Creating release-$BUILDNO...
 
-yarn --cwd src/student_web build
-yarn --cwd src/teacher_web build
+# 1. rebuild apps
 yarn --cwd src/notification_app build
+# 2. student site
+yarn --cwd src/student_web build
+# 3. teacher site
+yarn --cwd src/teacher_web build
 
 # Create docker-compose with new build number
 #sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-compose.yml
