@@ -1,19 +1,23 @@
 const getNotifications = (reactComponent) => {
-    let uri = `${REACT_APP_STUDENT_WEB__CSSOW_API_URI}/notifications/?format=json`;
+    let uri = `/api/notifications/?format=json`;
     fetch(uri)
         .then(res => { 
             return res.json();
         })
         .then(
         (data) => {
+            let messages = {};
+            data.messages.map(m => {
+                messages[m.id] = m
+            })
             reactComponent.setState({
-                Messages: data.messages, 
+                Messages: messages,
                 hasError: false,
             });
         },  
         (error) => {
             reactComponent.setState({
-                Messages: [],
+                Institutes: [],
                 hasError: true,
             });
         }

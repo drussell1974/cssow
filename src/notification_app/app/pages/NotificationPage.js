@@ -4,20 +4,27 @@ import NotificationWidget from '../widgets/NotificationWidget';
 
 class NotificationPage extends React.Component {
     
-    onProgress() {
-        return this.state.loading + 100 / 3;
-    }
-
     constructor(props){
         super(props);
         this.state = {
-            messages: [],
+            Messages: {},
         }
+        this.handleDeleteMessageClick = this.handleDeleteMessageClick.bind(this);
     }
+
+    handleDeleteMessageClick(id) {
+        const copyMessages = {...this.state.Messages}
+            delete copyMessages[id]
+        this.setState({
+            Messages: copyMessages,
+        })
+    }
+    
 
     componentDidMount() {
         getNotifications(this);
-    }
+        setInterval(() => getNotifications(this), 30000);
+      }
     
     static getDerivedStateFromError(error) {
         // Update state so the next render will show the fallback UI.
@@ -37,7 +44,7 @@ class NotificationPage extends React.Component {
 
         return (
             <React.Fragment>
-                <NotificationWidget messages={this.state.messages} />
+                <NotificationWidget messages={this.state.Messages} deleteMessageCallback={this.handleDeleteMessageClick} />
             </React.Fragment>
         )
     }

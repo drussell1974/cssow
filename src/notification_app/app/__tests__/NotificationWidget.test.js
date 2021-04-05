@@ -11,6 +11,10 @@ describe('NotificationWidget', () => {
         ({render, container} = createContainer());
     })
 
+    let deleteMessageCallback = () => {
+        
+    }
+
     it('renders empty model', () => {
         render(<NotificationWidget />);
 
@@ -20,48 +24,67 @@ describe('NotificationWidget', () => {
     })
 
     it('renders single message', () => {
-        let messages=[{"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }]
-        render(<NotificationWidget messages={messages} />);
+        
+        let messages={
+            1: {"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+        }
+        
+        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
 
         expect(
             container.querySelector('#dropdownNotificationsMenuButton').textContent
         ).toMatch('1');
         
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item').textContent
+            container.querySelector('.dropdown-menu .dropdown-item strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
     
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item').getAttribute('href')
+            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
+
+        expect(
+            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').textContent
+        ).toMatch('action now');
     })
 
     it('renders multiple messages', () => {
-        let messages=[
-            {"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" },
-            {"id": 2, "message":"Suspendisse semper neque diam, posuere facilisis quam vulputate eu. In et lorem mi.", "action":"http://localhost/dosomething/2" },
-            {"id": 3, "message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
-        ]
-        render(<NotificationWidget messages={messages} />);
+        
+
+        let messages={
+            1: {"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" },
+            2: {"id": 2, "message":"Suspendisse semper neque diam, posuere facilisis quam vulputate eu. In et lorem mi.", "action":"http://localhost/dosomething/2" },
+            3: {"id": 3, "message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
+        }
+
+        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
 
         expect(
             container.querySelector('#dropdownNotificationsMenuButton').textContent
         ).toMatch('3');
         
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item:first-child').textContent
+            container.querySelector('.dropdown-menu .dropdown-item:first-child strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
 
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item:last-child').textContent
-        ).toMatch('Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.');
+            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').textContent
+        ).toMatch('action now');
     
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item:first-child').getAttribute('href')
+            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
 
         expect(
-            container.querySelector('.alert .dropdown-menu .dropdown-item:last-child').getAttribute('href')
+            container.querySelector('.dropdown-menu .dropdown-item:last-child strong').textContent
+        ).toMatch('Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.');
+    
+        expect(
+            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').textContent
+        ).toMatch('action now');
+
+        expect(
+            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/3');
     })
 })

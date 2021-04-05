@@ -65,7 +65,8 @@
                 <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
             {% endif %}
           </div>
-          <!-- Dropdown END -->
+          <!-- Dropdown END -->          
+
           <a class="btn navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">{{_("Logout")}}</a>
           
           {% else %}
@@ -114,30 +115,28 @@
             <!-- Content Heading END -->
         </div>
       </div>
-      <!-- Notifications START -->
-      <div class="row">
-        <div class="col-lg-12 col-md-14">
-          <div id="notification-app"></div>
-        </div>
-      </div>
-      <!-- Notifications END -->
       <!-- Breadcrumb START -->
       <div class="row">
-        <!-- Academic Year START -->
-        <div class="col-lg-4 col-md-4 academic-year">
+        <div class="col-lg-4 col-md-4">
           {% if request.session.academic_year and content.ctx.institute_id %}
-          <form action="{% url 'default.academic-year' %}" method="POST">
-            {% csrf_token %}
             <div class="card-body">
-              <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
-              {% for key, value in request.session.academic_year.items %}
-                  <option value="{{key}}" {%if request.session.academic_year__selected_id == key %}selected{%endif%}>{{ value.display }}</option>
-              {% endfor %}
-              </select>
+              <!-- Notifications START -->
+              <div id="notification-app"></div>
+              <!-- Notifications END -->
+              <!-- Academic Year START -->
+              <form action="{% url 'default.academic-year' %}" method="POST">
+                {% csrf_token %}
+    
+                <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
+                {% for key, value in request.session.academic_year.items %}
+                    <option value="{{key}}" {%if request.session.academic_year__selected_id == key %}selected{%endif%}>{{ value.display }}</option>
+                {% endfor %}
+                </select>
+              </form>
+              <!-- Academic Year END -->
             </div>
-          </form>
           {% endif %}
-          <!-- Academic Year END -->
+        
         </div>
         <div class="col-lg-8 col-md-8 breadcrumb-custom">
           {% block breadcrumb %}
