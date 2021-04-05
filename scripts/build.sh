@@ -8,6 +8,7 @@ echo Creating release-$BUILDNO...
 
 yarn --cwd src/student_web build
 yarn --cwd src/teacher_web build
+yarn --cwd src/notification_app build
 
 # Create docker-compose with new build number
 #sed "s/BUILDNO/$BUILDNO/"  build/docker-compose.TEMPLATE.yml > build/docker-compose.yml

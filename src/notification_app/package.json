@@ -16,7 +16,7 @@
     "react-dom": "^16.10.2"
   },
   "scripts": {
-    "build:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && cp -R build ../../src/teacher_web/web/static/default/react_apps",
+    "build:dev": "env-cmd -f ../../dotenv/.env.development webpack --mode development && cp -R ./build ../../src/teacher_web/web/static/default/react_apps/",
     "build": "env-cmd -f ../../dotenv/.env.production webpack --mode production && tar -czf ../../build/react_apps/notification-app.build.tar.gz build",
     "test": "jest --coverage"
   },
