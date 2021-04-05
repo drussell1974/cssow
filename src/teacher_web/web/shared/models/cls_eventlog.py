@@ -43,7 +43,11 @@ class EventLogFilter(Pager):
 
 
 class EventLogModel(BaseModel):
-    def __init__(self, id_, created, event_type, message, details, category, subcategory):
+
+    message = ""
+    action = ""
+    
+    def __init__(self, id_, created, event_type, message, details="", category="", subcategory="", action=""):
         self.id = id_
         self.created = created
         self.event_type = event_type
@@ -51,6 +55,26 @@ class EventLogModel(BaseModel):
         self.details=details
         self.category=category
         self.subcategory=subcategory
+        self.action = action
+
+
+    @classmethod
+    def get_notifications(self, db, search_criteria, auth_user):
+        # TODO: return as EventLogModel collection
+        
+        rows = EventLogDataAccess.get_notifications(
+            db=db, 
+            page=search_criteria.page, 
+            pagesize=search_criteria.pagesize, 
+            auth_user_id=auth_user.auth_user_id)
+        
+        data = []
+        for row in rows:
+            event = EventLogModel(row[0], row[1], LOG_TYPE.parse(row[2]), row[3], row[4], action=row[5])
+            
+            data.append(event)
+
+        return data
 
 
     @staticmethod
@@ -92,6 +116,20 @@ class EventLogDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
         params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user_id)
+        
+        rows = []
+        rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
+    
+        return rows
+
+
+    @staticmethod
+    def get_notifications(db, page, pagesize, auth_user_id):
+        """ get notifications from event logs for user """
+
+        execHelper = ExecHelper()
+        stored_procedure = "logging__get_notifications"
+        params = (page - 1, pagesize, auth_user_id)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
