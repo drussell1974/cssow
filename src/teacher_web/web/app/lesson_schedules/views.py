@@ -20,7 +20,7 @@ from datetime import datetime
 @min_permission_required(LESSON.EDITOR, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
     """ Get schedules for lesson """
-
+    
     scheduleIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
     return render(request, "lesson_schedules/index.html", scheduleIndexView.view().content)
@@ -32,7 +32,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     ''' Edit the lesson scheduule '''
     model = None
     
-    modelview = LessonScheduleEditViewModel(db=db, request=request, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
+    #432 create url for notification
+    ''' creates url from lesson index e.g. /institute/2/department/5/schemesofwork/11/lessons#220 '''
+    action_url =  f"{reverse('lesson_schedule.index', args=[institute_id, department_id, scheme_of_work_id, lesson_id])}#{schedule_id}"
+    
+    modelview = LessonScheduleEditViewModel(db=db, request=request, action_url=action_url, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
         
     if request.method == "POST":
         ' saved the scheduled lesson '            

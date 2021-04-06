@@ -22,3 +22,9 @@ ADD CONSTRAINT `fk_sow_logging_notification__has__logging`
 ALTER TABLE sow_logging_notification
 ADD COLUMN `start_date` datetime DEFAULT CURRENT_TIMESTAMP;
 
+ALTER TABLE sow_logging_notification
+ADD COLUMN message VARCHAR(30) after logging_id,
+ADD COLUMN action VARCHAR(2083) after message;
+
+ALTER TABLE sow_logging
+DROP COLUMN action;

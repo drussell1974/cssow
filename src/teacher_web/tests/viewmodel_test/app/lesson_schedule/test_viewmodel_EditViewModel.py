@@ -135,7 +135,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     "id": 99,
                     "class_code": "XBCDEF",
                     "class_name": "10yab",
-                    "start_date": "2021-04-03 04:42:04",
+                    "start_date": "2021-04-03T04:42",
                     "published": "PUBLISH"
                 }
 
@@ -146,7 +146,7 @@ class test_viewmodel_EditViewModel(TestCase):
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
         
         # mock existing object in database
-        get_schedule_model = Model(101, class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        get_schedule_model = Model(101, class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
         get_schedule_model.is_valid = True
 
         # mock saved object
@@ -174,7 +174,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     self.assertEqual(101, test_context.model.id)
                     self.assertEqual("10yab", test_context.model.class_name)
                     self.assertEqual("XBCDEF", test_context.model.class_code)
-                    self.assertEqual("2021-04-03 04:42:04", test_context.model.start_date)
+                    self.assertEqual("2021-04-03T04:42", test_context.model.start_date)
 
 
     def test_execute_called_save__return_when_invalid(self, mock_auth_user):

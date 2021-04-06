@@ -197,7 +197,7 @@ MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
 MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
 
 # DATEFORMAT
-ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
+ISOFORMAT = "%Y-%m-%dT%H:%M"
 
 
 # Paging default settings
@@ -207,6 +207,11 @@ PAGER = {
         "page": 1,
         "pagesize": 25,
         "pagesize_options": [ 10, 25, 50, 100 ]
+    },
+    "notifications":{
+        "page": 1,
+        "pagesize": 100,
+        "pagesize_options": [100,]
     }
 }
 

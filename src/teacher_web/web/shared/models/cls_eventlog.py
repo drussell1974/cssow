@@ -41,13 +41,9 @@ class EventLogFilter(Pager):
             self.is_valid = True
         
 
-
 class EventLogModel(BaseModel):
 
-    message = ""
-    action = ""
-    
-    def __init__(self, id_, created, event_type, message, details="", category="", subcategory="", action=""):
+    def __init__(self, id_, created, event_type, message, details="", category="", subcategory="", action="", notify_message=""):
         self.id = id_
         self.created = created
         self.event_type = event_type
@@ -56,26 +52,7 @@ class EventLogModel(BaseModel):
         self.category=category
         self.subcategory=subcategory
         self.action = action
-
-
-    @classmethod
-    def get_notifications(self, db, search_criteria, auth_user):
-        # TODO: return as EventLogModel collection
-        
-        rows = EventLogDataAccess.get_notifications(
-            db=db, 
-            start_date=search_criteria.date_from,
-            page=search_criteria.page, 
-            pagesize=search_criteria.pagesize, 
-            auth_user_id=auth_user.auth_user_id)
-        
-        data = []
-        for row in rows:
-            event = EventLogModel(row[0], row[1], LOG_TYPE.parse(row[2]), row[3], row[4], action=row[5])
-            
-            data.append(event)
-
-        return data
+        self.notify_message = notify_message
 
 
     @staticmethod
@@ -117,20 +94,6 @@ class EventLogDataAccess(BaseDataAccess):
         execHelper = ExecHelper()
         stored_procedure = "logging__get_all"
         params = (scheme_of_work_id, page - 1, pagesize, date_from, date_to, event_type, category, subcategory, auth_user_id)
-        
-        rows = []
-        rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)
-    
-        return rows
-
-
-    @staticmethod
-    def get_notifications(db, start_date, page, pagesize, auth_user_id):
-        """ get notifications from event logs for user """
-
-        execHelper = ExecHelper()
-        stored_procedure = "logging__get_notifications"
-        params = (start_date, page - 1, pagesize, auth_user_id)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)

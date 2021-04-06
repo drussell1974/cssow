@@ -11,7 +11,7 @@ class fake_settings:
             "pagesize_options": [ 3, 5, 10, 25, 50, 100 ]
         }
     },
-    ISOFORMAT = "%Y-%m-%dT%H:%M:%S"
+    ISOFORMAT = "%Y-%m-%dT%H:%M"
 
 
 class test_cls_eventlogfilter__constructor(TestCase):

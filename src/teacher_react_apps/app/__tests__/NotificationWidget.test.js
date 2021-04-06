@@ -26,7 +26,7 @@ describe('NotificationWidget', () => {
     it('renders single message', () => {
         
         let messages={
-            1: {"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+            1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
         }
         
         render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
@@ -52,9 +52,9 @@ describe('NotificationWidget', () => {
         
 
         let messages={
-            1: {"id": 1, "message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" },
-            2: {"id": 2, "message":"Suspendisse semper neque diam, posuere facilisis quam vulputate eu. In et lorem mi.", "action":"http://localhost/dosomething/2" },
-            3: {"id": 3, "message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
+            1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" },
+            2: {"id": 2, "notify_message":"Suspendisse semper neque diam, posuere facilisis quam vulputate eu. In et lorem mi.", "action":"http://localhost/dosomething/2" },
+            3: {"id": 3, "notify_message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
         }
 
         render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);

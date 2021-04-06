@@ -8,7 +8,7 @@ const NotificationWidget = ({messages, deleteMessageCallback}) => {
                 <div className="dropdown-menu" aria-labelledby="dropdownNotificationsMenuButton">
                     {Object.keys(messages).map(id => (
                         <div key={id} className="dropdown-item">
-                            <strong>{messages[id].message}</strong> <a className="dropdown-link" href={messages[id].action}>action now</a> <button onClick={deleteMessageCallback.bind(this, id)} type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>{messages[id].notify_message}</strong> <a className="dropdown-link" href={messages[id].action}>action now</a> <button onClick={deleteMessageCallback.bind(this, id)} type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                     ))}
                 </div>

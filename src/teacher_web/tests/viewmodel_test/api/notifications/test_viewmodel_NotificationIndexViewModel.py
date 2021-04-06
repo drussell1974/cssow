@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from api.notifications.viewmodels import NotificationIndexViewModel as ViewModel
 from tests.test_helpers.mocks import fake_ctx_model
-from shared.models.cls_eventlog import EventLogModel as Model
+from shared.models.cls_notification import NotifyModel as Model
 from shared.models.core.log_type import LOG_TYPE
 
 class fake_settings:
@@ -10,6 +10,9 @@ class fake_settings:
     PAGER = { 
         "default": {
              "page": 2, "pagesize": 10, "pagesize_options": [5,10,25,50,100]
+        },
+        "notifications": {
+             "page": 1, "pagesize": 100, "pagesize_options": [100,]
         }
     }
 
@@ -51,10 +54,11 @@ class test_viewmodel_NotificationIndexViewModel(TestCase):
         # arrange
         
         data_to_return = [Model(56, 
+            notify_message="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.",
-            created="2021-04-05T07:46",
-            event_type=LOG_TYPE.Information,
-            details="http://localhost/dosomething/2"
+            reminder="2021-04-05T07:46",
+            event_type=LOG_TYPE.Warning,
+            action="http://localhost/dosomething/2"
         )]
 
         with patch.object(Model, "get_notifications", return_value=data_to_return):
@@ -78,22 +82,25 @@ class test_viewmodel_NotificationIndexViewModel(TestCase):
         
         data_to_return = [
             Model(56, 
+                notify_message="Lorem ipsum dolor sit amet",
                 message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.",
-                created="2021-04-05T07:46",
+                reminder="2021-04-05T07:46",
                 event_type=LOG_TYPE.Warning,
-                details="http://localhost/dosomething/1"
+                action="http://localhost/dosomething/1"
             ),
-            Model(56, 
+            Model(57, 
+                notify_message="Suspendisse semper neque diam.",
                 message="Suspendisse semper neque diam, posuere facilisis quam vulputate eu. In et lorem mi.",
-                created="2021-04-05T07:46",
+                reminder="2021-04-05T07:46",
                 event_type=LOG_TYPE.Information,
-                details="http://localhost/dosomething/2"
+                action="http://localhost/dosomething/2"
             ),
-            Model(56, 
+            Model(58, 
+                notify_message="Donec lacinia diam vel euismod aliquam.",
                 message="Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam.",
-                created="2021-04-05T07:46",
+                reminder="2021-04-05T07:46",
                 event_type=LOG_TYPE.Error,
-                details="http://localhost/dosomething/3"
+                action="http://localhost/dosomething/3"
             )
         ]
         
