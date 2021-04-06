@@ -49,7 +49,6 @@ class test_viewmodel_EditViewModel(TestCase):
                 # returns new model
                 self.assertEqual(0, test_context.model.id)
                 self.assertEqual(6, len(test_context.model.class_code))
-                #self.assertEqual(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), test_context.model.start_date)
 
 
     def test_view_when_new(self, mock_auth_user):
@@ -85,8 +84,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 # returns new model
                 self.assertEqual(0, test_context.model.id)
                 self.assertEqual(6, len(test_context.model.class_code))
-                #self.assertEqual(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), test_context.model.start_date)
-            
+                
 
     def test_view_when_existing(self, mock_auth_user):
         

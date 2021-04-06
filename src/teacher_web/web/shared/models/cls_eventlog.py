@@ -64,6 +64,7 @@ class EventLogModel(BaseModel):
         
         rows = EventLogDataAccess.get_notifications(
             db=db, 
+            start_date=search_criteria.date_from,
             page=search_criteria.page, 
             pagesize=search_criteria.pagesize, 
             auth_user_id=auth_user.auth_user_id)
@@ -124,12 +125,12 @@ class EventLogDataAccess(BaseDataAccess):
 
 
     @staticmethod
-    def get_notifications(db, page, pagesize, auth_user_id):
+    def get_notifications(db, start_date, page, pagesize, auth_user_id):
         """ get notifications from event logs for user """
 
         execHelper = ExecHelper()
         stored_procedure = "logging__get_notifications"
-        params = (page - 1, pagesize, auth_user_id)
+        params = (start_date, page - 1, pagesize, auth_user_id)
         
         rows = []
         rows = execHelper.select(db, stored_procedure, params, rows, handle_log_info)

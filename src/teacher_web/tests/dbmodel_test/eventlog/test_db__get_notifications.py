@@ -36,7 +36,7 @@ class test_db__get_notifications(TestCase):
         # arrange
         expected_result = []
 
-        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100)
+        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100, date_from = "2121-12-31T00:00:00")
         
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -47,7 +47,7 @@ class test_db__get_notifications(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_notifications'
-                , (1, 100, mock_auth_user.auth_user_id)
+                , ("2121-12-31T00:00:00", 1, 100, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -60,8 +60,8 @@ class test_db__get_notifications(TestCase):
             (1029, "2020-08-23 03:49:56", LOG_TYPE.Error, "An error occured doing some stuff", "nec arcu nec dolor vehicula ornare non.", "http://localhost/dosomething/1"),
             ]
         
-        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100)
-        
+        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100, date_from = "2021-01-15T00:00:00")
+
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
@@ -71,7 +71,7 @@ class test_db__get_notifications(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_notifications'
-                , (1, 100, mock_auth_user.auth_user_id)
+                , ("2021-01-15T00:00:00", 1, 100, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)                
 
@@ -93,7 +93,7 @@ class test_db__get_notifications(TestCase):
             (1023, "2020-08-23 03:48:01", LOG_TYPE.Warning, "Validation errors", "rutrum lorem a arcu ultrices, id mollis", "http://localhost/dosomething/3")
         ]
         
-        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100)
+        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100, date_from = "2021-04-05T00:00:00")
         
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -104,7 +104,7 @@ class test_db__get_notifications(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'logging__get_notifications'
-                , (1, 100, mock_auth_user.auth_user_id)
+                , ("2021-04-05T00:00:00", 1, 100, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 

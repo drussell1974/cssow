@@ -36,7 +36,7 @@ class test_cls_lesson_schedule__display_date(TestCase):
         self.test.start_date = datetime(year=2019, month=3, day=31, hour=14, minute=0, second=0)
         # assert
         self.assertFalse(self.test.is_today)
-        self.assertEqual("Sunday, 31 March 2019", self.test.display_date)
+        self.assertEqual("Sunday, 31st March 2019", self.test.display_date)
 
 
     def test_display_date__when_other_than_today__future(self):
@@ -45,7 +45,7 @@ class test_cls_lesson_schedule__display_date(TestCase):
         self.test.start_date = datetime(year=2121, month=3, day=31, hour=14, minute=0, second=0)
         # assert
         self.assertFalse(self.test.is_today)
-        self.assertEqual("Monday, 31 March 2121", self.test.display_date)
+        self.assertEqual("Monday, 31st March 2121", self.test.display_date)
 
 
 class test_cls_lesson_schedule__input_date(TestCase):
@@ -70,7 +70,7 @@ class test_cls_lesson_schedule__input_date(TestCase):
         self.test.start_date = datetime(year=2019, month=9, day=30, hour=11, minute=56, second=2)
         # assert
         self.assertFalse(self.test.is_today)
-        self.assertEqual("2019-09-30T11:56", self.test.input_date)
+        self.assertEqual("2019-09-30T11:56:02", self.test.input_date)
 
 
     def test_input_date__when_other_than_today__future(self):
@@ -79,4 +79,4 @@ class test_cls_lesson_schedule__input_date(TestCase):
         self.test.start_date = datetime(year=2121, month=3, day=15, hour=14, minute=0, second=0)
         # assert
         self.assertFalse(self.test.is_today)
-        self.assertEqual("2121-03-15T14:00", self.test.input_date)
+        self.assertEqual("2121-03-15T14:00:00", self.test.input_date)

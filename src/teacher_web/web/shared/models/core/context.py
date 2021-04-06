@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.conf import settings
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -12,9 +13,6 @@ class AcademicYear:
     def get_options(cls, db, institute_id, department_id):
         """ session helper to determine academic year """
         
-        # format data as recognised by mysql
-        db_date_fmt = "%Y-%m-%dT%H:%M:%S%z" # "%d-%b-%Y %H:%M:%S" # TODO: get from settings
-
         academic_year = {}
 
         start_year = datetime.now().year if datetime.now().month >= 9 else datetime.now().year - 1   
@@ -24,7 +22,7 @@ class AcademicYear:
             start_date = datetime(year=start_year+i, month=9, day=1)
             end_date = datetime(year=start_year+i+1, month=8, day=30)
 
-            academic_year[i] = { "display":display, "start":start_date.strftime(db_date_fmt), "end": end_date.strftime(db_date_fmt) }
+            academic_year[i] = { "display":display, "start":start_date.strftime(settings.ISOFORMAT), "end": end_date.strftime(settings.ISOFORMAT) }
 
         return academic_year
 

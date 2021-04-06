@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from shared.models.core.basemodel import BaseModel, try_int
 from shared.models.core.db_helper import ExecHelper, sql_safe, to_empty, TRANSACTION_STATE
 from shared.models.core.log_handlers import handle_log_info, handle_log_error
@@ -37,7 +38,7 @@ class LessonScheduleModel(BaseModel):
         # format as "2021-04-03T11:23" for datetime-local input field
         if self.start_date is None:
             return ""
-        return self.start_date.strftime("%Y-%m-%dT%H:%M")
+        return self.start_date.strftime(settings.ISOFORMAT)
 
     @property
     def display_date(self):
@@ -46,7 +47,7 @@ class LessonScheduleModel(BaseModel):
         elif self.is_today:
             return "Today"
         else:
-            return self.start_date.strftime("%A, {} %B %Y".format(self.start_date.day))
+            return date_to_string(self.start_date)
         
 
     @classmethod
