@@ -1,5 +1,5 @@
 {
-  "name": "notification-app",
+  "name": "teacher-react-apps",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/drussell1974/cssow",
@@ -16,9 +16,9 @@
     "react-dom": "^16.10.2"
   },
   "scripts": {
-    "clean": "cleandir ../../src/teacher_web/web/static/default/react_apps/build/notification_app",
-    "build:dev": "yarn clean && env-cmd -f ../../dotenv/.env.development webpack --mode development && cp -R ./build ../../src/teacher_web/web/static/default/react_apps/",
-    "build": "yarn clean && env-cmd -f ../../dotenv/.env.production webpack --mode production && cp -R ./build ../../src/teacher_web/web/static/default/react_apps/ && tar -czf ../../build/react_apps/notification-app.build.tar.gz build",
+    "clean": "cleandir ../../src/teacher_web/web/static/default/js/teacher_react_apps/",
+    "build:dev": "yarn clean && env-cmd -f ../../dotenv/.env.development webpack --mode development && cp -R ./build ../../src/teacher_web/web/static/default/js/teacher_react_apps/",
+    "build": "yarn clean && env-cmd -f ../../dotenv/.env.production webpack --mode production && cp -R ./build ../../src/teacher_web/web/static/default/js/teacher_react_apps/ && tar -czf ../../build/teacher_react_apps/teacher-react-apps.build.tar.gz build",
     "test": "jest --coverage"
   },
   "devDependencies": {

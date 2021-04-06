@@ -20,7 +20,7 @@ module.exports = {
    output: {
       path: path.join(__dirname, '/build/'),
       publicPath: '/',
-      filename: 'notification_app/bundle.js'
+      filename: 'bundle.js'
    },
    node: {
       fs: 'empty'

@@ -7,7 +7,7 @@ BUILDNO=$(date +%F)-${1:-development}
 echo Creating release-$BUILDNO...
 
 # 1. rebuild apps
-yarn --cwd src/notification_app build
+yarn --cwd src/teacher_react_apps build
 # 2. student site
 yarn --cwd src/student_web build
 # 3. teacher site

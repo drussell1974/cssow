@@ -72,7 +72,8 @@
       </button>
   </div>
 {% else %}
-  
+    <div id="calendar-app"></div>
+    
     {% for row in content.data.schedules %}
 
       <div class="card card-keyword {{ row.published_state }}">
@@ -96,8 +97,3 @@
 
 {% endblock %}
 
-
-{% block page_js %}
-    {% load static %} 
-    <script type="text/javascript" src="{% static 'default/js/keyword-card-search.js' %}"></script>
-{% endblock %}
