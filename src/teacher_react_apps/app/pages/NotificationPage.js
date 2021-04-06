@@ -14,7 +14,7 @@ class NotificationPage extends React.Component {
 
     handleDeleteMessageClick(id) {
         const copyMessages = {...this.state.Messages}
-            delete copyMessages[id]
+        delete copyMessages[id]
         this.setState({
             Messages: copyMessages,
         })
