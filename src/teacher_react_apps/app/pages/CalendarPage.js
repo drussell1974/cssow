@@ -14,8 +14,8 @@ class CalendarPage extends React.Component {
         // required for getting parameters
         // this.handleDateClick = this.handleDateClick.bind(this);
         
-        // TODO: #358 get params from page and handle if not available
-        this.institute_id = document.querySelector("#teacher_react_apps.institute_id");
+        // #358 get params from page TODO: handle if not available
+        this.institute_id = document.querySelector("#teacher_react_apps__institute_id").value;
     }
 
     handleDateClick(arg) {
