@@ -48,7 +48,7 @@ const deleteNotification = (reactComponent, id) => {
 
 
 const getSchedule = (reactComponent, institute_id) => {
-    let uri = `/api/institute/${institute_id}/schedule/?format=json`;
+    let uri = `/api/institute/${institute_id}/schedule?format=json`;
     fetch(uri)
         .then(res => { 
             return res.json();
@@ -57,8 +57,8 @@ const getSchedule = (reactComponent, institute_id) => {
         (data) => {
             let scheduled_events = []
             // map scheduled lessons to fulcalendar event
-            data.lessons.map(sch => {
-                scheduled_events.push({title: sch.title, date: sch.date})
+            data.schedule.map(sch => {
+                scheduled_events.push({title: `${sch.class_name} - ${sch.title}`, date: sch.start_date})
             })
 
             reactComponent.setState({
