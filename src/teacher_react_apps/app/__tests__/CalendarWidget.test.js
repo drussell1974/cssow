@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { createContainer } from '../helpers/domManipulators';
-import CalendarWidget from '../widgets/NotificationWidget';
-
+import ReactTestUtils, { act } from 'react-dom/test-utils';
+import { createContainer, withEvent } from '../helpers/domManipulators';
+import CalendarWidget from '../widgets/CalendarWidget';
+import  'whatwg-fetch';
 import  { 
     fetchResponseOK,
     fetchResponseNotOK,
@@ -12,14 +12,31 @@ import  {
 } from '../helpers/spyHelpers';
 
 describe('CalendarWidget', () => {
-    let render, container;
+    let render, 
+    container, 
+    //form, 
+    field, 
+    //labelFor,
+    //element, 
+    //elements, 
+    change; 
+    //submit;
+
+    let events= [
+        { title: 'event 1', date: '2019-04-01' },
+        { title: 'event 2', date: '2019-04-02' }
+    ]
 
     beforeEach(() => {
         ({render, container} = createContainer());
     })
 
-    let handleDateClick = () => {
+    let onDateClick = () => {
         
+    }
+
+    let onChangeFilter = () => {
+
     }
 
     it('renders empty widget', () => {
@@ -31,49 +48,62 @@ describe('CalendarWidget', () => {
     })
 
     it('renders events on calendar', () => {
-        
-        let events= [
-            { title: 'event 1', date: '2019-04-01' },
-            { title: 'event 2', date: '2019-04-02' }
-        ]
 
-        render(<CalendarWidget events={events} handleDateClick={handleDateClick} />);
+        render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
         
         expect(
             container.textContent
         ).toMatch('');
     })
 
-    describe.skip('when item added', () => {
-        
+
+    describe('filter events ', () => {
+
         beforeEach(() => {
-            jest
-                .spyOn(window, 'fetch')
-                .mockReturnValue(fetchResponseOK({}));
+            ({render, container, field, change } = createContainer());
+            render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
+
         })
+
+        it('has control', () => {    
+            expect(
+                container.querySelector('#event-filter').textContent
+            ).toMatch('');
+        })
+
+        it('has all option', () => {
+            expect(
+                container.querySelector('#event_filter--all').getAttribute('value')
+            ).toEqual('all');
+
+            expect(
+                container.querySelector('#event-filter .form-check label').textContent
+            ).toEqual('show all events');
+        })
+    })
+    
+    describe.skip('when filter changed', () => {
         
-        afterEach(() => {
-            //window.fetch.mockRestore(); // = originalFetch;
-        })
-
-        it('notifies onDelete', async () => {
-            const notification = { id: 123 };
-            window.fetch.mockReturnValue(fetchResponseOK(notification));
+        const onChangeFilterSpy = jest.fn();
+        
+        it('notifies onChange', async () => {
             
-            const saveSpy = jest.fn(); //spy();
+            let fieldName = "event_filter";
             
-            render(<NotificationWidget 
-                    { ...validClassCode } 
-                    onClick={window.fetch} //.fn} 
-                />);
-
-            //await act(async () => {
-            //    submit(form('frm-login-form'));
-            //})
+            render(<CalendarWidget 
+                events={events} 
+                onDateClick={onDateClick}
+                onChangeFilter={onChangeFilterSpy}
+            />);
             
-            expect(window.fetch).toHaveBeenCalled();
-            //expect(saveSpy).toHaveBeenCalledWith(notification);
-            //expect(saveSpy).toHaveBeenCalled();
+            act(() => {
+                change(
+                    field('event-filter', fieldName),
+                    withEvent(fieldName, 'newValue')
+                );
+            })
+            
+            expect(onChangeFilterSpy).toHaveBeenCalled();
         })
     })
 })

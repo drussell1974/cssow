@@ -15,13 +15,20 @@ class CalendarPage extends React.Component {
         // this.handleDateClick = this.handleDateClick.bind(this);
         
         // #358 get params from page TODO: handle if not available
-        this.institute_id = document.querySelector("#teacher_react_apps__institute_id").value;
+        this.institute_id = document.querySelector("input#teacher_react_apps__institute_id").value;
+        //this.department_id = document.querySelector("input#teacher_react_apps__department_id").value;
+        //this.schemeofwork_id = document.querySelector("input#teacher_react_apps__scheme_of_work_id").value;
+        //this.lesson_id = document.querySelector("input#teacher_react_apps__lesson_id").value;
     }
 
-    handleDateClick(arg) {
-        console.log(arg.dateStr);
+    handleDateClick(e) {
+        console.log(e.dateStr);
         // TODO: #358 add scheduled lesson
       }
+
+    handleChangeFilter(e) {
+        console.log(e);
+    }
 
     componentDidMount() {
         getSchedule(this, this.institute_id);
@@ -49,7 +56,8 @@ class CalendarPage extends React.Component {
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
-                    handleDateClick={this.handleDateClick}
+                    onDateClick={this.handleDateClick}
+                    onChangeFilter={this.handleChangeFilter}
                 />
             </React.Fragment>
         )
