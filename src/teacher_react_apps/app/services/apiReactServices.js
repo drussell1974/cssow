@@ -32,18 +32,14 @@ const deleteNotification = (reactComponent, id) => {
         })
         .then(
         (data) => {
-            let messages = {};
-            data.messages.map(m => {
-                messages[m.id] = m
-            })
             reactComponent.setState({
-                Messages: messages,
                 hasError: false,
+                Alert: data
             });
         },
         (error) => {
             reactComponent.setState({
-                Messages: [],
+                Alert: error,
                 hasError: true,
             });
         }
