@@ -16,10 +16,11 @@ class test_cls_lesson_schedule__constructor(TestCase):
 
         # arrange
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = LessonScheduleModel(0, start_date=None, class_name="", class_code="", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
+            self.test = LessonScheduleModel(0, title="", start_date=None, class_name="", class_code="", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
 
             # assert
             self.assertEqual(0, self.test.id)
+            self.assertEqual("", self.test.title)
             self.assertEqual("", self.test.class_name)
             self.assertEqual("", self.test.class_code)
             self.assertEqual(12, self.test.lesson_id)
@@ -36,11 +37,12 @@ class test_cls_lesson_schedule__constructor(TestCase):
         # arrange
 
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:            
-            self.test = LessonScheduleModel(0, start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
+            self.test = LessonScheduleModel(0, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
 
             # assert
             self.assertEqual(0, self.test.id)
             self.assertEqual("ABCDEF", self.test.class_code)
+            self.assertEqual("Vivamus at porta orci", self.test.title)
             self.assertEqual("7x", self.test.class_name)
             self.assertEqual(12, self.test.lesson_id)
             self.assertEqual(34, self.test.scheme_of_work_id)

@@ -46,4 +46,35 @@ const deleteNotification = (reactComponent, id) => {
     )
 }
 
-export { getNotifications, deleteNotification };
+
+const getSchedule = (reactComponent, institute_id) => {
+    let uri = `/api/institute/${institute_id}/schedule/?format=json`;
+    fetch(uri)
+        .then(res => { 
+            return res.json();
+        })
+        .then(
+        (data) => {
+            let scheduled_events = []
+            // map scheduled lessons to fulcalendar event
+            data.lessons.map(sch => {
+                scheduled_events.push({title: sch.title, date: sch.date})
+            })
+
+            reactComponent.setState({
+                Events: scheduled_events,
+                hasError: false,
+            });
+        },
+        (error) => {
+            reactComponent.setState({
+                Events: [],
+                Alert: error,
+                hasError: true,
+            });
+        }
+    )
+}
+
+
+export { getNotifications, deleteNotification, getSchedule };

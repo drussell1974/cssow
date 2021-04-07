@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from django.db import connection as db
 from django.http import JsonResponse
 from shared.models.core.context import AuthCtx
-from .viewmodels import InstituteGetAllViewModel, InstituteGetModelViewModel
+from .viewmodels import InstituteGetAllViewModel, InstituteGetModelViewModel, InstituteGetScheduleViewModel
 
 class InstituteViewSet(APIView):
     ''' API endpoint for a institute '''
@@ -27,3 +27,20 @@ class InstituteListViewSet(APIView):
         #253 check user id
         institutes_view = InstituteGetAllViewModel(db=db, auth_user=auth_ctx)
         return JsonResponse({"institutes": institutes_view.model})
+
+
+class InstituteScheduleViewSet(APIView):
+    ''' API endpoint for a institute schedule '''
+
+    def get(self, request, institute_id, auth_ctx=None):
+
+        # TODO: #367 get auth_ctx from min_permission_required decorator
+        auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=0)
+        
+        #class_code = request.GET.get("class_code", "")
+
+        #253 check user id
+        get_schedule_view = InstituteGetScheduleViewModel(db=db, auth_ctx=auth_ctx)
+
+        return JsonResponse({ "schedule": get_schedule_view.model } )
+    

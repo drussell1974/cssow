@@ -9,7 +9,8 @@ from shared.models.enums.publlished import STATE
 from datetime import datetime, timedelta
 
 class LessonScheduleModel(BaseModel):
-        
+    
+    title = ""
     class_name = ""
     class_code = ""
     start_date = ""
@@ -19,8 +20,9 @@ class LessonScheduleModel(BaseModel):
     institute_id = 0
     is_from_db = False
 
-    def __init__(self, id_, class_name, class_code, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None):
-        super().__init__(id_, class_code, created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
+    def __init__(self, id_, title, class_name, class_code, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None):
+        super().__init__(id_, f"{title} - {class_name} ({class_code})", created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
+        self.title = title
         self.class_name = class_name
         self.class_code = class_code
         self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
@@ -54,7 +56,7 @@ class LessonScheduleModel(BaseModel):
     def new(cls, lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
         start_date = datetime.now()
         new_class_code = fn_generate_class_code(length=6)
-        return LessonScheduleModel(0, class_name="", class_code=new_class_code, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+        return LessonScheduleModel(0, title="", class_name="", class_code=new_class_code, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
 
     def validate(self, skip_validation = []):
@@ -95,13 +97,14 @@ class LessonScheduleModel(BaseModel):
         for row in rows:
             model = LessonScheduleModel(
                 id_=row[0],
-                class_name=row[1],
-                class_code = row[2],
-                start_date=row[3],
-                lesson_id = row[4],
-                scheme_of_work_id=row[5],
-                published=row[6],
-                created_by_id=row[7],
+                title=row[1],
+                class_name=row[2],
+                class_code = row[3],
+                start_date=row[4],
+                lesson_id = row[5],
+                scheme_of_work_id=row[6],
+                published=row[7],
+                created_by_id=row[8],
                 auth_user=auth_user)
             model.on_fetched_from_db()
             
@@ -117,13 +120,14 @@ class LessonScheduleModel(BaseModel):
         for row in rows:
             model = LessonScheduleModel(
                 id_=schedule_id,
-                class_name=row[0],
-                class_code = row[1],
-                start_date=row[2],
-                lesson_id = row[3],
-                scheme_of_work_id=row[4],
-                published=row[5],
-                created_by_id=row[6],
+                title=row[0],
+                class_name=row[1],
+                class_code = row[2],
+                start_date=row[3],
+                lesson_id = row[4],
+                scheme_of_work_id=row[5],
+                published=row[6],
+                created_by_id=row[7],
                 auth_user=auth_user)
             model.on_fetched_from_db()
         return model
@@ -137,18 +141,19 @@ class LessonScheduleModel(BaseModel):
         for row in rows:
             if auth_user.department_id == 0 and auth_user.institute_id == 0:
                 # handle empty context
-                auth_user.department_id = row[5]
-                auth_user.institute_id = row[6]
+                auth_user.department_id = row[6]
+                auth_user.institute_id = row[7]
                 
             model = LessonScheduleModel(
                 id_=row[0],
-        		class_name = row[1],
+                title=row[1],
+        		class_name = row[2],
                 class_code = class_code,
-                start_date = row[2],
-                lesson_id = row[3],
-                scheme_of_work_id=row[4],
-                published=row[7],
-                created_by_id=row[8],
+                start_date = row[3],
+                lesson_id = row[4],
+                scheme_of_work_id=row[5],
+                published=row[8],
+                created_by_id=row[9],
                 auth_user=auth_user)
             model.on_fetched_from_db()
         return model
@@ -198,7 +203,7 @@ class LessonScheduleDataAccess:
         """
         
         execHelper = ExecHelper()
-        select_sql = "lesson_schedule__get_all"
+        select_sql = "lesson_schedule__get_all$2"
         params = (lesson_id, from_date, to_date, int(show_published_state), auth_user_id)
         
         rows = []
@@ -220,7 +225,7 @@ class LessonScheduleDataAccess:
         """
         
         execHelper = ExecHelper()
-        select_sql = "lesson_schedule__get$2"
+        select_sql = "lesson_schedule__get$3"
         params = (id_, int(show_published_state), auth_user_id)
         
         rows = []
@@ -241,7 +246,7 @@ class LessonScheduleDataAccess:
         """
         
         execHelper = ExecHelper()
-        select_sql = "lesson_schedule__get_by_class_code$2"
+        select_sql = "lesson_schedule__get_by_class_code$3"
         params = (class_code, int(show_published_state), auth_user_id)
         
         rows = []

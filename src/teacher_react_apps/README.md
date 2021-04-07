@@ -10,6 +10,12 @@ Use 'yarn build' from package.json to create production deployment and tar file 
 
 Use 'yarn build' from package.json to create development deployment and copy to teacher_web website 'webpack --mode development && cp -R build ../../src/teacher_web/web/static/default/js/teacher_react_apps' ...
 
+## full calendar support
+
+https://fullcalendar.io/docs/react
+
+yarn add @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction
+
 # Run the api service and website
 
 1. Switch to the virtual environment

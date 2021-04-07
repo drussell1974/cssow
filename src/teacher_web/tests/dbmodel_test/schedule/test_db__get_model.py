@@ -39,7 +39,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get$2'
+                'lesson_schedule__get$3'
                 , (987, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -49,7 +49,7 @@ class test_db__get_model(TestCase):
 
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [("7x", "ABCDEF", "", 6, 11, 1, 99)]
+        expected_result = [("Maecenas finibus tellus", "7x", "ABCDEF", "", 6, 11, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -59,7 +59,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get$2'
+                'lesson_schedule__get$3'
                 , (987, 1, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)

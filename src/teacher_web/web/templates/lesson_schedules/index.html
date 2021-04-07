@@ -72,7 +72,6 @@
       </button>
   </div>
 {% else %}
-    <div id="calendar-app"></div>
     
     {% for row in content.data.schedules %}
 
@@ -92,6 +91,11 @@
       </div>
 
     {% endfor %}
+
+    <!-- Show calendar here -->
+    <!-- TODO: #435 add link to full calendar -->
+    <hr>
+    <div id="calendar-app"></div>
 
 {% endif %}
 

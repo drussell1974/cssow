@@ -8,7 +8,7 @@ class test_cls_lesson_schedule__display_date(TestCase):
 
     def setUp(self):
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = LessonScheduleModel(1, start_date=None, class_name="7x", class_code="", lesson_id = 34, scheme_of_work_id = 12, auth_user=mock_auth_user)
+            self.test = LessonScheduleModel(1, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="", lesson_id = 34, scheme_of_work_id = 12, auth_user=mock_auth_user)
 
 
     def test_display_date__when_none(self):
@@ -52,7 +52,7 @@ class test_cls_lesson_schedule__input_date(TestCase):
 
     def setUp(self):
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = LessonScheduleModel(1, start_date=None, class_name="7x", class_code="", lesson_id = 34, scheme_of_work_id = 12, auth_user=mock_auth_user)
+            self.test = LessonScheduleModel(1, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="", lesson_id = 34, scheme_of_work_id = 12, auth_user=mock_auth_user)
 
 
     def test_input_date__when_none(self):

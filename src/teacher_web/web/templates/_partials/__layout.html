@@ -257,6 +257,8 @@
       </div>
     </div>
   {% endif %}
+  <!-- page parameters used by react app - ADD OTHER CONTEXT PARAMETERS HERE as necessary -->
+  <input type="hidden" id="teacher_react_apps.institute_id" value="{{content.ctx.institute_id}}" />
   <!-- react scripts START --> 
   <script src="{% static 'default/js/teacher_react_apps/build/bundle.js' %}"></script>
   {% block react_scripts %}

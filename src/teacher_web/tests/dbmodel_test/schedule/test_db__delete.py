@@ -22,7 +22,7 @@ class test_db__delete(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1, class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115)
+        model = Model(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115)
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
@@ -35,7 +35,7 @@ class test_db__delete(TestCase):
     def test_should_call__delete(self, mock_auth_user):
          # arrange
 
-        model = Model(1, class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115)
+        model = Model(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115)
 
         expected_result = [(1)]
 
