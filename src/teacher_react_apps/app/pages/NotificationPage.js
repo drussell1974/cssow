@@ -1,5 +1,5 @@
 import React from 'react';
-import { getNotifications } from '../services/apiReactServices';
+import { getNotifications, deleteNotification } from '../services/apiReactServices';
 import NotificationWidget from '../widgets/NotificationWidget';
 
 class NotificationPage extends React.Component {
@@ -13,6 +13,9 @@ class NotificationPage extends React.Component {
     }
 
     handleDeleteMessageClick(id) {
+        
+        deleteNotification(this, id);
+        
         const copyMessages = {...this.state.Messages}
         delete copyMessages[id]
         this.setState({

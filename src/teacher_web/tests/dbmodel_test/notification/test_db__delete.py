@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.cls_eventlog import EventLogModel as Model, EventLogDataAccess, handle_log_info
+from shared.models.cls_notification import NotifyModel as Model, NotifyModelDataAccess
 from tests.test_helpers.mocks import *
 
 
@@ -29,7 +29,7 @@ class test_db__delete(TestCase):
             # act and assert
             with self.assertRaises(KeyError):
                 # act 
-                Model.delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=mock_ctx)
+                Model.delete(db=self.fake_db, event_log_id=12832746, auth_ctx=mock_ctx)
 
 
     def test_should_call__delete(self, mock_ctx):
@@ -40,15 +40,15 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', return_value=expected_result):
             # act
 
-            actual_result = Model.delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=mock_ctx)
+            actual_result = Model.delete(db=self.fake_db, event_log_id=12832746, auth_ctx=mock_ctx)
 
             # assert
-
+            
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                "logging__delete"
-                , (69, 31, mock_ctx.auth_user_id)
-                , handle_log_info)
+                "logging_notification__delete"
+                , (12832746, mock_ctx.auth_user_id)
+            )
 
             # check subsequent functions where called
 

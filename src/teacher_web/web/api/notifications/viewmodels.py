@@ -21,3 +21,10 @@ class NotificationIndexViewModel(BaseViewModel):
         data = NotifyModel.get_notifications(db, search_criteria=search_criteria, auth_user=auth_user)
 
         self.model = list(map(lambda m: NotifyModelSerializer(m).data, data))
+
+
+class NotificationDeleteViewModel(BaseViewModel):
+
+    def __init__(self, db, event_log_id, auth_user):
+        data = NotifyModel.delete(db, event_log_id=event_log_id, auth_ctx=auth_user)
+        self.model = data

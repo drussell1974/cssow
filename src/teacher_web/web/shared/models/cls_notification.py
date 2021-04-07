@@ -48,6 +48,12 @@ class NotifyModel(BaseModel):
         NotifyModelDataAccess.insert_notification(db, notify)
 
 
+    @classmethod
+    def delete(cls, db, event_log_id, auth_ctx):
+        result = NotifyModelDataAccess.delete(db, event_log_id=event_log_id, auth_user_id=auth_ctx.auth_user_id)
+        return result
+
+
 class NotifyModelDataAccess:
 
     @classmethod
@@ -80,3 +86,16 @@ class NotifyModelDataAccess:
         except Exception as e:
             print("***Error writing to sql event log - exception:'{}'......***".format(e))
             pass # we'll swallow this up to prevent issues with normal operations
+
+    
+    @classmethod
+    def delete(cls, db, event_log_id, auth_user_id):
+        """ delete notifications from sow_logging_notification for user """
+
+        execHelper = ExecHelper()
+        stored_procedure = "logging_notification__delete"
+        params = (event_log_id, auth_user_id)
+        
+        result = execHelper.delete(db, stored_procedure, params)
+    
+        return result
