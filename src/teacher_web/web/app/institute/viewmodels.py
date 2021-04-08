@@ -108,7 +108,25 @@ class InstituteEditViewModel(BaseViewModel):
 
         return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
- 
+
+class InstituteScheduleViewModel(DefaultIndexViewModel):
+
+    def __init__(self, db, institute_id, auth_user):
+        super().__init__(db, 0, auth_user)
+        self.institute_id = institute_id
+        self.institute = Model.get_model(db, id=institute_id, auth_user=auth_user)
+        
+        # if not found then raise error
+        if self.institute_id > 0:
+            if self.institute is None or self.institute.is_from_db == False:
+                self.on_not_found(self.institute, self.institute_id)
+
+
+    def view(self, main_heading, sub_heading):
+        view = super().view(self.institute.name, sub_heading)
+        return view
+
+
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):
 
     def __init__(self, db, auth_user):

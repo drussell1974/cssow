@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_institute import InstituteContextModel
@@ -5,7 +6,7 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkContextModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
-from shared.models.core.context import AuthCtx, Ctx
+from shared.models.core.context import AuthCtx, Ctx, AcademicYearCtx
 
 def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True, ctx=Ctx(1276711, 826)):
     return SchemeOfWorkModel(id, name=name, study_duration=1, start_study_in_year=12, is_from_db=is_from_db, auth_user=ctx)
@@ -15,8 +16,11 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
     
     mock_request = MagicMock()
     mock_request.user = MagicMock(id=fake_request_user_id)
-    mock_request.session = {}
-
+    mock_request.session = {
+            "academic_year.start_date": datetime(year=2020, month=9, day=1),
+            "academic_year.end_date": datetime(year=2021, month=7, day=15)
+        }
+    
     mock_db = Mock()
     mock_db.cursor = MagicMock()
     
@@ -26,17 +30,19 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
                 
                 institute.name = "Lorum Ipsum"
                 department.name = "Computer Science"
+                academic_year__start_date = datetime(year=2020, month=9, day=1)
+                academic_year__end_date = datetime(year=2021, month=7, day=14)
 
                 scheme_of_work = SchemeOfWorkContextModel(12323232, name="GCSE Computer Science", ctx=Ctx(1276711, 826))
 
-                auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=67, scheme_of_work_id=scheme_of_work.id)
+                auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=67, scheme_of_work_id=scheme_of_work.id, start_date=academic_year__start_date, end_date=academic_year__end_date)
                 auth_ctx.institute = institute
                 auth_ctx.department = department
                 auth_ctx.scheme_of_work = scheme_of_work
                 auth_ctx.department_permission = dep
                 auth_ctx.scheme_of_work_permission = sow
                 auth_ctx.lesson_permission = les
-
+                
     return auth_ctx
 
 

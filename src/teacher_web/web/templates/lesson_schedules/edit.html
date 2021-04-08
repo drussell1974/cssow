@@ -1,0 +1,86 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--keywords-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+{% block maincontent %}
+
+<article class="widget widget-form widget-keyword-form">
+    <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.model.id %}">
+        {% csrf_token %}
+
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        
+        <!-- Class name START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Class")}}</label>
+                <input type="text" class="form-control" placeholder="{{_('Enter a class name')}}" id="ctl-class_name" name="class_name" required
+                        maxlength="10" value='{{content.data.model.class_name}}'>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Class name END -->
+
+        <!-- Start date START -->
+        <div class="control-group">
+            <div class="form-group controls">
+                <label>{{_("Date")}}</label>
+                <input type="datetime-local" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
+                        value='{{content.data.model.input_date}}'>
+                <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+            </div>
+        </div>
+        <!-- Start date END -->
+
+        <!-- Class code -->
+        <label>{{_("Class code")}}</label>
+        <div class="input-group mb-3">    
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input type="checkbox" id="ctl-class_code" name="generate_class_code" data-toggle="tooltip" data-placement="bottom" title="{{_('Check to regenerate the class code')}}" aria-label="Checkbox for regenerating the class code">
+                </div>
+                </div>
+                <input type="text" class="form-control" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" 
+                    readonly minlength="6" maxlength="6" />
+        </div>
+        <!-- Class code END -->
+
+
+        <br>
+        <div id="success"></div>
+        <div class="form-group stackable-group stackable-group-sm">
+            <!-- #386: use form.buttons.validition.wizard partial -->
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        
+        <input type="hidden" name="id" value="{{content.data.model.id}}">
+        <input type="hidden" name="lesson_id" value="{{ content.data.lesson_id}}">
+        <input type="hidden" name="next" value="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" >
+        <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
+    </form>
+<hr>
+</article>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    $('#ctl-class_code').tooltip();
+</script>
+{% endblock %}

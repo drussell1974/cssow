@@ -2,12 +2,18 @@ from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
 from shared.models.cls_lesson import LessonModel, handle_log_info
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_learningobjective import LearningObjectiveModel
 from shared.models.cls_resource import ResourceModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.publlished import STATE
 from tests.test_helpers.mocks import *
 
+
+@patch.object(LessonScheduleModel, "get_all", return_value=[])
+@patch.object(LearningObjectiveModel, "get_all", return_value=[1,2,3])
+@patch.object(ResourceModel, "get_all", return_value=[])
+@patch.object(LessonModel, "get_ks123_pathway_objective_ids", return_value=[])
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__get_model(TestCase):
     
@@ -24,22 +30,12 @@ class test_db__get_model(TestCase):
         ])
 
 
-        LearningObjectiveModel.get_all = MagicMock(return_value=[1,2,3])
-        ResourceModel.get_all = MagicMock(return_value=[])
-        #LessonModel.get_pathway_objective_ids = MagicMock(return_value=[])
-        LessonModel.get_ks123_pathway_objective_ids = MagicMock(return_value=[])
-
-
     def tearDown(self):
         
-        LearningObjectiveModel.get_all.reset_mock()
-        ResourceModel.get_all.reset_mock()
-        LessonModel.get_ks123_pathway_objective_ids.reset_mock()
-
         self.fake_db.close()
 
 
-    def test__should_call_select__with_exception(self, mock_auth_user):
+    def test__should_call_select__with_exception(self, mock_auth_user, LessonScheduleModel_get_all, LearningObjectiveModel_get_all, ResourceModel_get_all, LessonModel_get_ks123):
         # arrange
         expected_exception = KeyError("Bang!")
 
@@ -50,7 +46,7 @@ class test_db__get_model(TestCase):
                 LessonModel.get_model(self.fake_db, int(STATE.PUBLISH), 4)
 
 
-    def test__should_call_select__return_no_items(self, mock_auth_user):
+    def test__should_call_select__return_no_items(self, mock_auth_user, LessonScheduleModel_get_all, LearningObjectiveModel_get_all, ResourceModel_get_all, LessonModel_get_ks123):
         # arrange
         expected_result = []
 
@@ -68,14 +64,14 @@ class test_db__get_model(TestCase):
                 , handle_log_info)
 
 
-            LearningObjectiveModel.get_all.assert_not_called()
-            ResourceModel.get_all.assert_not_called()
-            LessonModel.get_ks123_pathway_objective_ids.assert_not_called()
+            LearningObjectiveModel_get_all.assert_not_called()
+            ResourceModel_get_all.assert_not_called()
+            LessonModel_get_ks123.assert_not_called()
 
             self.assertIsNone(actual_results)        
 
 
-    def test__should_call_select__return_single_item(self, mock_auth_user):
+    def test__should_call_select__return_single_item(self, mock_auth_user, LessonScheduleModel_get_all, LearningObjectiveModel_get_all, ResourceModel_get_all, LessonModel_get_ks123):
         # arrange
         expected_result = [(
             321,"Understanding numbering systems",1,5,"Computer Science", 13, "Abstract",
@@ -100,9 +96,10 @@ class test_db__get_model(TestCase):
 
             self.assertEqual(3, len(actual_results.key_words))
             
-            LearningObjectiveModel.get_all.assert_called()
-            ResourceModel.get_all.assert_called()
-            LessonModel.get_ks123_pathway_objective_ids.assert_called()
+            LessonScheduleModel_get_all.assert_called()
+            LearningObjectiveModel_get_all.assert_called()
+            ResourceModel_get_all.assert_called()
+            LessonModel_get_ks123.assert_called()
 
             self.assertEqual(321, actual_results.id)
             self.assertEqual("Understanding numbering systems", actual_results.title),

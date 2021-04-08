@@ -44,7 +44,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         data_to_return = None
         
         with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):
+            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):
 
                 db = MagicMock()
                 db.cursor = MagicMock()
@@ -57,10 +57,11 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
 
                     # assert functions was called
                     Model.get_model.assert_called()
-                    LessonScheduleModel.get_model.assert_called()
+                    LessonScheduleModel.get_all.assert_called()
 
                     self.assertIsNone(self.viewmodel.model)
                     self.assertEqual("ABCDEF", self.viewmodel.lesson_schedule.class_code)
+                    self.assertEqual("", self.viewmodel.lesson_schedule.class_name)
 
 
     def test_init_called_fetch__return_item(self, mock_auth_user):
@@ -74,23 +75,25 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
                 KeywordModel(106, "RAM"),
             ]
         data_to_return.is_from_db = True
+        data_to_return.lesson_schedule = [LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7xab", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)]
 
         with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, "ABCDEF", lesson_id=99, scheme_of_work_id=12, department_id=67, institute_id=12711671276711)):
-                
-                db = MagicMock()
-                db.cursor = MagicMock()
+            #with patch.object(LessonScheduleModel, "get_all", return_value=[LessonScheduleModel(15, class_name="7xab", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)]):
+            
+            db = MagicMock()
+            db.cursor = MagicMock()
 
-                self.mock_model = Mock()
-                
-                # act
-                self.viewmodel = ViewModel(db=db, lesson_id=456, scheme_of_work_id=22, auth_user=mock_auth_user)
+            self.mock_model = Mock()
+            
+            # act
+            self.viewmodel = ViewModel(db=db, lesson_id=456, scheme_of_work_id=22, auth_user=mock_auth_user)
 
-                # assert functions was called
-                Model.get_model.assert_called()
-                LessonScheduleModel.get_model.assert_called()
+            # assert functions was called
+            Model.get_model.assert_called()
+            #LessonScheduleModel.get_all.assert_called()
 
-                self.assertEqual(99, self.viewmodel.model.id)
-                self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
-                self.assertEqual(3, len(self.viewmodel.model.key_words))
-                self.assertEqual("ABCDEF", self.viewmodel.lesson_schedule.class_code)
+            self.assertEqual(99, self.viewmodel.model.id)
+            self.assertEqual("How to save the world in a day", self.viewmodel.model.title)
+            self.assertEqual(3, len(self.viewmodel.model.key_words))
+            self.assertEqual("ABCDEF", self.viewmodel.model.lesson_schedule[0].class_code)
+            self.assertEqual("7xab", self.viewmodel.model.lesson_schedule[0].class_name)

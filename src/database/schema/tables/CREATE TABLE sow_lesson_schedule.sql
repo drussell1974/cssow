@@ -2,6 +2,7 @@
 
 CREATE TABLE `sow_lesson_schedule` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `start_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `class_code` CHAR(6) NOT NULL UNIQUE,
   `institute_id` INT NOT NULL,
   `department_id` INT NOT NULL,

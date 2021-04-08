@@ -41,9 +41,9 @@ class EventLogFilter(Pager):
             self.is_valid = True
         
 
-
 class EventLogModel(BaseModel):
-    def __init__(self, id_, created, event_type, message, details, category, subcategory):
+
+    def __init__(self, id_, created, event_type, message, details="", category="", subcategory="", action="", notify_message=""):
         self.id = id_
         self.created = created
         self.event_type = event_type
@@ -51,6 +51,8 @@ class EventLogModel(BaseModel):
         self.details=details
         self.category=category
         self.subcategory=subcategory
+        self.action = action
+        self.notify_message = notify_message
 
 
     @staticmethod

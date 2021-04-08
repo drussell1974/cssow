@@ -73,20 +73,6 @@ class BaseModel(models.Model):
         """ event to use when instances has been retreived from the data """
         self.is_from_db = True
 
-    '''
-    def get_ui_created(self, dt):
-        return datetime.strftime(dt, "%d %B %Y")
-
-
-    def set_is_recent(self):
-        """ checks the created field and sets is_recent """
-        if self.created is not None:
-            date_format = "%Y-%m-%d %H:%M:%S"
-            a = datetime.strptime(str(self.created), date_format)
-            b = datetime.now()
-            delta = b - a
-            self.is_recent = False if delta.days > 3 else True
-    '''
 
     def validate(self, skip_validation):
         self._on_before_validate(skip_validation)

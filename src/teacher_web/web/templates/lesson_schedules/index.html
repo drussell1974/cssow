@@ -1,0 +1,106 @@
+{% extends '_partials/__layout.twocolumn.contentheading.html' %}
+
+
+{% block head_js %} 
+  <!-- #295: Google Analytics script.googleanalytics.html partial -->
+  {% include '_partials/script.googleanalytics.html' %}
+  <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--resources-index">
+  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+    <div class="container">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</section>
+{% endblock %}
+
+
+{% block sidecontent %}
+
+<!-- SIDE MENU START -->
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("Menu")}} <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+    <div class="list-group">
+
+      {% include '_partials/widget.sidebar.this-lesson.html'  %}   
+      
+      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %} 
+
+      {% include '_partials/widget.sidebar.other-lessons.html'  %}
+
+    </div>
+  </div>
+</nav>
+
+<!-- SIDE MENU // END -->
+
+{% endblock %}
+
+
+
+{% block maincontent %}
+
+<!-- Pager Header -->      
+{% if request.user.is_authenticated %}
+  <span class="float-right">  
+    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+  </span>
+{% endif %}
+<h2 class="group-heading">{{_("Schedule")}} {{ request.session.academic_year__display }}</h2>
+<hr />
+<!-- Pager Header END -->      
+
+{% if content.data.schedules|length == 0 %}
+  <div class="alert alert-warning" role="alert">
+      <span class="large">{{_('There are no schedules for this lesson.')}}</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+{% else %}
+    
+    {% for row in content.data.schedules %}
+
+      <div class="card card-keyword {{ row.published_state }}">
+        <a name="{{ row.id }}"></a>
+        <div class="card-body">
+          <a class="edit float-right" href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id row.id %}" target="_blank"><i class="fa fa-graduation-cap"> {{ row.class_code }}</i></a>
+          <h5 class="card-title">
+            <a href="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id content.data.lesson_id row.id %}?return={{request.url}}" id="lnk-edit-lesson_schedule--{{row.id}}">
+              <i class="fa fa-calendar"> {{ row.display_date }}</i> <i class="fa fa-clock"> {{ row.start_date|date:"H:i"  }}</i> <i class="fa fa-users"> {{ row.class_name }}</i> 
+            </a>
+          </h5>
+          <span class="small">
+            <a class="btn-sm btn-danger float-right" role="button" href="{% url 'lesson_schedule.delete' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id content.data.lesson_id row.id %}?return={{request.url}}">{{_('Delete')}}</a>
+          </span>
+        </div>
+      </div>
+
+    {% endfor %}
+
+    <hr>
+
+    <!-- #435 add link to full calendar -->
+    <a href="{% url 'institute.schedule' content.ctx.institute_id %}" class="btn btn-primary">{{_('Go to full schedule')}}</a>
+    <!-- #435 Show calendar here -->
+
+    <div id="calendar-app"></div>
+
+{% endif %}
+
+{% endblock %}
+

@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest.mock import Mock, patch
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
@@ -49,7 +50,12 @@ def init_TestAuthCtx(institute_id, department_id, scheme_of_work_id = 0, fake_re
 
         mock_request = Mock()
         mock_request.user = Mock(id=fake_request_user_id)
-
+        mock_request.session = Mock()
+        mock_request.session = {
+            "academic_year.start_date": datetime(year=2020, month=9, day=1),
+            "academic_year.end_date": datetime(year=2021, month=7, day=15)
+        }
+        
         auth_ctx = AuthCtx(mock_db, mock_request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id)
 
         return auth_ctx

@@ -73,24 +73,6 @@ class LessonGetModelViewModel(BaseViewModel):
         self.db = db
         # get model
         model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
-        self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
-
-        # if not found then raise error
-        if lesson_id > 0:
-            if model is None or model.is_from_db == False:
-                self.on_not_found(model, lesson_id, scheme_of_work_id)
-
-        self.model = model
-
-
-class LessonWhiteboardViewModel(BaseViewModel):
-    
-    def __init__(self, db, lesson_id, scheme_of_work_id, auth_user, resource_type_id = 0):
-        self.db = db
-        # get model
-        model = Model.get_model(self.db, lesson_id, scheme_of_work_id, auth_user, resource_type_id)
-        self.lesson_schedule = LessonScheduleModel.get_model(self.db, lesson_id, scheme_of_work_id, auth_user)
         self.STUDENT_WEB__WEB_SERVER_WWW = settings.STUDENT_WEB__WEB_SERVER_WWW
 
         # if not found then raise error

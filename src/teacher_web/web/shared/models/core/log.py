@@ -19,38 +19,46 @@ class CONSOLE_STYLE:
 class Log:
 
 
-    def __init__(self, db, log_level_setting = LOG_TYPE.NONE):
+    def __init__(self, db, log_level_setting = LOG_TYPE.NONE, notify = None):
         self.db = db
         self.logging_level = log_level_setting
+        self.notify = notify
+        self.sql_event_log_id = 0
 
 
     def write(self, scheme_of_work_id, msg, details, log_type, category = "", subcategory = ""):
         """ write to a log """
         
-        if (self.logging_level % log_type) == 0:
+        if (self.logging_level % log_type) == 0 or self.notify is not None:
             
             # write to sql custom log table
             
-            self._write_to_sql(msg, log_type, scheme_of_work_id, details, category, subcategory)
+            result = LogDataAccess._write_to_sql(self.db, msg=msg, event_type=log_type, scheme_of_work_id=scheme_of_work_id, details=details, category=category, subcategory=subcategory, notify=self.notify)
             
+            if result is not None and len(result):
+                self.sql_event_log_id = result[0]
+
             # write to the django log
-            
-            self._write_to_django_log(msg, details)
-            
-            # write to console
-            if log_type == LOG_TYPE.Error:
-                self._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
-            if log_type == LOG_TYPE.Warning:
-                self._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
-            if log_type == LOG_TYPE.Information:
-                self._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
-            if log_type == LOG_TYPE.Verbose:
-                self._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
+            if (self.logging_level % log_type) > 0:
+                LogDataAccess._write_to_django_log(msg, details)
+                
+                # write to console
+                if log_type == LOG_TYPE.Error:
+                    LogDataAccess._write_to_console(msg, details, CONSOLE_STYLE.FAIL)
+                if log_type == LOG_TYPE.Warning:
+                    LogDataAccess._write_to_console(msg, details, CONSOLE_STYLE.WARNING)
+                if log_type == LOG_TYPE.Information:
+                    LogDataAccess._write_to_console(msg, details, CONSOLE_STYLE.BOLD)
+                if log_type == LOG_TYPE.Verbose:
+                    LogDataAccess._write_to_console(msg, details, CONSOLE_STYLE.ENDC)
 
 
-    def _write_to_sql(self, msg, scheme_of_work_id, event_type, details="", category = "", subcategory = ""):
+class LogDataAccess:
+
+    @classmethod
+    def _write_to_sql(cls, db, msg, scheme_of_work_id, event_type, details="", category = "", subcategory = "", notify=None):
         """ inserts the detail into the sow_logging table """
-        if settings.LOG_TO_SQL == True:
+        if settings.LOG_TO_SQL == True or notify is not None:
             try:
                 execHelper = ExecHelper()
                 
@@ -60,15 +68,17 @@ class Log:
                 
                 params =  (scheme_of_work_id, msg[0:199], details, int(event_type), category[0:69], subcategory[0:69])
                 
-                execHelper.insert(self.db, str_insert, params)
-
+                result = execHelper.insert(db, str_insert, params)
+                return result
+                
             except Exception as e:
                 print("***Error writing to sql event log - exception:'{}'......***".format(e))
                 print(".... '{}' to sql event log - message:'{}' was not written to event logs".format(event_type, msg))
                 pass # we'll swallow this up to prevent issues with normal operations
 
 
-    def _write_to_django_log(self, msg, details=""):
+    @classmethod
+    def _write_to_django_log(cls, msg, details=""):
         """ 
         Write to the django event log.
         View log when running django debug toolbar
@@ -78,8 +88,8 @@ class Log:
             logger = logging.getLogger(__name__)
             logger.info(details)
 
-
-    def _write_to_console(self, msg, details="", style=CONSOLE_STYLE.OKBLUE):
+    @classmethod
+    def _write_to_console(cls, msg, details="", style=CONSOLE_STYLE.OKBLUE):
         """ 
         Write to console using print.
         View log when running django debug toolbar

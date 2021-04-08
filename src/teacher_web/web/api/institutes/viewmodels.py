@@ -2,7 +2,6 @@ from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_institute import InstituteModel
 from shared.serializers.srl_institute import InstituteModelSerializer
 
-
 class InstituteGetAllViewModel(BaseViewModel):
     
     def __init__(self, db, auth_user):
@@ -26,4 +25,3 @@ class InstituteGetModelViewModel(BaseViewModel):
         else:
             srl = InstituteModelSerializer(model)
             self.model = srl.data
-

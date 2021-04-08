@@ -17,8 +17,10 @@ class test_core_context_authctx_constructor(TestCase):
 
         self.mock_request = MagicMock()
         self.mock_request.user = MagicMock(id=6079)
-        self.mock_request.session = {}
-
+        self.mock_request.session = {
+            "academic_year.start_date": datetime(year=2020, month=9, day=1),
+            "academic_year.end_date": datetime(year=2021, month=7, day=15)
+        }
 
         self.mock_db = Mock()
         self.mock_db.cursor = MagicMock()
@@ -31,12 +33,15 @@ class test_core_context_authctx_constructor(TestCase):
     def test_constructor_default(self, mock_institute, mock_department):
 
         # act
-        test = AuthCtx(self.mock_db, self.mock_request, 1276711, 67)
+        test = AuthCtx(self.mock_db, self.mock_request, 1276711, 67, start_date=datetime.now(), end_date=datetime.now())
 
         # assert
         self.assertEqual(1276711, test.institute_id)
         self.assertEqual(67, test.department_id)
         self.assertEqual(6079, test.auth_user_id)
+        self.assertIsNotNone(test.academic_year)
+        self.assertIsNotNone(test.academic_year.start_date)
+        self.assertIsNotNone(test.academic_year.end_date)
 
 
     def test_constructor_with_scheme_of_work_id___as_param(self, mock_institute, mock_department):
@@ -48,7 +53,6 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(1276711, test.institute_id)
         self.assertEqual(67, test.department_id)
         self.assertEqual(11, test.scheme_of_work_id)
-
         
 
     def test_constructor_with_scheme_of_work_id___as_kwargs(self, mock_institute, mock_department):
@@ -64,8 +68,6 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(67, test.department_id)
         self.assertEqual(13, test.scheme_of_work_id)
 
-
-        
 
     def test_constructor_with_multiple_args(self, mock_institute, mock_department):
         # arrange

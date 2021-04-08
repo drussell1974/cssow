@@ -23,11 +23,13 @@ class test_db__get_all(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
+        search_criteria = EventLogFilter([5,10,25,50,100], 2, 100, date_from="2020-08-23 00:00:00", date_to="2020-08-23 00:00:01", category="volutpat", subcategory="dolor")
+
         with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
 
             with self.assertRaises(Exception):
-                get_all(self.fake_db)
+                EventLogModel.get_all(self.fake_db, scheme_of_work_id=69, search_criteria=search_criteria, auth_user=mock_auth_user)
 
 
     def test__should_call_select_return_no_items(self, mock_auth_user):

@@ -109,14 +109,8 @@
 
     <div class="links card-body stackable-group-sm">
       <div class="dropdown show">
-        <!-- Show whiteboard -->
-        <a class="btn btn-outline-dark stackable" role="button" href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" id="lnk-whiteboard_view--{{row.id}}">
-          {{_('Whiteboard')}} <i class="fa fa-graduation-cap"></i>
-        </a>
         <!-- Edit drop down button/links -->
-        <button class="btn btn-outline-dark stackable dropdown-toggle" role="button" id="lessonDropdownMenuLink--{{row.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{_('Edit')}}
-        </button>
+        <button class="btn btn-outline-dark stackable dropdown-toggle" role="button" id="lessonDropdownMenuLink--{{row.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_('Edit')}}</button>
         <div class="dropdown-menu stackable" aria-labelledby="lessonDropdownMenuLink--{{row.id}}">    
           <a href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-edit--{{row.id}}">    
             {{_("Edit")}} <i class="far fa-edit"></i>
@@ -135,19 +129,24 @@
             {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
           </a>
         </div>
+        <!-- Schedule -->
+        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedule--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedule--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}"><i class="fa fa-calendar"></i> {{_('Schedule')}} {% if row.lesson_schedule|length > 0 %}<i class="badge badge-danger fa fa-graduation-cap" title="{{ row.lesson_schedule|length }} {{_('current lessons')}}"> {{ row.lesson_schedule|length }}</i>{% endif %}</button>
+        <div class="collapse shadow" id="collapseSchedule--{{row.id}}">
+          <div class="card card-body">  
+            <a href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark stackable" id="btn-lesson-schedule--{{row.id}}">{{_('View all')}}</a>
+            {% if row.lesson_schedule %}
+              <div class="far fa-calendar text-center small pt-3"> {{_('Next 7 days')}}</div>
+            {% endif %}
+            {% for schrow in row.lesson_schedule %}                
+                <a class="btn-md {% if schrow.is_today %}btn-warning{%else%}btn-primary{%endif%} p-2 m-1 w-1" role="button" href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id schrow.id %}" target="_blank" id="lnk-whiteboard_view--{{schrow.id}}">
+                  <i class="fa fa-calendar"> {{ schrow.display_date }}</i> <i class="fa fa-clock"> {{ schrow.start_date|date:"H:i"  }}</i> <i class="fa fa-users"> {{ schrow.class_name }}</i>
+                </a>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
     <p class="post-meta">
-      {% if row.lesson_schedule.class_code is not None  %}
-      <span class="info-class_code small float-right" data-toggle="popover" title="Student class code" data-content="Students should visit {{ content.data.STUDENT_WEB__WEB_SERVER_WWW }} and enter {{row.lesson_schedule.class_code}}">
-        <a href="{% student_uri content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" target="_blank" title="{{_('student portal')}}" > {{_('Class code:')}} {{row.lesson_schedule.class_code}} <i class="fa fa-users student_portal--link"></i></a>
-      </span>
-      {% elif request.user.is_authenticated %}
-      <a class="info-class_code small float-right" href="{% url 'lesson.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}">
-        {{_('Create class code')}} <i class="fa fa-users student_portal--link"></i></a>
-      </a>
-      {% endif %}
-      
       {{_("Created by")}}
       <a href="#">{{ row.created_by_name }}</a>
       {% if row.created %}
@@ -184,5 +183,16 @@
 {% block page_js %}
 <script>
   $('.info-class_code').popover()
+</script>
+<script>
+  const params = new URLSearchParams(window.location.search)
+  if (params !== undefined) {
+    var p = params.get('show-schedule');
+    var id = '#collapseSchedule--'.concat(p);
+    var elem = document.querySelector(id);
+    if (elem != undefined) {
+      elem.collapse('show');
+    }
+  }
 </script>
 {% endblock %}

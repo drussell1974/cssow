@@ -1,5 +1,57 @@
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS `lesson_schedule__get$3`;
+
+CREATE PROCEDURE `lesson_schedule__get$3` 
+(
+ IN p_schedule_id INT,
+ IN p_show_published_state INT,
+ IN p_auth_user_id INT
+ )
+BEGIN
+	SELECT 
+		lsn.title as title,
+		sch.class_name as class_name,
+		sch.class_code as class_code,
+        sch.start_date as start_date,
+        sch.lesson_id as lesson_id,
+        sch.scheme_of_work_id as scheme_of_work_id,
+        sch.published as published,
+        sch.created_by as created_by
+    FROM sow_lesson_schedule as sch
+    INNER JOIN sow_lesson as lsn ON lsn.id = sch.lesson_id
+    WHERE sch.id = p_schedule_id AND (p_show_published_state % sch.published = 0 or sch.created_by = p_auth_user_id);
+END;
+
+// DELIMITER ;
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS `lesson_schedule__get$2`;
+
+CREATE PROCEDURE `lesson_schedule__get$2` 
+(
+ IN p_schedule_id INT,
+ IN p_show_published_state INT,
+ IN p_auth_user_id INT
+ )
+BEGIN
+	SELECT 
+		class_name as class_name,
+		class_code as class_code,
+        start_date as start_date,
+        lesson_id as lesson_id,
+        scheme_of_work_id as scheme_of_work_id,
+        published as published,
+        created_by as created_by
+    FROM sow_lesson_schedule
+    WHERE id = p_schedule_id AND (p_show_published_state % published = 0 or created_by = p_auth_user_id);
+END;
+
+// DELIMITER ;
+
+DELIMITER //
+
 DROP PROCEDURE IF EXISTS `lesson_schedule__get`;
 
 CREATE PROCEDURE `lesson_schedule__get` 

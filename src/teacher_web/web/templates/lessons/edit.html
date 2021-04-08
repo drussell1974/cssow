@@ -45,18 +45,6 @@
     <!-- show error_message -->
     {% include '_partials/form.viewmodel.alert_message.html' %}
     <!-- show error_message END -->
-    <!-- Class code -->
-    <div class="alert alert-warning" role="alert">{{_('Class code:')}} {{content.data.lesson_schedule.class_code}}</div>
-  
-    <div class="input-group mb-3">    
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input type="checkbox" id="ctl-class_code" name="generate_class_code" aria-label="Checkbox for following text input">
-        </div>
-      </div>
-      <div class="form-check-label border p-2 {%if not content.data.lesson_schedule%}bg-warning {%endif%}" for="ctl-class_code">{{_('Generate new class code')}} {%if not content.data.lesson_schedule%}<i class="fas fa-exclamation-triangle"></i>{%endif%}</div>
-    </div>
-    <!-- Class code END -->
     <div class="control-group">
       <div class="form-group  controls">
         <label>{{_("Year group")}}</label>

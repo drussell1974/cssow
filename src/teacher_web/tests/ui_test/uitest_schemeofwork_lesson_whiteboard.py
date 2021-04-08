@@ -7,7 +7,7 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
     def setUp(self):
         # set up
-        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard")
+        self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/schedules/{self.test_lesson_schedule_id}/whiteboard")
         self.wait(s=1)
 
 

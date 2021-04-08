@@ -110,7 +110,7 @@ class uitest_permissions_schemeofwork_lesson__when_different_logged_in_users(UIT
         testcases = [
             {
                 "route":"lesson.whiteboard as schemeofwork-viewer@localhost",
-                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard",
+                "uri":f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/schedules/{self.test_lesson_schedule_id}/whiteboard",
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",

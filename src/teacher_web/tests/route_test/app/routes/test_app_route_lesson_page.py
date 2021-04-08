@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.lessons.views import index, edit, publish, delete, whiteboard, missing_words_challenge, delete_unpublished
+from app.lessons.views import index, edit, publish, delete, delete_unpublished, missing_words_challenge
 
 # Create your tests here.
 class test_app_route_lesson_page(TestCase):
@@ -71,17 +71,6 @@ class test_app_route_lesson_page(TestCase):
         self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/127/lessons/13/publish", url)
 
 
-    def test__lesson_whiteboard__url_resolves_to_whitebaord(self):
-        url = resolve("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/whiteboard")
-        self.assertEqual("lesson.whiteboard_view", url.url_name)
-        self.assertEqual(url.func, whiteboard)
-        
-    
-    def test__lesson_whiteboard__url_resolves_to_whitebaord__reverse(self):
-        url = reverse("lesson.whiteboard_view", args=[12711761271176, 1271176, 11, 44])
-        self.assertEqual("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/44/whiteboard", url)
-
-    
     def test__lesson_delete_unpublished__url_resolves_to_delete_unpublished(self):
         url = resolve("/institute/12711761271176/department/1271176/schemesofwork/11/lessons/delete_unpublished")
         self.assertEqual("lesson.delete_unpublished", url.url_name)

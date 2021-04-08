@@ -27,9 +27,9 @@ class test_db__delete(TestCase):
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
             # act and assert
-            with self.assertRaises(Exception):
+            with self.assertRaises(KeyError):
                 # act 
-                delete(self.fake_db, 0, 99)
+                Model.delete(db=self.fake_db, scheme_of_work_id=69, older_than_n_days=31, auth_user=mock_ctx)
 
 
     def test_should_call__delete(self, mock_ctx):

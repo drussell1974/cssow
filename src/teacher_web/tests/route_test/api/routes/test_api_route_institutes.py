@@ -26,4 +26,3 @@ class test_api_route_institutes(TestCase):
     def test_url_resolves_to_InstituteViewSet_get__reverse(self):
         url = reverse("api.institutes.get", args=[127671276711])
         self.assertEqual("/api/institute/127671276711", url)
-

@@ -20,7 +20,7 @@ from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 
-from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonWhiteboardViewModel, LessonMissingWordsChallengeViewModel, LessonGetModelViewModel
+from .viewmodels import LessonEditViewModel, LessonPublishViewModel, LessonDeleteViewModel, LessonDeleteUnpublishedViewModel, LessonIndexViewModel, LessonGetModelViewModel, LessonMissingWordsChallengeViewModel
 
 from datetime import datetime
 
@@ -77,7 +77,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
             #253 check user id
             get_lesson_view = LessonGetModelViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
             model = get_lesson_view.model  
-            lesson_schedule = get_lesson_view.lesson_schedule      
+            lesson_schedule = get_lesson_view.model.lesson_schedule      
             wizard.next_url=reverse('lesson_ks123pathways.select', args=[auth_ctx.institute_id, auth_ctx.department_id, scheme_of_work_id, lesson_id])
 
         # handle copy
@@ -112,10 +112,8 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
 
         model.pathway_ks123_ids = request.POST.getlist("pathway_ks123_ids")
 
-        create_schedule = request.POST.get("generate_class_code", False)
-        
         #253 check user id
-        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, create_schedule = create_schedule)
+        modelviewmodel = LessonEditViewModel(db=db, model=model, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
         try:
             modelviewmodel.execute(published_state)
@@ -199,28 +197,6 @@ def delete(request, institute_id, department_id, scheme_of_work_id, lesson_id, a
 
     return HttpResponseRedirect(redirect_to_url)
     
-
-@min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def whiteboard(request, institute_id, department_id,scheme_of_work_id, lesson_id, auth_ctx):
-
-    #367 get auth_ctx from min_permission_required decorator
-    #367 use min permissions NONE
-
-    get_lesson_view =  LessonWhiteboardViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-    model = get_lesson_view.model
-    lesson_schedule = LessonScheduleModel.get_model(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
-    
-    data = {
-        "key_words":model.key_words,
-        "learning_objectives":model.learning_objectives,
-        "resources": model.resources,
-        "lesson_schedule": lesson_schedule, 
-        "STUDENT_WEB__WEB_SERVER_WWW": get_lesson_view.STUDENT_WEB__WEB_SERVER_WWW
-    }
-
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
-    
-    return render(request, "lessons/whiteboard_view.html", view_model.content)
 
 
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")

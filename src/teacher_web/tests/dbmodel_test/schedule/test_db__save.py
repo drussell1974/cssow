@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase, skip
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
@@ -25,7 +26,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(0, "", lesson_id = 12, scheme_of_work_id = 11, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
+        model = Model(0, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
@@ -39,7 +40,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1, "", lesson_id = 12, scheme_of_work_id = 11, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
+        model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
     
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
@@ -52,7 +53,7 @@ class test_db__save(TestCase):
 
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
-        model = Model(1, "ZYXWVU", lesson_id = 12, scheme_of_work_id = 11, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
+        model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="ZYXWVU", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
 
         expected_result = model.id
 
@@ -64,8 +65,8 @@ class test_db__save(TestCase):
             # assert
             
             ExecHelper.update.assert_called_with(self.fake_db, 
-                 'lesson_schedule__update'
-                , (1, 'ZYXWVU', mock_auth_user.institute_id, mock_auth_user.department_id, 11, 12, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                 'lesson_schedule__update$2'
+                , (1, datetime(year=2019,month=12,day=31), 'ZYXWVU', '7x', mock_auth_user.institute_id, mock_auth_user.department_id, 11, 12, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(1, actual_result.id)
@@ -74,7 +75,7 @@ class test_db__save(TestCase):
     def test_should_call__insert_insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
-        model = Model(0, class_code="MNOPQR", lesson_id = 12, scheme_of_work_id = 11, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
+        model = Model(0, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
 
         expected_result = (876,)
 
@@ -87,8 +88,8 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db,
-                'lesson_schedule__insert'
-                , (0, 'MNOPQR', mock_auth_user.institute_id, mock_auth_user.department_id, 11, 12, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                'lesson_schedule__insert$2'
+                , (0, datetime(year=2019,month=12,day=31), 'MNOPQR', '7x', mock_auth_user.institute_id, mock_auth_user.department_id, 11, 12, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(876, actual_result.id)
@@ -97,7 +98,7 @@ class test_db__save(TestCase):
     def test_should_call__delete__when__is_new__false__and__published_is_2(self, mock_auth_user):
         # arrange
 
-        model = Model(101, class_code="MNOPQR", lesson_id = 12, scheme_of_work_id = 11, department_id = 67, institute_id = 12767111276711, auth_user=mock_auth_user)
+        model = Model(101, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
         
         expected_result = model.id
 

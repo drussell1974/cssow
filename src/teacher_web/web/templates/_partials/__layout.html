@@ -33,6 +33,7 @@
       <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <div class="btn-group">
+
           {% if request.user.is_authenticated %}
           <!-- Dropdown -->
           <button class="btn dropdown-toggle navbar-brand" id="btn-profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i> {{request.user.first_name}}</button>
@@ -65,7 +66,9 @@
                 <a class="dropdown-item" href="/admin"><i class="fa fa-cog"></i> {{_("admin")}}</a>
             {% endif %}
           </div>
-          <!-- Dropdown END -->
+          <!-- Dropdown END -->          
+
+
           <a class="btn navbar-brand" id="btn-logout" href="{% url 'logout' %}?next={{ request.path }}">{{_("Logout")}}</a>
           
           {% else %}
@@ -77,6 +80,7 @@
                 <a class="navbar-brand" href="{% url 'password_reset' %}">{{_("Lost password")}}</a>
               {% endif %}
           {% endif %}
+
         </div>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
@@ -95,11 +99,14 @@
                     <div class="site-heading">
                       <h1>{{ content.main_heading }}</h1>
                       <span class="subheading" id="main-subheading">{{ content.sub_heading }}</span>
+                <!-- Notifications START -->
+                <div id="notification-app" class="pt-3"></div>
+                <!-- Notifications END -->
                     </div>
                 {% endblock %}
               </div>
             </div>
-          </div>
+        </div>
     </header>
     <!-- Main ========================================= -->
     <!-- Begin page content -->
@@ -116,7 +123,25 @@
       </div>
       <!-- Breadcrumb START -->
       <div class="row">
-        <div class="col-lg-12 col-md-14 breadcrumb-custom">
+        <div class="col-lg-4 col-md-4">
+          {% if request.session.academic_year and content.ctx.institute_id %}
+            <div class="card-body">
+              <!-- Academic Year START -->
+              <form action="{% url 'default.academic-year' %}" method="POST">
+                {% csrf_token %}
+    
+                <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
+                {% for key, value in request.session.academic_year.items %}
+                    <option value="{{key}}" {%if request.session.academic_year__selected_id == key %}selected{%endif%}>{{ value.display }}</option>
+                {% endfor %}
+                </select>
+              </form>
+              <!-- Academic Year END -->
+            </div>
+          {% endif %}
+        
+        </div>
+        <div class="col-lg-8 col-md-8 breadcrumb-custom">
           {% block breadcrumb %}
           {% endblock %}
         </div>
@@ -232,6 +257,14 @@
       </div>
     </div>
   {% endif %}
-
+  <!-- page parameters used by react app - ADD OTHER CONTEXT PARAMETERS HERE as necessary -->
+  <input type="hidden" id="teacher_react_apps__institute_id" value="{{content.ctx.institute_id}}" />
+  <input type="hidden" id="teacher_react_apps__department_id" value="{{content.ctx.department_id}}" />
+  <input type="hidden" id="teacher_react_apps__scheme_of_work_id" value="{{content.ctx.scheme_of_work_id}}" />
+  <input type="hidden" id="teacher_react_apps__lesson_id" value="{{content.ctx.lesson_id}}" />
+  <!-- react scripts START --> 
+  <script src="{% static 'default/js/teacher_react_apps/build/bundle.js' %}"></script>
+  {% block react_scripts %}
+  {% endblock %}
   </body>
 </html>

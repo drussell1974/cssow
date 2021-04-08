@@ -28,14 +28,6 @@
 
 {% block sidecontent %}
 
-<section class="card widget widget-button widget-button--blackboard">
-  <div class="alert alert-secondary">
-    <a href="{% url 'lesson.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark" id="lnk-whiteboard_view">
-      {{_("Blackboard display")}}
-    </a>
-  </div>
-</section>
-
 <!-- SIDE MENU START -->
 <nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
   <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">

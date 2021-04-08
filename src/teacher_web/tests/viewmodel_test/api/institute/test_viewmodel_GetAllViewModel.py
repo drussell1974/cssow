@@ -7,7 +7,7 @@ from tests.test_helpers.mocks import fake_ctx_model
 
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_InstituteGetModelViewModel(TestCase):
+class test_viewmodel_InstituteGetAllViewModel(TestCase):
 
     def setUp(self):        
         pass

@@ -69,7 +69,7 @@ class uitest_permissions_schemeofwork_lesson__when_vistor(UITestCase):
     def test_page__whiteboard__should_be_allowed(self):
         #path('<int:lesson_id>/whiteboard', views.whiteboard, name="lesson.whiteboard_view"),
         # test
-        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/whiteboard")
+        self.try_log_out(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/schedules/{self.test_lesson_schedule_id}/whiteboard")
         
         # assert
         self.assertWebPageTitleAndHeadings(title="Dave Russell - Teach Computer Science", h1="Types of CPU architecture", subheading="Algorithms")
