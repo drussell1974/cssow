@@ -4,22 +4,19 @@ import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer, withEvent } from '../helpers/domManipulators';
 import CalendarWidget from '../widgets/CalendarWidget';
 import  'whatwg-fetch';
-import  { 
-    fetchResponseOK,
-    fetchResponseNotOK,
-    fetchResponseError, 
-    requestBodyOf 
-} from '../helpers/spyHelpers';
 
 describe('CalendarWidget', () => {
     let render, 
     container, 
     //form, 
+    //
     field, 
+    input,
     //labelFor,
     //element, 
     //elements, 
-    change; 
+    change, 
+    click;
     //submit;
 
     let events= [
@@ -56,54 +53,58 @@ describe('CalendarWidget', () => {
         ).toMatch('');
     })
 
-
-    describe('filter events ', () => {
-
-        beforeEach(() => {
-            ({render, container, field, change } = createContainer());
-            render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
-
-        })
-
-        it('has control', () => {    
-            expect(
-                container.querySelector('#event-filter').textContent
-            ).toMatch('');
-        })
+    describe('renders filter control', () => {
 
         it('has all option', () => {
+            
+            render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
+        
             expect(
-                container.querySelector('#event_filter--all').getAttribute('checked')
-            ).toEqual('false');
+                container.querySelector('#event_filter--control input').checked
+            ).toEqual(false);
 
             expect(
-                container.querySelector('#event-filter .form-check label').textContent
+                container.querySelector('#event_filter--control label').textContent
             ).toEqual('show all events');
         })
-    })
-    
-    describe.skip('when filter changed', () => {
         
-        const onChangeFilterSpy = jest.fn();
-        
-        it('notifies onChange', async () => {
+        describe('when filter changes', () => {
             
-            let fieldName = "event_filter";
-            
-            render(<CalendarWidget 
-                events={events} 
-                onDateClick={onDateClick}
-                onChangeFilter={onChangeFilterSpy}
-            />);
-            
-            act(() => {
-                change(
-                    field('event-filter', fieldName),
-                    withEvent(fieldName, 'newValue')
-                );
+            const onChangeFilterSpy = jest.fn();
+
+            beforeEach(() => {
+                ({render, container, input, change } = createContainer());
             })
-            
-            expect(onChangeFilterSpy).toHaveBeenCalled();
+
+            it('notifies onChange', async () => {
+                
+                // arrange
+
+                let original_checked_state = true;
+                
+                render(<CalendarWidget 
+                    events={events} 
+                    showAllDefault={original_checked_state}
+                    onDateClick={onDateClick}
+                    onChangeFilter={onChangeFilterSpy}
+                />);
+                
+                // act
+                
+                await act(async () => {
+                    change(
+                        input('event_filter--toggle-show-all')
+                    );
+                })
+                
+                // assert 
+                
+                expect(onChangeFilterSpy).toHaveBeenCalled();
+
+                expect(
+                    container.querySelector('#event_filter--control input').checked
+                ).toEqual(!original_checked_state); // should have changed the check state
+            })
         })
     })
 })

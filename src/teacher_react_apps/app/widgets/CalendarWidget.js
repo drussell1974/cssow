@@ -4,28 +4,31 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
 const FilterCheckbox = ({onChange, showAllDefault}) => {
-    
-    
+
+    const  [ isChecked, setIsChecked ] = useState(showAllDefault);
+
+    const handleOnChangeFilter = async e => {
+        e.preventDefault();
+        setIsChecked(!isChecked)
+        onChange(e);
+    };
+
     return (
         <React.Fragment>
-            
+            <div  id="event_filter--control">
+                <div className="form-check form-switch form-check-inline" >
+                    <input className="form-check-input" type="checkbox" name="show_all" checked={isChecked} onChange={handleOnChangeFilter} id="event_filter--toggle-show-all" />
+                    <label className="form-check-label" htmlFor="event_filter--all">show all events</label>
+                </div>
+            </div>
         </React.Fragment>
     )
 }
 
 const CalendarWidget = ({events, onDateClick, onChangeFilter, showAllDefault=false}) => {
 
-    const  [ isChecked, setIsChecked ] = useState(showAllDefault);
-
     const handleOnDateClick = async e => {
         onDateClick(e);
-    };
-
-    const handleOnChangeFilter = async e => {
-    
-        e.preventDefault();
-        setIsChecked(!isChecked)
-        onChangeFilter(e);
     };
 
     if (events === undefined) {
@@ -33,13 +36,7 @@ const CalendarWidget = ({events, onDateClick, onChangeFilter, showAllDefault=fal
     } else {
         return (
             <React.Fragment>
-                <FilterCheckbox showAllDefault={showAllDefault} onChange={handleOnChangeFilter} />
-                <div id="event-filter">
-                    <div className="form-check form-switch form-check-inline" >
-                        <input className="form-check-input" type="checkbox" name="event_filter" checked={isChecked} onChange={handleOnChangeFilter} id="event_filter--all"/>
-                        <label className="form-check-label" htmlFor="event_filter--all">show all events</label>
-                    </div>
-                </div>
+                <FilterCheckbox onChange={onChangeFilter} showAllDefault={showAllDefault} />
                 <FullCalendar
                     plugins={[ dayGridPlugin ]}
                     initialView="dayGridMonth"

@@ -10,6 +10,8 @@ export const createContainer = () => {
     
     const field = (formId, name) => form(formId).elements[name];
     
+    const input = id => container.querySelector(`input[id="${id}"]`);
+    
     const labelFor = formElement => 
         container.querySelector(`h2[for="${formElement}"]`);
     
@@ -33,6 +35,7 @@ export const createContainer = () => {
         container,
         form,
         field,
+        input,
         labelFor,
         click:  simulateEvent('click'),
         change: simulateEvent('change'),
