@@ -91,7 +91,7 @@ class LessonScheduleModel(BaseModel):
         from_date = auth_user.academic_year.start_date if show_next_days == 0 else datetime.today().date()
         to_date = auth_user.academic_year.end_date if show_next_days == 0 else datetime.today().date() + timedelta(show_next_days)
 
-        rows = LessonScheduleDataAccess.get_all(db, lesson_id, scheme_of_work_id, auth_user_id=auth_user.auth_user_id, from_date=from_date, to_date=to_date, show_published_state=auth_user.can_view)
+        rows = LessonScheduleDataAccess.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, from_date=from_date, to_date=to_date, show_published_state=auth_user.can_view)
         
         result = []
         for row in rows:
@@ -103,9 +103,13 @@ class LessonScheduleModel(BaseModel):
                 start_date=row[4],
                 lesson_id = row[5],
                 scheme_of_work_id=row[6],
-                published=row[7],
-                created_by_id=row[8],
+                published=row[9],
+                created_by_id=row[10],
                 auth_user=auth_user)
+
+            model.department_id=row[7]
+            model.institute_id=row[8]
+
             model.on_fetched_from_db()
             
             result.append(model)
@@ -190,7 +194,7 @@ class LessonScheduleModel(BaseModel):
 class LessonScheduleDataAccess:
 
     @staticmethod
-    def get_all(db, lesson_id, scheme_of_work_id, auth_user_id, from_date, to_date, show_published_state=STATE.PUBLISH):
+    def get_all(db, institute_id, department_id, scheme_of_work_id, lesson_id, auth_user_id, from_date, to_date, show_published_state=STATE.PUBLISH):
         """
         get lesson schedule
 
@@ -204,7 +208,7 @@ class LessonScheduleDataAccess:
         
         execHelper = ExecHelper()
         select_sql = "lesson_schedule__get_all$2"
-        params = (lesson_id, from_date, to_date, int(show_published_state), auth_user_id)
+        params = (lesson_id, scheme_of_work_id, department_id, institute_id, from_date, to_date, int(show_published_state), auth_user_id)
         
         rows = []
         rows = execHelper.select(db, select_sql, params, rows, handle_log_info)

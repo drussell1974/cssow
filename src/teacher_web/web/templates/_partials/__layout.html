@@ -259,6 +259,9 @@
   {% endif %}
   <!-- page parameters used by react app - ADD OTHER CONTEXT PARAMETERS HERE as necessary -->
   <input type="hidden" id="teacher_react_apps__institute_id" value="{{content.ctx.institute_id}}" />
+  <input type="hidden" id="teacher_react_apps__department_id" value="{{content.ctx.department_id}}" />
+  <input type="hidden" id="teacher_react_apps__scheme_of_work_id" value="{{content.ctx.scheme_of_work_id}}" />
+  <input type="hidden" id="teacher_react_apps__lesson_id" value="{{content.ctx.lesson_id}}" />
   <!-- react scripts START --> 
   <script src="{% static 'default/js/teacher_react_apps/build/bundle.js' %}"></script>
   {% block react_scripts %}

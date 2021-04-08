@@ -47,8 +47,8 @@ const deleteNotification = (reactComponent, id) => {
 }
 
 
-const getSchedule = (reactComponent, institute_id) => {
-    let uri = `/api/institute/${institute_id}/schedule?format=json`;
+const getSchedule = (reactComponent, institute_id, department_id, schemeofwork_id, lesson_id) => {
+    let uri = `/api/schedule/institute/${institute_id}/department/${department_id}/schemesofwork/${schemeofwork_id}/lessons/${lesson_id}/events?format=json`;
     fetch(uri)
         .then(res => { 
             return res.json();

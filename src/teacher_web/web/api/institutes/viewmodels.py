@@ -1,9 +1,6 @@
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.models.cls_institute import InstituteModel
-from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.serializers.srl_institute import InstituteModelSerializer
-from shared.serializers.srl_lesson_schedule import LessonScheduleModelSerializer
-
 
 class InstituteGetAllViewModel(BaseViewModel):
     
@@ -28,15 +25,3 @@ class InstituteGetModelViewModel(BaseViewModel):
         else:
             srl = InstituteModelSerializer(model)
             self.model = srl.data
-
-
-class InstituteGetScheduleViewModel(BaseViewModel):
-
-    def __init__(self, db, auth_ctx):
-        self.db = db
-        
-        # get list
-        data = LessonScheduleModel.get_all(self.db, 0, 0, auth_user= auth_ctx)
-        
-        srl_list = list(map(lambda m: LessonScheduleModelSerializer(m).data, data))
-        self.model = srl_list

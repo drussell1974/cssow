@@ -52,7 +52,7 @@ describe('CalendarWidget', () => {
         render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
         
         expect(
-            container.textContent
+            container.querySelector('.fc-today-button').textContent
         ).toMatch('');
     })
 
@@ -73,8 +73,8 @@ describe('CalendarWidget', () => {
 
         it('has all option', () => {
             expect(
-                container.querySelector('#event_filter--all').getAttribute('value')
-            ).toEqual('all');
+                container.querySelector('#event_filter--all').getAttribute('checked')
+            ).toEqual('false');
 
             expect(
                 container.querySelector('#event-filter .form-check label').textContent

@@ -33,6 +33,7 @@ class Ctx:
         self.institute_id = institute_id
         self.department_id = department_id
         self.scheme_of_work_id = view_params.get("scheme_of_work_id",0)
+        self.lesson_id = view_params.get("lesson_id",0)
         self.auth_user_id = view_params.get("auth_user_id",0)
         self.user_name = "Not logged in"
         # public member

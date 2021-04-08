@@ -1,25 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import getParams from '../helpers/host_page';
 import { getSchedule } from '../services/apiReactServices';
-// import { getEvents } from '../services/apiReactServices';
 import CalendarWidget from '../widgets/CalendarWidget';
 
 class CalendarPage extends React.Component {
     
     constructor(props){
         super(props);
+
         this.state = {
+            Params: getParams(false),
             Events: [],
             hasError: false,
         }
-        // required for getting parameters
+        // bind the handler to the component
+        this.handleChangeFilter = this.handleChangeFilter.bind(this);
         // this.handleDateClick = this.handleDateClick.bind(this);
-        
-        // #358 get params from page TODO: handle if not available
-        this.institute_id = document.querySelector("input#teacher_react_apps__institute_id").value;
-        //this.department_id = document.querySelector("input#teacher_react_apps__department_id").value;
-        //this.schemeofwork_id = document.querySelector("input#teacher_react_apps__scheme_of_work_id").value;
-        //this.lesson_id = document.querySelector("input#teacher_react_apps__lesson_id").value;
-    }
+    }   
 
     handleDateClick(e) {
         console.log(e.dateStr);
@@ -27,13 +24,17 @@ class CalendarPage extends React.Component {
       }
 
     handleChangeFilter(e) {
-        console.log(e);
+        this.state = { 
+            Params: getParams(e.target.checked)
+        };
+        
+        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
     }
 
     componentDidMount() {
-        getSchedule(this, this.institute_id);
+        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
         // get schedule every 30 seconds
-        setInterval(() => getSchedule(this, this.institute_id), 30000);
+        setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
       }
     
     static getDerivedStateFromError(error) {
@@ -56,6 +57,7 @@ class CalendarPage extends React.Component {
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
+                    showAllDefault={false}
                     onDateClick={this.handleDateClick}
                     onChangeFilter={this.handleChangeFilter}
                 />

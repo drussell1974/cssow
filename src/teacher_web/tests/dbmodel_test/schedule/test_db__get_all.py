@@ -43,7 +43,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all$2'
-                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
+                , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -52,7 +52,7 @@ class test_db__get_all(TestCase):
 
     def test__should_call_select_return_single_item(self, mock_ctx):
         # arrange
-        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "7x", "ABCDEF", "2021-04-03 11:30:34", 6, 11, 1, 99)]
+        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "7x", "ABCDEF", "2021-04-03 11:30:34", 6, 11, 5, 2, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -63,7 +63,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all$2'
-                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
+                , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
                 
@@ -80,9 +80,9 @@ class test_db__get_all(TestCase):
     def test__should_call_select_return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [
-            (569, "Proin sit amet elementum lectus", "7x", "ABCDEX", "2021-04-03 09:00:00", 6, 11, 1, 99),
-            (570, "Maecenas finibus tellus", "7y", "ABCDEY", "2021-04-04 10:00:00", 6, 11, 1, 99),
-            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7z", "ABCDEZ", "2021-04-04 13:30:04", 6, 11, 1, 99)
+            (569, "Proin sit amet elementum lectus", "7x", "ABCDEX", "2021-04-03 09:00:00", 6, 11, 5, 2, 1, 99),
+            (570, "Maecenas finibus tellus", "7y", "ABCDEY", "2021-04-04 10:00:00", 6, 11, 1, 7, 2, 99),
+            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7z", "ABCDEZ", "2021-04-04 13:30:04", 6, 11, 7, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -94,7 +94,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all$2'
-                , (34, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
+                , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -118,9 +118,9 @@ class test_db__get_all(TestCase):
     def test__should_call_select_return_current_items_only(self, mock_ctx):
         # arrange
         expected_result = [
-            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7x", "ABCDEX", "2121-04-03 09:00:00", 6, 11, 1, 99),
-            (765570, "Proin sit amet elementum lectus", "7y", "ABCDEY", "2121-04-04 10:00:00", 6, 11, 1, 99),
-            (765571, "Maecenas finibus tellus", "7z", "ABCDEZ", "2121-04-04 13:30:04", 6, 11, 1, 99)
+            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7x", "ABCDEX", "2121-04-03 09:00:00", 6, 11, 5, 2, 1, 99),
+            (765570, "Proin sit amet elementum lectus", "7y", "ABCDEY", "2121-04-04 10:00:00", 6, 11, 5, 2, 1, 99),
+            (765571, "Maecenas finibus tellus", "7z", "ABCDEZ", "2121-04-04 13:30:04", 6, 11, 5, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -132,7 +132,7 @@ class test_db__get_all(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'lesson_schedule__get_all$2'
-                , (34, datetime.today().date(), datetime.today().date() + timedelta(7), 1, mock_ctx.auth_user_id)
+                , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, datetime.today().date(), datetime.today().date() + timedelta(7), 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
 

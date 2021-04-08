@@ -1,13 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-from api.institutes.viewmodels import InstituteGetScheduleViewModel as ViewModel
+from api.schedules.viewmodels import LessonScheduleViewModel as ViewModel
 from shared.models.core.context import Ctx
 from shared.models.cls_lesson_schedule import LessonScheduleModel as Model
 from tests.test_helpers.mocks import fake_ctx_model
 
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_InstituteGetScheduleViewModel(TestCase):
+class test_viewmodel_ScheduleViewModel(TestCase):
 
     def setUp(self):        
         pass
@@ -31,7 +31,7 @@ class test_viewmodel_InstituteGetScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_ctx=mock_ctx_model)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -52,7 +52,7 @@ class test_viewmodel_InstituteGetScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_ctx=mock_ctx_model)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -77,7 +77,7 @@ class test_viewmodel_InstituteGetScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_ctx=mock_ctx_model)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model)
 
             # assert functions was called
             Model.get_all.assert_called()

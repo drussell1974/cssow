@@ -28,7 +28,7 @@ END;
 
 // DELIMITER ;
 
-CALL lesson_schedule__get_by_class_code$3('G86O5B', 1, 0);
+CALL lesson_schedule__get_by_class_code$3('FTRXZQ', 1, 0);
 
 DELIMITER //
 
