@@ -92,9 +92,12 @@
 
     {% endfor %}
 
-    <!-- Show calendar here -->
-    <!-- TODO: #435 add link to full calendar -->
     <hr>
+
+    <!-- #435 add link to full calendar -->
+    <a href="{% url 'institute.schedule' content.ctx.institute_id %}" class="btn btn-primary">{{_('Go to full schedule')}}</a>
+    <!-- #435 Show calendar here -->
+
     <div id="calendar-app"></div>
 
 {% endif %}

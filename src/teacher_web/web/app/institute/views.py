@@ -8,7 +8,7 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.view_model import ViewModel
 from app.institute.viewmodels import InstituteEditViewModel
-from app.institute.viewmodels import InstituteIndexViewModel, InstituteAllViewModel
+from app.institute.viewmodels import InstituteIndexViewModel, InstituteAllViewModel, InstituteScheduleViewModel
 from app.institute.viewmodels import InstituteDeleteUnpublishedViewModel
 
 # Create your views here.
@@ -53,3 +53,14 @@ def delete_unpublished(request, institute_id, auth_ctx):
     InstituteDeleteUnpublishedViewModel(db=db, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("institute.index"))
+
+
+@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def schedule(request, institute_id, auth_ctx):    
+    
+    schedule_view =  InstituteScheduleViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
+    
+    sub_heading = "Schedule"
+
+    return render(request, "institute/schedule.html", schedule_view.view(schedule_view.institute.name, sub_heading).content)
+

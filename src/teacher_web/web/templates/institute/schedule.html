@@ -1,0 +1,9 @@
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
+
+{% block maincontent %}
+    <h2 class="group-heading">{{_("Schedule")}} {{ request.session.academic_year__display }}</h2>
+    <hr />
+    <div id="calendar-app"></div>
+
+{% endblock %}
+

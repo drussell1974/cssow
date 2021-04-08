@@ -52,7 +52,7 @@ class CalendarPage extends React.Component {
       }
       
     render() {
-
+        // set showAllDefault based on getParams
         return (
             <React.Fragment>
                 <CalendarWidget 
