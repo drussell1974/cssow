@@ -7,7 +7,7 @@ from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_EditViewModel(TestCase):
@@ -29,7 +29,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):            
+            with patch.object(LessonScheduleModel, "save", return_value=fake_lesson_schedule(id=15, auth_ctx=mock_auth_user)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -73,7 +73,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):            
+            with patch.object(LessonScheduleModel, "save", return_value=fake_lesson_schedule(id=15, auth_ctx=mock_auth_user)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -114,7 +114,7 @@ class test_viewmodel_EditViewModel(TestCase):
         on_save__data_to_return.is_valid = True
 
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):            
+            with patch.object(LessonScheduleModel, "save", return_value=fake_lesson_schedule(id=15, auth_ctx=mock_auth_user)):            
                 with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                     return_keyword_model = KeywordModel(4, term="Four")
@@ -150,7 +150,7 @@ class test_viewmodel_EditViewModel(TestCase):
         
         
         with patch("app.default.viewmodels.KeywordSaveViewModel") as save_keyword:
-            with patch.object(LessonScheduleModel, "save", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):
+            with patch.object(LessonScheduleModel, "save", return_value=fake_lesson_schedule(id=15, auth_ctx=mock_auth_user)):
                 with patch.object(Model, "save", return_value=None):
                     
                     save_keyword.model = Mock(return_value=KeywordModel(12, scheme_of_work_id=13))

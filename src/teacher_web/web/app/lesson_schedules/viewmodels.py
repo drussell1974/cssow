@@ -41,8 +41,14 @@ class LessonScheduleIndexViewModel(BaseViewModel):
 
             self.lesson_options = LessonModel.get_options(self.db, self.scheme_of_work_id, self.auth_user)  
 
+            # TODO: get from settings
+            self.show_next_days = 7
+
+            if request.method == "POST":
+                self.show_next_days = try_int(request.POST.get("show_next_days", 7))
+
             # get model
-            data = LessonScheduleModel.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+            data = LessonScheduleModel.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, show_next_days=self.show_next_days, auth_user=auth_user)
             self.model = data
 
         except Http404 as e:
@@ -61,7 +67,9 @@ class LessonScheduleIndexViewModel(BaseViewModel):
             "scheme_of_work": self.scheme_of_work,
             "lesson": self.lesson,
             "schedules": self.model,
-            "lesson_options": self.lesson_options
+            "lesson_options": self.lesson_options,
+            "show_next_days": self.show_next_days,
+            "days_to_show__options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks",28:"28 days"}
         }
         
         return ViewModel(self.lesson.title, self.lesson.title, "Scheduled lessons", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)

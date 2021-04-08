@@ -55,10 +55,11 @@ def delete_unpublished(request, institute_id, auth_ctx):
     return HttpResponseRedirect(reverse("institute.index"))
 
 
+@permission_required("cssow.view_schedule", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def schedule(request, institute_id, auth_ctx):    
     
-    schedule_view =  InstituteScheduleViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
+    schedule_view =  InstituteScheduleViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_ctx)
     
     sub_heading = "Schedule"
 

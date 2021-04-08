@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from shared.models.cls_lesson_schedule import LessonScheduleModel
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
 
 class test_cls_lesson_schedule__constructor(TestCase):
 
@@ -16,7 +16,7 @@ class test_cls_lesson_schedule__constructor(TestCase):
 
         # arrange
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = LessonScheduleModel(0, title="", start_date=None, class_name="", class_code="", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
+            self.test = fake_lesson_schedule(id=0, title="", start_date=None, class_name="", class_code="", lesson_id=12, scheme_of_work_id=34, auth_ctx=mock_auth_user)
 
             # assert
             self.assertEqual(0, self.test.id)
@@ -37,7 +37,7 @@ class test_cls_lesson_schedule__constructor(TestCase):
         # arrange
 
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:            
-            self.test = LessonScheduleModel(0, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
+            self.test = fake_lesson_schedule(id=0, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_ctx=mock_auth_user)
 
             # assert
             self.assertEqual(0, self.test.id)

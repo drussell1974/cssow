@@ -8,7 +8,7 @@ from shared.models.cls_lesson import LessonModel as Model
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_LessonGetModelViewModel(TestCase):
@@ -44,7 +44,7 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
         data_to_return = None
         
         with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(LessonScheduleModel, "get_model", return_value=LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)):
+            with patch.object(LessonScheduleModel, "get_model", return_value=fake_lesson_schedule(id=15, auth_ctx=mock_auth_user)):
 
                 db = MagicMock()
                 db.cursor = MagicMock()
@@ -75,10 +75,9 @@ class test_viewmodel_LessonGetModelViewModel(TestCase):
                 KeywordModel(106, "RAM"),
             ]
         data_to_return.is_from_db = True
-        data_to_return.lesson_schedule = [LessonScheduleModel(15, title="Vivamus at porta orci", class_name="7xab", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)]
+        data_to_return.lesson_schedule = [fake_lesson_schedule(id=15, class_name="7xab", auth_ctx=mock_auth_user)]
 
         with patch.object(Model, "get_model", return_value=data_to_return):
-            #with patch.object(LessonScheduleModel, "get_all", return_value=[LessonScheduleModel(15, class_name="7xab", class_code="ABCDEF", start_date=None, lesson_id=99, scheme_of_work_id=12, auth_user=mock_auth_user)]):
             
             db = MagicMock()
             db.cursor = MagicMock()

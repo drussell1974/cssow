@@ -2,6 +2,7 @@ from datetime import datetime
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_institute import InstituteContextModel
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkContextModel
@@ -10,6 +11,10 @@ from shared.models.core.context import AuthCtx, Ctx, AcademicYearCtx
 
 def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True, ctx=Ctx(1276711, 826)):
     return SchemeOfWorkModel(id, name=name, study_duration=1, start_study_in_year=12, is_from_db=is_from_db, auth_user=ctx)
+
+
+def fake_lesson_schedule(id=1, title="Vivamus at porta orci",  start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=34, scheme_of_work_id = 12, auth_ctx=Ctx(1276711, 826)):
+    return LessonScheduleModel(id_=id, title=title, start_date=start_date, class_name=class_name, class_code=class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
 
 def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, fake_request_user_id=6079):

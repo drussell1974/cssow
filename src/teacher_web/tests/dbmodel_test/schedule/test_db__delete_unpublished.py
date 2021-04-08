@@ -24,7 +24,7 @@ class test_db__deleteunpublished(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        LessonScheduleModel(0, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
+        #LessonScheduleModel(0, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7x", class_code="ABCDEF", start_date=None, lesson_id=12, scheme_of_work_id=34, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
