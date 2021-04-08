@@ -58,6 +58,7 @@ class CalendarPage extends React.Component {
                 <CalendarWidget 
                     events={this.state.Events} 
                     showAllDefault={false}
+                    showWeekendsDefault={false}
                     onDateClick={this.handleDateClick}
                     onChangeFilter={this.handleChangeFilter}
                 />
