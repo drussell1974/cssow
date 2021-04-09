@@ -27,7 +27,7 @@ class test_db__save(TestCase):
         expected_exception = KeyError("Bang!")
 
         model = fake_lesson_schedule(id=0, auth_ctx=mock_auth_user)
-        # Model(0, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
+        # Model(0, title="Aliquam sem sapien", class_name="7x", class_code="", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
@@ -41,7 +41,7 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        #model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
+        #model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
         model = fake_lesson_schedule(id=1, auth_ctx=mock_auth_user)
         
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
@@ -100,7 +100,7 @@ class test_db__save(TestCase):
     def test_should_call__delete__when__is_new__false__and__published_is_2(self, mock_auth_user):
         # arrange
 
-        model = fake_lesson_schedule(101, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_ctx=mock_auth_user)
+        model = fake_lesson_schedule(101, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_ctx=mock_auth_user)
         
         expected_result = model.id
 

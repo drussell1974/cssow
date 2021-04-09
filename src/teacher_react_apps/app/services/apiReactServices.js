@@ -59,10 +59,10 @@ const getSchedule = (reactComponent, institute_id, department_id, schemeofwork_i
             // map scheduled lessons to fulcalendar event
             data.schedule.map(sch => {
                 scheduled_events.push({
-                    title: `${sch.period}: ${sch.class_name} - ${sch.title}`, 
+                    title: `${sch.start_date_ui_time}: ${sch.class_name} - ${sch.title}`, 
                     start: sch.start_date, 
                     extendedProps: {
-                        lesson_details: `period: ${sch.period}, class: ${sch.class_name}, title: '${sch.title}', code: ${sch.class_code}`
+                        lesson_details: `time: ${sch.start_date_ui_time}, class: ${sch.class_name}, title: '${sch.title}', code: ${sch.class_code}`
                       },
                     url: sch.whiteboard_url })
             })

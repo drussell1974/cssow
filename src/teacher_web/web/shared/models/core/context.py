@@ -42,7 +42,7 @@ class Ctx:
 
 class AuthCtx(Ctx):
     
-    def __init__(self, db, request, institute_id, department_id, start_date=None, end_date=None, **view_params):
+    def __init__(self, db, request, institute_id, department_id, start_date="2021-06-09T17:20", end_date=None, **view_params):
         super().__init__(institute_id=institute_id, department_id=department_id, **view_params)
 
         self.db = db

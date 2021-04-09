@@ -22,7 +22,7 @@ class test_db__delete(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = fake_lesson_schedule(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115, auth_ctx=mock_auth_user)
+        model = fake_lesson_schedule(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date="2021-06-09T17:20", lesson_id=15, scheme_of_work_id=115, auth_ctx=mock_auth_user)
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
@@ -35,7 +35,7 @@ class test_db__delete(TestCase):
     def test_should_call__delete(self, mock_auth_user):
          # arrange
 
-        model = fake_lesson_schedule(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date=None, lesson_id=15, scheme_of_work_id=115, auth_ctx=mock_auth_user)
+        model = fake_lesson_schedule(1, title="Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", class_name="7B", class_code="ABCDFD", start_date="2021-06-09T17:20", lesson_id=15, scheme_of_work_id=115, auth_ctx=mock_auth_user)
 
         expected_result = [(1)]
 

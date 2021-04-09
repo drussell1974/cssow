@@ -135,7 +135,8 @@ class test_viewmodel_EditViewModel(TestCase):
                     "id": 99,
                     "class_code": "XBCDEF",
                     "class_name": "10yab",
-                    "start_date": "2021-04-03T04:42",
+                    "start_date": "2021-04-03",
+                    "period": "04:42",
                     "published": "PUBLISH"
                 }
 
@@ -187,7 +188,8 @@ class test_viewmodel_EditViewModel(TestCase):
                     "id": 99,
                     "class_code": "XBCDEX",
                     "class_name": "",
-                    "start_date": "2021-04-03 04:44:44",
+                    "start_date": "2021-04-03",
+                    "period": "04:44",
                     "published": "PUBLISH"
                 }
 
@@ -226,4 +228,4 @@ class test_viewmodel_EditViewModel(TestCase):
                     self.assertEqual(101, test_context.model.id)
                     self.assertEqual("", test_context.model.class_name)
                     self.assertEqual("XBCDEX", test_context.model.class_code)
-                    self.assertEqual("2021-04-03 04:44:44", test_context.model.start_date)
+                    self.assertEqual("2021-04-03T04:44", test_context.model.start_date)

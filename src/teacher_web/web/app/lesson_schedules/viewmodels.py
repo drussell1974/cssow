@@ -69,7 +69,7 @@ class LessonScheduleIndexViewModel(BaseViewModel):
             "schedules": self.model,
             "lesson_options": self.lesson_options,
             "show_next_days": self.show_next_days,
-            "days_to_show__options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks",28:"28 days"}
+            "days_to_show__options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks",28:"28 days"},
         }
         
         return ViewModel(self.lesson.title, self.lesson.title, "Scheduled lessons", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
@@ -104,7 +104,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
         try:
             published_state = STATE.parse(self.request.POST["published"] if self.request.POST["published"] is not None else "PUBLISH")
             
-            self.model.start_date = self.request.POST['start_date']
+            self.model.start_date = f"{self.request.POST['start_date']}T{self.request.POST['period']}"
             create_new_class_code = self.request.POST.get("generate_class_code", False)
             if create_new_class_code:
                 self.model.class_code = ClassCodeGenerator.generate_class_code(6)
@@ -126,8 +126,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
 
                 notify = NotifyModel(0, 
                     auth_user_id=self.auth_ctx.auth_user_id, 
-                    notify_message=f"lesson reminder {self.model.class_name} {self.model.start_date.split('T')[1]}",   
-                    message=f"Lesson for {self.model.class_name} starts at {self.model.start_date}", 
+                    notify_message=f"lesson {self.model.start_date_ui_date} {self.model.start_date_ui_time} for {self.model.class_name}",   
+                    message=f"Lesson for {self.model.class_name} starts at {self.model.start_date_ui_date} {self.model.start_date_ui_time}", 
                     action=self.action_url, 
                     reminder=reminder,
                     event_type=LOG_TYPE.Information)
@@ -151,7 +151,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
         data = {
             "scheme_of_work_id": self.scheme_of_work_id,
             "lesson_id": self.lesson_id,
-            "model": self.model
+            "model": self.model,
+            "period_options": { 1:"09:00", 2:"10:00", 3:"11:15", 4:"13:15", 6:"14:15", 7:"15:15", 8:"16:15" } 
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)

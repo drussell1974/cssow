@@ -20,7 +20,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
 
 
     @patch.object(LessonModel, "get_model", return_value=LessonModel(34, title="", is_from_db=True))
-    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date=None, lesson_id=23, scheme_of_work_id=34, is_from_db=True))
+    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-06-09T17:20", lesson_id=23, scheme_of_work_id=34, is_from_db=True))
     def test_init_called_delete__with_exception(self, mock_auth_user, LessonScheduleModel_get_model, LessonModel_get_model):
         
         # arrange        
@@ -41,7 +41,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
                 LessonModel_get_model.assert_called()
                 
 
-    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date=None, is_from_db=False, lesson_id=23, scheme_of_work_id=34))
+    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-06-09T17:20", is_from_db=False, lesson_id=23, scheme_of_work_id=34))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(34, title="", is_from_db=True))
     def test_init_raise_Http404__when_model_not_found(self, mock_auth_user, LessonScheduleModel_get_model, LessonModel_get_model):
     
@@ -63,7 +63,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
                 Model.delete.assert_not_called()
 
 
-    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date=None, lesson_id=23, scheme_of_work_id=34, is_from_db=True))
+    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-06-09T17:20", lesson_id=23, scheme_of_work_id=34, is_from_db=True))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(34, title="", is_from_db=True))
     def test_init_called_delete__no_return_rows(self, mock_auth_user, LessonScheduleModel_get_model, LessonModel_get_model):
         
@@ -87,7 +87,7 @@ class test_viewmodel_DeleteViewModel(TestCase):
             Model.delete.assert_called()
 
 
-    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date=None, lesson_id=23, scheme_of_work_id=34, is_from_db=True))
+    @patch.object(Model, "get_model", return_value=fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-06-09T17:20", lesson_id=23, scheme_of_work_id=34, is_from_db=True))
     @patch.object(LessonModel, "get_model", return_value=LessonModel(34, title="", is_from_db=True))
     def test_init_called_delete__return_item(self, mock_auth_user, LessonScheduleModel_get_model, LessonModel_get_model):
         

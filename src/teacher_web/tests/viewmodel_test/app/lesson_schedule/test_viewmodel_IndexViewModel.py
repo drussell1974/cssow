@@ -52,7 +52,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [fake_lesson_schedule(34, title="", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)]
+        data_to_return = [fake_lesson_schedule(34, title="", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
             
@@ -80,9 +80,9 @@ class test_viewmodel_IndexViewModel(TestCase):
         # arrange
         
         data_to_return = [
-            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
-            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
-            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
+            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
+            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
             ]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
@@ -111,9 +111,9 @@ class test_viewmodel_IndexViewModel(TestCase):
         # arrange
         
         data_to_return = [
-            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
-            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
-            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
+            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
+            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
             ]
         
         with patch.object(Model, "get_all", return_value=data_to_return):

@@ -12,6 +12,8 @@ class LessonScheduleModelSerializer(serializers.ModelSerializer):
             "class_name",
             "period",
             "start_date",
+            "start_date_ui_date",
+            "start_date_ui_time",
             "class_code",
             "lesson_id",
             "scheme_of_work_id",
