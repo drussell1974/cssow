@@ -199,7 +199,6 @@ MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
 # DATEFORMAT
 ISOFORMAT = "%Y-%m-%dT%H:%M"
 
-
 # Paging default settings
 
 PAGER = {

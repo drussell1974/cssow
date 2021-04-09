@@ -12,7 +12,6 @@ class fake_settings:
         }
     },
     ISOFORMAT = "%Y-%m-%dT%H:%M"
-    DATEFORMAT_DISPLAY = "%d-%m-%Y"
 
 
 class test_cls_eventlogfilter__constructor(TestCase):
