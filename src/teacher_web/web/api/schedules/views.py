@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.db import connection as db
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from shared.models.core.context import AuthCtx, Ctx
 from .viewmodels import LessonScheduleClassCodeViewModel, LessonScheduleViewModel
@@ -28,6 +29,11 @@ class LessonScheduleClassCodeViewSet(APIView):
 class LessonScheduleViewSet(APIView):
     ''' API endpoint for events '''
 
+    def resolve_url(self, schedule):
+        whiteboard_url = reverse("lesson_schedule.whiteboard_view", args=[schedule.institute_id, schedule.department_id, schedule.scheme_of_work_id, schedule.lesson_id, schedule.id])
+        return whiteboard_url
+
+
     def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx=None):
 
         # TODO: #367 get auth_ctx from min_permission_required decorator
@@ -36,7 +42,7 @@ class LessonScheduleViewSet(APIView):
         #class_code = request.GET.get("class_code", "")
 
         #253 check user id
-        get_schedule_view = LessonScheduleViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_ctx=auth_ctx)
+        get_schedule_view = LessonScheduleViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_ctx=auth_ctx, fn_resolve_url=self.resolve_url)
 
         return JsonResponse({ "schedule": get_schedule_view.model } )
     

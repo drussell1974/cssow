@@ -11,6 +11,10 @@ const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeeke
     const handleOnDateClick = async e => {
         onDateClick(e);
     };
+
+    const handleEventClick = async e => {
+        console.log(e);
+    }
     
     const handleOnShowAllEventsChange = async e => {
         e.preventDefault();
@@ -46,6 +50,7 @@ const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeeke
                     events={events}
                     plugins={[ dayGridPlugin, interactionPlugin ]}
                     dateClick={handleOnDateClick}
+                    eventClick={handleEventClick}
                 />
             </React.Fragment>
         )

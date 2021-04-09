@@ -23,6 +23,7 @@ class test_cls_lesson_schedule__constructor(TestCase):
             self.assertEqual("", self.test.title)
             self.assertEqual("", self.test.class_name)
             self.assertEqual("", self.test.class_code)
+            self.assertEqual("", self.test.whiteboard_url)
             self.assertEqual(12, self.test.lesson_id)
             self.assertEqual(34, self.test.scheme_of_work_id)
             self.assertEqual(mock_auth_user.department_id, self.test.department_id)
@@ -33,17 +34,21 @@ class test_cls_lesson_schedule__constructor(TestCase):
 
     def test_constructor_set_valid_values(self):
 
+        def fake_resolve_schedule_urls(sch):
+            return f"http://localhost/.../schemesofwork/{sch.scheme_of_work_id}/lessons/{sch.lesson_id}/whiteboard"
 
-        # arrange
+        # arranged
 
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:            
-            self.test = fake_lesson_schedule(id=0, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_ctx=mock_auth_user)
+            self.test = fake_lesson_schedule(id=0, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_ctx=mock_auth_user, fn_resolve_url=fake_resolve_schedule_urls)
 
+            self.maxDiff = None
             # assert
             self.assertEqual(0, self.test.id)
             self.assertEqual("ABCDEF", self.test.class_code)
             self.assertEqual("Vivamus at porta orci", self.test.title)
             self.assertEqual("7x", self.test.class_name)
+            self.assertEqual("http://localhost/.../schemesofwork/34/lessons/12/whiteboard", self.test.whiteboard_url)
             self.assertEqual(12, self.test.lesson_id)
             self.assertEqual(34, self.test.scheme_of_work_id)
             self.assertEqual(mock_auth_user.department_id, self.test.department_id)

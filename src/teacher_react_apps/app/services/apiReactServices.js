@@ -58,7 +58,7 @@ const getSchedule = (reactComponent, institute_id, department_id, schemeofwork_i
             let scheduled_events = []
             // map scheduled lessons to fulcalendar event
             data.schedule.map(sch => {
-                scheduled_events.push({title: `${sch.class_name} - ${sch.title}`, date: sch.start_date})
+                scheduled_events.push({title: `${sch.class_name} - ${sch.title}`, start: sch.start_date, url: sch.whiteboard_url })
             })
 
             reactComponent.setState({

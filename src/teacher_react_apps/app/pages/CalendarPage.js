@@ -19,6 +19,28 @@ class CalendarPage extends React.Component {
         this.handleShowWeekendChange = this.handleShowWeekendChange.bind(this);
     }   
 
+    static getDerivedStateFromError(error) {
+        // Update state so the next render will show the fallback UI.
+        return { hasError: true };
+      }
+
+    componentDidCatch(error, errorInfo) {
+        // You can also log the error to an error reporting service
+        console.log(error, errorInfo);
+        
+        this.state = {
+            hasError: true,
+        }
+      }
+
+      componentDidMount() {
+        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
+        // get schedule every 30 seconds
+        setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
+      }
+
+    /** Event Handlers >>> **/
+
     handleDateClick(e) {
         console.log(e.dateStr);
         // TODO: #358 add scheduled lesson
@@ -35,27 +57,9 @@ class CalendarPage extends React.Component {
     handleShowWeekendChange(e) {
         // NOTE: do not NOT e.preventDefault();, as it causes conflict with calendar
     }
-
-    componentDidMount() {
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
-        // get schedule every 30 seconds
-        setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
-      }
-    
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return { hasError: true };
-      }
-
-    componentDidCatch(error, errorInfo) {
-        // You can also log the error to an error reporting service
-        console.log(error, errorInfo);
+  
+    /** <<< Event Handlers END **/
         
-        this.state = {
-            hasError: true,
-        }
-      }
-      
     render() {
         return (
             <React.Fragment>
