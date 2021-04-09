@@ -13,6 +13,7 @@ class LessonScheduleModel(BaseModel):
     title = ""
     class_name = ""
     class_code = ""
+    period = 0
     start_date = ""
     whiteboard_url = ""
     lesson_id = 0
@@ -21,18 +22,24 @@ class LessonScheduleModel(BaseModel):
     institute_id = 0
     is_from_db = False
 
-    def __init__(self, id_, title, class_name, class_code, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None, fn_resolve_url=None):
+    def __init__(self, id_, title, class_name, class_code, period, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None, fn_resolve_url=None):
         super().__init__(id_, f"{title} - {class_name} ({class_code})", created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title
         self.class_name = class_name
         self.class_code = class_code
         self.whiteboard_url = "" # default
+        self.period = period
         self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
         self.lesson_id = try_int(lesson_id)
         self.scheme_of_work_id = try_int(scheme_of_work_id)
 
         if fn_resolve_url is not None:
             self.whiteboard_url = fn_resolve_url(self)
+
+        if period == 0:
+            # TODO: get times
+            self.period = 1
+
 
     @property
     def is_today(self):
@@ -60,7 +67,7 @@ class LessonScheduleModel(BaseModel):
     def new(cls, lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
         start_date = datetime.now()
         new_class_code = fn_generate_class_code(length=6)
-        return LessonScheduleModel(0, title="", class_name="", class_code=new_class_code, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+        return LessonScheduleModel(0, title="", class_name="", class_code=new_class_code, period=0, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
 
     def validate(self, skip_validation = []):
@@ -104,6 +111,7 @@ class LessonScheduleModel(BaseModel):
                 title=row[1],
                 class_name=row[2],
                 class_code = row[3],
+                period=0,
                 start_date=row[4],
                 lesson_id = row[5],
                 scheme_of_work_id=row[6],
@@ -132,6 +140,7 @@ class LessonScheduleModel(BaseModel):
                 title=row[0],
                 class_name=row[1],
                 class_code = row[2],
+                period=0,
                 start_date=row[3],
                 lesson_id = row[4],
                 scheme_of_work_id=row[5],
@@ -158,6 +167,7 @@ class LessonScheduleModel(BaseModel):
                 title=row[1],
         		class_name = row[2],
                 class_code = class_code,
+                period = 0,
                 start_date = row[3],
                 lesson_id = row[4],
                 scheme_of_work_id=row[5],

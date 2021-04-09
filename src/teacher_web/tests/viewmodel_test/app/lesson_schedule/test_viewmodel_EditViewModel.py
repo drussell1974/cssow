@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.lesson_schedules.viewmodels import LessonScheduleEditViewModel as ViewModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel as Model
 from shared.models.cls_lesson import LessonModel
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_EditViewModel(TestCase):
@@ -99,7 +99,7 @@ class test_viewmodel_EditViewModel(TestCase):
         # mock lesson
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
 
-        return_schedule_model = Model(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        return_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         return_schedule_model.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):
@@ -146,11 +146,11 @@ class test_viewmodel_EditViewModel(TestCase):
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
         
         # mock existing object in database
-        get_schedule_model = Model(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         get_schedule_model.is_valid = True
 
         # mock saved object
-        on_save__data_to_return = Model(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         on_save__data_to_return.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):
@@ -198,11 +198,11 @@ class test_viewmodel_EditViewModel(TestCase):
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
 
         # mock existing object in database
-        get_schedule_model = Model(101, title="Vivamus at porta orci",  class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci",  class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         get_schedule_model.is_valid = True
 
         # mock saved object
-        on_save__data_to_return = Model(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_user=mock_auth_user)
+        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         on_save__data_to_return.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):

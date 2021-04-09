@@ -16,4 +16,8 @@ const getParams = (show_all) => {
     }
 }
 
+export const showAllEvents = () => {
+    return (0 == getParamOrDefault("input#teacher_react_apps__department_id", 0) + getParamOrDefault("input#teacher_react_apps__scheme_of_work_id", 0) + getParamOrDefault("input#teacher_react_apps__lesson_id", 0));
+}
+
 export default getParams;

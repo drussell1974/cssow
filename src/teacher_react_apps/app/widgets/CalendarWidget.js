@@ -3,10 +3,10 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
-const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeekendChange, showAllEventsDefault=false, showWeekendsDefault=false}) => {
+const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeekendChange, showAllEvents=false, showWeekends=false}) => {
 
-    const [ showAllIsChecked, setShowAllIsChecked ] = useState(showAllEventsDefault);
-    const [ showWeekendsIsChecked, setShowWeekendsIsChecked ] = useState(showWeekendsDefault);
+    const [ showAllIsChecked, setShowAllIsChecked ] = useState(showAllEvents);
+    const [ showWeekendsIsChecked, setShowWeekendsIsChecked ] = useState(showWeekends);
 
     const handleOnDateClick = async e => {
         onDateClick(e);
@@ -27,6 +27,10 @@ const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeeke
         setShowWeekendsIsChecked(!showWeekendsIsChecked);
         onShowWeekendChange(e);
     };
+
+    const fnEventContent = (arg) => {
+        return { html: `<button class="badge badge-info" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+    }
 
     if (events === undefined) {
         return(<React.Fragment></React.Fragment>)
@@ -49,6 +53,7 @@ const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeeke
                     weekends={showWeekendsIsChecked}
                     events={events}
                     plugins={[ dayGridPlugin, interactionPlugin ]}
+                    eventContent={fnEventContent}
                     dateClick={handleOnDateClick}
                     eventClick={handleEventClick}
                 />

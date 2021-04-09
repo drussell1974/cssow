@@ -13,8 +13,8 @@ def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True,
     return SchemeOfWorkModel(id, name=name, study_duration=1, start_study_in_year=12, is_from_db=is_from_db, auth_user=ctx)
 
 
-def fake_lesson_schedule(id=1, title="Vivamus at porta orci",  start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=34, scheme_of_work_id = 12, auth_ctx=Ctx(1276711, 826), fn_resolve_url=None):
-    return LessonScheduleModel(id_=id, title=title, start_date=start_date, class_name=class_name, class_code=class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx, fn_resolve_url=fn_resolve_url)
+def fake_lesson_schedule(id=1, title="Vivamus at porta orci",  start_date=None, class_name="7x", class_code="ABCDEF", lesson_id=34, scheme_of_work_id = 12, is_from_db=False, auth_ctx=Ctx(1276711, 826), fn_resolve_url=None):
+    return LessonScheduleModel(id_=id, title=title, period=1, start_date=start_date, class_name=class_name, class_code=class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, is_from_db=is_from_db, auth_user=auth_ctx, fn_resolve_url=fn_resolve_url)
 
 
 def fake_resolve_schedule_urls(schedule):

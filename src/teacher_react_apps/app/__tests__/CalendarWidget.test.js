@@ -99,8 +99,8 @@ describe('CalendarWidget', () => {
                     
                     render(<CalendarWidget 
                         events={events} 
-                        showAllEventsDefault={original_checked_state}
-                        showWeekendsDefault={false}
+                        showAllEvents={original_checked_state}
+                        showWeekends={false}
                         onDateClick={handleDateClick}
                         onShowAllEventsChange={onShowAllEventsChangeSpy}
                         onShowWeekendChange={handleShowWeekendChange}
@@ -162,8 +162,8 @@ describe('CalendarWidget', () => {
                     
                     render(<CalendarWidget 
                         events={events} 
-                        showAllEventsDefault={false}
-                        showWeekendsDefault={original_checked_state}
+                        showAllEvents={false}
+                        showWeekends={original_checked_state}
                         onDateClick={handleDateClick}
                         onShowAllEventsChange={handleShowAllEventsChange}
                         onShowWeekendChange={onShowWeekendChangeSpy}

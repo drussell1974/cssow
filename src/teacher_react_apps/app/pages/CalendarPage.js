@@ -9,8 +9,10 @@ class CalendarPage extends React.Component {
         super(props);
 
         this.state = {
-            Params: getParams(false),
+            Params: getParams(props.showAllEvents),
             Events: [],
+            ShowAllEvents: props.showAllEvents,
+            ShowWeekends: props.showWeekends,
             hasError: false,
         }
         // bind the handler to the component
@@ -36,7 +38,7 @@ class CalendarPage extends React.Component {
       componentDidMount() {
         getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
         // get schedule every 30 seconds
-        setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
+        // setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
       }
 
     /** Event Handlers >>> **/
@@ -49,13 +51,17 @@ class CalendarPage extends React.Component {
     handleShowAllEventsChange(e) {
         e.preventDefault();
         this.state = { 
-            Params: getParams(e.target.checked)
+            Params: getParams(e.target.checked),
+            ShowAllEvents: e.target.checked
         };
         getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
     }
 
     handleShowWeekendChange(e) {
         // NOTE: do not NOT e.preventDefault();, as it causes conflict with calendar
+        this.state = {
+            ShowWeekends: e.target.checked
+        }
     }
   
     /** <<< Event Handlers END **/
@@ -65,6 +71,8 @@ class CalendarPage extends React.Component {
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
+                    showAllEvents={this.state.ShowAllEvents}
+                    ShowWeekends={this.state.ShowWeekends}
                     onDateClick={this.handleDateClick}
                     onShowAllEventsChange={this.handleShowAllEventsChange}
                     onShowWeekendChange={this.handleShowWeekendChange}
