@@ -14,8 +14,9 @@ class CalendarPage extends React.Component {
             hasError: false,
         }
         // bind the handler to the component
-        this.handleChangeFilter = this.handleChangeFilter.bind(this);
-        // this.handleDateClick = this.handleDateClick.bind(this);
+        this.handleShowAllEventsChange = this.handleShowAllEventsChange.bind(this);
+        this.handleDateClick = this.handleDateClick.bind(this);
+        this.handleShowWeekendChange = this.handleShowWeekendChange.bind(this);
     }   
 
     handleDateClick(e) {
@@ -23,12 +24,16 @@ class CalendarPage extends React.Component {
         // TODO: #358 add scheduled lesson
       }
 
-    handleChangeFilter(e) {
+    handleShowAllEventsChange(e) {
+        e.preventDefault();
         this.state = { 
             Params: getParams(e.target.checked)
         };
-        
         getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
+    }
+
+    handleShowWeekendChange(e) {
+        // NOTE: do not NOT e.preventDefault();, as it causes conflict with calendar
     }
 
     componentDidMount() {
@@ -52,15 +57,13 @@ class CalendarPage extends React.Component {
       }
       
     render() {
-        // set showAllDefault based on getParams
         return (
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
-                    showAllDefault={false}
-                    showWeekendsDefault={false}
                     onDateClick={this.handleDateClick}
-                    onChangeFilter={this.handleChangeFilter}
+                    onShowAllEventsChange={this.handleShowAllEventsChange}
+                    onShowWeekendChange={this.handleShowWeekendChange}
                 />
             </React.Fragment>
         )
