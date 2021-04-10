@@ -31,7 +31,11 @@ class LessonScheduleViewSet(APIView):
 
     def resolve_url(self, schedule):
         whiteboard_url = reverse("lesson_schedule.whiteboard_view", args=[schedule.institute_id, schedule.department_id, schedule.scheme_of_work_id, schedule.lesson_id, schedule.id])
-        return whiteboard_url
+        edit_url = reverse("lesson_schedule.edit", args=[schedule.institute_id, schedule.department_id, schedule.scheme_of_work_id, schedule.lesson_id, schedule.id])
+        return {
+            "lesson_schedule.whiteboard_view":whiteboard_url, 
+            "lesson_schedule.edit":edit_url
+        }
 
 
     def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx=None):

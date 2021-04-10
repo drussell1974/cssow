@@ -20,5 +20,6 @@ class LessonScheduleModelSerializer(serializers.ModelSerializer):
             "department_id",
             "institute_id",
             "is_from_db",
+            "edit_url",
             "whiteboard_url",
         ]

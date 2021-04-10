@@ -17,6 +17,7 @@ class LessonScheduleModel(BaseModel):
     start_date = ""
     start_date_ui_date = ""
     start_date_ui_time = ""
+    edit_url = ""
     whiteboard_url = ""
     lesson_id = 0
     scheme_of_work_id = 0
@@ -30,6 +31,7 @@ class LessonScheduleModel(BaseModel):
         self.class_name = class_name
         self.class_code = class_code
         self.whiteboard_url = "" # default
+        self.edit_url = "" # default
         self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
         if type(start_date) is datetime:
             start_date = start_date.strftime(settings.ISOFORMAT)
@@ -40,7 +42,8 @@ class LessonScheduleModel(BaseModel):
         self.scheme_of_work_id = try_int(scheme_of_work_id)
 
         if fn_resolve_url is not None:
-            self.whiteboard_url = fn_resolve_url(self)
+            self.whiteboard_url  = fn_resolve_url(self)["lesson_schedule.whiteboard_view"]
+            self.edit_url = fn_resolve_url(self)["lesson_schedule.edit"]
 
 
     @property
