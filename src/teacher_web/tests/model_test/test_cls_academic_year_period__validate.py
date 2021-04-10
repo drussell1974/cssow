@@ -1,7 +1,7 @@
 from unittest import TestCase
-from shared.models.cls_academic_year_period import AcademicYearPeriod
+from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 
-class test_AcademicYearPeriod_validate__name(TestCase):
+class test_AcademicYearPeriodModel_validate__name(TestCase):
 
     test = None
 
@@ -15,7 +15,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
         
         test.time = "00:01"
 
@@ -29,7 +29,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.time = " 00:01 "
 
@@ -44,7 +44,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_min__invalid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.time = ""
 
@@ -58,7 +58,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_min__invalid_extreme_when_None(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.time = None
 
@@ -72,7 +72,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
         
         test.time = "23:59"
 
@@ -86,7 +86,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.time = "24:00"
 
@@ -100,7 +100,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_max__invalid_when_too_short(self):
         # arrange
-        test = AcademicYearPeriod("0000", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("0000", "Lorem ipsum", False)
 
         test.time = "24:00"
 
@@ -114,7 +114,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_max__invalid_when_invalid_sep(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.time = "00#00"
 
@@ -128,7 +128,7 @@ class test_AcademicYearPeriod_validate__name(TestCase):
 
     def test_max__invalid_when_not_a_number(self):
         # arrange
-        test = AcademicYearPeriod("00@00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00@00", "Lorem ipsum", False)
 
         test.time = "0a:00"
 
@@ -155,7 +155,7 @@ class test_institute_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
 
         test.name = "A"
@@ -170,7 +170,7 @@ class test_institute_validate__name(TestCase):
 
     def test_min__valid_extreme_trim_whitespace(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.name = " x "
 
@@ -185,7 +185,7 @@ class test_institute_validate__name(TestCase):
 
     def test_min__valid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.name = ""
 
@@ -199,7 +199,7 @@ class test_institute_validate__name(TestCase):
 
     def test_min__invalid_extreme_when_None(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.name = None
 
@@ -213,7 +213,7 @@ class test_institute_validate__name(TestCase):
 
     def test_max__valid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         
         test.name = "Lorem ipsum dolor si" # length 30 characters
@@ -228,7 +228,7 @@ class test_institute_validate__name(TestCase):
 
     def test_max__invalid_extreme(self):
         # arrange
-        test = AcademicYearPeriod("00:00", "Lorem ipsum", False)
+        test = AcademicYearPeriodModel("00:00", "Lorem ipsum", False)
 
         test.name = "Lorem ipsum dolor sit" # length 31 characters
 

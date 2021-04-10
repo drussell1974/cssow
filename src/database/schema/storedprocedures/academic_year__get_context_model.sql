@@ -1,10 +1,11 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS academic_year__get_context_model;
+DROP PROCEDURE IF EXISTS academic_year__get_model;
 
-CREATE PROCEDURE academic_year__get_context_model (
+CREATE PROCEDURE academic_year__get_model (
  IN p_department_id INT,
- IN p_selected_year INT)
+ IN p_selected_year INT,
+ IN p_auth_user INT)
 BEGIN
     SELECT 
 		yr.year,
@@ -23,5 +24,3 @@ END;
 //
 
 DELIMITER ;
-
-CALL academic_year__get_context_model(5, 2020);

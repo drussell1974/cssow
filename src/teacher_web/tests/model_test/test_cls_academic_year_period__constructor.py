@@ -1,5 +1,5 @@
 from unittest import TestCase
-from shared.models.cls_academic_year_period import AcademicYearPeriod
+from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 
 class test_cls_academic_year_period__constructor(TestCase):
 
@@ -14,7 +14,7 @@ class test_cls_academic_year_period__constructor(TestCase):
 
         # arrangee
 
-        self.test = AcademicYearPeriod("", "", is_from_db=False)
+        self.test = AcademicYearPeriodModel("", "", is_from_db=False)
 
         # assert
         self.assertEqual("", self.test.time)
@@ -27,7 +27,7 @@ class test_cls_academic_year_period__constructor(TestCase):
 
         # arrange
 
-        self.test = AcademicYearPeriod("10:00", "10am (Period 1)", is_from_db=True)
+        self.test = AcademicYearPeriodModel("10:00", "10am (Period 1)", is_from_db=True)
 
         # self.test
         self.test.validate()

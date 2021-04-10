@@ -4,9 +4,10 @@ from shared.models.core.db_helper import ExecHelper, sql_safe
 from shared.models.enums.publlished import STATE
 from shared.models.utils.cache_proxy import CacheProxy
 
+'''
 class AcademicYearPeriodContextModel(BaseContextModel):
     
-    def __init__(self, id_, academic_year, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+    def __init__(self,id_,  academic_year, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         super().__init__(id_, display_name=academic_year, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
         self.year = academic_year
 
@@ -41,8 +42,9 @@ class AcademicYearPeriodContextModel(BaseContextModel):
         
         return periods_array
 
+'''
 
-class AcademicYearPeriod(BaseModel):
+class AcademicYearPeriodModel(BaseModel):
     def __init__(self, time, name, is_from_db, created_by_id=0, created_by_name="", auth_ctx=None):
         super().__init__(time.__hash__, name, created="", created_by_id=created_by_id, created_by_name=created_by_name, published=1, is_from_db=is_from_db, ctx=auth_ctx)
         self.time = time
@@ -90,10 +92,10 @@ class AcademicYearPeriod(BaseModel):
         results = []
         for row in rows:
             results.append(
-                AcademicYearPeriod(row[0], row[1], is_from_db=True)
+                AcademicYearPeriodModel(row[0], row[1], is_from_db=True)
             )
 
-        return results 
+        return results
 
 
 class AcademicYearPeriodDataAccess:

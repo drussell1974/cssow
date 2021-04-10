@@ -7,7 +7,7 @@ from shared.models.cls_institute import InstituteModel
 from shared.models.cls_teacher import TeacherModel
 from tests.test_helpers.mocks import fake_ctx_model
 
-#@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_YearDataAccess__get_options(TestCase):
 
     def setUp(self):
@@ -20,21 +20,21 @@ class test_YearDataAccess__get_options(TestCase):
         self.fake_db.close()
 
 
-    def test__should_call__select__with_exception(self):
+    def test__should_call__select__with_exception(self, mock_auth_user):
         # arrange
 
-        expected_result = Exception('Bang')
+        expected_result = KeyError('Bang')
         
         with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
-            with self.assertRaises(Exception):
-                Model.get_options(self.fake_db, key_stage_id = 4)
+            with self.assertRaises(KeyError):
+                Model.get_options(self.fake_db, key_stage_id = 4, auth_user=mock_auth_user)
             
 
-    def test__should_call__select__no_items(self):
+    def test__should_call__select__no_items(self, mock_auth_user):
         # arrange
 
-        mock_auth_user = fake_ctx_model()
+        #mock_auth_user = fake_ctx_model()
 
         expected_result = []
 
@@ -55,10 +55,10 @@ class test_YearDataAccess__get_options(TestCase):
             self.assertEqual(0, len(rows))
 
 
-    def test__should_call__select__single_items(self):
+    def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
 
-        mock_auth_user = fake_ctx_model()
+        #mock_auth_user = fake_ctx_model()
         
         expected_result = [(1,"Yr4")]
         
@@ -72,7 +72,7 @@ class test_YearDataAccess__get_options(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'year__get_options'
-                , (2, 6079)
+                , (2, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -80,10 +80,10 @@ class test_YearDataAccess__get_options(TestCase):
             self.assertEqual("Yr4", rows[0].name, "First item not as expected")
             
 
-    def test__should_call__select__multiple_items(self):
+    def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
 
-        mock_auth_user = fake_ctx_model()
+        #mock_auth_user = fake_ctx_model()
 
         expected_result = [(1,"Yr7"), (2, "Yr8"), (3, "Yr9")]
         

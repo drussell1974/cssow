@@ -1,6 +1,7 @@
 from unittest import TestCase
 from shared.models.core.log_handlers import handle_log_info
-from shared.models.cls_academic_year_period import AcademicYearPeriodModel as Model
+from shared.models.cls_academic_year import AcademicYearModel as Model
+from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 from shared.models.enums.publlished import STATE
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
@@ -41,15 +42,15 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
                 
-            # act00
+            # act
             
             rows = Model.get_all(self.fake_db, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'academic_year_period__get_all'
-                , (mock_auth_user.department_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
+                'academic_year__get_all'
+                , (mock_auth_user.department_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -61,7 +62,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
         #mock_ctx = fake_ctx_model()
         
-        expected_result = [("08:30","Period 1")]
+        expected_result = [("2021-09-01T00:00","2022-07-18T00:00")]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -79,20 +80,21 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("08:30", rows[0].time)
-            self.assertEqual("Period 1", rows[0].name)
+            self.assertEqual("2021-09-01T00:00", rows[0].start)
+            self.assertEqual("2022-07-18T00:00", rows[0].end)
             
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
 
         #mock_ctx = fake_ctx_model()
-
         expected_result = [
-            ("08:30","Period 1"),
-            ("09:30","Period 2"),   
-            ("11:00","Period 3"),
+            ("2019-09-01T00:00","2020-07-02T00:00"),
+            ("2020-09-05T00:00","2021-07-13T00:00"),   
+            ("2021-09-03T00:00","2022-07-10T00:00"),
         ]
+        
+        #expected_result = [("2021-09-01T00:00","2022-07-18T00:00")]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
@@ -108,7 +110,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
             
             self.assertEqual(3, len(rows))
-            self.assertEqual("08:30", rows[0].time)
-            self.assertEqual("Period 1", rows[0].name)
-            self.assertEqual("11:00", rows[2].time)
-            self.assertEqual("Period 3", rows[2].name)
+            self.assertEqual("2019-09-01T00:00", rows[0].start)
+            self.assertEqual("2020-07-02T00:00", rows[0].end)
+            self.assertEqual("2021-09-03T00:00", rows[2].start)
+            self.assertEqual("2022-07-10T00:00", rows[2].end)
