@@ -1,7 +1,7 @@
 {% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 {% block maincontent %}
-    <h2 class="group-heading">{{_("Schedule")}} {{ request.session.academic_year__display }}</h2>
+    <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
     <hr />
 
     {% include '_partials/widget.control.filter.schedule.html' %}

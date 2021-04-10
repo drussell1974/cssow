@@ -44,15 +44,15 @@
         <div class="control-group">
             <div class="form-group controls row">
                 <label class="col-sm-2 col-form-label" >{{_("Date/Time")}}</label>
-                    <div class="col-sm-4">
-                        <input type="date" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
-                                value='{{content.data.model.start_date_ui_date}}'>
-                        <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-                    </div>
-                    <div class="col-sm-3">
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
+                            value='{{content.data.model.start_date_ui_date}}'>
+                    <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+                </div>
+                <div class="col-sm-3">
                     <select class="form-control" id="ctl-period" name="period">
                         <option value='00:00' {%if content.data.model.start_date_ui_time == "00:00"%}selected{%endif%}>{{_('No time')}}</option>
-                        {% for key, value in content.data.period_options.items %}
+                        {% for key, value in content.ctx.periods.items %}
                             <option value='{{key}}' {%if content.data.model.start_date_ui_time == key%}selected{%endif%}>{{key}} ({{value}})</option>
                         {% endfor %}
                     </select>

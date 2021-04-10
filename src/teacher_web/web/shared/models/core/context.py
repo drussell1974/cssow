@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.conf import settings
-from shared.models.cls_academic_year import AcademicYear
+from shared.models.cls_academic_year import AcademicYearContextModel
+from shared.models.cls_academic_year_period import AcademicYearPeriodContextModel
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -30,6 +31,16 @@ class AcademicYearCtx:
 
 
 class AuthCtx(Ctx):
+
+    @staticmethod
+    def current_year(academic_years):
+        now = datetime.now()
+        for ay in academic_years:
+            if ay["start_date"] > now and ay["end_date"] < now:
+                return ay[0].year
+        # otherwise return current year
+        return datetime.now().year
+
     
     def __init__(self, db, request, institute_id, department_id, start_date=None, end_date=None, **view_params):
         super().__init__(institute_id=institute_id, department_id=department_id, **view_params)
@@ -56,21 +67,22 @@ class AuthCtx(Ctx):
         # TODO: #323 check ownership and set can_view
         
         #432 get years academic years
-        academic_year = AcademicYear.get_all(db=db, auth_ctx=self)
-
-        #432 store in session
-        self.request.session["academic_year"] = academic_year
-
-        #432 get set start and end from selected year
-        selected_year = self.request.session.get("academic_year__selected_id", 0) # default current (offset from zero)
         
-        self.request.session["academic_year__display"] = academic_year[selected_year]["display"]
-        self.request.session["academic_year.start_date"] = academic_year[selected_year]["start"]
-        self.request.session["academic_year.end_date"] = academic_year[selected_year]["end"] 
-        self.request.session["academic_year.periods"] = academic_year[selected_year]["periods"]
+        self.academic_years = AcademicYearContextModel.cached_array(request, db, self.institute_id, self.department_id, self.auth_user_id)
         
-        # create current academic year context object
-        self.academic_year = AcademicYearCtx(request)
+        # get the selected year or find the current academic year
+
+        self.selected_year = self.request.session.get("academic_year__selected_id", AuthCtx.current_year(self.academic_years)) # default to current year
+        
+        self.academic_year = AcademicYearContextModel.cached(request, db, self.institute_id, self.department_id, self.selected_year, self.auth_user_id)
+        # TODO: verify
+        #self.request.session["academic_year.start_date"] = self.academic_year.start_date
+        #self.request.session["academic_year.end_date"] = self.academic_year.end_date
+        
+        #432 store in cache
+        #self.request.session["academic_year__display"] = self.academic_year.display_name
+        
+        self.periods = AcademicYearPeriodContextModel.cached_array(request, db, self.institute_id, self.department_id, self.selected_year, self.auth_user_id)
 
         # default TeacherPermissionModel
         self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)

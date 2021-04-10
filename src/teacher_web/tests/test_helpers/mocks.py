@@ -1,5 +1,7 @@
 from datetime import datetime
 from unittest.mock import Mock, MagicMock, patch
+from shared.models.cls_academic_year import AcademicYearContextModel
+from shared.models.cls_academic_year_period import AcademicYearPeriodContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel
@@ -16,6 +18,23 @@ def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True,
 def fake_lesson_schedule(id=1, title="Vivamus at porta orci", start_date="2021-04-09T10:00", class_name="7x", class_code="ABCDEF", lesson_id=34, scheme_of_work_id = 12, is_from_db=False, auth_ctx=Ctx(1276711, 826), fn_resolve_url=None):
     return LessonScheduleModel(id_=id, title=title, start_date=start_date, class_name=class_name, class_code=class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, is_from_db=is_from_db, auth_user=auth_ctx, fn_resolve_url=fn_resolve_url)
 
+def fake_academic_year():
+    return AcademicYearContextModel.default().__dict__
+
+
+def fake_academic_years():
+    return [
+        fake_academic_year(),
+        fake_academic_year()
+    ]
+
+
+def fake_academic_year_periods():
+    return [
+        AcademicYearPeriodContextModel("09:00", "Period 1", is_from_db=True).__dict__, 
+        AcademicYearPeriodContextModel("10:00", "Period 2", is_from_db=True).__dict__, 
+        AcademicYearPeriodContextModel("11:15", "Period 3", is_from_db=True).__dict__, 
+    ]
 
 def fake_resolve_schedule_urls(schedule):
     return "http://localhost/.../schemesofwork/11/lessons/220/whiteboard"
@@ -36,22 +55,27 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
     with patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum")) as institute:
         with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True)) as department:
             with patch.object(SchemeOfWorkContextModel, "get_context_model", return_value = SchemeOfWorkContextModel(67, name="Nunc maximus purus", is_from_db=True)) as scheme_of_work:
-                
-                institute.name = "Lorum Ipsum"
-                department.name = "Computer Science"
-                academic_year__start_date = datetime(year=2020, month=9, day=1)
-                academic_year__end_date = datetime(year=2021, month=7, day=14)
+                with patch.object(AcademicYearContextModel, "cached", return_value = fake_academic_year()) as academic_year:
+                    with patch.object(AcademicYearContextModel, "cached_array", return_value = fake_academic_years()) as academic_year:
+                        with patch.object(AcademicYearPeriodContextModel, "cached_array", return_value = fake_academic_year_periods()) as academic_year:
+                        
+                            institute.name = "Lorum Ipsum"
+                            department.name = "Computer Science"
+                            academic_year__start_date = datetime(year=2020, month=9, day=1)
+                            academic_year__end_date = datetime(year=2021, month=7, day=14)
 
-                scheme_of_work = SchemeOfWorkContextModel(12323232, name="GCSE Computer Science", ctx=Ctx(1276711, 826))
+                            scheme_of_work = SchemeOfWorkContextModel(12323232, name="GCSE Computer Science", ctx=Ctx(1276711, 826))
 
-                auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=67, scheme_of_work_id=scheme_of_work.id, start_date=academic_year__start_date, end_date=academic_year__end_date)
-                auth_ctx.institute = institute
-                auth_ctx.department = department
-                auth_ctx.scheme_of_work = scheme_of_work
-                auth_ctx.department_permission = dep
-                auth_ctx.scheme_of_work_permission = sow
-                auth_ctx.lesson_permission = les
-                
+                            auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=67, scheme_of_work_id=scheme_of_work.id, start_date=academic_year__start_date, end_date=academic_year__end_date)
+                            auth_ctx.institute = institute
+                            auth_ctx.department = department
+                            auth_ctx.scheme_of_work = scheme_of_work
+                            auth_ctx.department_permission = dep
+                            auth_ctx.scheme_of_work_permission = sow
+                            auth_ctx.lesson_permission = les
+
+                            auth_ctx.academic_year = academic_year
+
     return auth_ctx
 
 

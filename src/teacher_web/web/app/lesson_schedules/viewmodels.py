@@ -4,7 +4,7 @@ from django.http import Http404
 from shared.models.core.helper_string import date_to_string
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.log_handlers import handle_log_warning, handle_log_exception, handle_log_info
-from shared.models.cls_academic_year import AcademicYear
+from shared.models.cls_academic_year import AcademicYearModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_notification import NotifyModel
@@ -155,7 +155,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
             "scheme_of_work_id": self.scheme_of_work_id,
             "lesson_id": self.lesson_id,
             "model": self.model,
-            "period_options": self.auth_ctx.academic_year.periods
+            "period_options": self.auth_ctx.periods
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)

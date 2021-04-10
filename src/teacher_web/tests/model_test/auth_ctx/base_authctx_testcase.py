@@ -1,5 +1,7 @@
 from datetime import datetime
 from unittest.mock import Mock, patch
+from shared.models.cls_academic_year import AcademicYearContextModel
+from shared.models.cls_academic_year_period import AcademicYearPeriodContextModel
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
@@ -7,6 +9,7 @@ from shared.models.cls_teacher_permission import TeacherPermissionDataAccess
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
 from shared.models.core.context import AuthCtx
+from tests.test_helpers.mocks import *
 
 def get_fake_TeacherData(permission):
     
@@ -41,7 +44,10 @@ def init_TestAuthCtx(institute_id, department_id, scheme_of_work_id = 0, fake_re
     @patch.object(SchemeOfWorkContextModel, "cached", return_value=SchemeOfWorkContextModel(scheme_of_work_id, "CPU Architecture"))
     @patch.object(SchemeOfWorkContextModel, "from_dict", return_value=SchemeOfWorkContextModel(scheme_of_work_id, "CPU Architecture"))
     @patch.object(TeacherPermissionDataAccess, "get_model", return_value=get_fake_TeacherData(fake_teacher_data))
-    def inner_TestAuthCtx(institute_id, department_id, fake_request_user_id, mock_department_cached=None, mock_department_from_dict=None, mock_institute_cached=None, mock_institute_dict=None, mock_schemeofwork_cached=None, mock_schemeofwork_dict=None, mock_teacher_data=None):
+    @patch.object(AcademicYearContextModel, "cached", return_value = fake_academic_year())
+    @patch.object(AcademicYearContextModel, "cached_array", return_value = fake_academic_years())
+    @patch.object(AcademicYearPeriodContextModel, "cached_array", return_value = fake_academic_year_periods())
+    def inner_TestAuthCtx(institute_id, department_id, fake_request_user_id, mock_department_cached=None, mock_department_from_dict=None, mock_institute_cached=None, mock_institute_dict=None, mock_schemeofwork_cached=None, mock_schemeofwork_dict=None, mock_teacher_data=None, mock_academic_year=None, mock_academic_years=None, mock_academic_periods=None):
         
         # arrange
         

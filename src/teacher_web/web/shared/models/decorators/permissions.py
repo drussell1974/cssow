@@ -50,7 +50,7 @@ class min_permission_required:
                 auth_ctx = AuthCtx(db, request, department_id=department_id, **kwargs)
             else:
                 auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id, **kwargs)
-
+            
             # check permissions
             if auth_ctx.check_permission(self._permission) == False:
                 ''' redirect if user does not have permissions for this scheme of work '''
