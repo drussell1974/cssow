@@ -106,7 +106,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
             published_state = STATE.parse(self.request.POST["published"] if self.request.POST["published"] is not None else "PUBLISH")
             
             # join selected date and time
-            self.model.start_date = f"{self.request.POST['period']}T{self.request.POST['start_date']}"
+            self.model.start_date = f"{self.request.POST['start_date']}T{self.request.POST['period']}"
 
             create_new_class_code = self.request.POST.get("generate_class_code", False)
             if create_new_class_code:
