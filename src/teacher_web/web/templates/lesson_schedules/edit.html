@@ -52,7 +52,7 @@
                     <div class="col-sm-3">
                     <select class="form-control" id="ctl-period" name="period">
                         {% for key, value in content.data.period_options.items %}
-                            <option value='{{value}}' {%if content.data.model.start_date_ui_time == value%}selected{%endif%}>{{key}} ({{value}})</option>
+                            <option value='{{key}}' {%if content.data.model.start_date_ui_time == value%}selected{%endif%}>{{key}} ({{value}})</option>
                         {% endfor %}
                     </select>
                     <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
