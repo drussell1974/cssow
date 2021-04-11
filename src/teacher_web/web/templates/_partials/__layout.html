@@ -135,7 +135,7 @@
                   {% for ac_year in content.ctx.academic_years %}
                       <option value="{{ac_year.year}}" {%if request.session.academic_year__selected_id == ac_year.year %}selected{%endif%}>{{ ac_year.display }}</option>
                   {% endfor %}
-                  <option value="0">{{_("-- add new --") }}</option>
+                  <option value="1999">{{_("-- add new --") }}</option>
               </select>
               </form>
               <!-- Academic Year END -->
