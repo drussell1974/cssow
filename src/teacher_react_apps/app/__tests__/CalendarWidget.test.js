@@ -28,6 +28,11 @@ describe('CalendarWidget', () => {
         ({render, container} = createContainer());
     })
 
+
+    let fakeDataRange = () => {
+        return { start:"2021-09-04", end:"2022-07-16" }   
+    }
+
     let handleDateClick = () => {
         
     }
@@ -69,6 +74,7 @@ describe('CalendarWidget', () => {
                 
                 render(<CalendarWidget 
                     events={events} 
+                    academicYear={fakeDataRange}
                     onDateClick={handleDateClick} 
                     onShowAllEventsChange={handleShowAllEventsChange} 
                     onShowWeekendChange={handleShowWeekendChange}
@@ -99,6 +105,7 @@ describe('CalendarWidget', () => {
                     
                     render(<CalendarWidget 
                         events={events} 
+                        academicYear={fakeDataRange}
                         showAllEvents={original_checked_state}
                         showWeekends={false}
                         onDateClick={handleDateClick}
@@ -131,6 +138,7 @@ describe('CalendarWidget', () => {
                 
                 render(<CalendarWidget 
                     events={events} 
+                    academicYear={fakeDataRange}
                     onDateClick={handleDateClick}
                     onShowAllEventsChange={handleShowAllEventsChange}
                     onShowWeekendChange={handleShowWeekendChange}
@@ -162,6 +170,7 @@ describe('CalendarWidget', () => {
                     
                     render(<CalendarWidget 
                         events={events} 
+                        academicYear={fakeDataRange}
                         showAllEvents={false}
                         showWeekends={original_checked_state}
                         onDateClick={handleDateClick}
