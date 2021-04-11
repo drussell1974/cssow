@@ -20,4 +20,13 @@ export const showAllEvents = () => {
     return (0 == getParamOrDefault("input#teacher_react_apps__department_id", 0) + getParamOrDefault("input#teacher_react_apps__scheme_of_work_id", 0) + getParamOrDefault("input#teacher_react_apps__lesson_id", 0));
 }
 
+
+export const getAcademicYear = () => {
+    // set only institute_id if show all, otherwise inspect dom for input
+    return {
+        start: getParamOrDefault("#teacher_react_apps__academic_year_start", 0),
+        end: getParamOrDefault("#teacher_react_apps__academic_year_end", 0)
+    }
+}
+
 export default getParams;

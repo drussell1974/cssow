@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
-const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeekendChange, showAllEvents=false, showWeekends=false}) => {
+const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChange, onShowWeekendChange, showAllEvents=false, showWeekends=false}) => {
 
     const [ showAllIsChecked, setShowAllIsChecked ] = useState(showAllEvents);
     const [ showWeekendsIsChecked, setShowWeekendsIsChecked ] = useState(showWeekends);
@@ -52,6 +52,7 @@ const CalendarWidget = ({events, onDateClick, onShowAllEventsChange, onShowWeeke
                     initialView="dayGridMonth"
                     weekends={showWeekendsIsChecked}
                     events={events}
+                    validRange={academicYear()}
                     plugins={[ dayGridPlugin, interactionPlugin ]}
                     eventContent={fnEventContent}
                     dateClick={handleOnDateClick}

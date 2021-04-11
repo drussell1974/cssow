@@ -11,6 +11,7 @@ class CalendarPage extends React.Component {
         this.state = {
             Params: getParams(props.showAllEvents),
             Events: [],
+            AcademicYear: props.academicYear,
             ShowAllEvents: props.showAllEvents,
             ShowWeekends: props.showWeekends,
             hasError: false,
@@ -72,7 +73,8 @@ class CalendarPage extends React.Component {
                 <CalendarWidget 
                     events={this.state.Events} 
                     showAllEvents={this.state.ShowAllEvents}
-                    ShowWeekends={this.state.ShowWeekends}
+                    academicYear={this.state.AcademicYear}
+                    showWeekends={this.state.ShowWeekends}
                     onDateClick={this.handleDateClick}
                     onShowAllEventsChange={this.handleShowAllEventsChange}
                     onShowWeekendChange={this.handleShowWeekendChange}
