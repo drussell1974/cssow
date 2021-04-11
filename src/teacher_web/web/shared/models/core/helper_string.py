@@ -72,11 +72,16 @@ def to_cs_string(*argv):
     return rval.rstrip(',')
 
 
-def date_to_string(date):
+def date_to_string(date, show_long=True):
     suffix = ""
     if 4 <= date.day <= 20 or 24 <= date.day <= 30:
         suffix = "th"
     else:
         suffix = ["st", "nd", "rd"][date.day % 10 - 1]
-    strday = date.strftime("%A, ")
-    return strday + date.strftime("%d{suffix} %B %Y".format(suffix=suffix)).lstrip('0')
+    date_str = ""
+    if show_long:
+        date_str = date_str + date.strftime("%A, ")
+        date_str = date_str + date.strftime("%d{suffix} %B %Y".format(suffix=suffix)).lstrip('0')
+    else:
+        date_str = date_str + date.strftime("%d{suffix} %b %Y".format(suffix=suffix)).lstrip('0')
+    return date_str

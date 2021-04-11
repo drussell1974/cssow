@@ -92,7 +92,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'student_uri':'shared.models.utils.tags'
+                'student_uri':'shared.models.utils.tags',
+                'display_date':'shared.models.utils.tags'
             }
         },
     },

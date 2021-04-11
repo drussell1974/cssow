@@ -1,6 +1,7 @@
 {% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 {% block maincontent %}
+    {% load display_date %}
     <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
     <hr />
 

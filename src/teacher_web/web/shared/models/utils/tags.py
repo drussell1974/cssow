@@ -1,5 +1,8 @@
+from datetime import datetime
 from django.conf import settings
 from django import template
+from django.template.defaultfilters import stringfilter
+from shared.models.core.helper_string import date_to_string
 
 register = template.Library()
 
@@ -17,3 +20,12 @@ def student_uri(institute_id, department_id, scheme_of_work_id = None, lesson_id
         base_uri = base_uri + "%s" % lesson_id
 
     return base_uri
+
+
+@register.filter(name="display_shortdate")
+@stringfilter
+def display_shortdate(value):
+    """ given ISOFORMAT (see settings.ISOFORMAT) """
+    # convert to date and back to display_date
+    
+    return date_to_string(datetime.strptime(value, settings.ISOFORMAT), show_long=False)

@@ -53,6 +53,7 @@
 
 
 {% block maincontent %}
+  {% load display_date %}
 
 <!-- Pager Header -->      
 {% if request.user.is_authenticated %}
@@ -61,6 +62,7 @@
   </span>
 {% endif %}
 <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
+<label>{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
 <hr />
 <!-- Pager Header END -->      
 
