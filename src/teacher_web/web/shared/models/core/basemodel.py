@@ -305,6 +305,8 @@ class BaseContextModel(BaseModel):
 
 def try_int(val, return_value=None):
     """ convert value to int or None """
+    if val is None and val is not int: return return_value
+
     try:
         val = int(val)
     except:

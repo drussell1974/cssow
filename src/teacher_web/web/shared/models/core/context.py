@@ -39,11 +39,13 @@ class AuthCtx(Ctx):
     def get_selected_year(cls, request, session_key, academic_years):
         def inner(academic_years):
             now = datetime.now()
+            curr = now.year
             for ay in academic_years:
+                curr = ay.start_date.year # the last selected year will be returned if a matching one is not found
                 if now > ay.start_date and now < ay.end_date:
                     return ay.start_date.year
-            # otherwise return current year
-            return datetime.now().year
+            # otherwise return the last academic year or the current year
+            return curr
 
         return request.session.get(session_key, inner(academic_years))
         
@@ -76,7 +78,12 @@ class AuthCtx(Ctx):
         # use session to get selected year or default to current year
         self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
         
-        self.academic_year = AcademicYearModel.get_model(db, institute_id, self.selected_year, self)
+        self.academic_year = AcademicYearModel.get_model(db, institute_id, for_academic_year=self.selected_year, auth_ctx=self)
+        
+        # default
+
+        if self.academic_year is None:
+            self.academic_year = AcademicYearModel.default(for_academic_year=self.selected_year)
 
         self.periods = AcademicYearPeriodModel.get_all(db, institute_id, self)
 

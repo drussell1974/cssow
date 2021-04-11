@@ -19,8 +19,8 @@ def fake_lesson_schedule(id=1, title="Vivamus at porta orci", start_date="2021-0
     return LessonScheduleModel(id_=id, title=title, start_date=start_date, class_name=class_name, class_code=class_code, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, is_from_db=is_from_db, auth_user=auth_ctx, fn_resolve_url=fn_resolve_url)
 
 
-def fake_academic_year():
-    return AcademicYearModel.default()
+def fake_academic_year(year=datetime.now().year):
+    return AcademicYearModel.default(for_academic_year=year)
 
 
 def fake_academic_years():
