@@ -34,6 +34,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=34, lesson_id=1, auth_user=mock_auth_user)
@@ -60,6 +61,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)
@@ -91,6 +93,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)
@@ -124,6 +127,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             mock_request = Mock()
             mock_request.method = "POST"
             mock_request.POST = { "show_next_days": 14 }
+            mock_request.session = { "lesson_schedule.show_next_days": 7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)

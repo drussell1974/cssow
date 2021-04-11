@@ -27,6 +27,8 @@ class test_viewmodel_ScheduleViewModel(TestCase):
         db = MagicMock()
         db.cursor = MagicMock()
         mock_request = Mock()
+        mock_request.session = { "lesson_schedule.show_next_days":7 }
+
 
         self.mock_model = Mock()
 
@@ -52,7 +54,8 @@ class test_viewmodel_ScheduleViewModel(TestCase):
             
             mock_request = Mock()
             mock_request.method = MagicMock(return_value="GET")
-            
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
             # act
             self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=99, auth_user=mock_auth_user)
 
@@ -76,7 +79,8 @@ class test_viewmodel_ScheduleViewModel(TestCase):
 
             mock_request = Mock()
             mock_request.method = MagicMock(return_value="GET")
-            
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
             self.mock_model = Mock()
 
             # act
@@ -107,7 +111,8 @@ class test_viewmodel_ScheduleViewModel(TestCase):
 
             mock_request = Mock()
             mock_request.method = MagicMock(return_value="GET")
-            
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
             self.mock_model = Mock()
 
             # act
@@ -140,6 +145,7 @@ class test_viewmodel_ScheduleViewModel(TestCase):
             mock_request = Mock()
             mock_request.method = "POST"
             mock_request.POST = { "show_next_days": 14 }
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             self.mock_model = Mock()
 

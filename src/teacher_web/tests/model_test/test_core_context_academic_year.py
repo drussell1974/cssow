@@ -6,6 +6,8 @@ from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_institute import InstituteContextModel
 from shared.models.core.context import AcademicYearCtx
 
+
+@skip("needs implementing")
 class test_core_context_academic_year(TestCase):
 
     def setUp(self):

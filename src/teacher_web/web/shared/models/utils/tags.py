@@ -26,6 +26,15 @@ def student_uri(institute_id, department_id, scheme_of_work_id = None, lesson_id
 @stringfilter
 def display_shortdate(value):
     """ given ISOFORMAT (see settings.ISOFORMAT) """
-    # convert to date and back to display_date
+    # convert to date and back to display_date using date_to_string
     
     return date_to_string(datetime.strptime(value, settings.ISOFORMAT), show_long=False)
+
+
+@register.filter(name="format_time")
+@stringfilter
+def format_time(value):
+    """ given ISOFORMAT_TIME_MS (see settings.ISOFORMAT_TIME_MS) convert to short time, given settings.ISOFORMAT_TIME """
+    # convert to time ms and back to short time
+    
+    return datetime.strptime(value, settings.ISOFORMAT_TIME_MS).strftime(settings.ISOFORMAT_TIME)

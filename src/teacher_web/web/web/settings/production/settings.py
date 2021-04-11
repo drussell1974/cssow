@@ -89,7 +89,8 @@ TEMPLATES = [
             ],
             'libraries': {
                 'student_uri':'shared.models.utils.tags',
-                'display_date':'shared.models.utils.tags'
+                'display_date':'shared.models.utils.tags',
+                'format_time':'shared.models.utils.tags',
             }
         },
     },
@@ -199,6 +200,8 @@ MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
 
 # DATEFORMAT
 ISOFORMAT = "%Y-%m-%dT%H:%M"
+ISOFORMAT_TIME = "%H:%M"
+ISOFORMAT_TIME_MS = "%H:%M:%S"
 
 # Paging default settings
 

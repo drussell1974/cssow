@@ -30,7 +30,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
         with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
             with self.assertRaises(KeyError):
-                Model.get_all(self.fake_db, auth_ctx=mock_auth_user)
+                Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx=mock_auth_user)
             
 
     def test__should_call__select__no_items(self, mock_auth_user):
@@ -43,14 +43,14 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
         with patch.object(ExecHelper, "select", return_value=expected_result):
                 
             # act
-            
-            rows = Model.get_all(self.fake_db, auth_ctx = mock_auth_user)
+
+            rows = Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 'academic_year__get_all'
-                , (mock_auth_user.department_id, mock_auth_user.auth_user_id,)
+                , (mock_auth_user.institute_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -67,14 +67,15 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
             # act
+            
 
-            rows = Model.get_all(self.fake_db, auth_ctx = mock_auth_user)
+            rows = Model.get_all(self.fake_db,  mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'academic_year_period__get_all'
-                , (mock_auth_user.department_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id)
+                , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
@@ -98,13 +99,13 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_all(self.fake_db, auth_ctx = mock_auth_user)
+            rows = Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'academic_year_period__get_all'
-                , (mock_auth_user.department_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
+                , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 

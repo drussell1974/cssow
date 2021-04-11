@@ -47,8 +47,9 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
     mock_request.user = MagicMock(id=fake_request_user_id)
     mock_request.session = {
             "academic_year.start_date": datetime(year=2020, month=9, day=1),
-            "academic_year.end_date": datetime(year=2021, month=7, day=15)
-        }
+            "academic_year.end_date": datetime(year=2021, month=7, day=15),
+            "lesson_schedule.show_next_days":7,
+    }
     
     mock_db = Mock()
     mock_db.cursor = MagicMock()

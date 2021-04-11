@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block maincontent %}
-
+    {% load format_time %}
 <article class="widget widget-form widget-keyword-form">
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.model.id %}">
         {% csrf_token %}
@@ -52,8 +52,8 @@
                 <div class="col-sm-3">
                     <select class="form-control" id="ctl-period" name="period">
                         <option value='00:00' {%if content.data.model.start_date_ui_time == "00:00"%}selected{%endif%}>{{_('No time')}}</option>
-                        {% for key, value in content.ctx.periods.items %}
-                            <option value='{{key}}' {%if content.data.model.start_date_ui_time == key%}selected{%endif%}>{{key}} ({{value}})</option>
+                        {% for pd in content.ctx.periods %}
+                            <option value='{{pd.time|format_time}}' {%if content.data.model.start_date_ui_time == pd.time|format_time%}selected{%endif%}>{{pd.time|format_time}} ({{pd.name}})</option>
                         {% endfor %}
                     </select>
                     <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>

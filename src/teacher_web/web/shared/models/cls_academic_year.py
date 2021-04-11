@@ -7,73 +7,6 @@ from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 from shared.models.enums.publlished import STATE
 from shared.models.utils.cache_proxy import CacheProxy
 
-'''
-class AcademicYearContextModel(BaseContextModel):
-    
-    def __init__(self, id_, start_date, end_date, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
-        super().__init__(id_, display_name=f"{start_date.year}/{end_date.year}", created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
-        self.start_date = start_date
-        self.end_date = end_date
-
-
-    @classmethod
-    def default(cls, published=STATE.PUBLISH, ctx=None):
-        start_year = datetime.now().year if datetime.now().month >= 9 else datetime.now().year - 1
-        model = cls(id_=0, start_date=datetime(start_year, 9, 1), end_date=datetime(start_year+1, 7, 30), published=published, ctx=ctx)
-        return model
-
-
-    @classmethod
-    def get_context_model(cls, db, institute_id, department_id, selected_year, auth_user_id):
-        
-        empty_model = cls.default()
-
-        result = BaseContextModel.get_context_model(db, empty_model, "academic_year__get_context_model", handle_log_info, department_id, selected_year)
-        result.institute_id = institute_id
-        result.department_id = department_id
-
-        return result if result is not None else None
-
-
-    @classmethod
-    def cached(cls, request, db, institude_id, department_id, selected_year, auth_user_id):
-
-        academic_year = cls.default()
-        
-        cache_obj = CacheProxy.session_cache(request, db, "academic_year", cls.get_context_model, institude_id, department_id, selected_year, auth_user_id)
-
-        if cache_obj is not None:
-            academic_year.from_dict(cache_obj)
-
-        return academic_year        
-
-
-    @classmethod
-    def get_context_array(cls, db, institute_id, department_id, auth_user_id):
-        
-        model = cls.default()
-
-        result = BaseContextModel.get_context_array(db, model, "academic_year__get_context_array", handle_log_info, department_id)
-        #result.institute_id = institute_id
-        #result.department_id = department_id
-
-        return result if result is not None else None
-
-
-    @classmethod
-    def cached_array(cls, request, db, institude_id, department_id, auth_user_id):
-
-
-        academic_years = []
-        
-        cache_obj = CacheProxy.session_cache_array(request, db, "academic_year_array", cls.get_context_array, institude_id, department_id, auth_user_id)
-
-        if cache_obj is not None:
-            academic_years = cache_obj
-        
-        return academic_years     
-'''
-
 class AcademicYearModel(BaseModel):
 
     def __init__(self, start_date, end_date, is_from_db, created_by_id=0, created_by_name="", published=STATE.PUBLISH, auth_ctx=None):
@@ -113,16 +46,16 @@ class AcademicYearModel(BaseModel):
 
 
     @classmethod
-    def get_all(cls, db, auth_ctx):
+    def get_all(cls, db, institute_id, auth_ctx):
         """ get the periods for the academic year """
         
-        rows = AcademicYearDataAccess.get_all(db, auth_ctx.department_id, auth_ctx.auth_user_id)
+        rows = AcademicYearDataAccess.get_all(db, institute_id, auth_ctx.auth_user_id)
         results = []
         for row in rows:
             # check current year
             model = AcademicYearModel(row[0], row[1], is_from_db=True)
 
-            model.periods = AcademicYearPeriodModel.get_all(db, auth_ctx=auth_ctx)
+            model.periods = AcademicYearPeriodModel.get_all(db, institute_id, auth_ctx=auth_ctx)
 
             results.append(model)
 
@@ -130,16 +63,16 @@ class AcademicYearModel(BaseModel):
 
 
     @classmethod
-    def get_model(cls, db, selected_year, auth_ctx):
+    def get_model(cls, db, institute_id, selected_year, auth_ctx):
         """ get the periods for the academic year """
         model = None
-        rows = AcademicYearDataAccess.get_model(db, auth_ctx.department_id, selected_year, auth_ctx.auth_user_id)
+        rows = AcademicYearDataAccess.get_model(db, institute_id, selected_year, auth_ctx.auth_user_id)
         
         for row in rows:
             # check current year
             model = AcademicYearModel(row[1], row[2], is_from_db=True)
 
-            model.periods = AcademicYearPeriodModel.get_all(db, auth_ctx=auth_ctx)
+            model.periods = AcademicYearPeriodModel.get_all(db, auth_ctx.institute_id,  auth_ctx=auth_ctx)
 
             return model
 
@@ -149,12 +82,12 @@ class AcademicYearModel(BaseModel):
 class AcademicYearDataAccess:
 
     @classmethod
-    def get_all(cls, db, department_id, auth_user_id):
+    def get_all(cls, db, institute_id, auth_user_id):
 
         execHelper = ExecHelper()
 
         str_select = "academic_year__get_all"
-        params = (department_id, auth_user_id)
+        params = (institute_id, auth_user_id)
 
         rows = []
         
@@ -164,12 +97,12 @@ class AcademicYearDataAccess:
 
 
     @classmethod
-    def get_model(cls, db, department_id, selected_year, auth_user_id):
+    def get_model(cls, db, institute_id, selected_year, auth_user_id):
 
         execHelper = ExecHelper()
 
         str_select = "academic_year__get_model"
-        params = (department_id, selected_year, auth_user_id)
+        params = (institute_id, selected_year, auth_user_id)
 
         rows = []
         

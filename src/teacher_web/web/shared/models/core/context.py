@@ -25,6 +25,9 @@ class Ctx:
 
 class AcademicYearCtx:
     def __init__(self, request):
+        
+        raise DeprecationWarning("Needs implementing")
+
         self.start_date=request.session["academic_year.start_date"]
         self.end_date=request.session["academic_year.end_date"]
         self.periods=request.session["academic_year.periods"]
@@ -32,15 +35,18 @@ class AcademicYearCtx:
 
 class AuthCtx(Ctx):
 
-    @staticmethod
-    def current_year(academic_years):
-        now = datetime.now()
-        for ay in academic_years:
-            if now > ay.start_date and now < ay.end_date:
-                return ay.start_date.year
-        # otherwise return current year
-        return datetime.now().year
+    @classmethod
+    def get_selected_year(cls, request, session_key, academic_years):
+        def inner(academic_years):
+            now = datetime.now()
+            for ay in academic_years:
+                if now > ay.start_date and now < ay.end_date:
+                    return ay.start_date.year
+            # otherwise return current year
+            return datetime.now().year
 
+        return request.session.get(session_key, inner(academic_years))
+        
     
     def __init__(self, db, request, institute_id, department_id, **view_params):
         super().__init__(institute_id=institute_id, department_id=department_id, **view_params)
@@ -58,32 +64,21 @@ class AuthCtx(Ctx):
         # NOTE: get department then get institute to promote can_view
 
         self.department = DepartmentContextModel.cached(request, db, self.institute_id, self.department_id, self.auth_user_id)
-        # TODO: #323 check ownership and set can_view
         
         self.institute = InstituteContextModel.cached(request, db, self.institute_id, self.auth_user_id)
-        # TODO: #323 check ownership and set can_view
         
         self.scheme_of_work = SchemeOfWorkContextModel.cached(request, db, self.institute_id, self.department_id, self.scheme_of_work_id, self.auth_user_id)
-        # TODO: #323 check ownership and set can_view
         
-        #432 get years academic years
-        
-        self.academic_years = AcademicYearModel.get_all(db, self)
-        
-        # get the selected year or find the current academic year
+        #432 get academic years and periods
 
-        self.selected_year = self.request.session.get("academic_year__selected_id", AuthCtx.current_year(self.academic_years)) # default to current year
+        self.academic_years = AcademicYearModel.get_all(db, institute_id, self)
         
-        self.academic_year = AcademicYearModel.get_model(db, self.selected_year, self)
+        # use session to get selected year or default to current year
+        self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
+        
+        self.academic_year = AcademicYearModel.get_model(db, institute_id, self.selected_year, self)
 
-        # TODO: verify
-        #self.request.session["academic_year.start_date"] = self.academic_year.start_date
-        #self.request.session["academic_year.end_date"] = self.academic_year.end_date
-        
-        #432 store in cache
-        #self.request.session["academic_year__display"] = self.academic_year.display_name
-        
-        self.periods = AcademicYearPeriodModel.get_all(db, self)
+        self.periods = AcademicYearPeriodModel.get_all(db, institute_id, self)
 
         # default TeacherPermissionModel
         self.teacher_permission = TeacherPermissionModel.default(self.institute, self.department, None, self)
