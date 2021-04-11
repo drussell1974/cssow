@@ -27,8 +27,10 @@ class AcademicYearModel(BaseModel):
 
 
     @classmethod
-    def default(cls, published=STATE.PUBLISH, ctx=None):
-        start_year = datetime.now().year if datetime.now().month >= 9 else datetime.now().year - 1
+    def default(cls, for_academic_year=datetime.now().year, published=STATE.PUBLISH, ctx=None):
+        """ a default academic year runs from 01-Sept-YYYY - 30-Jul-YYYY+1 """
+
+        start_year = for_academic_year if datetime.now().month >= 9 else for_academic_year - 1
         model = cls(start_date=datetime(start_year, 9, 1), end_date=datetime(start_year+1, 7, 30), published=published, is_from_db=False, auth_ctx=ctx)
         return model
 
@@ -63,10 +65,12 @@ class AcademicYearModel(BaseModel):
 
 
     @classmethod
-    def get_model(cls, db, institute_id, selected_year, auth_ctx):
+    def get_model(cls, db, institute_id, for_academic_year, auth_ctx):
         """ get the periods for the academic year """
+        
         model = None
-        rows = AcademicYearDataAccess.get_model(db, institute_id, selected_year, auth_ctx.auth_user_id)
+
+        rows = AcademicYearDataAccess.get_model(db, institute_id, for_academic_year, auth_ctx.auth_user_id)
         
         for row in rows:
             # check current year
@@ -97,12 +101,12 @@ class AcademicYearDataAccess:
 
 
     @classmethod
-    def get_model(cls, db, institute_id, selected_year, auth_user_id):
+    def get_model(cls, db, institute_id, for_academic_year, auth_user_id):
 
         execHelper = ExecHelper()
 
         str_select = "academic_year__get_model"
-        params = (institute_id, selected_year, auth_user_id)
+        params = (institute_id, for_academic_year, auth_user_id)
 
         rows = []
         

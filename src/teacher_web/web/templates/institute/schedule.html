@@ -2,8 +2,12 @@
 
 {% block maincontent %}
     {% load display_date %}
-    <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
-    <label class="text-muted">{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
+    {% if content.ctx %}
+        <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
+            <label class="text-muted">{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
+    {% else %}
+        <h2 class="group-heading">{{_("Schedule")}}</h2>
+    {% endif %}
     <hr />
 
     {% include '_partials/widget.control.filter.schedule.html' %}
