@@ -209,6 +209,11 @@ PAGER = {
         "page": 1,
         "pagesize": 100,
         "pagesize_options": [100,]
+    },
+    "schedule":{
+        "page": 1,
+        "pagesize": 7,
+        "pagesize_options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks", 28:"28 days" }
     }
 }
 

@@ -36,7 +36,7 @@ class AuthCtx(Ctx):
     def current_year(academic_years):
         now = datetime.now()
         for ay in academic_years:
-            if ay.start_date > now and ay.end_date < now:
+            if now > ay.start_date and now < ay.end_date:
                 return ay.start_date.year
         # otherwise return current year
         return datetime.now().year

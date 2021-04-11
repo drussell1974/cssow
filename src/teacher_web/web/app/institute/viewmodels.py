@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
+from django.conf import settings
 from app.default.viewmodels import DefaultIndexViewModel
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
@@ -122,12 +123,14 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             if self.institute is None or self.institute.is_from_db == False:
                 self.on_not_found(self.institute, self.institute_id)
 
-        # TODO: get from settings
-        self.show_next_days = 7
+        # get default from settings
+        self.show_next_days = request.session.get("lesson_schedule.show_next_days", settings.PAGER["schedule"]["pagesize"])
 
         if request.method == "POST":
-            self.show_next_days = try_int(request.POST.get("show_next_days", 7))
-        
+            # get show_next_days from POST or use default set above
+            self.show_next_days = try_int(request.POST.get("show_next_days", self.show_next_days))
+            request.session["lesson_schedule.show_next_days"] = self.show_next_days
+
         #lesson_id, scheme_of_work_id, auth_user
         data = LessonScheduleModel.get_all(db, lesson_id=0, scheme_of_work_id=0, show_next_days=self.show_next_days, auth_user=auth_user)
         self.model = data
@@ -141,7 +144,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             "institute": self.institute,
             "schedules": self.model,
             "show_next_days": self.show_next_days,
-            "days_to_show__options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks",28:"28 days"}
+            "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
         return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.institute)

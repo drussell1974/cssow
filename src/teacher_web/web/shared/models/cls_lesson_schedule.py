@@ -104,8 +104,8 @@ class LessonScheduleModel(BaseModel):
     def get_all(db, lesson_id, scheme_of_work_id, auth_user, show_next_days=0, fn_resolve_url=None):
         
         #432 use academic year start and end by default 
-        from_date = auth_user.academic_year.start_date if show_next_days == 0 else datetime.today().date()
-        to_date = auth_user.academic_year.end_date if show_next_days == 0 else datetime.today().date() + timedelta(show_next_days)
+        from_date = auth_user.academic_year.start_date if show_next_days == 0 and auth_user.department_id > 0 else datetime.today().date()
+        to_date = auth_user.academic_year.end_date if show_next_days == 0 and auth_user.department_id > 0 else datetime.today().date() + timedelta(show_next_days)
 
         rows = LessonScheduleDataAccess.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, from_date=from_date, to_date=to_date, show_published_state=auth_user.can_view)
         
