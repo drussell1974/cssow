@@ -25,3 +25,14 @@ class test_api_route_schedule(TestCase):
     def test_url_resolves_to_LessonScheduleViewSet_get__reverse(self):
         url = reverse("api.schedule.get", args=[2,5,11,220])
         self.assertEqual("/api/schedule/institute/2/department/5/schemesofwork/11/lessons/220/events", url)
+
+
+    def test_url_resolves_to_LessonScheduleViewSet_get__with_no_of_days(self):
+        url = resolve('/api/schedule/institute/2/department/5/schemesofwork/11/lessons/220/events/7')
+        self.assertEqual("api.schedule.get_days", url.url_name)
+        self.assertEqual(type(url.func), type(LessonScheduleViewSet.as_view()))
+
+    
+    def test_url_resolves_to_LessonScheduleViewSet_get__with_no_of_days__reverse(self):
+        url = reverse("api.schedule.get_days", args=[2,5,11,220,28])
+        self.assertEqual("/api/schedule/institute/2/department/5/schemesofwork/11/lessons/220/events/28", url)

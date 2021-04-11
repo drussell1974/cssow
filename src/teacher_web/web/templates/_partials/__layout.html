@@ -124,15 +124,15 @@
       <!-- Breadcrumb START -->
       <div class="row">
         <div class="col-lg-4 col-md-4">
-          {% if request.session.academic_year and content.ctx.institute_id %}
+          {% if content.ctx.academic_years %}
             <div class="card-body">
               <!-- Academic Year START -->
               <form action="{% url 'default.academic-year' %}" method="POST">
                 {% csrf_token %}
     
                 <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
-                {% for key, value in request.session.academic_year.items %}
-                    <option value="{{key}}" {%if request.session.academic_year__selected_id == key %}selected{%endif%}>{{ value.display }}</option>
+                {% for ac_year in content.ctx.academic_years %}
+                    <option value="{{ac_year.year}}" {%if request.session.academic_year__selected_id == ac_year.year %}selected{%endif%}>{{ ac_year.display }}</option>
                 {% endfor %}
                 </select>
               </form>
@@ -262,6 +262,8 @@
   <input type="hidden" id="teacher_react_apps__department_id" value="{{content.ctx.department_id}}" />
   <input type="hidden" id="teacher_react_apps__scheme_of_work_id" value="{{content.ctx.scheme_of_work_id}}" />
   <input type="hidden" id="teacher_react_apps__lesson_id" value="{{content.ctx.lesson_id}}" />
+  <input type="hidden" id="teacher_react_apps__academic_year_start" value="{{content.ctx.academic_year.start}}" />
+  <input type="hidden" id="teacher_react_apps__academic_year_end" value="{{content.ctx.academic_year.end}}" />
   <!-- react scripts START --> 
   <script src="{% static 'default/js/teacher_react_apps/build/bundle.js' %}"></script>
   {% block react_scripts %}

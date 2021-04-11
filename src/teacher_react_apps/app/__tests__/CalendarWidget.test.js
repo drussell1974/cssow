@@ -28,11 +28,20 @@ describe('CalendarWidget', () => {
         ({render, container} = createContainer());
     })
 
-    let onDateClick = () => {
+
+    let fakeDataRange = () => {
+        return { start:"2021-09-04", end:"2022-07-16" }   
+    }
+
+    let handleDateClick = () => {
         
     }
 
-    let onChangeFilter = () => {
+    let handleShowAllEventsChange = () => {
+
+    }
+
+    let handleShowWeekendChange = () => {
 
     }
 
@@ -46,7 +55,12 @@ describe('CalendarWidget', () => {
 
     it('renders events on calendar', () => {
 
-        render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
+        render(<CalendarWidget 
+            events={events}
+            onDateClick={handleDateClick}
+            onShowAllEventsChange={handleShowAllEventsChange}
+            onShowWeekendChange={handleShowWeekendChange}
+        />);
         
         expect(
             container.querySelector('.fc-today-button').textContent
@@ -54,56 +68,132 @@ describe('CalendarWidget', () => {
     })
 
     describe('renders filter control', () => {
-
-        it('has all option', () => {
-            
-            render(<CalendarWidget events={events} onDateClick={onDateClick} onChangeFilter={onChangeFilter} />);
-        
-            expect(
-                container.querySelector('#event_filter--control input').checked
-            ).toEqual(false);
-
-            expect(
-                container.querySelector('#event_filter--control label').textContent
-            ).toEqual('show all events');
-        })
-        
-        describe('when filter changes', () => {
-            
-            const onChangeFilterSpy = jest.fn();
-
-            beforeEach(() => {
-                ({render, container, input, change } = createContainer());
-            })
-
-            it('notifies onChange', async () => {
-                
-                // arrange
-
-                let original_checked_state = true;
+        describe('renders filter show all events', () => {
+    
+            it('has show all option', () => {
                 
                 render(<CalendarWidget 
                     events={events} 
-                    showAllDefault={original_checked_state}
-                    onDateClick={onDateClick}
-                    onChangeFilter={onChangeFilterSpy}
+                    academicYear={fakeDataRange}
+                    onDateClick={handleDateClick} 
+                    onShowAllEventsChange={handleShowAllEventsChange} 
+                    onShowWeekendChange={handleShowWeekendChange}
                 />);
-                
-                // act
-                
-                await act(async () => {
-                    change(
-                        input('event_filter--toggle-show-all')
-                    );
-                })
-                
-                // assert 
-                
-                expect(onChangeFilterSpy).toHaveBeenCalled();
+            
+                expect(
+                    container.querySelector('#event_filter--control .event_filter--all input').checked
+                ).toEqual(false);
 
                 expect(
-                    container.querySelector('#event_filter--control input').checked
-                ).toEqual(!original_checked_state); // should have changed the check state
+                    container.querySelector('#event_filter--control .event_filter--all label').textContent
+                ).toEqual('show all events');
+            })
+            
+            describe('when filter changes', () => {
+                
+                const onShowAllEventsChangeSpy = jest.fn();
+
+                beforeEach(() => {
+                    ({render, container, input, change } = createContainer());
+                })
+
+                it('notifies onChange', async () => {
+                    
+                    // arrange
+
+                    let original_checked_state = true;
+                    
+                    render(<CalendarWidget 
+                        events={events} 
+                        academicYear={fakeDataRange}
+                        showAllEvents={original_checked_state}
+                        showWeekends={false}
+                        onDateClick={handleDateClick}
+                        onShowAllEventsChange={onShowAllEventsChangeSpy}
+                        onShowWeekendChange={handleShowWeekendChange}
+                    />);
+                    
+                    // act
+                    
+                    await act(async () => {
+                        change(
+                            input('event_filter--all')
+                        );
+                    })
+                    
+                    // assert 
+                    
+                    expect(onShowAllEventsChangeSpy).toHaveBeenCalled();
+
+                    expect(
+                        container.querySelector('#event_filter--control .event_filter--all input').checked
+                    ).toEqual(!original_checked_state); // should have changed the check state
+                })
+            })
+        })
+
+        describe('renders filter show weekend', () => {
+
+            it('has show all option', () => {
+                
+                render(<CalendarWidget 
+                    events={events} 
+                    academicYear={fakeDataRange}
+                    onDateClick={handleDateClick}
+                    onShowAllEventsChange={handleShowAllEventsChange}
+                    onShowWeekendChange={handleShowWeekendChange}
+                />);
+            
+                expect(
+                    container.querySelector('#event_filter--control .event_filter--weekend input').checked
+                ).toEqual(false);
+
+                expect(
+                    container.querySelector('#event_filter--control .event_filter--weekend label').textContent
+                ).toEqual('show weekends');
+            })
+            
+
+            describe('when filter changes', () => {
+                
+                const onShowWeekendChangeSpy = jest.fn();
+
+                beforeEach(() => {
+                    ({render, container, input, change } = createContainer());
+                })
+
+                it('notifies onChange', async () => {
+                    
+                    // arrange
+
+                    let original_checked_state = true;
+                    
+                    render(<CalendarWidget 
+                        events={events} 
+                        academicYear={fakeDataRange}
+                        showAllEvents={false}
+                        showWeekends={original_checked_state}
+                        onDateClick={handleDateClick}
+                        onShowAllEventsChange={handleShowAllEventsChange}
+                        onShowWeekendChange={onShowWeekendChangeSpy}
+                    />);
+                    
+                    // act
+                    
+                    await act(async () => {
+                        change(
+                            input('event_filter--weekend')
+                        );
+                    })
+                    
+                    // assert 
+                    
+                    expect(onShowWeekendChangeSpy).toHaveBeenCalled();
+
+                    expect(
+                        container.querySelector('#event_filter--control .event_filter--weekend input').checked
+                    ).toEqual(!original_checked_state); // should have changed the check state
+                })
             })
         })
     })

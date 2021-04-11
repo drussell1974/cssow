@@ -277,6 +277,32 @@ class BaseContextModel(BaseModel):
         return model
 
 
+    # TODO: move to DataModel
+    @staticmethod
+    def get_context_array(db, default_or_empty_context_model, get_context_model_sp_name, handle_log_info, *lookup_args):
+        ''' Call stored procedure get_context_model_sp_name with parameters to include unique identifiers and auth_user_id '''
+        execHelper = ExecHelper()
+
+        # return a default or empty        
+        array = []
+        # TODO: could raise outer exception
+
+        result = execHelper.select(db, get_context_model_sp_name, lookup_args, None, handle_log_info)
+        model = default_or_empty_context_model
+        for row in result:
+            # NOTE: should return first item only
+            model.id = row[0]
+            model.name = row[1]
+            #model.parent_id = row[2] # TODO: create @property setter
+            model.created_by_id = row[3]
+            model.published = row[4]
+            model.set_published_state()
+            model.is_from_db = True
+            array.append(model.__dict__)
+        
+        return array
+
+
 def try_int(val, return_value=None):
     """ convert value to int or None """
     try:

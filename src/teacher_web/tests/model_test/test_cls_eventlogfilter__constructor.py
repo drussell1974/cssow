@@ -9,6 +9,16 @@ class fake_settings:
             "page": 1,
             "pagesize": 20,
             "pagesize_options": [ 3, 5, 10, 25, 50, 100 ]
+        },
+        "notifications":{
+            "page": 1,
+            "pagesize": 100,
+            "pagesize_options": [100,]
+        },
+        "schedule":{
+            "page": 1,
+            "pagesize": 7,
+            "pagesize_options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks", 28:"28 days" }
         }
     },
     ISOFORMAT = "%Y-%m-%dT%H:%M"

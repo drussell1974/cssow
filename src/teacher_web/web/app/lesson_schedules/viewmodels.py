@@ -4,6 +4,7 @@ from django.http import Http404
 from shared.models.core.helper_string import date_to_string
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.log_handlers import handle_log_warning, handle_log_exception, handle_log_info
+from shared.models.cls_academic_year import AcademicYearModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_notification import NotifyModel
@@ -41,8 +42,16 @@ class LessonScheduleIndexViewModel(BaseViewModel):
 
             self.lesson_options = LessonModel.get_options(self.db, self.scheme_of_work_id, self.auth_user)  
 
+            # get default from settings
+            self.show_next_days = request.session.get("lesson_schedule.show_next_days", settings.PAGER["schedule"]["pagesize"])
+
+            if request.method == "POST":
+                # get show_next_days from POST or use default set above
+                self.show_next_days = try_int(request.POST.get("show_next_days", self.show_next_days))
+                request.session["lesson_schedule.show_next_days"] = self.show_next_days
+
             # get model
-            data = LessonScheduleModel.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_user)
+            data = LessonScheduleModel.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, show_next_days=self.show_next_days, auth_user=auth_user)
             self.model = data
 
         except Http404 as e:
@@ -61,7 +70,9 @@ class LessonScheduleIndexViewModel(BaseViewModel):
             "scheme_of_work": self.scheme_of_work,
             "lesson": self.lesson,
             "schedules": self.model,
-            "lesson_options": self.lesson_options
+            "lesson_options": self.lesson_options,
+            "show_next_days": self.show_next_days,
+            "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
         
         return ViewModel(self.lesson.title, self.lesson.title, "Scheduled lessons", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
@@ -96,7 +107,9 @@ class LessonScheduleEditViewModel(BaseViewModel):
         try:
             published_state = STATE.parse(self.request.POST["published"] if self.request.POST["published"] is not None else "PUBLISH")
             
-            self.model.start_date = self.request.POST['start_date']
+            # join selected date and time
+            self.model.start_date = f"{self.request.POST['start_date']}T{self.request.POST['period']}"
+
             create_new_class_code = self.request.POST.get("generate_class_code", False)
             if create_new_class_code:
                 self.model.class_code = ClassCodeGenerator.generate_class_code(6)
@@ -118,8 +131,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
 
                 notify = NotifyModel(0, 
                     auth_user_id=self.auth_ctx.auth_user_id, 
-                    notify_message=f"lesson reminder {self.model.class_name} {self.model.start_date.split('T')[1]}",   
-                    message=f"Lesson for {self.model.class_name} starts at {self.model.start_date}", 
+                    notify_message=f"lesson {self.model.start_date_ui_date} {self.model.start_date_ui_time} for {self.model.class_name}",   
+                    message=f"Lesson for {self.model.class_name} starts at {self.model.start_date_ui_date} {self.model.start_date_ui_time}", 
                     action=self.action_url, 
                     reminder=reminder,
                     event_type=LOG_TYPE.Information)
@@ -143,7 +156,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
         data = {
             "scheme_of_work_id": self.scheme_of_work_id,
             "lesson_id": self.lesson_id,
-            "model": self.model
+            "model": self.model,
+            "period_options": self.auth_ctx.periods
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)

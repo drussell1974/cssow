@@ -6,7 +6,7 @@ from shared.models.core.log_handlers import handle_log_info
 from shared.models.cls_lesson_schedule import LessonScheduleModel as Model, LessonScheduleDataAccess, handle_log_info
 #from shared.models.cls_department import DepartmentModel
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_db__save(TestCase):
@@ -26,7 +26,8 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(0, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
+        model = fake_lesson_schedule(id=0, auth_ctx=mock_auth_user)
+        # Model(0, title="Aliquam sem sapien", class_name="7x", class_code="", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
 
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
             
@@ -40,8 +41,9 @@ class test_db__save(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
-    
+        #model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
+        model = fake_lesson_schedule(id=1, auth_ctx=mock_auth_user)
+        
         with patch.object(ExecHelper, 'update', side_effect=expected_exception):
             
             # act and assert
@@ -53,8 +55,8 @@ class test_db__save(TestCase):
 
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
-        model = Model(1, title="Aliquam sem sapien", class_name="7x", class_code="ZYXWVU", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
-
+        model = fake_lesson_schedule(id=1, title="Aliquam sem sapien", class_name="7x", class_code="ZYXWVU", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_ctx=mock_auth_user)
+        
         expected_result = model.id
 
         with patch.object(ExecHelper, 'update', return_value=expected_result):
@@ -75,8 +77,8 @@ class test_db__save(TestCase):
     def test_should_call__insert_insert__when__is_new__true(self, mock_auth_user):
         # arrange
 
-        model = Model(0, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
-
+        model = fake_lesson_schedule(id=0, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=datetime(year=2019,month=12,day=31), lesson_id = 12, scheme_of_work_id = 11, auth_ctx=mock_auth_user)
+        
         expected_result = (876,)
 
         with patch.object(ExecHelper, 'insert', return_value=expected_result):
@@ -98,7 +100,7 @@ class test_db__save(TestCase):
     def test_should_call__delete__when__is_new__false__and__published_is_2(self, mock_auth_user):
         # arrange
 
-        model = Model(101, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date=None, lesson_id = 12, scheme_of_work_id = 11, auth_user=mock_auth_user)
+        model = fake_lesson_schedule(101, title="Aliquam sem sapien", class_name="7x", class_code="MNOPQR", start_date="2021-06-09T17:20", lesson_id = 12, scheme_of_work_id = 11, auth_ctx=mock_auth_user)
         
         expected_result = model.id
 

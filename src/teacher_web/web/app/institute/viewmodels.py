@@ -2,10 +2,12 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
+from django.conf import settings
 from app.default.viewmodels import DefaultIndexViewModel
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel as Model
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -111,7 +113,7 @@ class InstituteEditViewModel(BaseViewModel):
 
 class InstituteScheduleViewModel(DefaultIndexViewModel):
 
-    def __init__(self, db, institute_id, auth_user):
+    def __init__(self, db, request, institute_id, auth_user):
         super().__init__(db, 0, auth_user)
         self.institute_id = institute_id
         self.institute = Model.get_model(db, id=institute_id, auth_user=auth_user)
@@ -121,10 +123,31 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             if self.institute is None or self.institute.is_from_db == False:
                 self.on_not_found(self.institute, self.institute_id)
 
+        # get default from settings
+        self.show_next_days = request.session.get("lesson_schedule.show_next_days", settings.PAGER["schedule"]["pagesize"])
+
+        if request.method == "POST":
+            # get show_next_days from POST or use default set above
+            self.show_next_days = try_int(request.POST.get("show_next_days", self.show_next_days))
+            request.session["lesson_schedule.show_next_days"] = self.show_next_days
+
+        #lesson_id, scheme_of_work_id, auth_user
+        data = LessonScheduleModel.get_all(db, lesson_id=0, scheme_of_work_id=0, show_next_days=self.show_next_days, auth_user=auth_user)
+        self.model = data
+
 
     def view(self, main_heading, sub_heading):
-        view = super().view(self.institute.name, sub_heading)
-        return view
+        super().view(self.institute.name, sub_heading)
+        
+        data = {
+            "institute_id": self.institute.id,
+            "institute": self.institute,
+            "schedules": self.model,
+            "show_next_days": self.show_next_days,
+            "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
+        }
+
+        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):

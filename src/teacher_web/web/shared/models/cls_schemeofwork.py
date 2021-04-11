@@ -37,11 +37,11 @@ class SchemeOfWorkContextModel(BaseContextModel):
 
 
     @classmethod
-    def cached(cls, request, db, institude_id, department_id, scheme_of_work_id, auth_user_id):
+    def cached(cls, request, db, institute_id, department_id, scheme_of_work_id, auth_user_id):
 
         scheme_of_work = cls.empty()
             
-        cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", cls.get_context_model, institude_id, department_id, scheme_of_work_id, auth_user_id)
+        cache_obj = CacheProxy.session_cache(request, db, "scheme_of_work", cls.get_context_model, institute_id, department_id, scheme_of_work_id, auth_user_id)
 
         if cache_obj is not None:
             scheme_of_work.from_dict(cache_obj)

@@ -13,6 +13,17 @@ class CacheProxy:
 
 
     @classmethod
+    def session_cache_array(cls, request, db, name, fnc, *lookup_args):
+        
+        key = str((name, lookup_args)) # create unique key from name and lookup_id
+        if not request.session.get(key):
+            request.session[key] = fnc(db, *lookup_args)
+        array = request.session.get(key)
+
+        return array
+
+
+    @classmethod
     def print_cache(cls, request, print_key = None):
         print("SESSION...")
         for key, value in request.session.items():

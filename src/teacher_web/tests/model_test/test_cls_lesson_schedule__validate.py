@@ -1,7 +1,8 @@
 from unittest import TestCase, skip
 from unittest.mock import patch
 from shared.models.cls_lesson_schedule import LessonScheduleModel as Model
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
+
 
 class test_cls_lesson_schedule__validate__class_code(TestCase):
 
@@ -11,7 +12,7 @@ class test_cls_lesson_schedule__validate__class_code(TestCase):
         # start with valid model exept attribute under test
         
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = Model(1, title="Vivamus at porta orci", start_date=None, class_name="7x", class_code = "", lesson_id=9734, scheme_of_work_id=3434, auth_user=mock_auth_user)
+            self.test = fake_lesson_schedule(1, title="Vivamus at porta orci", start_date="2021-06-09T17:20", class_name="7x", class_code = "", lesson_id=9734, scheme_of_work_id=3434, auth_ctx=mock_auth_user)
 
 
     def tearDown(self):
@@ -105,7 +106,7 @@ class test_cls_lesson_schedule__validate__class_name(TestCase):
         # start with valid model exept attribute under test
         
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:    
-            self.test = Model(1, title="Vivamus at porta orci", start_date=None, class_name="", class_code = "ABCDEF", lesson_id=9734, scheme_of_work_id=3434, auth_user=mock_auth_user)
+            self.test = fake_lesson_schedule(1, title="Vivamus at porta orci", start_date="2021-06-09T17:20", class_name="", class_code = "ABCDEF", lesson_id=9734, scheme_of_work_id=3434, auth_ctx=mock_auth_user)
 
 
     def tearDown(self):

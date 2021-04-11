@@ -1,14 +1,13 @@
 from unittest import TestCase
-from shared.models.cls_year import YearModel as Model, handle_log_info
+from shared.models.core.log_handlers import handle_log_info
+from shared.models.cls_academic_year_period import AcademicYearPeriodModel as Model
+from shared.models.enums.publlished import STATE
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
-from shared.models.cls_department import DepartmentModel
-from shared.models.cls_institute import InstituteModel
-from shared.models.cls_teacher import TeacherModel
-from tests.test_helpers.mocks import fake_ctx_model
+from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_YearDataAccess__get_options(TestCase):
+class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -23,32 +22,34 @@ class test_YearDataAccess__get_options(TestCase):
     def test__should_call__select__with_exception(self, mock_auth_user):
         # arrange
 
+        #mock_ctx = fake_ctx_model()
+        
         expected_result = KeyError('Bang')
         
         with patch.object(ExecHelper, "select", side_effect=expected_result):
             # act and assert
             with self.assertRaises(KeyError):
-                Model.get_options(self.fake_db, key_stage_id = 4, auth_user=mock_auth_user)
+                Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx=mock_auth_user)
             
 
     def test__should_call__select__no_items(self, mock_auth_user):
         # arrange
 
-        #mock_auth_user = fake_ctx_model()
+        #mock_ctx = fake_ctx_model()
 
         expected_result = []
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
                 
-            # act
+            # act00
             
-            rows = Model.get_options(self.fake_db, key_stage_id = 1, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'year__get_options'
-                , (1, mock_auth_user.auth_user_id)
+                'academic_year_period__get_all'
+                , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
@@ -58,47 +59,56 @@ class test_YearDataAccess__get_options(TestCase):
     def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
 
-        #mock_auth_user = fake_ctx_model()
+        #mock_ctx = fake_ctx_model()
         
-        expected_result = [(1,"Yr4")]
+        expected_result = [("08:30","Period 1")]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
             # act
 
-            rows = Model.get_options(self.fake_db, key_stage_id = 2, auth_user = mock_auth_user)
+            rows = Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'year__get_options'
-                , (2, mock_auth_user.auth_user_id)
+                'academic_year_period__get_all'
+                , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
 
+
             self.assertEqual(1, len(rows))
-            self.assertEqual("Yr4", rows[0].name, "First item not as expected")
+            self.assertEqual("08:30", rows[0].time)
+            self.assertEqual("Period 1", rows[0].name)
             
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
 
-        #mock_auth_user = fake_ctx_model()
+        #mock_ctx = fake_ctx_model()
 
-        expected_result = [(1,"Yr7"), (2, "Yr8"), (3, "Yr9")]
+        expected_result = [
+            ("08:30","Period 1"),
+            ("09:30","Period 2"),   
+            ("11:00","Period 3"),
+        ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
-            rows = Model.get_options(self.fake_db, key_stage_id = 3, auth_user=mock_auth_user)
+            rows = Model.get_all(self.fake_db, mock_auth_user.institute_id, auth_ctx = mock_auth_user)
             
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'year__get_options'
-                , (3, mock_auth_user.auth_user_id)
+                'academic_year_period__get_all'
+                , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
-            self.assertEqual(3, len(rows))
-            self.assertEqual("Yr7", rows[0].name, "First item not as expected")
-            self.assertEqual("Yr9", rows[len(rows)-1].name, "Last item not as expected")
 
+            
+            self.assertEqual(3, len(rows))
+            self.assertEqual("08:30", rows[0].time)
+            self.assertEqual("Period 1", rows[0].name)
+            self.assertEqual("11:00", rows[2].time)
+            self.assertEqual("Period 3", rows[2].name)

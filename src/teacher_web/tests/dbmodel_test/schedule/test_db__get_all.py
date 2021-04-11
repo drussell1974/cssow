@@ -25,6 +25,8 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', side_effect=expected_exception):
             # act and assert
+            
+            mock_ctx.institute_id = 12767111276711 # explicitly set
 
             with self.assertRaises(KeyError):
                 LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
@@ -36,7 +38,9 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
-            
+
+            mock_ctx.institute_id = 12767111276711 # explicitly set
+
             rows = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
 
             # assert
@@ -56,6 +60,8 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
+
+            mock_ctx.institute_id = 12767111276711 # explicitly set
 
             actual_results = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
             
@@ -87,6 +93,8 @@ class test_db__get_all(TestCase):
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
+
+            mock_ctx.institute_id = 12767111276711 # explicitly set
 
             actual_results = LessonScheduleModel.get_all(self.fake_db, lesson_id=34, scheme_of_work_id=11, auth_user=mock_ctx)
             

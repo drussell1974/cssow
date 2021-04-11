@@ -34,6 +34,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=34, lesson_id=1, auth_user=mock_auth_user)
@@ -43,6 +44,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             LessonModel_get_model.assert_called()
 
             self.assertEqual(0, len(actual_result.model))
+            self.assertEqual(7, actual_result.show_next_days) # default
 
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, is_from_db=True))
@@ -51,7 +53,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(34, title="", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11)]
+        data_to_return = [fake_lesson_schedule(34, title="", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
             
@@ -59,6 +61,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)
@@ -69,6 +72,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             LessonModel_get_model.assert_called()
 
             self.assertEqual(1, len(actual_result.model))
+            self.assertEqual(7, actual_result.show_next_days) # default
             
 
     @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, name="Tumbing Dice - Rolling Stones", is_from_db=True))
@@ -78,9 +82,9 @@ class test_viewmodel_IndexViewModel(TestCase):
         # arrange
         
         data_to_return = [
-            Model(91, title="Vivamus", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11), 
-            Model(92, title="Orci", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11),
-            Model(93,  title="At porta", class_code="", class_name="", start_date=None, lesson_id=220, scheme_of_work_id=11)
+            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
+            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
             ]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
@@ -89,6 +93,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             db.cursor = MagicMock()
 
             mock_request = Mock()
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
             actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)
@@ -99,4 +104,39 @@ class test_viewmodel_IndexViewModel(TestCase):
             LessonModel_get_model.assert_called()
             
             self.assertEqual(3, len(actual_result.model))
+            self.assertEqual(7, actual_result.show_next_days) # default
+            
+
+    @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=92, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(LessonModel, "get_model", return_value=LessonModel(3, "Box of Rain - Grateful Dead", is_from_db=True))
+    def test_init_called_fetch__multiple_items_with_POST(self, SchemeOfWorkModel_get_model, LessonModel_get_model, mock_auth_user):
+        
+        # arrange
+        
+        data_to_return = [
+            fake_lesson_schedule(91, title="Vivamus", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user), 
+            fake_lesson_schedule(92, title="Orci", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(93,  title="At porta", class_code="", class_name="", start_date="2021-06-09T17:20", lesson_id=220, scheme_of_work_id=11, auth_ctx=mock_auth_user)
+            ]
+        
+        with patch.object(Model, "get_all", return_value=data_to_return):
+            
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            mock_request = Mock()
+            mock_request.method = "POST"
+            mock_request.POST = { "show_next_days": 14 }
+            mock_request.session = { "lesson_schedule.show_next_days": 7 }
+
+            # act
+            actual_result = ViewModel(db=db, request=mock_request, scheme_of_work_id=11, lesson_id=220, auth_user=mock_auth_user)
+
+            # assert functions was called
+            Model.get_all.assert_called()
+            SchemeOfWorkModel_get_model.assert_called()
+            LessonModel_get_model.assert_called()
+            
+            self.assertEqual(3, len(actual_result.model))
+            self.assertEqual(14, actual_result.show_next_days) # default
             

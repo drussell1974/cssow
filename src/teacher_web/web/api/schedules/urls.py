@@ -8,4 +8,5 @@ urlpatterns = [
     #path('', LessonListViewSet.as_view(), name="api.lessons.get"),
     path('lesson/<str:class_code>', LessonScheduleClassCodeViewSet.as_view(), name="api.schedule.classcode"),
     path('institute/<int:institute_id>/department/<int:department_id>/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/events', LessonScheduleViewSet.as_view(), name="api.schedule.get"),
+    path('institute/<int:institute_id>/department/<int:department_id>/schemesofwork/<int:scheme_of_work_id>/lessons/<int:lesson_id>/events/<int:show_next_days>', LessonScheduleViewSet.as_view(), name="api.schedule.get_days"),
 ]

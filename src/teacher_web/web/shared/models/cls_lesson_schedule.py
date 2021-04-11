@@ -13,22 +13,38 @@ class LessonScheduleModel(BaseModel):
     title = ""
     class_name = ""
     class_code = ""
+    period = 0
     start_date = ""
+    start_date_ui_date = ""
+    start_date_ui_time = ""
+    edit_url = ""
+    whiteboard_url = ""
     lesson_id = 0
     scheme_of_work_id = 0
     department_id = 0
     institute_id = 0
     is_from_db = False
 
-    def __init__(self, id_, title, class_name, class_code, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None):
+    def __init__(self, id_, title, class_name, class_code, start_date, lesson_id, scheme_of_work_id, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_user=None, fn_resolve_url=None):
         super().__init__(id_, f"{title} - {class_name} ({class_code})", created, created_by_id, created_by_name, published, is_from_db, ctx=auth_user)
         self.title = title
         self.class_name = class_name
         self.class_code = class_code
+        self.whiteboard_url = "" # default
+        self.edit_url = "" # default
         self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
+        if type(start_date) is datetime:
+            start_date = start_date.strftime(settings.ISOFORMAT)
+        if "T" in start_date:
+            self.start_date_ui_date = start_date.split("T")[0]
+            self.start_date_ui_time = start_date.split("T")[1]
         self.lesson_id = try_int(lesson_id)
         self.scheme_of_work_id = try_int(scheme_of_work_id)
-        
+
+        if fn_resolve_url is not None:
+            self.whiteboard_url  = fn_resolve_url(self)["lesson_schedule.whiteboard_view"]
+            self.edit_url = fn_resolve_url(self)["lesson_schedule.edit"]
+
 
     @property
     def is_today(self):
@@ -54,7 +70,7 @@ class LessonScheduleModel(BaseModel):
 
     @classmethod
     def new(cls, lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
-        start_date = datetime.now()
+        start_date = date_to_string(datetime.now())
         new_class_code = fn_generate_class_code(length=6)
         return LessonScheduleModel(0, title="", class_name="", class_code=new_class_code, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
@@ -85,12 +101,12 @@ class LessonScheduleModel(BaseModel):
 
 
     @staticmethod
-    def get_all(db, lesson_id, scheme_of_work_id, auth_user, show_next_days=0):
+    def get_all(db, lesson_id, scheme_of_work_id, auth_user, show_next_days=0, fn_resolve_url=None):
         
         #432 use academic year start and end by default 
         from_date = auth_user.academic_year.start_date if show_next_days == 0 else datetime.today().date()
         to_date = auth_user.academic_year.end_date if show_next_days == 0 else datetime.today().date() + timedelta(show_next_days)
-
+        
         rows = LessonScheduleDataAccess.get_all(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, from_date=from_date, to_date=to_date, show_published_state=auth_user.can_view)
         
         result = []
@@ -105,7 +121,8 @@ class LessonScheduleModel(BaseModel):
                 scheme_of_work_id=row[6],
                 published=row[9],
                 created_by_id=row[10],
-                auth_user=auth_user)
+                auth_user=auth_user,
+                fn_resolve_url=fn_resolve_url)
 
             model.department_id=row[7]
             model.institute_id=row[8]

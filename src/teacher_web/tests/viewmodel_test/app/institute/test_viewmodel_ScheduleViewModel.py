@@ -4,9 +4,8 @@ from unittest.mock import MagicMock, Mock, patch
 # test context
 
 from app.institute.viewmodels import InstituteScheduleViewModel as ViewModel
-#from shared.models.cls_department import DepartmentModel as Model
-#from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_institute import InstituteModel
+from shared.models.cls_lesson_schedule import LessonScheduleModel
 from tests.test_helpers.mocks import *
 
 @patch.object(InstituteModel, "get_model", return_value=InstituteModel(534, "Lorum Ipsum", is_from_db=True))
@@ -27,89 +26,135 @@ class test_viewmodel_ScheduleViewModel(TestCase):
 
         db = MagicMock()
         db.cursor = MagicMock()
+        mock_request = Mock()
+        mock_request.session = { "lesson_schedule.show_next_days":7 }
+
 
         self.mock_model = Mock()
 
         # act
-        self.viewmodel = ViewModel(db=db, institute_id=99, auth_user=mock_auth_user)
+        self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=99, auth_user=mock_auth_user)
 
         # assert
         InstituteModel_get_model.assert_called()
-        self.assertEqual(None, self.viewmodel.model)
+        self.assertEqual([], self.viewmodel.model)
 
 
-'''
+
     def test_init_called_fetch__no_return_rows(self, mock_auth_user, InstituteModel_get_model):
         
         # arrange
         
         data_to_return = []
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
+        with patch.object(LessonScheduleModel, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
-
-            self.mock_model = Mock()
+            
+            mock_request = Mock()
+            mock_request.method = MagicMock(return_value="GET")
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
 
             # act
-            self.viewmodel = ViewModel(db=db, institute_id=99, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=99, auth_user=mock_auth_user)
 
             # assert functions was called
-            Model.get_all.assert_called()
+            LessonScheduleModel.get_all.assert_called()
             InstituteModel_get_model.assert_called()
-            self.assertEqual(0, len(self.viewmodel.model))
+            self.assertEqual(7, self.viewmodel.show_next_days) # default
 
 
     def test_init_called_fetch__single_row(self, mock_auth_user, InstituteModel_get_model):
         
         # arrange
-        model = Model(56, "Lorum", InstituteModel(12767111276711, "Ipsum"))
+        model = fake_lesson_schedule(id=22, auth_ctx=mock_auth_user)
         
         data_to_return = [model]
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
+        with patch.object(LessonScheduleModel, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+            mock_request.method = MagicMock(return_value="GET")
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, institute_id=56, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=56, auth_user=mock_auth_user)
 
             # assert functions was called
-            Model.get_all.assert_called()
+            LessonScheduleModel.get_all.assert_called()
             InstituteModel_get_model.assert_called()
 
             self.assertEqual(1, len(self.viewmodel.model))
-
-            self.assertEqual("Lorum", self.viewmodel.model[0].name)
+            self.assertEqual(7, self.viewmodel.show_next_days) # default
 
 
     def test_init_called_fetch__multiple_rows(self, mock_auth_user, InstituteModel_get_model):
         
         # arrange
-        fake_institute = InstituteModel(12767111276711, "Ipsum")
+        
         data_to_return = [
-            Model(56, "Tic", fake_institute),
-            Model(57, "Tac", fake_institute),
-            Model(58, "Toe", fake_institute)
+            fake_lesson_schedule(id=22, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(id=23, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(id=24, auth_ctx=mock_auth_user)
         ]
         
-        with patch.object(Model, "get_all", return_value=data_to_return):
+        with patch.object(LessonScheduleModel, "get_all", return_value=data_to_return):
 
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+            mock_request.method = MagicMock(return_value="GET")
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, institute_id = 5229, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=56, auth_user=mock_auth_user)
 
             # assert functions was called
-            Model.get_all.assert_called()
+            LessonScheduleModel.get_all.assert_called()
             InstituteModel_get_model.assert_called()
-            self.assertEqual(3, len(self.viewmodel.model))
 
-'''
+            self.assertEqual(3, len(self.viewmodel.model))
+            self.assertEqual(7, self.viewmodel.show_next_days) # default
+
+
+
+    def test_init_called_fetch__multiple_rows__with_POST(self, mock_auth_user, InstituteModel_get_model):
+        
+        # arrange
+        
+        data_to_return = [
+            fake_lesson_schedule(id=22, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(id=23, auth_ctx=mock_auth_user),
+            fake_lesson_schedule(id=24, auth_ctx=mock_auth_user)
+        ]
+        
+        with patch.object(LessonScheduleModel, "get_all", return_value=data_to_return):
+
+            db = MagicMock()
+            db.cursor = MagicMock()
+
+            mock_request = Mock()
+            mock_request.method = "POST"
+            mock_request.POST = { "show_next_days": 14 }
+            mock_request.session = { "lesson_schedule.show_next_days":7 }
+
+            self.mock_model = Mock()
+
+            # act
+            self.viewmodel = ViewModel(db=db, request=mock_request, institute_id=56, auth_user=mock_auth_user)
+
+            # assert
+            LessonScheduleModel.get_all.assert_called()
+            InstituteModel_get_model.assert_called()
+
+            self.assertEqual(3, len(self.viewmodel.model))
+            self.assertEqual(14, self.viewmodel.show_next_days)
