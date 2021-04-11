@@ -38,15 +38,13 @@ class LessonScheduleViewSet(APIView):
         }
 
 
-    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx=None):
+    def get(self, request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx=None, show_next_days=0):
 
         # TODO: #367 get auth_ctx from min_permission_required decorator
         auth_ctx = AuthCtx(db, request, institute_id=institute_id, department_id=department_id)
-        
-        #class_code = request.GET.get("class_code", "")
 
         #253 check user id
-        get_schedule_view = LessonScheduleViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, auth_ctx=auth_ctx, fn_resolve_url=self.resolve_url)
+        get_schedule_view = LessonScheduleViewModel(db=db, scheme_of_work_id=scheme_of_work_id, lesson_id=lesson_id, show_next_days=show_next_days, auth_ctx=auth_ctx, fn_resolve_url=self.resolve_url)
 
         return JsonResponse({ "schedule": get_schedule_view.model } )
     

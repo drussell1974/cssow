@@ -31,7 +31,7 @@ class test_viewmodel_ScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model, fn_resolve_url=fake_resolve_schedule_urls)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, show_next_days=7, auth_ctx=mock_ctx_model, fn_resolve_url=fake_resolve_schedule_urls)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -55,7 +55,7 @@ class test_viewmodel_ScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model, fn_resolve_url=mock_resolve_schedule_urls)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, show_next_days=0, auth_ctx=mock_ctx_model, fn_resolve_url=mock_resolve_schedule_urls)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -83,7 +83,7 @@ class test_viewmodel_ScheduleViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, auth_ctx=mock_ctx_model, fn_resolve_url=mock_resolve_schedule_urls)
+            self.viewmodel = ViewModel(db, scheme_of_work_id=11, lesson_id=220, show_next_days=0, auth_ctx=mock_ctx_model, fn_resolve_url=mock_resolve_schedule_urls)
 
             # assert functions was called
             Model.get_all.assert_called()
