@@ -34,51 +34,52 @@ class AcademicYearEditViewModel(BaseViewModel):
 
     def __init__(self, db, request, year, auth_user):
         self.db = db
-        self.model = Model.default(for_academic_year=year)
+        self.request = request
+        self.year = year
         self.auth_user = auth_user
-
-        if request.method == "GET":
-            ## GET request from client ##
-
-            model = Model.get_model(self.db, year, auth_user)
-            if model is None or model.is_from_db == False:
-                self.on_not_found(model, auth_user.department.id) 
-            
-            self.model = model
+        self.model = Model.default(for_academic_year=datetime.now().year, ctx=auth_user)
         
-        elif request.method == "POST":
-            ## POST back from client ##
+        #if self.request.method == "GET":
+        ## GET request from client ##
+        if self.year > 0:
+            self.model = Model.get_model(self.db, 
+                institute_id=self.auth_user.institute_id, 
+                for_academic_year=self.year, 
+                auth_ctx=self.auth_user)
+        
+        if self.model is None:
+            self.on_not_found(self.model, self.year)
 
+
+    def execute(self):
+        if self.request.method == "POST":
+            ## POST back from client ##
             # create instance of model from request
-            self.model = Model(
-                start_date=request.POST.get("start_date", ""),
-                end_date=request.POST.get("end_date", 0),
-                #created=datetime.now(),
-                #created_by_id=self.auth_user.auth_user_id,
-                is_from_db=False,
-                auth_ctx=auth_user)
+            self.model.start_date = self.request.POST.get("start_date", "")
+            self.model.end_date = self.request.POST.get("end_date", 0)
+            self.model.auth_ctx = self.auth_user
             
             try:
                 self.model.validate()
                 
                 if self.model.is_valid == True:
 
-                    data = Model.save(self.db, self.model, self.auth_user, STATE.parse(request.POST.get("published", "PUBLISH")))
+                    data = Model.save(self.db, self.model, self.auth_user, STATE.parse(self.request.POST.get("published", "PUBLISH")))
                     
                     self.on_post_complete(True)
                     self.model = data
                 else:
                     self.alert_message = "validation errors %s" % self.model.validation_errors 
-                    handle_log_warning(self.db, year, "saving academic year", "academicy year is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.year, len(self.model.validation_errors)))
+                    handle_log_warning(self.db, self.year, "saving academic year", "academicy year is not valid (id:{}, name:{}, validation_errors (count:{}).".format(self.model.id, self.model.year, len(self.model.validation_errors)))
                     
             except Exception as ex:
                 self.error_message = ex
-                handle_log_exception(db, year, "An error occurred processing academic year", ex)
-                raise ex
+                handle_log_exception(self.db, self.year, "An error occurred processing academic year", ex)
+                #raise ex
                 
 
     def view(self, heading):
-                
+
         # view data
         data = {
             "academic_year": self.model,

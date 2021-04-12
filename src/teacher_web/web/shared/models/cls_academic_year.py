@@ -8,29 +8,12 @@ from shared.models.enums.publlished import STATE
 from shared.models.utils.cache_proxy import CacheProxy
 
 class AcademicYearModel(BaseModel):
-
-    def init_dates(self, start_date, end_date):
-        
-        if type(start_date) is str:
-            self.start = start_date # set start string property
-            self.start_date = datetime.strptime(start_date, settings.ISOFORMAT) # set start_date datetime property    
-        elif type(start_date) is datetime:
-            self.start = start_date.strftime(settings.ISOFORMAT) # set start string property
-            self.start_date = start_date # set start_date date property
-        
-        if type(end_date) is str:
-            self.end = end_date  # set start string property
-            self.end_date = datetime.strptime(end_date, settings.ISOFORMAT) # set start_date datetime property
-        elif type(end_date) is datetime:
-            self.end = end_date.strftime(settings.ISOFORMAT)  # set start string property
-            self.end_date = end_date # set end_date datetime property
-        #raise KeyError(type(self.start_date))
-            
-
+    
     def __init__(self, start_date, end_date, is_from_db, created_by_id=0, created_by_name="", published=STATE.PUBLISH, auth_ctx=None):
         #self.start_date = start_date
         #self.end_date = end_date
-        self.init_dates(start_date, end_date)
+        self.start_date = start_date
+        self.end_date = end_date
         
         super().__init__(self.start_date.year, f"{self.start_date.year}/{self.end_date.year}", created="", created_by_id=created_by_id, created_by_name=created_by_name, published=1, is_from_db=is_from_db, ctx=auth_ctx)
         
@@ -38,6 +21,37 @@ class AcademicYearModel(BaseModel):
         self.display = f"{self.start_date.year}/{self.end_date.year}"
         self.periods = []
 
+
+    @property
+    def start_date(self):
+        return self._start_date
+
+
+    @start_date.setter
+    def start_date(self, start_date):
+        
+        if type(start_date) is str:
+            self.start = start_date # set start string property
+            self._start_date = datetime.strptime(start_date, settings.ISOFORMAT) # set start_date datetime property    
+        elif type(start_date) is datetime:
+            self.start = start_date.strftime(settings.ISOFORMAT) # set start string property
+            self._start_date = start_date # set start_date date property
+
+
+    @property
+    def end_date(self):
+        return self._end_date
+
+
+    @end_date.setter        
+    def end_date(self, end_date):
+        if type(end_date) is str:
+            self.end = end_date  # set start string property
+            self._end_date = datetime.strptime(end_date, settings.ISOFORMAT) # set start_date datetime property
+        elif type(end_date) is datetime:
+            self.end = end_date.strftime(settings.ISOFORMAT)  # set start string property
+            self._end_date = end_date # set end_date datetime property
+            
 
     @classmethod
     def default(cls, for_academic_year=datetime.now().year, published=STATE.PUBLISH, ctx=None):
@@ -67,9 +81,12 @@ class AcademicYearModel(BaseModel):
 
 
     @classmethod
-    def save(cls, db, academic_year, institute_id, published, auth_ctx):
+    def save(cls, db, academic_year, published, auth_ctx):
         if academic_year.is_valid:
-            return AcademicYearDataAccess.insert(db, academic_year.year, academic_year.start_date, academic_year.end_date, institute_id, published, auth_ctx.auth_user_id)
+            if academic_year.is_from_db == True:
+                return AcademicYearDataAccess.update(db, academic_year.year, academic_year.start_date, academic_year.end_date, auth_ctx.institute_id, published, auth_ctx.auth_user_id)
+            else:
+                return AcademicYearDataAccess.insert(db, academic_year.year, academic_year.start_date, academic_year.end_date, auth_ctx.institute_id, published, auth_ctx.auth_user_id)
         
         return academic_year
 
@@ -153,3 +170,16 @@ class AcademicYearDataAccess:
         new_id = execHelper.insert(db, str_insert, params, handle_log_info)
         
         return new_id
+
+
+    @classmethod
+    def update(cls, db, year, start_date, end_date, institute_id, published, auth_user_id):
+
+        execHelper = ExecHelper()
+
+        str_update = "academic_year__update"
+        params = (year, start_date, end_date, institute_id, published, auth_user_id)
+
+        updated_id = execHelper.update(db, str_update, params, handle_log_info)
+        
+        return updated_id
