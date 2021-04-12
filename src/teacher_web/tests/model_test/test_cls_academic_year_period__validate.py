@@ -1,7 +1,7 @@
 from unittest import TestCase
 from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 
-class test_AcademicYearPeriodModel_validate__name(TestCase):
+class test_AcademicYearPeriodModel_validate__time(TestCase):
 
     test = None
 
@@ -140,8 +140,7 @@ class test_AcademicYearPeriodModel_validate__name(TestCase):
         self.assertFalse(test.is_valid, "is_valid should be False")
 
 
-
-class test_institute_validate__name(TestCase):
+class test_AcademicYearPeriodModel_validate__name(TestCase):
 
     test = None
 

@@ -185,6 +185,14 @@ class BaseModel(models.Model):
                 self.is_valid = False
 
 
+    def _validate_range(self, name_of_property, value_to_validate, low, high):
+        """ check if a value is within a range """
+        if name_of_property not in self.skip_validation:
+            if value_to_validate < low or value_to_validate > high:
+                self.validation_errors[name_of_property] = "{} should be between {} and {}".format(value_to_validate, low, high)
+                self.is_valid = False
+
+
     @staticmethod
     def depreciation_notice(msg="Deprecated"):
         raise DeprecationWarning()
