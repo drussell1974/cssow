@@ -22,7 +22,6 @@ from app.default import views
 
 urlpatterns = [
 
-    
     ### api ##
     
     path("api/notifications/", include('api.notifications.urls')),

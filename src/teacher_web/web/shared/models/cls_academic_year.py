@@ -56,14 +56,22 @@ class AcademicYearModel(BaseModel):
     def validate(self, skip_validation = []):
         """ clean up and validate model """
         super().validate(skip_validation)
-
-        # Validate class code
-        self._validate_required_string("start", self.start, 1, 19)
+        #self.is_valid = True
+        # Validate
+        #self._validate_required_string("start", self.start, 1, 19)
         self._validate_range("start_date", value_to_validate=self.start_date, low=datetime(year=1700, month=1, day=1), high=datetime(year=2099, month=12, day=31))
-        self._validate_required_string("end", self.end, 1, 19)
+        #self._validate_required_string("end", self.end, 1, 19)
         self._validate_range("end_date", value_to_validate=self.end_date, low=datetime(year=1700, month=1, day=1), high=datetime(year=2099, month=12, day=31))
         
         return self.is_valid
+
+
+    @classmethod
+    def save(cls, db, academic_year, institute_id, published, auth_ctx):
+        if academic_year.is_valid:
+            return AcademicYearDataAccess.insert(db, academic_year.year, academic_year.start_date, academic_year.end_date, institute_id, published, auth_ctx.auth_user_id)
+        
+        return academic_year
 
 
     @classmethod
@@ -95,7 +103,7 @@ class AcademicYearModel(BaseModel):
             # check current year
             model = AcademicYearModel(row[1], row[2], is_from_db=True)
 
-            model.periods = AcademicYearPeriodModel.get_all(db, auth_ctx.institute_id,  auth_ctx=auth_ctx)
+            model.periods = AcademicYearPeriodModel.get_all(db, auth_ctx.institute_id, auth_ctx=auth_ctx)
 
             return model
 
@@ -132,3 +140,16 @@ class AcademicYearDataAccess:
         rows = execHelper.select(db, str_select, params, rows, handle_log_info)
         
         return rows
+
+
+    @classmethod
+    def insert(cls, db, year, start_date, end_date, institute_id, published, auth_user_id):
+
+        execHelper = ExecHelper()
+
+        str_insert = "academic_year__insert"
+        params = (year, start_date, end_date, institute_id, published, auth_user_id)
+
+        new_id = execHelper.insert(db, str_insert, params, handle_log_info)
+        
+        return new_id

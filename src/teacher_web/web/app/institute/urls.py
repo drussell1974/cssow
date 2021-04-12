@@ -13,5 +13,6 @@ urlpatterns = [
     path('<int:institute_id>/publish', views.index, name='institute.publish_item'),
     #path('<int:institute_id>/delete', views.index, name='institute.delete'),
     path('<int:institute_id>/department/', include('app.department.urls')),
+    path('<int:institute_id>/academic-years/', include('app.academic_years.urls')),
     path('', views.index, name='institute.index'), 
 ]
