@@ -43,24 +43,25 @@ class AcademicYearEditViewModel(BaseViewModel):
         self.db = db
         self.request = request
         self.auth_user = auth_user
-        self.year = year
-
-        if self.year > 0:
-            self.model = Model.get_model(self.db, 
-                institute_id=self.auth_user.institute_id, 
-                for_academic_year=year,
-                auth_ctx=self.auth_user)    
-
-            if self.model is None:
-                self.on_not_found(self.model, year)
-
-        elif len(self.auth_user.academic_years) > 0:
-            # must be new, so get the last academic year (which is the id) and increment by 1
-            self.year = self.auth_user.academic_years[len(self.auth_user.academic_years)-1].id + 1
-            self.model = Model.new(start_year=self.year, ctx=auth_user)
-        else:
-            self.model = Model.default(ctx=self.auth_user)
-            #self.model.is_from_db = False
+        
+        if request.method == "GET":
+            if year == 0: # must be new
+                if len(self.auth_user.academic_years) > 0:
+                    # must be new, so get the last academic year (which is the id) and increment by 1
+                    self.year = self.auth_user.academic_years[len(self.auth_user.academic_years)-1].id + 1
+                    self.model = Model.new(start_year=self.year, ctx=auth_user)
+                else:
+                    self.model = Model.default(ctx=self.auth_user)
+                    self.model.is_from_db = False
+            else:
+                self.model = Model.get_model(self.db, 
+                    institute_id=self.auth_user.institute_id, 
+                    for_academic_year=year,
+                    auth_ctx=self.auth_user)
+                if self.model is None:
+                    self.on_not_found(self.model, year)
+                else:
+                    self.model.is_from_db = True
 
 
     def execute(self):
@@ -72,8 +73,8 @@ class AcademicYearEditViewModel(BaseViewModel):
             # create instance of model from request
             self.model.id = try_int(self.request.POST.get("id", self.model.id))
             self.model.start_date = self.request.POST.get("start_date", 0)
-            self.model.end_date = self.request.POST.get("end_date", 0)
-            self.model.is_from_db = False if self.request.POST.get("is_from_db", "False") == "False" else True
+            self.model.end_date = self.request.POST.get("end_date", 0) 
+            self.model.is_from_db = True if self.request.POST.get("is_from_db").upper() == "TRUE" else False
             self.model.auth_ctx = self.auth_user
             
             try:

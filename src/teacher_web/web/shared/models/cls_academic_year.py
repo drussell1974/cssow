@@ -57,7 +57,7 @@ class AcademicYearModel(BaseModel):
     def default(cls, for_academic_year=datetime.now().year, published=STATE.PUBLISH, ctx=None):
         """ a default academic year runs from 01-Sept-YYYY - 30-Jul-YYYY+1 """
         start_year = for_academic_year if datetime.now().month >= 9 else for_academic_year - 1
-        model = cls(for_academic_year, start_date=datetime(start_year, 9, 1), end_date=datetime(start_year+1, 7, 30), published=published, is_from_db=False, auth_ctx=ctx)
+        model = cls(for_academic_year, start_date=datetime(start_year, 9, 1), end_date=datetime(start_year+1, 7, 31), published=published, is_from_db=False, auth_ctx=ctx)
         return model
 
 
