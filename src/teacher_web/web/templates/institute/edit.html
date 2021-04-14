@@ -28,7 +28,7 @@
         <div class="control-group">
             <div class="form-group controls">
                 <label>{{_("Name")}}</label>
-                <input type="text" name="name" class="form-control" placeholder="{{_('Enter a name')}}" id="ctl-name" name="name" required
+                <input type="text" name="name" class="form-control" placeholder="{{_('Enter a name')}}" id="ctl-name" required
                         maxlength="40" value='{{content.data.scheme_of_work.name}}'>
                 <div class="help-block text-danger invalid-feedback"></div>
             </div>
@@ -40,7 +40,7 @@
             <!-- #TODO: #231: use form.buttons.validition partial -->
             {% include '_partials/form.buttons.validation.html' %}
         </div>
-        <input type="hidden" name="id" value="{{content.data.institute_id.id}}">
+        <input type="hidden" name="id" value="{{content.data.institute.id}}">
         <input type="hidden" name="next" value="{% url 'institute.index' %}">
     </form>
 </article>
