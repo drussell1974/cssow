@@ -67,7 +67,7 @@ class test_viewmodel_IndexViewModel(TestCase):
 
             self.assertEqual(1, len(self.viewmodel.model))
 
-            self.assertEqual("Lorum", self.viewmodel.model[0].name)
+            self.assertEqual("2020-09-01", self.viewmodel.model[0].display_name)
 
 
     def test_init_called_fetch__multiple_rows(self, mock_auth_user, InstituteModel_get_model):
@@ -94,3 +94,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             Model.get_all.assert_called()
             InstituteModel_get_model.assert_called()
             self.assertEqual(3, len(self.viewmodel.model))
+
+            self.assertEqual("2019-09-03", self.viewmodel.model[0].display_name)
+
+            self.assertEqual("2021-09-02", self.viewmodel.model[2].display_name)
