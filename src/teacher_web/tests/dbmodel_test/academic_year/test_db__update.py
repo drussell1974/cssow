@@ -24,7 +24,7 @@ class test_AcademicYearDataAccess___update(TestCase):
         # arrange
         fake_ctx = fake_ctx_model()
         
-        fake_model = Model("2020-01-24T07:20", "2021-01-24T07:20", is_from_db=True, auth_ctx=fake_ctx)
+        fake_model = Model(2020, "2020-01-24", "2021-01-24", is_from_db=True, auth_ctx=fake_ctx)
         fake_model.is_valid = True
 
         expected_result = KeyError('Bang')
@@ -42,7 +42,7 @@ class test_AcademicYearDataAccess___update(TestCase):
 
         expected_result = 2020
 
-        fake_model = Model("2020-09-01T07:20", "2021-07-25T07:20", is_from_db=True, auth_ctx=fake_ctx)
+        fake_model = Model(2020, "2020-09-01", "2021-07-25", is_from_db=True, auth_ctx=fake_ctx)
         fake_model.is_valid = True
 
         with patch.object(ExecHelper, "update", return_value=expected_result):
@@ -55,7 +55,7 @@ class test_AcademicYearDataAccess___update(TestCase):
 
             ExecHelper.update.assert_called_with(self.fake_db,
                 'academic_year__update'
-                , (fake_model.year, datetime(2020, 9, 1, 7, 20), datetime(2021, 7, 25, 7, 20), 127671276711, int(STATE.PUBLISH), 6079)
+                , (fake_model.id, datetime(2020, 9, 1, 0, 0), datetime(2021, 7, 25, 0, 0), 127671276711, int(STATE.PUBLISH), 6079)
                 , handle_log_info)
 
             self.assertEqual(2020, result)
@@ -67,7 +67,7 @@ class test_AcademicYearDataAccess___update(TestCase):
 
         fake_ctx = fake_ctx_model()
 
-        fake_model = Model("2021-01-24T07:20", "2100-01-24T07:20", False, auth_ctx=fake_ctx)
+        fake_model = Model(2021, "2021-01-24", "2100-11-22", False, auth_ctx=fake_ctx)
         fake_model.is_valid = False
 
 
@@ -81,5 +81,5 @@ class test_AcademicYearDataAccess___update(TestCase):
 
             ExecHelper.update.assert_not_called()
 
-            self.assertEqual("2021-01-24T07:20", result.start)
-            self.assertEqual("2100-01-24T07:20", result.end)
+            self.assertEqual("2021-01-24", result.start)
+            self.assertEqual("2100-11-22", result.end)

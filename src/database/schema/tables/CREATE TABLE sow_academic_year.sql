@@ -9,6 +9,7 @@ CREATE TABLE `sow_academic_year` (
   `created_by` int unsigned NOT NULL DEFAULT '0',
   `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` int unsigned NOT NULL DEFAULT '0',
+  `published` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`year`, `institute_id`)
 );
 
@@ -28,6 +29,7 @@ CREATE TABLE `sow_academic_year_period` (
   `created_by` int unsigned NOT NULL DEFAULT '0',
   `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` int unsigned NOT NULL DEFAULT '0',
+  `published` int NOT NULL DEFAULT '1'
   PRIMARY KEY (`academic_year`, `time`, `institute_id`)
 );
 
@@ -37,6 +39,14 @@ ADD CONSTRAINT `fk_sow_academic_year_period__has__academic_year`
   REFERENCES `sow_academic_year` (`institute_id`, `year`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+
+
+ALTER TABLE `sow_academic_year_period`
+ADD COLUMN `published` int NOT NULL DEFAULT '1';
+
+ALTER TABLE `sow_academic_year`
+ADD COLUMN `published` int NOT NULL DEFAULT '1';
 
 SET @inst = 3;
 SET @yr = 2021;

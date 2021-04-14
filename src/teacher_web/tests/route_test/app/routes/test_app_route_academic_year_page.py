@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.academic_years.views import edit, index
+from app.academic_years.views import edit, index, change
 
 # Create your tests here.
 class test_app_route_institute_page(TestCase):
@@ -28,11 +28,22 @@ class test_app_route_institute_page(TestCase):
 
 
     def test__academic_years_edit__resolves_to_edit(self):
-        url = resolve("/institute/12711761277611/academic-years/2020/edit")
+        url = resolve("/institute/12711761277611/academic-years/2021/edit")
         self.assertEqual("academic-year.edit", url.url_name)
         self.assertEqual(url.func, edit)
 
 
     def test__academic_years_edit__resolves_to_edit__reverse(self):
-        url = reverse("academic-year.edit", args=[12711761277611, 2019])
-        self.assertEqual("/institute/12711761277611/academic-years/2019/edit", url)
+        url = reverse("academic-year.edit", args=[12711761277611, 2021])
+        self.assertEqual("/institute/12711761277611/academic-years/2021/edit", url)
+
+        
+    def test_change_academic_year__url_resolves_to_change_academic_year(self):
+        url = resolve('/institute/12711761277611/academic-years/change')
+        self.assertEqual("default.academic-year", url.url_name)
+        self.assertEquals(url.func, change)
+
+    
+    def test_change_academic_year_url_resolves_to_change_academic_year__reverse(self):
+        url = reverse("default.academic-year", args=[12711761277611])
+        self.assertEqual("/institute/12711761277611/academic-years/change", url)

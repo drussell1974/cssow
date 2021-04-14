@@ -26,7 +26,7 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        with patch.object(Model, "get_model", return_value=Model("2020-09-04T00:00", "2021-07-18T00:00", True)):
+        with patch.object(Model, "get_model", return_value=Model(2020, "2020-09-04", "2021-07-18", True)):
         
             # act
 
@@ -40,7 +40,7 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual(2020, test_context.model.id)
             self.assertEqual(datetime(2020, 9, 4, 0, 0), test_context.model.start_date)
             self.assertEqual(datetime(2021, 7, 18, 0, 0), test_context.model.end_date)
-            # TODO: #447 reinstate
+            # TODO: #458 reinstate
             #self.assertTrue(test_context.model.is_valid)
             self.assertEqual({}, test_context.model.validation_errors) 
 
@@ -52,15 +52,15 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_request = Mock()
         mock_request.method = "POST"
         mock_request.POST = {
-                    "start_date":"2020-09-04T00:00",
-                    "end_date": "2021-07-18T00:00",
+                    "start_date":"2020-09-04",
+                    "end_date": "2021-07-18",
                 }
 
         mock_db = MagicMock()
         mock_db.cursor = MagicMock()
 
-        on_save__data_to_return = Model("2020-09-04T00:00", "2021-07-18T00:00", True)
-        with patch.object(Model, "get_model", return_value=Model("2020-09-01T00:00", "2021-07-15T00:00", False)):
+        on_save__data_to_return = Model(2020, "2020-09-04", "2021-07-18", True)
+        with patch.object(Model, "get_model", return_value=Model(2020, "2020-09-01", "2021-07-15", False)):
             with patch.object(Model, "save", return_value=on_save__data_to_return):
 
                 # act
@@ -79,7 +79,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual(2020, test_context.model.id)
                 self.assertEqual(datetime(2020, 9, 4, 0, 0), test_context.model.start_date)
                 self.assertEqual(datetime(2021, 7, 18, 0, 0), test_context.model.end_date)
-                # TODO: #447 reinstate
+                # TODO: #458 reinstate
                 #self.assertTrue(test_context.model.is_valid)
                 self.assertEqual({}, test_context.model.validation_errors) 
 
@@ -91,11 +91,11 @@ class test_viewmodel_EditViewModel(TestCase):
         mock_request = Mock()
         mock_request.method = "POST"
         mock_request.POST = {
-                    "start_date": "2020-09-01T00:00",
-                    "end_date": "2100-07-15T00:00", # invalid date
+                    "start_date": "2020-09-01",
+                    "end_date": "2100-07-15", # invalid date
                 }
 
-        with patch.object(Model, "get_model", return_value=Model("2020-09-01T00:00", "2021-07-15T00:00", False)):
+        with patch.object(Model, "get_model", return_value=Model(2020, "2020-09-01", "2021-07-15", False)):
             with patch.object(Model, "save", return_value=None):
                     
                 # act

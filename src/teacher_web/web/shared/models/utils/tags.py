@@ -28,7 +28,7 @@ def display_shortdate(value):
     """ given ISOFORMAT (see settings.ISOFORMAT) """
     # convert to date and back to display_date using date_to_string
     
-    return date_to_string(datetime.strptime(value, settings.ISOFORMAT), show_long=False)
+    return date_to_string(datetime.strptime(value, settings.ISOFORMAT_DATE), show_long=False)
 
 
 @register.filter(name="format_time")
@@ -38,3 +38,13 @@ def format_time(value):
     # convert to time ms and back to short time
     
     return datetime.strptime(value, settings.ISOFORMAT_TIME_MS).strftime(settings.ISOFORMAT_TIME)
+
+
+@register.filter(name="format_date")
+@stringfilter
+def format_date(value):
+    """ given ISOFORMAT_DATE (see settings.ISOFORMAT_DATE) convert to date, given settings.ISOFORMAT_DATE """
+    # convert to iso date and back to iso date
+    
+    return datetime.strptime(value, settings.ISOFORMAT).strftime(settings.ISOFORMAT_DATE)
+

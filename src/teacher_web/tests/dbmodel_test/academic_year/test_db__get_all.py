@@ -49,7 +49,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'academic_year__get_all'
+                'academic_year__get_all$2'
                 , (mock_auth_user.institute_id, mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -59,10 +59,11 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
     def test__should_call__select__single_items(self, mock_auth_user):
         # arrange
-
+    
         #mock_ctx = fake_ctx_model()
-        
-        expected_result = [("2021-09-01T00:00","2022-07-18T00:00")]
+
+        # NOTE: must be datetime as fetched from database
+        expected_result = [(2021, datetime(2021, 9, 1), datetime(2022, 7, 18))]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -73,6 +74,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
             
             # assert
 
+            # TODO: should call academic_year__get_all, so mock academic_year_period__get_all
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'academic_year_period__get_all'
                 , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id)
@@ -81,18 +83,18 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("2021-09-01T00:00", rows[0].start)
-            self.assertEqual("2022-07-18T00:00", rows[0].end)
+            self.assertEqual("2021-09-01", rows[0].start)
+            self.assertEqual("2022-07-18", rows[0].end)
             
 
     def test__should_call__select__multiple_items(self, mock_auth_user):
         # arrange
 
-        #mock_ctx = fake_ctx_model()
+        # NOTE: must be datetime as fetched from database
         expected_result = [
-            ("2019-09-01T00:00","2020-07-02T00:00"),
-            ("2020-09-05T00:00","2021-07-13T00:00"),   
-            ("2021-09-03T00:00","2022-07-10T00:00"),
+            (2019, datetime(2019, 9, 1), datetime(2020, 7, 2)),
+            (2020, datetime(2020, 9, 5), datetime(2021, 7, 13)),   
+            (2021, datetime(2021, 9, 3), datetime(2022, 7, 10)),
         ]
         
         #expected_result = [("2021-09-01T00:00","2022-07-18T00:00")]
@@ -103,6 +105,8 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
             
             # assert
 
+            # TODO: should call academic_year__get_all, so mock academic_year_period__get_all
+
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'academic_year_period__get_all'
                 , (mock_auth_user.institute_id, mock_auth_user.selected_year, mock_auth_user.auth_user_id,)
@@ -111,7 +115,7 @@ class test_AcademicYearPeriodDataAccess__get_all(TestCase):
 
             
             self.assertEqual(3, len(rows))
-            self.assertEqual("2019-09-01T00:00", rows[0].start)
-            self.assertEqual("2020-07-02T00:00", rows[0].end)
-            self.assertEqual("2021-09-03T00:00", rows[2].start)
-            self.assertEqual("2022-07-10T00:00", rows[2].end)
+            self.assertEqual("2019-09-01", rows[0].start)
+            self.assertEqual("2020-07-02", rows[0].end)
+            self.assertEqual("2021-09-03", rows[2].start)
+            self.assertEqual("2022-07-10", rows[2].end)

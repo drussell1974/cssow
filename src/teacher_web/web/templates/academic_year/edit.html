@@ -1,0 +1,67 @@
+{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+
+
+{% block breadcrumb %}
+<section class="widget widget-breadcrumb widget-breadcrumb--schemeofwork-edit">
+    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+        <div class="container">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'institute.index' %}">{{_('institute')}}</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</section>
+{% endblock %}
+
+
+{% block maincontent %}
+    {% load display_date %}
+
+<h2 class="group-heading">{{_('Academic year')}} {{content.data.academic_year.id}}</h2>
+<hr>
+<article class="widget widget-form widget-schemeofwork-form">
+    <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'academic-year.edit' content.ctx.institute.id content.data.academic_year.id %}">
+        {% csrf_token %}
+        
+        <!-- show error_message -->
+        {% include '_partials/form.viewmodel.alert_message.html' %}
+        <!-- show error_message END -->
+        
+        <!-- Start date START -->
+        <div class="control-group">
+            <div class="form-group controls row">
+                <label class="col-sm-2 col-form-label" >{{_("Dates")}}</label>
+                <div class="col-sm-2">                
+                    <input type="number" name="id" class="form-control" id="ctl-year"
+                          min="2000" max="2040" value='{{content.data.academic_year.id}}' {% if content.data.academic_year.is_from_db %}readonly{%endif%} >
+                    <div class="help-block text-danger invalid-feedback"></div>
+                </div>
+                <div class="col-sm-4">                
+                    <input type="date" name="start_date" class="form-control" id="ctl-start_date"
+                        min="2015-01-01" max="2040-12-31" value='{{content.data.academic_year.start}}'>
+                    <div class="help-block text-danger invalid-feedback"></div>
+                </div>
+                <div class="col-sm-4">                
+                    <input type="date" name="end_date" class="form-control" id="ctl-end_date"
+                        min="2015-01-01" max="2040-12-31" value='{{content.data.academic_year.end}}'>
+                    <div class="help-block text-danger invalid-feedback"></div>
+                </div>
+            </div>  
+        </div>
+        <!-- Start/End date END -->
+
+        <br>
+        <div id="success"></div>
+        
+        <div class="form-group stackable-group stackable-group-sm">
+            <!-- #TODO: #231: use form.buttons.validition partial -->
+            {% include '_partials/form.buttons.validation.html' %}
+        </div>
+        <input type="hidden" name="next" value="{% url 'academic-year.index' content.ctx.institute.id %}">
+        <input type="hidden" name="is_from_db" value="{{content.data.academic_year.is_from_db}}" >
+    </form>
+</article>
+{% endblock %}
+
