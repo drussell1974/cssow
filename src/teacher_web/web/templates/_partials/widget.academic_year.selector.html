@@ -13,10 +13,10 @@
             <!-- Academic Year END -->
         </div>
     </div>
-{% elif content.ctx.institute_id %}
+{% elif content.ctx.institute.id %}
     <div class="col-lg-12 col-md-14">
     <div class="alert alert-danger" role="alert">
-        {{_('Using a default academic year.')}} {% if request.user.is_authenticated  %}{{_(' Enter details for this academic year now.')}} <a href="{% url 'academic-year.edit' content.ctx.institute_id %}" role="button" class="badge badge-secondary">{{_('click here')}}</a>{%endif%}
+        {{_('Using a default academic year.')}} {% if request.user.is_authenticated  %}{{_(' Enter details for this academic year now.')}} <a href="{% url 'academic-year.index' content.ctx.institute.id %}" role="button" class="badge badge-secondary">{{_('click here')}}</a>{%endif%}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>

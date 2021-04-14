@@ -8,7 +8,7 @@ class uitest_institute_schedule(UITestCase):
     def setUp(self):
         # set up
         self.do_log_in(self.root_uri + f"/institute/{self.test_institute_id}/schedule")
-        self.wait()
+        self.wait(s=4)
 
 
     def tearDown(self):

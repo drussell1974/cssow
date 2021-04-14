@@ -7,7 +7,10 @@
         <div class="container">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'institute.index' %}">{{_('institute')}}</a>
+                    <a class="nav-link" id="btn-bc-institute" href="{% url 'institute.index' %}">{{_('Institute')}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="btn-bc-academic_year" href="{% url 'academic-year.index' content.ctx.institute_id %}">{{_('Academic Years')}}</a>
                 </li>
             </ul>
         </div>
@@ -21,8 +24,8 @@
 
 <h2 class="group-heading">{{_('Academic year')}} {{content.data.academic_year.id}}</h2>
 <hr>
-<article class="widget widget-form widget-schemeofwork-form">
-    <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'academic-year.edit' content.ctx.institute.id content.data.academic_year.id %}">
+<article class="widget widget-form widget-academic-form">
+    <form name="edit-academic-year" id="form" class="needs-validation" method="post" action="{% url 'academic-year.edit' content.ctx.institute.id content.data.academic_year.id %}">
         {% csrf_token %}
         
         <!-- show error_message -->

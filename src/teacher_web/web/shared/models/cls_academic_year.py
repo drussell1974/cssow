@@ -104,7 +104,7 @@ class AcademicYearModel(BaseModel):
         for row in rows:
             # check current year
             model = AcademicYearModel(row[0], row[1], row[2], is_from_db=True)
-
+            model.institute_id = institute_id
             model.periods = AcademicYearPeriodModel.get_all(db, institute_id, auth_ctx=auth_ctx)
 
             results.append(model)

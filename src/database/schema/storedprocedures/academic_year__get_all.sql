@@ -9,7 +9,8 @@ BEGIN
     SELECT 
 		yr.year,
         yr.start_date,
-        yr.end_date
+        yr.end_date,
+        yr.created_by
     FROM 
         sow_academic_year as yr
     WHERE 

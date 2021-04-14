@@ -24,10 +24,17 @@ class AcademicYearIndexViewModel(DefaultIndexViewModel):
             if self.institute is None or self.institute.is_from_db == False:
                 self.on_not_found(self.institute, self.institute_id)
 
+        self.academic_years = Model.get_all(db, institute_id, auth_ctx=auth_user)
 
+        
     def view(self, main_heading, sub_heading):
-        view = super().view(self.institute.name, sub_heading)
-        return view
+        """ return View """
+
+        data = {
+            "academic_years": self.academic_years 
+        }
+
+        return ViewModel("", self.institute.name, "Academic Years", ctx=self.auth_user, data=data)
 
 
 class AcademicYearEditViewModel(BaseViewModel):
@@ -42,27 +49,31 @@ class AcademicYearEditViewModel(BaseViewModel):
             self.model = Model.get_model(self.db, 
                 institute_id=self.auth_user.institute_id, 
                 for_academic_year=year,
-                auth_ctx=self.auth_user)
-        else:
+                auth_ctx=self.auth_user)    
+
+            if self.model is None:
+                self.on_not_found(self.model, year)
+
+        elif len(self.auth_user.academic_years) > 0:
             # must be new, so get the last academic year (which is the id) and increment by 1
             self.year = self.auth_user.academic_years[len(self.auth_user.academic_years)-1].id + 1
             self.model = Model.new(start_year=self.year, ctx=auth_user)
-        
-        #if self.request.method == "GET":
-        ## GET request from client ##
-        
-        if self.model is None:
-            self.on_not_found(self.model, self.year)
+        else:
+            self.model = Model.default(ctx=self.auth_user)
+            #self.model.is_from_db = False
 
 
     def execute(self):
         if self.request.method == "POST":
+            if self.model is None:
+                # must be new and there are no other academic years
+                self.model = Model.default(ctx=self.auth_user)
             ## POST back from client ##
             # create instance of model from request
             self.model.id = try_int(self.request.POST.get("id", self.model.id))
             self.model.start_date = self.request.POST.get("start_date", 0)
             self.model.end_date = self.request.POST.get("end_date", 0)
-            self.model.is_from_db = bool(self.request.POST.get("is_from_db"))
+            self.model.is_from_db = False if self.request.POST.get("is_from_db", "False") == "False" else True
             self.model.auth_ctx = self.auth_user
             
             try:
@@ -93,4 +104,4 @@ class AcademicYearEditViewModel(BaseViewModel):
         
         # build alert message to be displayed
         
-        return ViewModel("", self.model.display_name, f"Edit {self.model.display_name}" if len(self.model.display_name) != 0 else "Create academic year", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel("", self.auth_user.institute.name, f"Edit academic year {self.model.display_name}" if self.model.is_from_db else f"New academic year {self.model.display_name}", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)

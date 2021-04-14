@@ -29,14 +29,12 @@ def index(request, institute_id, auth_ctx):
 
     index_view =  AcademicYearIndexViewModel(db=db, institute_id=institute_id, top=0, auth_user=auth_ctx)
     
-    return render(request, "default/index.html", index_view.view(index_view.institute.name, "Academic Years").content)
+    return render(request, "academic_year/index.html", index_view.view(index_view.institute.name, "Academic Years").content)
 
 
 #@permission_required("cssow.change_sow_academic_year", login_url="/accounts/login/")
 @min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def edit(request, institute_id, auth_ctx, year=0):
-
-    #367 get auth_ctx from min_permission_required decorator
 
     save_view = AcademicYearEditViewModel(db=db, request=request, year=year, auth_user=auth_ctx)
     
