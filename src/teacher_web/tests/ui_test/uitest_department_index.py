@@ -63,10 +63,10 @@ class uitest_department_index(UITestCase):
 
     def test_page__post_preview__item__navigate_to_schemesofwork(self):
         # setup
-        self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_department_id)).click()
+        self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_institute_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Mr Russell', 'Departments')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments', wait=4)
                 
 
     def not_test_page__submenu__navigate_to_department_new(self):
