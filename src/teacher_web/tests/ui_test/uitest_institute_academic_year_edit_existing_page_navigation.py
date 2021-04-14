@@ -36,10 +36,10 @@ class uitest_institute_academic_year_edit_existing_page_navigation(UITestCase):
     def test_page__breadcrumb__navigate_to_academic_year_index(self):
         #test
         elem = self.test_context.find_element_by_id('btn-bc-academic_year')
-        self.assertEqual("Academic Years", elem.text)
+        self.assertEqual("Academic years", elem.text)
 
         # test
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Academic Years')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')

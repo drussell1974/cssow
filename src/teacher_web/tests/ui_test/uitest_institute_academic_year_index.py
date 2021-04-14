@@ -24,7 +24,7 @@ class uitest_institute_academic_year_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic Years')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')
         self.assertFooterContextText("Finibus Bonorum et Malorum")
 
 
