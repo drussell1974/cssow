@@ -1,28 +1,21 @@
 {% if content.ctx.academic_years and content.ctx.institute_id  %}
-    <div class="col-lg-4 col-md-4">
-        <div class="card-body">
-            <!-- Academic Year START -->
-            <a class="text-muted small" title="click to view all academic years" href="{% url 'academic-year.index' content.ctx.institute_id %}">
-                {{_("Academic year")}} <div class="small"></div>
-              </a>
-            <form action="{% url 'default.academic-year' content.ctx.institute_id %}" method="POST">
-            {% csrf_token %}
-            <select onchange="this.form.submit()" class="form-control" id="ctl-academic_year" name="academic_year">
-                {% for ac_year in content.ctx.academic_years %}
-                    <option value="{{ac_year.id}}" {%if request.session.academic_year__selected_id == ac_year.id %}selected{%endif%}>{{ ac_year.display }}</option>
-                {% endfor %}
-            </select>
-            </form>
-            <!-- Academic Year END -->
-        </div>
+    <div class="ml-4 mr-4">
+        <!-- Academic Year START -->
+        <form action="{% url 'default.academic-year' content.ctx.institute_id %}" method="POST">
+        {% csrf_token %}
+        <select onchange="this.form.submit()" class="form-control text-light bg-dark" id="ctl-academic_year" name="academic_year">
+            {% for ac_year in content.ctx.academic_years %}
+                <option value="{{ac_year.id}}" {%if request.session.academic_year__selected_id == ac_year.id %}selected{%endif%}>{{ ac_year.display }}</option>
+            {% endfor %}
+        </select>
+        </form>
+        <!-- Academic Year END -->
     </div>
 {% elif content.ctx.institute.id %}
-    <div class="col-lg-12 col-md-14">
-        <div class="alert alert-danger" role="alert">
-            {{_('Using a default academic year.')}} {% if request.user.is_authenticated  %}{{_(' Enter details for this academic year now.')}} <a href="{% url 'academic-year.index' content.ctx.institute.id %}" role="button" class="badge badge-secondary">{{_('click here')}}</a>{%endif%}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    <div class="alert alert-danger" role="alert">
+        {{_('Using a default academic year.')}} {% if request.user.is_authenticated  %}{{_(' Enter details for this academic year now.')}} <a href="{% url 'academic-year.index' content.ctx.institute.id %}" role="button" class="badge badge-secondary">{{_('click here')}}</a>{%endif%}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 {% endif %}
