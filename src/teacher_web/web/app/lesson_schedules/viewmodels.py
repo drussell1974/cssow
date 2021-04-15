@@ -99,7 +99,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
         if schedule_id > 0:
             self.model = LessonScheduleModel.get_model(db, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=schedule_id, auth_user=auth_ctx)
         else:
-            self.model = LessonScheduleModel.new(lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx, fn_generate_class_code=ClassCodeGenerator.generate_class_code)
+            self.model = LessonScheduleModel.new(lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, start_date=start_date, auth_ctx=auth_ctx, fn_generate_class_code=ClassCodeGenerator.generate_class_code)
             self.model.created_by_id = auth_ctx.auth_user_id
         
         

@@ -36,7 +36,9 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     ''' creates url from lesson index e.g. /institute/2/department/5/schemesofwork/11/lessons#220 '''
     action_url =  f"{reverse('lesson_schedule.index', args=[institute_id, department_id, scheme_of_work_id, lesson_id])}#{schedule_id}"
     
-    start_date = request.GET.get("start_date", None)
+    start_date = request.GET.get('start_date', None)
+    if start_date is not None:
+        start_date = f"{start_date}T00:00" # TODO: get default time from settings
 
     modelview = LessonScheduleEditViewModel(db=db, request=request, action_url=action_url, start_date=start_date, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
     
