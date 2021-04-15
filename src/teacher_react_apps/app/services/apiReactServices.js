@@ -64,7 +64,7 @@ const getSchedule = (reactComponent, institute_id, department_id, schemeofwork_i
                     extendedProps: {
                         lesson_details: `time: ${sch.start_date_ui_time}, class: ${sch.class_name}, title: '${sch.title}', code: ${sch.class_code}`
                       },
-                    url: sch.whiteboard_url })
+                    url: sch.edit_url })
             })
 
             reactComponent.setState({
