@@ -80,7 +80,7 @@ class LessonScheduleIndexViewModel(BaseViewModel):
 
 class LessonScheduleEditViewModel(BaseViewModel):
 
-    def __init__(self, db, request, schedule_id, lesson_id, scheme_of_work_id, auth_ctx, action_url = ""):
+    def __init__(self, db, request, schedule_id, lesson_id, scheme_of_work_id, auth_ctx, action_url = "", start_date = None):
         self.db = db
         self.request = request
         self.schedule_id = schedule_id
@@ -125,7 +125,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
                 
                 #432 set reminder n minutes before start_date (string to date)
                 offset_min = self.request.POST.get('reminder_minutes_before', 15)
-                reminder = datetime.strptime(self.model.start_date, settings.ISOFORMAT) - timedelta(minutes=try_int(offset_min))
+                reminder = self.model.start_date - timedelta(minutes=try_int(offset_min))
                 # back to string
                 reminder = reminder.strftime(settings.ISOFORMAT)
 

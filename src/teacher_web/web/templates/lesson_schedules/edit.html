@@ -11,6 +11,9 @@
                     <li class="nav-item">
                       <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
                     </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="lnk-bc-schedule" href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Schedule")}}</a>
+                    </li>
                 </ul>
         </div>
     </nav>

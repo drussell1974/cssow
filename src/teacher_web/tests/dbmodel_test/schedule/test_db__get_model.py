@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.core.db_helper import ExecHelper
@@ -49,7 +50,7 @@ class test_db__get_model(TestCase):
 
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
-        expected_result = [("Maecenas finibus tellus", "7x", "ABCDEF", "", 6, 11, 1, 99)]
+        expected_result = [("Maecenas finibus tellus", "7x", "ABCDEF", datetime(2020, 4, 15, 0, 0), 6, 11, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act

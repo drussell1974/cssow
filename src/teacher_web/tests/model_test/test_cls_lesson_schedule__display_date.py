@@ -17,7 +17,7 @@ class test_cls_lesson_schedule__display_date(TestCase):
         self.test.start_date = None
 
         # assert
-        self.assertEqual("", self.test.display_date)
+        self.assertEqual("Friday, 9th April 2021", self.test.display_date)
 
 
     def test_display_date__when_today(self):
@@ -61,7 +61,7 @@ class test_cls_lesson_schedule__input_date(TestCase):
         self.test.start_date = None
 
         # assert
-        self.assertEqual("", self.test.input_date)
+        self.assertEqual("2021-04-09T10:00", self.test.input_date)
 
 
     def test_input_date__when_past(self):

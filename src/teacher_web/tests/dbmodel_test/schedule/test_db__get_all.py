@@ -56,7 +56,7 @@ class test_db__get_all(TestCase):
 
     def test__should_call_select_return_single_item(self, mock_ctx):
         # arrange
-        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "7x", "ABCDEF", "2021-04-03 11:30:34", 6, 11, 5, 2, 1, 99)]
+        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "7x", "ABCDEF", datetime(2020, 4, 3, 11, 30), 6, 11, 5, 2, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -80,15 +80,18 @@ class test_db__get_all(TestCase):
             self.assertEqual("Aenean egestas erat ac turpis aliquet iaculis", actual_results[0].title)
             self.assertEqual("ABCDEF", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
-            self.assertEqual("2021-04-03 11:30:34", actual_results[0].start_date)
+            self.assertEqual(datetime(2020, 4, 3, 11, 30), actual_results[0].start_date)
+            self.assertEqual("2020-04-03T11:30", actual_results[0].start)
+            self.assertEqual("2020-04-03", actual_results[0].start_date_ui_date)
+            self.assertEqual("11:30", actual_results[0].start_date_ui_time)
 
 
     def test__should_call_select_return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [
-            (569, "Proin sit amet elementum lectus", "7x", "ABCDEX", "2021-04-03 09:00:00", 6, 11, 5, 2, 1, 99),
-            (570, "Maecenas finibus tellus", "7y", "ABCDEY", "2021-04-04 10:00:00", 6, 11, 1, 7, 2, 99),
-            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7z", "ABCDEZ", "2021-04-04 13:30:04", 6, 11, 7, 2, 1, 99)
+            (569, "Proin sit amet elementum lectus", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 00), 6, 11, 5, 2, 1, 99),
+            (570, "Maecenas finibus tellus", "7y", "ABCDEY", datetime(2020, 4, 4, 0, 0), 6, 11, 1, 7, 2, 99),
+            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7z", "ABCDEZ", datetime(2020, 4, 4, 13, 30, 4), 6, 11, 7, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -112,23 +115,28 @@ class test_db__get_all(TestCase):
             self.assertEqual("Proin sit amet elementum lectus", actual_results[0].title)
             self.assertEqual("ABCDEX", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
-            self.assertEqual("2021-04-03 09:00:00", actual_results[0].start_date)
+            self.assertEqual(datetime(2021, 4, 3, 9, 0), actual_results[0].start_date)
+            self.assertEqual("2021-04-03T09:00", actual_results[0].start)
+            self.assertEqual("2021-04-03", actual_results[0].start_date_ui_date)
+            self.assertEqual("09:00", actual_results[0].start_date_ui_time)
             
 
             self.assertEqual(571, actual_results[2].id)
             self.assertEqual("Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", actual_results[2].title)
             self.assertEqual("ABCDEZ", actual_results[2].class_code)
             self.assertEqual("7z", actual_results[2].class_name)
-            self.assertEqual("2021-04-04 13:30:04", actual_results[2].start_date)
-
+            self.assertEqual(datetime(2020, 4, 4, 13, 30, 4), actual_results[2].start_date)
+            self.assertEqual("2020-04-04T13:30", actual_results[2].start)
+            self.assertEqual("2020-04-04", actual_results[2].start_date_ui_date)
+            self.assertEqual("13:30", actual_results[2].start_date_ui_time)
 
 
     def test__should_call_select_return_current_items_only(self, mock_ctx):
         # arrange
         expected_result = [
-            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7x", "ABCDEX", "2121-04-03 09:00:00", 6, 11, 5, 2, 1, 99),
-            (765570, "Proin sit amet elementum lectus", "7y", "ABCDEY", "2121-04-04 10:00:00", 6, 11, 5, 2, 1, 99),
-            (765571, "Maecenas finibus tellus", "7z", "ABCDEZ", "2121-04-04 13:30:04", 6, 11, 5, 2, 1, 99)
+            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 0), 6, 11, 5, 2, 1, 99),
+            (765570, "Proin sit amet elementum lectus", "7y", "ABCDEY", datetime(2021, 4, 4, 10, 0), 6, 11, 5, 2, 1, 99),
+            (765571, "Maecenas finibus tellus", "7z", "ABCDEZ", datetime(2021, 4, 4, 13, 30, 4), 6, 11, 5, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -150,11 +158,17 @@ class test_db__get_all(TestCase):
             self.assertEqual("Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", actual_results[0].title)
             self.assertEqual("ABCDEX", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
-            self.assertEqual("2121-04-03 09:00:00", actual_results[0].start_date)
+            self.assertEqual(datetime(2021, 4, 3, 9, 0), actual_results[0].start_date)
+            self.assertEqual("2021-04-03T09:00", actual_results[0].start)
+            self.assertEqual("2021-04-03", actual_results[0].start_date_ui_date)
+            self.assertEqual("09:00", actual_results[0].start_date_ui_time)
             
 
             self.assertEqual(765571, actual_results[2].id)
             self.assertEqual("ABCDEZ", actual_results[2].class_code)
             self.assertEqual("7z", actual_results[2].class_name)
-            self.assertEqual("2121-04-04 13:30:04", actual_results[2].start_date)
-
+            self.assertEqual(datetime(2021, 4, 4, 13, 30, 4), actual_results[2].start_date)
+            self.assertEqual("2021-04-04T13:30", actual_results[2].start)
+            self.assertEqual("2021-04-04", actual_results[2].start_date_ui_date)
+            self.assertEqual("13:30", actual_results[2].start_date_ui_time)
+            
