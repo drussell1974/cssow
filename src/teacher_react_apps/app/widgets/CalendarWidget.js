@@ -29,7 +29,8 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
     };
 
     const fnEventContent = (arg) => {
-        return { html: `<button class="badge badge-info" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+        // NOTE: #447 - add col-12 to prevent overlapping
+        return { html: `<button class="badge badge-info col-12" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
     }
 
     if (events === undefined) {
@@ -49,6 +50,7 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
                 </div>
                 <FullCalendar
                     plugins={[ dayGridPlugin ]}
+                    // TODO: make the following options available 'dayGridMonth', 'dayGridWeek', 'timeGridDay', 'listWeek'
                     initialView="dayGridMonth"
                     weekends={showWeekendsIsChecked}
                     events={events}
