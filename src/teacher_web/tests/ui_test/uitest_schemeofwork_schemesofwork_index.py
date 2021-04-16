@@ -84,6 +84,14 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
         
 
+    def test_page__post_preview__item__navigate_to_schedule(self):
+        # setup
+        self.test_context.find_element_by_id('lnk-schemeofwork-schedule--{}'.format(self.test_scheme_of_work_id)).click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheduled lessons')
+        
+
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
         # setup
         self.try_log_in(self.root_uri + "/schemesofwork")

@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:scheme_of_work_id>', views.index, name='schemesofwork.view'),    
     path('<int:scheme_of_work_id>/edit', views.edit, name='schemesofwork.edit'),
     path('<int:scheme_of_work_id>/publish', views.index, name='schemesofwork.publish_item'),
+    path('<int:scheme_of_work_id>/schedules', views.schedule, name='schemesofwork.schedule'),
     #path('<int:scheme_of_work_id>/delete', views.index, name='schemesofwork.delete'),
     path('<int:scheme_of_work_id>/lessons/', include('app.lessons.urls')), #329 move to schemeofwork route
     path('<int:scheme_of_work_id>/keywords/', include('app.keywords.urls')),

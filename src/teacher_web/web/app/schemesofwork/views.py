@@ -8,10 +8,7 @@ from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK
 from shared.models.decorators.permissions import min_permission_required
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel
-from app.schemesofwork.viewmodels import SchemeOfWorkDeleteUnpublishedViewModel
-
+from app.schemesofwork.viewmodels import SchemeOfWorkEditViewModel, SchemeOfWorkIndexViewModel, SchemeOfWorkDeleteUnpublishedViewModel, SchemeOfWorkScheduleViewModel
 # Create your views here.
 
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
@@ -59,3 +56,14 @@ def delete_unpublished(request, institute_id, department_id, auth_ctx):
     SchemeOfWorkDeleteUnpublishedViewModel(db=db, auth_user=auth_ctx)
 
     return HttpResponseRedirect(reverse("schemesofwork.index", args=[institute_id, department_id]))
+
+
+@permission_required("cssow.view_schedule", login_url="/accounts/login/")
+@min_permission_required(DEPARTMENT.HEAD, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
+def schedule(request, institute_id, department_id, scheme_of_work_id, auth_ctx):    
+    
+    schedule_view =  SchemeOfWorkScheduleViewModel(db=db, request=request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
+    
+    sub_heading = "Scheduled lessons"
+
+    return render(request, "schemesofwork/schedule.html", schedule_view.view(schedule_view.scheme_of_work.name, sub_heading).content)

@@ -1,4 +1,4 @@
-<!-- Schedule Filter -->
+<!-- Schedule Filter START -->
 <form method="POST">
     {% csrf_token %}
     <div class="form-row align-items-center">
@@ -6,7 +6,7 @@
             <label class="mr-sm-2">{{_('Show list of events for the next')}}</label>
         </div>
         <div class="col-auto my-1">
-            <select onchange="this.form.submit()" class="custom-select mr-sm-2" name="show_next_days"  id="teacher_react_apps__schedule_no_days" >
+            <select onchange="this.form.submit()" class="custom-select mr-sm-2" name="show_next_days" id="teacher_react_apps__schedule_no_days" >
             {% for key, value in content.data.days_to_show__options.items %}
                 <option value="{{key}}" {%if key == content.data.show_next_days %}selected{% endif %}>{{value}}</option>
             {% endfor %}
@@ -14,3 +14,4 @@
         </div>
     </div>
 </form>
+<!-- Schedule Filter END -->

@@ -1,0 +1,31 @@
+<!-- Schedule START -->
+
+{% if content.data.schedules|length == 0 %}
+<div class="alert alert-warning" role="alert">
+    <span class="large">{{_('There are no scheduled lessons for the next')}} {{ content.data.show_next_days }} {{_('day(s).')}}</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+  {% for row in content.data.schedules %}
+
+    <div class="card card-keyword {{ row.published_state }}">
+      <a name="{{ row.id }}"></a>
+      <div class="card-body">
+        <a class="edit float-right" href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.lesson_id row.id %}" target="_blank"><i class="fa fa-graduation-cap"> {{ row.class_code }}</i></a>
+        <h5 class="card-title">
+          <a href="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}" id="lnk-edit-lesson_schedule--{{row.id}}">
+            <i class="fa fa-calendar"> {{ row.display_date }}</i> <i class="fa fa-clock"> {{ row.start_date|date:"H:i"  }}</i> <i class="fa fa-users"> {{ row.class_name }}</i> 
+          </a>
+        </h5>
+        <span class="small">
+          <a class="btn-sm btn-danger float-right" role="button" href="{% url 'lesson_schedule.delete' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.lesson_id row.id %}?return={{request.url}}">{{_('Delete')}}</a>
+        </span>
+      </div>
+    </div>
+
+  {% endfor %}
+
+{% endif %}
+<!-- Schedule END -->

@@ -10,9 +10,9 @@ echo "running..."
 
 ### start test
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_academic_year_edit_create_new_page_navigation.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_index.py
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py

@@ -97,9 +97,6 @@
               <div class="col-lg-8 col-md-10 mx-auto">
                 {% block header %}
                     <div class="site-heading">
-                      <!-- Notifications START -->
-                      <div id="notification-app" class="pt-2"></div>
-                      <!-- Notifications END -->
                       <h1>{{ content.main_heading }}</h1>
                       <span class="subheading" id="main-subheading">{{ content.sub_heading }}</span>
                       <!-- academic year START-->
@@ -128,7 +125,12 @@
       </div>
       <!-- Breadcrumb START -->
       <div class="row">
-        <div class="col-lg-12 col-md-10 breadcrumb-custom">
+        <div class="col-lg-4 col-md-5">
+          <!-- Notifications START -->
+          <div id="notification-app" class="ml-4 pt-3"></div>
+          <!-- Notifications END -->
+        </div>
+        <div class="col-lg-8 col-md-5 breadcrumb-custom">
           {% block breadcrumb %}
           {% endblock %}
         </div>

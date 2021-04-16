@@ -6,6 +6,11 @@
       <div class="card-text widget-main">
         <ul class="navbar-nav flex-column fillspace">
           <li class="nav-item">
+            <a class="nav-link"  id="lnk-schemeofwork-schedule--{{srow.id}}" href="{% url 'schemesofwork.schedule' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
+              {{_("Schedule")}} <span class="small"><i class="far fa-calendar"></i></span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
               {{_("Lessons")}} <div class="small"></div>
             </a>
