@@ -20,6 +20,7 @@ class CalendarPage extends React.Component {
         this.handleShowAllEventsChange = this.handleShowAllEventsChange.bind(this);
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleShowWeekendChange = this.handleShowWeekendChange.bind(this);
+        this.handleAddScheduledLessonClick = this.handleAddScheduledLessonClick.bind(this);
     }   
 
     static getDerivedStateFromError(error) {
@@ -38,16 +39,11 @@ class CalendarPage extends React.Component {
 
       componentDidMount() {
         getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
-        // get schedule every 30 seconds
-        // setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
       }
 
     /** Event Handlers >>> **/
 
     handleDateClick(e) {
-        
-        // parameters must be supplied
-
         if (this.state.Params.institute_id > 0 && this.state.Params.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
             window.open(`/institute/${this.state.Params.institute_id}/department/${this.state.Params.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
         }
@@ -63,12 +59,15 @@ class CalendarPage extends React.Component {
     }
 
     handleShowWeekendChange(e) {
-        // NOTE: do not NOT e.preventDefault();, as it causes conflict with calendar
         this.state = {
             ShowWeekends: e.target.checked
         }
     }
-  
+
+    handleAddScheduledLessonClick(e) {
+        $('#scheduledLessonModal').modal('show');
+    }
+    
     /** <<< Event Handlers END **/
         
     render() {
@@ -82,6 +81,7 @@ class CalendarPage extends React.Component {
                     onDateClick={this.handleDateClick}
                     onShowAllEventsChange={this.handleShowAllEventsChange}
                     onShowWeekendChange={this.handleShowWeekendChange}
+                    onAddScheduledLessonClick={this.handleAddScheduledLessonClick}
                 />
             </React.Fragment>
         )

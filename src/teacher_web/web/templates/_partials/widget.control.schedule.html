@@ -28,4 +28,34 @@
   {% endfor %}
 
 {% endif %}
+
+
+{% if content.ctx.institute.id > 0 and content.ctx.department.id > 0 %}
+<!-- Modal -->
+<div class="modal fade" id="scheduledLessonModal" tabindex="-1" aria-labelledby="scheduledLessonModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="#url-to-save-scheduled_lesson" method="POST" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="scheduledLessonModalLabel">{{_("New Scheduled lesson")}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item"><!-- Input 1 --></li>
+            <li class="list-group-item"><!-- Input 2 --></li>
+            <li class="list-group-item"><!-- Input 3 --></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_('Save')}}</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
 <!-- Schedule END -->

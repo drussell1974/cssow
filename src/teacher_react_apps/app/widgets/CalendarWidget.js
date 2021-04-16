@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
-const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChange, onShowWeekendChange, showAllEvents=false, showWeekends=false}) => {
+const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChange, onShowWeekendChange, onAddScheduledLessonClick, showAllEvents=false, showWeekends=false}) => {
 
     const [ showAllIsChecked, setShowAllIsChecked ] = useState(showAllEvents);
     const [ showWeekendsIsChecked, setShowWeekendsIsChecked ] = useState(showWeekends);
@@ -28,9 +28,27 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
         onShowWeekendChange(e);
     };
 
+    const handleOnAddScheduledLessonClick = async e => {
+        onAddScheduledLessonClick(e);
+    };
+
     const fnEventContent = (arg) => {
         // NOTE: #447 - TODO to prevent overlapping, set badge-event with css width:100%, remove col-12
         return { html: `<button class="badge badge-info badge-event" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+    }
+    
+    const headerToolbar = {
+        // TODO: #view options // left: 'dayGridMonth,timeGridWeek,timeGridDay custom1',
+        left: 'add_scheduled_lesson',
+        center: 'title',
+        right: 'today,prev,next' // see customButtons
+    }
+
+    const customButtons = {
+        add_scheduled_lesson: {
+            text: 'Add Event',
+            click: handleOnAddScheduledLessonClick
+          }
     }
 
     if (events === undefined) {
@@ -41,7 +59,7 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
                 <div  id="event_filter--control">
                     <div className="form-check form-switch form-check-inline event_filter--all" >
                         <input className="form-check-input" type="checkbox" name="show_all" checked={showAllIsChecked} onChange={handleOnShowAllEventsChange} id="event_filter--all" />
-                        <label className="form-check-label" htmlFor="event_filter--all">show all events</label>
+                        <label className="form-check-label" htmlFor="event_filter--all">show all lessons</label>
                     </div>
                     <div className="form-check form-switch form-check-inline event_filter--weekend" >
                         <input className="form-check-input" type="checkbox" name="show_weekends" checked={showWeekendsIsChecked} onChange={handleOnChangeShowWeekend} id="event_filter--weekend" />
@@ -59,6 +77,8 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
                     eventContent={fnEventContent}
                     dateClick={handleOnDateClick}
                     eventClick={handleEventClick}
+                    headerToolbar={headerToolbar}  
+                    customButtons={customButtons}
                 />
             </React.Fragment>
         )
