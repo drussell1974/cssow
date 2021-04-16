@@ -42,7 +42,9 @@ class test_viewmodel_ScheduleViewModel(TestCase):
     def test_init_called_fetch__single_row(self, mock_ctx_model):
         
         # arrange
-        
+        mock_ctx_model.institute_id = 12767111276711
+        mock_ctx_model.department_id = 67
+
         mock_resolve_schedule_urls = MagicMock()
 
         data_to_return = [fake_lesson_schedule(id=56, auth_ctx=mock_ctx_model, fn_resolve_url=mock_resolve_schedule_urls)]
@@ -66,6 +68,8 @@ class test_viewmodel_ScheduleViewModel(TestCase):
     def test_init_called_fetch__multiple_rows(self, mock_ctx_model):
         
         # arrange
+        mock_ctx_model.institute_id = 12767111276711
+        mock_ctx_model.department_id = 67
 
         mock_resolve_schedule_urls = MagicMock()
         
