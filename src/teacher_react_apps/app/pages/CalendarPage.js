@@ -45,10 +45,13 @@ class CalendarPage extends React.Component {
     /** Event Handlers >>> **/
 
     handleDateClick(e) {
-        console.log(e);
-        // TODO: #358 add scheduled lesson
-        window.open(`/institute/${this.state.Params.institute_id}/department/${this.state.Params.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
-      }
+        
+        // parameters must be supplied
+
+        if (this.state.Params.institute_id > 0 && this.state.Params.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
+            window.open(`/institute/${this.state.Params.institute_id}/department/${this.state.Params.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
+        }
+    }
 
     handleShowAllEventsChange(e) {
         e.preventDefault();
