@@ -29,8 +29,8 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
     };
 
     const fnEventContent = (arg) => {
-        // NOTE: #447 - add col-12 to prevent overlapping
-        return { html: `<button class="badge badge-info col-12" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+        // NOTE: #447 - TODO to prevent overlapping, set badge-event with css width:100%, remove col-12
+        return { html: `<button class="badge badge-info badge-event" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
     }
 
     if (events === undefined) {
