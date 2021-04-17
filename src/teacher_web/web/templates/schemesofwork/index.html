@@ -40,7 +40,10 @@
         <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
             <h3 class="post-title">
               <!-- # TODO: #329 get context for institute_id and department_id -->
-              <a class="edit float-right" href="{% url 'schemesofwork.edit' content.ctx.institute_id content.ctx.department_id row.id %}?next={{ request.path }}">
+              <a class="edit float-right"  id="lnk-schemeofwork-schedule--{{row.id}}" href="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id row.id %}">
+                <i class="far fa-calendar"></i>
+              </a>
+              <a class="edit" href="{% url 'schemesofwork.edit' content.ctx.institute_id content.ctx.department_id row.id %}?next={{ request.path }}">
                 <i class="far fa-edit"></i>
               </a>
                 {{ row.name }}
@@ -49,15 +52,12 @@
               {{ row.key_stage_name }} {{ row.description }}
             </h4>
           <div class="card-body stackable-group-sm">
-            <!-- # TODO: #329 get context for institute_id and department_id -->
             <a id="lnk-schemeofwork-lessons--{{row.id}}" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id row.id %}" class="btn btn-outline-dark stackable">
               {{_("Lessons")}} <span class="badge badge-light">{{row.number_of_lessons}}</span>
             </a>
-            <!-- # TODO: #329 get context for institute_id and department_id -->
             <a id="lnk-schemeofwork-curriculum--{{row.id}}" href="{% url 'content.index' content.ctx.institute_id content.ctx.department_id row.id %}" class="btn btn-outline-dark stackable">
               {{_("Curriculum")}} <span class="badge badge-light"></span>
             </a>
-            <!-- # TODO: #329 get context for institute_id and department_id -->
             <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'keywords.index' content.ctx.institute_id content.ctx.department_id row.id %}" class="btn btn-outline-dark stackable">
               {{_("Keywords")}} <span class="badge badge-light">{{row.number_of_keywords}}</span>
             </a>

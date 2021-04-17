@@ -13,7 +13,7 @@ describe('CalendarWidget', () => {
     field, 
     input,
     //labelFor,
-    //element, 
+    element, 
     //elements, 
     change, 
     click;
@@ -45,6 +45,10 @@ describe('CalendarWidget', () => {
 
     }
 
+    let handleAddScheduledLessonClick = () => {
+        
+    }
+
     it('renders empty widget', () => {
         render(<CalendarWidget />);
 
@@ -60,6 +64,7 @@ describe('CalendarWidget', () => {
             onDateClick={handleDateClick}
             onShowAllEventsChange={handleShowAllEventsChange}
             onShowWeekendChange={handleShowWeekendChange}
+            onAddScheduledLessonClick={handleAddScheduledLessonClick}
         />);
         
         expect(
@@ -78,6 +83,7 @@ describe('CalendarWidget', () => {
                     onDateClick={handleDateClick} 
                     onShowAllEventsChange={handleShowAllEventsChange} 
                     onShowWeekendChange={handleShowWeekendChange}
+                    onAddScheduledLessonClick={handleAddScheduledLessonClick}
                 />);
             
                 expect(
@@ -86,7 +92,7 @@ describe('CalendarWidget', () => {
 
                 expect(
                     container.querySelector('#event_filter--control .event_filter--all label').textContent
-                ).toEqual('show all events');
+                ).toEqual('show all lessons');
             })
             
             describe('when filter changes', () => {
@@ -111,6 +117,7 @@ describe('CalendarWidget', () => {
                         onDateClick={handleDateClick}
                         onShowAllEventsChange={onShowAllEventsChangeSpy}
                         onShowWeekendChange={handleShowWeekendChange}
+                        onAddScheduledLessonClick={handleAddScheduledLessonClick}
                     />);
                     
                     // act
@@ -142,6 +149,7 @@ describe('CalendarWidget', () => {
                     onDateClick={handleDateClick}
                     onShowAllEventsChange={handleShowAllEventsChange}
                     onShowWeekendChange={handleShowWeekendChange}
+                    onAddScheduledLessonClick={handleAddScheduledLessonClick}
                 />);
             
                 expect(
@@ -175,6 +183,7 @@ describe('CalendarWidget', () => {
                         showWeekends={original_checked_state}
                         onDateClick={handleDateClick}
                         onShowAllEventsChange={handleShowAllEventsChange}
+                        onAddScheduledLessonClick={handleAddScheduledLessonClick}
                         onShowWeekendChange={onShowWeekendChangeSpy}
                     />);
                     
@@ -195,6 +204,74 @@ describe('CalendarWidget', () => {
                     ).toEqual(!original_checked_state); // should have changed the check state
                 })
             })
+        })
+    })
+
+    describe('render toolbar', () => {
+
+        const onAddScheduledLessonClickSpy = jest.fn();
+        beforeEach(() => {
+            ({render, container, element, click} = createContainer());
+        })
+    
+        it('when has schemeofwork_id notifies onClick', async () => {
+                    
+            // arrange
+
+            let ctx = {
+                "schemeofwork_id":11,
+            };
+            
+            render(<CalendarWidget 
+                events={events} 
+                ctx={ctx}
+                academicYear={fakeDataRange}
+                showAllEvents={false}
+                showWeekends={true}
+                onDateClick={handleDateClick}
+                onShowAllEventsChange={handleShowAllEventsChange}
+                onShowWeekendChange={handleShowWeekendChange}
+                onAddScheduledLessonClick={onAddScheduledLessonClickSpy}
+            />);
+            
+            // act
+            
+            await act(async () => {
+                click(
+                    element('.fc-add_scheduled_lesson-button')
+                );
+            })
+            
+            // assert 
+            
+            expect(onAddScheduledLessonClickSpy).toHaveBeenCalled();
+        })
+
+        it('when no schemeofwork_id button unavailable', async () => {
+                    
+            // arrange
+
+            let ctx = {
+                "schemeofwork_id":0,
+            };
+            
+            render(<CalendarWidget 
+                events={events} 
+                ctx={ctx}
+                academicYear={fakeDataRange}
+                showAllEvents={false}
+                showWeekends={true}
+                onDateClick={handleDateClick}
+                onShowAllEventsChange={handleShowAllEventsChange}
+                onShowWeekendChange={handleShowWeekendChange}
+                onAddScheduledLessonClick={onAddScheduledLessonClickSpy}
+            />);
+            
+            // assert 
+            
+            expect(
+                container.querySelector('.fc-add_scheduled_lesson-button')
+            ).toBeNull();
         })
     })
 })

@@ -20,14 +20,3 @@ def index(request, institute_id=0, department_id=0, auth_ctx=None):
 
     return render(request, "default/index.html", view_model.content)
 
-
-@min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def academic_year(request, institute_id=0, department_id=0, auth_ctx=None):
-    
-    # change session
-    if request.method == "POST":
-        request.session["academic_year__selected_id"] = int(request.POST["academic_year"])
-        
-    # redirect back to page
-    redirect_to_url = request.META.get('HTTP_REFERER')
-    return HttpResponseRedirect(redirect_to_url)

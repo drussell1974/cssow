@@ -42,8 +42,8 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(1276711, test.institute_id)
         self.assertEqual(67, test.department_id)
         self.assertEqual(6079, test.auth_user_id)
-        self.assertEqual('2020-09-01T00:00', test.academic_year.start)
-        self.assertEqual('2021-07-30T00:00', test.academic_year.end)
+        self.assertEqual('2020-09-01', test.academic_year.start)
+        self.assertEqual('2021-07-31', test.academic_year.end)
 
 
     def test_constructor_with_scheme_of_work_id___as_param(self, mock_institute, mock_department):
@@ -105,8 +105,8 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(0, test.department_id)
         self.assertEqual(6079, test.auth_user_id)
         self.assertEqual(2021, test.selected_year) # current year
-        self.assertEqual('2020-09-01T00:00', test.academic_year.start)
-        self.assertEqual('2021-07-30T00:00', test.academic_year.end)
+        self.assertEqual('2020-09-01', test.academic_year.start)
+        self.assertEqual('2021-07-31', test.academic_year.end)
 
 
     @patch.object(AcademicYearModel, "get_model", return_value = fake_academic_year(year=1802))
@@ -122,8 +122,8 @@ class test_core_context_authctx_constructor(TestCase):
 
         # assert
         self.assertEqual(1802, test.selected_year)
-        self.assertEqual('1801-09-01T00:00', test.academic_year.start)
-        self.assertEqual('1802-07-30T00:00', test.academic_year.end)
+        self.assertEqual('1801-09-01', test.academic_year.start)
+        self.assertEqual('1802-07-31', test.academic_year.end)
 
 
     @patch.object(AcademicYearModel, "get_model", return_value = None)
@@ -139,8 +139,8 @@ class test_core_context_authctx_constructor(TestCase):
 
         # assert
         self.assertEqual(2120, test.selected_year)
-        self.assertEqual('2119-09-01T00:00', test.academic_year.start)
-        self.assertEqual('2120-07-30T00:00', test.academic_year.end)
+        self.assertEqual('2119-09-01', test.academic_year.start)
+        self.assertEqual('2120-07-31', test.academic_year.end)
 
 
     @patch.object(AcademicYearModel, "get_model", return_value = fake_academic_year(year=2017))
@@ -165,5 +165,5 @@ class test_core_context_authctx_constructor(TestCase):
         self.assertEqual(0, test.department_id)
         self.assertEqual(6079, test.auth_user_id)
         self.assertEqual(2017, test.selected_year)
-        self.assertEqual('2016-09-01T00:00', test.academic_year.start)
-        self.assertEqual('2017-07-30T00:00', test.academic_year.end)
+        self.assertEqual('2016-09-01', test.academic_year.start)
+        self.assertEqual('2017-07-31', test.academic_year.end)

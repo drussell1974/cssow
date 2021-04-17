@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import Http404
+from django.urls import reverse
 from shared.models.core.helper_string import date_to_string
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.log_handlers import handle_log_warning, handle_log_exception, handle_log_info
@@ -80,7 +81,7 @@ class LessonScheduleIndexViewModel(BaseViewModel):
 
 class LessonScheduleEditViewModel(BaseViewModel):
 
-    def __init__(self, db, request, schedule_id, lesson_id, scheme_of_work_id, auth_ctx, action_url = ""):
+    def __init__(self, db, request, schedule_id, lesson_id, scheme_of_work_id, auth_ctx, action_url = "", start_date = None):
         self.db = db
         self.request = request
         self.schedule_id = schedule_id
@@ -88,7 +89,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.auth_ctx = auth_ctx
         self.action_url = action_url
-
+        self.return_url = ""
+        
         self.lesson = LessonModel.get_model(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
         # Http404
         if self.lesson_id > 0:
@@ -99,7 +101,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
         if schedule_id > 0:
             self.model = LessonScheduleModel.get_model(db, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=schedule_id, auth_user=auth_ctx)
         else:
-            self.model = LessonScheduleModel.new(lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx, fn_generate_class_code=ClassCodeGenerator.generate_class_code)
+            self.model = LessonScheduleModel.new(lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, start_date=start_date, auth_ctx=auth_ctx, fn_generate_class_code=ClassCodeGenerator.generate_class_code)
             self.model.created_by_id = auth_ctx.auth_user_id
         
         
@@ -125,7 +127,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
                 
                 #432 set reminder n minutes before start_date (string to date)
                 offset_min = self.request.POST.get('reminder_minutes_before', 15)
-                reminder = datetime.strptime(self.model.start_date, settings.ISOFORMAT) - timedelta(minutes=try_int(offset_min))
+                reminder = self.model.start_date - timedelta(minutes=try_int(offset_min))
                 # back to string
                 reminder = reminder.strftime(settings.ISOFORMAT)
 
@@ -157,7 +159,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
             "scheme_of_work_id": self.scheme_of_work_id,
             "lesson_id": self.lesson_id,
             "model": self.model,
-            "period_options": self.auth_ctx.periods
+            "period_options": self.auth_ctx.periods,
+            "return_url": self.return_url
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)

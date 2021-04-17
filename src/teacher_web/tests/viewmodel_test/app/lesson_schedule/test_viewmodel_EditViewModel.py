@@ -55,6 +55,9 @@ class test_viewmodel_EditViewModel(TestCase):
         
         # arrange
 
+        mock_auth_user.institute_id = 12767111276711
+        mock_auth_user.department_id = 67
+
         mock_request = Mock()
         mock_request.method = "GET"
         
@@ -99,7 +102,7 @@ class test_viewmodel_EditViewModel(TestCase):
         # mock lesson
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
 
-        return_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
+        return_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01T13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         return_schedule_model.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):
@@ -122,7 +125,10 @@ class test_viewmodel_EditViewModel(TestCase):
                 # returns new model
                 self.assertEqual(101, test_context.model.id)
                 self.assertEqual("ABCDEF", test_context.model.class_code)
-                self.assertEqual("2021-04-01 13:46:45", test_context.model.start_date)
+                self.assertEqual(datetime(2021, 4, 1, 13, 46), test_context.model.start_date)
+                self.assertEqual("2021-04-01", test_context.model.start_date_ui_date)
+                self.assertEqual("13:46", test_context.model.start_date_ui_time)
+
 
 
     def test_execute_called_save_when_valid(self, mock_auth_user):
@@ -147,11 +153,11 @@ class test_viewmodel_EditViewModel(TestCase):
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
         
         # mock existing object in database
-        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
+        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="7x", class_code="ABCDEF", start_date="2021-04-01T13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         get_schedule_model.is_valid = True
 
         # mock saved object
-        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
+        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-04-01T13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         on_save__data_to_return.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):
@@ -174,8 +180,11 @@ class test_viewmodel_EditViewModel(TestCase):
 
                     self.assertEqual(101, test_context.model.id)
                     self.assertEqual("10yab", test_context.model.class_name)
-                    self.assertEqual("XBCDEF", test_context.model.class_code)
-                    self.assertEqual("2021-04-03T04:42", test_context.model.start_date)
+                    self.assertEqual("XBCDEF", test_context.model.class_code)                
+                    self.assertEqual(datetime(2021, 4, 3, 4, 42), test_context.model.start_date)
+                    self.assertEqual("2021-04-03T04:42", test_context.model.start)
+                    self.assertEqual("2021-04-03", test_context.model.start_date_ui_date)
+                    self.assertEqual("04:42", test_context.model.start_date_ui_time)
 
 
     def test_execute_called_save__return_when_invalid(self, mock_auth_user):
@@ -200,11 +209,11 @@ class test_viewmodel_EditViewModel(TestCase):
         get_fake_lesson = LessonModel(220, "Consectetur adipiscing elit", is_from_db=True)
 
         # mock existing object in database
-        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci",  class_name="7x", class_code="ABCDEF", start_date="2021-04-01 13:46:45", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
+        get_schedule_model = fake_lesson_schedule(101, title="Vivamus at porta orci",  class_name="7x", class_code="ABCDEF", start_date="2021-04-01T13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         get_schedule_model.is_valid = True
 
         # mock saved object
-        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
+        on_save__data_to_return = fake_lesson_schedule(101, title="Vivamus at porta orci", class_name="", class_code="", start_date="2021-04-01T13:46", lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
         on_save__data_to_return.is_valid = True
 
         with patch.object(LessonModel, "get_model", return_value=get_fake_lesson):
@@ -228,4 +237,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     self.assertEqual(101, test_context.model.id)
                     self.assertEqual("", test_context.model.class_name)
                     self.assertEqual("XBCDEX", test_context.model.class_code)
-                    self.assertEqual("2021-04-03T04:44", test_context.model.start_date)
+                    self.assertEqual(datetime(2021, 4, 3, 4, 44), test_context.model.start_date)
+                    self.assertEqual("2021-04-03T04:44", test_context.model.start)
+                    self.assertEqual("2021-04-03", test_context.model.start_date_ui_date)
+                    self.assertEqual("04:44", test_context.model.start_date_ui_time)

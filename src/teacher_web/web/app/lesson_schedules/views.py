@@ -35,9 +35,13 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     #432 create url for notification
     ''' creates url from lesson index e.g. /institute/2/department/5/schemesofwork/11/lessons#220 '''
     action_url =  f"{reverse('lesson_schedule.index', args=[institute_id, department_id, scheme_of_work_id, lesson_id])}#{schedule_id}"
+
+    start_date = request.GET.get('start_date', None)
+    if start_date is not None:
+        start_date = f"{start_date}T00:00" # TODO: get default time from settings
+
+    modelview = LessonScheduleEditViewModel(db=db, request=request, action_url=action_url, start_date=start_date, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
     
-    modelview = LessonScheduleEditViewModel(db=db, request=request, action_url=action_url, schedule_id=schedule_id, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_ctx=auth_ctx)
-        
     if request.method == "POST":
         ' saved the scheduled lesson '            
         modelview.execute()
@@ -47,7 +51,11 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
             return HttpResponseRedirect(redirect_to_url)
         else:
             handle_log_warning(db, model.id, "lesson schedule {} (id:{}) is invalid posting back to client - {}".format(model.class_code, model.id, model.validation_errors))
-        
+    else:
+        # request.method == GET
+        ''' always return to the referrer '''
+        modelview.return_url = request.META.get('HTTP_REFERER')
+    
     return render(request, "lesson_schedules/edit.html", modelview.view().content)
 
 

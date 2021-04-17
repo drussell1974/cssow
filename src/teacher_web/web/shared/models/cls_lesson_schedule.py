@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 class LessonScheduleModel(BaseModel):
     
     title = ""
+    scheme_of_work_name = ""
     class_name = ""
     class_code = ""
     period = 0
@@ -32,18 +33,39 @@ class LessonScheduleModel(BaseModel):
         self.class_code = class_code
         self.whiteboard_url = "" # default
         self.edit_url = "" # default
-        self.start_date = start_date # date_to_string(start_date) if start_date is datetime else start_date
-        if type(start_date) is datetime:
-            start_date = start_date.strftime(settings.ISOFORMAT)
-        if "T" in start_date:
-            self.start_date_ui_date = start_date.split("T")[0]
-            self.start_date_ui_time = start_date.split("T")[1]
+        self.start_date = start_date 
         self.lesson_id = try_int(lesson_id)
         self.scheme_of_work_id = try_int(scheme_of_work_id)
 
-        if fn_resolve_url is not None:
+        if fn_resolve_url is not None and auth_user.institute_id > 0 and auth_user.department_id > 0:
             self.whiteboard_url  = fn_resolve_url(self)["lesson_schedule.whiteboard_view"]
             self.edit_url = fn_resolve_url(self)["lesson_schedule.edit"]
+
+
+    def set_ui_datetime(self, start_date_str):
+        """ properties used by the datetime and period selector control """
+        if "T" in start_date_str:
+            self.start_date_ui_date = start_date_str.split("T")[0]
+            self.start_date_ui_time = start_date_str.split("T")[1]
+        else:
+            self.start_date_ui_date = start_date_str
+            self.start_date_ui_time = "00:00" # TODO: get start time        
+
+
+    @property
+    def start_date(self):
+        return self._start_date
+
+
+    @start_date.setter
+    def start_date(self, start_date):
+        if type(start_date) is str:
+            self.start = start_date # set start string property
+            self._start_date = datetime.strptime(start_date, settings.ISOFORMAT) # set start_date datetime property
+        elif type(start_date) is datetime:
+            self.start = start_date.strftime(settings.ISOFORMAT) # set start string property
+            self._start_date = start_date # set start_date date property
+        self.set_ui_datetime(self.start)
 
 
     @property
@@ -69,8 +91,9 @@ class LessonScheduleModel(BaseModel):
         
 
     @classmethod
-    def new(cls, lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code):
-        start_date = date_to_string(datetime.now())
+    def new(cls, lesson_id, scheme_of_work_id, auth_ctx, fn_generate_class_code, start_date = None):
+        if start_date is None:
+            start_date = datetime.now().strftime(settings.ISOFORMAT)
         new_class_code = fn_generate_class_code(length=6)
         return LessonScheduleModel(0, title="", class_name="", class_code=new_class_code, start_date=start_date, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
@@ -114,18 +137,19 @@ class LessonScheduleModel(BaseModel):
             model = LessonScheduleModel(
                 id_=row[0],
                 title=row[1],
-                class_name=row[2],
-                class_code = row[3],
-                start_date=row[4],
-                lesson_id = row[5],
-                scheme_of_work_id=row[6],
-                published=row[9],
-                created_by_id=row[10],
+                class_name=row[3],
+                class_code=row[4],
+                start_date=row[5],
+                lesson_id=row[6],
+                scheme_of_work_id=row[7],
+                published=row[10],
+                created_by_id=row[11],
                 auth_user=auth_user,
                 fn_resolve_url=fn_resolve_url)
 
-            model.department_id=row[7]
-            model.institute_id=row[8]
+            model.department_id=row[8]
+            model.institute_id=row[9]
+            model.scheme_of_work_name=row[2]
 
             model.on_fetched_from_db()
             
@@ -224,7 +248,7 @@ class LessonScheduleDataAccess:
         """
         
         execHelper = ExecHelper()
-        select_sql = "lesson_schedule__get_all$2"
+        select_sql = "lesson_schedule__get_all$3"
         params = (lesson_id, scheme_of_work_id, department_id, institute_id, from_date, to_date, int(show_published_state), auth_user_id)
         
         rows = []

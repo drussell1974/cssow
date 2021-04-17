@@ -46,8 +46,11 @@ class AuthCtx(Ctx):
                     return ay.start_date.year
             # otherwise return the last academic year or the current year
             return curr
-
-        return request.session.get(session_key, inner(academic_years))
+        
+        if session_key not in request.session:
+            request.session[session_key] = inner(academic_years)
+        
+        return request.session[session_key]
         
     
     def __init__(self, db, request, institute_id, department_id, **view_params):
@@ -99,6 +102,8 @@ class AuthCtx(Ctx):
         """ check if the teacher has enough priviliges """
 
         #367 move checks to functions and allow where department requires no permissions or where department id is zero
+        
+        # TODO: change to self.institute_id == 0
 
         if min_permission == DEPARTMENT.NONE or self.department_id == 0:
             return True
@@ -108,6 +113,6 @@ class AuthCtx(Ctx):
             return self.teacher_permission.check_permission(min_permission)
 
 
-    def __repr__(self):
-        return f"user={self.auth_user_id},{self.user_name}, institute_id={self.institute_id}, department_id={self.department_id}"
+    #def __repr__(self):
+    #    return f"user={self.auth_user_id},{self.user_name}, institute_id={self.institute_id}, department_id={self.department_id}"
 

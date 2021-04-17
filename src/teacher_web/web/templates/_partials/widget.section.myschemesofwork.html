@@ -17,9 +17,12 @@
             {% for srow in drow.schemes_of_work %}
               <div class="post-preview post-preview--my_schemeofwork {{ row.published_state }}">
                 <h4 class="post-title">
+                  <a class="edit float-right"  id="lnk-schemeofwork-schedule--{{srow.id}}" href="{% url 'schemesofwork_schedule.index' row.id drow.id srow.id %}">
+                    <i class="far fa-calendar"></i>
+                  </a>
                   <a class="edit" href="{% url 'schemesofwork.edit' row.id drow.id srow.id %}?next={{ request.path }}">
-                  <i class="far fa-edit"></i> 
-                </a>
+                    <i class="far fa-edit"></i> 
+                  </a>
                 <a id="lnk-my_schemeofwork-{{row.id}}" href="{% url 'lesson.index' row.id drow.id srow.id %}">
                       {{ srow.name }}
                 </a>

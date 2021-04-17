@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getParams from '../helpers/host_page';
+import getParams, { openModal, getCtx } from '../helpers/host_page';
 import { getSchedule } from '../services/apiReactServices';
 import CalendarWidget from '../widgets/CalendarWidget';
 
@@ -14,12 +14,14 @@ class CalendarPage extends React.Component {
             AcademicYear: props.academicYear,
             ShowAllEvents: props.showAllEvents,
             ShowWeekends: props.showWeekends,
+            Ctx: getCtx(),
             hasError: false,
         }
         // bind the handler to the component
         this.handleShowAllEventsChange = this.handleShowAllEventsChange.bind(this);
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleShowWeekendChange = this.handleShowWeekendChange.bind(this);
+        this.handleAddScheduledLessonClick = this.handleAddScheduledLessonClick.bind(this);
     }   
 
     static getDerivedStateFromError(error) {
@@ -37,34 +39,39 @@ class CalendarPage extends React.Component {
       }
 
       componentDidMount() {
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
-        // get schedule every 30 seconds
-        // setInterval(() => getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id), 30000);
+        getSchedule(this, this.state.Ctx.institute_id, this.state.Ctx.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
       }
 
     /** Event Handlers >>> **/
 
     handleDateClick(e) {
-        console.log(e.dateStr);
-        // TODO: #358 add scheduled lesson
-      }
+        if (this.state.Ctx.institute_id > 0 && this.state.Ctx.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
+            window.open(`/institute/${this.state.Ctx.institute_id}/department/${this.state.Ctx.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
+        } else {
+            openModal('', e.dateStr);
+        }
+    }
 
     handleShowAllEventsChange(e) {
         e.preventDefault();
         this.state = { 
             Params: getParams(e.target.checked),
+            Ctx: getCtx(),
             ShowAllEvents: e.target.checked
         };
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
+        getSchedule(this, this.state.Ctx.institute_id, this.state.Ctx.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
     }
 
     handleShowWeekendChange(e) {
-        // NOTE: do not NOT e.preventDefault();, as it causes conflict with calendar
         this.state = {
             ShowWeekends: e.target.checked
         }
     }
-  
+
+    handleAddScheduledLessonClick(e) {
+        openModal();
+    }
+    
     /** <<< Event Handlers END **/
         
     render() {
@@ -72,12 +79,14 @@ class CalendarPage extends React.Component {
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
+                    ctx={this.state.Ctx}
                     showAllEvents={this.state.ShowAllEvents}
                     academicYear={this.state.AcademicYear}
                     showWeekends={this.state.ShowWeekends}
                     onDateClick={this.handleDateClick}
                     onShowAllEventsChange={this.handleShowAllEventsChange}
                     onShowWeekendChange={this.handleShowWeekendChange}
+                    onAddScheduledLessonClick={this.handleAddScheduledLessonClick}
                 />
             </React.Fragment>
         )

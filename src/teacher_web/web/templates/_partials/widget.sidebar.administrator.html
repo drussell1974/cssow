@@ -1,6 +1,6 @@
 
         
-        <section class="card widget widget--sidebar widget--sidebar---this-scheme-of-work">
+        <section class="card widget widget--sidebar widget--sidebar---administord">
           <div class="card-body">
             <div class="card-header widget-header">
               <h5 class="card-heading">{{ _("Administrator") }}</h5>
@@ -8,10 +8,16 @@
             <div class="card-text widget-main">
               <ul class="navbar-nav flex-column fillspace">
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'academic-year.index' content.ctx.institute_id %}">
+                    {{_("Academic years")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="{% url 'eventlog.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
                     {{_("Event log")}} <div class="small"></div>
                   </a>
                 </li>
+                
                 {% if request.user.is_superuser %}
                 <li class="nav-item">
                   <a class="nav-link" href="/admin">

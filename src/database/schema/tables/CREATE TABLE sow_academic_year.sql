@@ -9,6 +9,7 @@ CREATE TABLE `sow_academic_year` (
   `created_by` int unsigned NOT NULL DEFAULT '0',
   `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` int unsigned NOT NULL DEFAULT '0',
+  `published` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`year`, `institute_id`)
 );
 
@@ -28,6 +29,7 @@ CREATE TABLE `sow_academic_year_period` (
   `created_by` int unsigned NOT NULL DEFAULT '0',
   `modified` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` int unsigned NOT NULL DEFAULT '0',
+  `published` int NOT NULL DEFAULT '1'
   PRIMARY KEY (`academic_year`, `time`, `institute_id`)
 );
 
@@ -38,18 +40,25 @@ ADD CONSTRAINT `fk_sow_academic_year_period__has__academic_year`
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
+
+
+ALTER TABLE `sow_academic_year_period`
+ADD COLUMN `published` int NOT NULL DEFAULT '1';
+
+ALTER TABLE `sow_academic_year`
+ADD COLUMN `published` int NOT NULL DEFAULT '1';
+
 SET @inst = 3;
+SET @yr = 2021;
 
-INSERT INTO `sow_academic_year` (`year`, `institute_id`, `start_date`, `end_date`) VALUES (2019, @inst, '2019-09-01 00:00', '2020-07-07 00:00');
-INSERT INTO `sow_academic_year` (`year`, `institute_id`, `start_date`, `end_date`) VALUES (2020, @inst, '2020-09-03 00:00', '2021-07-15 00:00');
--- INSERT INTO `sow_academic_year` (`year`, `institute_id`, `start_date`, `end_date`) VALUES (2021, @inst, '2021-09-06 00:00', '2022-07-21 00:00');
+-- INSERT INTO `sow_academic_year` (`year`, `institute_id`, `start_date`, `end_date`) VALUES (2019, @inst, '2020-09-01 00:00', '2021-07-07 00:00');
 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("09:00", "Period 1", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("10:00", "Period 2", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("11:00", "Break", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("11:15", "Period 3", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("12:15", "Lunch", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("13:15", "Period 4", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("14:15", "Period 5", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("15:15", "Period 6", 2020, @inst); 
-INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("16:15", "Homework club", 2020, @inst);
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("09:00", "Period 1", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("10:00", "Period 2", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("11:00", "Break", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("11:15", "Period 3", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("12:15", "Lunch", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("13:15", "Period 4", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("14:15", "Period 5", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("15:15", "Period 6", @yr, @inst); 
+INSERT INTO `sow_academic_year_period` (`time`, `name`, `academic_year`, `institute_id`) VALUES ("16:15", "Homework club", @yr, @inst);

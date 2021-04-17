@@ -24,7 +24,8 @@ class test_cls_lesson_schedule__constructor(TestCase):
             self.assertEqual("", self.test.title)
             self.assertEqual("", self.test.class_name)
             self.assertEqual("", self.test.class_code)
-            self.assertEqual("2021-06-09T17:20", self.test.start_date)
+            self.assertEqual(datetime(2021, 6, 9, 17, 20), self.test.start_date)
+            self.assertEqual("2021-06-09T17:20", self.test.start)
             self.assertEqual("2021-06-09", self.test.start_date_ui_date)
             self.assertEqual("17:20", self.test.start_date_ui_time)
             self.assertEqual("", self.test.whiteboard_url)
@@ -48,6 +49,9 @@ class test_cls_lesson_schedule__constructor(TestCase):
         # arrange
 
         with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:            
+            mock_auth_user.institute_id = 12767111276711
+            mock_auth_user.department_id = 67
+
             self.test = fake_lesson_schedule(id=0, title="Vivamus at porta orci", start_date=datetime(year=2021, month=6, day=9, hour=17, minute=20, second=30), class_name="7x", class_code="ABCDEF", lesson_id=12, scheme_of_work_id=34, auth_ctx=mock_auth_user, fn_resolve_url=fake_resolve_schedule_urls)
 
             self.maxDiff = None

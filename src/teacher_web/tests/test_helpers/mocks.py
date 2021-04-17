@@ -106,3 +106,26 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
             auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=34, scheme_of_work_id=14)
 
     return TeacherPermissionModel(teacher_id=56, teacher_name="Jane Mellor" , scheme_of_work=scheme_of_work, is_from_db=is_from_db, ctx=auth_ctx, scheme_of_work_permission=SCHEMEOFWORK.OWNER, lesson_permission=LESSON.OWNER, department_permission=DEPARTMENT.HEAD, is_authorised=is_authorised)
+
+
+class fake_settings:
+    MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
+    MAX_NUMBER_OF_DAYS_TO_KEEP_LOGS = 30
+    PAGER = { 
+        "default": {
+             "page": 2, "pagesize": 10, "pagesize_options": [5,10,25,50,100]
+        },
+        "notifications": {
+             "page": 1, "pagesize": 100, "pagesize_options": [100,]
+        },
+        "schedule":{
+            "page": 1,
+            "pagesize": 7,
+            "pagesize_options": { 0:"all", 1:"today", 2:"2 days", 7:"1 week", 14:"2 weeks", 28:"28 days" }
+        },
+    },
+    ISOFORMAT = "%Y-%m-%dT%H:%M",
+    ISOFORMAT_DATE = "%Y-%m-%d",
+    ISOFORMAT_TIME = "%H:%M",
+    ISOFORMAT_TIME_MS = "%H:%M:%S"
+    

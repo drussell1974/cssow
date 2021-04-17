@@ -11,6 +11,8 @@ class BaseViewModel:
 
     def __init__(self, ctx):
         
+        self.return_url = "" # 
+
         if ctx is not None:
             self.department_id = ctx.department_id
             self.institute_id = ctx.institute_id #329 use auth_user context
