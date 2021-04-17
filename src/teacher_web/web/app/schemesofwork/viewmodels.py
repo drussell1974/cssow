@@ -9,6 +9,7 @@ from shared.models.core.basemodel import try_int
 from shared.models.cls_department import DepartmentModel
 from shared.models.cls_examboard import ExamBoardModel
 from shared.models.cls_keystage import KeyStageModel
+from shared.models.cls_lesson import LessonModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.enums.publlished import STATE
@@ -169,6 +170,7 @@ class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
                 self.on_not_found(self.scheme_of_work, self.scheme_of_work_id)
 
         self.schemeofwork_options = Model.get_options(self.db, self.auth_user)  
+        self.lesson_options = LessonModel.get_options(self.db, self.scheme_of_work_id, self.auth_user)  
 
         # get default from settings
         self.show_next_days = request.session.get("lesson_schedule.show_next_days", settings.PAGER["schedule"]["pagesize"])
@@ -190,6 +192,7 @@ class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
             "schemeofwork": self.scheme_of_work,
             "scheme_of_work_id": self.scheme_of_work_id,
             "schemeofwork_options": self.schemeofwork_options,
+            "lesson_options": self.lesson_options,
             "schedules": self.model,
             "show_next_days": self.show_next_days,
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],

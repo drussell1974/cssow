@@ -7,7 +7,7 @@
         <ul class="navbar-nav flex-column fillspace">
           <li class="nav-item">
             <a class="nav-link"  id="lnk-schemeofwork-schedule--{{srow.id}}" href="{% url 'schemesofwork.schedule' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
-              {{_("Schedule")}} <span class="small"><i class="far fa-calendar"></i></span>
+              {{_("Schedule")}} <span class="small float-right"><i class="far fa-calendar"></i></span>
             </a>
           </li>
           <li class="nav-item">
@@ -17,7 +17,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
-              {{_("Keywords")}} <div class="small"></div>
+              {{_("Keywords")}} <span class="small float-right"><i class="far fa-book"></i></span>
             </a>
           </li>
           <li class="nav-item">

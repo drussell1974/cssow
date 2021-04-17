@@ -64,6 +64,15 @@ def schedule(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
     
     schedule_view =  SchemeOfWorkScheduleViewModel(db=db, request=request, institute_id=institute_id, department_id=department_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
+    if request.method == "POST":
+        lesson_id = int(request.POST.get("lesson_id", 0))
+        start_date_str = request.POST.get("start_date")
+        return_to_url = request.META.get('HTTP_REFERER')
+        redirect_to_url = f"{reverse('lesson_schedule.new', args=[institute_id, department_id, scheme_of_work_id, lesson_id])}?start_date={start_date_str}&redirect_to_url={return_to_url}"
+
+        return HttpResponseRedirect(redirect_to_url)
+
+
     sub_heading = "Scheduled lessons"
 
     return render(request, "schemesofwork/schedule.html", schedule_view.view(schedule_view.scheme_of_work.name, sub_heading).content)
