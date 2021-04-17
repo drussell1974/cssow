@@ -156,7 +156,7 @@ class SchemeOfWorkPublishModelViewModel(BaseViewModel):
         data = Model.publish_by_id(db, auth_user, scheme_of_work_id)
         self.model = data
 
-
+'''
 class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
 
     def __init__(self, db, request, institute_id, department_id, scheme_of_work_id, auth_user):
@@ -200,3 +200,4 @@ class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
 
         return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
 
+'''

@@ -35,6 +35,7 @@
     "test-ui--admin": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--admin.sh",
     "test-ui--permissions": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--permissions.sh",
     "test-ui--verify": "env-cmd -f ../../dotenv/.env.test-ui sh scripts/yarn.test-ui--verify.sh",
+    "debug-ui": "env-cmd -f ../../dotenv/.env.debug-ui sh scripts/yarn.test-ui--verify.sh",
     "test-adhoc":"env-cmd -f ../../dotenv/.env.test-ui coverage run -a ./web/manage.py test ./tests/viewmodel_test/app/eventlog --settings=web.settings.test-ui.settings",
     "hotfix":"find ./web -type f -newermt '2021-03-05' -exec cp --parents \\{\\} ../../build/teacher-web/hotfix \\;"
   },

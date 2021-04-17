@@ -55,6 +55,9 @@ class test_viewmodel_EditViewModel(TestCase):
         
         # arrange
 
+        mock_auth_user.institute_id = 12767111276711
+        mock_auth_user.department_id = 67
+
         mock_request = Mock()
         mock_request.method = "GET"
         

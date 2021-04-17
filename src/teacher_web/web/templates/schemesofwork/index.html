@@ -40,7 +40,7 @@
         <div class="post-preview {{ row.published_state }} {% if row.is_recent == True %}recent{% endif %}">
             <h3 class="post-title">
               <!-- # TODO: #329 get context for institute_id and department_id -->
-              <a class="edit float-right"  id="lnk-schemeofwork-schedule--{{row.id}}" href="{% url 'schemesofwork.schedule' content.ctx.institute_id content.ctx.department_id row.id %}">
+              <a class="edit float-right"  id="lnk-schemeofwork-schedule--{{row.id}}" href="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id row.id %}">
                 <i class="far fa-calendar"></i>
               </a>
               <a class="edit" href="{% url 'schemesofwork.edit' content.ctx.institute_id content.ctx.department_id row.id %}?next={{ request.path }}">

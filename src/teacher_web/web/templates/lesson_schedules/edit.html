@@ -9,10 +9,13 @@
                     <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="lnk-bc-schemeofwork_schedule" href="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Schedule")}}</a>
+                    </li>
+                    <li class="nav-item">
                       <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" id="lnk-bc-schedule" href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Schedule")}}</a>
+                        <a class="nav-link" id="lnk-bc-lesson_schedule" href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Schedule")}}</a>
                     </li>
                 </ul>
         </div>
@@ -94,7 +97,7 @@
         
         <input type="hidden" name="id" value="{{content.data.model.id}}">
         <input type="hidden" name="lesson_id" value="{{ content.data.lesson_id}}">
-        <input type="hidden" name="next" value="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" >
+        <input type="hidden" name="next" value="{{ content.data.return_url }}" >
         <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
     </form>
 <hr>

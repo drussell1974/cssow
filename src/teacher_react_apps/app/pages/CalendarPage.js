@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getParams from '../helpers/host_page';
+import getParams, { openModal, getCtx } from '../helpers/host_page';
 import { getSchedule } from '../services/apiReactServices';
 import CalendarWidget from '../widgets/CalendarWidget';
 
@@ -14,6 +14,7 @@ class CalendarPage extends React.Component {
             AcademicYear: props.academicYear,
             ShowAllEvents: props.showAllEvents,
             ShowWeekends: props.showWeekends,
+            Ctx: getCtx(),
             hasError: false,
         }
         // bind the handler to the component
@@ -38,7 +39,7 @@ class CalendarPage extends React.Component {
       }
 
       componentDidMount() {
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
+        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
       }
 
     /** Event Handlers >>> **/
@@ -46,6 +47,8 @@ class CalendarPage extends React.Component {
     handleDateClick(e) {
         if (this.state.Params.institute_id > 0 && this.state.Params.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
             window.open(`/institute/${this.state.Params.institute_id}/department/${this.state.Params.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
+        } else {
+            openModal('', e.dateStr);
         }
     }
 
@@ -53,9 +56,10 @@ class CalendarPage extends React.Component {
         e.preventDefault();
         this.state = { 
             Params: getParams(e.target.checked),
+            Ctx: getCtx(),
             ShowAllEvents: e.target.checked
         };
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id);
+        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
     }
 
     handleShowWeekendChange(e) {
@@ -65,7 +69,7 @@ class CalendarPage extends React.Component {
     }
 
     handleAddScheduledLessonClick(e) {
-        $('#scheduledLessonModal').modal('show');
+        openModal();
     }
     
     /** <<< Event Handlers END **/

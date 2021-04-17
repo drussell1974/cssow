@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import Http404
+from django.urls import reverse
 from shared.models.core.helper_string import date_to_string
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.core.log_handlers import handle_log_warning, handle_log_exception, handle_log_info
@@ -88,7 +89,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
         self.scheme_of_work_id = scheme_of_work_id
         self.auth_ctx = auth_ctx
         self.action_url = action_url
-
+        self.return_url = ""
+        
         self.lesson = LessonModel.get_model(db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
         # Http404
         if self.lesson_id > 0:
@@ -157,7 +159,8 @@ class LessonScheduleEditViewModel(BaseViewModel):
             "scheme_of_work_id": self.scheme_of_work_id,
             "lesson_id": self.lesson_id,
             "model": self.model,
-            "period_options": self.auth_ctx.periods
+            "period_options": self.auth_ctx.periods,
+            "return_url": self.return_url
         }
         
         return ViewModel(self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)

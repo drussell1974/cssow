@@ -13,7 +13,7 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
     };
 
     const handleEventClick = async e => {
-        console.log(e);
+        // console.log(e);
     }
     
     const handleOnShowAllEventsChange = async e => {
@@ -34,7 +34,7 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
 
     const fnEventContent = (arg) => {
         // NOTE: #447 - TODO to prevent overlapping, set badge-event with css width:100%, remove col-12
-        return { html: `<button class="badge badge-info badge-event" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+        return { html: `<button class="${arg.event.extendedProps.button_class}" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
     }
     
     const headerToolbar = {

@@ -1,13 +1,13 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-from app.schemesofwork.viewmodels import SchemeOfWorkScheduleViewModel as ViewModel
+from app.schemesofwork_schedule.viewmodels import SchemeOfWorkScheduleIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from tests.test_helpers.mocks import *
 
 @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work())
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_viewmodel_ScheduleViewModel(TestCase):
+class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):
         pass
