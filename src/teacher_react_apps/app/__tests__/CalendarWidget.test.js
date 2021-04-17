@@ -210,17 +210,21 @@ describe('CalendarWidget', () => {
     describe('render toolbar', () => {
 
         const onAddScheduledLessonClickSpy = jest.fn();
-        
         beforeEach(() => {
             ({render, container, element, click} = createContainer());
         })
     
-        it('notifies onClick', async () => {
+        it('when has schemeofwork_id notifies onClick', async () => {
                     
             // arrange
 
+            let ctx = {
+                "schemeofwork_id":11,
+            };
+            
             render(<CalendarWidget 
                 events={events} 
+                ctx={ctx}
                 academicYear={fakeDataRange}
                 showAllEvents={false}
                 showWeekends={true}
@@ -241,6 +245,33 @@ describe('CalendarWidget', () => {
             // assert 
             
             expect(onAddScheduledLessonClickSpy).toHaveBeenCalled();
+        })
+
+        it('when no schemeofwork_id button unavailable', async () => {
+                    
+            // arrange
+
+            let ctx = {
+                "schemeofwork_id":0,
+            };
+            
+            render(<CalendarWidget 
+                events={events} 
+                ctx={ctx}
+                academicYear={fakeDataRange}
+                showAllEvents={false}
+                showWeekends={true}
+                onDateClick={handleDateClick}
+                onShowAllEventsChange={handleShowAllEventsChange}
+                onShowWeekendChange={handleShowWeekendChange}
+                onAddScheduledLessonClick={onAddScheduledLessonClickSpy}
+            />);
+            
+            // assert 
+            
+            expect(
+                container.querySelector('.fc-add_scheduled_lesson-button')
+            ).toBeNull();
         })
     })
 })
