@@ -57,7 +57,7 @@ class uitest_schemeofwork_lessonschedule_edit_create_new_page_navigation(UITestC
         self.wait()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheduled lessons')
 
 
     def test_page__breadcrumb__navigate_to_lesson_index(self):
@@ -83,4 +83,4 @@ class uitest_schemeofwork_lessonschedule_edit_create_new_page_navigation(UITestC
         self.wait()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheduled lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons')

@@ -10,7 +10,7 @@
 {% else %}
   {% for row in content.data.schedules %}
 
-    <div class="card card-keyword {{ row.published_state }}">
+    <div class="card card-scheduled_lesson {{ row.published_state }}">
       <a name="{{ row.id }}"></a>
       <div class="card-body">
         <a class="edit float-right" href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.lesson_id row.id %}" target="_blank"><i class="fa fa-graduation-cap"> {{ row.class_code }}</i></a>
@@ -27,67 +27,5 @@
 
   {% endfor %}
 
-{% endif %}
-
-
-{% if content.ctx.institute.id > 0 and content.ctx.department.id > 0 %}
-{% load display_date %}
-<!-- Modal -->
-<div class="modal fade" id="scheduledLessonModal" tabindex="-1" aria-labelledby="scheduledLessonModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form action="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" method="POST" >
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title" id="scheduledLessonModalLabel">{{_("New Scheduled lesson")}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <!-- Lesson START -->
-              <h6>{{_('Select lesson:')}}</h6>
-              <select class="form-control stackable" name="lesson_id" id="ctl-lesson_id" required>
-                <option value="">- {{_("Select a lesson")}}</option>
-                {% for opt in content.data.lesson_options %}
-                <option value="{{opt.id}}">{{opt.title}}</option>
-                {% endfor %}
-              </select>
-              <!-- Lesson END -->
-            </li>
-            <li class="list-group-item">
-              <!-- Date/Time START -->
-              <div class="control-group">
-                <div class="form-group controls row">
-                  <div class="col-sm-8">
-                      <input type="date" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
-                            value="{{ request.GET.start_date }}" >
-                      <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-                  </div>
-                  <div class="col-sm-4">
-                      <select class="form-control" id="ctl-period" name="period">
-                          <option value='00:00'>{{_('No time')}}</option>
-                          {% for pd in content.ctx.periods %}
-                              <option value='{{pd.time|format_time}}'>{{pd.time|format_time}} ({{pd.name}})</option>
-                          {% endfor %}
-                      </select>
-                      <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
-                  </div>
-                </div>
-              </div>
-              <!-- Date/Time END -->
-            </li> 
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-secondary" value="{{_('Next')}}" />
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 {% endif %}
 <!-- Schedule END -->

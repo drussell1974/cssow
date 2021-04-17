@@ -35,6 +35,12 @@ class apitest_schemeofwork_lessons_scheduled_get_model(APITestCase):
 
 
     @skip("not guarenteed")
+    def test__should_have_scheme_of_work_name(self):
+        # assert
+        self.assertEqual('A-Level Computer Science', self.payload["schedule"][0]["scheme_of_work"]["name"])
+
+
+    @skip("not guarenteed")
     def test__should_have_lesson_id(self):
         # assert
         self.assertEqual(131, self.payload["schedule"][0]["lesson_id"])

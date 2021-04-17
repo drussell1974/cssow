@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 class LessonScheduleModel(BaseModel):
     
     title = ""
+    scheme_of_work_name = ""
     class_name = ""
     class_code = ""
     period = 0
@@ -136,18 +137,19 @@ class LessonScheduleModel(BaseModel):
             model = LessonScheduleModel(
                 id_=row[0],
                 title=row[1],
-                class_name=row[2],
-                class_code = row[3],
-                start_date=row[4],
-                lesson_id = row[5],
-                scheme_of_work_id=row[6],
-                published=row[9],
-                created_by_id=row[10],
+                class_name=row[3],
+                class_code=row[4],
+                start_date=row[5],
+                lesson_id=row[6],
+                scheme_of_work_id=row[7],
+                published=row[10],
+                created_by_id=row[11],
                 auth_user=auth_user,
                 fn_resolve_url=fn_resolve_url)
 
-            model.department_id=row[7]
-            model.institute_id=row[8]
+            model.department_id=row[8]
+            model.institute_id=row[9]
+            model.scheme_of_work_name=row[2]
 
             model.on_fetched_from_db()
             
@@ -246,7 +248,7 @@ class LessonScheduleDataAccess:
         """
         
         execHelper = ExecHelper()
-        select_sql = "lesson_schedule__get_all$2"
+        select_sql = "lesson_schedule__get_all$3"
         params = (lesson_id, scheme_of_work_id, department_id, institute_id, from_date, to_date, int(show_published_state), auth_user_id)
         
         rows = []

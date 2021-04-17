@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
-const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChange, onShowWeekendChange, onAddScheduledLessonClick, showAllEvents=false, showWeekends=false}) => {
+const CalendarWidget = ({events, academicYear, ctx, onDateClick, onShowAllEventsChange, onShowWeekendChange, onAddScheduledLessonClick, showAllEvents=false, showWeekends=false}) => {
 
     const [ showAllIsChecked, setShowAllIsChecked ] = useState(showAllEvents);
     const [ showWeekendsIsChecked, setShowWeekendsIsChecked ] = useState(showWeekends);
@@ -34,12 +34,12 @@ const CalendarWidget = ({events, academicYear, onDateClick, onShowAllEventsChang
 
     const fnEventContent = (arg) => {
         // NOTE: #447 - TODO to prevent overlapping, set badge-event with css width:100%, remove col-12
-        return { html: `<button class="${arg.event.extendedProps.button_class}" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
+        return { html: `<button class="${arg.event.extendedProps.button_class}" course: "${arg.event.extendedProps.course_name}" title="${arg.event.extendedProps.lesson_details}">${arg.event.title}</button>` }
     }
     
     const headerToolbar = {
         // TODO: #view options // left: 'dayGridMonth,timeGridWeek,timeGridDay custom1',
-        left: 'add_scheduled_lesson',
+        left:  ctx !== undefined && ctx.schemeofwork_id > 0 ? 'add_scheduled_lesson' : '',
         center: 'title',
         right: 'today,prev,next' // see customButtons
     }

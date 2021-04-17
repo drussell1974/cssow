@@ -59,15 +59,16 @@ const getSchedule = (reactComponent, institute_id, department_id, schemeofwork_i
             // map scheduled lessons to fullcalendar event
             data.schedule.map(sch => {
                 scheduled_events.push({
-                    title: `${sch.start_date_ui_time}: ${sch.class_name} - ${sch.title}`, 
-                    start: sch.start_date, 
+                    title: `${sch.start_date_ui_time}: ${sch.class_name} - ${sch.scheme_of_work_name}`, 
+                    start: sch.start_date_ui_date, 
                     extendedProps: {
-                        lesson_details: `time: ${sch.start_date_ui_time}, class: ${sch.class_name}, title: '${sch.title}', code: ${sch.class_code}`,
+                        lesson_details: `time: ${sch.start_date_ui_time}, class: ${sch.class_name}, title: '${sch.title}', course: '${sch.scheme_of_work_name}', code: ${sch.class_code}`,
+                        course_name: sch.scheme_of_work_name,
                         edit_url: sch.edit_url,
                         whiteboard_url: sch.whiteboard_url,
                         button_class: sch.scheme_of_work_id == ctx.schemeofwork_id ? 'badge badge-primary badge-event' : 'badge badge-secondary badge-event',
                     },
-                    url: sch.edit_url 
+                    url: sch.edit_url
                 })
             })
 

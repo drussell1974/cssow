@@ -46,7 +46,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get_all$2'
+                'lesson_schedule__get_all$3'
                 , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -56,7 +56,7 @@ class test_db__get_all(TestCase):
 
     def test__should_call_select_return_single_item(self, mock_ctx):
         # arrange
-        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "7x", "ABCDEF", datetime(2020, 4, 3, 11, 30), 6, 11, 5, 2, 1, 99)]
+        expected_result = [(569, "Aenean egestas erat ac turpis aliquet iaculis", "A-Level Computer Science", "7x", "ABCDEF", datetime(2020, 4, 3, 11, 30), 6, 11, 5, 2, 1, 99)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -68,7 +68,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get_all$2'
+                'lesson_schedule__get_all$3'
                 , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -78,6 +78,7 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(569, actual_results[0].id)
             self.assertEqual("Aenean egestas erat ac turpis aliquet iaculis", actual_results[0].title)
+            self.assertEqual("A-Level Computer Science", actual_results[0].scheme_of_work_name)
             self.assertEqual("ABCDEF", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
             self.assertEqual(datetime(2020, 4, 3, 11, 30), actual_results[0].start_date)
@@ -89,9 +90,9 @@ class test_db__get_all(TestCase):
     def test__should_call_select_return_multiple_item(self, mock_ctx):
         # arrange
         expected_result = [
-            (569, "Proin sit amet elementum lectus", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 00), 6, 11, 5, 2, 1, 99),
-            (570, "Maecenas finibus tellus", "7y", "ABCDEY", datetime(2020, 4, 4, 0, 0), 6, 11, 1, 7, 2, 99),
-            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7z", "ABCDEZ", datetime(2020, 4, 4, 13, 30, 4), 6, 11, 7, 2, 1, 99)
+            (569, "Proin sit amet elementum lectus", "A-Level Computer Science", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 00), 6, 11, 5, 2, 1, 99),
+            (570, "Maecenas finibus tellus", "A-Level Computer Science", "7y", "ABCDEY", datetime(2020, 4, 4, 0, 0), 6, 11, 1, 7, 2, 99),
+            (571, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "KS3 Computing", "7z", "ABCDEZ", datetime(2020, 4, 4, 13, 30, 4), 6, 11, 7, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -104,7 +105,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get_all$2'
+                'lesson_schedule__get_all$3'
                 , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, mock_ctx.academic_year.start_date, mock_ctx.academic_year.end_date, 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -113,6 +114,7 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(569, actual_results[0].id)
             self.assertEqual("Proin sit amet elementum lectus", actual_results[0].title)
+            self.assertEqual("A-Level Computer Science", actual_results[0].scheme_of_work_name)
             self.assertEqual("ABCDEX", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
             self.assertEqual(datetime(2021, 4, 3, 9, 0), actual_results[0].start_date)
@@ -123,6 +125,7 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(571, actual_results[2].id)
             self.assertEqual("Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", actual_results[2].title)
+            self.assertEqual("KS3 Computing", actual_results[2].scheme_of_work_name)
             self.assertEqual("ABCDEZ", actual_results[2].class_code)
             self.assertEqual("7z", actual_results[2].class_name)
             self.assertEqual(datetime(2020, 4, 4, 13, 30, 4), actual_results[2].start_date)
@@ -134,9 +137,9 @@ class test_db__get_all(TestCase):
     def test__should_call_select_return_current_items_only(self, mock_ctx):
         # arrange
         expected_result = [
-            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 0), 6, 11, 5, 2, 1, 99),
-            (765570, "Proin sit amet elementum lectus", "7y", "ABCDEY", datetime(2021, 4, 4, 10, 0), 6, 11, 5, 2, 1, 99),
-            (765571, "Maecenas finibus tellus", "7z", "ABCDEZ", datetime(2021, 4, 4, 13, 30, 4), 6, 11, 5, 2, 1, 99)
+            (765569, "Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", "KS3 Computing", "7x", "ABCDEX", datetime(2021, 4, 3, 9, 0), 6, 11, 5, 2, 1, 99),
+            (765570, "Proin sit amet elementum lectus","KS3 Computing", "7y", "ABCDEY", datetime(2021, 4, 4, 10, 0), 6, 11, 5, 2, 1, 99),
+            (765571, "Maecenas finibus tellus","KS3 Computing", "7z", "ABCDEZ", datetime(2021, 4, 4, 13, 30, 4), 6, 11, 5, 2, 1, 99)
             ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
@@ -147,7 +150,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'lesson_schedule__get_all$2'
+                'lesson_schedule__get_all$3'
                 , (34, 11, mock_ctx.department_id, mock_ctx.institute_id, datetime.today().date(), datetime.today().date() + timedelta(7), 1, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -156,6 +159,7 @@ class test_db__get_all(TestCase):
 
             self.assertEqual(765569, actual_results[0].id)
             self.assertEqual("Vivamus at porta orci. Aliquam sem sapien, tristique ac tincidunt eget", actual_results[0].title)
+            self.assertEqual("KS3 Computing", actual_results[0].scheme_of_work_name)
             self.assertEqual("ABCDEX", actual_results[0].class_code)
             self.assertEqual("7x", actual_results[0].class_name)
             self.assertEqual(datetime(2021, 4, 3, 9, 0), actual_results[0].start_date)
@@ -165,6 +169,8 @@ class test_db__get_all(TestCase):
             
 
             self.assertEqual(765571, actual_results[2].id)
+            self.assertEqual("Maecenas finibus tellus", actual_results[2].title)
+            self.assertEqual("KS3 Computing", actual_results[2].scheme_of_work_name)
             self.assertEqual("ABCDEZ", actual_results[2].class_code)
             self.assertEqual("7z", actual_results[2].class_name)
             self.assertEqual(datetime(2021, 4, 4, 13, 30, 4), actual_results[2].start_date)

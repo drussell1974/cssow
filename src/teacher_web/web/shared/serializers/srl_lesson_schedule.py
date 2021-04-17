@@ -9,6 +9,7 @@ class LessonScheduleModelSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
+            "scheme_of_work_name",
             "class_name",
             "period",
             "start_date",

@@ -39,14 +39,14 @@ class CalendarPage extends React.Component {
       }
 
       componentDidMount() {
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
+        getSchedule(this, this.state.Ctx.institute_id, this.state.Ctx.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
       }
 
     /** Event Handlers >>> **/
 
     handleDateClick(e) {
-        if (this.state.Params.institute_id > 0 && this.state.Params.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
-            window.open(`/institute/${this.state.Params.institute_id}/department/${this.state.Params.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
+        if (this.state.Ctx.institute_id > 0 && this.state.Ctx.department_id > 0 &&  this.state.Params.schemeofwork_id > 0 && this.state.Params.lesson_id > 0) {
+            window.open(`/institute/${this.state.Ctx.institute_id}/department/${this.state.Ctx.department_id}/schemesofwork/${this.state.Params.schemeofwork_id}/lessons/${this.state.Params.lesson_id}/schedules/new?start_date=${e.dateStr}`, '_self');
         } else {
             openModal('', e.dateStr);
         }
@@ -59,7 +59,7 @@ class CalendarPage extends React.Component {
             Ctx: getCtx(),
             ShowAllEvents: e.target.checked
         };
-        getSchedule(this, this.state.Params.institute_id, this.state.Params.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
+        getSchedule(this, this.state.Ctx.institute_id, this.state.Ctx.department_id, this.state.Params.schemeofwork_id, this.state.Params.lesson_id, this.state.Ctx);
     }
 
     handleShowWeekendChange(e) {
@@ -79,6 +79,7 @@ class CalendarPage extends React.Component {
             <React.Fragment>
                 <CalendarWidget 
                     events={this.state.Events} 
+                    ctx={this.state.Ctx}
                     showAllEvents={this.state.ShowAllEvents}
                     academicYear={this.state.AcademicYear}
                     showWeekends={this.state.ShowWeekends}

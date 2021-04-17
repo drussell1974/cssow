@@ -66,10 +66,8 @@
       <a href="{% url 'institute.schedule' content.ctx.institute_id %}" class="btn btn-primary">{{_('View full schedule')}}</a>
       <!-- #435 Show calendar here -->
       
-      {% include '_partials/widget.control.filter.schedule.html' %}
-      {% include '_partials/widget.control.schedule.html' %}
-      <hr>
       <div id="calendar-app"></div>      
-            
+
+      {% include '_partials/widget.control.schedule.modal.html' %}
 
 {% endblock %}
