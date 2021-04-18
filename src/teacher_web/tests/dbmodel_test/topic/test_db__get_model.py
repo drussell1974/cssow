@@ -53,12 +53,9 @@ class test_db__get_model(TestCase):
     def test__should_call_select__return_single_item(self, mock_auth_user):
         # arrange
 
-        expected_result = [(
-            321,
-            "Numbering systems",
-            "2020-06-21 08:10:58",
-            "test_user"
-        )]
+        expected_result = [
+            (321, 'Numbering systems', 1, datetime(2021, 2, 27, 15, 26), 0, 1, 0, 'Computing', 0, datetime(2021, 2, 27, 15, 26), 2)
+        ]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -76,8 +73,9 @@ class test_db__get_model(TestCase):
 
             self.assertEqual(321, actual_results.id)
             self.assertEqual("Numbering systems", actual_results.name)
+            self.assertEqual(1, actual_results.lvl)
+            self.assertEqual("Computing", actual_results.parent.name)
+            self.assertEqual(0, actual_results.parent.lvl)
+            self.assertEqual(1, actual_results.parent.published)
             self.assertTrue(actual_results.is_from_db)
-
-
-
-
+            

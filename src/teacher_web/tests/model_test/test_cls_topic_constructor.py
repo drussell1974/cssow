@@ -20,7 +20,7 @@ class test_cls_topic_constructor(TestCase):
         # assert
         self.assertEqual(0, self.test.id)
         self.assertEqual("", self.test.name)
-        self.assertEqual(1, self.test.lvl)
+        self.assertEqual(0, self.test.lvl)
         self.assertEqual(mock_auth_user.department_id, self.test.department_id)
         self.assertFalse(self.test.is_valid)
         self.assertTrue(self.test.is_new())

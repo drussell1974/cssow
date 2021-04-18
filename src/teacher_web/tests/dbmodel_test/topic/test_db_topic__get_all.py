@@ -1,3 +1,5 @@
+from datetime import datetime
+from django.conf import settings
 from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel, handle_log_info
 from shared.models.enums.publlished import STATE
@@ -50,7 +52,9 @@ class test_db_topic__get_all__level_1(TestCase):
     def test__should_call__select__return_single_items(self, mock_auth_user):
         # arrange
 
-        expected_result = [(1,"Operators", "X","X")]
+        expected_result = [        
+            (1, 'Algorithms', 1, datetime(2021, 2, 27, 15, 26), 0, 1, 0, 'Computing', 0, datetime(2021, 2, 27, 15, 26), 2)
+        ]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
@@ -64,15 +68,22 @@ class test_db_topic__get_all__level_1(TestCase):
                 , []
                 , handle_log_info)
             self.assertEqual(1, len(rows))
-            self.assertEqual("Operators", rows[0].name)
-            #self.assertEqual(13, rows[0]["department_id"])
+            self.assertEqual("Algorithms", rows[0].name)
+            self.assertEqual(1, rows[0].lvl)
+            self.assertEqual(1, rows[0].published)
+            self.assertEqual("Computing", rows[0].parent.name)
+            self.assertEqual(0, rows[0].parent.lvl)
+            self.assertEqual(1, rows[0].parent.published)
         
-
 
     def test__should_call__select__return_multiple_items(self, mock_auth_user):
         # arrange
         
-        expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
+        expected_result = [
+            (38, 'Data Types', 2, datetime(2021, 2, 27, 15, 26), 2, 1, 1, 'Algorithms', 1, datetime(2021, 2, 27, 15, 26), 2),
+            (40, 'Logic gates', 2, datetime(2021, 2, 27, 15, 26), 2, 1, 1, 'Algorithms', 1, datetime(2021, 2, 27, 15, 26), 1),
+            (35, 'Problem solving', 2, datetime(2021, 2, 27, 15, 26), 2, 1, '1', 'Algorithms', 1, datetime(2021, 2, 27, 15, 26), 1),
+        ]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
@@ -87,8 +98,21 @@ class test_db_topic__get_all__level_1(TestCase):
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))
+            
+            self.assertEqual(38, rows[0].id)
+            self.assertEqual("Data Types", rows[0].name)
+            self.assertEqual(2, rows[0].lvl)
+            self.assertEqual(1, rows[0].published)
+            self.assertEqual("Algorithms", rows[0].parent.name)
+            self.assertEqual(1, rows[0].parent.lvl)
+            self.assertEqual(1, rows[0].parent.published)
         
-            self.assertEqual("Binary", rows[0].name)
-        
-            self.assertEqual("Data compression", rows[len(rows)-1].name)
+            i = len(rows)-1
+            self.assertEqual(35, rows[i].id)
+            self.assertEqual("Problem solving", rows[i].name)
+            self.assertEqual(2, rows[i].lvl)
+            self.assertEqual(1, rows[i].published)
+            self.assertEqual("Algorithms", rows[i].parent.name)
+            self.assertEqual(1, rows[i].parent.lvl)
+            self.assertEqual(1, rows[i].parent.published)
         

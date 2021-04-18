@@ -36,6 +36,8 @@ class test_db__save(TestCase):
     def test_should_call__update_with__is_new__false(self, mock_auth_user):
          # arrange
         model = Model(23, name="Testing", auth_ctx=mock_auth_user)
+        model.parent = Model(4, name="Implementation", auth_ctx=mock_auth_user)
+        model.lvl = 2
 
         with patch.object(ExecHelper, 'update', return_value=model):
             # act
@@ -43,10 +45,10 @@ class test_db__save(TestCase):
             actual_result = Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
             
             # assert
-            
+
             ExecHelper.update.assert_called_with(self.fake_db, 
              'topic__update'
-             , (23, 'Testing', mock_auth_user.department_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+             , (23, 'Testing', mock_auth_user.department_id, 4, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)
@@ -57,6 +59,8 @@ class test_db__save(TestCase):
 
         model = Model(0, name="Testing", auth_ctx=mock_auth_user)
         model.created = "2021-01-24 07:14:04"
+        model.parent = Model(4, name="Implementation", auth_ctx=mock_auth_user)
+        model.lvl = 2
 
         expected_result = (102,)
 
@@ -70,7 +74,7 @@ class test_db__save(TestCase):
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
                 'topic__insert'
-                , (0, 'Testing', mock_auth_user.department_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (0, 'Testing', mock_auth_user.department_id, 4, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , handle_log_info)
 
             self.assertEqual(102, actual_result.id)
@@ -89,7 +93,7 @@ class test_db__save(TestCase):
             
             ExecHelper.delete.assert_called_with(self.fake_db, 
              'topic__delete'
-             , (23, mock_auth_user.auth_user_id)
+             , (23, 1, mock_auth_user.auth_user_id)
              , handle_log_info)
             
             self.assertEqual(23, actual_result.id)

@@ -10,12 +10,13 @@ class TopicModel(BaseModel):
     name = ""
     department_id = 0
 
-    def __init__(self, id_, name, lvl=1, all_topic_names=[], created = "", created_by = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_ctx=None):
+    def __init__(self, id_, name, lvl=0, all_topic_names=[], created = "", created_by = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_ctx=None):
         super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=auth_ctx)
 
         self.id = id_
         self.name = name
         self.lvl = lvl
+        self.parent = None
         self.all_topic_names = all_topic_names # not implemented
         self.created = created
         self.created_by = created_by
@@ -48,7 +49,10 @@ class TopicModel(BaseModel):
         model = None
         
         for row in rows:
-            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
+            model = TopicModel(row[0], name=row[1], lvl=row[2], created=row[3], created_by=row[4], published=row[5], auth_ctx=auth_ctx)
+            if row[6] is not None: # if parent row
+                model.parent = TopicModel(row[6], name=row[7], lvl=row[8], created=row[9], created_by=row[10], auth_ctx=auth_ctx)
+                model.lvl = model.parent.lvl + 1
             model.on_fetched_from_db()
             return model
         return model
@@ -60,7 +64,10 @@ class TopicModel(BaseModel):
         data = []
         
         for row in rows:
-            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
+            model = TopicModel(row[0], name=row[1], lvl=row[2], created=row[3], created_by=row[4], published=row[5], auth_ctx=auth_ctx)
+            if row[6] is not None: # if parent row
+                model.parent = TopicModel(row[6], name=row[7], lvl=row[8], created=row[9], created_by=row[10], auth_ctx=auth_ctx)
+                model.lvl = model.parent.lvl + 1
             data.append(model)
         return data
 
@@ -79,9 +86,8 @@ class TopicModel(BaseModel):
 
     @staticmethod
     def save(db, model, auth_ctx, published=STATE.PUBLISH):
-        if try_int(published) == STATE.DELETE:
-            rval = TopicDataAccess._delete(db, model, auth_ctx.auth_user_id)
-            # TODO: check row count before updating
+        if try_int(model.published) == STATE.DELETE or try_int(published) == STATE.DELETE:
+            TopicDataAccess._delete(db, model, auth_ctx.auth_user_id)
             model.published = STATE.DELETE
         else:
             if model.is_new() == True:
@@ -153,10 +159,12 @@ class TopicDataAccess:
             model.id,
             model.name,
             model.department_id,
+            model.parent.id if model.parent is not None else 0,
+            model.lvl,
             int(published),
             auth_user_id
         )
-
+        
         result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
 
         return result
@@ -164,7 +172,7 @@ class TopicDataAccess:
 
     @staticmethod
     def _update(db, model, published, auth_user_id):
-        """ updates the topic"""
+        """ updatss the topic"""
         
         execHelper = ExecHelper()
         
@@ -173,7 +181,9 @@ class TopicDataAccess:
             model.id,
             model.name,
             model.department_id,
-            int(published),
+            model.parent.id if model.parent is not None else 0,
+            model.lvl,
+            int(model.published),
             auth_user_id
         )
         
@@ -188,10 +198,8 @@ class TopicDataAccess:
         execHelper = ExecHelper()
 
         sql = "topic__delete"
-        params = (model.id, auth_user_id)
+        params = (model.id, try_int(model.published), auth_user_id)
     
-        #271 Stored procedure
         rows = execHelper.delete(db, sql, params, handle_log_info)
         
         return rows
-

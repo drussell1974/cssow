@@ -39,6 +39,9 @@
             <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
               {{_("Pathways")}}
             </a>
+            <a id="lnk-topic-index--{{drow.id}}" href="{% url 'topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+              {{_("Topics")}}
+            </a>
             <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="btn btn-outline-dark stackable">
               {{_("Add scheme of work")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
             </a>

@@ -30,20 +30,20 @@ def index(request, institute_id, department_id, auth_ctx):
 
 #@permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
-def edit(request, institute_id, department_id, pathway_item_id = 0, auth_ctx = None):
+def edit(request, institute_id, department_id, topic_id = 0, auth_ctx = None):
 
-    pathway_edit = TopicEditViewModel(db=db, request=request, pathway_item_id=pathway_item_id, auth_ctx=auth_ctx)
+    topic_edit = TopicEditViewModel(db=db, request=request, topic_id=topic_id, auth_ctx=auth_ctx)
     if request.method == "POST":
-        pathway_edit.execute(published=STATE.PUBLISH)
+        topic_edit.execute(published=STATE.PUBLISH)
 
-        if pathway_edit.saved:
+        if topic_edit.saved:
             if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
-                redirect_to_url = f"{request.POST.get('next', None)}#{pathway_edit.model.id}"
+                redirect_to_url = f"{request.POST.get('next', None)}#{topic_edit.model.id}"
             return HttpResponseRedirect(redirect_to_url)
 
-    return render(request, "topic/edit.html", pathway_edit.view().content)
+    return render(request, "topic/edit.html", topic_edit.view().content)
 
-    
+
 '''
 #@permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
 @min_permission_required(DEPARTMENT.ADMIN, login_url="/accounts/login/", login_route_name="team-permissions.login-as")

@@ -1,19 +1,18 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS topic__get_model;
+DROP PROCEDURE IF EXISTS topic__get_all;
 
-CREATE PROCEDURE topic__get_model (
- IN p_topic_id INT,
+CREATE PROCEDURE topic__get_all (
  IN p_department_id INT,
  IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
-        cur.id as id, 
-        cur.name as name, 
+        cur.id, 
+        cur.name, 
         cur.lvl as lvl,
-        cur.created as created, 
-        cur.created_by as created_by,
+        cur.created, 
+        cur.created_by,
         cur.published as published,
         pnt.id as parent_id, 
         pnt.name as parent_name,
@@ -24,13 +23,15 @@ BEGIN
         sow_topic as cur
         LEFT JOIN sow_topic as pnt ON pnt.id = cur.parent_id
     WHERE 
-        cur.id = p_topic_id
+		cur.department_id = p_department_id
         and (p_show_published_state % cur.published = 0
-			or cur.created_by = p_auth_user
-        );
+		  	or cur.created_by = p_auth_user)
+	ORDER BY 
+		pnt.id, cur.name 
+        ;
 END;
 //
 
 DELIMITER ;
 
-CALL topic__get_model(0, 5, 1, 2);
+CALL topic__get_all(5, 1, 2);

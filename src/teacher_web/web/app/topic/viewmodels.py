@@ -40,7 +40,7 @@ class TopicIndexViewModel(BaseViewModel):
 
         data = {
             "department": self.auth_ctx.department,
-            "topics": self.model,
+            "topics": self.model
         }
 
         return ViewModel(self.department.name, self.department.name, "Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
@@ -70,7 +70,7 @@ class TopicEditViewModel(BaseViewModel):
         # view data
         data = {
             "topic_options": self.topic_options,
-            "model": self.model
+            "model": self.model,
         }
         
         return ViewModel("", self.department.name, self.model.name if len(self.model.name) != 0 else "Create new topic", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
@@ -78,18 +78,20 @@ class TopicEditViewModel(BaseViewModel):
 
     def execute(self, published=STATE.PUBLISH):
         
-        self.model = Model(0, "", self.auth_ctx)
+        self.model = TopicModel(0, "", self.auth_ctx)
         
         if self.topic_id > 0:
-            self.model = Model.get_model(self.db, self.topic_id, auth_ctx=self.auth_ctx)
+            self.model = TopicModel.get_model(self.db, self.topic_id, auth_ctx=self.auth_ctx)
         
-        self.model.objective = self.request.POST["name"]
+        self.model.name = self.request.POST["name"]
+        self.model.department_id = self.request.POST["department_id"]
         self.model.published = STATE.parse(self.request.POST["published"])
+        self.model.parent_id = self.request.POST["parent_id"]
 
         self.model.validate()
         
         if self.model.is_valid == True or published == STATE.DELETE:
-            data = Model.save(self.db, self.model, auth_ctx=self.auth_ctx)
+            data = TopicModel.save(self.db, self.model, auth_ctx=self.auth_ctx)
             
             self.on_post_complete(saved=True)
 
