@@ -1,5 +1,6 @@
 from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel
+from tests.test_helpers.mocks import *
 
 
 class test_cls_topic__validate__name(TestCase):
@@ -7,7 +8,8 @@ class test_cls_topic__validate__name(TestCase):
     test = None
 
     def setUp(self):
-        self.test = TopicModel(1, name = "A", department_id=13)
+        with patch("shared.models.core.django_helper", return_value=fake_ctx_model()) as mock_auth_user:
+            self.test = TopicModel(1, name = "A", auth_ctx=mock_auth_user)
 
 
     def tearDown(self):
