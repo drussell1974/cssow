@@ -20,6 +20,7 @@ from app.default.viewmodels import KeywordSaveViewModel
 class LessonIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
+        super().__init__(auth_user)
         
         data = []
 

@@ -29,6 +29,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
 
     
     def __init__(self, db, request, auth_ctx):
+        super().__init__(auth_ctx)
         
         self.model = []
         self.db = db

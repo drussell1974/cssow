@@ -22,6 +22,8 @@ from app.default.viewmodels import DefaultIndexViewModel
 class SchemeOfWorkIndexViewModel(BaseViewModel):
     
     def __init__(self, db, auth_user, key_stage_id=0):
+        super().__init__(auth_user)
+        
         self.model = []
         self.db = db
         self.auth_user = auth_user
