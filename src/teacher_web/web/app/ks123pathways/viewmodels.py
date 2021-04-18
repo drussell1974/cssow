@@ -83,7 +83,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
             self.model = Model.get_model(self.db, self.pathway_item_id, auth_ctx=self.auth_ctx)
         
         # topic options
-        self.topic_options = TopicModel.get_options(self.db, lvl=1, auth_user=self.auth_ctx)
+        self.topic_options = TopicModel.get_options(self.db, lvl=1, auth_ctx=self.auth_ctx)
 
         # view data
         data = {

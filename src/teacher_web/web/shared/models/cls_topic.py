@@ -55,6 +55,17 @@ class TopicModel(BaseModel):
 
 
     @staticmethod
+    def get_all(db, auth_ctx):
+        rows = TopicDataAccess.get_all(db, department_id=auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=STATE.PUBLISH)
+        data = []
+        
+        for row in rows:
+            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
+            data.append(model)
+        return data
+
+
+    @staticmethod
     def get_options(db, lvl, auth_ctx, topic_id = 0):
         rows = TopicDataAccess.get_options(db, lvl, department_id=auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id, topic_id=topic_id, show_published_state=STATE.PUBLISH)
         data = []
@@ -103,6 +114,21 @@ class TopicDataAccess:
 
 
     @staticmethod
+    def get_all(db, department_id, auth_user_id, show_published_state=STATE.PUBLISH):
+        
+        execHelper = ExecHelper()
+
+        str_select = "topic__get_all"
+        params = (department_id, int(show_published_state), auth_user_id)
+
+        rows = []
+        
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+        
+        return rows
+
+
+    @staticmethod
     def get_options(db, lvl, department_id, auth_user_id, show_published_state=STATE.PUBLISH, topic_id = 0):
         
         execHelper = ExecHelper()
@@ -110,16 +136,11 @@ class TopicDataAccess:
         str_select = "topic__get_options$2"
         params = (topic_id, department_id, lvl, int(show_published_state), auth_user_id)
 
-        try:
-            rows = []
-            #271 Stored procedure (get_options)
-            rows = execHelper.select(db, str_select, params, rows, handle_log_info)
-            
-            return rows
-
-        except Exception as e:
-            raise Exception("Error getting topics", e)
-
+        rows = []
+        
+        rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+        
+        return rows
 
 
     @staticmethod

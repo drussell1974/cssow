@@ -13,6 +13,11 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'topic.index' content.ctx.institute_id ctx.department_id %}">
+                    {{_("Manage Topics")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="{% url 'eventlog.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
                     {{_("Event log")}} <div class="small"></div>
                   </a>

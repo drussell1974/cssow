@@ -140,7 +140,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
     content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_ctx, scheme_of_work.id)
-    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_ctx)
+    topic_options = TopicModel.get_options(db, lvl=1, auth_ctx=auth_ctx)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user=auth_ctx)
     ks123_pathways = KS123PathwayModel.get_options(db, scheme_of_work.key_stage_id, model.topic_id, auth_ctx)
 
