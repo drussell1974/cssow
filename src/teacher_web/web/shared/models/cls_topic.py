@@ -15,6 +15,7 @@ class TopicModel(BaseModel):
         self.name = name
         self.department_id = department_id
         self.lvl = lvl
+        self.all_topic_names = [] # not implemented
         self.created = created
         self.created_by = created_by
 
@@ -35,7 +36,7 @@ class TopicModel(BaseModel):
         super().validate(skip_validation)
 
         # validate name
-        #self._validate_required_string("name", self.name, 1, 45)
+        self._validate_required_string("name", self.name, 1, 45)
         
         self.on_after_validate()
 
