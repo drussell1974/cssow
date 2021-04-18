@@ -156,6 +156,8 @@ class DepartmentModel(DepartmentContextModel):
                                     published=row[8])
             model.institute_id = row[3]
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
+            model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
+            model.number_of_pathways = DepartmentModel.get_number_of_pathways(db, model.id, auth_user)
             
             model.on_fetched_from_db()         
         return model

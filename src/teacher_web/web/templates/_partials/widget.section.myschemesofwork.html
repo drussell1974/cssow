@@ -15,27 +15,6 @@
                 {{ drow.name }} 
               </h3>
             
-            <!-- TODO: #464 create as tag department_has_no_topics__alert with parameters institute_id, department_id, number_of_topics -->
-            {% if drow.number_of_topics == 0 %}
-            <div class="alert alert-danger" role="alert">
-                {{_('You must create topics before you can create lessons. To add your first topic')}} <a id="lnk-alert-topic-new--{{drow.id}}" href="{% url 'topic.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
-            </div>
-            {% endif %}
-
-            <!-- TODO: #464 create as tag department_has_no_pathways__alert with parameters institute_id, department_id, number_of_topics, number_of_pathways -->            
-            {% if drow.number_of_topics > 0 and drow.number_of_pathways == 0 %}
-            <div class="alert alert-info" role="alert">
-                {{_('Pathways allow mapped progress between different key stages. To add your first topic')}} <a id="lnk-alert-pathway-new--{{drow.id}}" href="{% url 'ks123pathways.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
-            </div>
-            {% endif %}
-            
-            <!-- TODO: #464 create as tag department_has_no_schemesofwork__alert with parameters institute_id, department_id, number_of_schemesofwork -->            
-            {% if drow.number_of_schemes_of_work == 0 %}
-            <div class="alert alert-warning" role="alert">
-                {{_('To create your first scheme of work')}} <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
-            </div>
-            {% endif %}
-
 
             <!-- Scheme of works -->
             {% for srow in drow.schemes_of_work %}

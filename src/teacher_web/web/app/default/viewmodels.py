@@ -1,4 +1,5 @@
 import io
+from django.urls import reverse
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
@@ -14,6 +15,8 @@ from shared.view_model import ViewModel
 class DefaultIndexViewModel(BaseViewModel):
     
     def __init__(self, db, top, auth_user):
+        super().__init__(auth_user)
+
         self.latest_schemes_of_work = []
         self.schemes_of_work = []
         self.institutes = []
@@ -50,8 +53,16 @@ class DefaultIndexViewModel(BaseViewModel):
             "departments": self.departments,
             "institutes": self.institutes,
         }
+
+        for dep in self.departments:
+            if dep.number_of_topics == 0:
+                self.error_messages.append({"message":f"{dep.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, dep.id])})
+            if dep.number_of_topics and dep.number_of_pathways == 0:
+                self.alert_messages.append({"message":f"{dep.name}: Pathways allow mapped progress between different key stages. To add your first topic", "action": reverse('ks123pathways.new', args=[self.auth_user.institute_id, dep.id])})
+            if dep.number_of_schemes_of_work == 0:
+                self.info_messages.append({"message":f"{dep.name}: To create your first scheme of work", "action":reverse('schemesofwork.new', args=[self.auth_user.institute_id, dep.id]) })
         
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, alert_message=self.alert_message, alert_messages=self.alert_messages, error_message=self.error_message, error_messages=self.error_messages, info_messages=self.info_messages)
 
 
 class KeywordSaveViewModel(BaseViewModel):

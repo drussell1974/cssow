@@ -5,12 +5,20 @@ import traceback
 class BaseViewModel:
     model = None
     error_message = ""
+    error_messages = []
     alert_message = ""
+    alert_messages = []
+    info_messages = []
     saved = False
     stack_trace = ""
 
     def __init__(self, ctx):
         
+        # clear messages
+        self.alert_messages = []
+        self.error_messages = []
+        self.info_messages = []
+
         self.return_url = "" # 
 
         if ctx is not None:
