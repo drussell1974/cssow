@@ -1,10 +1,7 @@
 ALTER TABLE `sow_topic` 
-MODIFY COLUMN created DATETIME DEFAULT CURRENT_TIMESTAMP,
-MODIFY COLUMN modified DATETIME ON UPDATE CURRENT_TIMESTAMP after created_by,
-ADD INDEX `fk_sow_topic__has__created_by_user_idx` (`created_by` ASC),
-ADD INDEX `fk_sow_topic__has__modified_by_user_idx` (`modified_by` ASC),
-ADD CONSTRAINT `fk_sow_topic__has__parent_topic_id`
-  FOREIGN KEY (`parent_id`)
-  REFERENCES `sow_topic` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
+ADD COLUMN department_id INT NOT NULL DEFAULT 5 after name,
+ADD CONSTRAINT `fk_sow_topic__has__department_id`
+  FOREIGN KEY (`department_id`)
+  REFERENCES `sow_department` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;

@@ -41,7 +41,7 @@ class test_db_topic__get_options__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                'topic__get_options'
+                'topic__get_options$2'
                 , (1, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -51,7 +51,7 @@ class test_db_topic__get_options__level_1(TestCase):
     def test__should_call__select__return_single_items(self, mock_auth_user):
         # arrange
 
-        expected_result = [(1,"Operators","X","X")]
+        expected_result = [(1,"Operators", 13, "X","X")]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
@@ -60,19 +60,20 @@ class test_db_topic__get_options__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'topic__get_options'
+                'topic__get_options$2'
                 , (2, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, len(rows))
-            self.assertEqual("Operators", rows[0]["name"], "First item not as expected")
+            self.assertEqual("Operators", rows[0]["name"])
+            self.assertEqual(13, rows[0]["department_id"])
         
 
 
     def test__should_call__select__return_multiple_items(self, mock_auth_user):
         # arrange
         
-        expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
+        expected_result = [(1,"Binary",13,"X","X"),(2,"Operators",13,"X","X"),(3,"Data compression",13,"X","X")]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
@@ -82,10 +83,15 @@ class test_db_topic__get_options__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'topic__get_options'
+                'topic__get_options$2'
                 , (3, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))
-            self.assertEqual("Binary", rows[0]["name"], "First item not as expected")
-            self.assertEqual("Data compression", rows[len(rows)-1]["name"], "Last item not as expected")
+        
+            self.assertEqual("Binary", rows[0]["name"])
+            self.assertEqual(13, rows[0]["department_id"])
+        
+            self.assertEqual("Data compression", rows[len(rows)-1]["name"])
+            self.assertEqual(13, rows[len(rows)-1]["department_id"])
+        

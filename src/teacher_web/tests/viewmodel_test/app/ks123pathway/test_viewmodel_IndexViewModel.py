@@ -46,7 +46,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         
         # arrange
         fake_model = Model(34, "", year_id=7, topic_id=3, ctx=None)
-        fake_model.topic = TopicModel(3, "Hardware")
+        fake_model.topic = TopicModel(3, "Hardware", department_id=13)
         fake_model.year = YearModel(13, "Year 13")
  
  
@@ -74,15 +74,15 @@ class test_viewmodel_IndexViewModel(TestCase):
         # arrange
         
         fake_model1 = Model(91, "Tic", year_id=7, topic_id=3, ctx=mock_auth_user)
-        fake_model1.topic = TopicModel(3, "Hardware")
+        fake_model1.topic = TopicModel(3, "Hardware", department_id=13)
         fake_model1.year = YearModel(7, "Year 7")
 
         fake_model2 = Model(92, "Tac", year_id=7, topic_id=3, ctx=mock_auth_user)
-        fake_model2.topic = TopicModel(1, "Algorithms")
+        fake_model2.topic = TopicModel(1, "Algorithms", department_id=13)
         fake_model2.year = YearModel(7, "Year 7")
 
         fake_model3 = Model(93, "Toe", year_id=8, topic_id=3, ctx=mock_auth_user)
-        fake_model3.topic = TopicModel(3, "Hardware")
+        fake_model3.topic = TopicModel(3, "Hardware", department_id=13)
         fake_model3.year = YearModel(8, "Year 8")
 
         data_to_return = [fake_model1, fake_model2, fake_model3]

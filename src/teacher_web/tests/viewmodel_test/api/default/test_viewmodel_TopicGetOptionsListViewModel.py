@@ -47,7 +47,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56, name="Nullam")]
+        data_to_return = [Model(56, name="Nullam", department_id=13)]
         
         with patch.object(Model, "get_options", return_value=data_to_return):
 
@@ -68,7 +68,7 @@ class test_viewmodel_TopicGetOptionsListViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56, name="placerat"),Model(57, name="Aenean"),Model(58, name="Praesent")]
+        data_to_return = [Model(56, name="placerat", department_id=13),Model(57, name="Aenean", department_id=13),Model(58, name="Praesent", department_id=13)]
         
         with patch.object(Model, "get_options", return_value=data_to_return):
 
