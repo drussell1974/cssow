@@ -14,7 +14,12 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'topic.index' content.ctx.institute_id content.ctx.department_id %}">
-                    {{_("Manage topics")}} <div class="small"></div>
+                    {{_("Topics")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}">
+                    {{_("Pathways")}} <div class="small"></div>
                   </a>
                 </li>
                 <li class="nav-item">
