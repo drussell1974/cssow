@@ -2,7 +2,7 @@
 from .core.db_helper import ExecHelper, sql_safe
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.publlished import STATE
-from shared.models.core.basemodel import BaseModel
+from shared.models.core.basemodel import BaseModel, try_int
 
 
 class TopicModel(BaseModel):
@@ -66,6 +66,22 @@ class TopicModel(BaseModel):
         return data
 
 
+    @staticmethod
+    def save(db, model, auth_ctx, published=STATE.PUBLISH):
+        if try_int(published) == STATE.DELETE:
+            rval = TopicDataAccess._delete(db, model, auth_ctx.auth_user_id)
+            # TODO: check row count before updating
+            model.published = STATE.DELETE
+        else:
+            if model.is_new() == True:
+                new_id = TopicDataAccess._insert(db, model, published, auth_user_id=auth_ctx.auth_user_id)
+                model.id = new_id[0]
+            else:
+                TopicDataAccess._update(db, model, published, auth_user_id=auth_ctx.auth_user_id)
+
+        return model
+
+
 class TopicDataAccess:
     
     @staticmethod
@@ -103,3 +119,58 @@ class TopicDataAccess:
 
         except Exception as e:
             raise Exception("Error getting topics", e)
+
+
+
+    @staticmethod
+    def _insert(db, model, published, auth_user_id):
+        """ inserts the sow_topic """
+        execHelper = ExecHelper()
+
+        sql_insert_statement = "topic__insert"
+        params = (
+            model.id,
+            model.name,
+            model.department_id,
+            int(published),
+            auth_user_id
+        )
+
+        result = execHelper.insert(db, sql_insert_statement, params, handle_log_info)
+
+        return result
+
+
+    @staticmethod
+    def _update(db, model, published, auth_user_id):
+        """ updates the topic"""
+        
+        execHelper = ExecHelper()
+        
+        str_update = "topic__update"
+        params = (
+            model.id,
+            model.name,
+            model.department_id,
+            int(published),
+            auth_user_id
+        )
+        
+        result = execHelper.update(db, str_update, params, handle_log_info)
+
+        return result
+
+
+    @staticmethod
+    def _delete(db, model, auth_user_id):
+
+        execHelper = ExecHelper()
+
+        sql = "topic__delete"
+        params = (model.id, auth_user_id)
+    
+        #271 Stored procedure
+        rows = execHelper.delete(db, sql, params, handle_log_info)
+        
+        return rows
+
