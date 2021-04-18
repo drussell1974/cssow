@@ -60,7 +60,9 @@ class DepartmentModel(DepartmentContextModel):
         self.description = description
         self.institute = institute
         self.number_of_schemes_of_work = 0
-        
+        self.number_of_topics = 0
+        self.number_of_pathways = 0
+
 
     def validate(self, skip_validation = []):
         """ clean up and validate model """
@@ -105,7 +107,9 @@ class DepartmentModel(DepartmentContextModel):
             model.institute_id = row[2]
 
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
-
+            model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
+            model.number_of_pathways = DepartmentModel.get_number_of_pathways(db, model.id, auth_user)
+            
             data.append(model)
         return data
 
@@ -127,6 +131,8 @@ class DepartmentModel(DepartmentContextModel):
                                     published=row[5])
             
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
+            model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
+            model.number_of_pathways = DepartmentModel.get_number_of_pathways(db, model.id, auth_user)
             
             data.append(model)
         return data
@@ -170,6 +176,18 @@ class DepartmentModel(DepartmentContextModel):
     @staticmethod
     def get_number_of_schemes_of_work(db, department_id, auth_user):
         scalar_result = DepartmentDataAccess.get_number_of_schemes_of_work(db, department_id, auth_user.auth_user_id)
+        return scalar_result
+
+
+    @staticmethod
+    def get_number_of_topics(db, department_id, auth_user):
+        scalar_result = DepartmentDataAccess.get_number_of_topics(db, department_id, auth_user.auth_user_id)
+        return scalar_result
+
+
+    @staticmethod
+    def get_number_of_pathways(db, department_id, auth_user):
+        scalar_result = DepartmentDataAccess.get_number_of_pathways(db, department_id, auth_user.auth_user_id)
         return scalar_result
 
 
@@ -271,13 +289,46 @@ class DepartmentDataAccess:
 
         except Exception as e:
             raise Exception("Error getting departments", e)
-          
+
+
     @staticmethod
     def get_number_of_schemes_of_work(db, department_id, auth_user_id):
         execHelper = ExecHelper()
         execHelper.begin(db)
         
         select_sql = "department__get_number_of_schemes_of_work"
+        params = (department_id, auth_user_id)
+
+        result = []
+        result = execHelper.scalar(db, select_sql, result, handle_log_info, params)
+
+        if result is not None and len(result) > 0:
+            result = result[0]
+        return result
+
+
+    @staticmethod
+    def get_number_of_topics(db, department_id, auth_user_id):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
+        
+        select_sql = "department__get_number_of_topics"
+        params = (department_id, auth_user_id)
+
+        result = []
+        result = execHelper.scalar(db, select_sql, result, handle_log_info, params)
+
+        if result is not None and len(result) > 0:
+            result = result[0]
+        return result
+
+
+    @staticmethod
+    def get_number_of_pathways(db, department_id, auth_user_id):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
+        
+        select_sql = "department__get_number_of_pathways"
         params = (department_id, auth_user_id)
 
         result = []

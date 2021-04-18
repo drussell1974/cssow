@@ -51,7 +51,8 @@ class test__get_options(TestCase):
                 , []
                 , handle_log_info)
 
-            self.assertEqual(0, len(rows))
+            self.assertEqual(1, len(rows))
+            self.assertEqual(("","- Select level taught up to -"), rows[0])
 
 
     def test__should_call__select__single_items(self):
@@ -72,8 +73,9 @@ class test__get_options(TestCase):
                 , []
                 , handle_log_info)
 
-            self.assertEqual(1, len(rows))
-            self.assertEqual((1,"GCSE"), rows[0])
+            self.assertEqual(2, len(rows))
+            self.assertEqual(("","- Select level taught up to -"), rows[0])
+            self.assertEqual((1,"GCSE"), rows[1])
             
 
     def test__should_call__select__multiple_items(self):
@@ -94,8 +96,9 @@ class test__get_options(TestCase):
                 , []
                 , handle_log_info)
 
-            self.assertEqual(3, len(rows))
+            self.assertEqual(4, len(rows))
 
-            self.assertEqual((1,"GCSE"), rows[0])
+            self.assertEqual(("","- Select level taught up to -"), rows[0])
+            self.assertEqual((1,"GCSE"), rows[1])
 
             self.assertEqual((3,"NVQ"), rows[len(rows)-1])

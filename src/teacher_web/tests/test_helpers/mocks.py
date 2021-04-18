@@ -2,14 +2,32 @@ from datetime import datetime
 from unittest.mock import Mock, MagicMock, patch
 from shared.models.cls_academic_year import AcademicYearModel
 from shared.models.cls_academic_year_period import AcademicYearPeriodModel
-from shared.models.cls_department import DepartmentContextModel
-from shared.models.cls_institute import InstituteContextModel
+from shared.models.cls_department import DepartmentContextModel, DepartmentModel
+from shared.models.cls_institute import InstituteContextModel, InstituteModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel, SchemeOfWorkContextModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.core.context import AuthCtx, Ctx, AcademicYearCtx
+
+def fake_institute(id=1276711):
+    institute = InstituteModel(id, "Lorem Ipsum")
+    institute.number_of_departments = 2
+    institute.departments.append(fake_department(67, institute))
+    institute.departments.append(fake_department(76, institute))
+    
+    return institute
+
+
+def fake_department(id, institute):
+    department = DepartmentModel(id, "Lorem Ipsum", institute=institute)
+    department.number_of_schemes_of_work = 3
+    department.number_of_topics = 2
+    department.number_of_pathways = 10
+
+    return department
+
 
 def mock_scheme_of_work(id=99, name="A-Level Computer Science", is_from_db=True, ctx=Ctx(1276711, 826)):
     return SchemeOfWorkModel(id, name=name, study_duration=1, start_study_in_year=12, is_from_db=is_from_db, auth_user=ctx)

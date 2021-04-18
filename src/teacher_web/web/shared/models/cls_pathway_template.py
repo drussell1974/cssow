@@ -41,6 +41,8 @@ class PathwayTemplateModel(BaseModel):
     def get_options(db):
         rows = PathwayTemplateAccess.get_options(db)
         data = []
+        # default option
+        data.append(("", "- Select level taught up to -"))
         for row in rows:
             model = PathwayTemplateModel(row[0], row[1])
             data.append((model.id, model.name))

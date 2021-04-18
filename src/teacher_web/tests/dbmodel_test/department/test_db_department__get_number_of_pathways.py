@@ -5,7 +5,7 @@ from shared.models.core.db_helper import ExecHelper
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
+class test_DepartmentDataAccess__get_number_of_pathways(TestCase):
 
     def setUp(self):
         ' fake database context '
@@ -25,7 +25,7 @@ class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
         with patch.object(ExecHelper, "scalar", side_effect=expected_result):
             # act and assert
             with self.assertRaises(KeyError):
-                Model.get_number_of_schemes_of_work(self.fake_db, department_id=67, auth_user=mock_ctx)
+                Model.get_number_of_pathways(self.fake_db, department_id=67, auth_user=mock_ctx)
             
 
     def test__should_call__scalar__no_items(self, mock_ctx):
@@ -36,12 +36,12 @@ class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
                 
             # act
             
-            result = Model.get_number_of_schemes_of_work(self.fake_db, 12776111277611, auth_user = mock_ctx)
+            result = Model.get_number_of_pathways(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.scalar.assert_called_with(self.fake_db,
-                'department__get_number_of_schemes_of_work'
+                'department__get_number_of_pathways'
                 , []
                 , handle_log_info
                 , (12776111277611, mock_ctx.auth_user_id,))
@@ -57,12 +57,12 @@ class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
             
             # act
 
-            rows = Model.get_number_of_schemes_of_work(self.fake_db, 12776111277611, auth_user = mock_ctx)
+            rows = Model.get_number_of_pathways(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.scalar.assert_called_with(self.fake_db, 
-                'department__get_number_of_schemes_of_work'
+                'department__get_number_of_pathways'
                 , []
                 , handle_log_info
                 , (12776111277611, mock_ctx.auth_user_id,))
@@ -77,12 +77,12 @@ class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
 
         with patch.object(ExecHelper, "scalar", return_value=expected_result):
             # act
-            rows = Model.get_number_of_schemes_of_work(self.fake_db, 12776111277611, auth_user = mock_ctx)
+            rows = Model.get_number_of_pathways(self.fake_db, 12776111277611, auth_user = mock_ctx)
             
             # assert
 
             ExecHelper.scalar.assert_called_with(self.fake_db, 
-                'department__get_number_of_schemes_of_work'
+                'department__get_number_of_pathways'
                 , []
                 , handle_log_info
                 , (12776111277611, mock_ctx.auth_user_id,))

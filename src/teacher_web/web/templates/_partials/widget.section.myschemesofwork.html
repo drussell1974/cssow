@@ -8,10 +8,34 @@
               <i class="fa fa-list" data-toggle="tooltip" data-placement="top" title="Go to {{row.name}} departments"></i>
             </a>
           </h2>
+
           {% for drow in row.departments %}
-          <h3>
-              {{ drow.name }} 
-          </h3>
+            
+              <h3>
+                {{ drow.name }} 
+              </h3>
+            
+            <!-- TODO: #464 create as tag department_has_no_topics__alert with parameters institute_id, department_id, number_of_topics -->
+            {% if drow.number_of_topics == 0 %}
+            <div class="alert alert-danger" role="alert">
+                {{_('You must create topics before you can create lessons. To add your first topic')}} <a id="lnk-alert-topic-new--{{drow.id}}" href="{% url 'topic.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
+            </div>
+            {% endif %}
+
+            <!-- TODO: #464 create as tag department_has_no_pathways__alert with parameters institute_id, department_id, number_of_topics, number_of_pathways -->            
+            {% if drow.number_of_topics > 0 and drow.number_of_pathways == 0 %}
+            <div class="alert alert-info" role="alert">
+                {{_('Pathways allow mapped progress between different key stages. To add your first topic')}} <a id="lnk-alert-pathway-new--{{drow.id}}" href="{% url 'ks123pathways.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
+            </div>
+            {% endif %}
+            
+            <!-- TODO: #464 create as tag department_has_no_schemesofwork__alert with parameters institute_id, department_id, number_of_schemesofwork -->            
+            {% if drow.number_of_schemes_of_work == 0 %}
+            <div class="alert alert-warning" role="alert">
+                {{_('To create your first scheme of work')}} <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="font-weight-bold">{{_('click here')}}</a>
+            </div>
+            {% endif %}
+
 
             <!-- Scheme of works -->
             {% for srow in drow.schemes_of_work %}
@@ -37,19 +61,16 @@
             
             <!-- Scheme of works END -->
             <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
-              {{_("Pathways")}}
+              {{_("Pathways")}} <span class="badge badge-info">{{drow.number_of_pathways}}</span>
             </a>
             <a id="lnk-topic-index--{{drow.id}}" href="{% url 'topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
-              {{_("Topics")}}
+              {{_("Topics")}} <span class="badge badge-info">{{drow.number_of_topics}}</span>
             </a>
-            <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.new' row.id drow.id %}" class="btn btn-outline-dark stackable">
-              {{_("Add scheme of work")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
+            <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+              {{_("Schemes of work")}} <span class="badge badge-info">{{drow.number_of_schemes_of_work}}</span>
             </a>
           
           {% endfor %}
-          <a id="lnk-schemeofwork-keywords--{{row.id}}" href="{% url 'department.new' row.id %}" class="btn btn-outline-dark stackable">
-            {{_("Add department")}} <span class="badge badge-light">{{row.number_of_schemes_of_work}}</span>
-          </a>
           
         </div>
         <hr>

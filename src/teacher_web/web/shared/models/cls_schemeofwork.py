@@ -97,7 +97,7 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         # Validate name
         self._validate_required_string("name", self.name, 1, 40)
         # Validate description
-        self._validate_required_string("description", self.description, 1, 1500)
+        self._validate_optional_string("description", self.description, 1500)
         # Validate exam board
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
