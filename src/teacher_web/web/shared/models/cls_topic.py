@@ -10,12 +10,13 @@ class TopicModel(BaseModel):
     name = ""
     department_id = 0
 
-    def __init__(self, id_, name, department_id, lvl=1, created = "", created_by = ""):
+    def __init__(self, id_, name, lvl=1, all_topic_names=[], created = "", created_by = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_ctx=None):
+        super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=auth_ctx)
+
         self.id = id_
         self.name = name
-        self.department_id = department_id
         self.lvl = lvl
-        self.all_topic_names = [] # not implemented
+        self.all_topic_names = all_topic_names # not implemented
         self.created = created
         self.created_by = created_by
 
@@ -42,12 +43,24 @@ class TopicModel(BaseModel):
 
 
     @staticmethod
-    def get_options(db, lvl, auth_user, topic_id = 0):
-        rows = TopicDataAccess.get_options(db, lvl, auth_user_id=auth_user.auth_user_id, topic_id=topic_id, show_published_state=STATE.PUBLISH)
+    def get_model(db, topic_id, auth_ctx):
+        rows = TopicDataAccess.get_model(db, topic_id=topic_id, department_id=auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id, show_published_state=STATE.PUBLISH)
+        model = None
+        
+        for row in rows:
+            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
+            model.on_fetched_from_db()
+            return model
+        return model
+
+
+    @staticmethod
+    def get_options(db, lvl, auth_ctx, topic_id = 0):
+        rows = TopicDataAccess.get_options(db, lvl, department_id=auth_ctx.department_id, auth_user_id=auth_ctx.auth_user_id, topic_id=topic_id, show_published_state=STATE.PUBLISH)
         data = []
         
         for row in rows:
-            model = TopicModel(row[0], name=row[1], department_id=row[2], created=row[3], created_by=row[4])
+            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
         return data
@@ -56,12 +69,30 @@ class TopicModel(BaseModel):
 class TopicDataAccess:
     
     @staticmethod
-    def get_options(db, lvl, auth_user_id, show_published_state=STATE.PUBLISH, topic_id = 0):
+    def get_model(db, topic_id, department_id, auth_user_id, show_published_state=STATE.PUBLISH):
+        
+        execHelper = ExecHelper()
+
+        str_select = "topic__get_model"
+        params = (topic_id, department_id, int(show_published_state), auth_user_id)
+
+        try:
+            rows = []
+            rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+            
+            return rows
+
+        except Exception as e:
+            raise Exception("Error getting topic {}".format(topic_id), e)
+
+
+    @staticmethod
+    def get_options(db, lvl, department_id, auth_user_id, show_published_state=STATE.PUBLISH, topic_id = 0):
         
         execHelper = ExecHelper()
 
         str_select = "topic__get_options$2"
-        params = (topic_id, lvl, int(show_published_state), auth_user_id)
+        params = (topic_id, department_id, lvl, int(show_published_state), auth_user_id)
 
         try:
             rows = []

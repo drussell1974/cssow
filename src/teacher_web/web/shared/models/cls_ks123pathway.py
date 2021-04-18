@@ -84,7 +84,7 @@ class KS123PathwayModel(BaseModel):
         for row in rows:
             model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6], ctx=auth_ctx)
             model.year = YearModel(row[2], row[3])
-            model.topic = TopicModel(row[4], name=row[5], department_id=auth_ctx.department_id)
+            model.topic = TopicModel(row[4], name=row[5], auth_ctx=auth_ctx)
             
             return model        
         return model
@@ -98,7 +98,7 @@ class KS123PathwayModel(BaseModel):
         for row in rows:
             model = KS123PathwayModel(row[0], row[1], year_id=row[2], topic_id=row[4], published = row[6], ctx=auth_ctx)
             model.year = YearModel(row[2], row[3])
-            model.topic = TopicModel(row[4], row[5], department_id=auth_ctx.department_id)
+            model.topic = TopicModel(row[4], row[5], auth_ctx=auth_ctx.department_id)
 
             data.append(model)
         

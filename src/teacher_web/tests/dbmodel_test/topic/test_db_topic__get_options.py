@@ -37,12 +37,12 @@ class test_db_topic__get_options__level_1(TestCase):
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
 
-            rows = Model.get_options(self.fake_db, lvl = 2, auth_user=mock_auth_user, topic_id = 1)
+            rows = Model.get_options(self.fake_db, lvl = 2, auth_ctx=mock_auth_user, topic_id = 1)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 'topic__get_options$2'
-                , (1, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (1, mock_auth_user.department_id, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(0, len(rows))
@@ -51,47 +51,45 @@ class test_db_topic__get_options__level_1(TestCase):
     def test__should_call__select__return_single_items(self, mock_auth_user):
         # arrange
 
-        expected_result = [(1,"Operators", 13, "X","X")]
+        expected_result = [(1,"Operators", "X","X")]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
             # act
-            rows = Model.get_options(self.fake_db, lvl = 2, auth_user=mock_auth_user, topic_id = 2)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 2, auth_ctx=mock_auth_user)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options$2'
-                , (2, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (2, mock_auth_user.department_id, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(1, len(rows))
             self.assertEqual("Operators", rows[0]["name"])
-            self.assertEqual(13, rows[0]["department_id"])
+            #self.assertEqual(13, rows[0]["department_id"])
         
 
 
     def test__should_call__select__return_multiple_items(self, mock_auth_user):
         # arrange
         
-        expected_result = [(1,"Binary",13,"X","X"),(2,"Operators",13,"X","X"),(3,"Data compression",13,"X","X")]
+        expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
             # act
             
-            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 3, auth_user=mock_auth_user)
+            rows = Model.get_options(self.fake_db, lvl = 2, topic_id = 3, auth_ctx=mock_auth_user)
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
                 'topic__get_options$2'
-                , (3, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
+                , (3, mock_auth_user.department_id, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
             self.assertEqual(3, len(rows))
         
             self.assertEqual("Binary", rows[0]["name"])
-            self.assertEqual(13, rows[0]["department_id"])
         
             self.assertEqual("Data compression", rows[len(rows)-1]["name"])
-            self.assertEqual(13, rows[len(rows)-1]["department_id"])
         

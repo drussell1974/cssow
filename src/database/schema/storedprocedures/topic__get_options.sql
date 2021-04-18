@@ -5,13 +5,13 @@ DROP PROCEDURE IF EXISTS topic__get_options$2;
 CREATE PROCEDURE topic__get_options$2 (
  IN p_topic_id INT,
  IN p_lvl INT,
+ IN p_department_id INT,
  IN p_show_published_state INT,
  IN p_auth_user INT)
 BEGIN
     SELECT 
         id, 
         name, 
-        department_id,
         created, 
         created_by 
     FROM 
