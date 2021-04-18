@@ -4,6 +4,7 @@ import traceback
 from rest_framework import serializers, status
 from django.conf import settings
 from django.http.response import Http404
+from django.urls import reverse
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
 from shared.models.cls_department import DepartmentModel
@@ -36,7 +37,15 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
             "schemes_of_work":self.model
         }
         
-        return ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", ctx=self.auth_user, data=data)
+        number_of_topics = DepartmentModel.get_number_of_topics(self.db, department_id=self.auth_user.department_id, auth_user=self.auth_user)
+        if number_of_topics == 0:
+            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
+        for sow in self.model:
+            number_of_content = Model.get_number_of_contents(self.db, try_int(sow["id"]), auth_user=self.auth_user)
+            if number_of_content == 0:
+                self.alert_messages.append({"message":f"{sow['name']}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[self.auth_user.institute_id, self.auth_user.department_id, try_int(sow["id"])])})
+
+        return ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", ctx=self.auth_user, data=data, alert_messages=self.alert_messages)
 
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):

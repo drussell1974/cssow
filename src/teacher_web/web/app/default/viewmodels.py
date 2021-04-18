@@ -56,7 +56,7 @@ class DefaultIndexViewModel(BaseViewModel):
 
         for dep in self.departments:
             if dep.number_of_topics == 0:
-                self.error_messages.append({"message":f"{dep.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, dep.id])})
+                self.alert_messages.append({"message":f"{dep.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, dep.id])})
             if dep.number_of_topics and dep.number_of_pathways == 0:
                 self.alert_messages.append({"message":f"{dep.name}: Pathways allow mapped progress between different key stages. To add your first topic", "action": reverse('ks123pathways.new', args=[self.auth_user.institute_id, dep.id])})
             if dep.number_of_schemes_of_work == 0:

@@ -63,7 +63,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
         
         number_of_topics = DepartmentModel.get_number_of_topics(self.db, department_id=self.auth_ctx.department_id, auth_user=self.auth_ctx)
         if number_of_topics == 0:
-            self.error_messages.append({"message":"You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_ctx.institute.id, self.auth_ctx.department.id])})
+            self.alert_messages.append({"message":"You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_ctx.institute.id, self.auth_ctx.department.id])})
 
         return ViewModel(self.department.name, self.department.name, "KS123 Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, alert_messages=self.alert_messages, error_message=self.error_message, error_messages=self.error_messages)
 

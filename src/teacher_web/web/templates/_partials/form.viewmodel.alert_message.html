@@ -27,7 +27,7 @@
 {% endif %}
 {% for alert in content.alert_message.alert_messages %}
 <div class="alert alert-warning small" role="alert">
-    <i class="fa fa-bell-on"></i> {{ alert.message }} <a id="lnk-alert" href="{{ alert.action }}" class="font-weight-bold">{{_('click here')}}</a>
+    <i class="fa fa-bell"></i> {{ alert.message }} <a id="lnk-alert" href="{{ alert.action }}" class="font-weight-bold">{{_('click here')}}</a>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>

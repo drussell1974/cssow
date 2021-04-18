@@ -1,13 +1,15 @@
 import json
 from django.conf import settings
 from django.http import Http404
+from django.urls import reverse
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.publlished import STATE 
 from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -63,8 +65,15 @@ class LessonIndexViewModel(BaseViewModel):
             "search_criteria": self.search_criteria,
             "STUDENT_WEB__WEB_SERVER_WWW": settings.STUDENT_WEB__WEB_SERVER_WWW
         }
+        
+        number_of_topics = DepartmentModel.get_number_of_topics(self.db, department_id=self.auth_user.department_id, auth_user=self.auth_user)
+        if number_of_topics == 0:
+            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
+        number_of_content = SchemeOfWorkModel.get_number_of_contents(self.db, self.scheme_of_work_id, auth_user=self.auth_user)
+        if number_of_content == 0:
+            self.alert_messages.append({"message":f"{self.scheme_of_work_name}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[self.auth_user.institute_id, self.auth_user.department_id, self.scheme_of_work_id])})
 
-        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message, error_messages=self.error_messages, alert_message=self.alert_message, alert_messages=self.alert_messages)
 
 
 class LessonGetModelViewModel(BaseViewModel):

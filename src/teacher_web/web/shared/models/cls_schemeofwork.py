@@ -339,6 +339,15 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
 
     @staticmethod
+    def get_number_of_contents(db, scheme_of_work_id, auth_user):
+        number_of_contents = 0
+        rows = SchemeOfWorkDataAccess.get_number_of_contents(db, scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+        for row in rows:
+            number_of_contents = row[0]   
+        return number_of_contents
+
+
+    @staticmethod
     def get_all_keywords(db, scheme_of_work_id, auth_user):
         rows = SchemeOfWorkDataAccess.get_all_keywords(db, scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
         data = []
@@ -610,6 +619,22 @@ class SchemeOfWorkDataAccess:
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_lessons"
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
+        execHelper.end()
+
+        return rows
+
+
+    @staticmethod
+    def get_number_of_contents(db, scheme_of_work_id, department_id, institute_id, auth_user_id, show_published_state=STATE.PUBLISH):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
+        
+        select_sql = "scheme_of_work__get_number_of_contents"
         params = (scheme_of_work_id, int(show_published_state), auth_user_id)
 
         rows = []

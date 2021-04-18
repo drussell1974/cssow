@@ -12,9 +12,10 @@ from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
+from shared.models.cls_content import ContentModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_lesson_schedule import LessonScheduleModel
-from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
@@ -41,7 +42,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, les
     pagesize = settings.PAGER["default"]["pagesize"]
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
-
+    
     lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_ctx)
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
@@ -157,9 +158,17 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "lesson": model,
         "ks123_pathways": ks123_pathways,
         "lesson_schedule": lesson_schedule
-    }
+    }   
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
+    alert_messages = []
+    number_of_topics = DepartmentModel.get_number_of_topics(db, department_id=auth_ctx.department_id, auth_user=auth_ctx)
+    if number_of_topics == 0:
+        alert_messages.append({"message":f"{auth_ctx.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[auth_ctx.institute.id, auth_ctx.department.id])})
+    number_of_content = 0 # SchemeOfWorkModel.get_number_of_contents(db, scheme_of_work_id, auth_ctx=auth_ctx)
+    if number_of_content == 0:
+        alert_messages.append({"message":f"{scheme_of_work.name}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[auth_ctx.institute.id, auth_ctx.department.id, scheme_of_work_id])})
+       
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", alert_messages=alert_messages, error_message=error_message, wizard=wizard)
     
     return render(request, "lessons/edit.html", view_model.content)
 
