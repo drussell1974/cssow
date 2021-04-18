@@ -1,13 +1,12 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
-
-# test context
-
 from app.schemesofwork.viewmodels import SchemeOfWorkIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from shared.models.cls_keyword import KeywordModel
+from tests.test_helpers.mocks import *
 
 
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):        
@@ -18,7 +17,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_auth_user):
         
         # arrange
         
@@ -32,14 +31,14 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=mock_auth_user)
 
             # assert functions was called
             Model.get_all.assert_called()
             self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_auth_user):
         
         # arrange
         model = Model(56, name="Lorum", study_duration=2, start_study_in_year=10)
@@ -55,7 +54,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=mock_auth_user)
 
             # assert functions was called
             Model.get_all.assert_called()
@@ -65,7 +64,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(2, len(self.viewmodel.model[0].key_words))
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_auth_user):
         
         # arrange
         
@@ -79,7 +78,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db=db, auth_user=99)
+            self.viewmodel = ViewModel(db=db, auth_user=mock_auth_user)
 
             # assert functions was called
             Model.get_all.assert_called()
