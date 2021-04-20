@@ -9,7 +9,7 @@ from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
-class TopicIndexViewModel(BaseViewModel):
+class DepartmentTopicIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, auth_ctx):
         
@@ -46,7 +46,7 @@ class TopicIndexViewModel(BaseViewModel):
         return ViewModel(self.department.name, self.department.name, "Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
 
 
-class TopicEditViewModel(BaseViewModel):
+class DepartmentTopicEditViewModel(BaseViewModel):
 
     def __init__(self, db, request, auth_ctx, topic_id = 0):
 
@@ -55,15 +55,24 @@ class TopicEditViewModel(BaseViewModel):
         self.auth_ctx = auth_ctx
         self.department = auth_ctx.department
         self.topic_id = topic_id
+        self.parent_topic_id = 0
         
 
     def view(self):
-
-        self.model = TopicModel(0, "", self.auth_ctx)
         
+        self.model = TopicModel(0, name="", lvl=1, auth_ctx=self.auth_ctx)
+                
         if self.topic_id > 0:
-            self.model = TopicModel.get_model(self.db, self.topic_id, self.auth_ctx)
+            self.model = TopicModel.get_model(self.db, topic_id=self.topic_id, auth_ctx=self.auth_ctx)
 
+        # the parent topic is always the department "subject"
+        if self.model.parent is None:
+            self.model.parent = TopicModel.get_model(self.db, topic_id=self.auth_ctx.department.topic_id, auth_ctx=self.auth_ctx)
+            if self.model.parent is None:
+                raise Exception("must have parent topic")
+
+        self.model.parent_id = self.model.parent.id
+        
         # topic options TODO: allow sub-topics
         self.topic_options = TopicModel.get_options(self.db, lvl=1, auth_ctx=self.auth_ctx)
 
@@ -78,13 +87,14 @@ class TopicEditViewModel(BaseViewModel):
 
     def execute(self, published=STATE.PUBLISH):
         
-        self.model = TopicModel(0, "", self.auth_ctx)
+        self.model = TopicModel(0, name="", lvl=1, auth_ctx=self.auth_ctx)
         
         if self.topic_id > 0:
-            self.model = TopicModel.get_model(self.db, self.topic_id, auth_ctx=self.auth_ctx)
+            self.model = TopicModel.get_model(self.db, topic_id=self.topic_id, auth_ctx=self.auth_ctx)
         
         self.model.name = self.request.POST["name"]
         self.model.department_id = self.request.POST["department_id"]
+        self.model.lvl = self.request.POST["lvl"]
         self.model.published = STATE.parse(self.request.POST["published"])
         self.model.parent_id = self.request.POST["parent_id"]
 
@@ -103,14 +113,13 @@ class TopicEditViewModel(BaseViewModel):
         return self.model
 
 
-"""
-class LessonKeywordDeleteUnpublishedViewModel(BaseViewModel):
+class DepartmentTopicDeleteUnpublishedViewModel(BaseViewModel):
 
-    def __init__(self, db, scheme_of_work_id, lesson_id, auth_user):
-        data = Model.delete_unpublished(db, scheme_of_work_id, lesson_id=lesson_id, auth_user=auth_user)
+    def __init__(self, db, auth_user):
+        data = TopicModel.delete_unpublished(db, auth_user=auth_user)
         self.model = data
 
-
+"""
 class LessonKeywordPublishModelViewModel(BaseViewModel):
 
     def __init__(self, db, keyword_id, auth_user):

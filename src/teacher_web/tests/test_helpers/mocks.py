@@ -21,7 +21,7 @@ def fake_institute(id=1276711):
 
 
 def fake_department(id, institute):
-    department = DepartmentModel(id, "Lorem Ipsum", institute=institute)
+    department = DepartmentModel(id, "Lorem Ipsum", topic_id=3, institute=institute)
     department.number_of_schemes_of_work = 3
     department.number_of_topics = 2
     department.number_of_pathways = 10
@@ -73,7 +73,7 @@ def fake_ctx_model(dep=DEPARTMENT.NONE, sow=SCHEMEOFWORK.NONE, les=LESSON.NONE, 
     mock_db.cursor = MagicMock()
     
     with patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum")) as institute:
-        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True)) as department:
+        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", topic_id=3, is_from_db=True)) as department:
             with patch.object(SchemeOfWorkContextModel, "get_context_model", return_value = SchemeOfWorkContextModel(67, name="Nunc maximus purus", is_from_db=True)) as scheme_of_work:
                 with patch.object(AcademicYearModel, "get_model", return_value = fake_academic_year()) as academic_year:
                     with patch.object(AcademicYearModel, "get_all", return_value = fake_academic_years()) as academic_year:
@@ -114,7 +114,7 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
     #department = DepartmentContextModel(67, "Computer Science", is_from_db=True)
 
     with patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum")) as institute:
-        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True)) as department:
+        with patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", topic_id=3, is_from_db=True)) as department:
             
             institute.get = MagicMock(return_value="Lorum Ipsum")
             department.get = MagicMock(return_value="Computer Science")

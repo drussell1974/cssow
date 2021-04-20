@@ -163,7 +163,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     alert_messages = []
     number_of_topics = DepartmentModel.get_number_of_topics(db, department_id=auth_ctx.department_id, auth_user=auth_ctx)
     if number_of_topics == 0:
-        alert_messages.append({"message":f"{auth_ctx.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[auth_ctx.institute.id, auth_ctx.department.id])})
+        alert_messages.append({"message":f"{auth_ctx.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('department_topic.new', args=[auth_ctx.institute.id, auth_ctx.department.id])})
     number_of_content = 0 # SchemeOfWorkModel.get_number_of_contents(db, scheme_of_work_id, auth_ctx=auth_ctx)
     if number_of_content == 0:
         alert_messages.append({"message":f"{scheme_of_work.name}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[auth_ctx.institute.id, auth_ctx.department.id, scheme_of_work_id])})

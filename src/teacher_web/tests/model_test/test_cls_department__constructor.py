@@ -16,7 +16,7 @@ class test_cls_department__constructor(TestCase):
 
         # arrangee
 
-        self.test = DepartmentModel(0, "Lorem ipsum",  hod_id=12, institute=InstituteModel(2, "Lorem Ipsum"))
+        self.test = DepartmentModel(0, "Lorem ipsum", topic_id=3, hod_id=12, institute=InstituteModel(2, "Lorem Ipsum"))
 
         # assert
         self.assertEqual(0, self.test.id)
@@ -31,7 +31,7 @@ class test_cls_department__constructor(TestCase):
 
         # arrange
 
-        self.test = DepartmentModel(1, "Sor shurem", hod_id=56, description="Curabitur vulputate leo sed erat ultricies dapibus.", institute=InstituteModel(2, "Lorem Ipsum"))
+        self.test = DepartmentModel(1, "Sor shurem", topic_id=3, hod_id=56, description="Curabitur vulputate leo sed erat ultricies dapibus.", institute=InstituteModel(2, "Lorem Ipsum"))
 
         # self.test
         self.test.validate()

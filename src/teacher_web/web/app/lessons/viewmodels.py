@@ -69,7 +69,7 @@ class LessonIndexViewModel(BaseViewModel):
         
         number_of_topics = DepartmentModel.get_number_of_topics(self.db, department_id=self.auth_user.department_id, auth_user=self.auth_user)
         if number_of_topics == 0:
-            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
+            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('department_topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
         number_of_content = SchemeOfWorkModel.get_number_of_contents(self.db, self.scheme_of_work_id, auth_user=self.auth_user)
         if number_of_content == 0:
             self.alert_messages.append({"message":f"{self.scheme_of_work_name}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[self.auth_user.institute_id, self.auth_user.department_id, self.scheme_of_work_id])})

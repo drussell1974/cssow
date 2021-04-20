@@ -21,9 +21,16 @@ class InstituteContextModel(BaseContextModel):
     @classmethod
     def get_context_model(cls, db, institute_id, auth_user_id):
         
+        def set_attributes(model, row):
+            model.id = row[0]
+            model.name = row[1]
+            #model.parent_id = row[2] # TODO: create @property setter
+            model.created_by_id = row[3]
+            model.published = row[4]
+
         empty_model = cls.empty()
 
-        result = BaseContextModel.get_context_model(db, empty_model, "institute__get_context_model", handle_log_info, institute_id)
+        result = BaseContextModel.get_context_model(db, empty_model, set_attributes, "institute__get_context_model",  handle_log_info, institute_id)
         result.institute_id = institute_id
         
         return result if result is not None else None

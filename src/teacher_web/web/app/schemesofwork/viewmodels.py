@@ -41,7 +41,7 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
         
         number_of_topics = DepartmentModel.get_number_of_topics(self.db, department_id=self.auth_user.department_id, auth_user=self.auth_user)
         if number_of_topics == 0:
-            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
+            self.alert_messages.append({"message":f"{self.auth_user.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('department_topic.new', args=[self.auth_user.institute.id, self.auth_user.department.id])})
         for sow in self.model:
             number_of_content = Model.get_number_of_contents(self.db, try_int(sow["id"]), auth_user=self.auth_user)
             if number_of_content == 0:

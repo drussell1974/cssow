@@ -14,6 +14,7 @@ BEGIN
 		sow_department as dep ON dep.id = top.department_id
     WHERE
 		top.department_id = p_department_id
+        and top.lvl = 1
         and (top.published = 1); -- or p_auth_user IN (SELECT auth_user_id 
 													-- FROM sow_teacher 
 													-- WHERE auth_user_id = p_auth_user));

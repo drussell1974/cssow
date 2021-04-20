@@ -24,7 +24,7 @@ BEGIN
         sow_topic as cur
         LEFT JOIN sow_topic as pnt ON pnt.id = cur.parent_id
     WHERE 
-        cur.id = p_topic_id
+        cur.id = p_topic_id and cur.department_id = p_department_id
         and (p_show_published_state % cur.published = 0
 			or cur.created_by = p_auth_user
         );
@@ -34,3 +34,7 @@ END;
 DELIMITER ;
 
 CALL topic__get_model(0, 5, 1, 2);
+CALL topic__get_model(10009, 84, 1, 152);
+SELECT * FROM sow_topic;
+WHERE department_id = 84;
+

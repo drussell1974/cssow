@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase, skip
 from shared.models.cls_topic import TopicModel, handle_log_info
 from shared.models.enums.publlished import STATE
@@ -51,7 +52,7 @@ class test_db_topic__get_options__level_1(TestCase):
     def test__should_call__select__return_single_items(self, mock_auth_user):
         # arrange
 
-        expected_result = [(1,"Operators", "X","X")]
+        expected_result = [(2,"Operators", 2, datetime(2021, 4, 20), 2, 2, 1,"Algorithms", 1, datetime(2021, 4, 20), 2, 2)]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             
@@ -73,7 +74,10 @@ class test_db_topic__get_options__level_1(TestCase):
     def test__should_call__select__return_multiple_items(self, mock_auth_user):
         # arrange
         
-        expected_result = [(1,"Binary","X","X"),(2,"Operators","X","X"),(3,"Data compression","X","X")]
+        expected_result = [
+            (3, "Binary", 2, datetime(2021, 4, 20), 2, 1, 1, "Algorithms", 1, datetime(2021, 4, 20), 2, 2),
+            (4, "Operators", 2, datetime(2021, 4, 20), 2,  1, 1, "Algorithms", 1, datetime(2021, 4, 20), 2, 2),
+            (5, "Data compression", 2, datetime(2021, 4, 20), 2, 1, 1, "Algorithms", 1, datetime(2021, 4, 20), 2, 2)]
 
         with patch.object(ExecHelper, 'select',  return_value=expected_result):
             

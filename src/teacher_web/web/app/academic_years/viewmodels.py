@@ -14,8 +14,8 @@ from shared.view_model import ViewModel
 
 class AcademicYearIndexViewModel(DefaultIndexViewModel):
 
-    def __init__(self, db, institute_id, top, auth_user):
-        super().__init__(db, top, auth_user)
+    def __init__(self, db, institute_id, auth_user):
+        super().__init__(db, top=0, auth_user=auth_user)
         self.institute_id = institute_id
         self.institute = InstituteModel.get_model(db, id=institute_id, auth_user=auth_user)
         

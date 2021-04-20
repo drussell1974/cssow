@@ -47,7 +47,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'department__get_all'
+                'department__get_all$2'
                 , (12776111277611, int(STATE.PUBLISH_INTERNAL), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -61,7 +61,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
 
         mock_ctx = fake_ctx_model()
         
-        expected_result = [(1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)]
+        expected_result = [(1,"Computer Science", 3, 12776111277611, "Finibus Bonorum", "2020-07-21 17:09:34", 1, "test_user", 0)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -72,7 +72,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_all'
+                'department__get_all$2'
                 , (12776111277611, int(STATE.PUBLISH_INTERNAL), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -80,7 +80,9 @@ class test_DepartmentDataAccess__get_all(TestCase):
             DepartmentModel_get_number_of_schemes_of_work.assert_called_with(self.fake_db, 1, mock_ctx)
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
+            self.assertEqual("Computer Science", rows[0].name)
+            self.assertEqual("Finibus Bonorum", rows[0].institute.name)
+            self.assertEqual(3, rows[0].topic_id)
             
 
     @patch.object(Model, "get_number_of_schemes_of_work", return_value=10)
@@ -90,9 +92,9 @@ class test_DepartmentDataAccess__get_all(TestCase):
         mock_ctx = fake_ctx_model()
 
         expected_result = [
-            (1,"Computer Science", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0),
-            (2, "Business", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0), 
-            (3, "IT", 12776111277611, "2020-07-21 17:09:34", 1, "test_user", 0)
+            (1,"Computer Science", 3, 12776111277611, "Finibus Bonorum", "2020-07-21 17:09:34", 1, "test_user", 0),
+            (2, "Business", 2, 12776111277611, "Finibus Bonorum", "2020-07-21 17:09:34", 1, "test_user", 0), 
+            (3, "IT", 1, 12776111277611, "Lorem Ipsum", "2020-07-21 17:09:34", 1, "test_user", 0)
         ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -102,7 +104,7 @@ class test_DepartmentDataAccess__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_all'
+                'department__get_all$2'
                 , (12776111277611, int(STATE.PUBLISH_INTERNAL), mock_ctx.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -110,5 +112,10 @@ class test_DepartmentDataAccess__get_all(TestCase):
             DepartmentModel_get_number_of_schemes_of_work.assert_called_with(self.fake_db, 3, mock_ctx)
             
             self.assertEqual(3, len(rows))
-            self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
-            self.assertEqual("IT", rows[len(rows)-1].name, "Last item not as expected")
+            self.assertEqual("Computer Science", rows[0].name)
+            self.assertEqual("Finibus Bonorum", rows[0].institute.name)
+            self.assertEqual(3, rows[0].topic_id)
+
+            self.assertEqual("IT", rows[len(rows)-1].name)
+            self.assertEqual("Lorem Ipsum", rows[len(rows)-1].institute.name)
+            self.assertEqual(1, rows[len(rows)-1].topic_id)

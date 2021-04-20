@@ -7,7 +7,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-@patch.object(DepartmentModel, "get_my", return_value = [DepartmentModel(76, name="Lorum Ipsum", institute=InstituteModel(127671276711, "Lorem Ipsum"), is_from_db=True)])
+@patch.object(DepartmentModel, "get_my", return_value = [DepartmentModel(76, name="Lorum Ipsum", topic_id=3, institute=InstituteModel(127671276711, "Lorem Ipsum"), is_from_db=True)])
 @patch.object(InstituteModel, "get_my", return_value=[InstituteModel(127671276711, "Lorem Ipsum", is_from_db=True)])
 class test_viewmodel_IndexViewModel__my_schemes_of_work(TestCase):
 

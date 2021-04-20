@@ -9,24 +9,43 @@ from shared.models.utils.cache_proxy import CacheProxy
 class DepartmentContextModel(BaseContextModel):
     
     name = ""
+    topic_id = 0
 
-    def __init__(self, id_, name, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+    def __init__(self, id_, name, topic_id, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
         super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
         self.name = name
         self.hod_id = hod_id
+        self.topic_id = topic_id
+
+
+    def from_dict(self, dict_obj):
+        if type(dict_obj) is not dict:
+            raise TypeError(f"Value must be type dictionary (dict).{type(dict_obj)}")
+
+        self.topic_id = dict_obj.get("topic_id")
+        super().from_dict(dict_obj)
 
 
     @classmethod
     def empty(cls, published=STATE.DRAFT, ctx=None):
-        model = cls(id_=0, name="", published=published, ctx=ctx)
+        model = cls(id_=0, topic_id = 0, name="", published=published, ctx=ctx)
         return model
 
 
     @classmethod
     def get_context_model(cls, db, institute_id, department_id, auth_user_id):
+
+        def set_attributes(model, row):
+            model.id = row[0]
+            model.name = row[1]
+            model.topic_id = row[2]
+            model.institute_id = row[3]
+            model.created_by_id = row[4]
+            model.published = row[5]
+
         empty_model = cls.empty()
 
-        result = BaseContextModel.get_context_model(db, empty_model, "department__get_context_model", handle_log_info, institute_id, department_id)
+        result = BaseContextModel.get_context_model(db, empty_model, set_attributes, "department__get_context_model$2", handle_log_info, institute_id, department_id)
         result.institute_id = institute_id
         result.department_id = department_id
         
@@ -54,8 +73,8 @@ class DepartmentModel(DepartmentContextModel):
     number_of_schemes_of_work = 0
     institute_id = 0
 
-    def __init__(self, id_, name, institute, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
-        super().__init__(id_, name=name, hod_id=hod_id, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
+    def __init__(self, id_, name, institute, topic_id, description = "", hod_id = 0, created = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, ctx=None):
+        super().__init__(id_, name=name, topic_id=topic_id, hod_id=hod_id, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=ctx)
         
         self.description = description
         self.institute = institute
@@ -98,13 +117,14 @@ class DepartmentModel(DepartmentContextModel):
         for row in rows: 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
-                                    institute=InstituteModel(id_=row[2], name=row[5]), # TODO: #329 use institute name
-                                    created=row[3],                                                                                                                                                                                                                         
-                                    created_by_id=row[4],
-                                    created_by_name=row[5],
-                                    published=row[6])
+                                    topic_id=row[2],
+                                    institute=InstituteModel(id_=row[3], name=row[4]), # TODO: #329 use institute name
+                                    created=row[5],                                                                                                                                                                                                                         
+                                    created_by_id=row[6],
+                                    created_by_name=row[7],
+                                    published=row[8])
 
-            model.institute_id = row[2]
+            model.institute_id = row[3]
 
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
@@ -124,11 +144,12 @@ class DepartmentModel(DepartmentContextModel):
         for row in rows: 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
+                                    topic_id=row[2],
                                     institute = institute,
-                                    created=row[2],                                                                                                                                                                                                                         
-                                    created_by_id=row[3],
-                                    created_by_name=row[4],
-                                    published=row[5])
+                                    created=row[3],                                                                                                                                                                                                                         
+                                    created_by_id=row[4],
+                                    created_by_name=row[5],
+                                    published=row[6])
             
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
@@ -143,18 +164,19 @@ class DepartmentModel(DepartmentContextModel):
         
         rows = DepartmentDataAccess.get_model(db, department_id, show_published_state=auth_user.can_view, auth_user_id=auth_user.auth_user_id)
 
-        model = DepartmentModel(0, "", institute=InstituteModel(0, ""))
+        model = DepartmentModel(0, "", topic_id=3, institute=InstituteModel(0, ""))
         for row in rows:
 
             model = DepartmentModel(id_=row[0],
                                     name=row[1],
-                                    hod_id=row[2],
-                                    institute=InstituteModel(id_=row[3], name=row[4]), # TODO: #323 use context institute name
-                                    created=row[5],
-                                    created_by_id=row[6],
-                                    created_by_name=row[7],
-                                    published=row[8])
-            model.institute_id = row[3]
+                                    topic_id=row[2],
+                                    hod_id=row[3],
+                                    institute=InstituteModel(id_=row[4], name=row[5]), # TODO: #323 use context institute name
+                                    created=row[6],
+                                    created_by_id=row[7],
+                                    created_by_name=row[8],
+                                    published=row[9])
+            model.institute_id = row[4]
             model.number_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, model.id, auth_user)
             model.number_of_topics = DepartmentModel.get_number_of_topics(db, model.id, auth_user)
             model.number_of_pathways = DepartmentModel.get_number_of_pathways(db, model.id, auth_user)
@@ -170,7 +192,7 @@ class DepartmentModel(DepartmentContextModel):
         
         for row in rows:
             # TODO: 323 get institute_name
-            model = DepartmentModel(row[0], row[1], institute=InstituteModel(auth_user.institute_id, name=""))
+            model = DepartmentModel(row[0], row[1], topic_id=0, institute=InstituteModel(auth_user.institute_id, name=""))
             data.append(model)
         return data
 
@@ -233,7 +255,7 @@ class DepartmentDataAccess:
 
         execHelper = ExecHelper()
 
-        select_sql = "department__get"
+        select_sql = "department__get$2"
         params = (id_, int(show_published_state), auth_user_id)
 
         rows = []
@@ -249,7 +271,7 @@ class DepartmentDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "department__get_all" 
+        select_sql = "department__get_all$2" 
         params = (institute_id, int(show_published_state), auth_user_id,)
 
         rows = []
@@ -266,7 +288,7 @@ class DepartmentDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "department__get_my" 
+        select_sql = "department__get_my$2" 
         params = (institute_id, department_id, int(show_published_state), auth_user_id,)
         
         rows = []
@@ -412,7 +434,9 @@ class DepartmentDataAccess:
     @staticmethod
     def publish(db, auth_user_id, id_):
         
-        model = DepartmentModel(id_, "", institute=InstituteModel(0, ""))
+        raise DeprecationWarning("not used")
+
+        model = DepartmentModel(id_, "", topic_id=0, institute=InstituteModel(0, ""))
         model.publish = True
 
         execHelper = ExecHelper()

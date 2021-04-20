@@ -257,9 +257,9 @@ class BaseContextModel(BaseModel):
         self.institute_id = dict_obj.get("institute_id", 0)
         self.is_from_db = dict_obj.get("is_from_db")
 
-    # TODO: move to DataModel
+
     @staticmethod
-    def get_context_model(db, default_or_empty_context_model, get_context_model_sp_name, handle_log_info, *lookup_args):
+    def get_context_model(db, default_or_empty_context_model, fn_set_attributes, get_context_model_sp_name, handle_log_info, *lookup_args):
         ''' Call stored procedure get_context_model_sp_name with parameters to include unique identifiers and auth_user_id '''
         execHelper = ExecHelper()
 
@@ -275,11 +275,7 @@ class BaseContextModel(BaseModel):
         else:
             for row in result:
                 # NOTE: should return first item only
-                model.id = row[0]
-                model.name = row[1]
-                #model.parent_id = row[2] # TODO: create @property setter
-                model.created_by_id = row[3]
-                model.published = row[4]
+                fn_set_attributes(model, row)
                 model.set_published_state()
                 model.is_from_db = True
         return model

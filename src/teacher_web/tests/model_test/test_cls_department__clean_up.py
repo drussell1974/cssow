@@ -5,7 +5,7 @@ from shared.models.cls_institute import InstituteModel
 class test_cls_department__clean_up(TestCase):
 
     def setUp(self):
-        self.test = DepartmentModel(1, "",  hod_id=56, institute=InstituteModel(2, ""))
+        self.test = DepartmentModel(1, "", topic_id=3, hod_id=56, institute=InstituteModel(2, ""))
 
     # title
 

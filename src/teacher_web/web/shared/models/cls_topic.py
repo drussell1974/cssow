@@ -9,6 +9,7 @@ class TopicModel(BaseModel):
 
     name = ""
     department_id = 0
+    parent_id = None
 
     def __init__(self, id_, name, lvl=0, all_topic_names=[], created = "", created_by = "", created_by_id = 0, created_by_name = "", published=STATE.PUBLISH, is_from_db=False, auth_ctx=None):
         super().__init__(id_, display_name=name, created=created, created_by_id=created_by_id, created_by_name=created_by_name, published=published, is_from_db=is_from_db, ctx=auth_ctx)
@@ -52,6 +53,7 @@ class TopicModel(BaseModel):
             model = TopicModel(row[0], name=row[1], lvl=row[2], created=row[3], created_by=row[4], published=row[5], auth_ctx=auth_ctx)
             if row[6] is not None: # if parent row
                 model.parent = TopicModel(row[6], name=row[7], lvl=row[8], created=row[9], created_by=row[10], auth_ctx=auth_ctx)
+                model.parent_id = model.parent.id
                 model.lvl = model.parent.lvl + 1
             model.on_fetched_from_db()
             return model
@@ -67,6 +69,7 @@ class TopicModel(BaseModel):
             model = TopicModel(row[0], name=row[1], lvl=row[2], created=row[3], created_by=row[4], published=row[5], auth_ctx=auth_ctx)
             if row[6] is not None: # if parent row
                 model.parent = TopicModel(row[6], name=row[7], lvl=row[8], created=row[9], created_by=row[10], auth_ctx=auth_ctx)
+                model.parent_id = model.parent.id
                 model.lvl = model.parent.lvl + 1
             data.append(model)
         return data
@@ -78,7 +81,11 @@ class TopicModel(BaseModel):
         data = []
         
         for row in rows:
-            model = TopicModel(row[0], name=row[1], created=row[2], created_by=row[3], auth_ctx=auth_ctx)
+            model = TopicModel(row[0], name=row[1], lvl=row[2], created=row[3], created_by=row[4], published=row[5], auth_ctx=auth_ctx)
+            if row[6] is not None: # if parent row
+                model.parent = TopicModel(row[6], name=row[7], lvl=row[8], created=row[9], created_by=row[10], auth_ctx=auth_ctx)
+                model.parent_id = model.parent.id
+                model.lvl = model.parent.lvl + 1
             # TODO: remove __dict__ . The object should be serialised to json further up the stack
             data.append(model.__dict__)
         return data
@@ -97,6 +104,12 @@ class TopicModel(BaseModel):
                 TopicDataAccess._update(db, model, published, auth_user_id=auth_ctx.auth_user_id)
 
         return model
+
+
+    @staticmethod
+    def delete_unpublished(db, auth_user):
+        rows = TopicDataAccess.delete_unpublished(db, department_id=auth_user.department_id, auth_user_id=auth_user.auth_user_id)
+        return rows
 
 
 class TopicDataAccess:
@@ -159,7 +172,7 @@ class TopicDataAccess:
             model.id,
             model.name,
             model.department_id,
-            model.parent.id if model.parent is not None else 0,
+            model.parent_id, # if model.parent is not None else 0,
             model.lvl,
             int(published),
             auth_user_id
@@ -181,7 +194,7 @@ class TopicDataAccess:
             model.id,
             model.name,
             model.department_id,
-            model.parent.id if model.parent is not None else 0,
+            model.parent_id, # if model.parent is not None else 0,
             model.lvl,
             int(model.published),
             auth_user_id
@@ -203,3 +216,16 @@ class TopicDataAccess:
         rows = execHelper.delete(db, sql, params, handle_log_info)
         
         return rows
+
+
+    @staticmethod
+    def delete_unpublished(db, department_id, auth_user_id):
+        """ Delete all unpublished keywords for the scheme of work"""
+
+        execHelper = ExecHelper()
+        
+        str_delete = "topic__delete_unpublished"
+        params = (department_id, auth_user_id)
+        
+        rval = execHelper.delete(db, str_delete, params, handle_log_info)
+        return rval

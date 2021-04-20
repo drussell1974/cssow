@@ -42,7 +42,7 @@
             <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
               {{_("Pathways")}} <span class="badge badge-info">{{drow.number_of_pathways}}</span>
             </a>
-            <a id="lnk-topic-index--{{drow.id}}" href="{% url 'topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+            <a id="lnk-topic-index--{{drow.id}}" href="{% url 'department_topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
               {{_("Topics")}} <span class="badge badge-info">{{drow.number_of_topics}}</span>
             </a>
             <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.index' row.id drow.id %}" class="btn btn-outline-dark stackable">

@@ -37,6 +37,7 @@ class test_db__save(TestCase):
          # arrange
         model = Model(23, name="Testing", auth_ctx=mock_auth_user)
         model.parent = Model(4, name="Implementation", auth_ctx=mock_auth_user)
+        model.parent_id = 4
         model.lvl = 2
 
         with patch.object(ExecHelper, 'update', return_value=model):
@@ -45,7 +46,8 @@ class test_db__save(TestCase):
             actual_result = Model.save(self.fake_db, model, auth_ctx=mock_auth_user)
             
             # assert
-
+            #update(<Mock id='139717368393616'>, 'topic__update', (23, 'Testing', <MagicMock name='django_helper.department_id' id='139717368285648'>, 4, 2, 1, <MagicMock name='django_helper.auth_user_id' id='139717367809104'>), <function handle_log_info at 0x7f127f7f5050>)
+            #update(<Mock id='139717368393616'>, 'topic__update', (23, 'Testing', <MagicMock name='django_helper.department_id' id='139717368285648'>, None, 2, 1, <MagicMock name='django_helper.auth_user_id' id='139717367809104'>), <function handle_log_info at 0x7f127f7f5050>)
             ExecHelper.update.assert_called_with(self.fake_db, 
              'topic__update'
              , (23, 'Testing', mock_auth_user.department_id, 4, 2, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
@@ -60,6 +62,7 @@ class test_db__save(TestCase):
         model = Model(0, name="Testing", auth_ctx=mock_auth_user)
         model.created = "2021-01-24 07:14:04"
         model.parent = Model(4, name="Implementation", auth_ctx=mock_auth_user)
+        model.parent_id = 4
         model.lvl = 2
 
         expected_result = (102,)

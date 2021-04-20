@@ -19,7 +19,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__no_return_rows(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
@@ -41,7 +41,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(0, len(actual_result.model()))
 
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__single_item(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
@@ -68,7 +68,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(1, len(actual_result.model()))
             
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__multiple_items(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange

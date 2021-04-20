@@ -3,8 +3,9 @@ from unittest.mock import MagicMock, Mock, patch
 
 # test context
 
-from app.department.viewmodels import DepartmentAllViewModel as ViewModel
-from shared.models.cls_department import DepartmentModel as Model
+from app.academic_years.viewmodels import AcademicYearIndexViewModel as ViewModel
+from shared.models.cls_department import DepartmentModel
+from shared.models.cls_academic_year import AcademicYearModel as Model
 from shared.models.cls_keyword import KeywordModel
 from shared.models.cls_institute import InstituteModel
 from tests.test_helpers.mocks import *
@@ -40,7 +41,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             # assert functions was called
             Model.get_all.assert_called()
             InstituteModel_get_model.assert_called()
-            self.assertEqual(0, len(self.viewmodel.model))
+            self.assertEqual(0, len(self.viewmodel.academic_years))
 
 
     def test_init_called_fetch__single_row(self, mock_auth_user, InstituteModel_get_model):
@@ -65,9 +66,9 @@ class test_viewmodel_IndexViewModel(TestCase):
             Model.get_all.assert_called()
             InstituteModel_get_model.assert_called()
 
-            self.assertEqual(1, len(self.viewmodel.model))
+            self.assertEqual(1, len(self.viewmodel.academic_years))
 
-            self.assertEqual("2020-09-01", self.viewmodel.model[0].display_name)
+            self.assertEqual("2020/2021", self.viewmodel.academic_years[0].display_name)
 
 
     def test_init_called_fetch__multiple_rows(self, mock_auth_user, InstituteModel_get_model):
@@ -93,8 +94,8 @@ class test_viewmodel_IndexViewModel(TestCase):
             # assert functions was called
             Model.get_all.assert_called()
             InstituteModel_get_model.assert_called()
-            self.assertEqual(3, len(self.viewmodel.model))
+            self.assertEqual(3, len(self.viewmodel.academic_years))
 
-            self.assertEqual("2019-09-03", self.viewmodel.model[0].display_name)
+            self.assertEqual("2019/2020", self.viewmodel.academic_years[0].display_name)
 
-            self.assertEqual("2021-09-02", self.viewmodel.model[2].display_name)
+            self.assertEqual("2021/2022", self.viewmodel.academic_years[2].display_name)
