@@ -131,15 +131,15 @@ class LessonScheduleEditViewModel(BaseViewModel):
                 # back to string
                 reminder = reminder.strftime(settings.ISOFORMAT)
 
-                notify = NotifyModel(0, 
-                    auth_user_id=self.auth_ctx.auth_user_id, 
-                    notify_message=f"lesson {self.model.start_date_ui_date} {self.model.start_date_ui_time} for {self.model.class_name}",   
-                    message=f"Lesson for {self.model.class_name} starts at {self.model.start_date_ui_date} {self.model.start_date_ui_time}", 
-                    action=self.action_url, 
-                    reminder=reminder,
-                    event_type=LOG_TYPE.Information)
-
-                handle_log_info(self.db, self.scheme_of_work_id, msg="Lesson", notify=notify)
+                NotifyModel.create(
+                        db=self.db,
+                        title="Create scheduled lesson",
+                        message=f"lesson {self.model.start_date_ui_date} {self.model.start_date_ui_time} for {self.model.class_name}",
+                        action_url=self.action_url,
+                        auth_ctx=self.auth_ctx,
+                        notify_dt=reminder,
+                        handle_log_info=handle_log_info
+                    )
 
                 self.on_post_complete(saved=True)
             

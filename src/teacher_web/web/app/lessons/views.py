@@ -160,15 +160,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "lesson_schedule": lesson_schedule
     }   
     
-    alert_messages = []
-    number_of_topics = DepartmentModel.get_number_of_topics(db, department_id=auth_ctx.department_id, auth_user=auth_ctx)
-    if number_of_topics == 0:
-        alert_messages.append({"message":f"{auth_ctx.department.name}: You must create topics before you can create lessons and pathways. To add your first topic", "action": reverse('department_topic.new', args=[auth_ctx.institute.id, auth_ctx.department.id])})
-    number_of_content = 0 # SchemeOfWorkModel.get_number_of_contents(db, scheme_of_work_id, auth_ctx=auth_ctx)
-    if number_of_content == 0:
-        alert_messages.append({"message":f"{scheme_of_work.name}: You must define the curriculum content before you can create lessons. To add your first curriculum content", "action": reverse('content.new', args=[auth_ctx.institute.id, auth_ctx.department.id, scheme_of_work_id])})
-       
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", alert_messages=alert_messages, error_message=error_message, wizard=wizard)
+    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
     
     return render(request, "lessons/edit.html", view_model.content)
 

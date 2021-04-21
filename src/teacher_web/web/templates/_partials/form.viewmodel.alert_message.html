@@ -8,14 +8,6 @@
     </button>
 </div>
 {% endif %}
-{% for error in content.alert_message.error_messages %}
-    <div class="alert alert-danger small" role="alert">
-        <i class="fa fa-exclamation-triangle"></i> {{ error.message }} <a id="lnk-alert" href="{{ error.action }}" class="font-weight-bold">{{_('click here')}}</a>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-{% endfor %}
 
 {% if content.alert_message.alert_message is not None %}
 <div class="alert alert-warning small" role="alert">
@@ -25,20 +17,3 @@
     </button>
 </div>
 {% endif %}
-{% for alert in content.alert_message.alert_messages %}
-<div class="alert alert-warning small" role="alert">
-    <i class="fa fa-bell"></i> {{ alert.message }} <a id="lnk-alert" href="{{ alert.action }}" class="font-weight-bold">{{_('click here')}}</a>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-{% endfor %}
-
-{% for info in content.alert_message.info_messages %}
-<div class="alert alert-info small" role="alert">
-    <i class="fa fa-info"></i> {{ info.message }} <a id="lnk-alert" href="{{ info.action }}" class="font-weight-bold">{{_('click here')}}</a>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-{% endfor %}

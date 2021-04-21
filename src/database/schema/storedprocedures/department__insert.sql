@@ -33,7 +33,7 @@ BEGIN
     -- Create top level topic
     SET p_department_id = LAST_INSERT_ID();
     
-    INSERT INTO sow_topic (name, lvl, department_id) VALUES (p_name, 0, p_department_id);
+    INSERT INTO sow_topic (name, lvl, department_id, published) VALUES (p_name, 0, p_department_id, 1);
     SELECT p_department_id;
 END;
 //

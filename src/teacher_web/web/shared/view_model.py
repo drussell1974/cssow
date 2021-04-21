@@ -7,17 +7,14 @@ class ViewModel:
     active_model__validation_errors = {}
     active_model__published_state = "unknown-state"
 
-    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", error_messages = [], stack_trace = "", info_messages=[], alert_message = "", alert_messages = [], delete_dialog_message = "", cancel_dialog_message = "", wizard = None):
+    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = "", wizard = None):
         """ Create View Model """
         self.data = data
         self.ctx = ctx
 
         ui_messages = {
             "alert_message": alert_message if len(alert_message) > 0 else None,
-            "alert_messages": alert_messages,
             "error_message": error_message if len(str(error_message)) > 0 else None,
-            "error_messages": error_messages,
-            "info_messages": info_messages,
             "delete_dialog_message": delete_dialog_message if len(delete_dialog_message) > 0 else None,
             "cancel_dialog_message": cancel_dialog_message if len(cancel_dialog_message) > 0 else None
         }
