@@ -15,7 +15,7 @@ class test_cls_department_context__from_dict(TestCase):
 
         # arrangee
 
-        non_dict_obj = DepartmentContextModel(0, "Lorem ipsum")
+        non_dict_obj = DepartmentContextModel(0, "Lorem ipsum", topic_id=3)
 
         # act
         with self.assertRaises(TypeError):
@@ -27,7 +27,7 @@ class test_cls_department_context__from_dict(TestCase):
 
         # arrange
 
-        dict_obj = DepartmentContextModel(0, "Lorem ipsum").__dict__
+        dict_obj = DepartmentContextModel(0, "Lorem ipsum", topic_id=3).__dict__
 
         # act
         
@@ -40,7 +40,7 @@ class test_cls_department_context__from_dict(TestCase):
         self.assertEqual(0, self.test.id)
         self.assertEqual("Lorem ipsum", self.test.name)
         self.assertEqual("Lorem ipsum", self.test.display_name)
-        #self.assertEqual(None, self.test.parent_id)
+        self.assertEqual(3, self.test.topic_id)
         self.assertEqual(0, self.test.created_by_id)
         self.assertEqual(int(STATE.PUBLISH), self.test.published)
         self.assertEqual("published", self.test.published_state)
@@ -51,7 +51,7 @@ class test_cls_department_context__from_dict(TestCase):
 
         # arrange
 
-        dict_obj = DepartmentContextModel(1, "Sor shurem", description="Curabitur vulputate leo sed erat ultricies dapibus.", published=STATE.DRAFT, is_from_db=True).__dict__
+        dict_obj = DepartmentContextModel(1, "Sor shurem", topic_id=3, description="Curabitur vulputate leo sed erat ultricies dapibus.", published=STATE.DRAFT, is_from_db=True).__dict__
 
         # act
         
@@ -63,7 +63,7 @@ class test_cls_department_context__from_dict(TestCase):
         self.assertEqual(1, self.test.id)
         self.assertEqual("Sor shurem", self.test.name)
         self.assertEqual("Sor shurem", self.test.display_name)
-        #self.assertEqual(None, self.test.parent_id)
+        self.assertEqual(3, self.test.topic_id)
         self.assertEqual(0, self.test.created_by_id)
         self.assertEqual(STATE.DRAFT, self.test.published)
         self.assertEqual("unpublished", self.test.published_state)

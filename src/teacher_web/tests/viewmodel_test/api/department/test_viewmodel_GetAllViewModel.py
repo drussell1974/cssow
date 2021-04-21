@@ -43,7 +43,7 @@ class test_viewmodel_DepartmentGetModelViewModel(TestCase):
         
         # arrange
         
-        data_to_return = [Model(56, "Ipsum", institute=InstituteModel(1276711, "Lorum"))]
+        data_to_return = [Model(56, "Ipsum", topic_id=3, institute=InstituteModel(1276711, "Lorum"))]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
 
@@ -65,9 +65,9 @@ class test_viewmodel_DepartmentGetModelViewModel(TestCase):
         # arrange
         
         data_to_return = [
-            Model(56, "Tic", institute=InstituteModel(1276711, "Lorum")),
-            Model(57, "Tac", institute=InstituteModel(1276711, "Lorum")),
-            Model(58, "Toe", institute=InstituteModel(1276711, "Lorum"))]
+            Model(56, "Tic", topic_id=3, institute=InstituteModel(1276711, "Lorum")),
+            Model(57, "Tac", topic_id=3, institute=InstituteModel(1276711, "Lorum")),
+            Model(58, "Toe", topic_id=3, institute=InstituteModel(1276711, "Lorum"))]
         
         with patch.object(Model, "get_all", return_value=data_to_return):
 

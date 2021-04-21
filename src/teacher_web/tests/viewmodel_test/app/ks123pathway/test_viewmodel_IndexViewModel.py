@@ -19,7 +19,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__no_return_rows(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
@@ -41,12 +41,12 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(0, len(actual_result.model()))
 
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__single_item(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
         fake_model = Model(34, "", year_id=7, topic_id=3, ctx=None)
-        fake_model.topic = TopicModel(3, "Hardware")
+        fake_model.topic = TopicModel(3, "Hardware", auth_ctx=mock_auth_user)
         fake_model.year = YearModel(13, "Year 13")
  
  
@@ -68,21 +68,21 @@ class test_viewmodel_IndexViewModel(TestCase):
             self.assertEqual(1, len(actual_result.model()))
             
 
-    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", is_from_db=True))
+    @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__multiple_items(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
         
         fake_model1 = Model(91, "Tic", year_id=7, topic_id=3, ctx=mock_auth_user)
-        fake_model1.topic = TopicModel(3, "Hardware")
+        fake_model1.topic = TopicModel(3, "Hardware", auth_ctx=mock_auth_user)
         fake_model1.year = YearModel(7, "Year 7")
 
         fake_model2 = Model(92, "Tac", year_id=7, topic_id=3, ctx=mock_auth_user)
-        fake_model2.topic = TopicModel(1, "Algorithms")
+        fake_model2.topic = TopicModel(1, "Algorithms", auth_ctx=mock_auth_user)
         fake_model2.year = YearModel(7, "Year 7")
 
         fake_model3 = Model(93, "Toe", year_id=8, topic_id=3, ctx=mock_auth_user)
-        fake_model3.topic = TopicModel(3, "Hardware")
+        fake_model3.topic = TopicModel(3, "Hardware", auth_ctx=mock_auth_user)
         fake_model3.year = YearModel(8, "Year 8")
 
         data_to_return = [fake_model1, fake_model2, fake_model3]

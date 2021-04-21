@@ -37,7 +37,7 @@ class test_DepartmentDataAccess___insert(TestCase):
 
         expected_result = [99]
 
-        fake_model = Model(0, "Lorum ipsum",  hod_id=56, institute = InstituteModel(12767111276711, "Lorum ipsum"), ctx=fake_ctx)
+        fake_model = Model(0, "Lorum ipsum", topic_id=3, hod_id=56, institute = InstituteModel(12767111276711, "Lorum ipsum"), ctx=fake_ctx)
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = True
 
@@ -63,7 +63,7 @@ class test_DepartmentDataAccess___insert(TestCase):
 
         fake_ctx = fake_ctx_model()
 
-        fake_model = Model(0, "Lorum ipsum",  hod_id=56, institute = InstituteModel(12767111276711, "Lorum ipsum"))
+        fake_model = Model(0, "Lorum ipsum", topic_id=3,  hod_id=56, institute = InstituteModel(12767111276711, "Lorum ipsum"))
         fake_model.created = "2021-01-24 07:20:01.907507"
         fake_model.is_valid = False
 

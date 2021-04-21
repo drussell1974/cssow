@@ -1,4 +1,5 @@
 import io
+from django.urls import reverse
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error
@@ -14,6 +15,8 @@ from shared.view_model import ViewModel
 class DefaultIndexViewModel(BaseViewModel):
     
     def __init__(self, db, top, auth_user):
+        super().__init__(auth_user)
+
         self.latest_schemes_of_work = []
         self.schemes_of_work = []
         self.institutes = []
@@ -51,7 +54,7 @@ class DefaultIndexViewModel(BaseViewModel):
             "institutes": self.institutes,
         }
         
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, alert_message=self.alert_message, error_message=self.error_message)
 
 
 class KeywordSaveViewModel(BaseViewModel):

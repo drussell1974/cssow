@@ -8,7 +8,7 @@ from shared.models.core.context import AuthCtx
 from tests.test_helpers.mocks import *
 
 @patch.object(InstituteContextModel, "get_context_model", return_value = InstituteContextModel(127671276711, name="Lorum Ipsum"))
-@patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", is_from_db=True))
+@patch.object(DepartmentContextModel, "get_context_model", return_value = DepartmentContextModel(67, name="Computer Science", topic_id=3, is_from_db=True))
 class test_core_context_authctx_constructor(TestCase):
 
     test = None

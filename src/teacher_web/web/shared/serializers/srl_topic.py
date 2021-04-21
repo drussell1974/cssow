@@ -8,4 +8,4 @@ class TopicModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TopicModel
-        fields = ["id", "name"]
+        fields = ["id", "name", "parent_id"]

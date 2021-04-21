@@ -80,6 +80,7 @@ class test_db__get_context_model(TestCase):
             self.assertEqual(6, model.id)
             self.assertEqual("Lorem ipsum dolor sit amet", model.name)
             #self.assertEqual(None, model.parent_id)
+            #self.assertEqual(0, model.topic_id)
             self.assertEqual(1, model.created_by_id)
             self.assertEqual(32, model.published)
             self.assertEqual("unpublished", model.published_state)

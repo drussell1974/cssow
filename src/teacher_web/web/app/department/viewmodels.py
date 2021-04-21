@@ -2,11 +2,14 @@ from datetime import datetime
 import json
 from rest_framework import serializers, status
 from django.http.response import Http404
+from django.urls import reverse
 from app.default.viewmodels import DefaultIndexViewModel
-from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
+from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_info
+from shared.models.core.log import LOG_TYPE
 from shared.models.core.basemodel import try_int
 from shared.models.cls_institute import InstituteModel
 from shared.models.cls_department import DepartmentModel as Model
+from shared.models.cls_notification import NotifyModel
 from shared.models.enums.publlished import STATE
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -90,12 +93,42 @@ class DepartmentEditViewModel(BaseViewModel):
                 created_by_id=self.auth_user)
         
             try:
+                was_new = self.model.is_new()
                 self.model.validate()
                 
                 if self.model.is_valid == True:
 
-                    data = Model.save(self.db, self.model, self.auth_user, STATE.parse(request.POST.get("published", "PUBLISH")))
+                    data = Model.save(db, self.model, self.auth_user, STATE.parse(request.POST.get("published", "PUBLISH")))
                     
+                    # alert user to create topics
+                    if was_new:                        
+                        NotifyModel.create(
+                            db=db,
+                            title="Create topics",
+                            message="You must create topics before you can create lessons and pathways.",
+                            action_url=reverse('department_topic.new', args=[self.auth_user.institute.id, self.model.id]),
+                            auth_ctx=auth_user,
+                            handle_log_info=handle_log_info
+                        )
+
+                        NotifyModel.create(
+                            db=db,
+                            title="Create pathway",
+                            message="Pathways allow mapped progress between different key stages.",
+                            action_url=reverse('ks123pathways.new', args=[self.auth_user.institute_id, self.model.id]),
+                            auth_ctx=auth_user,
+                            handle_log_info=handle_log_info
+                        )
+
+                        NotifyModel.create(
+                            db=db,
+                            title="Create scheme of work",
+                            message="Create your first scheme of work.",
+                            action_url=reverse('schemesofwork.new', args=[self.auth_user.institute_id, self.model.id]),
+                            auth_ctx=auth_user,
+                            handle_log_info=handle_log_info
+                        )
+            
                     self.on_post_complete(True)
                     self.model = data
                 else:

@@ -48,7 +48,7 @@ class test_viewmodel_IndexViewModel__my_departments(TestCase):
         
         mock_institute = mock_auth_user.institute
 
-        data_to_return = [Model(56, "Lorem Ipsum", institute=mock_institute)]
+        data_to_return = [Model(56, "Lorem Ipsum", topic_id=3, institute=mock_institute)]
         
         with patch.object(Model, "get_my", return_value=data_to_return):
 
@@ -76,9 +76,9 @@ class test_viewmodel_IndexViewModel__my_departments(TestCase):
         mock_institute = mock_auth_user.institute
 
         data_to_return = [
-            Model(57, "Lorem Ipsum", institute=mock_institute),
-            Model(58, "Lorem Ipsum", institute=mock_institute),
-            Model(59, "Lorem Ipsum", institute=mock_institute)
+            Model(57, "Lorem Ipsum", topic_id=3, institute=mock_institute),
+            Model(58, "Lorem Ipsum", topic_id=2, institute=mock_institute),
+            Model(59, "Lorem Ipsum", topic_id=1, institute=mock_institute)
             ]
         
         with patch.object(Model, "get_my", return_value=data_to_return):

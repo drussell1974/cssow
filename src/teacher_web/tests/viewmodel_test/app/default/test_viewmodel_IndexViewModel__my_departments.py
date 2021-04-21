@@ -7,7 +7,7 @@ from tests.test_helpers.mocks import *
 
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-@patch.object(InstituteModel, "get_my", return_value=[InstituteModel(56, "Lorem Ipsum")])
+@patch.object(InstituteModel, "get_my", return_value=[fake_institute()])
 class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
 
     def setUp(self):        
@@ -48,7 +48,7 @@ class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
         
         mock_institute = mock_auth_user.institute
 
-        data_to_return = [Model(56, "Lorem Ipsum", institute=mock_institute)]
+        data_to_return = [fake_department(56, institute=mock_institute)]
         
         with patch.object(Model, "get_my", return_value=data_to_return):
 
@@ -66,6 +66,9 @@ class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
 
             self.assertEqual(1, len(self.viewmodel.institutes))
             self.assertEqual(1, len(self.viewmodel.institutes[0].departments))
+            self.assertEqual(3, self.viewmodel.institutes[0].departments[0].number_of_schemes_of_work)
+            self.assertEqual(2, self.viewmodel.institutes[0].departments[0].number_of_topics)
+            self.assertEqual(10, self.viewmodel.institutes[0].departments[0].number_of_pathways)
 
 
     def test_init_called_fetch__multiple_rows(self, InstituteModel_get_my, mock_auth_user):
@@ -75,9 +78,9 @@ class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
         mock_institute = mock_auth_user.institute
 
         data_to_return = [
-            Model(57, "Lorem Ipsum", institute=mock_institute),
-            Model(58, "Lorem Ipsum", institute=mock_institute),
-            Model(59, "Lorem Ipsum", institute=mock_institute)
+            fake_department(57, institute=mock_institute),
+            fake_department(58, institute=mock_institute),
+            fake_department(59, institute=mock_institute)
             ]
         
         with patch.object(Model, "get_my", return_value=data_to_return):
@@ -94,3 +97,11 @@ class test_viewmodel_DefaultIndexViewModel__my_departments(TestCase):
             
             self.assertEqual(1, len(self.viewmodel.institutes))
             self.assertEqual(3, len(self.viewmodel.institutes[0].departments))
+
+            self.assertEqual(3, self.viewmodel.institutes[0].departments[0].number_of_schemes_of_work)
+            self.assertEqual(2, self.viewmodel.institutes[0].departments[0].number_of_topics)
+            self.assertEqual(10, self.viewmodel.institutes[0].departments[0].number_of_pathways)
+
+            self.assertEqual(3, self.viewmodel.institutes[0].departments[2].number_of_schemes_of_work)
+            self.assertEqual(2, self.viewmodel.institutes[0].departments[2].number_of_topics)
+            self.assertEqual(10, self.viewmodel.institutes[0].departments[2].number_of_pathways)

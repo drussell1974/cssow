@@ -20,7 +20,7 @@ class test_viewmodel_DeleteUnpublishedViewModel(TestCase):
         
         # arrange
         
-        data_to_return = Model(56, "Lorum Ipsum", institute=InstituteModel(12767111276711, "Lorem Ipsum"))
+        data_to_return = Model(56, "Lorum Ipsum", topic_id=3, institute=InstituteModel(12767111276711, "Lorem Ipsum"))
         
         with patch.object(Model, "publish_by_id", return_value=data_to_return):
 

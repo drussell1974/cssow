@@ -14,6 +14,9 @@
     <div class="container">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
+          <a class="nav-link" id="lnk-bc-department" href="{% url 'department.index' content.ctx.institute_id %}">{{ content.ctx.department.name }}</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
         </li>
       </ul>
@@ -55,8 +58,7 @@
                 <i class="far fa-edit"></i>
               </a>{{ row.objective }}</h5>
               <hr>
-              <span class="small">{{ row.year.name }} 
-            </span>
+              <span class="small">{{ row.year.name }}</span>
           </div>
         </div>
 

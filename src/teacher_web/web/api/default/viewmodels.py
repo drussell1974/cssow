@@ -12,7 +12,7 @@ from shared.serializers.srl_topic import TopicModelSerializer
 class TopicGetOptionsListViewModel(BaseViewModel):
 
     def __init__(self, db, topic_id, auth_user, lvl=2):
-        data = TopicModel.get_options(db, topic_id=topic_id, auth_user=auth_user, lvl=lvl)
+        data = TopicModel.get_options(db, topic_id=topic_id, auth_ctx=auth_user, lvl=lvl)
         self.model = list(map(lambda m: TopicModelSerializer(m).data,data))
 
 

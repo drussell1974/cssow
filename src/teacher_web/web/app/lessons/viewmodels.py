@@ -1,13 +1,15 @@
 import json
 from django.conf import settings
 from django.http import Http404
+from django.urls import reverse
 from rest_framework import serializers, status
 from shared.models.core.basemodel import try_int
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
-from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
 from shared.models.cls_lesson_schedule import LessonScheduleModel
 from shared.models.cls_keyword import KeywordModel
+from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.publlished import STATE 
 from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
@@ -18,6 +20,7 @@ from app.default.viewmodels import KeywordSaveViewModel
 class LessonIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, scheme_of_work_id, page, pagesize, pagesize_options, keyword_search, auth_user):
+        super().__init__(auth_user)
         
         data = []
 
@@ -63,8 +66,8 @@ class LessonIndexViewModel(BaseViewModel):
             "search_criteria": self.search_criteria,
             "STUDENT_WEB__WEB_SERVER_WWW": settings.STUDENT_WEB__WEB_SERVER_WWW
         }
-
-        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message)
+        
+        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)
 
 
 class LessonGetModelViewModel(BaseViewModel):

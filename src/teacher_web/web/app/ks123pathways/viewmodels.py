@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import serializers, status
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning
 from shared.models.core.basemodel import try_int
-from shared.models.cls_department import DepartmentContextModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_ks123pathway import KS123PathwayModel as Model
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_year import YearModel
@@ -29,6 +29,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
 
     
     def __init__(self, db, request, auth_ctx):
+        super().__init__(auth_ctx)
         
         self.model = []
         self.db = db
@@ -51,7 +52,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
 
         except Exception as e:
             handle_log_exception(self.db, self.department_id, "An error occured viewing pathways", e)
-            self.error_message = repr(e)
+            self.error_message.append(repr(e))
             raise e
 
     def view(self):
@@ -60,8 +61,8 @@ class KS123PathwayIndexViewModel(BaseViewModel):
             "department": self.auth_ctx.department,
             "ks123pathway": self.model,
         }
-
-        return ViewModel(self.department.name, self.department.name, "KS123 Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
+        
+        return ViewModel(self.department.name, self.department.name, "KS123 Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message, error_messages=self.error_messages)
 
 
 class KS123PathwayEditViewModel(BaseViewModel):
@@ -83,7 +84,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
             self.model = Model.get_model(self.db, self.pathway_item_id, auth_ctx=self.auth_ctx)
         
         # topic options
-        self.topic_options = TopicModel.get_options(self.db, lvl=1, auth_user=self.auth_ctx)
+        self.topic_options = TopicModel.get_options(self.db, lvl=1, auth_ctx=self.auth_ctx)
 
         # view data
         data = {

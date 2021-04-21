@@ -11,7 +11,7 @@ class NotifyModel(BaseModel):
     notify_message = ""
     action = ""
     
-    def __init__(self, id_, notify_message, message, action, reminder, event_type, event_log_id=0, auth_user_id=0, created=None):
+    def __init__(self, id_, notify_message, message="", action="", reminder="", event_type=LOG_TYPE.Information, event_log_id=0, auth_user_id=0, created=None):
         self.id = id_
         self.message = message
         self.notify_message = notify_message[0:30] # max 30 characters TODO: add to clean function
@@ -52,6 +52,19 @@ class NotifyModel(BaseModel):
     def delete(cls, db, event_log_id, auth_ctx):
         result = NotifyModelDataAccess.delete(db, event_log_id=event_log_id, auth_user_id=auth_ctx.auth_user_id)
         return result
+
+
+    @classmethod
+    def create(cls, db, title, message, action_url, auth_ctx, handle_log_info, notify_dt = None):
+        notify = NotifyModel(0, 
+            auth_user_id=auth_ctx.auth_user_id, 
+            notify_message=message,
+            #message=notify_message, 
+            action=action_url, 
+            reminder=notify_dt if notify_dt is not None else datetime.now(),
+            event_type=LOG_TYPE.Information)
+
+        handle_log_info(db, 0, msg=title, notify=notify)
 
 
 class NotifyModelDataAccess:

@@ -30,9 +30,9 @@ class apitest_related_topics__get(APITestCase):
 
 
     def test__should_return_list_of_topics(self):
-        self.assertEqual(42, self.payload["related-topics"][0]["id"])
-        self.assertEqual("Operators", self.payload["related-topics"][0]["name"])
+        self.assertEqual(7, self.payload["related-topics"][0]["id"])
+        self.assertEqual("CPU", self.payload["related-topics"][0]["name"])
 
-        self.assertEqual(57, self.payload["related-topics"][self.last_item_index]["id"])
-        self.assertEqual("Run-time environment", self.payload["related-topics"][self.last_item_index]["name"])
+        self.assertEqual(72, self.payload["related-topics"][self.last_item_index]["id"])
+        self.assertEqual("Environment", self.payload["related-topics"][self.last_item_index]["name"])
         

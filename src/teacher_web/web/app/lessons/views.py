@@ -12,9 +12,10 @@ from shared.models.decorators.permissions import min_permission_required
 from shared.models.enums.publlished import STATE
 from shared.wizard_helper import WizardHelper
 from shared.view_model import ViewModel
+from shared.models.cls_content import ContentModel
+from shared.models.cls_department import DepartmentModel
 from shared.models.cls_lesson import LessonModel, try_int
 from shared.models.cls_lesson_schedule import LessonScheduleModel
-from shared.models.cls_content import ContentModel
 from shared.models.cls_topic import TopicModel
 from shared.models.cls_ks123pathway import KS123PathwayModel
 from shared.models.cls_year import YearModel
@@ -41,7 +42,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, les
     pagesize = settings.PAGER["default"]["pagesize"]
     pagesize_options = settings.PAGER["default"]["pagesize_options"]
     keyword_search = request.POST.get("keyword_search", "")
-
+    
     lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_ctx)
 
     return render(request, "lessons/index.html", lessonIndexView.view().content)
@@ -140,7 +141,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
     
     #270 get ContentModel.get_options by scheme_of_work and key_stage_id
     content_options = ContentModel.get_options(db, scheme_of_work.key_stage_id, auth_ctx, scheme_of_work.id)
-    topic_options = TopicModel.get_options(db, lvl=1, auth_user=auth_ctx)
+    topic_options = TopicModel.get_options(db, lvl=1, auth_ctx=auth_ctx)
     year_options = YearModel.get_options(db, key_stage_id=scheme_of_work.key_stage_id, auth_user=auth_ctx)
     ks123_pathways = KS123PathwayModel.get_options(db, scheme_of_work.key_stage_id, model.topic_id, auth_ctx)
 
@@ -157,7 +158,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "lesson": model,
         "ks123_pathways": ks123_pathways,
         "lesson_schedule": lesson_schedule
-    }
+    }   
     
     view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
     

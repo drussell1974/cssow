@@ -43,7 +43,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'department__get'
+                'department__get$2'
                 , (999, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -56,7 +56,7 @@ class test_DepartmentDataAccess__get_model(TestCase):
     @patch.object(DepartmentModel, "get_number_of_schemes_of_work", return_value=3)
     def test__should_call__select__items(self, DepartmentModel_get_number_of_schemes_of_work, mock_auth_user):
         # arrange
-        expected_result = [(593,"Computer Science", 56, 12776111277611, "Lorem Ipsum", "2020-07-21 17:09:34", 1, "test_user", 0)]
+        expected_result = [(593,"Computer Science", 3, 56, 12776111277611, "Lorem Ipsum", "2020-07-21 17:09:34", 1, "test_user", 0)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -67,11 +67,12 @@ class test_DepartmentDataAccess__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get'
+                'department__get$2'
                 , (593, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
 
             DepartmentModel_get_number_of_schemes_of_work.assert_called_with(self.fake_db, 593, mock_auth_user)
 
-            self.assertEqual("Computer Science", act_result.name, "First item not as expected")
+            self.assertEqual("Computer Science", act_result.name)
+            self.assertEqual(3, act_result.topic_id)

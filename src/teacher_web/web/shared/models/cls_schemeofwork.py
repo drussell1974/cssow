@@ -27,9 +27,17 @@ class SchemeOfWorkContextModel(BaseContextModel):
     @classmethod
     def get_context_model(cls, db, institute_id, department_id, scheme_of_work_id, auth_user_id):
         
+        def set_attributes(model, row):
+            model.id = row[0]
+            model.name = row[1]
+            #model.parent_id = row[2] # TODO: create @property setter
+            model.created_by_id = row[3]
+            model.published = row[4]
+
         empty_model = cls.empty()
 
-        result = BaseContextModel.get_context_model(db, empty_model, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
+        result = BaseContextModel.get_context_model(db, empty_model, set_attributes, "scheme_of_work__get_context_model", handle_log_info, scheme_of_work_id)
+
         result.institute_id = institute_id
         result.department_id = department_id
 
@@ -97,7 +105,7 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         # Validate name
         self._validate_required_string("name", self.name, 1, 40)
         # Validate description
-        self._validate_required_string("description", self.description, 1, 1500)
+        self._validate_optional_string("description", self.description, 1500)
         # Validate exam board
         self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
         # Validate key stage
@@ -271,8 +279,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         for row in rows:
             model = SchemeOfWorkModel(id_=row[0],
                                     name=row[1],
-                                    study_duration=row[15],
-                                    start_study_in_year=row[16],
+                                    study_duration=row[16],
+                                    start_study_in_year=row[17],
                                     description=row[2],
                                     exam_board_id=row[3],
                                     exam_board_name=row[4],
@@ -284,9 +292,9 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
                                     published=row[10],
                                     auth_user=auth_user)
             model.department_id = try_int(row[11])
-            model.department = DepartmentContextModel(row[11], row[12])
-            model.institute_id = try_int(row[13])
-            model.institute = InstituteContextModel(row[13], row[14]) 
+            model.department = DepartmentContextModel(row[11], row[12], topic_id=row[13]) 
+            model.institute_id = try_int(row[14])
+            model.institute = InstituteContextModel(row[14], row[15]) 
 
             data.append(model)
         return data
@@ -336,6 +344,15 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         for row in rows:
             number_of_lessons = row[0]   
         return number_of_lessons
+
+
+    @staticmethod
+    def get_number_of_contents(db, scheme_of_work_id, auth_user):
+        number_of_contents = 0
+        rows = SchemeOfWorkDataAccess.get_number_of_contents(db, scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
+        for row in rows:
+            number_of_contents = row[0]   
+        return number_of_contents
 
 
     @staticmethod
@@ -444,7 +461,7 @@ class SchemeOfWorkDataAccess:
         """
         execHelper = ExecHelper()
         
-        select_sql = "scheme_of_work__get_latest$2"
+        select_sql = "scheme_of_work__get_latest$3"
         params = (top, department_id, institute_id, int(show_published_state), auth_user_id)
 
         rows = []
@@ -610,6 +627,22 @@ class SchemeOfWorkDataAccess:
         execHelper.begin(db)
         
         select_sql = "scheme_of_work__get_number_of_lessons"
+        params = (scheme_of_work_id, int(show_published_state), auth_user_id)
+
+        rows = []
+        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
+        
+        execHelper.end()
+
+        return rows
+
+
+    @staticmethod
+    def get_number_of_contents(db, scheme_of_work_id, department_id, institute_id, auth_user_id, show_published_state=STATE.PUBLISH):
+        execHelper = ExecHelper()
+        execHelper.begin(db)
+        
+        select_sql = "scheme_of_work__get_number_of_contents"
         params = (scheme_of_work_id, int(show_published_state), auth_user_id)
 
         rows = []

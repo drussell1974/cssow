@@ -37,8 +37,8 @@ def init_TestAuthCtx(institute_id, department_id, scheme_of_work_id = 0, fake_re
     def get_creator():
         return 346
 
-    @patch.object(DepartmentContextModel, "cached", return_value=DepartmentContextModel(department_id, "Computer Science", hod_id=get_hod(), created_by_id=get_creator()))
-    @patch.object(DepartmentContextModel, "from_dict", return_value=DepartmentContextModel(department_id, "Computer Science", hod_id=get_hod(), created_by_id=get_creator()))
+    @patch.object(DepartmentContextModel, "cached", return_value=DepartmentContextModel(department_id, "Computer Science", topic_id=3, hod_id=get_hod(), created_by_id=get_creator()))
+    @patch.object(DepartmentContextModel, "from_dict", return_value=DepartmentContextModel(department_id, "Computer Science", topic_id=3, hod_id=get_hod(), created_by_id=get_creator()))
     @patch.object(InstituteContextModel, "cached", return_value=InstituteContextModel(institute_id, "Lorem Ipsum", created_by_id=get_creator()))
     @patch.object(InstituteContextModel, "from_dict", return_value=InstituteContextModel(institute_id, "Lorem Ipsum", created_by_id=get_creator()))
     @patch.object(SchemeOfWorkContextModel, "cached", return_value=SchemeOfWorkContextModel(scheme_of_work_id, "CPU Architecture"))

@@ -87,6 +87,18 @@ class uitest_schemeofwork_default_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways', wait=4)
 
 
+    def test_page__view_topics(self):
+        # setup
+        
+        # act
+
+        elem = self.test_context.find_element_by_id(f'lnk-topic-index--{self.test_department_id}')
+        elem.click()
+
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways', wait=4)
+
+
     def test_page__has_showcase(self):
         # setup
         

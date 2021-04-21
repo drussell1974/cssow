@@ -20,12 +20,12 @@ class test_DepartmentDataAccess__get_number_of_schemes_of_work(TestCase):
     def test__should_call__scalar__with_exception(self, mock_ctx):
 
         # arrange
-        expected_result = Exception('Bang')
+        expected_result = KeyError('Bang')
         
         with patch.object(ExecHelper, "scalar", side_effect=expected_result):
             # act and assert
-            with self.assertRaises(Exception):
-                Model.get_number_of_schemes_of_work(self.fake_db, key_stage_id = 4)
+            with self.assertRaises(KeyError):
+                Model.get_number_of_schemes_of_work(self.fake_db, department_id=67, auth_user=mock_ctx)
             
 
     def test__should_call__scalar__no_items(self, mock_ctx):

@@ -72,7 +72,7 @@ class test_db_institute__get_my(TestCase):
             InstituteModel_get_number_of_departments.assert_called_with(self.fake_db, 1, mock_auth_user)
 
             self.assertEqual(1, len(rows))
-            self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
+            self.assertEqual("Computer Science", rows[0].name)
             
 
     @patch.object(Model, "get_number_of_departments", return_value=12)

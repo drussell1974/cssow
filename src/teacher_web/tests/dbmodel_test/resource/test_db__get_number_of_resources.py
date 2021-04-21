@@ -8,7 +8,7 @@ from tests.test_helpers.mocks import *
 get_number_of_resources = ResourceModel.get_number_of_resources
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
-class test_db__get_resource_type_options(TestCase):
+class test_db__get_number_of_resources(TestCase):
     
     def setUp(self):
         ' fake database context '

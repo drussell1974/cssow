@@ -41,7 +41,7 @@ class test_db_department__get_my(TestCase):
             
             # assert
 
-            ExecHelper.select.assert_called_with(self.fake_db, 'department__get_my'
+            ExecHelper.select.assert_called_with(self.fake_db, 'department__get_my$2'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -52,7 +52,7 @@ class test_db_department__get_my(TestCase):
     @patch.object(Model, "get_number_of_schemes_of_work", return_value=12)
     def test__should_call__select__single_items(self, DepartmentModel_get_number_of_schemes_of_work, mock_auth_user):
         # arrange
-        expected_result = [(1, "Computer Science", "2020-07-21 17:09:34", 1, "test_user", 0)]
+        expected_result = [(1, "Computer Science", 3, "2020-07-21 17:09:34", 1, "test_user", 0)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -63,7 +63,7 @@ class test_db_department__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_my'
+                'department__get_my$2'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -78,9 +78,9 @@ class test_db_department__get_my(TestCase):
     def test__should_call__select__multiple_items(self, DepartmentModel_get_number_of_schemes_of_work, mock_auth_user):
         # arrange
         expected_result = [
-            (1, "Computer Science",  "2020-07-21 17:09:34", 1, "test_user", 0),
-            (2, "Business",  "2020-07-21 17:09:34", 1, "test_user", 1), 
-            (3, "IT",  "2020-07-21 17:09:34", 1, "test_user", 1)]
+            (1, "Computer Science", 3, "2020-07-21 17:09:34", 1, "test_user", 0),
+            (2, "Business", 2, "2020-07-21 17:09:34", 1, "test_user", 1), 
+            (3, "IT", 1, "2020-07-21 17:09:34", 1, "test_user", 1)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             # act
@@ -89,7 +89,7 @@ class test_db_department__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_my'
+                'department__get_my$2'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -97,6 +97,10 @@ class test_db_department__get_my(TestCase):
             DepartmentModel_get_number_of_schemes_of_work.assert_called()
 
             self.assertEqual(3, len(rows))
-            self.assertEqual("Computer Science", rows[0].name, "First item not as expected")
-            self.assertEqual("IT", rows[len(rows)-1].name, "Last item not as expected")
+            
+            self.assertEqual("Computer Science", rows[0].name)
+            self.assertEqual(3, rows[0].topic_id)
+
+            self.assertEqual("IT", rows[len(rows)-1].name)
+            self.assertEqual(1, rows[len(rows)-1].topic_id)
 

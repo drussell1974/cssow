@@ -15,7 +15,7 @@ class test_cls_department_context__constructor(TestCase):
 
         # arrangee
 
-        self.test = DepartmentContextModel(0, "Lorem ipsum")
+        self.test = DepartmentContextModel(0, "Lorem ipsum", topic_id=3)
 
         # assert
         self.assertEqual(0, self.test.id)
@@ -31,7 +31,7 @@ class test_cls_department_context__constructor(TestCase):
 
         # arrange
 
-        self.test = DepartmentContextModel(1, "Sor shurem", description="Curabitur vulputate leo sed erat ultricies dapibus.")
+        self.test = DepartmentContextModel(1, "Sor shurem", topic_id=3, description="Curabitur vulputate leo sed erat ultricies dapibus.")
 
         # assert
         self.assertEqual(1, self.test.id)

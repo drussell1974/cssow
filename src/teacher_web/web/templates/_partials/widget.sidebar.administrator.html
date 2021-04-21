@@ -13,6 +13,16 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'department_topic.index' content.ctx.institute_id content.ctx.department_id %}">
+                    {{_("Topics")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}">
+                    {{_("Pathways")}} <div class="small"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="{% url 'eventlog.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
                     {{_("Event log")}} <div class="small"></div>
                   </a>

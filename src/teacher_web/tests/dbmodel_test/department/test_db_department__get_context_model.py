@@ -42,7 +42,7 @@ class test_DepartmentDataAccess__get_context_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'department__get_context_model'
+                'department__get_context_model$2'
                 , (127671276711, 999)
                 , None
                 , handle_log_info)
@@ -58,7 +58,7 @@ class test_DepartmentDataAccess__get_context_model(TestCase):
     @patch.object(DepartmentModel, "get_number_of_schemes_of_work", return_value=3)
     def test__should_call__select__items(self, DepartmentModel_get_number_of_schemes_of_work, mock_auth_user):
         # arrange
-        expected_result = [(593,"Computer Science", 12776111277611, 99, 1)]
+        expected_result = [(593,"Computer Science", 3, 12776111277611, 99, 1)]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
             
@@ -69,7 +69,7 @@ class test_DepartmentDataAccess__get_context_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_context_model'
+                'department__get_context_model$2'
                 , (127671276711, 593,)
                 , None
                 , handle_log_info)

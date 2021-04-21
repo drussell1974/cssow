@@ -12,7 +12,7 @@ class ViewModel:
         self.data = data
         self.ctx = ctx
 
-        ui_messages = { 
+        ui_messages = {
             "alert_message": alert_message if len(alert_message) > 0 else None,
             "error_message": error_message if len(str(error_message)) > 0 else None,
             "delete_dialog_message": delete_dialog_message if len(delete_dialog_message) > 0 else None,

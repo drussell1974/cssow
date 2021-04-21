@@ -27,7 +27,7 @@ def index(request, institute_id, auth_ctx):
 
     #367 get auth_ctx from min_permission_required decorator
 
-    index_view =  AcademicYearIndexViewModel(db=db, institute_id=institute_id, top=0, auth_user=auth_ctx)
+    index_view =  AcademicYearIndexViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
     
     return render(request, "academic_year/index.html", index_view.view(index_view.institute.name, "Academic years").content)
 
