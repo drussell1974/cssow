@@ -26,7 +26,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         fake_model1.parent_id = fake_model_prt.id
         fake_model1.parent = fake_model_prt
 
-        fake_model1 = Model(12346, "sub topic 1", lvl=2, auth_ctx=auth_ctx)
+        fake_model1 = Model(12346, "sub topic 2", lvl=2, auth_ctx=auth_ctx)
         fake_model1.parent_id = fake_model_prt.id
         fake_model1.parent = fake_model_prt
 
@@ -87,7 +87,7 @@ class test_viewmodel_IndexViewModel(TestCase):
             # assert
             Model.get_all.assert_called()
 
-            self.assertEqual(1, len(actual_result.model))
+            self.assertEqual(1, len(actual_result.model.items()))
             
 
     @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
@@ -117,7 +117,8 @@ class test_viewmodel_IndexViewModel(TestCase):
             # act
             actual_result = ViewModel(db=db, request=mock_request, auth_ctx=mock_auth_user)
 
-            # assert functions was called
+            # assert
             Model.get_all.assert_called()
+            self.assertEqual(91, actual_result.model[1][0].id)
+            self.assertEqual(93, actual_result.model[1][2].id)
             
-            self.assertEqual(3, len(actual_result.model))
