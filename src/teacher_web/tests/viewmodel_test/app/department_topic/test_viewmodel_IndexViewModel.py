@@ -10,9 +10,32 @@ from tests.test_helpers.mocks import *
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
 class test_viewmodel_IndexViewModel(TestCase):
 
+    def fake_topic_model(self, id, name, auth_ctx):
+        
+        ''' create top level topic '''
+        fake_model_top = Model(1, "Top level topic", lvl=0, auth_ctx=auth_ctx)
+        
+        ''' create level 1 topic '''
+        fake_model_prt = Model(id, name, lvl=1, auth_ctx=auth_ctx)
+        fake_model_prt.parent_id = fake_model_top.id
+        fake_model_prt.parent = fake_model_top
+
+        # arrange
+        
+        fake_model1 = Model(12345, "sub topic 1", lvl=2, auth_ctx=auth_ctx)
+        fake_model1.parent_id = fake_model_prt.id
+        fake_model1.parent = fake_model_prt
+
+        fake_model1 = Model(12346, "sub topic 1", lvl=2, auth_ctx=auth_ctx)
+        fake_model1.parent_id = fake_model_prt.id
+        fake_model1.parent = fake_model_prt
+
+        return fake_model_prt
+
+
     def setUp(self):
         pass
-        
+
 
     def tearDown(self):
         pass
@@ -44,9 +67,9 @@ class test_viewmodel_IndexViewModel(TestCase):
     def test_init_called_fetch__single_item(self, DepartmentCtxModel_get_model, mock_auth_user):
         
         # arrange
-        fake_model = Model(34, "", auth_ctx=mock_auth_user)
-        # TODO: allow parent
-        #fake_model.parent = Model(3, "Hardware", auth_ctx=mock_auth_user)
+        
+        fake_model = self.fake_topic_model(34, "Parent 1", mock_auth_user)
+
         
         data_to_return = [fake_model]
         
@@ -70,16 +93,15 @@ class test_viewmodel_IndexViewModel(TestCase):
     @patch.object(DepartmentContextModel, "get_context_model", return_value=DepartmentContextModel(id_=34, name="Tumbing Dice - Rolling Stones", topic_id=3, is_from_db=True))
     def test_init_called_fetch__multiple_items(self, DepartmentCtxModel_get_model, mock_auth_user):
         
+
         # arrange
         
-        fake_model1 = Model(91, "Tic", auth_ctx=mock_auth_user)
-        #fake_model1.topic = TopicModel(3, "Hardware", auth_ctx=mock_auth_user)
+        fake_model1 = self.fake_topic_model(91, "Tic", mock_auth_user)
+                
+        fake_model2 = self.fake_topic_model(92, "Tac", mock_auth_user)
         
-        fake_model2 = Model(92, "Tac", auth_ctx=mock_auth_user)
-        #fake_model2.topic = TopicModel(1, "Algorithms", auth_ctx=mock_auth_user)
+        fake_model3 = self.fake_topic_model(93, "Tac", mock_auth_user)
         
-        fake_model3 = Model(93, "Toe", auth_ctx=mock_auth_user)
-        #fake_model3.topic = TopicModel(3, "Hardware", auth_ctx=mock_auth_user)
         
         data_to_return = [fake_model1, fake_model2, fake_model3]
         

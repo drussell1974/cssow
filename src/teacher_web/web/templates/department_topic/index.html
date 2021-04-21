@@ -28,12 +28,7 @@
 
 {% block maincontent %}
 
-<!-- Pager Header -->      
-{% if request.user.is_authenticated %}
-  <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_("add")}}</a>
-  </span>
-{% endif %}
+<!-- Pager Header -->   
 <h2 class="group-heading">{{_("Topics")}}</h2>
 <hr />
 <!-- Pager Header END -->      
@@ -47,25 +42,39 @@
   </div>
 {% else %}
 
-    {% for row in content.data.topics %}
-        <div class="card card-ks123pathway {{ row.published_state }}">
-          <a name="{{ row.id }}"></a>
-          <div class="card-body">
-            <h5 class="card-title">  
-              {% if row.id > 0 and row.lvl > 0 %}
-              <a class="edit float-right" href="{% url 'department_topic.edit' content.ctx.institute_id content.ctx.department_id row.id %}">
-                <i class="far fa-edit"></i>
-              </a>
-              {% endif %}
-              {{ row.name }}</h5>
-              {% if row.parent %}
-              <span class="small">{{ row.parent.name }}</span>
-              {% endif %}
-              <hr>
-          </div>
-        </div>
-    {% endfor %}
+  {% for key, value in content.data.topics.items %}
+        
+      <span class="float-right">  
+        <a class="btn btn-warning" id="btn-new--subtopic-{{key}}" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}?parent_id={{key}}#main">{{_("add")}}</a>
+      </span>
+      <h2>
+        <a class="edit" href="{% url 'department_topic.edit' content.ctx.institute_id content.ctx.department_id value.0.parent.id %}">
+          <i class="far fa-edit"></i>
+        </a>
+        {{_('Level')}} {{ value.0.lvl }} - {{ value.0.parent.name }} 
+      </h2>
+      {% for row in value %}
+          <div class="card card-ks123pathway {{ row.published_state }}">
+            <a name="{{ row.id }}"></a>
+            <div class="card-body">
+              <h5 class="card-title">  
+                {% if row.lvl == 1 %}
+                <a class="btn-sm btn-warning edit float-right" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}?parent_id={{row.id}}#main">
+                  {{_('Add subtopic')}}
+                </a>
+                {% endif %}
+                {% if row.id > 0 and row.lvl > 0 %}
+                <a class="edit" href="{% url 'department_topic.edit' content.ctx.institute_id content.ctx.department_id row.id %}">
+                  <i class="far fa-edit"></i>
+                </a>
+                {% endif %}
 
+                <!-- Topic name -->
+                {{ row.name }}</h5>
+            </div>
+          </div>
+      {% endfor %}
+  {% endfor %}
 {% endif %}
 
   <footer class="widget widget--article-footer">

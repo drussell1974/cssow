@@ -42,7 +42,7 @@ class test_db_topic__get_all__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                'topic__get_all'
+                'topic__get_all$2'
                 , (mock_auth_user.department_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -63,7 +63,7 @@ class test_db_topic__get_all__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'topic__get_all'
+                'topic__get_all$2'
                 , (mock_auth_user.department_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)
@@ -93,7 +93,7 @@ class test_db_topic__get_all__level_1(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'topic__get_all'
+                'topic__get_all$2'
                 , (mock_auth_user.department_id, int(STATE.PUBLISH), mock_auth_user.auth_user_id)
                 , []
                 , handle_log_info)

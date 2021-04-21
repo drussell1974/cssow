@@ -13,21 +13,24 @@ class DepartmentTopicIndexViewModel(BaseViewModel):
     
     def __init__(self, db, request, auth_ctx):
         
-        self.model = []
+        self.model = {}
         self.db = db
         self.request = request
-        #self.institute_id = auth_ctx.institute_id
-        #self.department_id = auth_ctx.department_id
         self.department = auth_ctx.department
         self.auth_ctx = auth_ctx
         
         try:
-            
+        
             # get model
-            self.model = TopicModel.get_all(self.db, self.auth_ctx)
+            all_topics = TopicModel.get_all(self.db, self.auth_ctx)
+            
+            for topic in all_topics:
+                if topic.parent is not None:
+                    if self.model.get(topic.parent.id, 0) == 0:
+                        self.model[topic.parent.id] = []
 
-            #self.model = self.group_and_sort(data).items
-
+                    self.model[topic.parent.id].append(topic)
+            
         except Http404 as e:
             raise e
 
@@ -61,13 +64,14 @@ class DepartmentTopicEditViewModel(BaseViewModel):
     def view(self):
         
         self.model = TopicModel(0, name="", lvl=1, auth_ctx=self.auth_ctx)
-                
+        self.model.parent_id = try_int(self.request.GET.get("parent_id", self.auth_ctx.department.topic_id))
+
         if self.topic_id > 0:
             self.model = TopicModel.get_model(self.db, topic_id=self.topic_id, auth_ctx=self.auth_ctx)
 
         # the parent topic is always the department "subject"
         if self.model.parent is None:
-            self.model.parent = TopicModel.get_model(self.db, topic_id=self.auth_ctx.department.topic_id, auth_ctx=self.auth_ctx)
+            self.model.parent = TopicModel.get_model(self.db, topic_id=self.model.parent_id, auth_ctx=self.auth_ctx)
             if self.model.parent is None:
                 raise Exception("must have parent topic")
 

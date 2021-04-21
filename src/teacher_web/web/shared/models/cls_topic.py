@@ -137,7 +137,7 @@ class TopicDataAccess:
         
         execHelper = ExecHelper()
 
-        str_select = "topic__get_all"
+        str_select = "topic__get_all$2"
         params = (department_id, int(show_published_state), auth_user_id)
 
         rows = []
