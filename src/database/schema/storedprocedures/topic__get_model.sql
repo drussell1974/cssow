@@ -35,6 +35,6 @@ DELIMITER ;
 
 CALL topic__get_model(0, 5, 1, 2);
 CALL topic__get_model(10009, 84, 1, 152);
-SELECT * FROM sow_topic;
-WHERE department_id = 84;
 
+SELECT pic_id dfddfddfdfddson;df
+ddfdf

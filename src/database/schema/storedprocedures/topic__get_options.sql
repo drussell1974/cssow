@@ -28,17 +28,17 @@ BEGIN
     WHERE 
 		top.department_id = p_department_id -- and tl_top.parent_id is NULL
         and top.lvl = p_lvl and top.parent_id = prt_top.id
-        -- and (p_show_published_state % published = 0
-		-- 	or created_by = p_auth_user
-        -- )
+        and (p_show_published_state % top.published = 0
+			or top.created_by = p_auth_user
+        )
         ;
 END;
 //
 
 DELIMITER ;
 
-CALL topic__get_options$2(0, 5, 1, 1, 2);
-CALL topic__get_options$2(2, 5, 1, 1, 2);
+CALL topic__get_options$2(0, 5, 2, 1, 2);
+CALL topic__get_options$2(2, 5, 2, 1, 2);
 
 DELIMITER //
 
