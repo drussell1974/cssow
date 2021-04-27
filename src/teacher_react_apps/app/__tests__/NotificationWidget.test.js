@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer } from '../helpers/domManipulators';
 import NotificationWidget from '../widgets/NotificationWidget';
 
 describe('NotificationWidget', () => {
-    let render, container;
+    let render, container, element, click;
 
     beforeEach(() => {
         ({render, container} = createContainer());
     })
 
     let deleteMessageCallback = () => {
+        
+    }
+
+    let clickActionLinkMessageCallback = () => {
         
     }
 
@@ -29,7 +33,7 @@ describe('NotificationWidget', () => {
             1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
         }
         
-        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
+        render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={deleteMessageCallback} />);
 
         expect(
             container.querySelector('.alert strong').textContent
@@ -53,7 +57,7 @@ describe('NotificationWidget', () => {
             3: {"id": 3, "notify_message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
         }
 
-        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
+        render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={deleteMessageCallback} />);
         
         expect(
             container.querySelector('.alert:first-child strong').textContent
@@ -78,5 +82,60 @@ describe('NotificationWidget', () => {
         expect(
             container.querySelector('.alert:last-child .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/3');
+    })
+
+    describe('delete alert', () => {
+
+        const onDismissClickSpy = jest.fn();
+        
+        beforeEach(() => {
+            ({render, container, element, click} = createContainer());
+        });
+    
+        it('when dismiss button is clicked', async () => {
+
+            // arrange
+
+            let messages={
+                1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+            }
+            
+            render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={onDismissClickSpy} />);
+            
+            // act
+            
+            await act(async () => {
+                click(
+                    element('button.close')
+                );
+            })
+            
+            // assert 
+            
+            expect(onDismissClickSpy).toHaveBeenCalled();
+        });
+
+        it('when action link is clicked', async () => {
+
+            // arrange
+
+            let messages={
+                1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+            }
+            
+            render(<NotificationWidget messages={messages} actionLinkCallback={onDismissClickSpy} deleteMessageCallback={deleteMessageCallback} />);
+            
+            // act
+            
+            await act(async () => {
+                click(
+                    element('a.alert-link')
+                );
+            })
+            
+            // assert 
+            
+            expect(onDismissClickSpy).toHaveBeenCalled();
+        });
     })
 })
