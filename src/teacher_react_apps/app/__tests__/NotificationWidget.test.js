@@ -32,19 +32,15 @@ describe('NotificationWidget', () => {
         render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
 
         expect(
-            container.querySelector('#dropdownNotificationsMenuButton').textContent
-        ).toMatch('1');
-        
-        expect(
-            container.querySelector('.dropdown-menu .dropdown-item strong').textContent
+            container.querySelector('.alert strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').getAttribute('href')
+            container.querySelector('.alert .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').textContent
+            container.querySelector('.alert .alert-link').textContent
         ).toMatch('action now');
     })
 
@@ -58,33 +54,29 @@ describe('NotificationWidget', () => {
         }
 
         render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
-
-        expect(
-            container.querySelector('#dropdownNotificationsMenuButton').textContent
-        ).toMatch('3');
         
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child strong').textContent
+            container.querySelector('.alert:first-child strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').textContent
+            container.querySelector('.alert:first-child .alert-link').textContent
         ).toMatch('action now');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').getAttribute('href')
+            container.querySelector('.alert:first-child .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child strong').textContent
+            container.querySelector('.alert:last-child strong').textContent
         ).toMatch('Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').textContent
+            container.querySelector('.alert:last-child .alert-link').textContent
         ).toMatch('action now');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').getAttribute('href')
+            container.querySelector('.alert:last-child .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/3');
     })
 })
