@@ -159,35 +159,6 @@ class RegisterTeacherForm(UserCreationForm):
                             # delete user if cannot create department
                             if user.id is not None:
                                 user.delete()
-
-                        # send notifications
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create topics",
-                            message="You must create topics before you can create lessons and pathways.",
-                            action_url=reverse('department_topic.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create pathway",
-                            message="Pathways allow mapped progress between different key stages.",
-                            action_url=reverse('ks123pathways.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create scheme of work",
-                            message="Create your first scheme of work.",
-                            action_url=reverse('schemesofwork.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
             
                     else:
                         # delete user if cannot create department
