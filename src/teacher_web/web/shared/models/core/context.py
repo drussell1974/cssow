@@ -166,14 +166,15 @@ class AuthCtx(Ctx):
                 else:
                     # ... otherwise, check if there are curriculum content for the scheme of work
                     for schemeofwork_model in SchemeOfWorkModel.get_my(db, institute_model, department_model, auth_ctx):
-                        # after creating a scheme of work notify the user they must create curriculum content before create lessons 
-                        no_of_content = SchemeOfWorkModel.get_number_of_contents(db, schemeofwork_model.id, auth_ctx)
+                        # after creating a scheme of work notify the user they must create curriculum content before create lessons
+                        no_of_content = SchemeOfWorkModel.get_number_of_contents(db, schemeofwork_model["id"], auth_ctx)
                         if no_of_content == 0:
                             NotifyModel.create(
                                 db=db,
                                 title="Create scheme of work",
                                 message="You must define the curriculum content before you can create lessons",
-                                action_url=reverse('content.index', args=[institute_model.id, department_model.id, schemeofwork_model.id]),
+                                action_url=reverse('content.index', args=[institute_model.id, department_model.id, schemeofwork_model["id"]]),
                                 auth_ctx=auth_ctx,
                                 handle_log_info=handle_log_info
                             )
+                
