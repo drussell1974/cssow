@@ -134,7 +134,7 @@ class AuthCtx(Ctx):
                     NotifyModel.create(
                         db=db,
                         title="Create topics",
-                        message="You must create topics before you can create lessons and pathways.",
+                        message=f"You must create topics for {department_model.name} before you can create lessons and pathways.",
                         action_url=reverse('department_topic.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
@@ -146,7 +146,7 @@ class AuthCtx(Ctx):
                     NotifyModel.create(
                         db=db,
                         title="Create pathway",
-                        message="Pathways allow mapped progress between different key stages.",
+                        message=f"Create pathways for {department_model.name} to allow objectives progress between different key stages.",
                         action_url=reverse('ks123pathways.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
@@ -158,7 +158,7 @@ class AuthCtx(Ctx):
                     NotifyModel.create(
                         db=db,
                         title="Create scheme of work",
-                        message="Create your first scheme of work.",
+                        message=f"Create your first scheme of work for {department_model.name}.",
                         action_url=reverse('schemesofwork.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
@@ -172,7 +172,7 @@ class AuthCtx(Ctx):
                             NotifyModel.create(
                                 db=db,
                                 title="Create scheme of work",
-                                message="You must define the curriculum content before you can create lessons",
+                                message=f"You must define the curriculum content for {schemeofwork_model['name']} before you can create lessons",
                                 action_url=reverse('content.index', args=[institute_model.id, department_model.id, schemeofwork_model["id"]]),
                                 auth_ctx=auth_ctx,
                                 handle_log_info=handle_log_info
