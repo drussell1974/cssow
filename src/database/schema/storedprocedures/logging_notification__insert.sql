@@ -3,7 +3,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS logging_notification__insert;
 
 CREATE PROCEDURE logging_notification__insert (
- IN p_message VARCHAR(30),
+ IN p_message VARCHAR(135),
  IN p_action VARCHAR(2083),
  IN p_start_date DATETIME,
  IN p_event_log_id INT,
@@ -11,7 +11,7 @@ CREATE PROCEDURE logging_notification__insert (
 )
 BEGIN
 
-    INSERT INTO sow_logging_notification
+    INSERT IGNORE INTO sow_logging_notification
     (
 		message,
         action,

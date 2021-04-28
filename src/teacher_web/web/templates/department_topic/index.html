@@ -29,6 +29,11 @@
 {% block maincontent %}
 
 <!-- Pager Header -->   
+{% if request.user.is_authenticated %}
+<span class="float-right">  
+  <a class="btn btn-warning" id="btn-new" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_("add")}}</a>
+</span>
+{% endif %}
 <h2 class="group-heading">{{_("Topics")}}</h2>
 <hr />
 <!-- Pager Header END -->      

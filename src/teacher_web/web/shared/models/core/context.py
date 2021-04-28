@@ -6,7 +6,7 @@ from shared.models.cls_academic_year_period import AcademicYearPeriodModel
 from shared.models.cls_institute import InstituteContextModel, InstituteModel
 from shared.models.cls_department import DepartmentContextModel, DepartmentModel
 from shared.models.cls_notification import NotifyModel
-from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
+from shared.models.cls_schemeofwork import SchemeOfWorkContextModel, SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
@@ -117,7 +117,7 @@ class AuthCtx(Ctx):
 
 
     @classmethod
-    def login_init(cls, db, request, auth_ctx):
+    def check_setup_and_notify(cls, db, request, auth_ctx):
         # iterate user institutes
         owned_institutes = InstituteModel.get_my(db, auth_ctx)
         for institute_model in owned_institutes: 
@@ -128,35 +128,52 @@ class AuthCtx(Ctx):
                 
                 auth_ctx.department_id = department_model.id
 
+                # inform owner the should create topics
                 no_of_topics = DepartmentModel.get_number_of_topics(db, auth_ctx.department_id, auth_ctx)
                 if no_of_topics == 0:
                     NotifyModel.create(
                         db=db,
                         title="Create topics",
                         message="You must create topics before you can create lessons and pathways.",
-                        action_url=reverse('department_topic.new', args=[institute_model.id, department_model.id]),
+                        action_url=reverse('department_topic.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
                     )
-            
+
+                # inform owner they should create pathways
                 no_of_pathways = DepartmentModel.get_number_of_pathways(db, department_model.id, auth_ctx)
                 if no_of_pathways == 0:
                     NotifyModel.create(
                         db=db,
                         title="Create pathway",
                         message="Pathways allow mapped progress between different key stages.",
-                        action_url=reverse('ks123pathways.new', args=[institute_model.id, department_model.id]),
+                        action_url=reverse('ks123pathways.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
                     )
 
                 no_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, department_model.id, auth_ctx)
                 if no_of_schemes_of_work == 0:
+                    # if there are no schemes of work prompt owner to create one
                     NotifyModel.create(
                         db=db,
                         title="Create scheme of work",
                         message="Create your first scheme of work.",
-                        action_url=reverse('schemesofwork.new', args=[institute_model.id, department_model.id]),
+                        action_url=reverse('schemesofwork.index', args=[institute_model.id, department_model.id]),
                         auth_ctx=auth_ctx,
                         handle_log_info=handle_log_info
                     )
+                else:
+                    # ... otherwise, check if there are curriculum content for the scheme of work
+                    for schemeofwork_model in SchemeOfWorkModel.get_my(db, institute_model, department_model, auth_ctx):
+                        # after creating a scheme of work notify the user they must create curriculum content before create lessons 
+                        no_of_content = SchemeOfWorkModel.get_number_of_contents(db, schemeofwork_model.id, auth_ctx)
+                        if no_of_content == 0:
+                            NotifyModel.create(
+                                db=db,
+                                title="Create scheme of work",
+                                message="You must define the curriculum content before you can create lessons",
+                                action_url=reverse('content.index', args=[institute_model.id, department_model.id, schemeofwork_model.id]),
+                                auth_ctx=auth_ctx,
+                                handle_log_info=handle_log_info
+                            )

@@ -58,7 +58,7 @@ class min_permission_required:
                 
                 return self.redirect_handler(str_err, institute_id, department_id, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 
-            AuthCtx.login_init(db, request, auth_ctx)
+            AuthCtx.check_setup_and_notify(db, request, auth_ctx)
             
             self.setkwargs("ctx", value=auth_ctx)
             
