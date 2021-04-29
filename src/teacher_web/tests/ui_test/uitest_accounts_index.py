@@ -73,27 +73,6 @@ class uitest_accounts_index(UITestCase):
         self.assertEqual(4, len(elems))
 
 
-    def test_page__show_published_and_owned_latest_schemesofwork(self):
-        # arrange
-        
-        ''' expand accordian '''
-
-        elem = self.test_context.find_element_by_id("btn-expand-heading-latest_schemes_of_work")
-        elem.click()
-        self.wait(s=1)
-
-        # act
-
-        section = self.test_context.find_elements_by_class_name('post-preview--schemeofwork')
-
-        result = len(section)
-
-        # assert
-        # ***** less 5 should be visible to test@localhost for testing purposes
-        ''' TEMPORARILY SET TO 4 SHOULD BE 3 '''
-        self.assertEqual(4, result, "number of elements not as expected")
-
-
     def test_page__show_my_institutes(self):
         # arrange
         

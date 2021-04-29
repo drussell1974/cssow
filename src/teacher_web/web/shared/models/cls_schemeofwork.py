@@ -272,35 +272,6 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
 
 
     @staticmethod
-    def get_latest_schemes_of_work(db, top, auth_user):
-    
-        rows = SchemeOfWorkDataAccess.get_latest_schemes_of_work(db, top, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=auth_user.can_view)
-        data = []
-        for row in rows:
-            model = SchemeOfWorkModel(id_=row[0],
-                                    name=row[1],
-                                    study_duration=row[16],
-                                    start_study_in_year=row[17],
-                                    description=row[2],
-                                    exam_board_id=row[3],
-                                    exam_board_name=row[4],
-                                    key_stage_id=row[5],
-                                    key_stage_name=row[6],
-                                    created=row[7],
-                                    created_by_id=row[8],
-                                    created_by_name=row[9],
-                                    published=row[10],
-                                    auth_user=auth_user)
-            model.department_id = try_int(row[11])
-            model.department = DepartmentContextModel(row[11], row[12], topic_id=row[13]) 
-            model.institute_id = try_int(row[14])
-            model.institute = InstituteContextModel(row[14], row[15]) 
-
-            data.append(model)
-        return data
-
-
-    @staticmethod
     def get_schemeofwork_name_only(db, scheme_of_work_id, auth_user):
         rows = SchemeOfWorkDataAccess.get_schemeofwork_name_only(db, scheme_of_work_id, department_id=auth_user.department_id, institute_id=auth_user.institute_id, auth_user_id=auth_user.auth_user_id, show_published_state=STATE.PUBLISH)
         scheme_of_work_name = ""
@@ -450,25 +421,6 @@ class SchemeOfWorkDataAccess:
 
         return rows
 
-
-    @staticmethod
-    def get_latest_schemes_of_work(db, top = 5, department_id = 0, institute_id = 0, auth_user_id = 0, show_published_state=STATE.PUBLISH):
-        """
-        Gets the latest schemes of work with learning objectives
-        :param db: the database context
-        :param top: number of records to return
-        :return: list of schemes of work models
-        """
-        execHelper = ExecHelper()
-        
-        select_sql = "scheme_of_work__get_latest$3"
-        params = (top, department_id, institute_id, int(show_published_state), auth_user_id)
-
-        rows = []
-        rows = execHelper.select(db, select_sql, params, rows, handle_log_info)
- 
-        return rows
-        
 
     @staticmethod
     def _update(db, model, published, auth_user_id):

@@ -28,16 +28,12 @@ from shared.view_model import ViewModel
 class AccountIndexViewModel(BaseViewModel):
     
     def __init__(self, db, top, auth_user):
-        self.latest_schemes_of_work = []
         self.db = db
         self.auth_user = auth_user
 
         try:
             # get institutes
             self.institutes = InstituteModel.get_my(self.db, auth_user=auth_user)
-
-            # get latest_schemes_of_work
-            self.latest_schemes_of_work = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
 
         except Exception as e:
             self.error_message = repr(e)
@@ -47,7 +43,6 @@ class AccountIndexViewModel(BaseViewModel):
         
         data = {
             "institutes": self.institutes,
-            "latest_schemes_of_work":self.latest_schemes_of_work,
         }
         
         return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
