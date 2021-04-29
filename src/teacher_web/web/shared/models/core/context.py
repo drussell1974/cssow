@@ -76,20 +76,20 @@ class AuthCtx(Ctx):
         self.institute = InstituteContextModel.cached(request, db, self.institute_id, self.auth_user_id)
         
         self.scheme_of_work = SchemeOfWorkContextModel.cached(request, db, self.institute_id, self.department_id, self.scheme_of_work_id, self.auth_user_id)
-        
-        #432 get academic years and periods
 
-        self.academic_years = AcademicYearModel.get_all(db, institute_id, self)
+        if institute_id > 0:        
+            #432 get academic years and periods
+            self.academic_years = AcademicYearModel.get_all(db, institute_id, self)
+            
+            # use session to get selected year or default to current year
+            self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
         
-        # use session to get selected year or default to current year
-        self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
+            self.academic_year = AcademicYearModel.get_model(db, institute_id, for_academic_year=self.selected_year, auth_ctx=self)
         
-        self.academic_year = AcademicYearModel.get_model(db, institute_id, for_academic_year=self.selected_year, auth_ctx=self)
-        
-        # default
+            # default
 
-        if self.academic_year is None:
-            self.academic_year = AcademicYearModel.default(for_academic_year=self.selected_year)
+            if self.academic_year is None:
+                self.academic_year = AcademicYearModel.default(for_academic_year=self.selected_year)
 
         self.periods = AcademicYearPeriodModel.get_all(db, institute_id, self)
 

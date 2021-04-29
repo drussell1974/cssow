@@ -28,7 +28,7 @@ class uitest_institute_academic_year_edit_create_new_page_navigation(UITestCase)
 
         # assert
         # NOTE: This increments to next available academic year
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'New academic year 2024/2025', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'New academic year 2022/2023', wait=2)
         self.assertFooterContextText("Finibus Bonorum et Malorum")
 
 
@@ -55,4 +55,4 @@ class uitest_institute_academic_year_edit_create_new_page_navigation(UITestCase)
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years', wait=2)
