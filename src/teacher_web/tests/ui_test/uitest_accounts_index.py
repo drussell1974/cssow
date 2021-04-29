@@ -50,43 +50,8 @@ class uitest_accounts_index(UITestCase):
     def test_page__submenu__navigate_to_change_password(self):
         # arrange
         
-        ''' expand accordian '''
-
-        elem = self.test_context.find_element_by_id("btn-expand-heading-my_admin")
-        elem.click()
-        self.wait(s=1)
-
-        # test
+        # act
         self.test_context.find_element_by_id('btn-password_change--content').click()
 
         # assert
         self.assertWebPageTitleAndHeadings('', 'Account', 'Change password')
-
-
-    def test_page__content__has_accordian(self):
-        # setup
-
-        # test #headingMyTeam > h5 > button
-        elems = self.test_context.find_elements_by_css_selector('.card-header > h5.mb-0 > button.btn-link')
-
-        # assert
-        self.assertEqual(4, len(elems))
-
-
-    def test_page__show_my_institutes(self):
-        # arrange
-        
-        ''' expand accordian '''
-
-        elem = self.test_context.find_element_by_id("btn-expand-heading-my_institutes")
-        elem.click()
-        self.wait(s=1)
-
-        # act
-
-        section = self.test_context.find_elements_by_class_name('post-preview--institute')
-
-        result = len(section)
-
-        # assert
-        self.assertEqual(3, result, "number of elements not as expected")
