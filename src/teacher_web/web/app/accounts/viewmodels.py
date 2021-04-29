@@ -20,6 +20,7 @@ from shared.models.cls_institute import InstituteModel
 from shared.models.cls_notification import NotifyModel
 from shared.models.cls_pathway_template import PathwayTemplateModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -46,6 +47,17 @@ class AccountIndexViewModel(BaseViewModel):
         }
         
         return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+
+
+class AccountDeleteViewModel(BaseViewModel):
+
+    def __init__(self, db, auth_user):
+        self.model = TeacherModel.get_model(auth_user)
+        
+        
+    def execute(self):
+        self.model.delete()
+
 
 
 # 206 inherit RegisteredUserForm from UserCreationForm to include new fields

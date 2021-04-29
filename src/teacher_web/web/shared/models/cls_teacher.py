@@ -13,12 +13,13 @@ class TeacherModel(BaseModel):
 
     def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=False, ctx=None):
         
-        TeacherModel.depreciation_notice("use TeacherPermissionModel")
+        #TeacherModel.depreciation_notice("use TeacherPermissionModel")
 
         super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=is_from_db, ctx=ctx)
         self.id = id
         self.name = name
         self.department = department
+        self.user = None
 
         
     def validate(self, skip_validation = []):
@@ -46,15 +47,22 @@ class TeacherModel(BaseModel):
         return self.name
 
 
+    def delete(self):
+        self.user.delete()
+
+
     @staticmethod
     def get_model(db, teacher_id, ctx):
-        model = TeacherModel(0, "", department=DepartmentModel(0, "", institute=InstituteModel(0, "", is_from_db=False), is_from_db=False), is_authorised=False, is_from_db=False)
-        
+        model = None
+
         rows = TeacherDataAccess.get_model(db, teacher_id, ctx.department_id, ctx.institute_id)
         
         for row in rows:
-            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], institute=InstituteModel(row[4], name=row[5], is_from_db=False), is_from_db=True), is_authorised=row[6], is_from_db=True)
+            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], topic_id=0, institute=InstituteModel(row[4], name=row[5], is_from_db=False), is_from_db=True), is_authorised=row[6], is_from_db=True)
+            model.user = User.objects.get(username = model.name)
+        
         return model
+
 
 class TeacherDataAccess:
 
