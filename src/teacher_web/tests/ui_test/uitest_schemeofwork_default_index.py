@@ -47,21 +47,6 @@ class uitest_schemeofwork_default_index(UITestCase):
         self.assertEqual(3, result, "number of elements not as expected")
 
 
-    def test_page__has_show_published_and_owned_latest_schemesofwork(self):
-        # setup
-        
-        # act
-
-        section = self.test_context.find_elements_by_class_name('post-preview--schemeofwork')
-
-        result = len(section)
-
-        # assert
-        # ***** less 5 should be visible to test@localhost for testing purposes
-        ''' TEMPORARILY SET TO 4 SHOULD BE 3 '''
-        self.assertEqual(4, result, "number of elements not as expected")
-
-
     def test_page__show_institutes(self):
         # setup
         
