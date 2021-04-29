@@ -24,8 +24,11 @@ class test_check_setup_and_notify__notify_schemeofwork_content(TestCase):
         pass
 
 
-    def test__notify(self, mock_inst_getmy, mock_dep_getmy, mock_sow_getmy, mock_auth_ctx):
+    def test__notify(self, mock_auth_ctx, mock_inst_getmy, mock_dep_getmy, mock_sow_getmy):
         # arrange
+        mock_auth_ctx.institute_id = 1276711
+        mock_auth_ctx.department_id = 67
+        
         with patch.object(SchemeOfWorkModel, "get_number_of_contents", return_value=0):
             with patch.object(NotifyModel, "create", return_value=None):
                 # act
@@ -37,6 +40,9 @@ class test_check_setup_and_notify__notify_schemeofwork_content(TestCase):
 
     def test__does_not_notify(self, mock_inst_getmy, mock_dep_getmy, mock_sow_getmy, mock_auth_ctx):
         # arrange
+        mock_auth_ctx.institute_id = 1276711
+        mock_auth_ctx.department_id = 67
+
         with patch.object(SchemeOfWorkModel, "get_number_of_contents", return_value=1):
             with patch.object(NotifyModel, "create", return_value=None):
                 # act

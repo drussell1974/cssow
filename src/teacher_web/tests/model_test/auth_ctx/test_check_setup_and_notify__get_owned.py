@@ -21,41 +21,29 @@ class test_check_setup_and_notify__get_owned(TestCase):
         pass
 
 
-    def test__call_institutemodel_get_my__returns_no_institutes(self, mock_auth_ctx):
-        """ should call InstituteModel.get_my but not DepartmentModel.get_my """
+    def test__call_departmentmodel_get_model__returns_no_departments(self, mock_auth_ctx):
         # arrange
-        with patch.object(InstituteModel, "get_my", return_value=[]):
-            with patch.object(DepartmentModel, "get_my", return_value=[]):
-                # act
-                AuthCtx.check_setup_and_notify(self.mock_db, self.mock_request, mock_auth_ctx)
-                # assert
-                InstituteModel.get_my.assert_called()
-                DepartmentModel.get_my.assert_not_called()
+        mock_auth_ctx.institute_id = 1276711
+        mock_auth_ctx.department_id = 67
+        
+        with patch.object(DepartmentModel, "get_model", return_value=None):
+            # act
+            AuthCtx.check_setup_and_notify(self.mock_db, self.mock_request, mock_auth_ctx)
+            # assert
+            DepartmentModel.get_model.assert_called()
 
 
-    def test__call_departmentmodel_get_my__returns_no_departments(self, mock_auth_ctx):
-        """ should call InstituteModel.get_my and DepartmentModel.get_my """
+    def test__call_schemeofworkmodel_get_my(self, mock_auth_ctx):
         # arrange
-        with patch.object(InstituteModel, "get_my", return_value=[fake_institute()]):
-            with patch.object(DepartmentModel, "get_my", return_value=[]):
-                # act
-                AuthCtx.check_setup_and_notify(self.mock_db, self.mock_request, mock_auth_ctx)
-                # assert
-                InstituteModel.get_my.assert_called()
-                DepartmentModel.get_my.assert_called()
+        mock_auth_ctx.institute_id = 1276711
+        mock_auth_ctx.department_id = 67
 
-
-    def test__call_schemeofworkmodel_get_my__returns_has_departments(self, mock_auth_ctx):
-        """ should call InstituteModel.get_my and DepartmentModel.get_my """
-        # arrange
         fake_inst = fake_institute()
 
-        with patch.object(InstituteModel, "get_my", return_value=[fake_inst]):
-            with patch.object(DepartmentModel, "get_my", return_value=[fake_department(76, fake_inst)]):
-                with patch.object(SchemeOfWorkModel, "get_my", return_value=[mock_scheme_of_work().__dict__]):
-                    # act
-                    AuthCtx.check_setup_and_notify(self.mock_db, self.mock_request, mock_auth_ctx)
-                    # assert
-                    InstituteModel.get_my.assert_called()
-                    DepartmentModel.get_my.assert_called()
-                    SchemeOfWorkModel.get_my.assert_called()
+        with patch.object(DepartmentModel, "get_model", return_value=fake_department(76, fake_inst)):
+            with patch.object(SchemeOfWorkModel, "get_my", return_value=[mock_scheme_of_work().__dict__]):
+                # act
+                AuthCtx.check_setup_and_notify(self.mock_db, self.mock_request, mock_auth_ctx)
+                # assert
+                DepartmentModel.get_model.assert_called()
+                SchemeOfWorkModel.get_my.assert_called()
