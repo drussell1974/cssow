@@ -118,7 +118,9 @@ def fake_teacher_permission_model(is_from_db=True, is_authorised=True):
             
             institute.get = MagicMock(return_value="Lorum Ipsum")
             department.get = MagicMock(return_value="Computer Science")
-                    
+
+            institute.id = 127671276711
+
             scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", study_duration=2, start_study_in_year=12, is_from_db=is_from_db, auth_user=AuthCtx(mock_db, mock_request, institute.id, department.id))
             
             auth_ctx = AuthCtx(mock_db, mock_request, institute_id=127671276711, department_id=34, scheme_of_work_id=14)
