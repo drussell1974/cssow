@@ -47,8 +47,9 @@ class TeacherModel(BaseModel):
         return self.name
 
 
-    def delete(self):
-        self.user.delete()
+    @staticmethod
+    def save(db, model, auth_user):
+        TeacherDataAccess.delete(db, model, auth_user)
 
 
     @staticmethod
@@ -83,18 +84,15 @@ class TeacherDataAccess:
             raise Exception("Error getting teacher model", e)
 
 
-'''
     @staticmethod
-    def save(db, model, teacher_id, auth_user):
-        """ save model """
-        if model.published == STATE.DELETE
-            data = DepartmentDataAccess._delete(db, model, auth_user)
-        elif model.is_valid == True:
-            if model.is_new():
-                data = TeacherDataAccess._insert(db, model, teacher_id, auth_user)
-                model.id = data[0]
-            else:
-                data = TeacherDataAccess._update(db, model, teacher_id, auth_user)
+    def delete(db, model, auth_user):
+        #execHelper = ExecHelper()
 
-        return model
-'''
+        #str_delete = "teacher__delete"
+        #params = (teacher_id)
+        
+        try:
+            model.user.delete()
+            #execHelper.delete(db, str_delete, params, handle_log_info)
+        except Exception as e:
+            raise Exception("Error deleting teacher model", e)
