@@ -48,8 +48,8 @@ class TeacherModel(BaseModel):
 
 
     @staticmethod
-    def save(db, model, auth_user):
-        TeacherDataAccess.delete(db, model, auth_user)
+    def save(db, auth_user):
+        TeacherDataAccess.delete(db, auth_user)
 
 
     @staticmethod
@@ -85,14 +85,11 @@ class TeacherDataAccess:
 
 
     @staticmethod
-    def delete(db, model, auth_user):
-        #execHelper = ExecHelper()
-
-        #str_delete = "teacher__delete"
-        #params = (teacher_id)
+    def delete(db, auth_user):
+        if auth_user.is_superuser or auth_user.id == 2:
+            raise Exception("Cannot delete this account")
         
         try:
-            model.user.delete()
-            #execHelper.delete(db, str_delete, params, handle_log_info)
+            auth_user.delete()
         except Exception as e:
-            raise Exception("Error deleting teacher model", e)
+            raise Exception("Error deleting account", e)

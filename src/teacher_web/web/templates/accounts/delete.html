@@ -2,7 +2,7 @@
 {% block header %}
 <div class="site-heading">
   <h1>{{_('Account')}}</h1>
-  <span class="subheading" id="main-subheading">{{_('Registration')}}</span>
+  <span class="subheading" id="main-subheading">{{_('Delete account')}}</span>
 </div>
 {% endblock %}
 
@@ -11,14 +11,15 @@
 
     <h1>{{_('Delete account')}}</h1>
 
-    <p>{{_("All your information will be permanently deleted")}}</p>
-
     <div class="site-registration-form">
       <form method="POST" class="needs-validation">
         {% csrf_token %}
-        
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="deleteCheck" required>
+          <label class="form-check-label text-danger" for="deleteCheck" id="deleteCheckLabel">{{_("I understand that my information will be permanently deleted")}}</label>
+        </div>
         <div class="form-group stackable-group stackable-group-sm">
-        <input type="submit" class="btn btn-primary" value="{{_('Register')}}" id="saveButton">
+        <input type="submit" class="btn btn-danger" value="{{_('Continue')}}" id="saveButton">
         <a href="{% url 'default' %}" type="submit" class="btn btn-secondary" id="cancelButton">{{_('Cancel')}}</a>
         </div>
       </form>

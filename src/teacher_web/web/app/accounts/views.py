@@ -37,7 +37,7 @@ def delete(request):
         delete_view.execute()
         return HttpResponseRedirect("/")
     
-    return render(request, "accounts/delete.html", delete_view.view().content)
+    return render(request, "accounts/delete.html", delete_view.view("", "Delete account").content)
 
 
 class RegisterTeacherView(generic.CreateView):
