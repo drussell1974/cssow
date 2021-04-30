@@ -26,10 +26,13 @@ class test_viewmodel_AccountDeleteViewModel(TestCase):
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+            mock_request.user = MagicMock(id=6079)
+
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db, mock_request)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -47,10 +50,13 @@ class test_viewmodel_AccountDeleteViewModel(TestCase):
             db = MagicMock()
             db.cursor = MagicMock()
 
+            mock_request = Mock()
+            mock_request.user = MagicMock(id=6079)
+
             self.mock_model = Mock()
 
             # act
-            self.viewmodel = ViewModel(db, auth_user=mock_auth_user)
+            self.viewmodel = ViewModel(db, mock_request)
 
             # assert functions was called
             Model.get_model.assert_called()
@@ -69,8 +75,11 @@ class test_viewmodel_AccountDeleteViewModel(TestCase):
                 db = MagicMock()
                 db.cursor = MagicMock()
 
+                mock_request = Mock()
+                mock_request.user = MagicMock(id=6079)
+
                 # act
-                self.viewmodel = ViewModel(db, auth_user=mock_auth_user)
+                self.viewmodel = ViewModel(db, mock_request)
                 self.viewmodel.execute()
 
                 # assert functions was called
