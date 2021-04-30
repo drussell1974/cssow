@@ -21,7 +21,9 @@
             <a class="btn" href="{% url 'password_change' %}" id="btn-password_change--content">
               <i class="fa fa-key"></i> {{_("Change password")}}
             </a>
-
+            <a class="btn" href="{% url 'accounts.delete' %}" id="btn-delete_account--content">
+              <i class="fa fa-trash"></i> {{_("Delete Account")}}
+            </a>
             {% if request.user.is_superuser %}
             <h2>{{_('Super user')}}</h2>
             <div>
