@@ -126,7 +126,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
                 LessonScheduleModel.save(self.db, self.model, self.auth_ctx, published_state)
                 
                 #432 set reminder n minutes before start_date (string to date)
-                offset_min = self.request.POST.get('reminder_minutes_before', 15)
+                offset_min = self.request.POST.get('reminder_minutes_before', 0) # TODO: get reminder_minutes_before value from form
                 reminder = self.model.start_date - timedelta(minutes=try_int(offset_min))
                 # back to string
                 reminder = reminder.strftime(settings.ISOFORMAT)
@@ -160,6 +160,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
             "lesson_id": self.lesson_id,
             "model": self.model,
             "period_options": self.auth_ctx.periods,
+            "reminder_options": { 5:"5 minutes", 10:"10 minutes", 15:"15 minutes", 30:"30 minutes", 60:"1 hour"},
             "return_url": self.return_url
         }
         

@@ -49,7 +49,7 @@
         <!-- Start date START -->
         <div class="control-group">
             <div class="form-group controls row">
-                <label class="col-sm-2 col-form-label" >{{_("Date/Time")}}</label>
+                <label class="col-sm-2 col-form-label" >{{_("Start")}}</label>
                 <div class="col-sm-4">
                     <input type="date" class="form-control" placeholder="{{_('Enter a start date/time')}}" id="ctl-start_date" name="start_date" required
                             value='{{content.data.model.start_date_ui_date}}'>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-sm-3">
                     <select class="form-control" id="ctl-period" name="period">
-                        <option value='00:00' {%if content.data.model.start_date_ui_time == "00:00"%}selected{%endif%}>{{_('No time')}}</option>
+                        <option value='00:00' {%if content.data.model.start_date_ui_time == "00:00"%}selected{%endif%}>{{_('All day')}}</option>
                         {% for pd in content.ctx.periods %}
                             <option value='{{pd.time|format_time}}' {%if content.data.model.start_date_ui_time == pd.time|format_time%}selected{%endif%}>{{pd.time|format_time}} ({{pd.name}})</option>
                         {% endfor %}
@@ -67,7 +67,22 @@
             </div>
         </div>
         <!-- Start date END -->
-
+        <!-- Reminder START -->
+        <div class="control-group">
+            <div class="form-group controls row">
+                <label class="col-sm-2 col-form-label">{{_("Reminder")}}</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="ctl-reminder" name="reminder_minutes_before">
+                        <option value='0' selected>{{_('At start')}}</option>
+                        {% for key, value in content.data.reminder_options.items %}
+                            <option value='{{key}}'>{{value}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="help-block text-danger invalid-feedback">{{_("not valid")}}</div>
+                </div>
+            </div>
+        </div>
+        <!-- Reminder END -->
         <!-- Class code -->
         <div class="control-group">
             <div class="form-group controls row">
