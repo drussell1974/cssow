@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("profile/", views.index, name="accounts.index"),
+    path("delete/", views.delete, name="accounts.delete"),
     path('register/', views.RegisterTeacherView.as_view(), name='accounts.register'),
     path('team-permissions/', include('app.teampermissions.urls')),
     path("", views.index, name="accounts.index"),

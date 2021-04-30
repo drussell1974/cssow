@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.accounts.views import index, RegisterTeacherView
+from app.accounts.views import index, RegisterTeacherView, delete
 
 # Create your tests here.
 class test_app_route_accounts_page(TestCase):
@@ -25,4 +25,15 @@ class test_app_route_accounts_page(TestCase):
     def test_register_url_resolves_to_register__reverse(self):
         url = reverse("accounts.register")
         self.assertEqual("/accounts/register/", url)
+        
+
+    def test_delete_url_resolves_to_delete(self):
+        url = resolve('/accounts/delete/')
+        self.assertEqual("accounts.delete", url.url_name)
+        self.assertEquals(url.func, delete)
+
+    
+    def test_delete_url_resolves_to_delete__reverse(self):
+        url = reverse("accounts.delete")
+        self.assertEqual("/accounts/delete/", url)
         
