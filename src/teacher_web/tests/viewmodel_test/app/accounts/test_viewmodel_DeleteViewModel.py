@@ -18,70 +18,72 @@ class test_viewmodel_AccountDeleteViewModel(TestCase):
     def test_init_called_fetch__does_not_exist(self, mock_auth_user):
         
         # arrange
-        
-        data_to_return = None
-        
-        with patch.object(Model, "get_model", return_value=data_to_return):
+    
+        db = MagicMock()
+        db.cursor = MagicMock()
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        mock_request = Mock()
+        mock_request.user = None
 
-            mock_request = Mock()
-            mock_request.user = MagicMock(id=6079)
+        self.mock_model = Mock()
 
-            self.mock_model = Mock()
+        # act
+        self.viewmodel = ViewModel(db, mock_request)
 
-            # act
-            self.viewmodel = ViewModel(db, mock_request)
-
-            # assert functions was called
-            Model.get_model.assert_called()
-            self.assertIsNone(self.viewmodel.model)
+        # assert functions was called
+        self.assertIsNone(self.viewmodel.model)
 
 
     def test_init_called_fetch(self, mock_auth_user):
         
         # arrange
         
-        data_to_return = Model(56, "Lorem Ipsum", department=fake_department(67, institute=fake_institute()))
-        
-        with patch.object(Model, "get_model", return_value=data_to_return):
+        db = MagicMock()
+        db.cursor = MagicMock()
 
-            db = MagicMock()
-            db.cursor = MagicMock()
+        mock_request = Mock()
+        mock_request.user = MagicMock(id=6079, username="Jane Doe")
 
-            mock_request = Mock()
-            mock_request.user = MagicMock(id=6079)
+        self.mock_model = Mock()
 
-            self.mock_model = Mock()
+        # act
+        self.viewmodel = ViewModel(db, mock_request)
 
-            # act
-            self.viewmodel = ViewModel(db, mock_request)
-
-            # assert functions was called
-            Model.get_model.assert_called()
-            self.assertEqual("Lorem Ipsum", self.viewmodel.model.name)
+        # assert
+        self.assertEqual("Jane Doe", self.viewmodel.model.username)
 
 
     def test_delete_called_on_execute(self, mock_auth_user):
         
         # arrange
         
-        data_to_return = Model(59, "Lorem Ipsum", department=fake_department(67, institute=fake_institute()))
+        with patch.object(Model, "save", return_value=None):
 
-        with patch.object(Model, "get_model", return_value=data_to_return):
-            with patch.object(Model, "delete", return_value=None):
+            db = MagicMock()
+            db.cursor = MagicMock()
 
-                db = MagicMock()
-                db.cursor = MagicMock()
+            mock_request = Mock()
+            mock_request.user = MagicMock(id=6079, is_superuser = False)
 
-                mock_request = Mock()
-                mock_request.user = MagicMock(id=6079)
+            # act
+            self.viewmodel = ViewModel(db, mock_request)
+            self.viewmodel.execute()
 
-                # act
-                self.viewmodel = ViewModel(db, mock_request)
-                self.viewmodel.execute()
+            # assert
+            Model.save.assert_called()
 
-                # assert functions was called
-                Model.get_model.assert_called()
-                Model.delete.assert_called()
+
+    def test_delete_exception_raised_if_super_user(self, mock_auth_user):
+        
+        # arrange
+    
+        db = MagicMock()
+        db.cursor = MagicMock()
+
+        mock_request = Mock()
+        mock_request.user = MagicMock(id=6079, is_superuser = True)
+
+        with self.assertRaises(Exception):
+            # act/assert
+            self.viewmodel = ViewModel(db, mock_request)
+            self.viewmodel.execute()

@@ -53,15 +53,15 @@ class AccountDeleteViewModel(BaseViewModel):
 
     def __init__(self, db, request):
         self.db = db
-        self.auth_user = request.user 
+        self.model = request.user 
         
 
     def execute(self):
-        TeacherModel.save(self.db, self.auth_user)
+        TeacherModel.save(self.db, self.model)
 
 
     def view(self, main_heading, sub_heading):    
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user)
+        return ViewModel("", main_heading, sub_heading, ctx=self.model)
 
 
 
