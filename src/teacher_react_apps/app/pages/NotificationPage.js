@@ -47,7 +47,10 @@ class NotificationPage extends React.Component {
 
         return (
             <React.Fragment>
-                <NotificationWidget messages={this.state.Messages} deleteMessageCallback={this.handleDeleteMessageClick} />
+                <NotificationWidget messages={this.state.Messages} 
+                    actionLinkCallback={this.handleDeleteMessageClick} 
+                    deleteMessageCallback={this.handleDeleteMessageClick} 
+                />
             </React.Fragment>
         )
     }

@@ -14,7 +14,7 @@ class NotifyModel(BaseModel):
     def __init__(self, id_, notify_message, message="", action="", reminder="", event_type=LOG_TYPE.Information, event_log_id=0, auth_user_id=0, created=None):
         self.id = id_
         self.message = message
-        self.notify_message = notify_message[0:30] # max 30 characters TODO: add to clean function
+        self.notify_message = notify_message[0:145] # max 30 characters TODO: add to clean function
         self.action = action
         self.reminder = reminder
         self.event_type = event_type

@@ -46,8 +46,6 @@ END;
 
 DELIMITER ;
 
-CALL scheme_of_work__get_latest$3(5, 5, 2, 2, 2);
-
 DELIMITER //
 
 DROP PROCEDURE IF EXISTS scheme_of_work__get_latest$2;
@@ -139,3 +137,7 @@ END;
 //
 
 DELIMITER ;
+
+DROP PROCEDURE `drussell1974$cssow_api`.`scheme_of_work__get_latest`;
+DROP PROCEDURE `drussell1974$cssow_api`.`scheme_of_work__get_latest$2`;
+DROP PROCEDURE `drussell1974$cssow_api`.`scheme_of_work__get_latest$3`;

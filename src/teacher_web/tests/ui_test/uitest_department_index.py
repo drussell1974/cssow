@@ -69,7 +69,7 @@ class uitest_department_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments', wait=4)
         
 
-    @skip("not implemented - permissions error")
+    @unittest.skip("not implemented - permissions error")
     def test_page__submenu__navigate_to_department_new(self):
         # setup
         #self.try_log_in(self.root_uri + "/schemesofwork")
@@ -79,8 +79,3 @@ class uitest_department_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'x', 'y')
-
-
-
-
-

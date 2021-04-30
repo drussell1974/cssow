@@ -20,6 +20,7 @@ from shared.models.cls_institute import InstituteModel
 from shared.models.cls_notification import NotifyModel
 from shared.models.cls_pathway_template import PathwayTemplateModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
@@ -28,16 +29,12 @@ from shared.view_model import ViewModel
 class AccountIndexViewModel(BaseViewModel):
     
     def __init__(self, db, top, auth_user):
-        self.latest_schemes_of_work = []
         self.db = db
         self.auth_user = auth_user
 
         try:
             # get institutes
             self.institutes = InstituteModel.get_my(self.db, auth_user=auth_user)
-
-            # get latest_schemes_of_work
-            self.latest_schemes_of_work = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
 
         except Exception as e:
             self.error_message = repr(e)
@@ -47,10 +44,25 @@ class AccountIndexViewModel(BaseViewModel):
         
         data = {
             "institutes": self.institutes,
-            "latest_schemes_of_work":self.latest_schemes_of_work,
         }
         
         return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+
+
+class AccountDeleteViewModel(BaseViewModel):
+
+    def __init__(self, db, request):
+        self.db = db
+        self.model = request.user 
+        
+
+    def execute(self):
+        TeacherModel.save(self.db, self.model)
+
+
+    def view(self, main_heading, sub_heading):    
+        return ViewModel("", main_heading, sub_heading, ctx=self.model)
+
 
 
 # 206 inherit RegisteredUserForm from UserCreationForm to include new fields
@@ -159,35 +171,6 @@ class RegisterTeacherForm(UserCreationForm):
                             # delete user if cannot create department
                             if user.id is not None:
                                 user.delete()
-
-                        # send notifications
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create topics",
-                            message="You must create topics before you can create lessons and pathways.",
-                            action_url=reverse('department_topic.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create pathway",
-                            message="Pathways allow mapped progress between different key stages.",
-                            action_url=reverse('ks123pathways.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create scheme of work",
-                            message="Create your first scheme of work.",
-                            action_url=reverse('schemesofwork.new', args=[institute_model.id, department_model.id]),
-                            auth_ctx=auth_ctx,
-                            handle_log_info=handle_log_info
-                        )
             
                     else:
                         # delete user if cannot create department

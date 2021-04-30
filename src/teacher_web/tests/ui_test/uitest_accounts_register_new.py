@@ -92,8 +92,8 @@ class uitest_accounts_register_new(UITestCase):
 
         # assert
 
-        elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Registration", elem[0].text)
+        elem = self.test_context.find_element_by_css_selector(".maincontent h1")
+        self.assertEqual("Registration", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
 

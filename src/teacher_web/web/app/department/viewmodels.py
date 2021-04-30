@@ -100,35 +100,6 @@ class DepartmentEditViewModel(BaseViewModel):
 
                     data = Model.save(db, self.model, self.auth_user, STATE.parse(request.POST.get("published", "PUBLISH")))
                     
-                    # alert user to create topics
-                    if was_new:                        
-                        NotifyModel.create(
-                            db=db,
-                            title="Create topics",
-                            message="You must create topics before you can create lessons and pathways.",
-                            action_url=reverse('department_topic.new', args=[self.auth_user.institute.id, self.model.id]),
-                            auth_ctx=auth_user,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create pathway",
-                            message="Pathways allow mapped progress between different key stages.",
-                            action_url=reverse('ks123pathways.new', args=[self.auth_user.institute_id, self.model.id]),
-                            auth_ctx=auth_user,
-                            handle_log_info=handle_log_info
-                        )
-
-                        NotifyModel.create(
-                            db=db,
-                            title="Create scheme of work",
-                            message="Create your first scheme of work.",
-                            action_url=reverse('schemesofwork.new', args=[self.auth_user.institute_id, self.model.id]),
-                            auth_ctx=auth_user,
-                            handle_log_info=handle_log_info
-                        )
-            
                     self.on_post_complete(True)
                     self.model = data
                 else:

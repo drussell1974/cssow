@@ -58,6 +58,8 @@ class min_permission_required:
                 
                 return self.redirect_handler(str_err, institute_id, department_id, scheme_of_work_id=scheme_of_work_id, permission=self._permission) 
 
+            AuthCtx.check_setup_and_notify(db, request, auth_ctx)
+            
             self.setkwargs("ctx", value=auth_ctx)
             
             # call decorated function

@@ -1,11 +1,14 @@
 from datetime import datetime
 from django.conf import settings
+from django.urls import reverse
 from shared.models.cls_academic_year import AcademicYearModel
 from shared.models.cls_academic_year_period import AcademicYearPeriodModel
-from shared.models.cls_institute import InstituteContextModel
-from shared.models.cls_department import DepartmentContextModel
-from shared.models.cls_schemeofwork import SchemeOfWorkContextModel
+from shared.models.cls_institute import InstituteContextModel, InstituteModel
+from shared.models.cls_department import DepartmentContextModel, DepartmentModel
+from shared.models.cls_notification import NotifyModel
+from shared.models.cls_schemeofwork import SchemeOfWorkContextModel, SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
+from shared.models.core.log_handlers import handle_log_info
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
 
@@ -73,20 +76,20 @@ class AuthCtx(Ctx):
         self.institute = InstituteContextModel.cached(request, db, self.institute_id, self.auth_user_id)
         
         self.scheme_of_work = SchemeOfWorkContextModel.cached(request, db, self.institute_id, self.department_id, self.scheme_of_work_id, self.auth_user_id)
-        
-        #432 get academic years and periods
 
-        self.academic_years = AcademicYearModel.get_all(db, institute_id, self)
+        if institute_id > 0:        
+            #432 get academic years and periods
+            self.academic_years = AcademicYearModel.get_all(db, institute_id, self)
+            
+            # use session to get selected year or default to current year
+            self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
         
-        # use session to get selected year or default to current year
-        self.selected_year = self.get_selected_year(request, "academic_year__selected_id", self.academic_years)
+            self.academic_year = AcademicYearModel.get_model(db, institute_id, for_academic_year=self.selected_year, auth_ctx=self)
         
-        self.academic_year = AcademicYearModel.get_model(db, institute_id, for_academic_year=self.selected_year, auth_ctx=self)
-        
-        # default
+            # default
 
-        if self.academic_year is None:
-            self.academic_year = AcademicYearModel.default(for_academic_year=self.selected_year)
+            if self.academic_year is None:
+                self.academic_year = AcademicYearModel.default(for_academic_year=self.selected_year)
 
         self.periods = AcademicYearPeriodModel.get_all(db, institute_id, self)
 
@@ -113,6 +116,57 @@ class AuthCtx(Ctx):
             return self.teacher_permission.check_permission(min_permission)
 
 
-    #def __repr__(self):
-    #    return f"user={self.auth_user_id},{self.user_name}, institute_id={self.institute_id}, department_id={self.department_id}"
+    @classmethod
+    def check_setup_and_notify(cls, db, request, auth_ctx):
+        if auth_ctx.institute_id > 0 and auth_ctx.department_id > 0:
+            department = DepartmentModel.get_model(db, department_id=auth_ctx.department_id, auth_user=auth_ctx)
 
+            # inform owner the should create topics
+            no_of_topics = DepartmentModel.get_number_of_topics(db, auth_ctx.department_id, auth_ctx)
+            if no_of_topics == 0:
+                NotifyModel.create(
+                    db=db,
+                    title="Create topics",
+                    message=f"You must create topics for {department.name} before you can create lessons and pathways.",
+                    action_url=reverse('department_topic.index', args=[auth_ctx.institute_id, auth_ctx.department_id]),
+                    auth_ctx=auth_ctx,
+                    handle_log_info=handle_log_info
+                )
+
+            # inform owner they should create pathways
+            no_of_pathways = DepartmentModel.get_number_of_pathways(db, auth_ctx.department_id, auth_ctx)
+            if no_of_pathways == 0:
+                NotifyModel.create(
+                    db=db,
+                    title="Create pathway",
+                    message=f"Create pathways for {department.name} to allow objectives progress between different key stages.",
+                    action_url=reverse('ks123pathways.index', args=[auth_ctx.institute_id, auth_ctx.department_id]),
+                    auth_ctx=auth_ctx,
+                    handle_log_info=handle_log_info
+                )
+
+            no_of_schemes_of_work = DepartmentModel.get_number_of_schemes_of_work(db, auth_ctx.department_id, auth_ctx)
+            if no_of_schemes_of_work == 0:
+                # if there are no schemes of work prompt owner to create one
+                NotifyModel.create(
+                    db=db,
+                    title="Create scheme of work",
+                    message=f"Create your first scheme of work for {department.name}.",
+                    action_url=reverse('schemesofwork.index', args=[auth_ctx.institute_id, auth_ctx.department_id]),
+                    auth_ctx=auth_ctx,
+                    handle_log_info=handle_log_info
+                )
+            else:
+                # ... otherwise, check if there are curriculum content for the scheme of work
+                for schemeofwork_model in SchemeOfWorkModel.get_my(db, auth_ctx.institute, auth_ctx.department, auth_ctx):
+                    # after creating a scheme of work notify the user they must create curriculum content before create lessons
+                    no_of_content = SchemeOfWorkModel.get_number_of_contents(db, schemeofwork_model["id"], auth_ctx)
+                    if no_of_content == 0:
+                        NotifyModel.create(
+                            db=db,
+                            title="Create scheme of work",
+                            message=f"You must define the curriculum content for {schemeofwork_model['name']} before you can create lessons",
+                            action_url=reverse('content.index', args=[auth_ctx.institute_id, auth_ctx.department_id, schemeofwork_model["id"]]),
+                            auth_ctx=auth_ctx,
+                            handle_log_info=handle_log_info
+                        )

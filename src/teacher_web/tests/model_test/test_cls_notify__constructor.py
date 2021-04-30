@@ -28,8 +28,8 @@ class test_cls_notify__constructor(TestCase):
 
         # arrange
         self.test = NotifyModel(1, 
-            message="Fusce tempor nulla at semper lobortis. Nam vitae consectetur metus. Mauris suscipit dolor non ex fringilla auctor.", 
-            notify_message="Fusce tempor nulla at semper lobortis. Nam vitae consectetur metus. Mauris suscipit dolor non ex fringilla auctor. Duis aliquam risus", 
+            message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo magna sem. Suspendisse laoreet varius odio eu varius. Phasellus eu tincidunt risus. Mauris gravida urna at ligula molestie eros.", 
+            notify_message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo magna sem. Suspendisse laoreet varius odio eu varius. Phasellus eu tincidunt risus. Mauris gravida urna at ligula molestie eros.", 
             action="http://localhost/dosomething/1", 
             reminder=None, 
             event_type=1,
@@ -37,9 +37,12 @@ class test_cls_notify__constructor(TestCase):
             auth_user_id=21)
 
         # assert
+        self.maxDiff = None
+
         self.assertEqual(1, self.test.id)
-        self.assertEqual("Fusce tempor nulla at semper l", self.test.notify_message)
-        self.assertEqual("Fusce tempor nulla at semper lobortis. Nam vitae consectetur metus. Mauris suscipit dolor non ex fringilla auctor.", self.test.message)
+        # trim to 145 characters
+        self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo magna sem. Suspendisse laoreet varius odio eu varius. Phasellus eu tincid", self.test.notify_message)
+        self.assertEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo magna sem. Suspendisse laoreet varius odio eu varius. Phasellus eu tincidunt risus. Mauris gravida urna at ligula molestie eros.", self.test.message)
         self.assertEqual("http://localhost/dosomething/1", self.test.action)
         self.assertEqual(None, self.test.reminder)
         self.assertEqual(99, self.test.event_log_id)

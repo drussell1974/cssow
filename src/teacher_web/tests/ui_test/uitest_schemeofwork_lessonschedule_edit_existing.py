@@ -10,9 +10,10 @@ class uitest_schemeofwork_lessonschedule_edit_existing(UITestCase):
         self.current_learning_objective_id = 0
 
         # setup
+        """ got to schedule index and click add - so the form can redirect back to the referrer """
         self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/schedules/{self.test_lesson_schedule_id}/edit", wait=4)
-
         
+
     def tearDown(self):
         pass
 
@@ -58,5 +59,5 @@ class uitest_schemeofwork_lessonschedule_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons')
-
+        #self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons', wait=2)
+        self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons', wait=2)

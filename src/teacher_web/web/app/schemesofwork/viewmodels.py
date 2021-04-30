@@ -102,15 +102,6 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
 
                     data = Model.save(self.db, self.model, self.auth_user, published=published_state)
 
-                    NotifyModel.create(
-                            db=self.db,
-                            title="Create scheme of work",
-                            message="You must define the curriculum content before you can create lessons",
-                            action_url=reverse('content.new', args=[self.auth_user.institute_id, self.auth_user.department_id, try_int(data.id)]),
-                            auth_ctx=self.auth_user,
-                            handle_log_info=handle_log_info
-                        )
-
                     self.on_post_complete(True)
                     self.model = data
                 else:

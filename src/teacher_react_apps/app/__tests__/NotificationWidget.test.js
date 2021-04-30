@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer } from '../helpers/domManipulators';
 import NotificationWidget from '../widgets/NotificationWidget';
 
 describe('NotificationWidget', () => {
-    let render, container;
+    let render, container, element, click;
 
     beforeEach(() => {
         ({render, container} = createContainer());
     })
 
     let deleteMessageCallback = () => {
+        
+    }
+
+    let clickActionLinkMessageCallback = () => {
         
     }
 
@@ -29,22 +33,18 @@ describe('NotificationWidget', () => {
             1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
         }
         
-        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
+        render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={deleteMessageCallback} />);
 
         expect(
-            container.querySelector('#dropdownNotificationsMenuButton').textContent
-        ).toMatch('1');
-        
-        expect(
-            container.querySelector('.dropdown-menu .dropdown-item strong').textContent
+            container.querySelector('.alert strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').getAttribute('href')
+            container.querySelector('.alert .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item .dropdown-link').textContent
+            container.querySelector('.alert .alert-link').textContent
         ).toMatch('action now');
     })
 
@@ -57,34 +57,85 @@ describe('NotificationWidget', () => {
             3: {"id": 3, "notify_message":"Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.", "action":"http://localhost/dosomething/3" }
         }
 
-        render(<NotificationWidget messages={messages} deleteMessageCallback={deleteMessageCallback} />);
-
-        expect(
-            container.querySelector('#dropdownNotificationsMenuButton').textContent
-        ).toMatch('3');
+        render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={deleteMessageCallback} />);
         
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child strong').textContent
+            container.querySelector('.alert:first-child strong').textContent
         ).toMatch('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').textContent
+            container.querySelector('.alert:first-child .alert-link').textContent
         ).toMatch('action now');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:first-child .dropdown-link').getAttribute('href')
+            container.querySelector('.alert:first-child .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/1');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child strong').textContent
+            container.querySelector('.alert:last-child strong').textContent
         ).toMatch('Nulla vulputate nisi at ipsum porttitor, sit amet sagittis ipsum convallis. Donec lacinia diam vel euismod aliquam. Nulla molestie iaculis augue ut ultricies. Maecenas in finibus lorem.');
     
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').textContent
+            container.querySelector('.alert:last-child .alert-link').textContent
         ).toMatch('action now');
 
         expect(
-            container.querySelector('.dropdown-menu .dropdown-item:last-child .dropdown-link').getAttribute('href')
+            container.querySelector('.alert:last-child .alert-link').getAttribute('href')
         ).toMatch('http://localhost/dosomething/3');
+    })
+
+    describe('delete alert', () => {
+
+        const onDismissClickSpy = jest.fn();
+        
+        beforeEach(() => {
+            ({render, container, element, click} = createContainer());
+        });
+    
+        it('when dismiss button is clicked', async () => {
+
+            // arrange
+
+            let messages={
+                1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+            }
+            
+            render(<NotificationWidget messages={messages} actionLinkCallback={clickActionLinkMessageCallback} deleteMessageCallback={onDismissClickSpy} />);
+            
+            // act
+            
+            await act(async () => {
+                click(
+                    element('button.close')
+                );
+            })
+            
+            // assert 
+            
+            expect(onDismissClickSpy).toHaveBeenCalled();
+        });
+
+        it('when action link is clicked', async () => {
+
+            // arrange
+
+            let messages={
+                1: {"id": 1, "notify_message":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec elit quis lorem semper rutrum quis sed turpis.", "action":"http://localhost/dosomething/1" }
+            }
+            
+            render(<NotificationWidget messages={messages} actionLinkCallback={onDismissClickSpy} deleteMessageCallback={deleteMessageCallback} />);
+            
+            // act
+            
+            await act(async () => {
+                click(
+                    element('a.alert-link')
+                );
+            })
+            
+            // assert 
+            
+            expect(onDismissClickSpy).toHaveBeenCalled();
+        });
     })
 })

@@ -17,7 +17,6 @@ const getParams = (show_all) => {
 }
 
 export const getCtx = () => {
-    console.log(getParamOrDefault("input#teacher_react_apps__scheme_of_work_id", 0));
     return {
         institute_id: getParamOrDefault("input#teacher_react_apps__institute_id", 0),
         department_id:  getParamOrDefault("input#teacher_react_apps__department_id", 0),

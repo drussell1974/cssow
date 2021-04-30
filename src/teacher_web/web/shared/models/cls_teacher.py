@@ -13,12 +13,13 @@ class TeacherModel(BaseModel):
 
     def __init__(self, id, name, department, is_authorised=False, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=False, ctx=None):
         
-        TeacherModel.depreciation_notice("use TeacherPermissionModel")
+        #TeacherModel.depreciation_notice("use TeacherPermissionModel")
 
         super().__init__(id, name, created=None, created_by_id=None, created_by_name=None, published=STATE.PUBLISH, is_from_db=is_from_db, ctx=ctx)
         self.id = id
         self.name = name
         self.department = department
+        self.user = None
 
         
     def validate(self, skip_validation = []):
@@ -47,14 +48,22 @@ class TeacherModel(BaseModel):
 
 
     @staticmethod
+    def save(db, auth_user):
+        TeacherDataAccess.delete(db, auth_user)
+
+
+    @staticmethod
     def get_model(db, teacher_id, ctx):
-        model = TeacherModel(0, "", department=DepartmentModel(0, "", institute=InstituteModel(0, "", is_from_db=False), is_from_db=False), is_authorised=False, is_from_db=False)
-        
+        model = None
+
         rows = TeacherDataAccess.get_model(db, teacher_id, ctx.department_id, ctx.institute_id)
         
         for row in rows:
-            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], institute=InstituteModel(row[4], name=row[5], is_from_db=False), is_from_db=True), is_authorised=row[6], is_from_db=True)
+            model = TeacherModel(row[0], row[1], department=DepartmentModel(row[2], row[3], topic_id=0, institute=InstituteModel(row[4], name=row[5], is_from_db=False), is_from_db=True), is_authorised=row[6], is_from_db=True)
+            model.user = User.objects.get(username = model.name)
+        
         return model
+
 
 class TeacherDataAccess:
 
@@ -75,18 +84,12 @@ class TeacherDataAccess:
             raise Exception("Error getting teacher model", e)
 
 
-'''
     @staticmethod
-    def save(db, model, teacher_id, auth_user):
-        """ save model """
-        if model.published == STATE.DELETE
-            data = DepartmentDataAccess._delete(db, model, auth_user)
-        elif model.is_valid == True:
-            if model.is_new():
-                data = TeacherDataAccess._insert(db, model, teacher_id, auth_user)
-                model.id = data[0]
-            else:
-                data = TeacherDataAccess._update(db, model, teacher_id, auth_user)
-
-        return model
-'''
+    def delete(db, auth_user):
+        if auth_user.is_superuser or auth_user.id == 2:
+            raise Exception("Cannot delete this account")
+        
+        try:
+            auth_user.delete()
+        except Exception as e:
+            raise Exception("Error deleting account", e)

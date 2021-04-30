@@ -17,7 +17,6 @@ class DefaultIndexViewModel(BaseViewModel):
     def __init__(self, db, top, auth_user):
         super().__init__(auth_user)
 
-        self.latest_schemes_of_work = []
         self.schemes_of_work = []
         self.institutes = []
         self.departments = []
@@ -41,15 +40,10 @@ class DefaultIndexViewModel(BaseViewModel):
                 #for scheme_of_work in department.schemes_of_work:
                 #    self.schemes_of_work.append(scheme_of_work)
 
-        # get model
-        self.latest_schemes_of_work = SchemeOfWorkModel.get_latest_schemes_of_work(self.db, top=5, auth_user=auth_user)
-
-
 
     def view(self, main_heading, sub_heading):
         
         data = {
-            "latest_schemes_of_work":self.latest_schemes_of_work,
             "departments": self.departments,
             "institutes": self.institutes,
         }
