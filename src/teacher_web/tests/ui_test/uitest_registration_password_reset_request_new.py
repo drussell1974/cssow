@@ -74,8 +74,11 @@ class uitest_registration_password_reset_request_new(UITestCase):
 
         # assert
 
-        elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Forgot your password?", elem[0].text)
+        elem = self.test_context.find_element_by_css_selector(".maincontent h1")
+        self.assertEqual("Forgot your password?", elem.text)
+
+        elem = self.test_context.find_element_by_css_selector(".maincontent p")
+        self.assertEqual("Enter your email address below, and we'll email instructions for setting a new one.", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Registration', 'Reset your password')
 
