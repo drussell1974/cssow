@@ -24,17 +24,13 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-        #elem = self.test_context.find_element_by_id("nav-link-schemeofwork-{}".format(self.test_scheme_of_work_id))
-        #self.assertEqual("A-Level Computer Science\nKS5", elem.text)
-        #self.assertEqual("nav-link", elem.get_attribute("class"))
-        
         self.assertPageShouldHaveGroupHeading("Keywords")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeSchemeOfWork()
 
 
     def test_page__show_published_only(self):
@@ -72,13 +68,3 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
         self.assertEqual(47, result, "number of elements not as expected")
-
-
-    def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
-
-
-    def test_page__should_have_sidenav__showing_administrator_links(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Department", expected_no_of_items=1)
