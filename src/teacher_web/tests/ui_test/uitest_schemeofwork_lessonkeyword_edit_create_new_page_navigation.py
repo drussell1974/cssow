@@ -29,54 +29,8 @@ class uitest_schemeofwork_lessonkeyword_edit_create_new_page_navigation(UITestCa
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new keyword for Types of CPU architecture')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    """ Breadcrumb """
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
-        self.assertEqual("Schemes of Work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_lesson_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-lessons')
-        self.assertEqual("Lessons", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
-
-
-    def test_page__breadcrumb__navigate_to_keywords_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-keywords')
-        self.assertEqual("Keywords", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
-
-
-    def test_page__breadcrumb__navigate_to_keywords_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-keywords-select')
-        self.assertEqual("Select", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select keywords for Types of CPU architecture')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(True)
