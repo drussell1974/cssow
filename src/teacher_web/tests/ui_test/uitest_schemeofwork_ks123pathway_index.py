@@ -24,10 +24,7 @@ class uitest_schemeofwork_ks123pathway_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-        elem = self.test_context.find_element_by_class_name('group-heading')
-        self.assertEqual("Pathways", elem.text)
-
+        self.assertPageShouldHaveGroupHeading("Pathways")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
