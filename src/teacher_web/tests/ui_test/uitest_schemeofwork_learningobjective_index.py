@@ -23,6 +23,11 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(True)
 
 
     def test_page__should_have__sidebar_and_selected_lesson(self):
@@ -33,42 +38,13 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # assert
         self.assertEqual("Types of CPU architecture", elem.text)
         self.assertEqual("nav-link", elem.get_attribute("class"))
-
-
-    def test_page__should_have__group_heading(self):
-        # test
-        #self.test_context.implicitly_wait(20)
         elem = self.test_context.find_element_by_class_name('group-heading')
-
-        # assert
         self.assertEqual("Learning objectives", elem.text)
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
-        
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_lessons_index(self):
-        # setup
-
-        self.test_context.find_element_by_id('lnk-bc-lessons').click()
-        self.wait(s=1)
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
-
-
-    def test_page__breadcrumb__navigate_to_missing_words_challenge_view(self):
-        # setup
-
-        self.test_context.find_element_by_id('lnk-missing_words_challenge').click()
-
-        # assert (TEST parent page is still open)
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(True)
 
 
     def test_page__show_published_only(self):
@@ -80,7 +56,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(8, result, "number of elements not as expected")
+        self.assertEqual(9, result, "number of elements not as expected")
 
 
     def test_page__show_published_and_owned(self):
@@ -93,7 +69,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(8, result, "number of elements not as expected")
+        self.assertEqual(9, result, "number of elements not as expected")
 
 
     def test_page__should_display_description(self):
