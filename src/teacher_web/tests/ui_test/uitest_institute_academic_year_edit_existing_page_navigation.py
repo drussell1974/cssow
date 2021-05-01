@@ -23,6 +23,8 @@ class uitest_institute_academic_year_edit_existing_page_navigation(UITestCase):
 
     def test_page__breadcrumb(self):
         #test
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)

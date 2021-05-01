@@ -63,5 +63,5 @@ def schedule(request, institute_id, auth_ctx):
     
     sub_heading = "Schedule"
 
-    return render(request, "institute/schedule.html", schedule_view.view(schedule_view.institute.name, sub_heading).content)
+    return render(request, "institute/schedule.html", schedule_view.view(request, schedule_view.institute.name, sub_heading).content)
 

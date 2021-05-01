@@ -137,7 +137,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
 
 
     def view(self, request, main_heading, sub_heading):
-        super().view(self.institute.name, sub_heading)
+        super().view(request, self.institute.name, sub_heading)
         
         data = {
             "institute_id": self.institute.id,

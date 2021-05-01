@@ -26,6 +26,12 @@ class uitest_institute_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Institutes')
         
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
 
     @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
     def test_page__navigate_to_lesson_index(self):
@@ -42,26 +48,3 @@ class uitest_institute_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
-
-
-    def test_page__breadcrumb(self):
-        #test
-        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
-        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
-        self.assertBreadcrumbShouldHaveLessonsIndex(False)
-
-
-    def test_page__topnav__navigate_to_home(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-home').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
-
-
-    def test_page__post_preview__item__navigate_to_departments(self):
-        # setup
-        self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_institute_id)).click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')

@@ -81,23 +81,35 @@ class UITestCase(TestCase):
         self.assertGreaterEqual(len(list_item_elems), expected_no_of_items, "number of items not as expected")
 
 
-    def assertBreadcrumbShouldHaveDepartmentsIndex(self, should_exists):
+    def assertTopNavShouldHaveHomeIndex(self, should_exist):
+        if should_exist:
+            elem = self.test_context.find_element_by_id('btn-topnav-home')
+            self.assertEqual("HOME", elem.text)
+
+
+    def assertTopNavShouldHaveDepartmentsIndex(self, should_exist):
+        if should_exist:
+            elem = self.test_context.find_element_by_id('btn-topnav-departments_all'.format(self.test_institute_id))
+            self.assertEqual("ALL DEPARTMENTS", elem.text)
+
+
+    def assertBreadcrumbShouldHaveDepartmentsIndex(self, should_exist):
         #TODO: #447 use find_elements then check count or element
-        if should_exists:
+        if should_exist:
             elem = self.test_context.find_element_by_id('lnk-bc-departments')
             self.assertEqual("departments", elem.text)
         
 
-    def assertBreadcrumbShouldHaveSchemesOfWorkIndex(self, should_exists):
+    def assertBreadcrumbShouldHaveSchemesOfWorkIndex(self, should_exist):
         #TODO: #447 use find_elements then check count or element
-        if should_exists:
+        if should_exist:
             elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
             self.assertEqual("schemes of work", elem.text)
         
 
-    def assertBreadcrumbShouldHaveLessonsIndex(self, should_exists):
+    def assertBreadcrumbShouldHaveLessonsIndex(self, should_exist):
         #TODO: #447 use find_elements then check count or element
-        if should_exists:
+        if should_exist:
             elem = self.test_context.find_element_by_id('lnk-bc-lessons')
             self.assertEqual("lessons", elem.text)
 

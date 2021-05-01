@@ -30,12 +30,8 @@ class uitest_institute_academic_year_edit_create_new_page_navigation(UITestCase)
         # NOTE: This increments to next available academic year
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'New academic year 2022/2023', wait=2)
         self.assertFooterContextText("Finibus Bonorum et Malorum")
-
-
-    """ Breadcrumb """
-
-    def test_page__breadcrumb(self):
-        #test
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)

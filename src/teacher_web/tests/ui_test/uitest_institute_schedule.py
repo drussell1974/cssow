@@ -26,19 +26,9 @@ class uitest_institute_schedule(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Schedule')
-        
-
-    def test_page__breadcrumb(self):
-        #test
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
-
-
-    def test_page__topnav__navigate_to_home(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-home').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
 
