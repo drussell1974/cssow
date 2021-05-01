@@ -26,11 +26,13 @@ class uitest_institute_academic_year_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')
         self.assertFooterContextText("Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Academic years")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeInstitute()
         
 
     def test_page__post_preview__item__navigate_to_academic_year__edit(self):

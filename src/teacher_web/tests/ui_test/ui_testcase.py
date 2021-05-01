@@ -119,6 +119,14 @@ class UITestCase(TestCase):
             self.assertEqual("lessons", elem.text)
 
 
+    def assertNavTabsShouldBeInstitute(self):
+        
+        # schemes of work index
+        elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(1) > a')
+        self.assertEqual("academic years", elem.text)
+        self.assertEqual("http://127.0.0.1:3002/institute/2/academic-years/", elem.get_attribute("href"))
+        
+
     def assertNavTabsShouldBeDepartment(self):
         
         # schemes of work index

@@ -1,10 +1,15 @@
-{% extends '_partials/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.onecolumn.html' %}
 
 
 {% block head_js %} 
   <!-- #295: Google Analytics script.googleanalytics.html partial -->
   {% include '_partials/script.googleanalytics.html' %}
   <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-department.html' %}
 {% endblock %}
 
 
