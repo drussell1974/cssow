@@ -124,7 +124,7 @@ class UITestCase(TestCase):
         # schemes of work index
         elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(1) > a')
         self.assertEqual("academic years", elem.text)
-        self.assertEqual("http://127.0.0.1:3002/institute/2/academic-years/", elem.get_attribute("href"))
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/academic-years/", elem.get_attribute("href"))
         
 
     def assertNavTabsShouldBeDepartment(self):
@@ -132,17 +132,17 @@ class UITestCase(TestCase):
         # schemes of work index
         elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(1) > a')
         self.assertEqual("schemes of work", elem.text)
-        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/schemesofwork/", elem.get_attribute("href"))
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/", elem.get_attribute("href"))
         
         # topics index
         elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(2) > a')
         self.assertEqual("topics", elem.text)
-        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/topics/", elem.get_attribute("href"))
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/topics/", elem.get_attribute("href"))
         
         # pathways index
         elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(3) > a')
         self.assertEqual("pathways", elem.text)
-        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/pathways/", elem.get_attribute("href"))
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/pathways/", elem.get_attribute("href"))
         
         # academic years index
         elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(4) > a')
@@ -150,6 +150,29 @@ class UITestCase(TestCase):
         self.assertEqual("http://127.0.0.1:3002/institute/2/academic-years/", elem.get_attribute("href"))
 
 
+    def assertNavTabsShouldBeSchemeOfWork(self):
+        
+        # lesson index
+        elem = self.test_context.find_element_by_css_selector('#schemeofwork--navtabs > ul > li:nth-child(1) > a')
+        self.assertEqual("lessons", elem.text)
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/", elem.get_attribute("href"))
+        
+        # topics index
+        elem = self.test_context.find_element_by_css_selector('#schemeofwork--navtabs > ul > li:nth-child(2) > a')
+        self.assertEqual("schedule", elem.text)
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/schedules", elem.get_attribute("href"))
+        
+        # pathways index
+        elem = self.test_context.find_element_by_css_selector('#schemeofwork--navtabs > ul > li:nth-child(3) > a')
+        self.assertEqual("keywords", elem.text)
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/keywords/", elem.get_attribute("href"))
+        
+        # academic years index
+        elem = self.test_context.find_element_by_css_selector('#schemeofwork--navtabs > ul > li:nth-child(4) > a')
+        self.assertEqual("curriculum", elem.text)
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/curriculum-content/", elem.get_attribute("href"))
+
+        
     def assertFooterContextText(self, context_text):
         # assert - context_text
         self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")

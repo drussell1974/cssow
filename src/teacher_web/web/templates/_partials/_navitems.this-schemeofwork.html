@@ -1,0 +1,12 @@
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("lessons")}}</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" id="lnk-schemeofwork-schedule" href="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("schedule")}} <i class="far fa-calendar"></i></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("keywords")}} <i class="far fa-book"></i></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'content.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("curriculum")}}</a>
+</li>

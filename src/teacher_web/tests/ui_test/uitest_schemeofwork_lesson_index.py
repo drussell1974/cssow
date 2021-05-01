@@ -28,6 +28,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeSchemeOfWork()
 
 
     def test_page__submenu__navigate_to_lesson_new(self):
@@ -39,16 +40,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new lesson for A-Level Computer Science')
-
-
-    def test_page__should_have_sidenav(self):
-        # arrange
-        elem = self.test_context.find_element_by_id('sidebarNav')
-
-        # act
-
-        # assert
-        self.assertIsNotNone(elem)
 
 
     def test_page__show_published_only(self):
@@ -69,16 +60,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
             elem_next = self.test_context.find_element_by_id("btn-pager--next")
             elem_next.click()
             self.wait()
-
-
-    def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
-
-
-    def test_page__should_have_sidenav__showing_administrator_links(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Department", expected_no_of_items=1)
 
         
     def test_page__post_preview__item__navigate_to_ks123pathways(self):
