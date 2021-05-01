@@ -45,7 +45,7 @@ class ResourceIndexViewModel(BaseViewModel):
             self.error_message = repr(e)
             raise e
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id": self.scheme_of_work_id,
@@ -55,7 +55,7 @@ class ResourceIndexViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
+        return ViewModel(request, self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
 class ResourceGetModelViewModel(BaseViewModel):
@@ -100,7 +100,7 @@ class ResourceGetModelViewModel(BaseViewModel):
             raise e
 
 
-    def view(self):
+    def view(self, request):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -110,7 +110,7 @@ class ResourceGetModelViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson)
+        return ViewModel(request, self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson)
         
 
 

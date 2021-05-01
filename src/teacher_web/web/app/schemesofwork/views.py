@@ -18,7 +18,7 @@ def index(request, institute_id, department_id, auth_ctx):
     
     index_view =  SchemeOfWorkIndexViewModel(db=db, auth_user=auth_ctx)
     
-    return render(request, "schemesofwork/index.html", index_view.view().content)
+    return render(request, "schemesofwork/index.html", index_view.view(request).content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
@@ -44,7 +44,7 @@ def edit(request, institute_id, department_id, auth_ctx, scheme_of_work_id = 0):
         redirect_to_url = wizard.get_redirect_url(request)
 
         return HttpResponseRedirect(redirect_to_url)
-    return render(request, "schemesofwork/edit.html", save_view.view().content)
+    return render(request, "schemesofwork/edit.html", save_view.view(request).content)
 
 
 @permission_required('cssow.delete_schemeofworkmodel', login_url='/accounts/login/')
@@ -75,6 +75,6 @@ def schedule(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
     sub_heading = "Scheduled lessons"
 
-    return render(request, "schemesofwork/schedule.html", schedule_view.view(schedule_view.scheme_of_work.name, sub_heading).content)
+    return render(request, "schemesofwork/schedule.html", schedule_view.view(request, schedule_view.scheme_of_work.name, sub_heading).content)
 
 '''

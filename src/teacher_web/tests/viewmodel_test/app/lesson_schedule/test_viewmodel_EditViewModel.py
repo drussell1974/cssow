@@ -4,9 +4,12 @@ from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from app.lesson_schedules.viewmodels import LessonScheduleEditViewModel as ViewModel
 from shared.models.cls_lesson_schedule import LessonScheduleModel as Model
 from shared.models.cls_lesson import LessonModel
-from tests.test_helpers.mocks import fake_ctx_model, fake_lesson_schedule
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
+from tests.test_helpers.mocks import *
+
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -17,7 +20,7 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
-    def test_init_called_404_if_lesson_not_found(self, mock_auth_user):
+    def test_init_called_404_if_lesson_not_found(self, mock_auth_user, mock_bc):
 
         # arrange
 
@@ -37,7 +40,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 test_context = ViewModel(db=mock_db, request=mock_request, schedule_id=0, lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
                 
-                test_context.view()
+                test_context.view(mock_request)
                 
                 # assert 
 
@@ -51,7 +54,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual(6, len(test_context.model.class_code))
 
 
-    def test_view_when_new(self, mock_auth_user):
+    def test_view_when_new(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -74,7 +77,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 test_context = ViewModel(db=mock_db, request=mock_request, schedule_id=0, lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
                 
-                test_context.view()
+                test_context.view(mock_request)
                 
                 # assert 
 
@@ -89,7 +92,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual(6, len(test_context.model.class_code))
                 
 
-    def test_view_when_existing(self, mock_auth_user):
+    def test_view_when_existing(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -112,7 +115,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 test_context = ViewModel(db=mock_db, request=mock_request, schedule_id=101, lesson_id=0, scheme_of_work_id=0, auth_ctx=mock_auth_user)
                 
-                test_context.view()
+                test_context.view(mock_request)
                 
                 # assert 
 
@@ -131,7 +134,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
 
 
-    def test_execute_called_save_when_valid(self, mock_auth_user):
+    def test_execute_called_save_when_valid(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -187,7 +190,7 @@ class test_viewmodel_EditViewModel(TestCase):
                     self.assertEqual("04:42", test_context.model.start_date_ui_time)
 
 
-    def test_execute_called_save__return_when_invalid(self, mock_auth_user):
+    def test_execute_called_save__return_when_invalid(self, mock_auth_user, mock_bc):
          
         # arrange
 

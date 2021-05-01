@@ -23,7 +23,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
     
     scheduleIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
-    return render(request, "lesson_schedules/index.html", scheduleIndexView.view().content)
+    return render(request, "lesson_schedules/index.html", scheduleIndexView.view(request).content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -56,7 +56,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         ''' always return to the referrer '''
         modelview.return_url = request.META.get('HTTP_REFERER')
     
-    return render(request, "lesson_schedules/edit.html", modelview.view().content)
+    return render(request, "lesson_schedules/edit.html", modelview.view(request).content)
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')

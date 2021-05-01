@@ -22,7 +22,7 @@ def index(request, institute_id, department_id, auth_ctx):
     
     myTeamPermssionsViewModel = TeamPermissionIndexViewModel(db=db, request=request, auth_user=auth_ctx)
     
-    return render(request, "teampermissions/index.html", myTeamPermssionsViewModel.view().content)    
+    return render(request, "teampermissions/index.html", myTeamPermssionsViewModel.view(request).content)    
 
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")
@@ -40,7 +40,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, teacher_id, au
             redirect_to_url = reverse('team-permissions.index', args=[institute_id, department_id])
             return HttpResponseRedirect(redirect_to_url)
        
-    return render(request, "teampermissions/edit.html", save_view.view().content)
+    return render(request, "teampermissions/edit.html", save_view.view(request).content)
 
 
 @permission_required('cssow.can_manage_team_permissions', login_url="/accounts/login")

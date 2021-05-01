@@ -7,9 +7,11 @@ from app.content.viewmodels import ContentEditViewModel as ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_keystage import KeyStageModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_EditViewModel(ViewModelTestCase):
 
     def setUp(self):
@@ -21,7 +23,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         pass
 
 
-    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self, mock_auth_user):
+    def test_init_called_on_GET__raises_404_if_scheme_of_work_not_found(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -43,7 +45,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self, mock_auth_user):
+    def test_init_on_POST__raises_404_if_scheme_of_work_not_found(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=None)
@@ -63,7 +65,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             SchemeOfWorkModel.get_model.assert_called()
 
 
-    def test_init_on_GET__edit_new_model(self, mock_auth_user):
+    def test_init_on_GET__edit_new_model(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
@@ -84,7 +86,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # assert functions was to return data called
         SchemeOfWorkModel.get_model.assert_called()
 
-        self.assertViewModelContent(viewmodel
+        self.assertViewModelContent(mock_request, viewmodel
             , ""
             , "Vivamus venenatis interdum sem."
             , "Create new content for Vivamus venenatis interdum sem."
@@ -92,7 +94,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    def test_init_on_GET__edit_existing_model(self, mock_auth_user):
+    def test_init_on_GET__edit_existing_model(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=2, start_study_in_year=10, is_from_db=True))
@@ -113,7 +115,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         # assert functions was to return data called
         Model.get_model.assert_called()
 
-        self.assertViewModelContent(viewmodel
+        self.assertViewModelContent(mock_request, viewmodel
             , ""
             , "Vivamus venenatis interdum sem."
             , "Edit: dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti"
@@ -121,7 +123,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         )
 
 
-    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self, mock_auth_user):
+    def test_init_on_GET__edit_existing_model__raise_404_if__content_model__not_found(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
@@ -149,7 +151,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             viewmodel.view()
             
 
-    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self, mock_auth_user):
+    def test_init_on_POST_valid_model__is_content_ready__true__and__save(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=mock_scheme_of_work(id=32))
@@ -177,7 +179,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             Model.save.assert_called()
 
             
-    def test_init_on_POST__invalid_model_is_content_ready__false(self, mock_auth_user):
+    def test_init_on_POST__invalid_model_is_content_ready__false(self, mock_auth_user, mock_bc):
         
         # arrange
         SchemeOfWorkModel.get_model = Mock(return_value=SchemeOfWorkModel(23, name="Vivamus venenatis interdum sem.", study_duration=3, start_study_in_year=7, is_from_db=True))
@@ -205,7 +207,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             # assert functions was called
             Model.save.assert_not_called()
     
-            self.assertViewModelContent(viewmodel
+            self.assertViewModelContent(mock_post, viewmodel
                 , ""
                 , "Vivamus venenatis interdum sem."
                 , "Edit: Vivamus venenatis interdum sem."
@@ -213,7 +215,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             )
 
             # return invalid model with validation
-            ui_view = viewmodel.view().content
+            ui_view = viewmodel.view(mock_post).content
 
             self.assertEqual(23, ui_view["content"]["data"]["scheme_of_work_id"])
             self.assertEqual(67, ui_view["content"]["data"]["content_id"])

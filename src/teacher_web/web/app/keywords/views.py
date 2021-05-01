@@ -26,7 +26,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
     getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
-    return render(request, "keywords/index.html", getall_keywords.view().content)
+    return render(request, "keywords/index.html", getall_keywords.view(request).content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
@@ -215,5 +215,5 @@ def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, ke
         ' redirect as necessary '
         return HttpResponseRedirect(merge_viewmodel.redirect_to_url)
     
-    return render(request, "keywords/merge.html", merge_viewmodel.view().content)
+    return render(request, "keywords/merge.html", merge_viewmodel.view(request).content)
     

@@ -45,7 +45,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, les
     
     lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_ctx)
 
-    return render(request, "lessons/index.html", lessonIndexView.view().content)
+    return render(request, "lessons/index.html", lessonIndexView.view(request).content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')

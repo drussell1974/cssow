@@ -4,9 +4,11 @@ from app.lesson_keywords.viewmodels import LessonKeywordSelectViewModel as ViewM
 from shared.models.cls_keyword import KeywordModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_KeywordSelectViewModel_view(TestCase):
     
     fake_lesson = LessonModel(45)
@@ -24,7 +26,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
     
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
     @patch.object(LessonModel, "get_options", return_value=[])
-    def test_init_called_fetch__no_return_rows(self, LessonModel__get_model, LessonModel__get_options, mock_auth_user):
+    def test_init_called_fetch__no_return_rows(self, LessonModel__get_model, LessonModel__get_options, mock_auth_user, mock_bc):
         
         # arrange
         db = MagicMock()
@@ -53,7 +55,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
 
     
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
-    def test_init_called_fetch_single_item(self, LessonModel__get_model, mock_auth_user):
+    def test_init_called_fetch_single_item(self, LessonModel__get_model, mock_auth_user, mock_bc):
 
         # arrange
         db = MagicMock()
@@ -84,7 +86,7 @@ class test_viewmodel_KeywordSelectViewModel_view(TestCase):
     
     @patch.object(LessonModel, "get_model", return_value=fake_lesson)
     @patch.object(LessonModel, "get_options", return_value=[LessonModel(34), Model(35), Model(36)])
-    def test_init_called_fetch__multiple_items(self, LessonModel__get_model, LessonModel__get_options, mock_auth_user):
+    def test_init_called_fetch__multiple_items(self, LessonModel__get_model, LessonModel__get_options, mock_auth_user, mock_bc):
         
         # arrange
         

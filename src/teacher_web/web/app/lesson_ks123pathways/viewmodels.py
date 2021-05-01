@@ -84,4 +84,4 @@ class LessonKS123PathwaySelectViewModel(BaseViewModel):
             "reference_uri": "https://community.computingatschool.org.uk/resources/2324/single", # TODO: create look up for e.g. reference['<id_or_name>']
         }
         
-        return ViewModel(self.model.title, self.model.title, "Select pathway for {}".format(self.model.title), ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, wizard=self.wizard)
+        return ViewModel(request, self.model.title, self.model.title, "Select pathway for {}".format(self.model.title), ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, wizard=self.wizard)

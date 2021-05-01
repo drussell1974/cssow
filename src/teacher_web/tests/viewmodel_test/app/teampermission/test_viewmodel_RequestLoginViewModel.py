@@ -9,10 +9,12 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel as Model, DepartmentModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON 
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model, mock_scheme_of_work
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
+from tests.test_helpers.mocks import *
 
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_RequestLoginViewModel(TestCase):
 
     def setUp(self):        
@@ -26,7 +28,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
     @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
-    def test_init_raise_exception_when_missing__scheme_of_work_id(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):
+    def test_init_raise_exception_when_missing__scheme_of_work_id(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model, mock_bc):
         
         # arrange     
         db = MagicMock()
@@ -61,7 +63,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
     @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model(is_authorised=False))
     @patch.object(Model, "validate", return_value=True)
-    def test_init_when_permssion_requested__return_true(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):
+    def test_init_when_permssion_requested__return_true(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model, mock_bc):
         
         # arrange
         
@@ -91,7 +93,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
             permission=DEPARTMENT.TEACHER
         )
 
-        result = self.viewmodel.view()
+        result = self.viewmodel.view(mock_request)
 
         # assert
 
@@ -109,7 +111,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
     @patch.object(SchemeOfWorkModel, "get_model", return_value=mock_scheme_of_work(id=22, is_from_db=True))
     @patch.object(Model, "get_model", return_value=fake_teacher_permission_model())
     @patch.object(Model, "validate", return_value=True)
-    def test_init_when_permssion_requested__return_false(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model):
+    def test_init_when_permssion_requested__return_false(self, SchemeOfWorkModel_get_model, TeacherPermissionModel_get_model, TeacherPermissionModel_validate, mock_ctx_model, mock_bc):
         
         # arrange
         
@@ -141,7 +143,7 @@ class test_viewmodel_RequestLoginViewModel(TestCase):
             permission=DEPARTMENT.TEACHER
         )
 
-        result = self.viewmodel.view()
+        result = self.viewmodel.view(mock_request)
 
         # assert
 

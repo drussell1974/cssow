@@ -29,7 +29,7 @@ def index(request, institute_id, auth_ctx):
 
     index_view =  AcademicYearIndexViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
     
-    return render(request, "academic_year/index.html", index_view.view(index_view.institute.name, "Academic years").content)
+    return render(request, "academic_year/index.html", index_view.view(request, index_view.institute.name, "Academic years").content)
 
 
 #@permission_required("cssow.change_sow_academic_year", login_url="/accounts/login/")
@@ -49,4 +49,4 @@ def edit(request, institute_id, auth_ctx, year=0):
                 redirect_to_url = reverse("institute.edit", args=[save_view.model.id])
             return HttpResponseRedirect(redirect_to_url)
     
-    return render(request, "academic_year/edit.html", save_view.view().content)
+    return render(request, "academic_year/edit.html", save_view.view(request).content)

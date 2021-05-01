@@ -131,6 +131,19 @@
       <!-- Breadcrumb START -->
       <div class="row">
         <div class="col-lg-12 col-md-14 breadcrumb-custom">
+          <section class="widget widget-breadcrumb">
+            <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+              <div class="container">
+                <ul class="navbar-nav ml-auto">
+                    {% for key, value in breadcrumb_items.items %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="lnk-{{value.id}}" href="{{key}}">{{value.text}}</a>
+                    </li>
+                   {% endfor %}
+                </ul>
+              </div>
+            </nav>
+          </section>
           {% block breadcrumb %}
           {% endblock %}
         </div>

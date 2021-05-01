@@ -26,7 +26,7 @@ def index(request, institute_id, department_id, auth_ctx):
 
     pathways_index = KS123PathwayIndexViewModel(db, request, auth_ctx)
 
-    return render(request, "ks123pathway/index.html", pathways_index.view().content)
+    return render(request, "ks123pathway/index.html", pathways_index.view(request).content)
 
 
 #@permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -42,7 +42,7 @@ def edit(request, institute_id, department_id, pathway_item_id = 0, auth_ctx = N
                 redirect_to_url = f"{request.POST.get('next', None)}#{pathway_edit.model.id}"
             return HttpResponseRedirect(redirect_to_url)
 
-    return render(request, "ks123pathway/edit.html", pathway_edit.view().content)
+    return render(request, "ks123pathway/edit.html", pathway_edit.view(request).content)
 
 '''
 @permission_required('cssow.publish_lessonmodel', login_url='/accounts/login/')

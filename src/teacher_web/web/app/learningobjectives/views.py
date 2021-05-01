@@ -36,7 +36,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
     #253 check user id
     learningobjectivesviewmodel = LearningObjectiveIndexViewModel(db=db, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
-    return render(request, "learningobjectives/index.html", learningobjectivesviewmodel.view().content)
+    return render(request, "learningobjectives/index.html", learningobjectivesviewmodel.view(request).content)
 
 
 @permission_required('cssow.add_learningobjectivemodel', login_url='/accounts/login/')

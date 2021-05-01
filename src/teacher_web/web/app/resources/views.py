@@ -27,7 +27,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
     
     getall_resources = ResourceIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
-    return render(request, "resources/index.html", getall_resources.view().content)
+    return render(request, "resources/index.html", getall_resources.view(request).content)
 
 
 #234 add permission

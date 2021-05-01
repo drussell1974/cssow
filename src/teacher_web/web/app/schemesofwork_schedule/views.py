@@ -29,4 +29,4 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
     sub_heading = "Scheduled lessons"
 
-    return render(request, "schemesofwork/schedule.html", schedule_view.view(schedule_view.scheme_of_work.name, sub_heading).content)
+    return render(request, "schemesofwork/schedule.html", schedule_view.view(request, schedule_view.scheme_of_work.name, sub_heading).content)

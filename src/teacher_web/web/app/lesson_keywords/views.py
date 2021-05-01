@@ -26,7 +26,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
     
     getall_keywords = LessonKeywordIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)  
     
-    return render(request, "lesson_keywords/index.html", getall_keywords.view().content)
+    return render(request, "lesson_keywords/index.html", getall_keywords.view(request).content)
 
 
 # 299 Keyword Index

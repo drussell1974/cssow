@@ -40,13 +40,13 @@ class AccountIndexViewModel(BaseViewModel):
             self.error_message = repr(e)
 
 
-    def view(self, main_heading, sub_heading):
+    def view(self, request, main_heading, sub_heading):
         
         data = {
             "institutes": self.institutes,
         }
         
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel(request, "", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class AccountDeleteViewModel(BaseViewModel):
@@ -60,8 +60,8 @@ class AccountDeleteViewModel(BaseViewModel):
         TeacherModel.save(self.db, self.model)
 
 
-    def view(self, main_heading, sub_heading):    
-        return ViewModel("", main_heading, sub_heading, ctx=self.model)
+    def view(self, request, main_heading, sub_heading):    
+        return ViewModel(request, "", main_heading, sub_heading, ctx=self.model)
 
 
 

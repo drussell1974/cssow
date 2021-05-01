@@ -16,7 +16,7 @@ def index(request, institute_id=0, department_id=0, auth_ctx=None):
     
     modelview = DefaultIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
-    view_model = modelview.view(settings.SITE_TITLE, settings.SITE_SUMMARY)
+    view_model = modelview.view(request, settings.SITE_TITLE, settings.SITE_SUMMARY)
 
     return render(request, "default/index.html", view_model.content)
 

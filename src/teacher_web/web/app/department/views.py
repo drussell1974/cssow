@@ -18,7 +18,7 @@ def index(request, institute_id, auth_ctx):
 
     index_view =  DepartmentIndexViewModel(db=db, institute_id=institute_id, top=10, auth_user=auth_ctx)
     
-    return render(request, "default/index.html", index_view.view(index_view.institute.name, "Departments").content)
+    return render(request, "default/index.html", index_view.view(request, index_view.institute.name, "Departments").content)
 
 
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
@@ -28,7 +28,7 @@ def viewall(request, institute_id, auth_ctx):
 
     all_view =  DepartmentAllViewModel(db=db, institute_id=institute_id, auth_user=auth_ctx)
     
-    return render(request, "department/index.html", all_view.view().content)
+    return render(request, "department/index.html", all_view.view(request).content)
 
 
 @permission_required("cssow.change_institutemodel", login_url="/accounts/login/")
@@ -38,7 +38,6 @@ def edit(request, institute_id, department_id, auth_ctx):
     #367 get auth_ctx from min_permission_required decorator
 
     save_view = DepartmentEditViewModel(db=db, request=request, auth_user=auth_ctx)
-    
     if save_view.saved == True:
 
         if request.POST.get("next", None) != "None"  and request.POST.get("next", None) != "":
@@ -47,7 +46,7 @@ def edit(request, institute_id, department_id, auth_ctx):
             redirect_to_url = reverse("institute.edit", args=[save_view.model.id])
         return HttpResponseRedirect(redirect_to_url)
     
-    return render(request, "institute/edit.html", save_view.view().content)
+    return render(request, "institute/edit.html", save_view.view(request).content)
 
 
 @permission_required("cssow.delete_institutemodel", login_url="/accounts/login/")

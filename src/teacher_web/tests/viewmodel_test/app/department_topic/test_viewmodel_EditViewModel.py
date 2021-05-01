@@ -4,9 +4,11 @@ from app.ks123pathways.viewmodels import KS123PathwayEditViewModel as ViewModel
 from shared.models.cls_department import DepartmentModel 
 from shared.models.cls_ks123pathway import KS123PathwayModel as Model
 from shared.models.cls_topic import TopicModel
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_EditViewModel(TestCase):
 
     def setUp(self):
@@ -17,7 +19,7 @@ class test_viewmodel_EditViewModel(TestCase):
         pass
 
 
-    def test_view_when_new(self, mock_auth_user):
+    def test_view_when_new(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -39,7 +41,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 test_context = ViewModel(db=mock_db, request=mock_request, auth_ctx=mock_auth_user, pathway_item_id = 0)
                 
-                test_context.view()
+                test_context.view(mock_request)
                 
                 # assert 
 
@@ -55,7 +57,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual("", test_context.model.objective)
 
 
-    def test_view_when_existing(self, mock_auth_user):
+    def test_view_when_existing(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -77,7 +79,7 @@ class test_viewmodel_EditViewModel(TestCase):
 
                 test_context = ViewModel(db=mock_db, request=mock_request, auth_ctx=mock_auth_user, pathway_item_id = 101)
                 
-                test_context.view()
+                test_context.view(mock_request)
                 
                 # assert 
 
@@ -93,7 +95,7 @@ class test_viewmodel_EditViewModel(TestCase):
                 self.assertEqual("Integer pretium ultrices dolor, eget convallus purus, volutpat finibus turpis tempus in.", test_context.model.objective)
 
 
-    def test_execute_called_save_when_valid(self, mock_auth_user):
+    def test_execute_called_save_when_valid(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -131,7 +133,7 @@ class test_viewmodel_EditViewModel(TestCase):
             self.assertEqual("Proin id massa metus. Aliqua tincidunt.", test_context.model.objective)
 
     
-    def test_execute_called_save__return_when_invalid(self, mock_auth_user):
+    def test_execute_called_save__return_when_invalid(self, mock_auth_user, mock_bc):
          
         # arrange
 

@@ -27,14 +27,14 @@ class AcademicYearIndexViewModel(DefaultIndexViewModel):
         self.academic_years = Model.get_all(db, institute_id, auth_ctx=auth_user)
 
         
-    def view(self, main_heading, sub_heading):
+    def view(self, request, main_heading, sub_heading):
         """ return View """
 
         data = {
             "academic_years": self.academic_years 
         }
 
-        return ViewModel("", self.institute.name, "Academic years", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.institute.name, "Academic years", ctx=self.auth_user, data=data)
 
 
 class AcademicYearEditViewModel(BaseViewModel):
@@ -96,7 +96,7 @@ class AcademicYearEditViewModel(BaseViewModel):
                 #raise ex
                 
 
-    def view(self):
+    def view(self, request):
 
         # view data
         data = {
@@ -105,4 +105,4 @@ class AcademicYearEditViewModel(BaseViewModel):
         
         # build alert message to be displayed
         
-        return ViewModel("", self.auth_user.institute.name, f"Edit academic year {self.model.display_name}" if self.model.is_from_db else f"New academic year {self.model.display_name}", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.auth_user.institute.name, f"Edit academic year {self.model.display_name}" if self.model.is_from_db else f"New academic year {self.model.display_name}", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)

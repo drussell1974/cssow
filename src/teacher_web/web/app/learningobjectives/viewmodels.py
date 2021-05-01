@@ -48,7 +48,7 @@ class LearningObjectiveIndexViewModel(BaseViewModel):
             self.learning_objectives_by_solo_group[learning_objective["solo_taxonomy_id"]].learning_objectives.append(learning_objective)
         
 
-    def view(self):
+    def view(self, request):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -59,7 +59,7 @@ class LearningObjectiveIndexViewModel(BaseViewModel):
             "lesson_options": self.lesson_options,
         }
 
-        return ViewModel("", self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data)
         
 
 class LearningObjectiveGetModelViewModel(BaseViewModel):
