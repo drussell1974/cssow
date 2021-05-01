@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.twocolumn.html' %}
+{% extends '_partials/__layout.onecolumn.html' %}
 {% load student_uri %}
 
 
@@ -9,21 +9,8 @@
 {% endblock %}
 
 
-{% block sidecontent %}
-<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("Menu")}} <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="sidebarResponsive">
-    <div class="list-group">
-
-      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %}
-      
-      {% include '_partials/widget.sidebar.this-department.html' %}  
-      
-    </div>
-  </div>
-</nav>
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-schemeofwork.html' %}
 {% endblock %}
 
 
