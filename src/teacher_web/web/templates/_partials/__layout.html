@@ -135,18 +135,20 @@
             <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
               <div class="container">
                 <ul class="navbar-nav ml-auto">
+                    {% block breadcrumb_before %}
+                    {% endblock %}
                     {% for key, value in breadcrumb_items.items %}
                     <li class="nav-item">
                         <a class="nav-link" id="{{value.id}}" href="{{key}}">{{value.text}}</a>
                     </li>
                    {% endfor %}
+                   {% block breadcrumb_after %}
+                   {% endblock %}
                 </ul>
               </div>
             </nav>
           </section>
-          <p>REMOVE block breadcrumb from all pages</p>
-          {% block breadcrumb_x %}
-          {% endblock %}
+          <p class="text-danger">REMOVE block breadcrumb from all pages</p>
         </div>
       </div>
       <!-- Breadcrumb END -->

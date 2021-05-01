@@ -81,6 +81,11 @@ class UITestCase(TestCase):
         self.assertGreaterEqual(len(list_item_elems), expected_no_of_items, "number of items not as expected")
 
 
+    def assertPageShouldHaveGroupHeading(self, text):
+        elem = self.test_context.find_element_by_class_name('group-heading')
+        self.assertEqual(text, elem.text)
+
+
     def assertTopNavShouldHaveHomeIndex(self, should_exist):
         if should_exist:
             elem = self.test_context.find_element_by_id('btn-topnav-home')

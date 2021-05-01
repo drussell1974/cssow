@@ -28,18 +28,11 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-        
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # test
-        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
-        self.assertEqual("Schemes of Work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     """ edit """

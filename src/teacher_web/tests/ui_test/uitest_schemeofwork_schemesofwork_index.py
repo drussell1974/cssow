@@ -25,39 +25,11 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
-    def test_page__navigate_to_lesson_index(self):
-
-        # setup
-
-        elem = self.test_context.find_element_by_id("lnk-schemeofwork-127")
-
-        ' Ensure element is visible '
-        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-schemes_of_work').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_home(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-home').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def test_page__post_preview__item__navigate_to_lessons(self):
