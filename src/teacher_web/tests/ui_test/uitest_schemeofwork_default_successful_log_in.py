@@ -24,6 +24,19 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
         cls.test_context.close()
 
 
+    def test_page__should_have__title__title_heading__and__sub_heading(self):
+        # test
+        
+        # assert
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
+        
     def test_page__login_should_redirect_to_default_index__with_correct_credentials(self):
 
         # assert

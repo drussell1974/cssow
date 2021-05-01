@@ -23,6 +23,11 @@ class uitest_schemeofwork_default_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
         self.assertFooterContextText("")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def skip_test_page__navigate_to_all_schemesofwork_index(self):

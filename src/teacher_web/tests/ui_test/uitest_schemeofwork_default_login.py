@@ -28,4 +28,9 @@ class uitest_schemeofwork_default_login(UITestCase):
         # assert
         # TODO: set title
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
         
