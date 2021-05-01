@@ -85,7 +85,7 @@ def whiteboard(request, institute_id, department_id, scheme_of_work_id, lesson_i
         "STUDENT_WEB__WEB_SERVER_WWW": get_lesson_view.STUDENT_WEB__WEB_SERVER_WWW
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(request, model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
