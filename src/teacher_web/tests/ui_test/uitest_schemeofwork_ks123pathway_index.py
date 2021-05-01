@@ -33,6 +33,7 @@ class uitest_schemeofwork_ks123pathway_index(UITestCase):
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeDepartment()
 
 
     def test_page__show_published_only(self):
