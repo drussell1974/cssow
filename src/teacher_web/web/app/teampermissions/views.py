@@ -113,4 +113,4 @@ class TeamPermissionRequestLoginView(auth_views.LoginView):
         
         request_login = TeamPermissionRequestLoginViewModel(db=db, request=request, get_context_data=func, auth_user=auth_ctx, **kwargs)
         
-        return render(request, "registration/login.html", request_login.view())
+        return render(request, "registration/login.html", request_login.view(request))
