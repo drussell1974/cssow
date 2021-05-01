@@ -160,7 +160,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "lesson_schedule": lesson_schedule
     }   
     
-    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Scheme of work", ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
     
     return render(request, "lessons/edit.html", view_model.content)
 

@@ -41,7 +41,7 @@ class ContentIndexViewModel(BaseViewModel):
             "schemeofwork_options": self.scheme_of_work_options
         }
 
-        return ViewModel(request, "", self.scheme_of_work.name, "Curriculum", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.scheme_of_work.name, "Scheme of work", ctx=self.auth_user, data=data)
         
 
 class ContentEditViewModel(BaseViewModel):

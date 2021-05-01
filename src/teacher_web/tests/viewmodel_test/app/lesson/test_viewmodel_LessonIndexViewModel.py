@@ -84,7 +84,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                     self.assertViewModelContent(self.mock_request, self.viewmodel
                         , ""
                         , "Varum dosctes"
-                        , "Lessons"
+                        , "Scheme of work"
                         , {}
                     )
 
@@ -122,7 +122,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )
 
@@ -162,7 +162,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )
 
@@ -204,6 +204,6 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )

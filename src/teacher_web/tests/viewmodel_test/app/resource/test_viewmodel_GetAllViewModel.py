@@ -47,7 +47,7 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )
 
@@ -81,7 +81,7 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )
 
@@ -114,6 +114,6 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )

@@ -62,7 +62,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
             "ks123pathway": self.model,
         }
         
-        return ViewModel(request, self.department.name, self.department.name, "KS123 Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
 
 
 class KS123PathwayEditViewModel(BaseViewModel):

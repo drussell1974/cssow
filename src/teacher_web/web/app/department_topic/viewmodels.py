@@ -46,7 +46,7 @@ class DepartmentTopicIndexViewModel(BaseViewModel):
             "topics": self.model
         }
 
-        return ViewModel(request, self.department.name, self.department.name, "Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
 
 
 class DepartmentTopicEditViewModel(BaseViewModel):

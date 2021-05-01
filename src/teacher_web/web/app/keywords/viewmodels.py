@@ -62,7 +62,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
         
-        return ViewModel(request, self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=self.auth_user, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
+        return ViewModel(request, self.scheme_of_work.name, self.scheme_of_work.name, "Scheme of work", ctx=self.auth_user, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
 
 
 class KeywordGetModelViewModel(BaseViewModel):

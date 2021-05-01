@@ -76,7 +76,7 @@ class LessonScheduleIndexViewModel(BaseViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
         
-        return ViewModel(request, self.lesson.title, self.lesson.title, "Scheduled lessons", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
+        return ViewModel(request, self.lesson.title, self.lesson.title,  "Lesson", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
 class LessonScheduleEditViewModel(BaseViewModel):

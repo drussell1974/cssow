@@ -34,7 +34,7 @@ class AcademicYearIndexViewModel(DefaultIndexViewModel):
             "academic_years": self.academic_years 
         }
 
-        return ViewModel(request, "", self.institute.name, "Academic years", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.institute.name, "Your Institute", ctx=self.auth_user, data=data)
 
 
 class AcademicYearEditViewModel(BaseViewModel):
