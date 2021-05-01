@@ -34,25 +34,8 @@ class uitest_institute_academic_year_edit_create_new_page_navigation(UITestCase)
 
     """ Breadcrumb """
 
-    def test_page__breadcrumb__navigate_to_institute_index(self):
+    def test_page__breadcrumb(self):
         #test
-        elem = self.test_context.find_element_by_id('btn-bc-institute')
-        self.assertEqual("Institute", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Institutes')
-        
-
-    def test_page__breadcrumb__navigate_to_academic_year_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-academic_year')
-        self.assertEqual("Academic years", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years', wait=2)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)

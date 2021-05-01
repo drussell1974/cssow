@@ -81,6 +81,27 @@ class UITestCase(TestCase):
         self.assertGreaterEqual(len(list_item_elems), expected_no_of_items, "number of items not as expected")
 
 
+    def assertBreadcrumbShouldHaveDepartmentsIndex(self, should_exists):
+        #TODO: #447 use find_elements then check count or element
+        if should_exists:
+            elem = self.test_context.find_element_by_id('lnk-bc-departments')
+            self.assertEqual("departments", elem.text)
+        
+
+    def assertBreadcrumbShouldHaveSchemesOfWorkIndex(self, should_exists):
+        #TODO: #447 use find_elements then check count or element
+        if should_exists:
+            elem = self.test_context.find_element_by_id('lnk-bc-schemes_of_work')
+            self.assertEqual("schemes of work", elem.text)
+        
+
+    def assertBreadcrumbShouldHaveLessonsIndex(self, should_exists):
+        #TODO: #447 use find_elements then check count or element
+        if should_exists:
+            elem = self.test_context.find_element_by_id('lnk-bc-lessons')
+            self.assertEqual("lessons", elem.text)
+
+
     def assertFooterContextText(self, context_text):
         # assert - context_text
         self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")

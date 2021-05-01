@@ -28,16 +28,14 @@ class uitest_institute_schedule(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Schedule')
         
 
-    @skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
-    def test_page__breadcrumb__navigate_to_departments_all(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-departments_all').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+    def test_page__breadcrumb(self):
+        #test
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
-    def test_page__breadcrumb__navigate_to_home(self):
+    def test_page__topnav__navigate_to_home(self):
         # setup
         self.test_context.find_element_by_id('btn-topnav-home').click()
 

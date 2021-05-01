@@ -137,14 +137,15 @@
                 <ul class="navbar-nav ml-auto">
                     {% for key, value in breadcrumb_items.items %}
                     <li class="nav-item">
-                        <a class="nav-link" id="lnk-{{value.id}}" href="{{key}}">{{value.text}}</a>
+                        <a class="nav-link" id="{{value.id}}" href="{{key}}">{{value.text}}</a>
                     </li>
                    {% endfor %}
                 </ul>
               </div>
             </nav>
           </section>
-          {% block breadcrumb %}
+          <p>REMOVE block breadcrumb from all pages</p>
+          {% block breadcrumb_x %}
           {% endblock %}
         </div>
       </div>
