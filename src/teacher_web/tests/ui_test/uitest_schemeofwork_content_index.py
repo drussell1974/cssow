@@ -24,14 +24,16 @@ class uitest_schemeofwork_content_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Curriculum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeSchemeOfWork()
 
 
-    def test_page__submenu__navigate_to_lesson_new(self):
+    def test_page__submenu__navigate_to_content_new(self):
         # arrange
 
         # act
@@ -40,26 +42,6 @@ class uitest_schemeofwork_content_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science', wait=2)
-
-
-    def test_page__should_have_sidenav(self):
-        # arrange
-        elem = self.test_context.find_element_by_id('sidebarNav')
-
-        # act
-
-        # assert
-        self.assertIsNotNone(elem)
-
-
-    def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
-
-
-    def test_page__should_have_sidenav__showing_administrator_links(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Department", expected_no_of_items=1)
 
         
     def test_page__show_published_only(self):
