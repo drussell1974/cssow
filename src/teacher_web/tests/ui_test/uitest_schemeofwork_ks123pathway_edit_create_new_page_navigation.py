@@ -29,17 +29,8 @@ class uitest_schemeofwork_ks123pathway_edit_create_new_page_navigation(UITestCas
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Create new pathway objective', wait=2)
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    """ Breadcrumb """
-
-    def test_page__breadcrumb__navigate_to_ks123pathway_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-ks123pathway')
-        self.assertEqual("Pathways", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
