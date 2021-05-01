@@ -25,30 +25,16 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
 
-
-    def test_page__should_have__sidebar_and_selected_scheme_of_work(self):
-        # test
-        elem = self.test_context.find_element_by_id("nav-link-schemeofwork-{}".format(self.test_scheme_of_work_id))
+        #elem = self.test_context.find_element_by_id("nav-link-schemeofwork-{}".format(self.test_scheme_of_work_id))
+        #self.assertEqual("A-Level Computer Science\nKS5", elem.text)
+        #self.assertEqual("nav-link", elem.get_attribute("class"))
         
-        # assert
-        self.assertEqual("A-Level Computer Science\nKS5", elem.text)
-        self.assertEqual("nav-link", elem.get_attribute("class"))
-
-
-    def test_page__should_have__group_heading(self):
-        # test
-        elem = self.test_context.find_element_by_class_name('group-heading')
-
-        # assert
-        self.assertEqual("Keywords", elem.text)
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertPageShouldHaveGroupHeading("Keywords")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def test_page__show_published_only(self):
@@ -93,11 +79,6 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
 
 
-    def test_page__should_have_sidenav__showing_other_lessons(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Other schemes of work", expected_no_of_items=3)
-
-
     def test_page__should_have_sidenav__showing_administrator_links(self):
         # arrange
-        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Administrator", expected_no_of_items=1)
+        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Department", expected_no_of_items=1)

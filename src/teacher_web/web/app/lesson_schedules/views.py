@@ -89,7 +89,7 @@ def whiteboard(request, institute_id, department_id, scheme_of_work_id, lesson_i
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
-
+'''
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def missing_words_challenge(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
  
@@ -100,7 +100,7 @@ def missing_words_challenge(request, institute_id, department_id, scheme_of_work
         "learning_objectives":model.learning_objectives,
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(request, model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/missing_words_view.html", view_model.content)
-
+'''
