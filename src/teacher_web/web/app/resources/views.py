@@ -194,7 +194,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, res
             "get_resource_type_options": get_resource_type_options,
         }
         
-        view_model = ViewModel(lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
+        view_model = ViewModel(request, lesson.title, lesson.summary, "Edit: {}".format(model.title), ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
         
         return render(request, "resources/edit.html", view_model.content)
 

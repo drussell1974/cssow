@@ -92,7 +92,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
 
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -159,7 +159,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
             "keyword": model
         }
         
-        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        
+        view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        
         
         return render(request, "keywords/edit.html", view_model.content)
         
