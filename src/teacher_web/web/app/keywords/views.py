@@ -57,7 +57,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
         "keyword": model
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "keywords/edit.html", view_model.content)
 

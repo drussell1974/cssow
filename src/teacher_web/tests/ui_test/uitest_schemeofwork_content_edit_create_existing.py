@@ -66,3 +66,4 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         # assert
         ' should be next page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
+        

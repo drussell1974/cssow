@@ -28,38 +28,8 @@ class uitest_schemeofwork_content_edit_create_new_page_navigation(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    """ Breadcrumb """
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
-        self.assertEqual("Schemes of Work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-'''
-    def test_page__breadcrumb__navigate_to_lesson_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-lessons')
-        self.assertEqual("Lessons", elem.text)
-
-        # test
-        elem.click()
-
-        # asserts
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
-
-
-    def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):
-        #test
-
-        with self.assertRaises(Exception):
-            self.test_context.find_element_by_id('btn-new')
-'''
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)

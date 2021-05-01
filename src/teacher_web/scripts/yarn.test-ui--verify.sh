@@ -11,16 +11,16 @@ echo "running..."
 ### start test
 
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonschedule_edit_existing.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_edit_existing.py
 
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_default_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_accounts_*.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemeofworkschedule_*.py
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_content_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lesson_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonschedule_*.py
