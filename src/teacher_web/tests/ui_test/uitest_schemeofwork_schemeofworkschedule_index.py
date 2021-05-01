@@ -37,11 +37,6 @@ class uitest_schemeofwork_schemeofworkschedule_index(UITestCase):
         self.assertSidebarResponsiveMenu(section_no=1, expected_title="This scheme of work", expected_no_of_items=3)
 
 
-    def test_page__should_have_sidenav__showing_other_lessons(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="Department", expected_no_of_items=3)
-
-
     # card-scheduled_lesson
 
     def test_page__show_published_only(self):

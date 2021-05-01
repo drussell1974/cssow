@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 {% load student_uri %}
 
 
@@ -8,22 +8,11 @@
   <!-- Google Analytics // END -->
 {% endblock %}
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--schemeofwork-edit">
-    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-        <div class="container">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" id="btn-bc-department" href="{% url 'department.index' content.ctx.institute_id %}">{{_('Departments')}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_('Schemes of work')}}</a>
-              </li>
-            </ul>
-        </div>
-    </nav>
-</section>
+
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-department.html' %}
 {% endblock %}
+
 
 {% block maincontent %}
 

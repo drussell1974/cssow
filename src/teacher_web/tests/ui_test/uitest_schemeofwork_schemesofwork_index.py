@@ -30,6 +30,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeDepartment()
 
 
     def test_page__post_preview__item__navigate_to_lessons(self):

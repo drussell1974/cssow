@@ -11,7 +11,11 @@ echo "running..."
 ### start test
 
 
-#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_index.py
+python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofwork_index.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_index*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_ks123pathway_edit_existing*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_edit_existing*.py
 
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_institute_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_department_*.py
@@ -25,7 +29,7 @@ echo "running..."
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonks123pathway_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_ks123pathway_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonschedule_*.py
-python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
+#python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_learningobjective_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_resources_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_lessonkeyword_*.py
 #python -m unittest discover --start-directory ./tests/ui_test/ -p uitest_schemeofwork_schemesofworkkeyword_*.py

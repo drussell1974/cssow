@@ -119,6 +119,29 @@ class UITestCase(TestCase):
             self.assertEqual("lessons", elem.text)
 
 
+    def assertNavTabsShouldBeDepartment(self):
+        
+        # schemes of work index
+        elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(1) > a')
+        self.assertEqual("schemes of work", elem.text)
+        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/schemesofwork/", elem.get_attribute("href"))
+        
+        # topics index
+        elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(2) > a')
+        self.assertEqual("topics", elem.text)
+        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/topics/", elem.get_attribute("href"))
+        
+        # pathways index
+        elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(3) > a')
+        self.assertEqual("pathways", elem.text)
+        self.assertEqual("http://127.0.0.1:3002/institute/2/department/5/pathways/", elem.get_attribute("href"))
+        
+        # academic years index
+        elem = self.test_context.find_element_by_css_selector('#department--navtabs > ul > li:nth-child(4) > a')
+        self.assertEqual("academic years", elem.text)
+        self.assertEqual("http://127.0.0.1:3002/institute/2/academic-years/", elem.get_attribute("href"))
+
+
     def assertFooterContextText(self, context_text):
         # assert - context_text
         self.assertEqual(context_text, self.test_context.find_element_by_id("footer-context--text").text, f"#footer-context--text not as expected.")
