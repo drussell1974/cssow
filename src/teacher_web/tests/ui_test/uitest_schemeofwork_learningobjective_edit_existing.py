@@ -68,8 +68,9 @@ class uitest_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem = self.find_wizardoptions_element_by_id("saveButtonNext")        
         elem.send_keys(Keys.RETURN)
         
-        self.wait(s=2)
+        self.wait(s=4)
         
         # assert
         ' should be next page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new resource for Types of CPU architecture')
+        

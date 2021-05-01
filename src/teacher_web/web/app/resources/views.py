@@ -62,7 +62,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         "get_resource_type_options": get_resource_type_options,
     }
     
-    view_model = ViewModel(lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
+    view_model = ViewModel(request, lesson.title, lesson.title, "Create new resource for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "resources/edit.html", view_model.content)
 
