@@ -22,8 +22,19 @@ class uitest_accounts_register_new(UITestCase):
         cls.test_context.close()
 
 
-    """ Test edit """
-    
+    def test_page__should_have__title__title_heading__and__sub_heading(self):
+        # test
+
+        # assert
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertFooterContextText("")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
+
     @skip("don't create new user during testing")
     def test_page__should_direct_to_confirmation_sent(self):
         # setup

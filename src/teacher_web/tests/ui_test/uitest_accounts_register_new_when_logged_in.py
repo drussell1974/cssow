@@ -22,7 +22,18 @@ class uitest_accounts_register_new_when_logged_in(UITestCase):
         cls.test_context.close()
 
 
-    """ Test edit """
+    def test_page__should_have__title__title_heading__and__sub_heading(self):
+        # test
+
+        # assert
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertFooterContextText("")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
     
     def test_page__should_show_already_registered_when_logged_in(self):
         
