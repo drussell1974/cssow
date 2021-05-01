@@ -24,19 +24,13 @@ class uitest_schemeofwork_resources_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-        
-        elem = self.test_context.find_element_by_id("nav-link-lesson-{}".format(self.test_lesson_id))        
-        self.assertEqual("Types of CPU architecture", elem.text)
-        self.assertEqual("nav-link", elem.get_attribute("class"))
-
-        elem = self.test_context.find_element_by_class_name('group-heading')
-        self.assertEqual("Resources", elem.text)
-        
+        self.assertPageShouldHaveGroupHeading("Resources")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
         self.assertBreadcrumbShouldHaveLessonsIndex(True)
+        self.assertNavTabsShouldBeLesson()
 
 
     def test_page__show_published_only(self):
@@ -62,13 +56,3 @@ class uitest_schemeofwork_resources_index(UITestCase):
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
         self.assertEqual(4, result, "number of elements not as expected")
-
-
-    def test_page__should_have_sidenav__showing_options_for_this_lesson(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=1, expected_title="This lesson", expected_no_of_items=3)
-
-
-    def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=2, expected_title="This scheme of work", expected_no_of_items=3)
