@@ -93,7 +93,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         "content_options": content_options,
     }
     
-    view_model = ViewModel("", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
+    view_model = ViewModel(request, "", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
