@@ -44,7 +44,7 @@ class SchemeOfWorkScheduleIndexViewModel(DefaultIndexViewModel):
 
 
     def view(self, request, main_heading, sub_heading):
-        super().view(self.scheme_of_work.name, sub_heading)
+        super().view(request, self.scheme_of_work.name, sub_heading)
         
         data = {
             "schemeofwork": self.scheme_of_work,
