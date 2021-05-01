@@ -1,0 +1,27 @@
+{% if content.ctx.department_id > 0 %}
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of work")}}</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'department_topic.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Topics")}}</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Pathways")}}</a>
+</li>
+{% endif %}
+
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'academic-year.index' content.ctx.institute_id %}">{{_("Academic years")}}</a>
+</li>
+
+{% if content.data.scheme_of_work_id > 0 %}
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'eventlog.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Event log")}}</a>
+</li>
+{% endif %}
+
+{% if request.user.is_superuser %}
+<li class="nav-item">
+  <a class="nav-link" href="/admin">{{_("Admin")}}</a>
+</li>
+{% endif %}

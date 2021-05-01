@@ -1,21 +1,7 @@
 {% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--schemeofwork-edit">
-    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-        <div class="container">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-institute" href="{% url 'institute.index' %}">{{_('Institute')}}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="btn-bc-academic_year" href="{% url 'academic-year.index' content.ctx.institute_id %}">{{_('Academic years')}}</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</section>
+{% block content_tabs %}
 {% endblock %}
 
 

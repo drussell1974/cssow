@@ -1,10 +1,26 @@
-{% extends '_partials/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.twocolumn.html' %}
 
 
 {% block head_js %} 
   <!-- #295: Google Analytics script.googleanalytics.html partial -->
   {% include '_partials/script.googleanalytics.html' %}
   <!-- Google Analytics // END -->
+{% endblock %}
+
+
+{% block sidecontent %}
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("Menu")}} <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+      <div class="list-group">
+      
+        {% include '_partials/widget.sidebar.this-department.html'  %}        
+
+      </div>
+  </div>
+</nav>
 {% endblock %}
 
 

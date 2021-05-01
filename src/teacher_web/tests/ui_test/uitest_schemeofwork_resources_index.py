@@ -72,8 +72,3 @@ class uitest_schemeofwork_resources_index(UITestCase):
     def test_page__should_have_sidenav__showing_options_for_this_scheme_of_work(self):
         # arrange
         self.assertSidebarResponsiveMenu(section_no=2, expected_title="This scheme of work", expected_no_of_items=3)
-
-
-    def test_page__should_have_sidenav__showing_other_lessons(self):
-        # arrange
-        self.assertSidebarResponsiveMenu(section_no=3, expected_title="Other lessons", expected_no_of_items=25)

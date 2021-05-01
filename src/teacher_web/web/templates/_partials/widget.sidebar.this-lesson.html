@@ -5,21 +5,7 @@
         </div>
         <div class="card-text widget-main">
         <ul class="navbar-nav flex-column fillspace">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
-                {{_("Learning objectives")}} <div class="small"></div>
-                </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'lesson_keywords.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
-                {{_("Keywords")}} <div class="small"></div>
-            </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'resource.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
-                {{_("Resources")}} <div class="small"></div>
-                </a>
-            </li>
+            {% include '_partials/_navitems.this-lesson.html' %}
         </ul>
         </div>
     </div>
