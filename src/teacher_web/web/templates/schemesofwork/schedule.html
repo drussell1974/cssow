@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 {% load student_uri %}
 
 
@@ -14,21 +14,14 @@
 {% endblock %}
 
 
+{% block content_new %}
+<label class="text-muted">{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
+{% endblock %}
+
+
 {% block maincontent %}
   {% load display_date %}
 
-      <!-- Pager Header -->      
-      <header class="widget widget--articleheader">
-        {% if content.ctx %}
-          <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
-          <label class="text-muted">{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
-        {% else %}
-          <h2 class="group-heading">{{_("Schedule")}}</h2>
-        {% endif %}
-      </header>
-      <!-- Pager Header END -->
-
-      <hr>
       <!-- #435 add link to full calendar -->
       <a href="{% url 'institute.schedule' content.ctx.institute_id %}" class="btn btn-primary">{{_('View full schedule')}}</a>
       <!-- #435 Show calendar here -->

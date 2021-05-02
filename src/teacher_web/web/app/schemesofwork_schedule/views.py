@@ -27,4 +27,4 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
         return HttpResponseRedirect(redirect_to_url)
 
 
-    return render(request, "schemesofwork/schedule.html", schedule_view.view(request, schedule_view.scheme_of_work.name, "Scheme of work").content)
+    return render(request, "schemesofwork/schedule.html", schedule_view.view(request).content)
