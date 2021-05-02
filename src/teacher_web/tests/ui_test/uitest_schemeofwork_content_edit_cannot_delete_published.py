@@ -51,5 +51,5 @@ class uitest_schemeofwork_content_edit_cannot_delete_published(UITestCase):
         # check this does nothing
         elem.click()
         
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         

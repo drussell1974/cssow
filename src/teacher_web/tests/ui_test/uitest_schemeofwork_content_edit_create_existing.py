@@ -45,7 +45,8 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Curriculum")
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -65,5 +66,6 @@ class uitest_schemeofwork_content_edit_create_existing(UITestCase):
         
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Keyword")
         

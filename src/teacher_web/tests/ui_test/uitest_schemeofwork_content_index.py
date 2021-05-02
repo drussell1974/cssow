@@ -22,7 +22,7 @@ class uitest_schemeofwork_content_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertPageShouldHaveGroupHeading("Curriculum")
         self.assertTopNavShouldHaveHomeIndex(True)
@@ -41,7 +41,7 @@ class uitest_schemeofwork_content_index(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work', wait=2)
 
         
     def test_page__show_published_only(self):

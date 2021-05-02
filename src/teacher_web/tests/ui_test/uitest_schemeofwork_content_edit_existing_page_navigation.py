@@ -25,8 +25,9 @@ class uitest_schemeofwork_content_edit_existing_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Curriculum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)

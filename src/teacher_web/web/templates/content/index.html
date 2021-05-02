@@ -13,18 +13,12 @@
 {% endblock %}
 
 
+{% block content_new %}
+<a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
+{% endblock %}
+
+
 {% block maincontent %}
-<!-- Pager Header  -->
-<header class="widget widget-artilceheader">
-{% if request.user.is_authenticated %}
-  <span class="float-right">
-    <a class="btn btn-warning" id="btn-new" href="{% url 'content.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
-  </span>
-{% endif %}
-<h2 class="group-heading">{{_("Curriculum")}}</h2>
-<hr />
-</header>
-<!-- Pager Header END -->
 
 <!-- Curriculum  list -->
 {% if content.data.curriculum_content|length == 0 %}

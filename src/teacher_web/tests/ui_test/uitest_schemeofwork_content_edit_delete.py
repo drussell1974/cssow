@@ -32,7 +32,7 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
 
 
@@ -58,7 +58,7 @@ class uitest_schemeofwork_content_edit_delete(UITestCase):
         self.wait(s=2)
 
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         
