@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 
 {% block head_js %} 
@@ -29,18 +29,13 @@
 {% endblock %}
 
 
+{% block content_new %}
+<a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'academic-year.new' content.ctx.institute_id %}#main">{{_('add')}}</a>
+{% endblock %}
+
+
 {% block maincontent %}
   {% load display_date %}
-    <article class="widget widget--schemeofwork--listing">
-      <!-- Pager Header -->      
-      <header class="widget widget--articleheader">
-        <span class="float-right">
-            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'academic-year.new' content.ctx.institute_id %}#main">{{_('add')}}</a>
-        </span>
-        <h2 class="group-heading">{{_("Academic years")}}</h2>
-        <hr />
-      </header>
-      <!-- Pager Header END -->
 
       <!-- Academic years -->
       
@@ -68,7 +63,5 @@
         <hr>
         {% endfor %}
       <!-- Academic END -->
-
-    </article>
 
 {% endblock %}

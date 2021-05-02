@@ -74,7 +74,7 @@ class uitest_schemeofwork_default_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department', wait=4)
 
 
     def test_page__view_topics(self):
@@ -86,7 +86,7 @@ class uitest_schemeofwork_default_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Topics', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department', wait=4)
 
 
     def test_page__has_showcase(self):

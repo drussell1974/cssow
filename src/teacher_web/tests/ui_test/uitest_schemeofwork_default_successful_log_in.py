@@ -28,7 +28,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
         # test
         
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -41,7 +41,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
 
         # assert
         ' redirect back to home page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department', wait=4)
 
         elem = self.test_context.find_element_by_id("btn-profile")
         self.assertEqual("TEST USER", elem.text)
@@ -58,7 +58,7 @@ class uitest_schemeofwork_successful_log_in(UITestCase):
         self.test_context.find_element_by_id('btn-logout').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
         elem = self.test_context.find_element_by_id("btn-login")
         self.assertEqual("Login", elem.text)

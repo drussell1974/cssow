@@ -2,14 +2,14 @@
 
 {% block content %}
 <div class="col-xl-8 col-lg-10 col-md-12 mx-auto maincontent">
-  
-  <!-- Content Heading -->      
-  <header class="widget widget--articleheader">
-    <h2 class="group-heading">{% block content_heading %}{{ content.content_heading }}{% endblock %}</h2>
-    <hr />
-  </header>
-  <!-- Pager Header END -->
-
+  <article class="widget">
+    <!-- Content Heading -->      
+    <header class="widget widget--articleheader">
+      <h2 class="group-heading">{% block content_heading %}{{ content.content_heading }}{% endblock %}</h2>
+      <hr />
+    </header>
+    <!-- Pager Header END -->
+  </article>
   {% block maincontent %}
   {% endblock %}
 </div>

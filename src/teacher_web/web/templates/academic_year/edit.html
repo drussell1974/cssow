@@ -8,7 +8,6 @@
 {% block maincontent %}
     {% load display_date %}
 
-<article class="widget widget-form widget-academic-form">
     <form name="edit-academic-year" id="form" class="needs-validation" method="post" action="{% url 'academic-year.edit' content.ctx.institute.id content.data.academic_year.id %}">
         {% csrf_token %}
         
@@ -49,6 +48,5 @@
         <input type="hidden" name="next" value="{% url 'academic-year.index' content.ctx.institute.id %}">
         <input type="hidden" name="is_from_db" value="{{content.data.academic_year.is_from_db}}" >
     </form>
-</article>
 {% endblock %}
 

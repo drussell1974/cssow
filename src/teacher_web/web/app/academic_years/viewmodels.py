@@ -27,7 +27,7 @@ class AcademicYearIndexViewModel(DefaultIndexViewModel):
         self.academic_years = Model.get_all(db, institute_id, auth_ctx=auth_user)
 
         
-    def view(self, request, main_heading, sub_heading):
+    def view(self, request):
         """ return View """
 
         data = {
