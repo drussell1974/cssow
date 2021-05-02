@@ -8,8 +8,10 @@
 {% endblock %}
 
 {% block content_new %}
-  <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right" id="lnk-missing_words_challenge">{{_("Challenge")}} <i class="fa fa-brain"></i></a>
-  <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id 0 %}" target="_blank" class="btn btn-dark float-right" id="lnk-whiteboard">{{_("Whiteboard")}} <i class="fa fa-chalkboard"></i></a>
+<div class="stackable-group-sm stackable">
+  <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right stackable" id="lnk-missing_words_challenge">{{_("Challenge")}} <i class="fa fa-brain"></i></a>
+  <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id 0 %}" target="_blank" class="btn btn-dark float-right stackable" id="lnk-whiteboard">{{_("Whiteboard")}} <i class="fa fa-chalkboard"></i></a>
+</div>
 {% endblock %}
 
 {% block content_tabs %}
