@@ -18,7 +18,7 @@ def index(request, auth_ctx):
     
     index_view =  InstituteIndexViewModel(db=db, top=10, auth_user=auth_ctx)
     
-    return render(request, "default/index.html", index_view.view(request, "Schemes of Work", "Institutes").content)
+    return render(request, "default/index.html", index_view.view(request).content)
 
 
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
@@ -61,7 +61,5 @@ def schedule(request, institute_id, auth_ctx):
     
     schedule_view =  InstituteScheduleViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_ctx)
     
-    sub_heading = "Schedule"
-
-    return render(request, "institute/schedule.html", schedule_view.view(request, schedule_view.institute.name, sub_heading).content)
+    return render(request, "institute/schedule.html", schedule_view.view(request).content)
 

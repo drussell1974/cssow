@@ -24,8 +24,8 @@ class uitest_institute_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Institutes')
-        
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
+        #self.assertPageShouldHaveGroupHeading("") index page no heading
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
@@ -48,3 +48,4 @@ class uitest_institute_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
+        self.assertPageShouldHaveGroupHeading("")

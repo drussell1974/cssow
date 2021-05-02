@@ -34,7 +34,7 @@ class AcademicYearIndexViewModel(DefaultIndexViewModel):
             "academic_years": self.academic_years 
         }
 
-        return ViewModel(request, "", self.institute.name, "Your Institute", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.institute.name, "Institute", ctx=self.auth_user, data=data)
 
 
 class AcademicYearEditViewModel(BaseViewModel):
@@ -105,4 +105,4 @@ class AcademicYearEditViewModel(BaseViewModel):
         
         # build alert message to be displayed
         
-        return ViewModel(request, "", self.auth_user.institute.name, f"Edit academic year {self.model.display_name}" if self.model.is_from_db else f"New academic year {self.model.display_name}", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.auth_user.institute.name, "Institute", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)

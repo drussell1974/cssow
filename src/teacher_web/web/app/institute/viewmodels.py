@@ -18,8 +18,8 @@ class InstituteIndexViewModel(DefaultIndexViewModel):
         super().__init__(db, top, auth_user)
 
 
-    def view(self, request, main_heading, sub_heading):
-        view = super().view(request, main_heading, sub_heading)
+    def view(self, request):
+        view = super().view(request, settings.SITE_TITLE, settings.SITE_SUMMARY)
         return view
 
 
@@ -47,7 +47,7 @@ class InstituteAllViewModel(BaseViewModel):
             "institutes": self.model
         }
         
-        return ViewModel(request, "", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", settings.SITE_TITLE,  settings.SITE_SUMMARY, ctx=self.auth_user, data=data)
 
 
 class InstituteEditViewModel(BaseViewModel):
@@ -108,7 +108,7 @@ class InstituteEditViewModel(BaseViewModel):
         # build alert message to be displayed
         delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>"
 
-        return ViewModel(request, "", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel(request, "", self.model.name, "Institute", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
 
 class InstituteScheduleViewModel(DefaultIndexViewModel):
@@ -136,8 +136,8 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
         self.model = data
 
 
-    def view(self, request, main_heading, sub_heading):
-        super().view(request, self.institute.name, sub_heading)
+    def view(self, request):
+        super().view(request, self.institute.name, "Institute")
         
         data = {
             "institute_id": self.institute.id,
@@ -147,7 +147,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
-        return ViewModel(request, "", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.institute)
+        return ViewModel(request, "", self.auth_user.institute.name, "Institute", ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):

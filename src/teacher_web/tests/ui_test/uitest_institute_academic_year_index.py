@@ -24,7 +24,7 @@ class uitest_institute_academic_year_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
         self.assertFooterContextText("Finibus Bonorum et Malorum")
         self.assertPageShouldHaveGroupHeading("Academic years")
         self.assertTopNavShouldHaveHomeIndex(True)
@@ -40,7 +40,8 @@ class uitest_institute_academic_year_index(UITestCase):
         self.test_context.find_element_by_id('lnk-institute-academic_year--{}'.format(2020)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Edit academic year 2020/2021', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute', wait=4)
+        self.assertPageShouldHaveGroupHeading("Academic year 2020")
         
 
     def test_page__submenu__navigate_to_academic_year_new(self):
@@ -51,9 +52,5 @@ class uitest_institute_academic_year_index(UITestCase):
         self.test_context.find_element_by_id('btn-new').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'New academic year 2022/2023')
-
-
-
-
-
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
+        self.assertPageShouldHaveGroupHeading("Academic year 2022")
