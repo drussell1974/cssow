@@ -3,7 +3,6 @@
 
 {% block maincontent %}
     {% load format_time %}
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.model.id %}">
         {% csrf_token %}
 
@@ -94,7 +93,6 @@
         <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
     </form>
 <hr>
-</article>
 {% endblock %}
 
 {% block page_js %}

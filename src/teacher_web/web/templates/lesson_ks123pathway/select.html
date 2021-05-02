@@ -2,8 +2,7 @@
 
 
 {% block maincontent %}
-
-<article class="widget widget-form widget-lesson-form">
+0.....
   {% if content.data.is_copy %}
   <div class="alert alert-warning" role="alert">
     <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
@@ -54,7 +53,6 @@
     <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
     <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" > 
   </form>
-</article>
 {% endblock %}
 
 

@@ -13,7 +13,6 @@
 <hr />
 <!-- Pager Header END -->      
 
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
         {% csrf_token %}
 
@@ -52,7 +51,7 @@
         </div>
     </form>
 <hr>
-</article>
+
 {% endblock %}
 
 

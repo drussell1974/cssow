@@ -4,8 +4,6 @@
 {% endblock %}
 
 {% block maincontent %}
-
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'keywords.save' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.keyword.id %}">
         {% csrf_token %}
 
@@ -47,5 +45,4 @@
         <input type="hidden" name="cssow_service_uri" id="ctl-cssow_service_uri" value="{{content.data.cssow_service_uri}}" />
     </form>
 <hr>
-</article>
 {% endblock %}

@@ -13,9 +13,7 @@
 {% endblock %}
 
 
-{% block maincontent %}
-
-<article class="widget widget--learningobjectives-listing">
+{% block maincontent %}............
 <!-- Pager Header -->      
 <header class="widget widget--articleheader">
   <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right" id="lnk-missing_words_challenge">
@@ -94,7 +92,7 @@
       <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'learningobjective.delete_unpublished'  content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_('Clean')}}</a>
     {% endif %}
   </footer>
-</article>
+
 {% endblock %}
 
 {% block page_js %}

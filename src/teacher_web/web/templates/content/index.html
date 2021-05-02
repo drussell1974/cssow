@@ -14,7 +14,6 @@
 
 
 {% block maincontent %}
-<article class="widget widget-curriculum-listing">
 <!-- Pager Header  -->
 <header class="widget widget-artilceheader">
 {% if request.user.is_authenticated %}
@@ -54,7 +53,5 @@
     <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'content.delete_unpublished' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('Clean')}}</a>
   {% endif %}
 </footer>
-
-</article>
 
 {% endblock %}

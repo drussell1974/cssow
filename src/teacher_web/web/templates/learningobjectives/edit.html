@@ -7,7 +7,6 @@
 
 
 {% block maincontent %}
-<article class="widget widget-form widget-learningobjective-form">
     <!-- #231: needs-validation class to select form in formValidation.js -->
     <form name="edit-learningobjective" id="form" class="needs-validation" method="post" action="{% url 'learningobjective.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.learningobjective.id %}">
         {% csrf_token %}
@@ -100,7 +99,6 @@
         </div>
     </form>
     <hr>
-</article>
 {% endblock %}
 
 {% block page_js %}

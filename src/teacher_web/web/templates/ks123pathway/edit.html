@@ -3,7 +3,6 @@
 
 {% block maincontent %}
 
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-ks123pathway" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'ks123pathways.edit' content.ctx.institute_id content.ctx.department_id content.data.model.id %}">
         {% csrf_token %}
         
@@ -68,5 +67,4 @@
         <input type="hidden" name="next" value="{% url 'ks123pathways.index' content.ctx.institute_id content.ctx.department_id %}" >
     </form>
 <hr>
-</article>
 {% endblock %}
