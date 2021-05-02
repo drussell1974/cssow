@@ -3,7 +3,6 @@
 
 {% block maincontent %}
 
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-teampermission" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'team-permissions.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.model.teacher_id %}">
         {% csrf_token %}
 
@@ -68,5 +67,5 @@
         <input type="hidden" name="is_from_db" value="{{content.data.model.is_from_db}}" >
     </form>
 <hr>
-</article>
+
 {% endblock %}

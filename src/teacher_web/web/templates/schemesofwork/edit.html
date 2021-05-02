@@ -2,7 +2,7 @@
 
 
 {% block maincontent %}
-<article class="widget widget-form widget-schemeofwork-form">
+
     <form name="edit-schemeofwork" id="form" class="needs-validation" method="post" action="{% url 'schemesofwork.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
         {% csrf_token %}
 
@@ -92,6 +92,6 @@
         <input type="hidden" name="department_id" value="{{content.ctx.department_id}}">
         <input type="hidden" name="next" value="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
     </form>
-</article>
+
 {% endblock %}
 
