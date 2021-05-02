@@ -81,4 +81,3 @@ class uitest_registration_password_reset_request_new(UITestCase):
         self.assertEqual("Enter your email address below, and we'll email instructions for setting a new one.", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Registration', 'Reset your password')
-
