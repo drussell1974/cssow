@@ -28,8 +28,8 @@ class DepartmentIndexViewModel(DefaultIndexViewModel):
                 self.on_not_found(self.institute, self.institute_id)
 
 
-    def view(self, request, main_heading, sub_heading):
-        view = super().view(request, self.institute.name, sub_heading)
+    def view(self, request):
+        view = super().view(request, self.institute.name, "Institute", content_heading="Departments")
         return view
 
 
@@ -61,7 +61,7 @@ class DepartmentAllViewModel(BaseViewModel):
             "departments": self.model
         }
         #329 active_model = institue
-        return ViewModel(request, "", self.institute.name, "Departments", ctx=self.auth_user, data=data, active_model=self.institute)
+        return ViewModel(request, "", self.institute.name, "Institute", ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class DepartmentEditViewModel(BaseViewModel):
@@ -132,7 +132,7 @@ class DepartmentEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel(request, "", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel(request, "", self.model.name, "Department", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
  
 class DepartmentDeleteUnpublishedViewModel(BaseViewModel):

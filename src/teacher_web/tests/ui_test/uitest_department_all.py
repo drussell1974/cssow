@@ -22,7 +22,7 @@ class uitest_department_all(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
         self.assertFooterContextText("Finibus Bonorum et Malorum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -53,7 +53,7 @@ class uitest_department_all(UITestCase):
         self.test_context.find_element_by_id('lnk-schemesofwork--{}'.format(self.test_department_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Department')
          
 
     def not_test_page__submenu__navigate_to_department_new(self):

@@ -19,7 +19,7 @@ class InstituteIndexViewModel(DefaultIndexViewModel):
 
 
     def view(self, request):
-        view = super().view(request, settings.SITE_TITLE, settings.SITE_SUMMARY)
+        view = super().view(request, settings.SITE_TITLE, settings.SITE_SUMMARY, content_heading="")
         return view
 
 
@@ -137,7 +137,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
 
 
     def view(self, request):
-        super().view(request, self.institute.name, "Institute")
+        super().view(request, self.institute.name, "Institute", content_heading="Schedule")
         
         data = {
             "institute_id": self.institute.id,

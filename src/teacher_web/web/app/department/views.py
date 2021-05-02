@@ -18,7 +18,7 @@ def index(request, institute_id, auth_ctx):
 
     index_view =  DepartmentIndexViewModel(db=db, institute_id=institute_id, top=10, auth_user=auth_ctx)
     
-    return render(request, "default/index.html", index_view.view(request, index_view.institute.name, "Departments").content)
+    return render(request, "default/index.html", index_view.view(request).content)
 
 
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
