@@ -44,5 +44,5 @@ class uitest_schemeofwork_schemesofwork_edit_cannot_delete_published(UITestCase)
         attr = elem.get_attribute("disabled")
         self.assertTrue(attr)
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         

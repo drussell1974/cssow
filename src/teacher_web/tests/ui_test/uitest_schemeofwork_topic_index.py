@@ -22,7 +22,7 @@ class uitest_schemeofwork_topic_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Topics')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertPageShouldHaveGroupHeading("Topics")
         self.assertTopNavShouldHaveHomeIndex(True)

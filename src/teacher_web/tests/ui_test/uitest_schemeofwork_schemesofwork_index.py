@@ -23,9 +23,9 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-        self.assertPageShouldHaveGroupHeading("Lessons")
+        self.assertPageShouldHaveGroupHeading("Schemes of work")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
@@ -39,7 +39,8 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('lnk-schemeofwork-lessons--{}'.format(self.test_scheme_of_work_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("")
         
 
     def test_page__post_preview__item__navigate_to_curriculum(self):
@@ -47,7 +48,8 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('lnk-schemeofwork-curriculum--{}'.format(self.test_scheme_of_work_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Curriculum')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("")
         
 
     def test_page__post_preview__item__navigate_to_keywords(self):
@@ -55,7 +57,8 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('lnk-schemeofwork-keywords--{}'.format(self.test_scheme_of_work_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("")
         
 
     def test_page__post_preview__item__navigate_to_schedule(self):
@@ -63,7 +66,8 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
         self.test_context.find_element_by_id('lnk-schemeofwork-schedule--{}'.format(self.test_scheme_of_work_id)).click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheduled lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Schedule 2020/2021")
         
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):
@@ -75,8 +79,4 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', '', '')
-
-
-
-
-
+        self.assertPageShouldHaveGroupHeading("")

@@ -26,7 +26,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
     def test_page__should_have__title__title_heading__and__sub_heading(self):
         
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -59,7 +59,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -76,7 +76,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
 
     ''' Test Save options - Default, Next, Add another '''
@@ -97,7 +97,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -117,7 +117,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
 
     def test_page__should_redirect_to_add_another_if_valid(self):
@@ -136,7 +136,7 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Create new scheme of work')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
 
     def test_page__should_redirect_to_skip_if_invalid(self):
@@ -160,4 +160,4 @@ class uitest_schemeofwork_schemesofwork_edit_existing(UITestCase):
         
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new content for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
