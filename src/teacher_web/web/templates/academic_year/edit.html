@@ -8,8 +8,6 @@
 {% block maincontent %}
     {% load display_date %}
 
-<h2 class="group-heading">{{_('Academic year')}} {{content.data.academic_year.id}}</h2>
-<hr>
 <article class="widget widget-form widget-academic-form">
     <form name="edit-academic-year" id="form" class="needs-validation" method="post" action="{% url 'academic-year.edit' content.ctx.institute.id content.data.academic_year.id %}">
         {% csrf_token %}

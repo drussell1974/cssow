@@ -41,7 +41,7 @@ class uitest_institute_academic_year_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute', wait=4)
-        self.assertPageShouldHaveGroupHeading("Academic year 2020")
+        self.assertPageShouldHaveGroupHeading("Academic year")
         
 
     def test_page__submenu__navigate_to_academic_year_new(self):
@@ -53,4 +53,4 @@ class uitest_institute_academic_year_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
-        self.assertPageShouldHaveGroupHeading("Academic year 2022")
+        self.assertPageShouldHaveGroupHeading("Academic year")

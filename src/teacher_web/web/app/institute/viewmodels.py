@@ -108,7 +108,7 @@ class InstituteEditViewModel(BaseViewModel):
         # build alert message to be displayed
         delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>"
 
-        return ViewModel(request, "", self.model.name, "Institute", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel(request, "", self.model.name, "Institute", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
 
 class InstituteScheduleViewModel(DefaultIndexViewModel):
@@ -147,7 +147,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
-        return ViewModel(request, "", self.auth_user.institute.name, "Institute", ctx=self.auth_user, data=data, active_model=self.institute)
+        return ViewModel(request, "", self.auth_user.institute.name, "Institute", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):

@@ -26,7 +26,7 @@ class uitest_institute_schedule(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
-        self.assertPageShouldHaveGroupHeading("Schedule 2020/2021")
+        self.assertPageShouldHaveGroupHeading("Schedule")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
