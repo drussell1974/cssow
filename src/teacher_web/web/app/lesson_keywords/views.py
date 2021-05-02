@@ -180,11 +180,8 @@ def save(request, institute_id, department_id, scheme_of_work_id, lesson_id, key
         }
 
         # determine heading
-        sub_heading = "Create new keyword for {}".format(lesson.title)
-        if model.id > 0:
-            sub_heading = "Edit: {} for {}".format(model.term, lesson.title)
 
-        view_model = ViewModel(request, lesson.title, lesson.title, sub_heading, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
+        view_model = ViewModel(request, lesson.title, lesson.title, "Scheme of work", content_heading="Keyword", ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message)
     
         return render(request, "lesson_keywords/edit.html", view_model.content)
 

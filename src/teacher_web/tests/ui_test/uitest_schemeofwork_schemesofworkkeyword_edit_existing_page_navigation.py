@@ -26,8 +26,9 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing_page_navigation(UIT
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work', wait=2)
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Keyword")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
