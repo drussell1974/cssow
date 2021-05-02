@@ -48,6 +48,7 @@ class uitest_schemeofwork_resources_edit_cancel(UITestCase):
         ' should still be on the same page '
         #231: assert we're still on the same page
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Types of CPU architecture')
+        self.assertPageShouldHaveGroupHeading("")
 
 
     def test_page__should_redirect_to_index_if_continue(self):
@@ -75,3 +76,4 @@ class uitest_schemeofwork_resources_edit_cancel(UITestCase):
         # assert
         ' should be redirected '
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        self.assertPageShouldHaveGroupHeading("")

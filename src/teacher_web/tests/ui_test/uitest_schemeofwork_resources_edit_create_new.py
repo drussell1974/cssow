@@ -46,6 +46,7 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','Create new resource for Types of CPU architecture')
+        self.assertPageShouldHaveGroupHeading("")
 
 
     def test_page__markdownfile_type_stay_on_same_page_if_invalid(self):
@@ -84,9 +85,9 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','Types of CPU architecture','Create new resource for Types of CPU architecture')
+        self.assertPageShouldHaveGroupHeading("")
         
         
-
     def test_page__should_redirect_to_index_if_valid(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
@@ -131,7 +132,8 @@ class test_schemeofwork_resources_edit_create_new(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Resources")
 
         # open newly created resource to edit
 
