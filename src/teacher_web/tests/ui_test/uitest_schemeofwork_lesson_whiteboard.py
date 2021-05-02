@@ -55,7 +55,7 @@ class uitest_schemeofwork_lesson_whiteboard(UITestCase):
 
         # assert
         self.assertEqual("Learning materials", elem.text)
-        self.assertEqual(4, len(elems))
+        self.assertEqual(3, len(elems))
 
 
     def test_page__should_preview_missing_words_challenge(self):

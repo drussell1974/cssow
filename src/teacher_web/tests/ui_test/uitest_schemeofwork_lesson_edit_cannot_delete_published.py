@@ -52,5 +52,5 @@ class uitest_schemeofwork_lesson_edit_cannot_delete_published(UITestCase):
 
         #231: assert we're still on the stay on page
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         

@@ -21,7 +21,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Lessons")
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -39,7 +40,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         self.wait()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new lesson for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Lesson")
 
 
     def test_page__show_published_only(self):
@@ -80,6 +82,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture')
+        self.assertPageShouldHaveGroupHeading("")
     
     
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
@@ -99,7 +102,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("")
         
         
     def test_page__post_preview__item__navigate_to_resources(self):
@@ -119,7 +123,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("")
         
 
     def test_page__post_preview__item__navigate_to_keywords(self):
@@ -139,7 +144,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("")
         
 
                 
@@ -162,6 +168,6 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Lessons")
         
-

@@ -81,7 +81,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Scheme of work')
 
         #231: items after should be less than before
         
@@ -123,7 +123,7 @@ class uitest_schemeofwork_lesson_edit_delete(UITestCase):
 
         # back to index
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         
         #231: items after should be less than before
 

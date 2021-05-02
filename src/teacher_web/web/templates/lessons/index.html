@@ -14,19 +14,12 @@
 {% endblock %}
 
 
+{% block content_new%}
+<a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
+{% endblock %}
+
 {% block maincontent %}
 
-  <!-- Pager Header  -->
-  <header class="widget widget--pageheader">
-    {% if request.user.is_authenticated %}
-      <span class="float-right">
-        <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
-      </span>
-    {% endif %}
-    <h2 class="group-heading">{{_("Lessons")}}</h2>
-    <hr />
-  </header> 
-  <!-- Pager Header END -->
 <!-- Scheme of works -->
 
   <form id="form" method="post" class="needs-validation" action="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">
