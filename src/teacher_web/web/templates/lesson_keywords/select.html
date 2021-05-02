@@ -1,17 +1,11 @@
-{% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
+
+{% block content_new %}
+<a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+{% endblock %}
 
 {% block maincontent %}
-
-<!-- Pager Header -->      
-{% if request.user.is_authenticated %}
-  <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_keywords.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
-  </span>
-{% endif %}
-<h2 class="group-heading">{{_("Keywords")}}</h2>
-<hr />
-<!-- Pager Header END -->      
 
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_keywords.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
         {% csrf_token %}

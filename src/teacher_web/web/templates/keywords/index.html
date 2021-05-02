@@ -13,17 +13,12 @@
 {% endblock %}
 
 
-{% block maincontent %}
+{% block content_new %}
+<a class="btn btn-warning" id="btn-new" href="{% url 'keywords.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_("add")}}</a>
+{% endblock %}
 
-<!-- Pager Header -->      
-{% if request.user.is_authenticated %}
-  <span class="float-right">  
-    <a class="btn btn-warning" id="btn-new" href="{% url 'keywords.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_("add")}}</a>
-  </span>
-{% endif %}
-<h2 class="group-heading">{{_("Keywords")}}</h2>
-<hr />
-<!-- Pager Header END -->      
+
+{% block maincontent %}
 
 {% if content.data.keywords|length == 0 %}
   <div class="alert alert-warning" role="alert">

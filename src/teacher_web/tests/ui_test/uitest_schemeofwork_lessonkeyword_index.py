@@ -21,7 +21,7 @@ class uitest_schemeofwork_lessonkeyword_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertPageShouldHaveGroupHeading("Keywords")
         self.assertTopNavShouldHaveHomeIndex(True)

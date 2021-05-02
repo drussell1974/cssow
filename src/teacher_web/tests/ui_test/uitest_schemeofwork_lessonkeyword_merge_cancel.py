@@ -73,4 +73,4 @@ class uitest_schemeofwork_lessonkeyword_merge_cancel(UITestCase):
 
         # assert
         ' should be redirected '
-        self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Merge Random Access Memory (RAM) for A-Level Computer Science')

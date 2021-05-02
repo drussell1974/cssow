@@ -3,14 +3,12 @@
 {% block content %}
 <div class="col-xl-8 col-lg-10 col-md-12 mx-auto maincontent">
   <article class="widget widget-form">
-    <!-- Content Heading -->
     <header class="widget widget--articleheader">
       <h2 class="group-heading">{% block content_heading %}{{ content.content_heading }}{% endblock %}</h2>
       <hr />
     </header>
-    <!-- Pager Header END -->
-  </article>
   {% block maincontent %}
   {% endblock %}
+  </article>
 </div>
 {% endblock %}
