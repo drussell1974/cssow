@@ -27,9 +27,10 @@ class uitest_accounts_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Account', 'Delete account')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'test@localhost', 'Account')
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
+        #self.assertPageShouldHaveGroupHeading("Delete account")
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)

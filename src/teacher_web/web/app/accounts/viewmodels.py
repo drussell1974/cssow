@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import connection as db
 from django.urls import reverse
+from django.conf import settings
 from shared.models.core.basemodel import try_int
 from shared.models.core.context import Ctx
 from shared.models.core.log_handlers import handle_log_exception, handle_log_warning, handle_log_error, handle_log_info
@@ -40,13 +41,13 @@ class AccountIndexViewModel(BaseViewModel):
             self.error_message = repr(e)
 
 
-    def view(self, request, main_heading, sub_heading):
+    def view(self, request):
         
         data = {
             "institutes": self.institutes,
         }
         
-        return ViewModel(request, "", main_heading, sub_heading, ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel(request, "", "Account", settings.SITE_TITLE, ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class AccountDeleteViewModel(BaseViewModel):
@@ -60,9 +61,8 @@ class AccountDeleteViewModel(BaseViewModel):
         TeacherModel.save(self.db, self.model)
 
 
-    def view(self, request, main_heading, sub_heading):    
-        return ViewModel(request, "", main_heading, sub_heading, ctx=self.model)
-
+    def view(self, request):    
+        return ViewModel(request, "",self.model.username, "Account", ctx=self.model)
 
 
 # 206 inherit RegisteredUserForm from UserCreationForm to include new fields

@@ -53,5 +53,5 @@ class uitest_accounts_index(UITestCase):
         self.test_context.find_element_by_id('btn-delete_account--content').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Account', 'Delete account')
-
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'test@localhost', 'Account')
+        #self.assertPageShouldHaveGroupHeading("Delete account")

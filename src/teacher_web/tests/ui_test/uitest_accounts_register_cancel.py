@@ -28,6 +28,7 @@ class uitest_accounts_register_cancel(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        #self.assertPageShouldHaveGroupHeading("")
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -63,4 +64,4 @@ class uitest_accounts_register_cancel(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
-
+        #self.assertPageShouldHaveGroupHeading("")

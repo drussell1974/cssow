@@ -23,7 +23,7 @@ def index(request):
     #253 check user id
     modelview = AccountIndexViewModel(db=db, top=5, auth_user=auth_ctx)
     
-    view_model = modelview.view(request, settings.SITE_TITLE, settings.SITE_SUMMARY)
+    view_model = modelview.view(request)
 
     return render(request, "accounts/index.html", view_model.content)
 
@@ -37,7 +37,7 @@ def delete(request):
         delete_view.execute()
         return HttpResponseRedirect("/")
     
-    return render(request, "accounts/delete.html", delete_view.view(request, "", "Delete account").content)
+    return render(request, "accounts/delete.html", delete_view.view(request).content)
 
 
 class RegisterTeacherView(generic.CreateView):

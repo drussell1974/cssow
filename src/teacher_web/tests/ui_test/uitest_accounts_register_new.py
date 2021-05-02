@@ -27,6 +27,7 @@ class uitest_accounts_register_new(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        #self.assertPageShouldHaveGroupHeading("")
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
@@ -70,6 +71,7 @@ class uitest_accounts_register_new(UITestCase):
         self.assertEqual("Password changed", elem[0].text)
 
         self.assertWebPageTitleAndHeadings('', 'Account', 'Password changed')
+        self.assertPageShouldHaveGroupHeading("")
 
 
     def test_page__should_stay_on_same_page_if_invalid(self):
@@ -107,4 +109,5 @@ class uitest_accounts_register_new(UITestCase):
         self.assertEqual("Registration", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        #self.assertPageShouldHaveGroupHeading("")
 
