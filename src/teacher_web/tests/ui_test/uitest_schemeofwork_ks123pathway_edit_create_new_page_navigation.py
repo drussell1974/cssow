@@ -27,7 +27,7 @@ class uitest_schemeofwork_ks123pathway_edit_create_new_page_navigation(UITestCas
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Create new pathway objective', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department', wait=2)
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
