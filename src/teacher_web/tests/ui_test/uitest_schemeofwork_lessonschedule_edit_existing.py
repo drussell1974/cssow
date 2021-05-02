@@ -43,7 +43,8 @@ class uitest_schemeofwork_lessonschedule_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit scheduled lesson Types of CPU architecture for 8u')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Schedule")
 
 
 
@@ -61,3 +62,4 @@ class uitest_schemeofwork_lessonschedule_edit_existing(UITestCase):
         # assert
         #self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Scheduled lessons', wait=2)
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons', wait=2)
+        #self.assertPageShouldHaveGroupHeading("")
