@@ -13,22 +13,12 @@
   {% include '_partials/widget.navtabs.this-department.html' %}
 {% endblock %}
 
+{% block content_new %}
+  <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_('add')}}</a>
+{% endblock %}
 
-{% block maincontent %}
 
-    <article class="widget widget--schemeofwork--listing">
-      <!-- Pager Header -->      
-      <header class="widget widget--articleheader">
-        {% if request.user.is_authenticated %}
-        <span class="float-right">
-            <!-- # TODO: #329 get context for institute_id and department_id -->
-            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'schemesofwork.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_('add')}}</a>
-        </span>
-        {% endif %}
-        <h2 class="group-heading">{{_("Schemes of work")}}</h2>
-        <hr />
-      </header>
-      <!-- Pager Header END -->
+{% block maincontent %}  
 
       <!-- Scheme of works -->
       
@@ -88,6 +78,4 @@
         <!-- # TODO: #329 get context for institute_id and department_id -->
         <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'schemesofwork.delete_unpublished' content.ctx.institute_id content.ctx.department_id %}#main">{{_('Clean')}}</a>
       {% endif %}
-    </article>
-
 {% endblock %}

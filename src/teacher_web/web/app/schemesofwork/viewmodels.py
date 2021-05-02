@@ -40,7 +40,7 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
             "schemes_of_work":self.model
         }
         
-        return ViewModel(request, "", self.auth_user.department.name, "Department", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.auth_user.department.name, "Department", content_heading="Schemes of work", ctx=self.auth_user, data=data)
 
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
@@ -143,7 +143,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel(request, "", self.model.description, self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message, wizard=self.wizard)
+        return ViewModel(request, "", self.auth_user.department.name, "Department", content_heading="Scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message, wizard=self.wizard)
 
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
