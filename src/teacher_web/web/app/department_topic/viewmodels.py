@@ -46,8 +46,8 @@ class DepartmentTopicIndexViewModel(BaseViewModel):
             "topics": self.model
         }
 
-        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
-
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", content_heading="Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
+        
 
 class DepartmentTopicEditViewModel(BaseViewModel):
 
@@ -86,7 +86,7 @@ class DepartmentTopicEditViewModel(BaseViewModel):
             "model": self.model,
         }
         
-        return ViewModel(request, "", self.department.name, self.model.name if len(self.model.name) != 0 else "Create new topic", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.department.name, "Department", content_heading="Topic", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
 
 
     def execute(self, published=STATE.PUBLISH):
