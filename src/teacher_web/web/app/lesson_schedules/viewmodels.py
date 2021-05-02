@@ -76,7 +76,7 @@ class LessonScheduleIndexViewModel(BaseViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
         
-        return ViewModel(request, self.lesson.title, self.lesson.title,  "Lesson", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
+        return ViewModel(request, self.lesson.title, self.lesson.title, "Lesson", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
 class LessonScheduleEditViewModel(BaseViewModel):
@@ -164,7 +164,7 @@ class LessonScheduleEditViewModel(BaseViewModel):
             "return_url": self.return_url
         }
         
-        return ViewModel(request, self.model.class_name, self.lesson.title if self.lesson is not None else "", "Edit scheduled lesson {} for {}".format(self.lesson.title, self.model.class_name) if self.model.id > 0 else "Create schedule for {}".format(self.lesson.title), ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)
+        return ViewModel(request, self.model.class_name, self.lesson.title, "Lesson", content_heading="Schedule", ctx=self.auth_ctx, data=data, active_model=self.model, alert_message="", error_message=self.error_message)
 
 
 class LessonScheduleDeleteViewModel(BaseViewModel):

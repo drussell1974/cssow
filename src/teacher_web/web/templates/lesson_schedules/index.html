@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.twocolumn.contentheading.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 
 {% block head_js %} 
@@ -8,43 +8,16 @@
 {% endblock %}
 
 
-{% block sidecontent %}
-
-<!-- SIDE MENU START -->
-<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("Menu")}} <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="sidebarResponsive">
-    <div class="list-group">
-
-      {% include '_partials/widget.sidebar.this-lesson.html'  %}   
-      
-      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %} 
-
-    </div>
-  </div>
-</nav>
-
-<!-- SIDE MENU // END -->
-
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-lesson.html' %}
 {% endblock %}
 
-
+{% block content_new %}
+<a class="btn btn-warning" id="btn-new" href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
+{% endblock %}
 
 {% block maincontent %}
   {% load display_date %}
-
-  <!-- Pager Header -->      
-  {% if request.user.is_authenticated %}
-    <span class="float-right">  
-      <a class="btn btn-warning" id="btn-new" href="{% url 'lesson_schedule.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_("add")}}</a>
-    </span>
-  {% endif %}
-  <h2 class="group-heading">{{_("Schedule")}} {{ content.ctx.academic_year.display_name }}</h2>
-  <label class="text-muted">{{ content.ctx.academic_year.start|display_shortdate }} - {{ content.ctx.academic_year.end|display_shortdate }}</label>
-  <hr />
-  <!-- Pager Header END -->      
 
   {% include '_partials/widget.control.filter.schedule.html' %}
   {% include '_partials/widget.control.schedule.html' %}
