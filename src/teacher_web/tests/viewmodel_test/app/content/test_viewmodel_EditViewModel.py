@@ -89,7 +89,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         self.assertViewModelContent(mock_request, viewmodel
             , ""
             , "Vivamus venenatis interdum sem."
-            , "Create new content for Vivamus venenatis interdum sem."
+            , "Scheme of work"
             , {}
         )
 
@@ -118,7 +118,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
         self.assertViewModelContent(mock_request, viewmodel
             , ""
             , "Vivamus venenatis interdum sem."
-            , "Edit: dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti"
+            , "Scheme of work"
             , {}
         )
 
@@ -210,7 +210,7 @@ class test_viewmodel_EditViewModel(ViewModelTestCase):
             self.assertViewModelContent(mock_post, viewmodel
                 , ""
                 , "Vivamus venenatis interdum sem."
-                , "Edit: Vivamus venenatis interdum sem."
+                , "Scheme of work"
                 , {}
             )
 
