@@ -62,7 +62,7 @@ class KS123PathwayIndexViewModel(BaseViewModel):
             "ks123pathway": self.model,
         }
         
-        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", content_heading="Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
 
 
 class KS123PathwayEditViewModel(BaseViewModel):
@@ -93,7 +93,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
             "model": self.model
         }
         
-        return ViewModel(request, "", self.department.name, self.model.objective if len(self.model.objective) != 0 else "Create new pathway objective", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.department.name, "Department", content_heading="Pathway", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
 
 
     def execute(self, published=STATE.PUBLISH):

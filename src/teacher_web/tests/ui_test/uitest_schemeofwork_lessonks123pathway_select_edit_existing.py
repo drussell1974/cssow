@@ -43,7 +43,7 @@ class uitest_schemeofwork_lessonks123pathway_select_edit_existing(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work', wait=2)
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -67,4 +67,4 @@ class uitest_schemeofwork_lessonks123pathway_select_edit_existing(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture', wait=2)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson', wait=2)

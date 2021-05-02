@@ -27,8 +27,9 @@ class uitest_schemeofwork_lessonks123pathway_select_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Pathway - prior learning")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
