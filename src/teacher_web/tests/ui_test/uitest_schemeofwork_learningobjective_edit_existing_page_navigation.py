@@ -26,8 +26,9 @@ class uitest_schemeofwork_learningobjective_edit_existing_navigation(UITestCase)
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertPageShouldHaveGroupHeading("Learning objective")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)

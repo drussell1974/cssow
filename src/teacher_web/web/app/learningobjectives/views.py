@@ -93,7 +93,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth
         "content_options": content_options,
     }
     
-    view_model = ViewModel(request, "", lesson.title, "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, wizard=wizard)
+    view_model = ViewModel(request, "", lesson.title, "Lesson", content_heading="Learning objective", ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 
@@ -200,7 +200,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, lesson_id, aut
         "content_options": content_options,
     }
     #231: pass the active model to ViewModel
-    view_model = ViewModel(request, "", lesson.title, "Edit: {}".format(model.description) if model.id > 0 else "Create new learning objective for %s" % lesson.title, ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
+    view_model = ViewModel(request, "", lesson.title, "Lesson", content_heading="Learning objective", ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
     
     return render(request, "learningobjectives/edit.html", view_model.content)
 

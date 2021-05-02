@@ -54,7 +54,8 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Learning objectives")
 
 
     def tearDown(self):
@@ -80,7 +81,8 @@ class uitest_schemeofwork_learningobjective_edit_delete(UITestCase):
         self.wait(s=5)
 
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Learning objectives")
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         

@@ -7,25 +7,18 @@
   <!-- Google Analytics // END -->
 {% endblock %}
 
+{% block content_new %}
+  <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right" id="lnk-missing_words_challenge">{{_("Challenge")}} <i class="fa fa-brain"></i></a>
+  <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id 0 %}" target="_blank" class="btn btn-dark float-right" id="lnk-whiteboard">{{_("Whiteboard")}} <i class="fa fa-chalkboard"></i></a>
+{% endblock %}
 
 {% block content_tabs %}
   {% include '_partials/widget.navtabs.this-lesson.html' %}
 {% endblock %}
 
 
-{% block maincontent %}............
-<!-- Pager Header -->      
-<header class="widget widget--articleheader">
-  <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right" id="lnk-missing_words_challenge">
-    {{_("Challenge")}}
-  </a>
-  <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id 0 %}" target="_blank" class="btn btn-dark float-right" id="lnk-whiteboard">
-    {{_("Whiteboard")}}
-  </a>
-<h2 class="group-heading">{{_("Learning objectives")}}</h2>
-<hr />
-</header>
-<!-- Pager Header END -->
+{% block maincontent %}
+
   {% for key, value  in content.data.learning_objectives_by_solo_group.items %}
 
     <div class="group">

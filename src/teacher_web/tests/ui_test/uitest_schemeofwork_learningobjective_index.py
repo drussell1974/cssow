@@ -21,7 +21,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
         self.assertPageShouldHaveGroupHeading("Learning objectives")
         self.assertTopNavShouldHaveHomeIndex(True)
@@ -100,6 +100,7 @@ class uitest_schemeofwork_learningobjective_index(UITestCase):
         # preview missing notes
 
         elem = self.test_context.find_element_by_css_selector(f"#card--class-notes--{self.test_learning_objective_id} .btn-challenge")
+        self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         ' Ensure element is visible '
         elem.click() # preview missing words
         self.wait(s=1)

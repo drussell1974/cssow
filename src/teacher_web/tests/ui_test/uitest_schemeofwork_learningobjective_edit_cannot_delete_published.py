@@ -51,5 +51,4 @@ class uitest_schemeofwork_learningobjective_edit_cannot_delete_published(UITestC
         # check this does nothing
         elem.click()
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
-        
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')        
