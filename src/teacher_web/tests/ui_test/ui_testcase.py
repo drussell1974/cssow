@@ -190,6 +190,11 @@ class UITestCase(TestCase):
         self.assertEqual("resources", elem.text)
         self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/resources/", elem.get_attribute("href"))
         
+        # schedule index
+        elem = self.test_context.find_element_by_css_selector('#lesson--navtabs > ul > li:nth-child(4) > a')
+        self.assertEqual("schedule", elem.text)
+        self.assertEqual(f"http://127.0.0.1:3002/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork/{self.test_scheme_of_work_id}/lessons/{self.test_lesson_id}/schedules/", elem.get_attribute("href"))
+        
           
     def assertFooterContextText(self, context_text):
         # assert - context_text
