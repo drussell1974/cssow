@@ -23,12 +23,8 @@ def WebBrowserContext():
     return browser
 
 
-TEST_USER_NAME = os.environ["TEST_USER_NAME"]
-TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
-
 class UITestCase(TestCase):                                                                     
     root_uri = os.environ["TEST_URI"]
-
     test_institute_id = os.environ["TEST_INSTITUTE_ID"]
     test_department_id = os.environ["TEST_DEPARTMENT_ID"]
     test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
@@ -41,18 +37,27 @@ class UITestCase(TestCase):
     test_keyword_id = os.environ["TEST_KEYWORD_ID"]
     test_ks123pathway_id = os.environ["TEST_KS123PATHWAY_ID"]
     TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
-    TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]
-    
+    TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]    
+    TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+    TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
+
+
     def wait(self, s = 3):
         time.sleep(s)
+
 
     def do_get(self, uri, wait=0):
         self.test_context.get(uri)
         self.test_context.implicitly_wait(wait)
 
+
+    def find_element_by_id__with_implicit_wait(self, element_id, wait=2):
+        self.test_context.implicitly_wait(wait)
+        elem = self.test_context.find_element_by_id(element_id)
+        return elem
+
+
     def find_element_by_id__with_explicit_wait(self, element_id, wait=2):
-        # TODO: scroll element into view - check functionality
-        #self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
         elem = WebDriverWait(self.test_context, wait).until(
             EC.presence_of_element_located((By.ID, element_id))
         )
@@ -249,10 +254,10 @@ class UITestCase(TestCase):
         try:
 
             elem = self.find_element_by_id__with_explicit_wait("id_username")
-            elem.send_keys(enter_username if None else TEST_USER_NAME)
+            elem.send_keys(enter_username if None else self.TEST_USER_NAME)
             
             elem = self.test_context.find_element_by_id("id_password")
-            elem.send_keys(enter_password if None else TEST_USER_PSWD)
+            elem.send_keys(enter_password if None else self.TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)
@@ -286,8 +291,8 @@ class UITestCase(TestCase):
         If the inputs for login are not found, then this is handled; it assumes the user is already logged in
         """
         #print(f"do_log_in: {redirect_to_uri_on_login}")
-        enter_username = enter_username if enter_username is not None else TEST_USER_NAME
-        enter_password = enter_password if enter_password is not None else TEST_USER_PSWD
+        enter_username = enter_username if enter_username is not None else self.TEST_USER_NAME
+        enter_password = enter_password if enter_password is not None else self.TEST_USER_PSWD
 
         ' Try log out first '
 

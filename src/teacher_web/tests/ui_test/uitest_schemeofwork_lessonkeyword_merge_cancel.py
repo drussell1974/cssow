@@ -2,7 +2,6 @@ from unittest import skip
 from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
-
 class uitest_schemeofwork_lessonkeyword_merge_cancel(UITestCase):
 
     test_context = WebBrowserContext()
@@ -57,20 +56,16 @@ class uitest_schemeofwork_lessonkeyword_merge_cancel(UITestCase):
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
-
         ' Open Modal '
 
         elem = self.find_element_by_id__with_explicit_wait("cancelButton")
         elem.click()
 
-
         ' click no (finding button appears to cancel dialog) '        
         
         elem = self.find_element_by_id__with_explicit_wait("cancelModalContinueButton")
         elem.click()
-        
-        self.wait(s=2)
 
         # assert
         ' should be redirected '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Merge Random Access Memory (RAM) for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
