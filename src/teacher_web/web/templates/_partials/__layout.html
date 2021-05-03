@@ -120,12 +120,14 @@
       {% include '_partials/form.viewmodel.alert_message.html' %}
       <!-- show error_message END -->
       
+      
       <!-- Breadcrumb START -->
       <div class="row">
         <div class="col-lg-12 col-md-14 breadcrumb-custom">
           <section class="widget widget-breadcrumb">
             <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
               <div class="container">
+                <i class="text-muted fa fa-long-arrow-alt-left" onclick="window.history.back();" ></i>
                 <ul class="navbar-nav ml-auto">
                     {% block breadcrumb_before %}
                     {% endblock %}
