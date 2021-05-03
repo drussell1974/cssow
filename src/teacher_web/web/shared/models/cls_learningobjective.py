@@ -54,16 +54,16 @@ class LearningObjectiveModel (BaseModel):
         self._validate_optional_string("missing_words_challenge", self.missing_words_challenge, 140)
 
         # validate content_id
-        self._validate_optional_integer("content_id", self.content_id, 1, 9999)
+        self._validate_optional_integer("content_id", self.content_id, 1, self.MAX_INT)
 
         # validate solo_taxonomy_id
-        self._validate_required_integer("solo_taxonomy_id", self.solo_taxonomy_id, 1, 9999)
+        self._validate_required_integer("solo_taxonomy_id", self.solo_taxonomy_id, 1, self.MAX_INT)
 
         # validate lesson_id
-        self._validate_required_integer("lesson_id", self.lesson_id, 1, 9999)
+        self._validate_required_integer("lesson_id", self.lesson_id, 1, self.MAX_INT)
 
         # validate parent_id
-        self._validate_optional_integer("parent_id", self.parent_id, 1, 9999)
+        self._validate_optional_integer("parent_id", self.parent_id, 1, self.MAX_INT)
 
         # Validate key_words
         self._validate_optional_list("key_words", self.key_words, sep=",", max_items=15)

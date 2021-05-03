@@ -172,7 +172,7 @@ class test_LessonModel__validate__order_of_delivery_id(Lesson_TestCase):
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
-        test.order_of_delivery_id = 9999
+        test.order_of_delivery_id = test.MAX_INT
 
         # test
         test.validate()
@@ -186,7 +186,7 @@ class test_LessonModel__validate__order_of_delivery_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.order_of_delivery_id = 10000  # too far out of possible range
+        test.order_of_delivery_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -252,7 +252,7 @@ class test_LessonModel__validate__topic_id(Lesson_TestCase):
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
-        test.topic_id = 9999
+        test.topic_id = test.MAX_INT
 
         # test
         test.validate()
@@ -266,7 +266,7 @@ class test_LessonModel__validate__topic_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.scheme_of_work_id = 10000  # too far out of possible range
+        test.scheme_of_work_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -332,7 +332,7 @@ class test_LessonModel__validate__scheme_of_work_id(Lesson_TestCase):
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
-        test.scheme_of_work_id = 9999
+        test.scheme_of_work_id = test.MAX_INT
 
         # test
         test.validate()
@@ -346,7 +346,7 @@ class test_LessonModel__validate__scheme_of_work_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.scheme_of_work_id = 10000  # too far out of possible range
+        test.scheme_of_work_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -412,7 +412,7 @@ class test_LessonModel__validate__key_stage_id(Lesson_TestCase):
     def test_max__valid_extreme(self):
 
         test = self._construct_valid_object()
-        test.key_stage_id = 9999
+        test.key_stage_id = test.MAX_INT
 
         # test
         test.validate()
@@ -426,7 +426,7 @@ class test_LessonModel__validate__key_stage_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 10000  # too far out of possible range
+        test.key_stage_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -590,7 +590,7 @@ class test_LessonModel__validate__year_id(Lesson_TestCase):
 
         test = self._construct_valid_object()
 
-        test.year_id = 1001  # too far out of possible range
+        test.year_id = test.MAX_INT + 1  # too far out of possible range
 
         # test
         test.validate()

@@ -107,9 +107,9 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         # Validate description
         self._validate_optional_string("description", self.description, 1500)
         # Validate exam board
-        self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, 9999)
+        self._validate_optional_integer("exam_board_id", self.exam_board_id, 1, BaseModel.MAX_INT)
         # Validate key stage
-        self._validate_required_integer("key_stage_id", self.key_stage_id, 1, 9999)
+        self._validate_required_integer("key_stage_id", self.key_stage_id, 1, BaseModel.MAX_INT)
         # Validate department
         self._validate_required_integer("department_id", self.department_id, 1, BaseModel.MAX_INT)
         # Validate institute_id

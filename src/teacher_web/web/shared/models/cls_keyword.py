@@ -77,7 +77,7 @@ class KeywordModel(BaseModel):
         self._validate_optional_string("definition", self.definition, 250)
 
         # validate required scheme_of_work_id
-        self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, 99999)
+        self._validate_required_integer("scheme_of_work_id", self.scheme_of_work_id, 1, self.MAX_INT)
 
         if self.published != 2:
             # 299 validate duplicates

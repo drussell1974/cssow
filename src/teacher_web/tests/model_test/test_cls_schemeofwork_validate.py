@@ -242,7 +242,7 @@ class test_SchemeOfWork_validate__exam_board_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.exam_board_id = 9999
+        test.exam_board_id = test.MAX_INT
 
         # test
         test.validate()
@@ -256,7 +256,7 @@ class test_SchemeOfWork_validate__exam_board_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.exam_board_id = 10000 # too far out of possible range
+        test.exam_board_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -338,7 +338,7 @@ class test_SchemeOfWork_validate__key_stage_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 9999
+        test.key_stage_id = test.MAX_INT
 
         # test
         test.validate()
@@ -352,7 +352,7 @@ class test_SchemeOfWork_validate__key_stage_id(SchemeOfWork_TestCase):
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 10000  # too far out of possible range
+        test.key_stage_id = test.MAX_INT + 1  # too far out of possible range
 
         # test
         test.validate()

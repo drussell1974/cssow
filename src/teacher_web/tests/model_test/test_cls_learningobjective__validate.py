@@ -395,7 +395,7 @@ class test_LearningObjectiveModel_validate__content_id(LearningObjective_TestCas
 
         test = self._construct_valid_object()
 
-        test.content_id = 9999
+        test.content_id = test.MAX_INT
 
         # test
         test.validate()
@@ -409,7 +409,7 @@ class test_LearningObjectiveModel_validate__content_id(LearningObjective_TestCas
 
         test = self._construct_valid_object()
 
-        test.content_id = 10000  # too far out of possible range
+        test.content_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -477,7 +477,7 @@ class test_LearningObjectiveModel_validate__solo_taxonomy_id(LearningObjective_T
 
         test = self._construct_valid_object()
 
-        test.solo_taxonomy_id = 9999
+        test.solo_taxonomy_id = test.MAX_INT
 
         # test
         test.validate()
@@ -491,7 +491,7 @@ class test_LearningObjectiveModel_validate__solo_taxonomy_id(LearningObjective_T
 
         test = self._construct_valid_object()
 
-        test.solo_taxonomy_id = 10000  # too far out of possible range
+        test.solo_taxonomy_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()
@@ -559,7 +559,7 @@ class test_LearningObjectiveModel_validate__lesson_id(LearningObjective_TestCase
 
         test = self._construct_valid_object()
 
-        test.lesson_id = 9999
+        test.lesson_id = test.MAX_INT
 
         # test
         test.validate()
@@ -573,7 +573,7 @@ class test_LearningObjectiveModel_validate__lesson_id(LearningObjective_TestCase
 
         test = self._construct_valid_object()
 
-        test.lesson_id = 10000  # too far out of possible range
+        test.lesson_id = test.MAX_INT + 1  # too far out of possible range
 
         # test
         test.validate()
@@ -641,7 +641,7 @@ class test_LearningObjectiveModel_validate__key_stage_id(LearningObjective_TestC
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 9999
+        test.key_stage_id = test.MAX_INT
 
         # test
         test.validate()
@@ -655,7 +655,7 @@ class test_LearningObjectiveModel_validate__key_stage_id(LearningObjective_TestC
 
         test = self._construct_valid_object()
 
-        test.key_stage_id = 10000  # too far out of possible range
+        test.key_stage_id = test.MAX_INT + 1  # too far out of possible range
 
         # test
         test.validate()
@@ -723,7 +723,7 @@ class test_LearningObjectiveModel_validate__parent_id(LearningObjective_TestCase
 
         test = self._construct_valid_object()
 
-        test.exam_board_id = 9999
+        test.exam_board_id = test.MAX_INT
 
         # test
         test.validate()
@@ -737,7 +737,7 @@ class test_LearningObjectiveModel_validate__parent_id(LearningObjective_TestCase
 
         test = self._construct_valid_object()
 
-        test.parent_id = 10000 # too far out of possible range
+        test.parent_id = test.MAX_INT + 1 # too far out of possible range
 
         # test
         test.validate()

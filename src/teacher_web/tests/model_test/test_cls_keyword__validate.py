@@ -381,7 +381,7 @@ class test_cls_keyword__validate__scheme_of_work_id(TestCase):
     def test_max__valid_extreme(self):
         # set up
         
-        self.test.scheme_of_work_id = 99999
+        self.test.scheme_of_work_id = self.test.MAX_INT
 
         # test
         self.test.validate()
@@ -394,7 +394,7 @@ class test_cls_keyword__validate__scheme_of_work_id(TestCase):
     def test_max__invalid_extreme(self):
         # set up
 
-        self.test.scheme_of_work_id = 100000
+        self.test.scheme_of_work_id = self.test.MAX_INT + 1
 
         # test
         self.test.validate()
