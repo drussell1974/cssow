@@ -16,11 +16,14 @@ const {
 
 module.exports = {
    mode: "development",
-   entry: './app/App.js',
+   entry: {
+      calendar:'./app/CalendarApp.js', 
+      notification:'./app/NotificationApp.js'
+   },
    output: {
       path: path.join(__dirname, '/build/'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: '[name].bundle.js'
    },
    node: {
       fs: 'empty'
