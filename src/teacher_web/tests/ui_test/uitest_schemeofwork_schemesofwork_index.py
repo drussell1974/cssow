@@ -40,7 +40,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Lessons")
         
 
     def test_page__post_preview__item__navigate_to_curriculum(self):
@@ -49,7 +49,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Curriculum")
         
 
     def test_page__post_preview__item__navigate_to_keywords(self):
@@ -67,7 +67,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
-        self.assertPageShouldHaveGroupHeading("Schedule 2020/2021")
+        self.assertPageShouldHaveGroupHeading("Schedule")
         
 
     def not_test_page__submenu__navigate_to_schemesofwork_new(self):

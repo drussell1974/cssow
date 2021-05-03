@@ -81,8 +81,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
         elem.click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Pathway - prior learning")
     
     
     def test_page__post_preview__item__navigate_to_learning_objectives(self):
@@ -103,7 +103,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Learning objectives")
         
         
     def test_page__post_preview__item__navigate_to_resources(self):
@@ -124,7 +124,7 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Resources")
         
 
     def test_page__post_preview__item__navigate_to_keywords(self):
@@ -145,9 +145,8 @@ class uitest_schemeofwork_lesson_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Keywords")
         
-
                 
     def test_page__post_preview__item__navigate_to_whiteboard(self):
         # setup

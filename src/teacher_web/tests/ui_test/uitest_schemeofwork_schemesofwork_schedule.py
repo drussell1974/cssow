@@ -24,7 +24,7 @@ class uitest_schemeofwork_schemesofwork_schedule(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-        self.assertPageShouldHaveGroupHeading("Schedule 2020/2021")
+        self.assertPageShouldHaveGroupHeading("Schedule")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
@@ -44,4 +44,4 @@ class uitest_schemeofwork_schemesofwork_schedule(UITestCase):
         # assert
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
-        self.assertEqual("Schedule 2019/2020", self.test_context.find_element_by_class_name('group-heading').text)
+        self.assertPageShouldHaveGroupHeading("Schedule")
