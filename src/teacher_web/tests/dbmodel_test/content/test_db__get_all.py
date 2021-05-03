@@ -40,7 +40,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
+                'content__get_all$2'
                 , (34, 7, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -62,7 +62,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
+                'content__get_all$2'
                 , (34, 5, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
@@ -91,7 +91,7 @@ class test_db__get_all(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                'content__get_all'
+                'content__get_all$2'
                 , (34, 5, mock_ctx.auth_user_id)
                 , []
                 , handle_log_info)
