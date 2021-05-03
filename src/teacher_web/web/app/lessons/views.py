@@ -45,7 +45,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx, les
     
     lessonIndexView = LessonIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, page=page, pagesize=pagesize, pagesize_options=pagesize_options, keyword_search=keyword_search, auth_user=auth_ctx)
 
-    return render(request, "lessons/index.html", lessonIndexView.view().content)
+    return render(request, "lessons/index.html", lessonIndexView.view(request).content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -160,7 +160,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         "lesson_schedule": lesson_schedule
     }   
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit: {}".format(model.title) if model.id > 0 else "Create new lesson for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Scheme of work", content_heading="Lesson", ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)
     
     return render(request, "lessons/edit.html", view_model.content)
 
@@ -213,7 +213,7 @@ def missing_words_challenge(request, institute_id, department_id,scheme_of_work_
         "learning_objectives":model.learning_objectives,
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(request, model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/missing_words_view.html", view_model.content)
 

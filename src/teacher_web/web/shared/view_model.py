@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.conf import settings
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 
 class ViewModel:
     active_model__id = 0
@@ -7,7 +8,7 @@ class ViewModel:
     active_model__validation_errors = {}
     active_model__published_state = "unknown-state"
 
-    def __init__(self, page_prefix, main_heading, sub_heading, ctx, data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = "", wizard = None):
+    def __init__(self, request, page_prefix, main_heading, sub_heading, ctx, content_heading = "", data = None, active_model = None, error_message = "", stack_trace = "", alert_message = "", delete_dialog_message = "", cancel_dialog_message = "", wizard = None):
         """ Create View Model """
         self.data = data
         self.ctx = ctx
@@ -26,10 +27,12 @@ class ViewModel:
             self.active_model__published_state = active_model.published_state
         
         self.content = {
+            "breadcrumb_items": BreadcrumbGenerator.get_items(request),
             "page_title": "Dave Russell - Teach Computer Science", # TODO: "SoW Planner - {}".format(page_prefix),
             "content": {
                 "main_heading": main_heading,
                 "sub_heading": sub_heading,
+                "content_heading": content_heading,
                 "data": self.data,
                 "validation_errors": self.active_model__validation_errors,
                 "active_model": {

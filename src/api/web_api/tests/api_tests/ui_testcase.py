@@ -5,9 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import os
 
-TEST_USER_NAME = os.environ["TEST_USER_NAME"]
-TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
-
 def WebBrowserContext():
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
@@ -24,6 +21,9 @@ class UITestCase(TestCase):
     test_keyword_id = 92
     test_ks123pathway_id = 21
     test_lesson_schedule_id = 15
+
+    TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+    TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
     
     def wait(self, s=3):
         time.sleep(s)
@@ -91,10 +91,10 @@ class UITestCase(TestCase):
         
         try:
             elem = self.test_context.find_element_by_id("auth_user_email")
-            elem.send_keys(enter_username if None else TEST_USER_NAME)
+            elem.send_keys(enter_username if None else self.TEST_USER_NAME)
             
             elem = self.test_context.find_element_by_id("auth_user_password")
-            elem.send_keys(enter_password if None else TEST_USER_PSWD)
+            elem.send_keys(enter_password if None else self.TEST_USER_PSWD)
 
             ' submit the form '
             elem.send_keys(Keys.RETURN)

@@ -41,14 +41,14 @@ class DefaultIndexViewModel(BaseViewModel):
                 #    self.schemes_of_work.append(scheme_of_work)
 
 
-    def view(self, main_heading, sub_heading):
+    def view(self, request, main_heading, sub_heading, content_heading):
         
         data = {
             "departments": self.departments,
             "institutes": self.institutes,
         }
         
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, alert_message=self.alert_message, error_message=self.error_message)
+        return ViewModel(request, "", main_heading, sub_heading, content_heading=content_heading, ctx=self.auth_user, data=data, alert_message=self.alert_message, error_message=self.error_message)
 
 
 class KeywordSaveViewModel(BaseViewModel):

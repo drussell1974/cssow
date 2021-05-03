@@ -43,6 +43,7 @@ class ContentModel(BaseModel):
         self.description = mvdict_obj["description"]
         self.letter_prefix = mvdict_obj["letter_prefix"]
         self.key_stage_id = mvdict_obj["key_stage_id"]
+        self.scheme_of_work_id = mvdict_obj["scheme_of_work_id"]
         self.published = mvdict_obj["published"]
 
         # validate
@@ -162,7 +163,7 @@ class ContentDataAccess(BaseDataAccess):
         """
         execHelper = ExecHelper()
 
-        select_sql = "content__get_all"
+        select_sql = "content__get_all$2"
         params = (scheme_of_work_id, key_stage_id, auth_user_id)
             
         rows = []

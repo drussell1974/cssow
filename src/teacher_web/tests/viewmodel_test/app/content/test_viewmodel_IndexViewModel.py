@@ -2,15 +2,13 @@ from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, patch
 from django.http import Http404
 from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
-
-# test context
-
 from app.content.viewmodels import ContentIndexViewModel as ViewModel
-
-#247 used in ViewModel
 from shared.models.cls_content import ContentModel as Model
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
+from tests.test_helpers.mocks import *
 
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_IndexViewModel(ViewModelTestCase):
 
     def setUp(self):        
@@ -20,7 +18,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
     def tearDown(self):
         pass
 
-    def test_init_called_404_if_scheme_of_work_not_found(self):
+    def test_init_called_404_if_scheme_of_work_not_found(self, mock_bc):
         
         # arrange
         
@@ -45,7 +43,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                         self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_404_if_scheme_of_work_not_found(self):
+    def test_init_called_404_if_scheme_of_work_not_found(self, mock_bc):
         
         # arrange
         
@@ -70,7 +68,7 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                         self.assertEqual(0, len(self.viewmodel.model))
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_bc):
         
         # arrange
         
@@ -83,6 +81,8 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     db = MagicMock()
                     db.cursor = MagicMock()
 
+                    mock_request = MagicMock()
+
                     # act
                     self.viewmodel = ViewModel(db=db, scheme_of_work_id=999, auth_user=99)
 
@@ -92,10 +92,10 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(0, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
+                    self.assertViewModelContent(mock_request, self.viewmodel, "", "Test", "Scheme of work", {})                
 
 
-    def test_init_called_fetch__single_row(self):
+    def test_init_called_fetch__single_row(self, mock_bc):
         
         # arrange
         
@@ -107,7 +107,9 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
 
                     db = MagicMock()
                     db.cursor = MagicMock()
-
+                    
+                    mock_request = MagicMock()
+                    
                     # act
                     self.viewmodel = ViewModel(db=db, scheme_of_work_id=101, auth_user=99)
 
@@ -117,10 +119,10 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
                     
                     self.assertEqual(1, len(self.viewmodel.model))                    
-                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})                
+                    self.assertViewModelContent(mock_request, self.viewmodel, "", "Test", "Scheme of work", {})                
 
 
-    def test_init_called_fetch__multiple_rows(self):
+    def test_init_called_fetch__multiple_rows(self, mock_bc):
         
         # arrange
         
@@ -133,6 +135,8 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     db = MagicMock()
                     db.cursor = MagicMock()
 
+                    mock_request = MagicMock()
+                    
                     # act
                     self.viewmodel = ViewModel(db=db, scheme_of_work_id=103, auth_user=99)
 
@@ -142,4 +146,4 @@ class test_viewmodel_IndexViewModel(ViewModelTestCase):
                     SchemeOfWorkModel.get_model.assert_called()
 
                     self.assertEqual(3, len(self.viewmodel.model))
-                    self.assertViewModelContent(self.viewmodel, "", "Test", "Curriculum", {})
+                    self.assertViewModelContent(mock_request, self.viewmodel, "", "Test", "Scheme of work", {})

@@ -25,38 +25,17 @@ class uitest_schemeofwork_lesson_edit_create_new_page_navigation(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Lesson")
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(True)
 
 
-    """ Breadcrumb """
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
-        self.assertEqual("Schemes of Work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_lesson_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-lessons')
-        self.assertEqual("Lessons", elem.text)
-
-        # test
-        elem.click()
-
-        # asserts
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Lessons')
-
-
-    def test_page__breadcrumb__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):
+    def test_page__navigate_to_learningobjective_index__should_not_show_on_page_for_new_item(self):
         #test
 
         with self.assertRaises(Exception):

@@ -1,10 +1,5 @@
-{% extends '_partials/__layout.onecolumn.html' %}
-{% block header %}
-<div class="site-heading">
-  <h1>{{_('Account')}}</h1>
-  <span class="subheading" id="main-subheading">{{_('Delete account')}}</span>
-</div>
-{% endblock %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
+
 
 {% block maincontent %}
     {% if user.is_authenticated %}

@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.twocolumn.contentheading.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 
 {% block head_js %} 
@@ -7,69 +7,20 @@
   <!-- Google Analytics // END -->
 {% endblock %}
 
-
-{% block breadcrumb %}
-
-<section class="widget widget-breadcrumb widget-breadcrumb--learningobjectives-index">
-  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-    <div class="container">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</section>
-
+{% block content_new %}
+<div class="stackable-group-sm stackable">
+  <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark float-right stackable" id="lnk-missing_words_challenge">{{_("Challenge")}} <i class="fa fa-brain"></i></a>
+  <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id 0 %}" target="_blank" class="btn btn-dark float-right stackable" id="lnk-whiteboard">{{_("Whiteboard")}} <i class="fa fa-chalkboard"></i></a>
+</div>
 {% endblock %}
 
-
-{% block sidecontent %}
-
-<section class="card widget widget-button widget-button--blackboard">
-  <div class="alert alert-secondary stackable-group stackable-group-sm">
-    <a href="{% url 'lesson.missing_words_challenge_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}" target="_blank" class="btn btn-dark stackable" id="lnk-missing_words_challenge">
-      {{_("Show challenge")}}
-    </a>
-  </div>
-</section>
-
-<!-- SIDE MENU START -->
-<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("Menu")}} <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="sidebarResponsive">
-    <div class="list-group">
-            
-      {% include '_partials/widget.sidebar.this-lesson.html'  %}        
-
-      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %} 
-
-      {% include '_partials/widget.sidebar.other-lessons.html'  %}
-    
-    </div>
-  </div>
-</nav>
-<!-- SIDE MENU // END -->
-
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-lesson.html' %}
 {% endblock %}
+
 
 {% block maincontent %}
 
-<article class="widget widget--learningobjectives-listing">
-<!-- Pager Header -->      
-<header class="widget widget--articleheader">
-{% if request.user.is_authenticated %}
-{% endif %}
-<h2 class="group-heading">{{_("Learning objectives")}}</h2>
-<hr />
-</header>
-<!-- Pager Header END -->
   {% for key, value  in content.data.learning_objectives_by_solo_group.items %}
 
     <div class="group">
@@ -136,7 +87,7 @@
       <a class="navbar-brand btn btn-danger float-right" id="btn-delete-unpublished" href="{% url 'learningobjective.delete_unpublished'  content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}#main">{{_('Clean')}}</a>
     {% endif %}
   </footer>
-</article>
+
 {% endblock %}
 
 {% block page_js %}

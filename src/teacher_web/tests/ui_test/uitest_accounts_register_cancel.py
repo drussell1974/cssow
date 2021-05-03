@@ -23,7 +23,19 @@ class uitest_accounts_register_cancel(UITestCase):
         cls.test_context.close()
 
 
-    """ Test edit """
+    def test_page__should_have__title__title_heading__and__sub_heading(self):
+        # test
+
+        # assert
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        #self.assertPageShouldHaveGroupHeading("")
+        self.assertFooterContextText("")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
     
     def test_page__should_redirect(self):
         # setup
@@ -52,4 +64,4 @@ class uitest_accounts_register_cancel(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
-
+        #self.assertPageShouldHaveGroupHeading("")

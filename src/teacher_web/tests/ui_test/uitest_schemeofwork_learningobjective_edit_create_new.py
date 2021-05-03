@@ -63,7 +63,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         # assert
 
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new learning objective for Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
         
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -122,7 +122,7 @@ class uitest_schemeofwork_learningobjective_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
 
         #delete
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")

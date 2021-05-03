@@ -47,7 +47,8 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Learning objective")
 
 
     def test_page__should_redirect_to_index_if_continue(self):
@@ -77,3 +78,4 @@ class uitest_schemeofwork_learningobjective_edit_cancel(UITestCase):
         # assert
         ' should be redirected '
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        #self.assertPageShouldHaveGroupHeading("")

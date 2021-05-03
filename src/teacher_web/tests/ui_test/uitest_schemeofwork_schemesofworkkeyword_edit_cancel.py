@@ -45,7 +45,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
 
     def test_page__should_redirect_to_index_if_continue(self):
@@ -71,4 +71,4 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_cancel(UITestCase):
 
         # assert
         ' should be redirected '
-        self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')

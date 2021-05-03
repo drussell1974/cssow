@@ -1,35 +1,7 @@
 {% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--lesson-edit">
-  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-    <div class="container">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
-              {{_("Schemes of Work")}}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="btn-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">
-              {{_("Lessons")}}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="btn-bc-ks123pathways" href="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">
-              {{_("Pathways")}}
-            </a>
-          </li>
-        </ul>
-    </div>
-  </nav>
-</section>
-{% endblock %}
-
 
 {% block maincontent %}
-
-<article class="widget widget-form widget-lesson-form">
   {% if content.data.is_copy %}
   <div class="alert alert-warning" role="alert">
     <i id="copy-of-{{content.data.lesson.orig_id}}">{{ content.data.lesson.title }} ({{ content.data.lesson_id }})</i>
@@ -80,7 +52,6 @@
     <input type="hidden" name="key_stage_id" value="{{content.data.lesson.key_stage_id}}" id="hdn-key_stage_id">
     <input type="hidden" name="next" value="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}" > 
   </form>
-</article>
 {% endblock %}
 
 

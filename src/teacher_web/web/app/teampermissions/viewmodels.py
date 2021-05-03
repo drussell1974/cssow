@@ -27,7 +27,7 @@ class TeamPermissionIndexViewModel(BaseViewModel):
         self.request = request
         self.auth_user = auth_user
 
-    def view(self):
+    def view(self, request):
 
         authorised_permissions = TeacherPermissionModel.get_team_permissions(self.db, self.auth_user.auth_user_id, self.auth_user, True)
 
@@ -41,7 +41,7 @@ class TeamPermissionIndexViewModel(BaseViewModel):
                 "lesson_permission_options": list(LESSON),
             }
         
-        return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data)
+        return ViewModel(request, "Account", "Account", "Team Permissions", ctx=self.auth_user, data=data)
 
 
 class TeamPermissionEditViewModel(BaseViewModel):
@@ -70,7 +70,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
                 self.on_not_found(self.model, teacher_id)
         
         
-    def view(self):
+    def view(self, request):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -84,7 +84,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
             "model": self.model
         }
 
-        return ViewModel("Account", "Account", "Team Permissions", ctx=self.auth_user, data=data, active_model=self.model)
+        return ViewModel(request, "Account", "Account", "Team Permissions", ctx=self.auth_user, data=data, active_model=self.model)
 
 
     def execute(self):
@@ -108,7 +108,7 @@ class TeamPermissionEditViewModel(BaseViewModel):
             handle_log_warning(self.db, self.scheme_of_work_id, "saving team permission", "permission settings are not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
             pass
         
-        return self.view()
+        return self.view(self.request)
 
 
 class TeamPermissionApproveViewModel(BaseViewModel):
@@ -285,7 +285,7 @@ class TeamPermissionRequestLoginViewModel(AuthenticationForm):
         self.context = get_context_data(**kwargs)
 
 
-    def view(self):
+    def view(self, request):
         return self.context
 
         

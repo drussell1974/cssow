@@ -5,9 +5,11 @@ from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from app.lessons.viewmodels import LessonIndexViewModel as ViewModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_lesson import LessonModel as Model, LessonFilter
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
     def setUp(self):
@@ -18,7 +20,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
         pass
 
 
-    def test_init_called_404_if_scheme_of_work_not_found(self, mock_auth_user):
+    def test_init_called_404_if_scheme_of_work_not_found(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -49,7 +51,7 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
                         self.assertEqual("", self.viewmodel.error_message)
 
 
-    def test_init_called_fetch__no_return_rows(self, mock_auth_user):
+    def test_init_called_fetch__no_return_rows(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -79,15 +81,15 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
                     self.assertEqual("", self.viewmodel.error_message)
 
-                    self.assertViewModelContent(self.viewmodel
+                    self.assertViewModelContent(self.mock_request, self.viewmodel
                         , ""
                         , "Varum dosctes"
-                        , "Lessons"
+                        , "Scheme of work"
                         , {}
                     )
 
 
-    def test_init_called_fetch__single_row(self, mock_auth_user):
+    def test_init_called_fetch__single_row(self, mock_auth_user, mock_bc):
         
         # arrange
         mock_auth_user.institute_id = 12767111276711
@@ -117,15 +119,15 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             self.assertEqual(1, len(self.viewmodel.data))
 
-            self.assertViewModelContent(self.viewmodel
+            self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )
 
 
-    def test_init_called_fetch__should_return_multiple_rows(self, mock_auth_user):
+    def test_init_called_fetch__should_return_multiple_rows(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -157,16 +159,16 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
             self.assertEqual(3, len(self.viewmodel.data))
 
 
-            self.assertViewModelContent(self.viewmodel
+            self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )
 
 
     
-    def test_init_called_fetch__should_return__multiple_rows__with_post(self, mock_auth_user):
+    def test_init_called_fetch__should_return__multiple_rows__with_post(self, mock_auth_user, mock_bc):
         
         # arrange
 
@@ -199,9 +201,9 @@ class test_viewmodel_LessonIndexModelViewModel(ViewModelTestCase):
 
             self.assertEqual(3, len(self.viewmodel.data))
 
-            self.assertViewModelContent(self.viewmodel
+            self.assertViewModelContent(self.mock_request, self.viewmodel
                 , ""
                 , "Varum dosctes"
-                , "Lessons"
+                , "Scheme of work"
                 , {}
             )

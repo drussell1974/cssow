@@ -149,3 +149,6 @@ class fake_settings:
     ISOFORMAT_TIME = "%H:%M",
     ISOFORMAT_TIME_MS = "%H:%M:%S"
     
+
+def fake_breadcrumbs():
+    return {"/":{"id":"lnk-bc-home","text":"Home"}}

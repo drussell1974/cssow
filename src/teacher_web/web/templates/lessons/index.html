@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.twocolumn.contentheading.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 {% load student_uri %}
 
 
@@ -9,58 +9,19 @@
 {% endblock %}
 
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--lessons-index">
-  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-    <div class="container">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" id="lnk-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">
-              {{_("Schemes of Work")}}
-            </a>
-          </li>
-        </ul>
-    </div>
-  </nav>
-</section>
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-schemeofwork.html' %}
 {% endblock %}
 
 
-{% block sidecontent %}
-<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
-  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
-      {{_("Menu")}} <i class="fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse" id="sidebarResponsive">
-    <div class="list-group">
-
-      {% include '_partials/widget.sidebar.this-schemeofwork.html'  %}
-
-      {% include '_partials/widget.sidebar.other-schemesofwork.html' %}
-      
-      {% include '_partials/widget.sidebar.administrator.html' %}  
-      
-    </div>
-  </div>
-</nav>
+{% block content_new%}
+<a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
 {% endblock %}
-
 
 {% block maincontent %}
 
-  <!-- Pager Header  -->
-  <header class="widget widget--pageheader">
-    {% if request.user.is_authenticated %}
-      <span class="float-right">
-        <a class="btn btn-warning" id="btn-new" href="{% url 'lesson.new' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">{{_('add')}}</a>
-      </span>
-    {% endif %}
-    <h2 class="group-heading">{{_("Lessons")}}</h2>
-    <hr />
-  </header> 
-  <!-- Pager Header END -->
 <!-- Scheme of works -->
-<article class="widget widget-lessons-list">
+
   <form id="form" method="post" class="needs-validation" action="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}#main">
     {% csrf_token %}
     <!-- Search/Pager-->
@@ -117,7 +78,7 @@
           </a>  
           <hr>
           <a href="{% url 'lesson_ks123pathways.select' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-ks123pathways--{{row.id}}">
-            {{_("KS123 Pathway")}} <span class="badge badge-light"></span>
+            {{_("Pathway")}} <span class="badge badge-light"></span>
           </a>
           <a href="{% url 'learningobjective.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}" class="btn btn-outline-dark dropdown-item" id="btn-lesson-learningobjectives--{{row.id}}">
             {{_("Objectives")}} <span class="badge badge-light">{{row.number_of_learning_objectives}}</span>
@@ -129,8 +90,10 @@
             {{_("Keywords")}} <span class="badge badge-light" >{{row.number_of_keywords}}</span>
           </a>
         </div>
+        <!-- Whitebaord -->
+        <a href="{% url 'lesson_schedule.whiteboard_view' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id row.id 0 %}" target="_blank" class="btn btn-outline-dark stackable" id="lnk-whiteboard">{{_("Whiteboard")}} <i class="fa fa-chalkboard"></i></a>
         <!-- Schedule -->
-        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedule--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedule--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}"><i class="fa fa-calendar"></i> {{_('Schedule')}} {% if row.lesson_schedule|length > 0 %}<i class="badge badge-danger fa fa-graduation-cap" title="{{ row.lesson_schedule|length }} {{_('current lessons')}}"> {{ row.lesson_schedule|length }}</i>{% endif %}</button>
+        <button class="btn btn-outline-dark stackable" type="button" data-toggle="collapse" data-target="#collapseSchedule--{{row.id}}" aria-expanded="true" aria-controls="collapseSchedule--{{row.id}}" id="ctl-lesson_schedudle--{{row.id}}">{{_('Schedule')}} <i class="fa fa-calendar"></i> {% if row.lesson_schedule|length > 0 %}<i class="badge badge-danger fa fa-graduation-cap" title="{{ row.lesson_schedule|length }} {{_('current lessons')}}"> {{ row.lesson_schedule|length }}</i>{% endif %}</button>
         <div class="collapse shadow" id="collapseSchedule--{{row.id}}">
           <div class="card card-body">  
             <a href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id row.scheme_of_work_id row.id %}?return={{request.url}}" class="btn btn-outline-dark stackable" id="btn-lesson-schedule--{{row.id}}">{{_('View all')}}</a>
@@ -176,7 +139,7 @@
   <!-- Lessons END -->
 
   <hr />
-</article>
+
 
 {% endblock %}
 

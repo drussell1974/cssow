@@ -25,7 +25,7 @@ def index(request, institute_id, department_id, auth_ctx):
 
     pathways_index = DepartmentTopicIndexViewModel(db, request, auth_ctx)
 
-    return render(request, "department_topic/index.html", pathways_index.view().content)
+    return render(request, "department_topic/index.html", pathways_index.view(request).content)
 
 
 #@permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -41,7 +41,7 @@ def edit(request, institute_id, department_id, topic_id = 0, auth_ctx = None):
                 redirect_to_url = f"{request.POST.get('next', None)}#{topic_edit.model.id}"
             return HttpResponseRedirect(redirect_to_url)
 
-    return render(request, "department_topic/edit.html", topic_edit.view().content)
+    return render(request, "department_topic/edit.html", topic_edit.view(request).content)
 
 
 #@permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')

@@ -55,14 +55,14 @@ class KS123PathwayIndexViewModel(BaseViewModel):
             self.error_message.append(repr(e))
             raise e
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "department": self.auth_ctx.department,
             "ks123pathway": self.model,
         }
         
-        return ViewModel(self.department.name, self.department.name, "KS123 Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", content_heading="Pathways", ctx=self.auth_ctx, data=data, active_model=self.department, alert_message=self.alert_message, error_message=self.error_message)
 
 
 class KS123PathwayEditViewModel(BaseViewModel):
@@ -76,7 +76,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
         self.pathway_item_id = pathway_item_id
         
 
-    def view(self):
+    def view(self, request):
 
         self.model = Model(0, "", self.auth_ctx)
         
@@ -93,7 +93,7 @@ class KS123PathwayEditViewModel(BaseViewModel):
             "model": self.model
         }
         
-        return ViewModel("", self.department.name, self.model.objective if len(self.model.objective) != 0 else "Create new pathway objective", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.department.name, "Department", content_heading="Pathway", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
 
 
     def execute(self, published=STATE.PUBLISH):

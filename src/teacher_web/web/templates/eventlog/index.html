@@ -4,7 +4,6 @@
 {% block maincontent %}
 
   <!-- Event logs --> 
-  <article class="widget widget--eventlog-listing">
 
   <!-- Pager Header -->      
   <header class="widget widget--articleheader">
@@ -126,14 +125,13 @@
     </footer>
     <hr>
     <script type="text/javascript" src="{% static 'default/js/formSearchValidation.js' %}"></script>
-  </article>
+  
   <!-- Event logs END -->
 
   <div class="clearfix"></div>
 
   {% if request.user.is_superuser %}
   <!-- Application Settings -->
-  <article class="widget widget--application-settings">
     <header class="widget widget--articleheader">
       <h2 class="group-heading">{{_("Application settings")}}</h2>
       <hr />
@@ -259,7 +257,6 @@
       </div>
     </div>
     
-  </article>
   <!-- Application Settings END -->
   {% endif %}
 

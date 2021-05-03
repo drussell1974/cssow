@@ -50,7 +50,8 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit: data representation')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Curriculum")
 
 
     def test_page__should_redirect_to_index_if_continue(self):
@@ -79,3 +80,4 @@ class uitest_schemeofwork_content_edit_cancel(UITestCase):
         # assert
         ' should be redirected '
         self.assertWebPageTitleAndHeadings('', 'Log in', 'Register to create schemes of work and lessons')
+        self.assertPageShouldHaveGroupHeading("")

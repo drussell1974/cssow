@@ -56,7 +56,8 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         self.wait(s=2)
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Resources")
 
 
     def tearDown(self):
@@ -81,7 +82,8 @@ class uitest_schemeofwork_resources_edit_delete(UITestCase):
         self.wait(s=2)
 
 
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
+        self.assertPageShouldHaveGroupHeading("Resources")
         
         items_after = self.test_context.find_elements_by_class_name("post-preview")
         

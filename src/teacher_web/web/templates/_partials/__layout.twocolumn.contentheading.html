@@ -1,8 +1,5 @@
 {% extends '_partials/__layout.html' %}
 
-{% block contentheading %}
-{% endblock %}
-
 
 {% block content %}
   <div class="col-xl-4 col-lg-4 col-md-10 mx-auto sidecontent">
@@ -12,9 +9,18 @@
     <!-- sidecontent END -->
   </div>
   <div class="col-xl-8 col-lg-8 col-md-10 mx-auto maincontent page-content">
-    <!-- maincontent START -->
-    {% block maincontent %}
-    {% endblock %}
-    <!-- maincontent END -->
+    <article class="widget">
+      <!-- Content Heading -->      
+      <span class="float-right">{% block content_new %}{% endblock %}</span>
+      <header class="widget widget--articleheader">
+        <h2 class="group-heading">{% block content_heading %}{{ content.content_heading }}{% endblock %}</h2>
+        <hr>
+      </header>
+      <!-- Content Heading END -->
+      <!-- Article Content -->
+      {% block maincontent %}
+      {% endblock %}
+      <!-- Article Content END -->
+    </article>
   </div>
 {% endblock %}

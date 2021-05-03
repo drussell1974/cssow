@@ -45,7 +45,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
 
     def test_page__should_stay_on_same_page_if_renamed_to_create_duplicate(self):
@@ -82,7 +82,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
         #delete
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")
@@ -110,4 +110,4 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_existing(UITestCase):
         
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new lesson for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')

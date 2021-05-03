@@ -40,7 +40,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
     
     def test_page__should_stay_on_same_page_if_duplicate(self):
@@ -71,7 +71,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -98,7 +98,7 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=5)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
 
         #delete
         elem = self.test_context.find_element_by_id("btn-delete-unpublished")

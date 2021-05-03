@@ -22,24 +22,15 @@ class uitest_schemeofwork_ks123pathway_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    def test_page__should_have__group_heading(self):
-        # test
-        elem = self.test_context.find_element_by_class_name('group-heading')
-
-        # assert
-        self.assertEqual("Pathways", elem.text)
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
+        self.assertPageShouldHaveGroupHeading("Pathways")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        self.assertNavTabsShouldBeDepartment()
 
 
     def test_page__show_published_only(self):

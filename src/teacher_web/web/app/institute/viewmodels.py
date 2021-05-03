@@ -18,8 +18,8 @@ class InstituteIndexViewModel(DefaultIndexViewModel):
         super().__init__(db, top, auth_user)
 
 
-    def view(self, main_heading, sub_heading):
-        view = super().view(main_heading, sub_heading)
+    def view(self, request):
+        view = super().view(request, settings.SITE_TITLE, settings.SITE_SUMMARY, content_heading="")
         return view
 
 
@@ -41,13 +41,13 @@ class InstituteAllViewModel(BaseViewModel):
         self.model = data
 
 
-    def view(self):
+    def view(self, request):
         
         data = {
             "institutes": self.model
         }
         
-        return ViewModel("", "Schemes of Work", "Institutes", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", settings.SITE_TITLE,  settings.SITE_SUMMARY, ctx=self.auth_user, data=data)
 
 
 class InstituteEditViewModel(BaseViewModel):
@@ -97,7 +97,7 @@ class InstituteEditViewModel(BaseViewModel):
                 handle_log_exception(db, auth_user.institute_id, "An error occurred processing institute", ex)
                 
 
-    def view(self):
+    def view(self, request):
         
         # view data
         data = {
@@ -108,7 +108,7 @@ class InstituteEditViewModel(BaseViewModel):
         # build alert message to be displayed
         delete_message = "<p>'{display_name}' ({id}) will be deleted!<ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel(request, "", self.model.name, "Institute", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
 
 class InstituteScheduleViewModel(DefaultIndexViewModel):
@@ -136,8 +136,8 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
         self.model = data
 
 
-    def view(self, main_heading, sub_heading):
-        super().view(self.institute.name, sub_heading)
+    def view(self, request):
+        super().view(request, self.institute.name, "Institute", content_heading="Schedule")
         
         data = {
             "institute_id": self.institute.id,
@@ -147,7 +147,7 @@ class InstituteScheduleViewModel(DefaultIndexViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.institute)
+        return ViewModel(request, "", self.auth_user.institute.name, "Institute", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class InstituteDeleteUnpublishedViewModel(BaseViewModel):

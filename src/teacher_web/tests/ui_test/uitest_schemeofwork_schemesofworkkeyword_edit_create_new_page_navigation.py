@@ -27,32 +27,12 @@ class uitest_schemeofwork_schemesofworkkeyword_edit_create_new_page_navigation(U
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Create new keyword for A-Level Computer Science')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
+        self.assertPageShouldHaveGroupHeading("Keyword")
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-
-
-    """ Breadcrumb """
-
-
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # setup
-        elem = self.test_context.find_element_by_id('btn-bc-schemes_of_work')
-        self.assertEqual("Schemes of Work", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_keywords_index(self):
-        #test
-        elem = self.test_context.find_element_by_id('btn-bc-keywords')
-        self.assertEqual("Keywords", elem.text)
-
-        # test
-        elem.click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Computing curriculum for A-Level')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(True)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+        

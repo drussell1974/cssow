@@ -82,7 +82,7 @@ class uitest_schemeofwork_lessonkeyword_select__search_term(UITestCase):
         
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson', wait=4)
 
         elem = self.test_context.find_elements_by_class_name("card-keyword")
         self.assertEqual(3, len(elem))

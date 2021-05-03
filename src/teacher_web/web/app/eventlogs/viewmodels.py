@@ -47,7 +47,7 @@ class EventLogIndexViewModel(BaseViewModel):
             self.error_message = str(e)
             #raise
 
-    def view(self):
+    def view(self, request):
         
         data = { 
             "scheme_of_work_id": self.scheme_of_work_id,
@@ -62,7 +62,7 @@ class EventLogIndexViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message)
+        return ViewModel(request, "", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message)
 
 
 class EventLogDeleteOldViewModel(BaseViewModel):
@@ -93,7 +93,7 @@ class EventLogDeleteOldViewModel(BaseViewModel):
                 self.error_message = str(e)
 
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id": self._scheme_of_work_id,
@@ -108,4 +108,4 @@ class EventLogDeleteOldViewModel(BaseViewModel):
             "settings": self.settings
         } 
         
-        return ViewModel("", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", "Event Log", "view event logs", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)

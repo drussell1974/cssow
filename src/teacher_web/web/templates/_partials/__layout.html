@@ -115,27 +115,42 @@
     <div class="container-fluid main-container">
       <div class="container">
       <a name="main"></a>
-      <div class="row">
-        <div class="col-lg-12 col-md-14 content-heading">
-            <!-- Content Heading START -->
-            {% block contentheading %}
-            {% endblock %}
-            <!-- Content Heading END -->
-        </div>
-      </div>
-
+      
       <!-- show error_message -->
       {% include '_partials/form.viewmodel.alert_message.html' %}
       <!-- show error_message END -->
       
+      
       <!-- Breadcrumb START -->
       <div class="row">
         <div class="col-lg-12 col-md-14 breadcrumb-custom">
-          {% block breadcrumb %}
-          {% endblock %}
+          <section class="widget widget-breadcrumb">
+            <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
+              <div class="container">
+                <i class="text-muted fa fa-long-arrow-alt-left" onclick="window.history.back();" ></i>
+                <ul class="navbar-nav ml-auto">
+                    {% block breadcrumb_before %}
+                    {% endblock %}
+                    {% for key, value in breadcrumb_items.items %}
+                    <li class="nav-item">
+                        <a class="nav-link" id="{{value.id}}" href="{{key}}">{{value.text}}</a>
+                    </li>
+                   {% endfor %}
+                   {% block breadcrumb_after %}
+                   {% endblock %}
+                </ul>
+              </div>
+            </nav>
+          </section>
         </div>
       </div>
       <!-- Breadcrumb END -->
+      <!-- Content Tabs START -->       
+      {% block content_tabs %}
+      {% endblock %}
+      <!-- spacer -->
+      <div class="p-3"></div>
+      <!-- Content Tabs END --> 
       <!-- Main Content START --> 
         <div class="row">
           {% block content %}

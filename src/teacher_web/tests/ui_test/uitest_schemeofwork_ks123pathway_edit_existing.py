@@ -40,7 +40,7 @@ class uitest_schemeofwork_ks123pathway_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Recognises that the design of an algorithm is distinct from its expression in a programming language (which will depend on the programming constructs available). (AL) (AB)')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -60,5 +60,5 @@ class uitest_schemeofwork_ks123pathway_edit_existing(UITestCase):
         
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'KS123 Pathways')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Computer Science', 'Department')
         

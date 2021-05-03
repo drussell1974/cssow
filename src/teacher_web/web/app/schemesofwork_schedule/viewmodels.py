@@ -43,8 +43,8 @@ class SchemeOfWorkScheduleIndexViewModel(DefaultIndexViewModel):
         self.model = data
 
 
-    def view(self, main_heading, sub_heading):
-        super().view(self.scheme_of_work.name, sub_heading)
+    def view(self, request):
+        #super().view(request, self.scheme_of_work.name, "Scheme of work", content_heading="Schedule")
         
         data = {
             "schemeofwork": self.scheme_of_work,
@@ -56,5 +56,5 @@ class SchemeOfWorkScheduleIndexViewModel(DefaultIndexViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
+        return ViewModel(request, "", self.scheme_of_work.name, "Scheme of work", content_heading="Schedule", ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
 

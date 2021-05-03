@@ -41,4 +41,3 @@ class uitest_registration_password_change_cancel(UITestCase):
         # assert
         ' should still be on the same page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
-

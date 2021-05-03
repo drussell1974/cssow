@@ -39,15 +39,15 @@ class DepartmentTopicIndexViewModel(BaseViewModel):
             self.error_message = repr(e)
             raise e
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "department": self.auth_ctx.department,
             "topics": self.model
         }
 
-        return ViewModel(self.department.name, self.department.name, "Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
-
+        return ViewModel(request, self.department.name, self.auth_ctx.department.name, "Department", content_heading="Topics", ctx=self.auth_ctx, data=data, active_model=self.department, error_message=self.error_message)
+        
 
 class DepartmentTopicEditViewModel(BaseViewModel):
 
@@ -61,7 +61,7 @@ class DepartmentTopicEditViewModel(BaseViewModel):
         self.parent_topic_id = 0
         
 
-    def view(self):
+    def view(self, request):
         
         self.model = TopicModel(0, name="", lvl=1, auth_ctx=self.auth_ctx)
         self.model.parent_id = try_int(self.request.GET.get("parent_id", self.auth_ctx.department.topic_id))
@@ -86,7 +86,7 @@ class DepartmentTopicEditViewModel(BaseViewModel):
             "model": self.model,
         }
         
-        return ViewModel("", self.department.name, self.model.name if len(self.model.name) != 0 else "Create new topic", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, "", self.department.name, "Department", content_heading="Topic", ctx=self.auth_ctx, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message)
 
 
     def execute(self, published=STATE.PUBLISH):

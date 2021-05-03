@@ -51,7 +51,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
             self.error_message = repr(e)
             raise e
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id": self.scheme_of_work_id,
@@ -62,7 +62,7 @@ class LessonKeywordIndexViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
         
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
+        return ViewModel(request, self.lesson.title, self.lesson.title, "Lesson", content_heading="Keywords", ctx=self.auth_user, data=data, active_model=self.lesson, error_message=self.error_message)
 
 
 class LessonKeywordSelectViewModel(BaseViewModel):
@@ -133,7 +133,7 @@ class LessonKeywordSelectViewModel(BaseViewModel):
             "keyword_options": self.keyword_options
         }
         
-        return ViewModel(self.model.title, self.model.title, "Select keywords for {}".format(self.model.title), ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message)
+        return ViewModel(request, self.model.title, self.model.title, "Lesson", content_heading="Keyword", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message)
 
 
 class LessonKeywordGetModelViewModel(BaseViewModel):
@@ -177,7 +177,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
             raise e
 
 
-    def view(self):
+    def view(self, request):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -188,7 +188,7 @@ class LessonKeywordGetModelViewModel(BaseViewModel):
             "lesson_options": self.lesson_options
         }
 
-        return ViewModel(self.lesson.title, self.lesson.title, self.lesson.summary, ctx=self.auth_user, data=data, active_model=self.lesson)
+        return ViewModel(request, self.lesson.title, self.lesson.title, "Lesson", content_heading="Keyword", ctx=self.auth_user, data=data, active_model=self.lesson)
         
 
 class LessonKeywordSaveViewModel(BaseViewModel):

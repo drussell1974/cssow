@@ -32,4 +32,9 @@ class uitest_schemeofwork_default_password_change(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('', 'Account', 'Change password')
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
         

@@ -24,8 +24,14 @@ class uitest_institute_index(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Institutes')
-        
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
+        #self.assertPageShouldHaveGroupHeading("") index page no heading
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
+
 
     @unittest.skip("overlay isssue causing - low priority test - selenium.common.exceptions.ElementNotInteractableException: could not be scrolled into view")
     def test_page__navigate_to_lesson_index(self):
@@ -42,44 +48,4 @@ class uitest_institute_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'GCSE Computer Science 9-1', "Lessons")
-
-
-    @unittest.skip("# TODO: #329 create drop down to view institutes departments schemesofwork - changes context")
-    def test_page__breadcrumb__navigate_to_institutes_all(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-institutes_all').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_home(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-home').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
-
-
-    def test_page__post_preview__item__navigate_to_departments(self):
-        # setup
-        self.test_context.find_element_by_id('lnk-institute-departments--{}'.format(self.test_institute_id)).click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Departments')
-                
-
-    def not_test_page__submenu__navigate_to_schemesofwork_new(self):
-        # setup
-        self.try_log_in(self.root_uri + "/schemesofwork")
-
-        # test
-        self.test_context.find_element_by_id('btn-new').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', '', '')
-
-
-
-
-
+        self.assertPageShouldHaveGroupHeading("")

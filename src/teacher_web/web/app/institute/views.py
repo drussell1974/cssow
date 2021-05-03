@@ -18,7 +18,7 @@ def index(request, auth_ctx):
     
     index_view =  InstituteIndexViewModel(db=db, top=10, auth_user=auth_ctx)
     
-    return render(request, "default/index.html", index_view.view("Schemes of Work", "Institutes").content)
+    return render(request, "default/index.html", index_view.view(request).content)
 
 
 @min_permission_required(DEPARTMENT.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
@@ -26,7 +26,7 @@ def all(request, auth_ctx):
     
     all_view =  InstituteAllViewModel(db=db, auth_user=auth_ctx)
     
-    return render(request, "institute/index.html", all_view.view().content)
+    return render(request, "institute/index.html", all_view.view(request).content)
 
 
 @permission_required("cssow.change_institutemodel", login_url="/accounts/login/")
@@ -43,7 +43,7 @@ def edit(request, institute_id, auth_ctx):
             redirect_to_url = reverse("institute.edit", args=[save_view.model.id])
         return HttpResponseRedirect(redirect_to_url)
     
-    return render(request, "institute/edit.html", save_view.view().content)
+    return render(request, "institute/edit.html", save_view.view(request).content)
 
 
 @permission_required("cssow.delete_institutemodel", login_url="/accounts/login/")
@@ -61,7 +61,5 @@ def schedule(request, institute_id, auth_ctx):
     
     schedule_view =  InstituteScheduleViewModel(db=db, request=request, institute_id=institute_id, auth_user=auth_ctx)
     
-    sub_heading = "Schedule"
-
-    return render(request, "institute/schedule.html", schedule_view.view(schedule_view.institute.name, sub_heading).content)
+    return render(request, "institute/schedule.html", schedule_view.view(request).content)
 

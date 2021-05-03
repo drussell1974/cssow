@@ -56,7 +56,7 @@ class LessonIndexViewModel(BaseViewModel):
             handle_log_exception(db, scheme_of_work_id, "Error initialising LessonIndexViewModel", e)
             raise e
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -67,7 +67,7 @@ class LessonIndexViewModel(BaseViewModel):
             "STUDENT_WEB__WEB_SERVER_WWW": settings.STUDENT_WEB__WEB_SERVER_WWW
         }
         
-        return ViewModel(self.scheme_of_work_name, self.scheme_of_work_name, "Lessons", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, self.scheme_of_work_name, self.scheme_of_work_name, "Scheme of work", content_heading="Lessons", ctx=self.auth_user, data=data, error_message=self.error_message, alert_message=self.alert_message)
 
 
 class LessonGetModelViewModel(BaseViewModel):

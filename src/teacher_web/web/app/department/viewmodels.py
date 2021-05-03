@@ -28,8 +28,8 @@ class DepartmentIndexViewModel(DefaultIndexViewModel):
                 self.on_not_found(self.institute, self.institute_id)
 
 
-    def view(self, main_heading, sub_heading):
-        view = super().view(self.institute.name, sub_heading)
+    def view(self, request):
+        view = super().view(request, self.institute.name, "Institute", content_heading="Departments")
         return view
 
 
@@ -54,14 +54,14 @@ class DepartmentAllViewModel(BaseViewModel):
         self.model = data
 
 
-    def view(self):
+    def view(self, request):
         data = {
             "institute_id": self.institute_id,
             "institute": self.institute,
             "departments": self.model
         }
         #329 active_model = institue
-        return ViewModel("", self.institute.name, "Departments", ctx=self.auth_user, data=data, active_model=self.institute)
+        return ViewModel(request, "", self.institute.name, "Institute", ctx=self.auth_user, data=data, active_model=self.institute)
 
 
 class DepartmentEditViewModel(BaseViewModel):
@@ -111,7 +111,7 @@ class DepartmentEditViewModel(BaseViewModel):
                 handle_log_exception(db, context.department_id, "An error occurred processing department", ex)
                 
 
-    def view(self):
+    def view(self, request):
         
         # get options
         self.institute_options = InstituteModel.get_options(self.db, self.auth_user)
@@ -132,7 +132,7 @@ class DepartmentEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
+        return ViewModel(request, "", self.model.name, "Department", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message)
 
  
 class DepartmentDeleteUnpublishedViewModel(BaseViewModel):

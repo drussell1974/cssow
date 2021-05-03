@@ -8,35 +8,18 @@
 {% endblock %}
 
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--resources-index">
-  <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-    <div class="container">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-department" href="{% url 'department.index' content.ctx.institute_id %}">{{ content.ctx.department.name }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="lnk-bc-topic" href="{% url 'department_topic.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Topics")}}</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</section>
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-department.html' %}
+{% endblock %}
+
+
+{% block content_new %}
+  <a class="btn btn-warning" id="btn-new" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_("add level 1")}}</a>
 {% endblock %}
 
 
 {% block maincontent %}
 
-<!-- Pager Header -->   
-{% if request.user.is_authenticated %}
-<span class="float-right">  
-  <a class="btn btn-warning" id="btn-new" href="{% url 'department_topic.new' content.ctx.institute_id content.ctx.department_id %}#main">{{_("add")}}</a>
-</span>
-{% endif %}
-<h2 class="group-heading">{{_("Topics")}}</h2>
-<hr />
-<!-- Pager Header END -->      
 
 {% if content.data.topics|length == 0 %}
   <div class="alert alert-warning" role="alert">
@@ -59,7 +42,7 @@
         {{_('Level')}} {{ value.0.lvl }} - {{ value.0.parent.name }} 
       </h2>
       {% for row in value %}
-          <div class="card card-ks123pathway {{ row.published_state }}">
+          <div class="card card-topic {{ row.published_state }}">
             <a name="{{ row.id }}"></a>
             <div class="card-body">
               <h5 class="card-title">  

@@ -23,7 +23,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
     
     view_model = ContentIndexViewModel(db=db, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
-    return render(request, "content/index.html", view_model.view().content)
+    return render(request, "content/index.html", view_model.view(request).content)
 
 
 #234 add permission
@@ -46,7 +46,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, cont
 
         return HttpResponseRedirect(redirect_to_url)
 
-    return render(request, "content/edit.html", view_model.view().content)    
+    return render(request, "content/edit.html", view_model.view(request).content)    
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')

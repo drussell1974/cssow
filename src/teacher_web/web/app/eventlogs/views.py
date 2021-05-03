@@ -23,7 +23,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx=None
        
     modelview = EventLogIndexViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_ctx)
     
-    return render(request, "eventlog/index.html", modelview.view().content)
+    return render(request, "eventlog/index.html", modelview.view(request).content)
 
 
 @permission_required('cssow.delete_eventlogs', login_url='/accounts/login/')
@@ -35,4 +35,4 @@ def delete(request, institute_id, department_id, scheme_of_work_id, rows = 0, au
     
     modelview = EventLogDeleteOldViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, settings=settings, auth_user=auth_ctx)
 
-    return render(request, "eventlog/index.html", modelview.view().content)
+    return render(request, "eventlog/index.html", modelview.view(request).content)

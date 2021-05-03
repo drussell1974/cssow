@@ -32,7 +32,7 @@ class ContentIndexViewModel(BaseViewModel):
         self.model = Model.get_all(db, self.scheme_of_work.id, self.scheme_of_work.key_stage_id, auth_user)
         
 
-    def view(self):
+    def view(self, request):
         """ return View """
 
         data = {
@@ -41,7 +41,7 @@ class ContentIndexViewModel(BaseViewModel):
             "schemeofwork_options": self.scheme_of_work_options
         }
 
-        return ViewModel("", self.scheme_of_work.name, "Curriculum", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.scheme_of_work.name, "Scheme of work", content_heading="Curriculum", ctx=self.auth_user, data=data)
         
 
 class ContentEditViewModel(BaseViewModel):
@@ -103,7 +103,7 @@ class ContentEditViewModel(BaseViewModel):
                 handle_log_warning(self.db, scheme_of_work_id, "saving resource", "resource is not valid (id:{}, display_name:{}, validation_errors (count:{}).".format(self.model.id, self.model.display_name, len(self.model.validation_errors)))
 
 
-    def view(self):
+    def view(self, request):
         
         #if self.content_id > 0 and self.model is None:            
         #    self.on_not_found(self.model, self.content_id) 
@@ -117,7 +117,7 @@ class ContentEditViewModel(BaseViewModel):
             "model":self.model
         }
         
-        return ViewModel("", self.scheme_of_work.name, "Edit: {}".format(self.model.description) if self.content_id > 0 else "Create new content for %s" % self.scheme_of_work.name, ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, wizard=self.wizard)
+        return ViewModel(request, "", self.scheme_of_work.name, "Scheme of work", content_heading="Curriculum", ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, wizard=self.wizard)
 
 
 class ContentDeleteUnpublishedViewModel(BaseViewModel):

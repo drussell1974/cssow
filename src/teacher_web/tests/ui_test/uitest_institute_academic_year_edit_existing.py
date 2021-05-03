@@ -38,5 +38,6 @@ class uitest_institute_academic_year_edit_existing(UITestCase):
         
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Academic years')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Finibus Bonorum et Malorum', 'Institute')
+        self.assertPageShouldHaveGroupHeading("Academic years")
         

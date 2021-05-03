@@ -39,7 +39,7 @@ class uitest_schemeofwork_learningobjective_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson')
 
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -52,7 +52,7 @@ class uitest_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem.send_keys(Keys.RETURN)
         self.wait(s=2)
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson', wait=4)
 
 
     def test_page__should_redirect_to_next_if_valid(self):
@@ -68,8 +68,9 @@ class uitest_schemeofwork_learningobjective_edit_existing(UITestCase):
         elem = self.find_wizardoptions_element_by_id("saveButtonNext")        
         elem.send_keys(Keys.RETURN)
         
-        self.wait(s=2)
+        self.wait(s=4)
         
         # assert
         ' should be next page '
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Create new resource for Types of CPU architecture')
+        

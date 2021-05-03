@@ -53,4 +53,5 @@ class uitest_schemeofwork_resources_edit_cannot_delete_published(UITestCase):
         #231: assert we're still on the stay on page
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Edit: Types of CPU architecture')
+        self.assertPageShouldHaveGroupHeading("")
         

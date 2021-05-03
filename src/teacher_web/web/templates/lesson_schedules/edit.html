@@ -1,31 +1,8 @@
 {% extends '_partials/__layout.onecolumn.contentheading.edit.html' %}
 
-{% block breadcrumb %}
-<section class="widget widget-breadcrumb widget-breadcrumb--keywords-edit">
-    <nav class="navbar navbar-expand-lg navbar-light" id="itemNav">
-        <div class="container">
-            <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                    <a class="nav-link parent" id="btn-bc-schemes_of_work" href="{% url 'schemesofwork.index' content.ctx.institute_id content.ctx.department_id %}">{{_("Schemes of Work")}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="lnk-bc-schemeofwork_schedule" href="{% url 'schemesofwork_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Schedule")}}</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="lnk-bc-lessons" href="{% url 'lesson.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id %}">{{_("Lessons")}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="lnk-bc-lesson_schedule" href="{% url 'lesson_schedule.index' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id %}">{{_("Schedule")}}</a>
-                    </li>
-                </ul>
-        </div>
-    </nav>
-</section>
-{% endblock %}
 
 {% block maincontent %}
     {% load format_time %}
-<article class="widget widget-form widget-keyword-form">
     <form name="edit-keyword" id="form" class="needs-validation" method="post" enctype="multipart/form-data" action="{% url 'lesson_schedule.edit' content.ctx.institute_id content.ctx.department_id content.data.scheme_of_work_id content.data.lesson_id content.data.model.id %}">
         {% csrf_token %}
 
@@ -116,7 +93,6 @@
         <input type="hidden" name="class_code" id="ctl-class_code" value="{{content.data.model.class_code}}" />
     </form>
 <hr>
-</article>
 {% endblock %}
 
 {% block page_js %}

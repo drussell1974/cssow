@@ -26,7 +26,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
 
     getall_keywords = KeywordGetAllListViewModel(db=db, request=request, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
     
-    return render(request, "keywords/index.html", getall_keywords.view().content)
+    return render(request, "keywords/index.html", getall_keywords.view(request).content)
 
 
 @permission_required('cssow.change_schemeofworkmodel', login_url='/accounts/login/')
@@ -57,7 +57,7 @@ def new(request, institute_id, department_id, scheme_of_work_id, auth_ctx):
         "keyword": model
     }
     
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Scheme of work", content_heading="Keyword", ctx=auth_ctx, data=data, wizard=wizard)
     
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -92,7 +92,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
         "keyword": model
     }
 
-    view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Edit keyword: {} for {}".format(model.term, scheme_of_work.description), ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
+    view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Scheme of work", content_heading="Keyword", ctx=auth_ctx, data=data, active_model=model, alert_message="", wizard=wizard)
 
     return render(request, "keywords/edit.html", view_model.content)
 
@@ -159,7 +159,7 @@ def save(request, institute_id, department_id, scheme_of_work_id, keyword_id, au
             "keyword": model
         }
         
-        view_model = ViewModel(scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        
+        view_model = ViewModel(request, scheme_of_work.name, scheme_of_work.name, "Create new keyword for %s" % scheme_of_work.name, ctx=auth_ctx, data=data, active_model=model, alert_message="", error_message=error_message, wizard=wizard)        
         
         return render(request, "keywords/edit.html", view_model.content)
         
@@ -215,5 +215,5 @@ def merge_duplicates(request, institute_id, department_id, scheme_of_work_id, ke
         ' redirect as necessary '
         return HttpResponseRedirect(merge_viewmodel.redirect_to_url)
     
-    return render(request, "keywords/merge.html", merge_viewmodel.view().content)
+    return render(request, "keywords/merge.html", merge_viewmodel.view(request).content)
     

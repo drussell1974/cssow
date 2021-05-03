@@ -53,7 +53,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             raise e
 
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id": self.scheme_of_work_id,
@@ -62,7 +62,7 @@ class KeywordGetAllListViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
         
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=self.auth_user, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
+        return ViewModel(request, self.scheme_of_work.name, self.scheme_of_work.name, "Scheme of work", content_heading="Keywords", ctx=self.auth_user, data=data, active_model=self.scheme_of_work, error_message=self.error_message)
 
 
 class KeywordGetModelViewModel(BaseViewModel):
@@ -106,7 +106,7 @@ class KeywordGetModelViewModel(BaseViewModel):
             raise e
 
 
-    def view(self):
+    def view(self, request):
         
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -115,7 +115,7 @@ class KeywordGetModelViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
 
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
+        return ViewModel(request, self.scheme_of_work.name, self.scheme_of_work.name, self.scheme_of_work.description, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
         
 
 class KeywordSaveViewModel(BaseViewModel):
@@ -226,7 +226,7 @@ class KeywordMergeViewModel(BaseViewModel):
             raise e
 
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "scheme_of_work_id":self.scheme_of_work_id,
@@ -235,5 +235,5 @@ class KeywordMergeViewModel(BaseViewModel):
             "schemeofwork_options": self.schemeofwork_options
         }
 
-        return ViewModel(self.scheme_of_work.name, self.scheme_of_work.name, "Merge {} for {}".format(self.model.term, self.scheme_of_work.name), ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
+        return ViewModel(request, self.scheme_of_work.name, self.scheme_of_work.name, "Merge {} for {}".format(self.model.term, self.scheme_of_work.name), ctx=self.auth_user, data=data, active_model=self.model, error_message=self.error_message, alert_message=self.alert_message)
         

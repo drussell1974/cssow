@@ -34,6 +34,7 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
         self.wait(s=2)
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertPageShouldHaveGroupHeading("")
 
 
     def tearDown(self):
@@ -66,6 +67,7 @@ class uitest_schemeofwork_lessonkeyword_edit_delete(UITestCase):
 
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Von Neumann architecture and Harvard architecture, and CISC and RISC')
+        self.assertPageShouldHaveGroupHeading("")
         
         #231: items after should be less than before
         

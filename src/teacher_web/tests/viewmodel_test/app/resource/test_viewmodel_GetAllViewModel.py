@@ -4,9 +4,11 @@ from tests.viewmodel_test.viewmodel_testcase import ViewModelTestCase
 from app.resources.viewmodels import ResourceIndexViewModel as ViewModel
 from shared.models.cls_lesson import LessonModel
 from shared.models.cls_resource import ResourceModel as Model
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
 from tests.test_helpers.mocks import *
 
 @patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_GetAllViewModel(ViewModelTestCase):
 
     def setUp(self):        
@@ -17,7 +19,7 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
         pass
 
     
-    def test_init_called_fetch__no_return_rows(self, mock_auth_user):
+    def test_init_called_fetch__no_return_rows(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -42,16 +44,16 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 Model.get_all.assert_called()
                 self.assertEqual(0, len(self.viewmodel.model))
                 
-                self.assertViewModelContent(self.viewmodel
+                self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )
 
 
 
-    def test_init_called_fetch__single_row(self, mock_auth_user):
+    def test_init_called_fetch__single_row(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -76,16 +78,16 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 Model.get_all.assert_called()
                 self.assertEqual(1, len(self.viewmodel.model))
 
-                self.assertViewModelContent(self.viewmodel
+                self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )
 
 
     
-    def test_init_called_fetch__multiple_rows(self, mock_auth_user):
+    def test_init_called_fetch__multiple_rows(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -109,9 +111,9 @@ class test_viewmodel_GetAllViewModel(ViewModelTestCase):
                 Model.get_all.assert_called()
                 self.assertEqual(3, len(self.viewmodel.model))
 
-                self.assertViewModelContent(self.viewmodel
+                self.assertViewModelContent(mock_request, self.viewmodel
                     , ""
                     , ""
-                    , ""
+                    , "Lesson"
                     , {}
                 )

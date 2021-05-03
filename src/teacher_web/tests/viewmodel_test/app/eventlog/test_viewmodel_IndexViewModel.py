@@ -1,11 +1,10 @@
 from unittest import TestCase, skip
 from unittest.mock import MagicMock, Mock, PropertyMock, patch
-
-# test context
-
 from app.eventlogs.viewmodels import EventLogIndexViewModel as ViewModel
 from shared.models.core.log_type import LOG_TYPE
 from shared.models.cls_eventlog import EventLogModel as Model, EventLogFilter
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
+from tests.test_helpers.mocks import *
 
 class fake_settings:
     MIN_NUMBER_OF_DAYS_TO_KEEP_LOGS = 7
@@ -17,7 +16,9 @@ class fake_settings:
             "pagesize_options": [5,10,25,50,100]
         }
     }
-
+    
+@patch("shared.models.core.django_helper", return_value=fake_ctx_model())
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_IndexViewModel(TestCase):
 
     def setUp(self):
@@ -29,7 +30,7 @@ class test_viewmodel_IndexViewModel(TestCase):
         pass
 
 
-    def test_view__request_method_get(self):
+    def test_view__request_method_get(self, mock_auth_user, mock_bc):
         
         # arrange
         mock_request = Mock()
@@ -67,7 +68,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 # act
 
                 test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
-                test_context.view()
+                test_context.view(mock_request)
                             
                 # assert functions was called
                 
@@ -90,7 +91,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual("view error", test_context.model[2].subcategory)
 
 
-    def test_view__request_method_post(self):
+    def test_view__request_method_post(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -138,7 +139,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 # act
 
                 test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=15, settings=self.fake_settings, auth_user=6079)
-                test_context.view()
+                test_context.view(mock_request)
                             
                 # assert functions was called
                 
@@ -161,7 +162,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual("update", test_context.model[2].subcategory)
 
 
-    def test_view__request_method_post__return_invalid(self):
+    def test_view__request_method_post__return_invalid(self, mock_auth_user, mock_bc):
         
         # arrange
         
@@ -187,7 +188,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 # act
 
                 test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=12, settings=self.fake_settings, auth_user=6079)
-                test_context.view()
+                test_context.view(mock_request)
                             
                 # assert functions was called
                 
@@ -196,8 +197,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 self.assertEqual(0, len(test_context.model))
 
 
-    def test_view__request_method__should_have__settings(self):
-        
+    def test_view__request_method__should_have__settings(self, mock_auth_user, mock_bc):      
         # arrange
         
         mock_request = Mock()
@@ -221,7 +221,7 @@ class test_viewmodel_IndexViewModel(TestCase):
                 # act
 
                 test_context = ViewModel(db=self.mock_db, request=mock_request, scheme_of_work_id=13, settings=self.fake_settings, auth_user=6079)
-                test_context.view()
+                test_context.view(mock_request)
                             
                 # assert settings (from fake settings)
 

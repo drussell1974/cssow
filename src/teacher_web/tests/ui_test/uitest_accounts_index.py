@@ -28,23 +28,12 @@ class uitest_accounts_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Test User', 'Your profile')
-
-
-    @skip("breadcrumb to be implemented")
-    def test_page__breadcrumb__navigate_to_schemesofwork_index(self):
-        # arrange
-        self.test_context.find_element_by_id('lnk-bc-schemes_of_work').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Schemes of Work', 'Our shared schemes of work by key stage')
-
-
-    def test_page__breadcrumb__navigate_to_home(self):
-        # setup
-        self.test_context.find_element_by_id('btn-topnav-home').click()
-
-        # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
+        self.assertFooterContextText("")
+        self.assertTopNavShouldHaveHomeIndex(True)
+        self.assertTopNavShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
+        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
+        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def test_page__card__navigate_to_change_password(self):
@@ -64,5 +53,5 @@ class uitest_accounts_index(UITestCase):
         self.test_context.find_element_by_id('btn-delete_account--content').click()
 
         # assert
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Account', 'Delete account')
-
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'test@localhost', 'Account')
+        #self.assertPageShouldHaveGroupHeading("Delete account")

@@ -23,7 +23,7 @@ def index(request, institute_id, department_id, scheme_of_work_id, lesson_id, au
     
     scheduleIndexView = LessonScheduleIndexViewModel(db=db, request=request, lesson_id=lesson_id, scheme_of_work_id=scheme_of_work_id, auth_user=auth_ctx)
 
-    return render(request, "lesson_schedules/index.html", scheduleIndexView.view().content)
+    return render(request, "lesson_schedules/index.html", scheduleIndexView.view(request).content)
 
 
 @permission_required('cssow.change_lessonmodel', login_url='/accounts/login/')
@@ -56,7 +56,7 @@ def edit(request, institute_id, department_id, scheme_of_work_id, auth_ctx, less
         ''' always return to the referrer '''
         modelview.return_url = request.META.get('HTTP_REFERER')
     
-    return render(request, "lesson_schedules/edit.html", modelview.view().content)
+    return render(request, "lesson_schedules/edit.html", modelview.view(request).content)
 
 
 @permission_required('cssow.delete_lessonmodel', login_url='/accounts/login/')
@@ -85,11 +85,11 @@ def whiteboard(request, institute_id, department_id, scheme_of_work_id, lesson_i
         "STUDENT_WEB__WEB_SERVER_WWW": get_lesson_view.STUDENT_WEB__WEB_SERVER_WWW
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(request, model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/whiteboard_view.html", view_model.content)
 
-
+'''
 @min_permission_required(LESSON.NONE, login_url="/accounts/login/", login_route_name="team-permissions.login-as")
 def missing_words_challenge(request, institute_id, department_id, scheme_of_work_id, lesson_id, auth_ctx):
  
@@ -100,7 +100,7 @@ def missing_words_challenge(request, institute_id, department_id, scheme_of_work
         "learning_objectives":model.learning_objectives,
     }
 
-    view_model = ViewModel(model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
+    view_model = ViewModel(request, model.title, model.title, model.topic_name, ctx=auth_ctx, data=data)
     
     return render(request, "lessons/missing_words_view.html", view_model.content)
-
+'''

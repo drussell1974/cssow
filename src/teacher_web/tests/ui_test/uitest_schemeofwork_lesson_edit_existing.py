@@ -27,7 +27,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
     def test_page__should_have_correct_elements(self):
 
         ' ensure headings are correct '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture', 'TEST USER')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Scheme of work', 'TEST USER')
     
         ' year group dropdown ' 
         elem = self.test_context.find_elements_by_xpath(".//*[@id='ctl-year_id']/option")
@@ -76,7 +76,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         # assert
         ' should still be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Edit: Types of CPU architecture')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Scheme of work')
         
 
     def test_page__should_redirect_to_index_if_valid(self):
@@ -88,7 +88,7 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         # assert
         ' should return to edit be on the same page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Lessons')
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science','A-Level Computer Science','Scheme of work')
 
         # TODO: detect dialog
         # TODO: close dialog
@@ -111,5 +111,5 @@ class uitest_schemeofwork_lesson_edit_existing(UITestCase):
 
         # assert
         ' should be next page '
-        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Select pathway for Types of CPU architecture', wait=4)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Types of CPU architecture', 'Lesson', wait=4)
         

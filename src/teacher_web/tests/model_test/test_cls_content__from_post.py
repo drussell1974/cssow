@@ -43,6 +43,7 @@ class test_cls_content__from_post(TestCase):
             "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit",
             "letter_prefix": "Y",
             "key_stage_id":"999",
+            "scheme_of_work_id":"11",
             "published":"1"})
 
         # assert
@@ -60,7 +61,7 @@ class test_cls_content__from_post(TestCase):
         self.test = Model()
 
         # act
-        self.test.from_post({"id":"1", "description":"", "letter_prefix":"X","key_stage_id":"5","published":"1"})
+        self.test.from_post({"id":"1", "description":"", "letter_prefix":"X","key_stage_id":"5","scheme_of_work_id":"11","published":"1"})
 
         # assert
         self.assertFalse(self.test.is_valid)

@@ -1,4 +1,4 @@
-{% extends '_partials/__layout.onecolumn.html' %}
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
 
 
 {% block head_js %} 
@@ -8,18 +8,34 @@
 {% endblock %}
 
 
+{% block content_tabs %}
+  {% include '_partials/widget.navtabs.this-department.html' %}
+{% endblock %}
+
+
+{% block sidecontent %}
+<nav class="navbar navbar-expand-lg navbar-light" id="sidebarNav">
+  <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#sidebarResponsive" aria-controls="sidebarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+      {{_("Menu")}} <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="sidebarResponsive">
+      <div class="list-group">
+      
+        {% include '_partials/widget.sidebar.this-department.html'  %}        
+
+      </div>
+  </div>
+</nav>
+{% endblock %}
+
+
+{% block content_new %}
+<a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'academic-year.new' content.ctx.institute_id %}#main">{{_('add')}}</a>
+{% endblock %}
+
+
 {% block maincontent %}
   {% load display_date %}
-    <article class="widget widget--schemeofwork--listing">
-      <!-- Pager Header -->      
-      <header class="widget widget--articleheader">
-        <span class="float-right">
-            <a class="navbar-brand btn btn-warning" id="btn-new" href="{% url 'academic-year.new' content.ctx.institute_id %}#main">{{_('add')}}</a>
-        </span>
-        <h2 class="group-heading">{{_("Academic years")}}</h2>
-        <hr />
-      </header>
-      <!-- Pager Header END -->
 
       <!-- Academic years -->
       
@@ -47,7 +63,5 @@
         <hr>
         {% endfor %}
       <!-- Academic END -->
-
-    </article>
 
 {% endblock %}

@@ -34,13 +34,13 @@ class SchemeOfWorkIndexViewModel(BaseViewModel):
         self.model = data
 
 
-    def view(self):
+    def view(self, request):
 
         data = {
             "schemes_of_work":self.model
         }
         
-        return ViewModel("", "Schemes of Work", "Our shared schemes of work by key stage", ctx=self.auth_user, data=data)
+        return ViewModel(request, "", self.auth_user.department.name, "Department", content_heading="Schemes of work", ctx=self.auth_user, data=data)
 
 
 class SchemeOfWorkGetModelViewModel(BaseViewModel):
@@ -115,7 +115,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
                 raise ex
                 
 
-    def view(self):
+    def view(self, request):
         
         # get options
         self.examboard_options = ExamBoardModel.get_options(self.db, self.auth_user)
@@ -143,7 +143,7 @@ class SchemeOfWorkEditViewModel(BaseViewModel):
             delete_message = delete_message + "<li>{number_of_resources} resource(s)</li>".format(number_of_resources=self.model.number_of_resources)
         delete_message = delete_message + "</ul>"
 
-        return ViewModel("", "Schemes of Work", self.model.name if len(self.model.name) != 0 else "Create new scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message, wizard=self.wizard)
+        return ViewModel(request, "", self.auth_user.department.name, "Department", content_heading="Scheme of work", ctx=self.auth_user, data=data, active_model=self.model, stack_trace=self.stack_trace, error_message=self.error_message, alert_message=self.alert_message, delete_dialog_message=delete_message, wizard=self.wizard)
 
  
 class SchemeOfWorkDeleteUnpublishedViewModel(BaseViewModel):
@@ -189,7 +189,7 @@ class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
         self.model = data
 
 
-    def view(self, main_heading, sub_heading):
+    def view(self, request, main_heading, sub_heading):
         super().view(self.scheme_of_work.name, sub_heading)
         
         data = {
@@ -202,6 +202,6 @@ class SchemeOfWorkScheduleViewModel(DefaultIndexViewModel):
             "days_to_show__options": settings.PAGER["schedule"]["pagesize_options"],
         }
 
-        return ViewModel("", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
+        return ViewModel(request, "", main_heading, sub_heading, ctx=self.auth_user, data=data, active_model=self.scheme_of_work)
 
 '''

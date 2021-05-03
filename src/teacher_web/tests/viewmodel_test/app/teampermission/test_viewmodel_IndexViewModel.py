@@ -6,8 +6,10 @@ from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
-from tests.test_helpers.mocks import fake_ctx_model, fake_teacher_permission_model
+from shared.models.utils.breadcrumb_generator import BreadcrumbGenerator
+from tests.test_helpers.mocks import fake_ctx_model, fake_teacher_permission_model, fake_breadcrumbs
 
+@patch.object(BreadcrumbGenerator, "get_items", return_value=fake_breadcrumbs())
 class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
 
     def setUp(self):
@@ -18,7 +20,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
         pass
 
 
-    def test_init_called_fetch__no_return_rows(self):
+    def test_init_called_fetch__no_return_rows(self, mock_bc):
         
         # arrange
         
@@ -33,14 +35,14 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             
             # act
             viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
-            actual_result = viewmodel.view()
+            actual_result = viewmodel.view(fake_request)
             
-            # assert functions was called
+            # assert 
             TeacherPermissionModel.get_team_permissions.assert_called()
-            self.assertEqual(3, len(actual_result.content))
+            self.assertEqual(4, len(actual_result.content))
             
 
-    def test_init_called_fetch__single_item(self):
+    def test_init_called_fetch__single_item(self, mock_bc):
         
         # arrange
         data_to_return = [
@@ -65,7 +67,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             
             # act
             viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
-            actual_result = viewmodel.view()
+            actual_result = viewmodel.view(fake_request)
             
             # assert functions was called
             TeacherPermissionModel.get_team_permissions.assert_called()
@@ -75,8 +77,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             self.assertEqual(1, len(actual_result.content["content"]["data"]["pending_permissions"]))           
             
 
-
-    def test_init_called_fetch__multiples_items(self):
+    def test_init_called_fetch__multiples_items(self, mock_bc):
         
         # arrange
 
@@ -123,7 +124,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             
             # act
             viewmodel = ViewModel(db=db, request=fake_request, auth_user=fake_ctx_model())
-            actual_result = viewmodel.view()
+            actual_result = viewmodel.view(fake_request)
             
             # assert
 
