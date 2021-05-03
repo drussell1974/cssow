@@ -288,7 +288,7 @@ class DepartmentDataAccess:
         
         execHelper = ExecHelper()
         
-        select_sql = "department__get_my$2" 
+        select_sql = "department__get_my$3" 
         params = (institute_id, department_id, int(show_published_state), auth_user_id,)
         
         rows = []
