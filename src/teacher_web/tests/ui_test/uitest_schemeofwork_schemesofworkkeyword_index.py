@@ -24,7 +24,7 @@ class uitest_schemeofwork_schemesofworkkeyword_index(UITestCase):
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
         self.assertFooterContextText("Computer Science Finibus Bonorum et Malorum")
-        #self.assertPageShouldHaveGroupHeading("Keywords")
+        self.assertPageShouldHaveGroupHeading("Keywords")
         self.assertTopNavShouldHaveHomeIndex(True)
         self.assertTopNavShouldHaveDepartmentsIndex(False)
         self.assertBreadcrumbShouldHaveDepartmentsIndex(True)
