@@ -58,7 +58,7 @@ class uitest_schemeofwork_schemesofwork_index(UITestCase):
 
         # assert
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'A-Level Computer Science', 'Scheme of work')
-        self.assertPageShouldHaveGroupHeading("")
+        self.assertPageShouldHaveGroupHeading("Keywords")
         
 
     def test_page__post_preview__item__navigate_to_schedule(self):
