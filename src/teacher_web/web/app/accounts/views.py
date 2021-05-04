@@ -9,7 +9,7 @@ from django.views import generic
 from shared.models.core.context import AuthCtx
 from shared.view_model import ViewModel
 
-from .viewmodels import RegisterTeacherForm, AccountIndexViewModel, AccountDeleteViewModel
+from .viewmodels import RegisterTeacherForm, JoinAsTeacherForm, AccountIndexViewModel, AccountDeleteViewModel
 
 # Create your views here.
 @login_required()
@@ -41,7 +41,12 @@ def delete(request):
 
 
 class RegisterTeacherView(generic.CreateView):
-    # 206 inherit RegisteredUserForm from UserCreationForm - see .viewmodels.py
     form_class = RegisterTeacherForm
     success_url = reverse_lazy('login')
     template_name = 'accounts/register.html'
+
+
+class JoinAsTeacherView(generic.CreateView):
+    form_class = JoinAsTeacherForm
+    success_url = reverse_lazy('login')
+    template_name = 'accounts/join.html'

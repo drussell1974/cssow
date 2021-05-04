@@ -65,7 +65,6 @@ class AccountDeleteViewModel(BaseViewModel):
         return ViewModel(request, "",self.model.username, "Account", ctx=self.model)
 
 
-# 206 inherit RegisteredUserForm from UserCreationForm to include new fields
 class RegisterTeacherForm(UserCreationForm):
 
     first_name = forms.CharField(label='Display name', max_length=150, required=True, help_text="required")
@@ -79,7 +78,7 @@ class RegisterTeacherForm(UserCreationForm):
         model = User
         fields = ('email','first_name', 'institute_name', 'department_name', 'pathway_id')
     
-    
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
@@ -188,3 +187,7 @@ class RegisterTeacherForm(UserCreationForm):
                 raise Exception("An error occurred creating user.") from e
 
         return user
+
+
+class JoinAsTeacherForm(UserCreationForm):
+    pass

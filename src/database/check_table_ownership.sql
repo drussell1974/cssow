@@ -1,5 +1,5 @@
 SELECT * FROM drussell1974$cssow_api.auth_user;
-SET @user_id = 21;
+SET @user_id = 168;
 
 SELECT * FROM sow_academic_year WHERE created_by = @user_id;
 SELECT * FROM sow_academic_year_period WHERE created_by = @user_id;
