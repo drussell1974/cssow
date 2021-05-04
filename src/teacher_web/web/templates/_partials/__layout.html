@@ -266,7 +266,8 @@
     <input type="hidden" id="teacher_react_apps__academic_year_start" value="{{content.ctx.academic_year.start}}" />
     <input type="hidden" id="teacher_react_apps__academic_year_end" value="{{content.ctx.academic_year.end}}" />
     <!-- react scripts START --> 
-    <script src="{% static 'default/js/teacher_react_apps/build/bundle.js' %}"></script>
+    <script src="{% static 'default/js/teacher_react_apps/build/calendar.bundle.js' %}"></script>
+    <script src="{% static 'default/js/teacher_react_apps/build/notification.bundle.js' %}"></script>
     {% block react_scripts %}
     {% endblock %}
   {% endif %}

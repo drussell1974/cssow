@@ -132,32 +132,32 @@ class LessonModel (BaseModel):
 
 
         # Validate order_of_delivery_id
-        if self.order_of_delivery_id is None or self.order_of_delivery_id < 1 or self.order_of_delivery_id > 9999:
+        if self.order_of_delivery_id is None or self.order_of_delivery_id < 1 or self.order_of_delivery_id > self.MAX_INT:
             self.validation_errors["order_of_delivery_id"] = "{} is not a valid selection".format(self.order_of_delivery_id)
             self.is_valid = False
 
         # Validate scheme_of_work_id
-        if self.scheme_of_work_id is None or self.scheme_of_work_id < 1 or self.scheme_of_work_id > 9999:
+        if self.scheme_of_work_id is None or self.scheme_of_work_id < 1 or self.scheme_of_work_id > self.MAX_INT:
             self.validation_errors["scheme_of_work_id"] = "{} is not a valid selection for lesson".format(self.scheme_of_work_id)
             self.is_valid = False
 
         # Validate content_id
-        if self.content_id is None or self.content_id < 1 or self.content_id > 99999:
+        if self.content_id is None or self.content_id < 1 or self.content_id > self.MAX_INT:
             self.validation_errors["content_id"] = "{} is not a valid selection for lesson".format(self.content_id)
             self.is_valid = False
 
         # Validate topic_id
-        if self.topic_id is None or self.topic_id < 1 or self.topic_id > 9999:
+        if self.topic_id is None or self.topic_id < 1 or self.topic_id > self.MAX_INT:
             self.validation_errors["topic_id"] = "{} is not a valid selection for lesson".format(self.topic_id)
             self.is_valid = False
 
         # Validate key_stage_id
-        if self.key_stage_id is None or self.key_stage_id < 1 or self.key_stage_id > 9999:
+        if self.key_stage_id is None or self.key_stage_id < 1 or self.key_stage_id > self.MAX_INT:
             self.validation_errors["key_stage_id"] = "{} is not a valid selection".format(self.key_stage_id)
             self.is_valid = False
 
         # Validate year_id
-        if self.year_id is None or self.year_id < 1 or self.year_id > 1000:
+        if self.year_id is None or self.year_id < 1 or self.year_id > self.MAX_INT:
             self.validation_errors["year_id"] = "{} is not a valid selection".format(self.year_id)
             self.is_valid = False
 

@@ -41,7 +41,7 @@ class test_db_department__get_my(TestCase):
             
             # assert
 
-            ExecHelper.select.assert_called_with(self.fake_db, 'department__get_my$2'
+            ExecHelper.select.assert_called_with(self.fake_db, 'department__get_my$3'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -63,7 +63,7 @@ class test_db_department__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_my$2'
+                'department__get_my$3'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
@@ -89,7 +89,7 @@ class test_db_department__get_my(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'department__get_my$2'
+                'department__get_my$3'
                 , (mock_auth_user.institute.id, mock_auth_user.department.id, int(STATE.PUBLISH), mock_auth_user.auth_user_id,)
                 , []
                 , handle_log_info)
