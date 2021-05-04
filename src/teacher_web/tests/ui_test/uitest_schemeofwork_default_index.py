@@ -49,7 +49,7 @@ class uitest_schemeofwork_default_index(UITestCase):
 
         # assert
         # ***** less 5 should be visible to test@localhost for testing purposes
-        self.assertEqual(3, result, "number of elements not as expected")
+        self.assertEqual(4, result, "number of elements not as expected")
 
 
     def test_page__show_institutes(self):
