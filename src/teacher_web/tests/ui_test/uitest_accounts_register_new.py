@@ -36,19 +36,31 @@ class uitest_accounts_register_new(UITestCase):
         self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
-    @skip("don't create new user during testing")
-    def test_page__should_direct_to_confirmation_sent(self):
+    def test_page__should_create_login(self):
         # setup
         elem = self.test_context.find_element_by_tag_name("form")
 
         ' Ensure element is visible '
         self.test_context.execute_script("arguments[0].scrollIntoView();", elem)
 
+        ' email '
+        elem = self.test_context.find_element_by_id("id_email")
+        elem.clear()
+        elem.send_keys("join@localhost")
 
         ' first name '
-        elem = self.test_context.find_element_by_id("id_username")
+        elem = self.test_context.find_element_by_id("id_first_name")
         elem.clear()
-        elem.send_keys("test@localhost")
+        elem.send_keys("You can delete me")
+
+        ' select pathway '
+
+        elem = self.test_context.find_element_by_id("id_pathway_id")
+        all_options = elem.find_elements_by_tag_name('option')
+        for opt in all_options:
+            if opt.text == "A-Level":
+                 opt.click()
+        elem.send_keys(Keys.TAB)
 
         ' enter password '
         elem = self.test_context.find_element_by_id("id_password1")
@@ -63,15 +75,27 @@ class uitest_accounts_register_new(UITestCase):
         ' submit '
         elem = self.test_context.find_element_by_id("saveButton")
         elem.click()
-        self.wait(s=2)
+
+        self.wait(s=4)
+
+        self.do_log_in("/accounts/profile/", wait=4, enter_username="join@localhost", enter_password="password1.")
 
         # assert
 
-        elem = self.test_context.find_elements_by_xpath("/html/body/div/div/div[3]/div/h1")
-        self.assertEqual("Password changed", elem[0].text)
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'You can delete me', 'Your profile')
 
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Password changed')
-        self.assertPageShouldHaveGroupHeading("")
+        # tearDown
+
+        elem = self.test_context.find_element_by_id("btn-delete_account--content")
+        elem.click()
+        self.wait(s=4)
+        #' confirm delete ' 
+        elem = self.test_context.find_element_by_id("deleteCheck")
+        elem.click()
+        #' delete ' 
+        elem = self.test_context.find_element_by_id("saveButton")
+        elem.click()
+        self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'Teach Computer Science', 'Computing Schemes of Work across all key stages')
 
 
     def test_page__should_stay_on_same_page_if_invalid(self):
@@ -84,13 +108,10 @@ class uitest_accounts_register_new(UITestCase):
         elem = self.test_context.find_element_by_id("id_email")
         elem.clear()
         elem.send_keys("test@localhost")
-
-
-
+        
+        ''' invalidate '''
         elem = self.test_context.find_element_by_id("id_first_name")
-        elem.clear()
-        elem.send_keys("Mr R")
-
+        elem.clear() 
 
         elem = self.test_context.find_element_by_id("id_password1")
         elem.clear()
@@ -104,9 +125,6 @@ class uitest_accounts_register_new(UITestCase):
         self.wait(s=1)
 
         # assert
-
-        elem = self.test_context.find_element_by_css_selector(".maincontent h1")
-        self.assertEqual("Registration", elem.text)
 
         self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
         #self.assertPageShouldHaveGroupHeading("")
