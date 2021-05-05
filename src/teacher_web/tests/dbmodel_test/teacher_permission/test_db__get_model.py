@@ -7,7 +7,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from tests.test_helpers.mocks import fake_teacher_permission_model, fake_ctx_model
 
-class test_db__get_teacher_permission(TestCase):
+class test_db__get_model(TestCase):
     
     def setUp(self):
         ' fake database context '
