@@ -200,6 +200,36 @@ class TeacherPermissionModel(BaseModel):
         return data
 
 
+    @classmethod
+    def get_by_join_code(cls, db, join_code, ctx):
+
+
+        cur_scheme_of_work = SchemeOfWorkContextModel.empty()
+
+        rows = TeacherPermissionDataAccess.get_by_join_code(db, join_code)
+        
+        for row in rows:
+            # check for changed scheme of work
+            if cur_scheme_of_work.id != row[2]:
+                cur_scheme_of_work = SchemeOfWorkContextModel(row[2], name=row[3])
+            
+            model = TeacherPermissionModel(
+                teacher_id=row[0],
+                teacher_name=row[1], #319 get teacher name
+                scheme_of_work=cur_scheme_of_work,
+                department_permission=DEPARTMENT(row[8]),
+                scheme_of_work_permission=SCHEMEOFWORK(row[9]),
+                lesson_permission=LESSON(row[10]),
+                is_authorised=row[11],
+                is_from_db = True,
+                ctx = ctx
+            )
+
+            cur_scheme_of_work.teacher_permissions.append(model)
+            return model
+        return None
+
+
     @staticmethod
     def request_access(db, model, auth_user):
 
@@ -284,6 +314,25 @@ class TeacherPermissionDataAccess:
 
         except Exception as e:
             raise Exception("Error getting team permissions", e)
+
+
+    @staticmethod
+    def get_by_join_code(db, join_code):
+        ''' gets the team permission for the new user '''
+
+        execHelper = ExecHelper()
+
+        str_select = "scheme_of_work__get_team_permissions_by_join_code"
+        params = (join_code)
+        
+        try:
+            rows = []
+            rows = execHelper.select(db, str_select, params, rows, handle_log_info)
+            
+            return rows
+
+        except Exception as e:
+            raise PermissionError("Error getting team permissions", e)
 
 
     @staticmethod
