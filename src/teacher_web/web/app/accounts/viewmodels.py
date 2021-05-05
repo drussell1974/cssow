@@ -190,4 +190,40 @@ class RegisterTeacherForm(UserCreationForm):
 
 
 class JoinAsTeacherForm(UserCreationForm):
-    pass
+    first_name = forms.CharField(label='Display name', max_length=150, required=True, help_text="required")
+    ''' Email used as user name so limit to 150 characters '''
+    email = forms.EmailField(label='Email', max_length=150, required=True, help_text='required') 
+    join_code = forms.CharField(label='Join code', max_length=6, required=True, help_text="enter the join code given to you - required")
+    
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('email','first_name', 'join_code')
+
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super().save(commit=False)
+        password = self.cleaned_data["password1"]
+        user.set_password(password)
+        user.username = self.cleaned_data["email"]
+
+        if commit:
+            user.save()
+
+            try:
+            
+                # a newly registered user is always head of department and teacher
+                
+                teacher_group = Group.objects.get(name='head of department')
+                teacher_group.user_set.add(user)
+                teacher_group = Group.objects.get(name='teacher')
+                teacher_group.user_set.add(user)
+
+            except Exception as e:
+                # delete user if cannot create department
+                if user.id is not None:
+                    user.delete()
+                
+                raise Exception("An error occurred creating user.") from e
+
+        return user

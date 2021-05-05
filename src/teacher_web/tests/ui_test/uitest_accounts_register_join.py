@@ -26,7 +26,7 @@ class uitest_accounts_register_join(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Complete registration')
         #self.assertPageShouldHaveGroupHeading("")
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
@@ -53,15 +53,6 @@ class uitest_accounts_register_join(UITestCase):
         elem.clear()
         elem.send_keys("You can delete me")
 
-        ' select pathway '
-
-        elem = self.test_context.find_element_by_id("id_pathway_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "A-Level":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
-
         ' enter password '
         elem = self.test_context.find_element_by_id("id_password1")
         elem.clear()
@@ -80,6 +71,8 @@ class uitest_accounts_register_join(UITestCase):
 
         self.do_log_in("/accounts/profile/", wait=4, enter_username="join@localhost", enter_password="password1.")
 
+        self.wait(s=4)
+        
         # assert
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'You can delete me', 'Your profile')
@@ -126,6 +119,6 @@ class uitest_accounts_register_join(UITestCase):
 
         # assert
 
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Complete registration')
         #self.assertPageShouldHaveGroupHeading("")
 
