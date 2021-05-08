@@ -46,7 +46,7 @@ class test_db__get_teacher_permission(TestCase):
 
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_team_permissions_by_join_code"
-                , ("ABCDEF")
+                , ("ABCDEF", True, 0)
                 , []
                 , handle_log_info)
             
@@ -68,7 +68,7 @@ class test_db__get_teacher_permission(TestCase):
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
                 "scheme_of_work__get_team_permissions_by_join_code"
-                , ("ABCDEF")
+                , ("ABCDEF", True, 0)
                 , []
                 , handle_log_info)
             
