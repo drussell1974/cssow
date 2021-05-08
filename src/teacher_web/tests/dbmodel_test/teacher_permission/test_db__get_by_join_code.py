@@ -57,7 +57,7 @@ class test_db__get_teacher_permission(TestCase):
         # arrange
         fake_ctx = fake_ctx_model()
 
-        expected_result = [(99, "Frank Herbert", 12323232, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(DEPARTMENT.NONE), int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), False)]
+        expected_result = [(99, "Frank Herbert", "ABCDEFGH", 12323232, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(DEPARTMENT.NONE), int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), False)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             

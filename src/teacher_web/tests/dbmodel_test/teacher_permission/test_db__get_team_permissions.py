@@ -47,7 +47,7 @@ class test_db__get_team_permissions(TestCase):
             # assert
             
             ExecHelper.select.assert_called_with(self.fake_db,
-                'scheme_of_work__get_team_permissions'
+                'scheme_of_work__get_team_permissions$2'
                 , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
@@ -61,7 +61,7 @@ class test_db__get_team_permissions(TestCase):
         fake_ctx = fake_ctx_model()
 
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (1, "John Doe", "ABCDEFGH", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
         ]
         
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -73,7 +73,7 @@ class test_db__get_team_permissions(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'scheme_of_work__get_team_permissions'
+                'scheme_of_work__get_team_permissions$2'
                 , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
@@ -88,9 +88,9 @@ class test_db__get_team_permissions(TestCase):
         fake_ctx = fake_ctx_model()
 
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
-            (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
-            (3, "Bill Gates", 68,  "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
+            (1, "John Doe", "ABCDEFGX",  67,"GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (2, "Jane Rogers", "ABCDEFGY", 68, "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
+            (3, "Bill Gates", "ABCDEFGY", 68, "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
         ]
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -100,7 +100,7 @@ class test_db__get_team_permissions(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'scheme_of_work__get_team_permissions'
+                'scheme_of_work__get_team_permissions$2'
                 , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
@@ -117,9 +117,9 @@ class test_db__get_team_permissions(TestCase):
         fake_ctx = fake_ctx_model()
 
         expected_result = [
-            (1, "John Doe", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
-            (2, "Jane Rogers", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
-            (3, "Bill Gates", 68,  "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
+            (1, "John Doe", "ABCDEFGX", 67, "GCSE Computer Science", 5, "Computer Science", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), True),
+            (2, "Jane Rogers", "ABCDEFGY", 68,  "Information Technology", 5, "Computer Science", int(DEPARTMENT.TEACHER), int(SCHEMEOFWORK.EDITOR), int(LESSON.EDITOR), True), 
+            (3, "Bill Gates", "ABCDEFGZ", 68,  "A-Level Computer Science", 5, "Computer Science", int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), False)
         ]
 
         with patch.object(ExecHelper, "select", return_value=expected_result):
@@ -129,7 +129,7 @@ class test_db__get_team_permissions(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db, 
-                'scheme_of_work__get_team_permissions'
+                'scheme_of_work__get_team_permissions$2'
                 , (6079, 67, 127671276711, False, 6079)
                 , []
                 , handle_log_info)

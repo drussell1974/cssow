@@ -28,7 +28,7 @@ class test_db__delete(TestCase):
 
         scheme_of_work = MagicMock(id=99, name="A-Level Computer Science")
 
-        model = Model(9343232, "Lorem Ipsum", scheme_of_work=scheme_of_work, ctx=fake_ctx_model())
+        model = Model(9343232, "Lorem Ipsum", join_code="ABCDEFGH", scheme_of_work=scheme_of_work, ctx=fake_ctx_model())
 
         with patch.object(ExecHelper, 'delete', side_effect=expected_exception):
             
@@ -43,7 +43,7 @@ class test_db__delete(TestCase):
 
         scheme_of_work = MagicMock(id=19, name="A-Level Computer Science")
 
-        model = Model(9343232, "Lorem Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, ctx=fake_ctx_model())
+        model = Model(9343232, "Lorem Ipsum", "ABCDEFGH", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=False)
         model.published = STATE.DELETE
@@ -60,6 +60,6 @@ class test_db__delete(TestCase):
 
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher_permission__delete'
-                , (19, 9343232, False, fake_ctx_model().auth_user_id)
+                'scheme_of_work__has__teacher_permission__delete$2'
+                , ("ABCDEFGH", 9343232, False, fake_ctx_model().auth_user_id)
                 , handle_log_info)

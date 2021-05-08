@@ -34,8 +34,7 @@ class test_db__get_model(TestCase):
         
         fake_ctx = fake_ctx_model()
 
-        #expected_result = [(int(SCHEMEOFWORK.NONE), int(LESSON.NONE), int(DEPARTMENT.NONE), "James Joyce", False)]
-        expected_result = [(2, "Frank Herbert", 11, "A-Level Computer Science", 5, "Computer Science", 127, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
+        expected_result = [(2, "Frank Herbert", "ABCDEFGH", 11, "A-Level Computer Science", 5, "Computer Science", 127, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             # act
@@ -45,7 +44,7 @@ class test_db__get_model(TestCase):
             # assert
 
             ExecHelper.select.assert_called_with(self.fake_db,
-                "scheme_of_work__get_teacher_permissions"
+                "scheme_of_work__get_teacher_permissions$2"
                 , (6079, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)
@@ -64,7 +63,7 @@ class test_db__get_model(TestCase):
         fake_ctx = fake_ctx_model()
         sow_id_to_get = 12323232
         #expected_result = [(int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), "Frank Herbert", True)]
-        expected_result = [(99, "Frank Herbert", sow_id_to_get, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
+        expected_result = [(99, "Frank Herbert", "ABCDEFGH", sow_id_to_get, "A-Level Computer Science", 67, "Computer Science", 127671276711, "Lorem Ipsum", int(SCHEMEOFWORK.EDITOR), int(LESSON.VIEWER), int(DEPARTMENT.NONE), True)]
 
         with patch.object(ExecHelper, 'select', return_value=expected_result):
             
@@ -74,7 +73,7 @@ class test_db__get_model(TestCase):
             
             # assert
             ExecHelper.select.assert_called_with(self.fake_db,
-                "scheme_of_work__get_teacher_permissions"
+                "scheme_of_work__get_teacher_permissions$2"
                 , (99, 67, 127671276711, True, 6079)
                 , []
                 , handle_log_info)

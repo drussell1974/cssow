@@ -29,7 +29,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
-                "exp__subheading":"Computing curriculum for A-Level",
+                "exp__subheading":"Scheme of work",
             }
         ]
 
@@ -122,7 +122,7 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
-                "exp__subheading":"Edit keyword: Random Access Memory (RAM) for Computing curriculum for A-Level",
+                "exp__subheading":"Scheme of work",
             }
         ]
 
@@ -153,8 +153,8 @@ class uitest_permissions_schemeofwork_schemesofworkkeyword__when_different_logge
                 "enter_username":"schemeofwork-owner@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"Schemes of Work",
-                "exp__subheading":"Our shared schemes of work by key stage",
+                "exp__h1":"Computer Science",
+                "exp__subheading":"Department",
             }]
 
         self.run_testcases__permission(testcases, "schemeofworkkeywords")

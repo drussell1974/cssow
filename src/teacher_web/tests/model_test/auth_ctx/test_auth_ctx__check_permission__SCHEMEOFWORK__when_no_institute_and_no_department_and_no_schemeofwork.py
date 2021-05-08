@@ -35,7 +35,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_no_institute_and_no_de
     def test_when_user_is_visitor(self):
         # arrange
         
-        self.test = init_TestAuthCtx(institute_id=0, department_id=0, fake_request_user_id=None, fake_teacher_data=DEPARTMENT.NONE)
+        self.test = init_TestAuthCtx(institute_id=0, department_id=0, join_code="ABCDEFGH", fake_request_user_id=None, fake_teacher_data=DEPARTMENT.NONE)
   
         # act and assert
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))

@@ -23,6 +23,7 @@ from shared.models.cls_pathway_template import PathwayTemplateModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher import TeacherModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
+from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -121,7 +122,7 @@ class RegisterTeacherForm(UserCreationForm):
 
                 # create teacher permission
 
-                teacher_permission_model = TeacherPermissionModel(user.id, user.username, is_authorised=True, ctx=auth_ctx)
+                teacher_permission_model = TeacherPermissionModel(user.id, user.username, join_code=ClassCodeGenerator.generate_class_code(8), is_authorised=True, ctx=auth_ctx)
                 teacher_permission_model.department_permission = DEPARTMENT.ADMIN
                 teacher_permission_model.scheme_of_work_permission = SCHEMEOFWORK.OWNER
                 teacher_permission_model.lesson_permission = LESSON.OWNER
@@ -206,24 +207,32 @@ class JoinAsTeacherForm(UserCreationForm):
         password = self.cleaned_data["password1"]
         user.set_password(password)
         user.username = self.cleaned_data["email"]
-
+        
+        join_code = self.cleaned_data["join_code"]
+        
         if commit:
-            user.save()
+            user.save() 
+            auth_ctx = Ctx(0, 0, auth_user_id=user.id)
 
-            try:
-            
-                # a newly registered user is always head of department and teacher
-                
-                teacher_group = Group.objects.get(name='head of department')
-                teacher_group.user_set.add(user)
-                teacher_group = Group.objects.get(name='teacher')
-                teacher_group.user_set.add(user)
+            teacher_permission_model = TeacherPermissionModel.get_by_join_code(db, join_code, auth_ctx)
+            if teacher_permission_model is not None:
+                try:
+                    
+                    # a newly registered user is always head of department and teacher
+                    
+                    teacher_group = Group.objects.get(name='head of department')
+                    teacher_group.user_set.add(user)
+                    teacher_group = Group.objects.get(name='teacher')
+                    teacher_group.user_set.add(user)
 
-            except Exception as e:
-                # delete user if cannot create department
+                except Exception as e:
+                    # delete user if cannot activate user
+                    if user.id is not None:
+                        user.delete()
+                    raise PermissionError("An error occurred creating user.") from e
+            else:
+                # delete user if not permission
                 if user.id is not None:
                     user.delete()
-                
-                raise Exception("An error occurred creating user.") from e
 
         return user

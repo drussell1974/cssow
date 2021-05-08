@@ -16,6 +16,8 @@ from shared.models.cls_department import DepartmentContextModel
 from shared.models.cls_schemeofwork import SchemeOfWorkModel
 from shared.models.cls_teacher_permission import TeacherPermissionModel
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON, parse_enum
+from shared.models.enums.publlished import STATE
+from shared.models.utils.class_code_generator import ClassCodeGenerator
 from shared.viewmodels.baseviewmodel import BaseViewModel
 from shared.view_model import ViewModel
 
@@ -29,10 +31,12 @@ class TeamPermissionIndexViewModel(BaseViewModel):
 
     def view(self, request):
 
+        # validate to display validation errors prior to processing
+
         authorised_permissions = TeacherPermissionModel.get_team_permissions(self.db, self.auth_user.auth_user_id, self.auth_user, True)
-
+        
         pending_permissions = TeacherPermissionModel.get_team_permissions(self.db, self.auth_user.auth_user_id, self.auth_user, False)
-
+        
         data = {
                 "authorised_permissions": authorised_permissions,
                 "pending_permissions": pending_permissions,
@@ -92,6 +96,8 @@ class TeamPermissionEditViewModel(BaseViewModel):
         self.model.department_permission = self.request.POST.get("department_permission", 0)
         self.model.scheme_of_work_permission = self.request.POST.get("scheme_of_work_permission", 0)
         self.model.lesson_permission = self.request.POST.get("lesson_permission", 0)
+        self.model.published = STATE.parse(self.request.POST["published"])
+        self.model.join_code = self.request.POST.get("join_code", "")
 
         self.model.validate()
         
@@ -143,12 +149,14 @@ class TeamPermissionApproveViewModel(BaseViewModel):
             self.model.department_permission = self.request.POST.get("department_permission", 0)
             self.model.scheme_of_work_permission = self.request.POST.get("scheme_of_work_permission", 0)
             self.model.lesson_permission = self.request.POST.get("lesson_permission", 0)
-
+            self.model.join_code = self.request.POST.get("join_code", "")
             self.model.is_authorised = True
             
             self.model.validate()
-
-            self.model = TeacherPermissionModel.approve(db, self.model, self.auth_user)
+            if self.model.is_valid:
+                self.model = TeacherPermissionModel.approve(db, self.model, self.auth_user)
+            #else:
+            #    raise ValidationError(f"could not approve request: join code:'{self.model.join_code}'")
 
 
 class TeamPermissionDeleteViewModel(BaseViewModel):
@@ -222,10 +230,11 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
             
             if approved_permissions is None or approved_permissions[self.scheme_of_work_id].is_from_db == False:
                 approved_permissions[self.scheme_of_work_id] = TeacherPermissionModel.default(auth_user.institute, auth_user.department, self.scheme_of_work, auth_user)
-            
+
                 self.model = TeacherPermissionModel(
                     teacher_id=self.model.teacher_id,
                     teacher_name=self.model.teacher_name,
+                    join_code = ClassCodeGenerator.generate_class_code(8),
                     scheme_of_work=self.scheme_of_work, 
                     department_permission = self.permission if type(self.approved_permissions[self.scheme_of_work_id]) is DEPARTMENT else approved_permissions[self.scheme_of_work_id].department_permission,
                     scheme_of_work_permission = self.permission if type(self.approved_permissions[self.scheme_of_work_id]) is SCHEMEOFWORK else approved_permissions[self.scheme_of_work_id].scheme_of_work_permission,
@@ -240,7 +249,7 @@ class TeamPermissionRequestAccessViewModel(BaseViewModel):
             self.model.department_permission = self.permission if type(self.permission) is DEPARTMENT else self.model.department_permission
             self.model.scheme_of_work_permission = self.permission if type(self.permission) is SCHEMEOFWORK else self.model.scheme_of_work_permission 
             self.model.lesson_permission = self.permission if type(self.permission) is LESSON else self.model.lesson_permission
-            self.model.is_authorised=False,
+            self.model.is_authorised=False
             self.model.ctx=auth_user
 
 

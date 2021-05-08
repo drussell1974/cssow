@@ -103,8 +103,8 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "enter_username":"schemeofwork-viewer@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"Schemes of Work",
-                "exp__subheading":"Our shared schemes of work by key stage",
+                "exp__h1":"Computer Science",
+                "exp__subheading":"Department",
             }]
 
         self.run_testcases__permission(testcases, "schemeofwork")
@@ -133,8 +133,8 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "enter_username":"schemeofwork-editor@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"Schemes of Work",
-                "exp__subheading":"A-Level Computer Science",
+                "exp__h1":"Computer Science",
+                "exp__subheading":"Department",
             }]
 
         self.run_testcases__permission(testcases, "schemeofwork")
@@ -177,8 +177,8 @@ class uitest_permissions_schemeofwork_schemesofwork__when_different_logged_in_us
                 "enter_username":"department-admin@localhost",
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
-                "exp__h1":"Schemes of Work",
-                "exp__subheading":"Our shared schemes of work by key stage",
+                "exp__h1":"Computer Science",
+                "exp__subheading":"Department",
             },
         ]
         

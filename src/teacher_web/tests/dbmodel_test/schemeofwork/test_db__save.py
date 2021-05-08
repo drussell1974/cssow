@@ -5,6 +5,7 @@ from shared.models.cls_schemeofwork import SchemeOfWorkModel as Model, SchemeOfW
 from shared.models.enums.permissions import DEPARTMENT, SCHEMEOFWORK, LESSON
 from shared.models.enums.publlished import STATE
 from shared.models.cls_department import DepartmentModel
+from shared.models.utils.class_code_generator import ClassCodeGenerator 
 from tests.test_helpers.mocks import fake_ctx_model
 
 class test_db__save(TestCase):
@@ -99,8 +100,8 @@ class test_db__save(TestCase):
 
             self.assertEqual(101, actual_result.id)
 
-
-    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self):
+    @patch.object(ClassCodeGenerator, "generate_class_code", return_value="8RG6H26F")
+    def test_should_call__scheme_of_work__has_teacher__insert__when__is_new__true(self, generate_class_code):
         # arrange
 
         model = Model(0, "", study_duration=2, start_study_in_year=10, auth_user=fake_ctx_model())
@@ -113,10 +114,12 @@ class test_db__save(TestCase):
             # assert
 
             ExecHelper.insert.assert_called_with(self.fake_db,
-                 'scheme_of_work__has__teacher_permission__insert'
-                 , (101, fake_ctx_model().auth_user_id, DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, fake_ctx_model().auth_user_id, True)
+                 'scheme_of_work__has__teacher_permission__insert$2'
+                 , (fake_ctx_model().auth_user_id, 101, "8RG6H26F", DEPARTMENT.HEAD.value, SCHEMEOFWORK.OWNER.value, LESSON.OWNER.value, fake_ctx_model().auth_user_id, True)
                  , handle_log_info)
 
+            generate_class_code.assert_called()
+            
             self.assertEqual(101, actual_result.id)
 
 

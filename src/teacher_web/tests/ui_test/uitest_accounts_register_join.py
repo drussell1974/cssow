@@ -30,10 +30,6 @@ class uitest_accounts_register_join(UITestCase):
         #self.assertPageShouldHaveGroupHeading("")
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
-        self.assertTopNavShouldHaveDepartmentsIndex(False)
-        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
-        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
-        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def test_page__should_create_login(self):
@@ -53,6 +49,11 @@ class uitest_accounts_register_join(UITestCase):
         elem.clear()
         elem.send_keys("You can delete me")
 
+        ' join code '
+        elem = self.test_context.find_element_by_id("id_join_code")
+        elem.clear()
+        elem.send_keys("ABCDEF")
+
         ' enter password '
         elem = self.test_context.find_element_by_id("id_password1")
         elem.clear()
@@ -71,8 +72,6 @@ class uitest_accounts_register_join(UITestCase):
 
         self.do_log_in("/accounts/profile/", wait=4, enter_username="join@localhost", enter_password="password1.")
 
-        self.wait(s=4)
-        
         # assert
 
         self.assertWebPageTitleAndHeadings('Dave Russell - Teach Computer Science', 'You can delete me', 'Your profile')

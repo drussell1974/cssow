@@ -15,17 +15,26 @@
                 {{ drow.name }} 
               </h3>
               <div class="pb-3">
-              <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
-                {{_("Pathways")}} <span class="badge badge-info">{{drow.number_of_pathways}}</span>
-              </a>
-              <a id="lnk-topic-index--{{drow.id}}" href="{% url 'department_topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
-                {{_("Topics")}} <span class="badge badge-info">{{drow.number_of_topics}}</span>
-              </a>
-              <a id="lnk-schemeofwork-new--{{row.id}}" href="{% url 'schemesofwork.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
-                {{_("Schemes of work")}} <span class="badge badge-info">{{drow.number_of_schemes_of_work}}</span>
-              </a>
-              </div>
+                <a id="lnk-ks123pathway-index--{{drow.id}}" href="{% url 'ks123pathways.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+                  {{_("Pathways")}} <span class="badge badge-info">{{drow.number_of_pathways}}</span>
+                </a>
+                <a id="lnk-topic-index--{{drow.id}}" href="{% url 'department_topic.index' row.id drow.id %}" class="btn btn-outline-dark stackable">
+                  {{_("Topics")}} <span class="badge badge-info">{{drow.number_of_topics}}</span>
+                </a>
 
+                <a href="#" role="button" id="dropdown-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-outline-dark stackable dropdown-toggle">
+                  {{_("More")}} 
+                </a>
+                <div class="btn btn-outline-dark stackable dropdown-menu" aria-labelledby="dropdown-more">
+                  <a id="lnk-schemeofwork-index--{{row.id}}" href="{% url 'schemesofwork.index' row.id drow.id %}" class="btn btn-light">
+                    {{_("Schemes of work")}} <span class="badge badge-info">{{drow.number_of_schemes_of_work}}</span>
+                  </a>
+                  <a id="lnk-team_permissions-index--{{row.id}}" href="{% url 'team-permissions.index' row.id drow.id %}" class="btn btn-light">
+                    {{_("Permissions")}} <span class="badge badge-info"></span>
+                  </a>
+                </div>
+              </div>
+            
             <!-- Scheme of works -->
             {% for srow in drow.schemes_of_work %}
               <div class="post-preview post-preview--my_schemeofwork {{ row.published_state }}">

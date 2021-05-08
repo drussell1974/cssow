@@ -29,7 +29,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
+                "exp__subheading":"Lesson",
             }]
 
         self.run_testcases__permission(testcases, "learningobjective")
@@ -110,7 +110,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Edit: Explain what happens to inactive processes and what is the purpose of managing these inactive processes",
+                "exp__subheading":"Lesson",
             }]
 
         self.run_testcases__permission(testcases, "learningobjective")
@@ -140,7 +140,7 @@ class uitest_permissions_schemeofwork_learningobjective__when_different_logged_i
                 "allow": True,
                 "exp__title": "Dave Russell - Teach Computer Science",
                 "exp__h1": "Types of CPU architecture",
-                "exp__subheading": "Von Neumann architecture and Harvard architecture, and CISC and RISC",
+                "exp__subheading": "Lesson",
             },
         ]
         

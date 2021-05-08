@@ -49,6 +49,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             TeacherPermissionModel(
                 teacher_id=24,
                 teacher_name="Jane Doe", #DepartmentModel(15, "Computer Science")), 
+                join_code="ABCDEFGH",
                 scheme_of_work=MagicMock(id = 69, name="GCSE Computer Science"), 
                 published=STATE.PUBLISH,
                 department_permission=DEPARTMENT.TEACHER, 
@@ -86,6 +87,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             TeacherPermissionModel(
                 teacher_id=1, 
                 teacher_name="Mr Russell", #DepartmentModel(15, "Computer Science")), 
+                join_code="ABCDEFGH",
                 scheme_of_work=MagicMock(id = 67, name="GCSE Computer Science"), 
                 published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.HEAD), 
@@ -96,6 +98,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             TeacherPermissionModel(
                 teacher_id=2, 
                 teacher_name="Jane Doe", #DepartmentModel(15, "Computer Science")), 
+                join_code="ABCDEFGH",
                 scheme_of_work=MagicMock(id = 68, name="A-Level Computer Science"), 
                 published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.TEACHER), 
@@ -106,6 +109,7 @@ class test_viewmodel_TeamPermissionsIndexViewModel(TestCase):
             TeacherPermissionModel(
                 teacher_id=3, 
                 teacher_name="Miss Doe", #DepartmentModel(15, "Computer Science")), 
+                join_code="ABCDEFGH",
                 scheme_of_work=MagicMock(id = 69, name="Games design"), 
                 published=STATE.PUBLISH,
                 department_permission=int(DEPARTMENT.STUDENT), 

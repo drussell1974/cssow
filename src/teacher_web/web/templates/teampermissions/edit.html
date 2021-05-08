@@ -63,6 +63,7 @@
         
         <input type="hidden" name="scheme_of_work_id" value="{{content.data.model.scheme_of_work_id}}">
         <input type="hidden" name="teacher_id" value={{content.data.model.teacher_id}}>
+        <input type="hidden" name="join_code" value="{{content.data.model.join_code}}">
         <input type="hidden" name="next" value="{% url 'team-permissions.index' content.ctx.institute_id content.ctx.department_id %}" >
         <input type="hidden" name="is_from_db" value="{{content.data.model.is_from_db}}" >
     </form>

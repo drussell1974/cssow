@@ -26,7 +26,7 @@ class test_db__full_access(TestCase):
         # arrange
         expected_exception = KeyError("Bang!")
 
-        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work(id=14, ctx=fake_ctx_model()), ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", join_code="ABCDEFGH", scheme_of_work = mock_scheme_of_work(id=14, ctx=fake_ctx_model()), ctx=fake_ctx_model())
         model.is_valid = True
         
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -40,7 +40,7 @@ class test_db__full_access(TestCase):
     def test_should_not_call__insert__when_not_valid(self):
         # arrange
 
-        model = Model(0, "", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(0, "", "ABCDEFGH", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         
@@ -89,7 +89,7 @@ class test_db__full_access(TestCase):
 
         fake_ctx = fake_ctx_model(6079)
 
-        model = Model(56, "Jane Mellor", is_authorised=True, ctx=fake_ctx)
+        model = Model(56, "Jane Mellor", join_code="ABCDEFGH", is_authorised=True, ctx=fake_ctx)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -107,8 +107,8 @@ class test_db__full_access(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                'department__has__teacher__insert'
-                , (6079, 67, int(DEPARTMENT.ADMIN), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079)
+                'department__has__teacher__insert$2'
+                , (6079, 67, "ABCDEFGH", int(DEPARTMENT.ADMIN), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079)
                 , handle_log_info)
 
             

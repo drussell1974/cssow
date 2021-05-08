@@ -29,7 +29,7 @@ class uitest_permissions_schemeofwork_lesson__when_different_logged_in_users(UIT
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
-                "exp__subheading":"Lessons",
+                "exp__subheading":"Scheme of work",
             }]
 
         self.run_testcases__permission(testcases, "lesson")
@@ -132,7 +132,7 @@ class uitest_permissions_schemeofwork_lesson__when_different_logged_in_users(UIT
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
-                "exp__subheading":"Edit: Types of CPU architecture",
+                "exp__subheading":"Scheme of work",
             }]
 
         self.run_testcases__permission(testcases, "lesson")
@@ -162,7 +162,7 @@ class uitest_permissions_schemeofwork_lesson__when_different_logged_in_users(UIT
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"A-Level Computer Science",
-                "exp__subheading":"Lessons",
+                "exp__subheading":"Scheme of work",
             },
         ]
         

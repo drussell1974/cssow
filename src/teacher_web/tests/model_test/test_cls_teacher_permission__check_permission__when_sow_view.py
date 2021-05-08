@@ -14,7 +14,7 @@ class test_cls_teacher_permission__check_permission__when_sow_view(TestCase):
         # act
         ''' The lesson view only '''
         # fake_user_model = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
-        self.test = Model(teacher_id=343434343, teacher_name="Tom foolery", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model(), 
+        self.test = Model(teacher_id=343434343, teacher_name="Tom foolery", join_code="ABCDEFGH", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model(), 
             scheme_of_work_permission=SCHEMEOFWORK.VIEWER)
         self.test.is_authorised = True
 

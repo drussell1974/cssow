@@ -34,6 +34,8 @@ class test_viewmodel_EditViewModel(TestCase):
             "department_permission": int(DEPARTMENT.TEACHER),
             "scheme_of_work_permission": int(SCHEMEOFWORK.VIEWER),
             "lesson_permission": int(LESSON.VIEWER), 
+            "join_code":"ABCDEFGH",
+            "published":"PUBLISH",
         }
     
         with patch.object(Model, "save", return_value = TeacherPermissionModel_get_model):
@@ -71,6 +73,7 @@ class test_viewmodel_EditViewModel(TestCase):
             "department_permission": int(DEPARTMENT.ADMIN) + 1,
             "scheme_of_work_permission": int(SCHEMEOFWORK.EDITOR),
             "lesson_permission": int(LESSON.EDITOR),
+            "published":"PUBLISH",
         }
         with patch.object(Model, "save", return_value=None):
             
