@@ -3,12 +3,12 @@ from selenium.webdriver.common.keys import Keys
 from ui_testcase import UITestCase, WebBrowserContext
 
 
-class uitest_accounts_register_new(UITestCase):
+class uitest_accounts_register_join(UITestCase):
 
     test_context = WebBrowserContext()
 
     def setUp(self):
-        self.try_log_in(self.root_uri + "/accounts/register")
+        self.try_log_in(self.root_uri + "/accounts/join")
 
 
     def tearDown(self):
@@ -26,14 +26,10 @@ class uitest_accounts_register_new(UITestCase):
         # test
 
         # assert
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Complete registration')
         #self.assertPageShouldHaveGroupHeading("")
         self.assertFooterContextText("")
         self.assertTopNavShouldHaveHomeIndex(True)
-        self.assertTopNavShouldHaveDepartmentsIndex(False)
-        self.assertBreadcrumbShouldHaveDepartmentsIndex(False)
-        self.assertBreadcrumbShouldHaveSchemesOfWorkIndex(False)
-        self.assertBreadcrumbShouldHaveLessonsIndex(False)
 
 
     def test_page__should_create_login(self):
@@ -53,14 +49,10 @@ class uitest_accounts_register_new(UITestCase):
         elem.clear()
         elem.send_keys("You can delete me")
 
-        ' select pathway '
-
-        elem = self.test_context.find_element_by_id("id_pathway_id")
-        all_options = elem.find_elements_by_tag_name('option')
-        for opt in all_options:
-            if opt.text == "A-Level":
-                 opt.click()
-        elem.send_keys(Keys.TAB)
+        ' join code '
+        elem = self.test_context.find_element_by_id("id_join_code")
+        elem.clear()
+        elem.send_keys("ABCDEF")
 
         ' enter password '
         elem = self.test_context.find_element_by_id("id_password1")
@@ -126,6 +118,6 @@ class uitest_accounts_register_new(UITestCase):
 
         # assert
 
-        self.assertWebPageTitleAndHeadings('', 'Account', 'Registration')
+        self.assertWebPageTitleAndHeadings('', 'Account', 'Complete registration')
         #self.assertPageShouldHaveGroupHeading("")
 

@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from app.accounts.views import index, RegisterTeacherView, delete
+from app.accounts.views import index, delete, RegisterTeacherView, JoinAsTeacherView
 
 # Create your tests here.
 class test_app_route_accounts_page(TestCase):
@@ -26,6 +26,17 @@ class test_app_route_accounts_page(TestCase):
         url = reverse("accounts.register")
         self.assertEqual("/accounts/register/", url)
         
+
+    def test_join_url_resolves_to_join(self):
+        url = resolve('/accounts/join/')
+        self.assertEqual("accounts.join", url.url_name)
+        self.assertEquals(url.func.__name__, JoinAsTeacherView.as_view().__name__)
+
+    
+    def test_join_url_resolves_to_join__reverse(self):
+        url = reverse("accounts.join")
+        self.assertEqual("/accounts/join/", url)
+
 
     def test_delete_url_resolves_to_delete(self):
         url = resolve('/accounts/delete/')

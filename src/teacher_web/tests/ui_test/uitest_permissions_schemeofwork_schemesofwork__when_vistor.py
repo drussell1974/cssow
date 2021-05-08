@@ -27,7 +27,7 @@ class uitest_permissions_schemeofwork_schemesofwork__when_vistor(UITestCase):
         self.do_log_in(f"/institute/{self.test_institute_id}/department/{self.test_department_id}/schemesofwork", enter_username="schemeofwork-viewer@localhost", wait=5)
         
         # assert
-        self.assertWebPageTitleAndHeadings(title="Dave Russell - Teach Computer Science", h1="Schemes of Work", subheading="Our shared schemes of work by key stage", should_be_logged_in=True, username="View Scheme of work only")
+        self.assertWebPageTitleAndHeadings(title="Dave Russell - Teach Computer Science", h1="Computer Science", subheading="Department", should_be_logged_in=True, username="View Scheme of work only")
 
 
     def test_page__new__should_redirect_to_login_when_with_permission_error(self):

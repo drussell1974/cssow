@@ -16,7 +16,7 @@ class test_cls_teacher_permission_validate__department_permission(TestCase):
     def setUp(self):
         #fake_user_model = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
         #fake_user_model.get_username = MagicMock(return_value="Dave Russell")
-        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
+        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", join_code="ABCDEFGH", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
 
     def tearDown(self):
         pass
@@ -121,7 +121,7 @@ class test_cls_teacher_permission_validate__scheme_of_work_permission(TestCase):
         #fake_user_model = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
         #fake_user_model.get_username = MagicMock(return_value="Dave Russell")
 
-        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
+        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", join_code="ABCDEFGH", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
 
     def tearDown(self):
         pass
@@ -227,7 +227,7 @@ class test_cls_teacher_permission_validate__lesson_permission(TestCase):
     def setUp(self):
         #fake_user_model = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
         #fake_user_model.get_username = MagicMock(return_value="Dave Russell")
-        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
+        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", join_code="ABCDEFGH", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
 
     def tearDown(self):
         pass
@@ -321,4 +321,82 @@ class test_cls_teacher_permission_validate__lesson_permission(TestCase):
 
         # assert
         self.assertTrue("lesson_permission" in self.test.validation_errors, "lesson_permission should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+class test_cls_teacher_permission_validate__join_code(TestCase):
+
+    test = None
+
+    def setUp(self):
+        #fake_user_model = TeacherModel(6079, "Dave Russell", department=DepartmentModel(67, "Computer Science", institute = InstituteModel(127671276711, name="Lorum Ipsum")))
+        #fake_user_model.get_username = MagicMock(return_value="Dave Russell")
+        self.test = Model(teacher_id=6079, teacher_name="Dave Russell", join_code="ABCDEFGH", scheme_of_work=SchemeOfWorkModel(11, name="KS3 Computing", study_duration=3, start_study_in_year=7), ctx=fake_ctx_model())
+
+    def tearDown(self):
+        pass
+
+
+    def test_min__valid_extreme(self):
+        # set up
+
+        self.test.join_code = "A1C2E3G4"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("join_code" in self.test.validation_errors, "join_code should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid)
+
+
+    def test_min__invalid_extreme(self):
+        # set up
+
+        self.test.join_code = "A1C2E3G"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("join_code" in self.test.validation_errors, "join_code should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "should not be is_valid")
+
+
+    def test_min__invalid_extreme_when_None(self):
+        # set up
+
+        self.test.join_code = None
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("join_code" in self.test.validation_errors, "join_code should have validation error %s" % self.test.validation_errors)
+        self.assertFalse(self.test.is_valid, "is_valid should be False")
+
+
+    def test_max__valid_extreme(self):
+        # set up
+
+        self.test.join_code = "A1C2E3G4"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertFalse("join_code" in self.test.validation_errors, "join_code should not have validation error %s" % self.test.validation_errors)
+        self.assertTrue(self.test.is_valid, "is_valid should be True")
+
+
+    def test_max__invalid_extreme(self):
+        # set up
+
+        self.test.join_code = "A1C2E3G4X"
+
+        # test
+        self.test.validate()
+
+        # assert
+        self.assertTrue("join_code" in self.test.validation_errors, "join_code should have validation error %s" % self.test.validation_errors)
         self.assertFalse(self.test.is_valid, "is_valid should be False")

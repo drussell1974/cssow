@@ -95,6 +95,8 @@ def request_access(request, institute_id, department_id, scheme_of_work_id, perm
 
     request_access_view.execute()
     
+    # TODO: #490 notify head of department 
+
     uri = reverse("team-permissions.login-as", args=[institute_id, department_id, scheme_of_work_id, permission])
     next = request.GET['next']
 

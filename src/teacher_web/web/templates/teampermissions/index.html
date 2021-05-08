@@ -37,16 +37,17 @@
             </h5>
             <hr>
             <span class="small">
-
               {% for member in scheme_of_work.teacher_permissions %}
-                <form name="edit-teampermission-{{member.id}}" id="form" class="needs-validation" method="post" enctype="multipart/form-data"  action="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}">
+                <form name="edit-teampermission-{{member.id}}" id="form" class="needs-validation" method="post" enctype="multipart/form-data"  action="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                   {% csrf_token %}
 
                   <div class="control-group"> 
                     <div class="form-group controls">
+                      <i class="text-muted float-right">{{member.join_code}}</i>
                       <b>{{member.teacher_name}}</b>
                     </div>
                   </div>
+
                   <div class="form-group stackable-group stackable-group-sm">
                   
                     <div class="control-group"> 
@@ -73,18 +74,18 @@
 
                     <div class="control-group"> 
                       <div class="form-group controls">
-                      <label>{{_("Lesson:")}}</label>
-                      <select class="form-control stackable" name="lesson_permission" id="ctl-type_id" required>
-                        {% for opt in content.data.lesson_permission_options %}
-                        <option value="{{opt.name}}" {% if opt.value == member.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
+                        <label>{{_("Lesson:")}}</label>
+                        <select class="form-control stackable" name="lesson_permission" id="ctl-type_id" required>
+                          {% for opt in content.data.lesson_permission_options %}
+                          <option value="{{opt.name}}" {% if opt.value == member.lesson_permission %} selected {% endif %}>{{opt.name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
                     </div>
 
                     <div class="control-group"> 
                       <div class="form-group controls">
-                          <a class="btn btn-danger float-right" href="{% url 'team-permissions.reject' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
+                        <a class="btn btn-danger float-right" href="{% url 'team-permissions.reject' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}" >
                         {{_("Reject")}}
                         </a>
                         <button type="submit" class="btn btn-warning float-right" href="{% url 'team-permissions.approve' content.ctx.institute_id content.ctx.department_id scheme_of_work.id member.teacher_id %}">
@@ -92,10 +93,13 @@
                         </button>
                       </div>
                     </div>
+                    
+                  </div>
+                  <input type="hidden" name="join_code" value="{{member.join_code}}" /> 
                 </form>
+                <div class="clearfix"></div>
+                <hr>
               {% endfor %}
-                
-
           </span>
         </div>
       </div>
@@ -136,7 +140,7 @@
               {% for member in scheme_of_work.teacher_permissions %}
 
                 <tr>
-                  <th scope="row">{{member.teacher_name}}</th>
+                  <th scope="row">{{member.teacher_name}} <span class="small text-muted float-right">{{member.join_code}}</span></th>
                   <td>{{member.department_permission.name}}</td>
                   <td>{{member.scheme_of_work_permission.name}}</td>
                   <td>{{member.lesson_permission.name}}</td>

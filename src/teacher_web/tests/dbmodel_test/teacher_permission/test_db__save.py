@@ -46,7 +46,7 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=1, name="A-Level Computer Science", auth_user=fake_ctx_model())
         
-        model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.EDITOR, LESSON.EDITOR, DEPARTMENT.TEACHER, is_authorised=True, ctx=fake_ctx_model())
+        model = Model(343430908034, "Loren Ipsum", "ABCDEFGH", scheme_of_work, SCHEMEOFWORK.EDITOR, LESSON.EDITOR, DEPARTMENT.TEACHER, is_authorised=True, ctx=fake_ctx_model())
         model.is_new = Mock(return_value=False)
         model.is_valid = True
 
@@ -64,7 +64,7 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=11, name="A-Level Computer Science", auth_user=fake_ctx_model())
         
-        model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(343430908034, "Loren Ipsum", "ABCDEFGH", scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.VIEWER, DEPARTMENT.STUDENT, is_authorised=False, ctx=fake_ctx_model())
         model.is_new = Mock(return_value=False)
         model.is_valid = True
         
@@ -77,7 +77,7 @@ class test_db__save(TestCase):
             
             ExecHelper.update.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher_permission__update'
+                'scheme_of_work__has__teacher_permission__update$2'
                 , (67, 12323232, 343430908034, int(DEPARTMENT.STUDENT), int(SCHEMEOFWORK.VIEWER), int(LESSON.VIEWER), 6079, False)
                 ,handle_log_info)
 
@@ -91,7 +91,7 @@ class test_db__save(TestCase):
         scheme_of_work = MagicMock(id=14, name="A-Level Computer Science", auth_user=fake_ctx_model())
         # 56, "Jane Mellor"
 
-        model = Model(343430908034, "Loren Ipsum",scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model())
+        model = Model(343430908034, "Loren Ipsum", "ABCDEFGH", scheme_of_work, SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=True, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -109,8 +109,8 @@ class test_db__save(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher_permission__insert'
-                , (12323232, 343430908034, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), fake_ctx_model().auth_user_id, True)
+                'scheme_of_work__has__teacher_permission__insert$2'
+                , (343430908034, 12323232, "ABCDEFGH", int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), fake_ctx_model().auth_user_id, True)
                 , handle_log_info)
             
             self.assertEqual(14, actual_result.scheme_of_work_id)
@@ -122,7 +122,7 @@ class test_db__save(TestCase):
 
         scheme_of_work = MagicMock(id=19, name="A-Level Computer Science", auth_user=fake_ctx_model())
         #
-        model = Model(343430908034, "Loren Ipsum", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(343430908034, "Loren Ipsum", "ABCDEFGH", scheme_of_work, SCHEMEOFWORK.VIEWER, SCHEMEOFWORK.EDITOR, DEPARTMENT.TEACHER, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=False)
         model.is_valid = True
@@ -140,8 +140,8 @@ class test_db__save(TestCase):
             
             ExecHelper.delete.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher_permission__delete'
-                , (19, 343430908034, False, fake_ctx_model().auth_user_id)
+                'scheme_of_work__has__teacher_permission__delete$2'
+                , ("ABCDEFGH", 343430908034, False, fake_ctx_model().auth_user_id)
                 , handle_log_info)
             
             self.assertEqual(19, actual_result.scheme_of_work_id)

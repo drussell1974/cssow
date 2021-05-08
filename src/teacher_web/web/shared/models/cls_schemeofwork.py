@@ -9,6 +9,7 @@ from shared.models.cls_keyword import KeywordModel
 from shared.models.enums.permissions import SCHEMEOFWORK, LESSON, DEPARTMENT
 from shared.models.enums.publlished import STATE
 from shared.models.utils.cache_proxy import CacheProxy
+from shared.models.utils.class_code_generator import ClassCodeGenerator
 
 class SchemeOfWorkContextModel(BaseContextModel):
     
@@ -346,7 +347,8 @@ class SchemeOfWorkModel(SchemeOfWorkContextModel):
         else:
             if model.is_new() == True:
                 model = SchemeOfWorkDataAccess._insert(db, model, published, auth_user_id=auth_user.auth_user_id)
-                SchemeOfWorkDataAccess._insert_as__teacher(db, model, auth_user_id=auth_user.auth_user_id, is_authorised=True)
+                join_code = ClassCodeGenerator.generate_class_code(8)
+                SchemeOfWorkDataAccess._insert_as__teacher(db, model, join_code, auth_user_id=auth_user.auth_user_id, is_authorised=True)
             else:
                 model = SchemeOfWorkDataAccess._update(db, model, published, auth_user_id=auth_user.auth_user_id)
 
@@ -476,12 +478,12 @@ class SchemeOfWorkDataAccess:
 
 
     @staticmethod
-    def _insert_as__teacher(db, model, auth_user_id, is_authorised):
+    def _insert_as__teacher(db, model, join_code, auth_user_id, is_authorised):
         execHelper = ExecHelper()
         
-        str_insert = "scheme_of_work__has__teacher_permission__insert"
+        str_insert = "scheme_of_work__has__teacher_permission__insert$2"
         
-        params = (model.id, auth_user_id, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user_id, is_authorised)
+        params = (auth_user_id, model.id, join_code, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), auth_user_id, is_authorised)
         
         execHelper.insert(db, str_insert, params, handle_log_info)
         

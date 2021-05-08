@@ -19,17 +19,18 @@ def get_fake_TeacherData(permission):
 
     return [
             (777, "Fusce von Pulvinar" # teacher [0] [1]
-            , 11, "Computer Science" # scheme of work [2] [3]
-            , 67, "Computer Science" # department [4] [5]
-            , 12767111276711, "Lorem Ipsum" # institute [6] [7]
-            , scheme_of_work_permission # scheme_of_work_permission [8]
-            , lesson_permission # lesson_permission [9]
-            , department_permission # department_permission [10]
-            , 1 # is_authorised [11]
+            , "ABCDEFGH"
+            , 11, "Computer Science" # scheme of work [3] [4]
+            , 67, "Computer Science" # department [5] [6]
+            , 12767111276711, "Lorem Ipsum" # institute [7] [8]
+            , scheme_of_work_permission # scheme_of_work_permission [9]
+            , lesson_permission # lesson_permission [10]
+            , department_permission # department_permission [11]
+            , 1 # is_authorised [12]
             )]
             
 
-def init_TestAuthCtx(institute_id, department_id, scheme_of_work_id = 0, fake_request_user_id = 0, fake_teacher_data=None):
+def init_TestAuthCtx(institute_id, department_id, scheme_of_work_id = 0, join_code="ABCDEFGH", fake_request_user_id = 0, fake_teacher_data=None):
     
     def get_hod():
         return 345

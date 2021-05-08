@@ -30,7 +30,7 @@ class test_db__request_access(TestCase):
         
         expected_exception = KeyError("Bang!")
 
-        model = Model(56, "Jane Mellor", scheme_of_work = mock_scheme_of_work(), ctx=fake_ctx)
+        model = Model(56, "Jane Mellor", join_code="ABCDEFGH",  scheme_of_work = mock_scheme_of_work(), ctx=fake_ctx)
         model.is_valid = True
         
         with patch.object(ExecHelper, 'insert', side_effect=expected_exception):
@@ -44,7 +44,7 @@ class test_db__request_access(TestCase):
     def test_should_not_call__insert__when_not_valid(self):
         # arrange
 
-        model = Model(0, "Jane Mellor", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(0, "Jane Mellor", "ABCDEFGH", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         
@@ -88,10 +88,10 @@ class test_db__request_access(TestCase):
 
     @patch.object(DataAccess, "insert_department__has__teacher")
     def test_should_call__insert_scheme_of_work__has__teacher_permissions(self, TeacherPermissionDataAccess_insert_department__has__teacher):
-        ''' NOTE: mock @patch.object insert_department__has__teacher to only test scheme_of_work__has__teacher_permission__insert ''' 
+        ''' NOTE: mock @patch.object insert_department__has__teacher to only test scheme_of_work__has__teacher_permission__insert$2 ''' 
         # arrange
 
-        model = Model(56, "Jane Mellor", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
+        model = Model(56, "Jane Mellor", "ABCDEFGH", mock_scheme_of_work(id=14, ctx=fake_ctx_model()), SCHEMEOFWORK.OWNER, LESSON.OWNER, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx_model())
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -109,8 +109,8 @@ class test_db__request_access(TestCase):
 
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                'scheme_of_work__has__teacher_permission__insert'
-                , (14, 56, int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079, False)
+                'scheme_of_work__has__teacher_permission__insert$2'
+                , (56, 14, 'ABCDEFGH', int(DEPARTMENT.HEAD), int(SCHEMEOFWORK.OWNER), int(LESSON.OWNER), 6079, False)
                 , handle_log_info)
 
             TeacherPermissionDataAccess_insert_department__has__teacher.assert_called()
@@ -132,7 +132,7 @@ class test_db__request_access(TestCase):
         fake_scheme_of_work = SchemeOfWorkModel(14, name="A-Level Computer Science", study_duration=2, start_study_in_year=10, auth_user=fake_ctx)
         
         
-        model = Model(343080834, "Lorem Ipsum", fake_scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.EDITOR, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx)
+        model = Model(343080834, "Lorem Ipsum", "ABCDEFGH", fake_scheme_of_work, SCHEMEOFWORK.VIEWER, LESSON.EDITOR, DEPARTMENT.HEAD, is_authorised=False, ctx=fake_ctx)
         model.created = '2021-01-24 07:18:18.677084'
         model.is_new = Mock(return_value=True)
         model.is_valid = True
@@ -150,8 +150,8 @@ class test_db__request_access(TestCase):
             # NOTE: department__has__teacher__insert has no access for request access
             ExecHelper.insert.assert_called_with(
                 self.fake_db, 
-                'department__has__teacher__insert'
-                , (6079, 67, int(DEPARTMENT.NONE), int(SCHEMEOFWORK.NONE), int(LESSON.NONE), 6079)
+                'department__has__teacher__insert$2'
+                , (6079, 67, "ABCDEFGH",  int(DEPARTMENT.NONE), int(SCHEMEOFWORK.NONE), int(LESSON.NONE), 6079)
                 , handle_log_info)
             
             #TeacherPermissionDataAccess_insert_access_request.assert_called_with(self.fake_db, model, fake_teacher_permission_model().teacher_id)

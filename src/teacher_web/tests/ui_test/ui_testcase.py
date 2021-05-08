@@ -23,23 +23,27 @@ def WebBrowserContext():
     return browser
 
 
-class UITestCase(TestCase):                                                                     
-    root_uri = os.environ["TEST_URI"]
-    test_institute_id = os.environ["TEST_INSTITUTE_ID"]
-    test_department_id = os.environ["TEST_DEPARTMENT_ID"]
-    test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
-    test_content_id = os.environ["TEST_CONTENT_ID"]
-    test_lesson_id = os.environ["TEST_LESSON_ID"] 
-    test_lesson_schedule_id = os.environ["TEST_LESSON_SCHEDULE_ID"] 
-    test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
-    test_reference = os.environ["TEST_RESOURCE_ID"]
-    test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
-    test_keyword_id = os.environ["TEST_KEYWORD_ID"]
-    test_ks123pathway_id = os.environ["TEST_KS123PATHWAY_ID"]
-    TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
-    TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]    
-    TEST_USER_NAME = os.environ["TEST_USER_NAME"]
-    TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
+class UITestCase(TestCase):                                                         
+
+    def __init__(self, test):                                                                
+        self.root_uri = os.environ["TEST_URI"]
+        self.test_institute_id = os.environ["TEST_INSTITUTE_ID"]
+        self.test_department_id = os.environ["TEST_DEPARTMENT_ID"]
+        self.test_scheme_of_work_id = os.environ["TEST_SCHEME_OF_WORK_ID"]
+        self.test_content_id = os.environ["TEST_CONTENT_ID"]
+        self.test_lesson_id = os.environ["TEST_LESSON_ID"] 
+        self.test_lesson_schedule_id = os.environ["TEST_LESSON_SCHEDULE_ID"] 
+        self.test_learning_objective_id = os.environ["TEST_LEARNING_OBJECTIVE_ID"]
+        self.test_reference = os.environ["TEST_RESOURCE_ID"]
+        self.test_md_document_name = os.environ["TEST_MD_DOCUMENT_NAME"]
+        self.test_keyword_id = os.environ["TEST_KEYWORD_ID"]
+        self.test_ks123pathway_id = os.environ["TEST_KS123PATHWAY_ID"]
+        self.TEST_KEYWORD_TERM = os.environ["TEST_KEYWORD_TERM"]
+        self.TEST_KEYWORD_RENAME_TERM_TO = os.environ["TEST_KEYWORD_RENAME_TERM_TO"]    
+        self.TEST_USER_NAME = os.environ["TEST_USER_NAME"]
+        self.TEST_USER_PSWD = os.environ["TEST_USER_PSWD"]
+
+        super().__init__(test) 
 
 
     def wait(self, s = 3):

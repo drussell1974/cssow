@@ -30,7 +30,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_different_logged_in_us
                 "allow": True,
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
+                "exp__subheading":"Lesson",
             }]
 
         self.run_testcases__permission(testcases, "lessonkeywords")
@@ -145,7 +145,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_different_logged_in_us
                 "exp__login_message":"The item is currently unavailable or you do not have permission.",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Edit: Random Access Memory (RAM) for Types of CPU architecture",
+                "exp__subheading":"Lesson",
             }]
 
         self.run_testcases__permission(testcases, "lessonkeywords")
@@ -176,7 +176,7 @@ class uitest_permissions_schemeofwork_lessonkeyword__when_different_logged_in_us
                 "wait_for_element_id": "index-page--group-heading",
                 "exp__title":"Dave Russell - Teach Computer Science",
                 "exp__h1":"Types of CPU architecture",
-                "exp__subheading":"Von Neumann architecture and Harvard architecture, and CISC and RISC",
+                "exp__subheading":"Lesson",
             },
         ]
         

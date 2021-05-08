@@ -24,7 +24,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_institute_but_no_depar
     
     def test_when_user_is_authenticated(self):
         # arrange
-        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=0, scheme_of_work_id=0, fake_request_user_id=6079, fake_teacher_data=DEPARTMENT.NONE)
+        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=0, join_code="ABCDEFGH", scheme_of_work_id=0, fake_request_user_id=6079, fake_teacher_data=DEPARTMENT.NONE)
 
         # act and assert
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))
@@ -35,7 +35,7 @@ class test_auth_ctx__check_permission__SCHEMEOFWORK__when_institute_but_no_depar
 
     def test_when_user_visitor(self):
         # arrange
-        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=0, fake_request_user_id=None, fake_teacher_data=DEPARTMENT.NONE)
+        self.test = init_TestAuthCtx(institute_id=12767111276711, department_id=0, join_code="ABCDEFGH", fake_request_user_id=None, fake_teacher_data=DEPARTMENT.NONE)
         
         # act and assert
         self.assertTrue(self.test.check_permission(SCHEMEOFWORK.NONE))

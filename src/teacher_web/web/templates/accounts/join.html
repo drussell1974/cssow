@@ -1,0 +1,31 @@
+{% extends '_partials/__layout.onecolumn.contentheading.html' %}
+{% block header %}
+<div class="site-heading">
+  <h1>{{_('Account')}}</h1>
+  <span class="subheading" id="main-subheading">{{_('Complete registration')}}</span>
+</div>
+{% endblock %}
+
+{% block maincontent %}
+    {% if user.is_authenticated %}
+
+      <h1 class="error text-center">{{_('You are already registered')}}</p>
+    {% else %}
+
+    <h1>{{_('Registration')}}</h1>
+
+    <p>{{_("Enter your details")}}</p>
+
+    <div class="site-registration-form">
+    <form method="POST" class="needs-validation">
+      {% csrf_token %}
+        {% include '_partials/form.auto.html' %}
+      
+        <div class="form-group stackable-group stackable-group-sm">
+        <input type="submit" class="btn btn-primary" value="{{_('Complete Registration')}}" id="saveButton">
+        <a href="{% url 'default' %}" type="submit" class="btn btn-secondary" id="cancelButton">{{_('Cancel')}}</a>
+      </div>
+    </form>
+    </div>
+  {% endif %}
+{% endblock %}

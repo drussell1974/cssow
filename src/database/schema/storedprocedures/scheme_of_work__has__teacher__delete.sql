@@ -1,5 +1,25 @@
 DELIMITER //
 
+DROP PROCEDURE IF EXISTS scheme_of_work__has__teacher_permission__delete$2;
+
+CREATE PROCEDURE scheme_of_work__has__teacher_permission__delete$2 (
+ IN p_join_code CHAR(8),
+ IN p_teacher_id INT,
+ IN p_is_authorised BOOLEAN,
+ IN p_auth_user_id INT)
+BEGIN
+	-- DO NOT REMOVE ESSENTIAL USERS
+	IF p_is_authorised = False OR p_teacher_id NOT IN (SELECT id FROM auth_user WHERE id < 30 or is_superuser = True) THEN
+		DELETE FROM sow_teacher_join_code 
+        WHERE join_code = p_join_code AND auth_user_id = p_teacher_id AND is_authorised = p_is_authorised;
+	END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
 DROP PROCEDURE IF EXISTS scheme_of_work__has__teacher_permission__delete;
 
 CREATE PROCEDURE scheme_of_work__has__teacher_permission__delete (
