@@ -87,6 +87,8 @@ ADD CONSTRAINT `scheme_of_work__has__teacher_join_code` FOREIGN KEY (`join_code`
 ALTER TABLE sow_department__has__teacher
 ADD CONSTRAINT `department__has__teacher_join_code` FOREIGN KEY (`join_code`) REFERENCES `sow_teacher_join_code` (`join_code`) ON UPDATE CASCADE ON DELETE CASCADE;
 
+SELECT * FROM sow_scheme_of_work__has__teacher;
+
 ALTER TABLE sow_scheme_of_work__has__teacher DROP FOREIGN KEY sow_scheme_of_work__has__teacher_ibfk_2; -- find name of fk to sow_scheme_of_work
 ALTER TABLE sow_scheme_of_work__has__teacher DROP FOREIGN KEY sow_scheme_of_work__has__teacher_ibfk_1; -- find name of fk to 
 ALTER TABLE sow_department__has__teacher DROP FOREIGN KEY fk_sow_department__has__teacher__has__auth_user_id;
@@ -105,6 +107,18 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`scheme_of_work_id`, `join_code`);
 ;
 
+SELECT * FROM sow_scheme_of_work__has__teacher WHERE join_code = 'LBXPHSVB';
+SELECT * FROM drussell1974$cssow_api.sow_teacher_join_code;
+
+UPDATE sow_department__has__teacher SET join_code = 'LBXPHSVC' WHERE join_code = 'LBXPHSVB' and created_by = 4;
+
+SELECT * FROM auth_user WHERE id IN (4, 11);
+
+
 ALTER TABLE sow_scheme_of_work__has__teacher
 ADD CONSTRAINT `scheme_of_work__has__teacher_scheme_of_work` FOREIGN KEY (`scheme_of_work_id`) 
-REFERENCES `sow_scheme_of_work` (`id`) ON UPDATE RESTRICT ON DELETE CASCADE;
+REFERENCES `sow_scheme_of_work` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE sow_scheme_of_work__has__teacher
+ADD CONSTRAINT `scheme_of_work_permission__has__teacher_join_code` FOREIGN KEY (`join_code`) 
+REFERENCES `sow_teacher_join_code` (`join_code`) ON UPDATE CASCADE ON DELETE CASCADE;

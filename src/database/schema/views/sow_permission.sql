@@ -31,5 +31,3 @@ SELECT
 			INNER JOIN auth_user as teach
 				ON teach.id = teacher_join.auth_user_id -- get teacher details from auth_user
     WHERE teach.is_active = True and hod.is_active = True;
-
-SELECT * FROM sow_permission;
